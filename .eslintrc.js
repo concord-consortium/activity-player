@@ -33,7 +33,7 @@ module.exports = {
       "@typescript-eslint/no-empty-interface": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": ["error", { "args": "none", "ignoreRestSiblings": true }],
-      '@typescript-eslint/no-var-requires': 0,
+      '@typescript-eslint/no-var-requires': "off",
       curly: ["error", "multi-line", "consistent"],
       eqeqeq: ["error", "smart"],
       "eslint-comments/no-unused-disable": "warn",
