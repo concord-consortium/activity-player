@@ -1,0 +1,111 @@
+{
+  "name": "lara-single-page",
+  "version": "0.0.1",
+  "description": "Concord Consortium LARA Single Page Application",
+  "main": "index.js",
+  "jest": {
+    "testURL": "https://lara-single-page.unexisting.url.com",
+    "setupFilesAfterEnv": [
+      "<rootDir>src/setupTests.js"
+    ],
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "/cypress/"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "src/utilities/test-utils.ts"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less|sass)$": "identity-obj-proxy"
+    },
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
+  "scripts": {
+    "start": "webpack-dev-server --inline --hot --content-base dist/",
+    "build": "npm-run-all lint:build clean build:webpack",
+    "build:webpack": "webpack --mode production --devtool false",
+    "clean": "rimraf dist",
+    "lint": "tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "lint:build": "tslint -c tslint-build.json 'src/**/*.{ts,tsx}'",
+    "lint:fix": "tslint -c tslint-build.json --fix 'src/**/*.{ts,tsx}'",
+    "lint:unused": "tsc --noUnusedLocals --project .",
+    "test": "jest",
+    "test:all": "npm-run-all build test start",
+    "test:coverage": "jest --coverage",
+    "test:debug": "node --nolazy --inspect-brk ./node_modules/.bin/jest --runInBand --no-cache",
+    "test:watch": "jest --watch",
+    "test:coverage:watch": "jest --coverage --watchAll",
+    "test:cypress": "cypress run",
+    "test:cypress:open": "cypress open",
+    "test:full": "npm-run-all test test:cypress"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/concord-consortium/lara-single-page.git"
+  },
+  "author": "Concord Consortium",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/concord-consortium/lara-single-page/issues"
+  },
+  "homepage": "https://github.com/concord-consortium/lara-single-page#readme",
+  "devDependencies": {
+    "@cypress/webpack-preprocessor": "^5.1.2",
+    "@testing-library/react-hooks": "^3.2.1",
+    "@types/enzyme": "^3.10.5",
+    "@types/enzyme-adapter-react-16": "^1.0.6",
+    "@types/jest": "^25.2.1",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
+    "autoprefixer": "^9.7.6",
+    "babel-core": "^6.26.3",
+    "babel-jest": "^25.5.1",
+    "copy-webpack-plugin": "^5.1.1",
+    "css-loader": "^3.5.3",
+    "cypress": "^4.5.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "file-loader": "^6.0.0",
+    "html-webpack-plugin": "^4.3.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^25.5.4",
+    "mini-css-extract-plugin": "^0.9.0",
+    "node-sass": "^4.14.0",
+    "npm-run-all": "^4.1.5",
+    "postcss-loader": "^3.0.0",
+    "rimraf": "^3.0.2",
+    "sass-loader": "^8.0.2",
+    "script-loader": "^0.7.2",
+    "style-loader": "^1.2.1",
+    "ts-jest": "^25.4.0",
+    "ts-loader": "^7.0.2",
+    "ts-node": "^8.10.1",
+    "tslint": "^6.1.2",
+    "tslint-loader": "^3.5.4",
+    "tslint-react": "^5.0.0",
+    "tslint-react-hooks": "^2.2.2",
+    "typescript": "^3.8.3",
+    "url-loader": "^4.1.0",
+    "wait-on": "^4.0.2",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
+}
