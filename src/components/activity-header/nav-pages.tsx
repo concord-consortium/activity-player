@@ -39,7 +39,7 @@ export class NavPages extends React.PureComponent <IProps> {
     const currentClass = this.props.currentPage === (index + 1) ? "current" : "";
     return (
       <div className={`page-button ${currentClass}`} key={`index ${index}`} onClick={this.handleButtonClick(index + 1)}>
-        <div className={`label ${currentClass}`}>{index + 1}</div>
+        <div className={`label ${currentClass}`}>{(index + 1).toString()}</div>
       </div>
     );
   }

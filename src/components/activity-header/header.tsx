@@ -10,12 +10,12 @@ interface IProps {
 
 export class Header extends React.PureComponent <IProps> {
   render() {
-    const logo = this.props.projectId ? projectLogo : undefined;
+    const logo = this.props.projectId !== undefined ? projectLogo : undefined;
     return (
       <div className="header" data-cy="header">
         <div className="inner">
           <div className="left">
-            { logo && <img src={logo} className="project-logo" /> }
+            { logo && <img src={logo} className="project-logo" data-cy="project-logo" /> }
           </div>
           <div className="right">
             <img src={ccLogo} className="logo" />

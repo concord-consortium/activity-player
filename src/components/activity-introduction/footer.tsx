@@ -18,20 +18,20 @@ function Footer() {
   const openSourceApacheLink = <a href={openSourceApacheURL} rel="noreferrer" target="_blank">Apache 2.0</a>;
 
   return (
-    <div className="footer">
-      <span>Copyright © 2020 </span>
+    <div className="footer" data-cy="footer">
+      <span>{`Copyright © 2020 `}</span>
       {concordLink}
-      <span>. All rights reserved. This material is licensed under a </span>
-      {creativeCommonsLink}.
-      <span>The software is licensed under </span>
+      <span>{`. All rights reserved. This material is licensed under a `}</span>
+      {creativeCommonsLink}
+      <span>{`. The software is licensed under `}</span>
       {openSourceBSDLink}
-      <span>, </span>
+      <span>{`, `}</span>
       {openSourceMITLink}
-      <span> or </span>
+      <span>{` or `}</span>
       {openSourceApacheLink}
-      <span>licenses. Please provide attribution to the Concord Consortium and the URL </span>
+      <span>{` licenses. Please provide attribution to the Concord Consortium and the URL `}</span>
       {concordLink2}
-      <span>.</span>
+      <span>{`.`}</span>
     </div>
   );
 }

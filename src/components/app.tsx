@@ -54,7 +54,7 @@ export class App extends React.PureComponent<IProps, IState> {
   private renderIntroductionContent = () => {
     return (
       <React.Fragment>
-        <div className="content">
+        <div className="content" data-cy="intro-page-content">
           <div className="social media">twitter, facebook</div>
           <div className="introduction">
             <ActivitySummary

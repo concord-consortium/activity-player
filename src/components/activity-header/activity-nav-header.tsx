@@ -15,13 +15,13 @@ export class ActivityNavHeader extends React.PureComponent <IProps> {
   render() {
     return (
       <div className="activity-nav-header" data-cy="activity-nav-header">
-        <div className="left">
+        <div className="left" data-cy="activity-nav-header-left">
           <NavMenu
             activityList={[this.props.activityName]}
           />
           <div className="activity-name">{`Activity: ${this.props.activityName}`}</div>
         </div>
-        <div className="right">
+        <div className="right" data-cy="activity-nav-header-right">
           <NavPages
             pages={this.props.activityPages}
             onPageChange={this.props.onPageChange}
