@@ -1,0 +1,13 @@
+@import "../vars.scss";
+
+.footer {
+  width: $content-width;
+  font-size: 13px;
+  color: white;
+  margin: 10px 0 10px 0;
+
+  a:link, a:visited, a:hover, a:active {
+    color: white;
+  }
+
+}

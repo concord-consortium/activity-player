@@ -1,3 +1,5 @@
+@import "./vars.scss";
+
 #app {
   position: fixed;
   top: 0;
@@ -5,9 +7,17 @@
   right: 0;
   bottom: 0;
   display: flex;
-  align-items: center;
   justify-content: center;
   color: #242424;
-  background-color: #dfdfdf;
+  background-color: $cc-teal-light3;
 }
 
+.content {
+  background-color: white;
+  padding: 12px;
+
+  .introduction {
+    display: flex;
+    justify-content: space-between
+  }
+}

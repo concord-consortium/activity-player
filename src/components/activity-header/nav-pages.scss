@@ -1,0 +1,47 @@
+@import "../vars.scss";
+
+.nav-pages {
+  display: flex;
+  margin: 0 10px 0 10px;
+
+  .page-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 24px;
+    height: 24px;
+    margin: 0 4px 0 4px;
+    border-radius: 50%;
+    border: solid $cc-charcoal-light1 2px;
+    background-color: white;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $cc-teal-light6;
+    }
+
+    &:active {
+      background-color: $cc-teal-light4;
+    }
+
+    &.current {
+      background-color: $cc-teal-light2;
+    }
+    &.current:hover {
+      background-color: $cc-teal-light1;
+    }
+    &.current:active {
+      background-color: $cc-teal;
+    }
+
+    .label {
+      color: $cc-charcoal-light1;
+      font-size: 14px;
+
+      &.current {
+        color: white;
+      }
+    }
+
+  }
+}

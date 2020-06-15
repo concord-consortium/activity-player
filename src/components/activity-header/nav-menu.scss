@@ -1,0 +1,64 @@
+@import "../vars.scss";
+
+.nav-menu {
+  height: 100%;
+  font-size: 18px;
+  padding: 0 30px 0 30px;
+  border-right: 2px solid white;
+
+  .header {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    .label {
+      margin-right: 5px;
+    }
+  }
+
+  .list {
+    position: absolute;
+    margin-top: 1px;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    z-index: 1;
+    transition-property: opacity;
+    transition-duration: .25s;
+    pointer-events: none;
+
+    &.show {
+      opacity: 1;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      box-sizing: border-box;
+      height: 40px;
+      min-width: 200px;
+      padding: 0 10px 0 10px;
+      background-color: white;
+      color: $cc-charcoal;
+      font-size: 16px;
+
+      &.selected {
+        font-weight: bold;
+      }
+
+      &:hover {
+        background-color: $cc-teal-light6;
+      }
+
+      &:active {
+        background-color: $cc-teal-light4;
+      }
+
+    }
+  }
+}

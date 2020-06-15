@@ -1,0 +1,23 @@
+@import "../vars.scss";
+
+.header {
+  height: 86px;
+  width: 100%;
+
+  .inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: $content-width;
+    height: 100%;
+    margin: 0 0 10px 0;
+
+    .logo {
+      height: 35px;
+    }
+    .project-logo {
+      height: 50px;
+    }
+  }
+
+}
