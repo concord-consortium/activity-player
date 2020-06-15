@@ -1,6 +1,8 @@
 import React from "react";
 import { EstimatedTime } from "./estimated-time";
 
+import './activity-summary.scss';
+
 interface IProps {
   activityName: string;
   introText: string;
