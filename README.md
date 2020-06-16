@@ -1,50 +1,8 @@
-# Starter Projects
+# Lightweight Activities Runtime and Authoring (LARA) Single Page
+
+This is a single page React and Typescript application intended to provide a platform for presenting "Lightweight" activities.
 
 ## Development
-
-### Copying a starter project
-
-1. Create a new public repository for your project (e.g. `new-repository`)
-2. Create a clone of the starter repo
-    ```
-    git clone --single-branch https://github.com/concord-consortium/starter-projects.git new-repository
-    ```
-3. Update the starter repo
-
-    First, update and run the starter project:
-    ```
-    cd new-repository
-    npm install
-    npm update
-    npm start
-    ``` 
-    Then, verify the project works by visiting [localhost:8080](http://localhost:8080) and checking for the words "Hello World". 
-    Also verify that the test suite still passes:
-    ```
-    npm run test:full
-    ```
-    If the updates are functional, please commit any changes to `package.json` or `package-lock.json` back to the 
-    Starter Projects repository for future use.
-
-4. Next, re-initialize the repo to create a new history
-    ```
-    rm -rf .git
-    git init
-    ```
-5. Create an initial commit for your new project
-    ```
-    git add .
-    git commit -m "Initial commit"
-    ```
-6. Push to your new repository
-    ```
-    git remote add origin https://github.com/concord-consortium/new-repository.git
-    git push -u origin master
-    ```
-7. Open your new repository and update all instances of `starter-projects` to `new-repository` and `Starter Projects` to `New Repository`. 
-   Note: this will do some of the configuration for Travis deployment to S3, but you'll still need to follow 
-   the instructions [here](https://docs.google.com/document/d/e/2PACX-1vTpYjbGmUMxk_FswUmapK_RzVyEtm1WdnFcNByp9mqwHnp0nR_EzRUOiubuUCsGwzQgOnut_UiabYOM/pub).
-8. Your new repository is ready! Remove this section of the `README`, and follow the steps below to use it.
 
 ### Initial steps
 
@@ -62,6 +20,8 @@ You *do not* need to build to deploy the code, that is automatic.  See more info
 1. Make sure if you are using Visual Studio Code that you use the workspace version of TypeScript.
    To ensure that you are open a TypeScript file in VSC and then click on the version number next to
    `TypeScript React` in the status bar and select 'Use Workspace Version' in the popup menu.
+2. When coding, use 2 spaces for indentation.
+3. SVG icons are imported as React components with initial JSX conversion done using https://react-svgr.com/playground/.  SVG icon examples can be found in src/assets/svg-icons.
 
 ## Deployment
 
@@ -114,6 +74,6 @@ Inside of your `package.json` file:
 
 ## License
 
-Starter Projects are Copyright 2018 (c) by the Concord Consortium and is distributed under the [MIT license](http://www.opensource.org/licenses/MIT).
+Lara Single Page is Copyright 2020 (c) by the Concord Consortium and is distributed under the [MIT license](http://www.opensource.org/licenses/MIT).
 
 See license.md for the complete license text.
