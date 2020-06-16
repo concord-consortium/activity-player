@@ -13,6 +13,10 @@
 
     .left {
       cursor: pointer;
+
+      &.no-link {
+        cursor: auto;
+      }
     }
     .right {
       cursor: pointer;

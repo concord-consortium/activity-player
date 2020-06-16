@@ -13,10 +13,11 @@ export class Header extends React.PureComponent <IProps> {
     const projectType = ProjectTypes.find(pt => pt.id === this.props.projectId);
     const logo = projectType !== undefined ? projectType.logo : undefined;
     const projectURL = projectType !== undefined ? projectType.url : "";
+    const linkClass = projectURL ? "" : "no-link";
     return (
       <div className="header" data-cy="header">
         <div className="inner">
-          <div className="left" onClick={this.handleProjectLogoClick(projectURL)}>
+          <div className={`left ${linkClass}`} onClick={this.handleProjectLogoClick(projectURL)}>
             { logo && <img src={logo} className="project-logo" data-cy="project-logo" /> }
           </div>
           <div className="right" onClick={this.handleConcordLogoClick}>
