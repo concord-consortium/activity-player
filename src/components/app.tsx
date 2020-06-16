@@ -35,7 +35,9 @@ export class App extends React.PureComponent<IProps, IState> {
   private renderActivity = () => {
     return (
       <React.Fragment>
-        <Header />
+        <Header
+          projectId={sampleActivity.project_id}
+        />
         <ActivityNavHeader
           activityName={sampleActivity.name}
           activityPages={sampleActivity.pages}

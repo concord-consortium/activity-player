@@ -9,7 +9,7 @@ describe("Header component", () => {
     const wrapperIcon = shallow(<Header projectId={1} />);
     expect(wrapperIcon.containsMatchingElement(projectLogo)).toEqual(true);
 
-    const wrapperNoIcon = shallow(<Header />);
+    const wrapperNoIcon = shallow(<Header projectId={9} />);
     expect(wrapperNoIcon.containsMatchingElement(projectLogo)).toEqual(false);
   });
 });
