@@ -2,6 +2,7 @@ import React from "react";
 import { Header } from "./activity-header/header";
 import { ActivityNavHeader } from "./activity-header/activity-nav-header";
 import { ProfileNavHeader } from "./activity-header/profile-nav-header";
+import { SocialMediaLinks } from "./activity-introduction/social-media-links";
 import { ActivitySummary } from "./activity-introduction/activity-summary";
 import { ActivityPageLinks } from "./activity-introduction/activity-page-links";
 import Footer from "./activity-introduction/footer";
@@ -55,7 +56,7 @@ export class App extends React.PureComponent<IProps, IState> {
     return (
       <React.Fragment>
         <div className="content" data-cy="intro-page-content">
-          <div className="social media">twitter, facebook</div>
+          <SocialMediaLinks shareURL="https://concord.org/" />
           <div className="introduction">
             <ActivitySummary
               activityName={sampleActivity.name}
