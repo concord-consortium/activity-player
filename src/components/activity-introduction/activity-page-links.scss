@@ -1,6 +1,7 @@
 @import "../vars.scss";
 
 .activity-page-links {
+  height: fit-content;
   padding: 20px;
   border-radius: 10px;
   border: 1px solid $cc-charcoal-light2;
@@ -16,8 +17,17 @@
   }
 
   .page-link {
-    color: $cc-teal-light1;
+    color: $cc-teal-light2;
     cursor: pointer;
+
+    &:hover {
+      color: $cc-teal-light1;
+      text-decoration: underline;
+    }
+    &:active {
+      color: $cc-teal;
+      text-decoration: underline;
+    }
   }
 
   .begin {
