@@ -11,8 +11,8 @@ interface IProps {
 export class Header extends React.PureComponent <IProps> {
   render() {
     const projectType = ProjectTypes.find(pt => pt.id === this.props.projectId);
-    const logo = projectType !== undefined ? projectType.logo : undefined;
-    const projectURL = projectType !== undefined ? projectType.url : "";
+    const logo = projectType?.logo;
+    const projectURL = projectType?.url || "";
     const linkClass = projectURL ? "" : "no-link";
     return (
       <div className="header" data-cy="header">
