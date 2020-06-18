@@ -1,0 +1,24 @@
+@import "../vars.scss";
+
+.profile-nav-header {
+  display: flex;
+  justify-content: flex-end;
+  width: $content-width;
+  color: white;
+  margin-top: 5px;
+
+  .profile-name {
+    height: 20px;
+    padding: 0 5px 0 5px;
+    background-color: #414546;
+    font-size: 13px;
+    line-height: 20px;
+
+    .userName {
+      cursor: pointer;
+    }
+    .userName:hover {
+      text-decoration: underline;
+    }
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "description": "<p>This is a sample activity used to test the LARA single page application.&nbsp; This activity uses the HAS project.</p>",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Single Page Test Activity",
+  "notes": "",
+  "project_id": 2,
+  "related": "<p>Related content for the&nbsp;sample activity used to test the LARA single page application.</p>",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "https://images.unsplash.com/photo-1583524505974-6facd53f4597?ixlib=rb-1.2.1&w=1000&q=80",
+  "time_to_complete": 10,
+  "version": 1,
+  "theme_name": "HAS National Geographic: Water",
+  "pages": [
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 1,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_introduction": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": "<p>This is introduction text for page 1 of the single page test activity.</p>",
+      "embeddables": [
+        {
+          "embeddable": {
+            "default_text": "sky is blue because...",
+            "give_prediction_feedback": false,
+            "hint": "<p>Science.</p>",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "Open Response",
+            "prediction_feedback": "",
+            "prompt": "<p>why is the sky blue?</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "446769-Embeddable::OpenResponse"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 2,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_introduction": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": "<p>This is introduction text for page 2 of the single page test activity.</p>",
+      "embeddables": [
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "<p>maybe blue</p>",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "<p>What color is the sky?</p>",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "red",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "green",
+                "is_correct": true,
+                "prompt": ""
+              },
+              {
+                "choice": "blue",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12849-Embeddable::MultipleChoice"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": true,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 3,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_introduction": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "text": null,
+      "embeddables": []
+    }
+  ],
+  "plugins": [],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

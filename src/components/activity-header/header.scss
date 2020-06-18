@@ -1,0 +1,33 @@
+@import "../vars.scss";
+
+.header {
+  height: 86px;
+
+  .inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: $content-width;
+    height: 100%;
+    margin: 0 0 10px 0;
+
+    .left {
+      cursor: pointer;
+
+      &.no-link {
+        cursor: auto;
+      }
+    }
+    .right {
+      cursor: pointer;
+    }
+
+    .logo {
+      height: 35px;
+    }
+    .project-logo {
+      height: 50px;
+    }
+  }
+
+}

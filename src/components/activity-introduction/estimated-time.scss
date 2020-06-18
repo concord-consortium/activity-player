@@ -1,0 +1,30 @@
+@import "../vars.scss";
+
+.estimated-time {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid $cc-charcoal-light2;
+  font-size: 16px;
+
+  .label {
+    display: flex;
+    align-items: baseline;
+
+    .estimate {
+      margin: 0 5px 0 5px;
+    }
+
+    .time {
+      color: $cc-teal-dark1;
+      font-size: 24px;
+      margin: 0 5px 0 0;
+    }
+    .minutes {
+      color: $cc-teal-dark1;
+    }
+
+  }
+
+}

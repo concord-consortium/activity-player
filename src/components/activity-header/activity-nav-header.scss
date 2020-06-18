@@ -1,0 +1,23 @@
+@import "../vars.scss";
+
+.activity-nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 46px;
+  width: $content-width;
+  border-radius: 2px;
+  background-color: #414546;
+  color: white;
+  font-size: 18px;
+
+  .left {
+    display: flex;
+    height: 100%;
+    align-items: center;
+  }
+
+  .activity-name {
+    margin: 0 5px 0 10px;
+  }
+}
