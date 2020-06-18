@@ -1,11 +1,11 @@
 {
-  "description": "<p>This is a sample activity used to test the LARA single page application.</p>",
+  "description": "<p>This is a sample activity used to test the Activity Player.</p>",
   "editor_mode": 0,
   "layout": 0,
   "name": "Single Page Test Activity",
   "notes": "",
   "project_id": null,
-  "related": "<p>Related content for the&nbsp;sample activity used to test the LARA single page application.</p>",
+  "related": "<p>Related content for the&nbsp;sample activity used to test the Activity Player.</p>",
   "show_submit_button": true,
   "student_report_enabled": true,
   "thumbnail_url": "https://images.unsplash.com/photo-1583524505974-6facd53f4597?ixlib=rb-1.2.1&w=1000&q=80",

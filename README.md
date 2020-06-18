@@ -1,4 +1,4 @@
-# Lightweight Activities Runtime and Authoring (LARA) Single Page
+# Activity Player
 
 This is a single page React and Typescript application intended to provide a platform for presenting "Lightweight" activities.
 
@@ -74,6 +74,6 @@ Inside of your `package.json` file:
 
 ## License
 
-Lara Single Page is Copyright 2020 (c) by the Concord Consortium and is distributed under the [MIT license](http://www.opensource.org/licenses/MIT).
+Activity Player is Copyright 2020 (c) by the Concord Consortium and is distributed under the [MIT license](http://www.opensource.org/licenses/MIT).
 
 See license.md for the complete license text.

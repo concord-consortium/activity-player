@@ -1,10 +1,10 @@
 {
-  "name": "lara-single-page",
+  "name": "activity-player",
   "version": "0.0.1",
-  "description": "Concord Consortium LARA Single Page Application",
+  "description": "Concord Consortium Activity Player",
   "main": "index.js",
   "jest": {
-    "testURL": "https://lara-single-page.unexisting.url.com",
+    "testURL": "https://activity-player.unexisting.url.com",
     "setupFilesAfterEnv": [
       "<rootDir>src/setupTests.js"
     ],
@@ -53,14 +53,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/concord-consortium/lara-single-page.git"
+    "url": "git+https://github.com/concord-consortium/activity-player.git"
   },
   "author": "Concord Consortium",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/concord-consortium/lara-single-page/issues"
+    "url": "https://github.com/concord-consortium/activity-player/issues"
   },
-  "homepage": "https://github.com/concord-consortium/lara-single-page#readme",
+  "homepage": "https://github.com/concord-consortium/activity-player#readme",
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^5.4.1",
     "@testing-library/react-hooks": "^3.3.0",
