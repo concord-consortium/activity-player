@@ -1,4 +1,4 @@
-# Activity Player
+# [LARA] Activity Player
 
 This is a single page React and Typescript application intended to provide a platform for presenting "Lightweight" activities.
 
