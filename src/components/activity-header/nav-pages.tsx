@@ -1,5 +1,5 @@
 import React from "react";
-import IconHome from "../../assets/svg-icons/icon-home";
+import IconHome from "../../assets/svg-icons/icon-home.svg";
 
 import './nav-pages.scss';
 
