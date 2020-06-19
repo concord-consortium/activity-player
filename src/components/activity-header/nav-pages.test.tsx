@@ -1,6 +1,6 @@
 import React from "react";
 import { NavPages } from "./nav-pages";
-import IconHome from "../../assets/svg-icons/icon-home";
+import IconHome from "../../assets/svg-icons/icon-home.svg";
 import { shallow } from "enzyme";
 
 describe("Nav Pages component", () => {
