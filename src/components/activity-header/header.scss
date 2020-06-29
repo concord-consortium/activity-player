@@ -2,14 +2,21 @@
 
 .header {
   height: 86px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
 
   .inner {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: $content-width;
     height: 100%;
+    width: $content-width;
     margin: 0 0 10px 0;
+
+    &.full {
+      width: 100%;
+    }
 
     .left {
       cursor: pointer;

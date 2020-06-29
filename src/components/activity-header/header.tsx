@@ -5,18 +5,20 @@ import { ProjectTypes } from "../../utilities/project-utils";
 import './header.scss';
 
 interface IProps {
+  fullWidth?: boolean;
   projectId: number | null;
 }
 
 export class Header extends React.PureComponent <IProps> {
   render() {
-    const projectType = ProjectTypes.find(pt => pt.id === this.props.projectId);
+    const { fullWidth, projectId } = this.props;
+    const projectType = ProjectTypes.find(pt => pt.id === projectId);
     const logo = projectType?.logo;
     const projectURL = projectType?.url || "";
     const linkClass = projectURL ? "" : "no-link";
     return (
       <div className="header" data-cy="header">
-        <div className="inner">
+        <div className={`inner ${fullWidth ? "full" : ""}`}>
           <div className={`left ${linkClass}`} onClick={this.handleProjectLogoClick(projectURL)}>
             { logo && <img src={logo} className="project-logo" data-cy="project-logo" /> }
           </div>
