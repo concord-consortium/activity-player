@@ -7,6 +7,10 @@
   color: white;
   margin-top: 5px;
 
+  &.full {
+    width: 100%;
+  }
+
   .profile-name {
     height: 20px;
     padding: 0 5px 0 5px;
