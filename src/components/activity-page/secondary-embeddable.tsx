@@ -9,8 +9,8 @@ interface IProps {
 
 export const SecondaryEmbeddable: React.FC<IProps> = (props) => {
   return (
-    <div className="secondary-embeddable">
-      <div className="header">{`Question #${props.questionNumber}`}</div>
+    <div className="secondary-embeddable" data-cy="secondary-embeddable">
+      <div className="header" data-cy="secondary-embeddable-header">{`Question #${props.questionNumber}`}</div>
       <div className="content" />
     </div>
   );
