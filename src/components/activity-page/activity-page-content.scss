@@ -41,6 +41,8 @@
 
       &.fill-remaining {
         flex-grow: 1;
+        position: relative;
+        height: fit-content;
       }
     }
   }
