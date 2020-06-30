@@ -1,0 +1,13 @@
+@import "../vars.scss";
+
+.intro-content {
+  width: $content-width;
+  box-sizing: border-box;
+  background-color: white;
+  padding: 12px;
+
+  .introduction {
+    display: flex;
+    justify-content: space-between
+  }
+}

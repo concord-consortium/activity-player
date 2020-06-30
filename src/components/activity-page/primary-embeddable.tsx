@@ -1,0 +1,15 @@
+import React from "react";
+
+import './primary-embeddable.scss';
+
+interface IProps {
+  embeddable: any;
+}
+
+export const PrimaryEmbeddable: React.SFC<IProps> = (props) => {
+  return (
+    <div className="primary-embeddable">
+      <div className="aspect-ratio-box" />
+    </div>
+  );
+};

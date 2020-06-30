@@ -1,0 +1,11 @@
+@import "../vars.scss";
+
+.primary-embeddable {
+
+  .aspect-ratio-box {
+    background-color: $cc-charcoal-light2;
+    position: relative;
+    width: 100%;
+    padding-top: 75%; /* 4:3 Aspect Ratio */
+  }
+}
