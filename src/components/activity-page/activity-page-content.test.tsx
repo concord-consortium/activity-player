@@ -7,7 +7,7 @@ describe("Activity Page Content component", () => {
     const stubFunction = () => {
       // do nothing.
     };
-    const page = { layout: "l-responsive", embeddables: [] }
+    const page = { layout: "l-responsive", embeddables: [] };
     const wrapper = shallow(<ActivityPageContent
       isFirstActivityPage={false}
       isLastActivityPage={false}
