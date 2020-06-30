@@ -6,7 +6,7 @@ interface IProps {
   embeddable: any;
 }
 
-export const PrimaryEmbeddable: React.SFC<IProps> = (props) => {
+export const PrimaryEmbeddable: React.FC<IProps> = (props) => {
   return (
     <div className="primary-embeddable">
       <div className="aspect-ratio-box" />

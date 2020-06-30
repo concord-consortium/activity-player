@@ -7,7 +7,7 @@ interface IProps {
   questionNumber: number;
 }
 
-export const SecondaryEmbeddable: React.SFC<IProps> = (props) => {
+export const SecondaryEmbeddable: React.FC<IProps> = (props) => {
   return (
     <div className="secondary-embeddable">
       <div className="header">{`Question #${props.questionNumber}`}</div>

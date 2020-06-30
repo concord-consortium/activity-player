@@ -7,7 +7,7 @@ interface BottomButtonProps {
   onNext?: () => void;
 }
 
-export const BottomButtons: React.SFC<BottomButtonProps> = (props) => {
+export const BottomButtons: React.FC<BottomButtonProps> = (props) => {
   return (
     <div className="bottom-buttons">
       <div>

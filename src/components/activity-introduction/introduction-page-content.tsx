@@ -10,7 +10,7 @@ interface IProps {
   onPageChange: (page: number) => void;
 }
 
-export const IntroductionPageContent: React.SFC<IProps> = (props) => {
+export const IntroductionPageContent: React.FC<IProps> = (props) => {
   const { activity, onPageChange } = props;
   return (
     <div className="intro-content" data-cy="intro-page-content">
