@@ -14,12 +14,12 @@
     align-items: center;
     padding: 0 0 0 10px;
     color: white;
-    background-color: $cc-teal-light1;
+    background-color: var(--theme-primary-color);
   }
 
   .content {
     height: 250px;
     border-radius: 0 0 13px 13px;
-    border: 1px solid #ededed;
+    border: 1px solid $cc-charcoal-light1;
   }
 }

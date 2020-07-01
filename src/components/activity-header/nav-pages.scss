@@ -25,13 +25,13 @@
     }
 
     &.current {
-      background-color: $cc-teal-light2;
+      background-color: var(--theme-primary-color);
     }
     &.current:hover {
-      background-color: $cc-teal-light1;
+      background-color: var(--theme-primary-hover-color);
     }
     &.current:active {
-      background-color: $cc-teal;
+      background-color: var(--theme-primary-active-color);
     }
 
     .label {
