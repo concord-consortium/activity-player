@@ -33,6 +33,10 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   render() {
     const { isFirstActivityPage, isLastActivityPage, page, totalPreviousQuestions } = this.props;
     const { scrollOffset } = this.state;
+    // Layout types are named in a somewhat confusing manner - particularly in relation to container widths.
+    // Responsive layout actually uses the entire page width, whereas the other layouts use only 960 horizontal pixels.
+    // FullWidth layout, despite its name, does not use the full screen width (it would be better named "stacked").
+    // However, in an effort to sync names with the authoring and activity JSON we will continue to use the previously defined naming conventions.
     const useFullPageWidth = page.layout === PageLayouts.Responsive;
     const vertical = page.layout === PageLayouts.FullWidth;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
