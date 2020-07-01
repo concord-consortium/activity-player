@@ -3,6 +3,7 @@ import { PrimaryEmbeddable } from "./primary-embeddable";
 import { SecondaryEmbeddable } from "./secondary-embeddable";
 import { BottomButtons } from "./bottom-buttons";
 import { PageLayouts, EmbeddableSections } from "../../utilities/activity-utils";
+import { renderHTML } from "../../utilities/render-html";
 
 import './activity-page-content.scss';
 
@@ -55,7 +56,9 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     return (
       <div className={`page-content ${useFullPageWidth ? "full" : ""}`} data-cy="page-content">
         <div className="name">{page.name}</div>
-        <div className="introduction" dangerouslySetInnerHTML={{ __html: page.text}}></div>
+        <div className="introduction">
+          { renderHTML(page.text) }
+        </div>
         <div className={`embeddables ${vertical ? "vertical" : ""}`}>
           { first }
           { second }

@@ -109,6 +109,9 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "@types/dompurify": "^2.0.2",
+    "dompurify": "^2.0.12",
+    "html-react-parser": "^0.13.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-share": "^4.2.0"
