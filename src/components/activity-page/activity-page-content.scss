@@ -1,0 +1,49 @@
+@import "../vars.scss";
+
+.page-content {
+  width: $content-width;
+  box-sizing: border-box;
+  background-color: rgba(255,255,255,0.95);
+  padding: 20px;
+  margin-bottom: 40px;
+
+  &.full {
+    width: 100%;
+  }
+
+  .name {
+    font-size: 24px;
+    font-weight: bold;;
+    max-width: 900px;
+    color: $cc-teal-light1;
+  }
+
+  .introduction {
+    max-width: 900px;
+  }
+
+  .embeddables {
+    display: flex;
+    flex-direction: row;
+    margin: 0 0 20px 0;
+
+    &.vertical {
+      flex-direction: column;
+    }
+
+    .group {
+      &.left {
+        margin-right: 20px;
+      }
+      &.top {
+        margin-bottom: 20px;
+      }
+
+      &.fill-remaining {
+        flex-grow: 1;
+        position: relative;
+        height: fit-content;
+      }
+    }
+  }
+}

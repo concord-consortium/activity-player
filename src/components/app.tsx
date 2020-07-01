@@ -2,11 +2,11 @@ import React from "react";
 import { Header } from "./activity-header/header";
 import { ActivityNavHeader } from "./activity-header/activity-nav-header";
 import { ProfileNavHeader } from "./activity-header/profile-nav-header";
-import { SocialMediaLinks } from "./activity-introduction/social-media-links";
-import { ActivitySummary } from "./activity-introduction/activity-summary";
-import { ActivityPageLinks } from "./activity-introduction/activity-page-links";
+import { ActivityPageContent } from "./activity-page/activity-page-content";
+import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import Footer from "./activity-introduction/footer";
-import sampleActivity from "../data/sample-activity-1.json";
+import { PageLayouts } from "../utilities/activity-utils";
+import sampleActivity from "../data/sample-activity-multiple-layout-types.json";
 
 import "./app.scss";
 
@@ -23,7 +23,6 @@ export class App extends React.PureComponent<IProps, IState> {
       currentPage: 0
     };
   }
-
   render() {
     return (
       <div className="app">
@@ -33,23 +32,47 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
+    const { currentPage } = this.state;
+    let totalPreviousQuestions = 0;
+
+    for (let page = 0; page < currentPage - 1; page++) {
+      for (let embeddable = 0; embeddable < sampleActivity.pages[page].embeddables.length; embeddable++) {
+        if (!sampleActivity.pages[page].embeddables[embeddable].section) {
+          totalPreviousQuestions++;
+        }
+      }
+    }
+
+    const fullWidth = (currentPage !== 0) && (sampleActivity.pages[currentPage - 1].layout === PageLayouts.Responsive);
+
     return (
       <React.Fragment>
         <Header
+          fullWidth={fullWidth}
           projectId={sampleActivity.project_id}
         />
         <ActivityNavHeader
           activityName={sampleActivity.name}
           activityPages={sampleActivity.pages}
-          currentPage={this.state.currentPage}
+          currentPage={currentPage}
+          fullWidth={fullWidth}
           onPageChange={this.handleChangePage}
         />
         <ProfileNavHeader
+          fullWidth={fullWidth}
           name={"test student"}
         />
-        { this.state.currentPage === 0
+        { currentPage === 0
           ? this.renderIntroductionContent()
-          : this.renderActivityContent(this.state.currentPage) }
+          : <ActivityPageContent
+              isFirstActivityPage={currentPage === 1}
+              isLastActivityPage={currentPage === sampleActivity.pages.length}
+              pageNumber={currentPage}
+              onPageChange={this.handleChangePage}
+              page={sampleActivity.pages[currentPage - 1]}
+              totalPreviousQuestions={totalPreviousQuestions}
+            />
+        }
       </React.Fragment>
     );
   }
@@ -57,28 +80,12 @@ export class App extends React.PureComponent<IProps, IState> {
   private renderIntroductionContent = () => {
     return (
       <React.Fragment>
-        <div className="content" data-cy="intro-page-content">
-          <SocialMediaLinks shareURL="https://concord.org/" />
-          <div className="introduction">
-            <ActivitySummary
-              activityName={sampleActivity.name}
-              introText={sampleActivity.description}
-              time={sampleActivity.time_to_complete}
-            />
-            <ActivityPageLinks
-              activityPages={sampleActivity.pages}
-              onPageChange={this.handleChangePage}
-            />
-          </div>
-        </div>
+        <IntroductionPageContent
+          activity={sampleActivity}
+          onPageChange={this.handleChangePage}
+        />
         <Footer/ >
       </React.Fragment>
-    );
-  }
-
-  private renderActivityContent = (page: number) => {
-    return (
-      <div>{`page ${page}`}</div>
     );
   }
 

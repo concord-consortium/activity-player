@@ -10,6 +10,11 @@
   background-color: #414546;
   color: white;
   font-size: 18px;
+  margin: 0 20px;
+
+  &.full {
+    width: 100%;
+  }
 
   .left {
     display: flex;

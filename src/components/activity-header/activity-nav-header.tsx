@@ -8,24 +8,26 @@ interface IProps {
   activityName: string;
   activityPages: any[];
   currentPage: number;
+  fullWidth?: boolean;
   onPageChange: (page: number) => void;
 }
 
 export class ActivityNavHeader extends React.PureComponent <IProps> {
   render() {
+    const { activityName, activityPages, currentPage, fullWidth, onPageChange} = this.props;
     return (
-      <div className="activity-nav-header" data-cy="activity-nav-header">
+      <div className={`activity-nav-header ${fullWidth ? "full" : ""}`} data-cy="activity-nav-header">
         <div className="left" data-cy="activity-nav-header-left">
           <NavMenu
-            activityList={[this.props.activityName]}
+            activityList={[activityName]}
           />
-          <div className="activity-name">{`Activity: ${this.props.activityName}`}</div>
+          <div className="activity-name">{`Activity: ${activityName}`}</div>
         </div>
         <div className="right" data-cy="activity-nav-header-right">
           <NavPages
-            pages={this.props.activityPages}
-            onPageChange={this.props.onPageChange}
-            currentPage={this.props.currentPage}
+            pages={activityPages}
+            onPageChange={onPageChange}
+            currentPage={currentPage}
           />
         </div>
       </div>

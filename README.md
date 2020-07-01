@@ -21,7 +21,7 @@ You *do not* need to build to deploy the code, that is automatic.  See more info
    To ensure that you are open a TypeScript file in VSC and then click on the version number next to
    `TypeScript React` in the status bar and select 'Use Workspace Version' in the popup menu.
 2. When coding, use 2 spaces for indentation.
-3. SVG icons are imported as React components with initial JSX conversion done using https://react-svgr.com/playground/.  SVG icon examples can be found in src/assets/svg-icons.
+3. SVG icons are imported directly into the project in src/assets/. SVGR is used to convert SVGs to React components which can be directly imported into other React components (attributes such as fill can be styled using CSS classes).
 
 ## Deployment
 
