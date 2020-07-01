@@ -5,6 +5,7 @@ import { ProfileNavHeader } from "./activity-header/profile-nav-header";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import Footer from "./activity-introduction/footer";
+import { PageLayouts } from "../utilities/activity-utils";
 import sampleActivity from "../data/sample-activity-multiple-layout-types.json";
 
 import "./app.scss";
@@ -34,7 +35,7 @@ export class App extends React.PureComponent<IProps, IState> {
     const { currentPage } = this.state;
     let totalPreviousQuestions = 0;
 
-    for (let page = 0; page < (currentPage - 1); page++) {
+    for (let page = 0; page < currentPage - 1; page++) {
       for (let embeddable = 0; embeddable < sampleActivity.pages[page].embeddables.length; embeddable++) {
         if (!sampleActivity.pages[page].embeddables[embeddable].section) {
           totalPreviousQuestions++;
@@ -42,7 +43,7 @@ export class App extends React.PureComponent<IProps, IState> {
       }
     }
 
-    const fullWidth = currentPage!==0 && (sampleActivity.pages[currentPage - 1].layout === "l-responsive");
+    const fullWidth = (currentPage !== 0) && (sampleActivity.pages[currentPage - 1].layout === PageLayouts.Responsive);
 
     return (
       <React.Fragment>

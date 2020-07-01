@@ -6,6 +6,8 @@ import { PageLayouts, EmbeddableSections } from "../../utilities/activity-utils"
 
 import './activity-page-content.scss';
 
+const kPinMargin = 20;
+
 interface IProps {
   isFirstActivityPage: boolean;
   isLastActivityPage: boolean;
@@ -31,7 +33,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   render() {
     const { isFirstActivityPage, isLastActivityPage, page, totalPreviousQuestions } = this.props;
     const { scrollOffset } = this.state;
-    const fullWidth = page.layout === PageLayouts.Responsive;
+    const useFullPageWidth = page.layout === PageLayouts.Responsive;
     const vertical = page.layout === PageLayouts.FullWidth;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
 
@@ -47,7 +49,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                             : [renderSecondary, renderPrimary];
 
     return (
-      <div className={`page-content ${fullWidth ? "full" : ""}`} data-cy="page-content">
+      <div className={`page-content ${useFullPageWidth ? "full" : ""}`} data-cy="page-content">
         <div className="name">{page.name}</div>
         <div className="introduction" dangerouslySetInnerHTML={{ __html: page.text}}></div>
         <div className={`embeddables ${vertical ? "vertical" : ""}`}>
@@ -78,7 +80,9 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
   private handleScroll = (e: MouseEvent) => {
     if (this.divRef) {
-      const scrollOffset = this.divRef.getBoundingClientRect().top < 20 ? 20 - this.divRef.getBoundingClientRect().top : 0;
+      const scrollOffset = this.divRef.getBoundingClientRect().top < kPinMargin
+        ? kPinMargin - this.divRef.getBoundingClientRect().top
+        : 0;
       this.setState({ scrollOffset });
     }
   }
