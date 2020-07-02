@@ -3,7 +3,7 @@ import { SocialMediaLinks } from "../activity-introduction/social-media-links";
 import { ActivitySummary } from "../activity-introduction/activity-summary";
 import { ActivityPageLinks } from "../activity-introduction/activity-page-links";
 
-import './introduction-page-content.scss';
+import "./introduction-page-content.scss";
 
 interface IProps {
   activity: any;

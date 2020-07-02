@@ -6,7 +6,7 @@ import {
   TwitterIcon
 } from "react-share";
 
-import './social-media-links.scss';
+import "./social-media-links.scss";
 
 interface IProps {
   shareURL: string;

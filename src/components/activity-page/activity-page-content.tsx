@@ -5,7 +5,7 @@ import { BottomButtons } from "./bottom-buttons";
 import { PageLayouts, EmbeddableSections } from "../../utilities/activity-utils";
 import { renderHTML } from "../../utilities/render-html";
 
-import './activity-page-content.scss';
+import "./activity-page-content.scss";
 
 const kPinMargin = 20;
 

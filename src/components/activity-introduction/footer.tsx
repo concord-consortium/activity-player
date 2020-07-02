@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 import "./footer.scss";
 
@@ -19,19 +19,19 @@ function Footer() {
 
   return (
     <div className="footer" data-cy="footer">
-      <span>{`Copyright © 2020 `}</span>
+      <span>{"Copyright © 2020 "}</span>
       {concordLink}
-      <span>{`. All rights reserved. This material is licensed under a `}</span>
+      <span>{". All rights reserved. This material is licensed under a "}</span>
       {creativeCommonsLink}
-      <span>{`. The software is licensed under `}</span>
+      <span>{". The software is licensed under "}</span>
       {openSourceBSDLink}
-      <span>{`, `}</span>
+      <span>{", "}</span>
       {openSourceMITLink}
-      <span>{` or `}</span>
+      <span>{" or "}</span>
       {openSourceApacheLink}
-      <span>{` licenses. Please provide attribution to the Concord Consortium and the URL `}</span>
+      <span>{" licenses. Please provide attribution to the Concord Consortium and the URL "}</span>
       {concordLink2}
-      <span>{`.`}</span>
+      <span>{"."}</span>
     </div>
   );
 }

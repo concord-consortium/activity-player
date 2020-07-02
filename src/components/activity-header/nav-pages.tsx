@@ -1,7 +1,7 @@
 import React from "react";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
 
-import './nav-pages.scss';
+import "./nav-pages.scss";
 
 interface IProps {
   pages: any[];
