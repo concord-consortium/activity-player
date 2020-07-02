@@ -4,7 +4,7 @@ import { SidebarPanel } from "./sidebar-panel";
 import { shallow } from "enzyme";
 
 describe("SidebarTab component", () => {
-  it('renders tab component', () => {
+  it("renders tab component", () => {
     const stubFunction = () => {
       // do nothing.
     };
@@ -14,7 +14,7 @@ describe("SidebarTab component", () => {
       sidebarOpen={false} />);
     expect(wrapper.find('[data-cy="sidebar-tab-title"]').text()).toContain(title);
   });
-  it('renders panel component', () => {
+  it("renders panel component", () => {
     const stubFunction = () => {
       // do nothing.
     };

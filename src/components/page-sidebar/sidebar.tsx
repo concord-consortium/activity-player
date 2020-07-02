@@ -2,7 +2,8 @@ import React from "react";
 import { SidebarTab } from "./sidebar-tab";
 import { SidebarPanel } from "./sidebar-panel";
 
-import './sidebar.scss';
+import "./sidebar.scss";
+
 interface IProps {
   content: string | null;
   title: string;
@@ -36,7 +37,6 @@ export class Sidebar extends React.PureComponent<IProps, IState> {
   }
 
   private setShowSidebarContent = (show: boolean) => {
-    if (show) { this.setState({ showSidebarContent: show }); }
-    else { this.setState({ showSidebarContent: false }); }
+    this.setState({ showSidebarContent: show }); 
   }
 }
