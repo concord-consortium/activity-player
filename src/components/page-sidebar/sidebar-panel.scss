@@ -1,0 +1,50 @@
+@import "../vars.scss";
+
+.sidebarPanel {
+  background-color: white;
+  width: 500px;
+
+  .sidebarHeader {
+    background-color: $cc-orange-light1;
+    display: flex;
+    align-items: center;
+    height: 40px;
+
+    .sidebarTitle{
+      color: white;
+      font-size: 20px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .icon {
+      fill: white;
+      width: 24px;
+      height: 18px;
+      position: relative;
+      right: 30px;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: $cc-orange-light4;
+        fill: $cc-orange-light2;
+      }
+      &:active {
+        background-color: $cc-orange-light2;
+        fill: $cc-orange;
+      }
+    }
+  }
+
+  .sidebarContent {
+    line-height: 1.575;
+    margin-top: 0;
+    margin-bottom: 11pt;
+    text-align: justify;
+    padding: 25px;
+    max-height: 649px;
+    overflow: auto;
+    min-height: 100px;
+  }
+}

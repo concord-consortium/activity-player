@@ -3,6 +3,7 @@ import { PrimaryEmbeddable } from "./primary-embeddable";
 import { SecondaryEmbeddable } from "./secondary-embeddable";
 import { BottomButtons } from "./bottom-buttons";
 import { PageLayouts, EmbeddableSections } from "../../utilities/activity-utils";
+import { Sidebar } from "../page-sidebar/sidebar";
 import { renderHTML } from "../../utilities/render-html";
 
 import './activity-page-content.scss';
@@ -67,6 +68,9 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
           onBack={!isFirstActivityPage ? this.handleBack : undefined}
           onNext={!isLastActivityPage ? this.handleNext : undefined}
         />
+        {page.show_sidebar &&
+          <Sidebar content={page.sidebar} title={page.sidebar_title} />
+        }
       </div>
     );
   }
@@ -121,5 +125,4 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
       </div>
     );
   }
-
 }
