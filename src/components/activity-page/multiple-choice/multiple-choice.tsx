@@ -16,14 +16,13 @@ export class MultipleChoiceQuestion extends React.PureComponent<IProps>  {
     const inputType = embeddable.multi_answer ? "checkbox" : "radio";
 
     return (
-      <div className="question">
+      <div className="question" data-cy="multiple-choice-question">
         <div className="header">Question #{questionNumber}</div>
         <div className="content">{renderHTML(embeddable.prompt)}
           <fieldset className="options">
             <div className={choicesClass}>
               {
                 choices.map((choice: any, i: number) => {
-                  console.log('embeddable: ', embeddable);
                   return (
                     <div className="choice" key={i}>
                       <input type={inputType} name={embeddable.ref_id} value={choice.choice}/>{choice.choice}

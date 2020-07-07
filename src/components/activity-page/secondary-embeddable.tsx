@@ -34,8 +34,7 @@ export const SecondaryEmbeddable: React.FC<IProps> = (props) => {
       "Embeddable::Labbook": LabbookQuestion,
       "ManagedInteractive": ManagedInteractive
     };
-    const type  = props.embeddable.embeddable.type;
-
+    const type  = embeddable.embeddable.type;
     const QComponent = embeddable ? EmbeddableComponent[type] : undefined;
 
     if (!QComponent) {
@@ -45,7 +44,7 @@ export const SecondaryEmbeddable: React.FC<IProps> = (props) => {
     }
     else {
       return (
-        <QComponent embeddable={embeddable.embeddable} questionNum={questionNumber} />
+        <QComponent embeddable={embeddable.embeddable} questionNumber={questionNumber} />
       );
     }
   }

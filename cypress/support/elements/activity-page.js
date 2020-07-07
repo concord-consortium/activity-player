@@ -11,5 +11,10 @@ class ActivityPage {
   getSidebarCloseButton() {
     return cy.get("[data-cy=sidebar-close-button");
   }
+  getSecondaryEmbeddable(type) { 
+    //types=["image-question","text-box","multiple-choice-question","open-response-question", 
+    //      "labbook-question", "iframe-interactive-question","image-video-interactive", ]
+    return cy.get("[data-cy="+type+"]");
+  }
 }
 export default ActivityPage;

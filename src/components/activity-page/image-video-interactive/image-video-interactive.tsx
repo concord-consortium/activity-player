@@ -10,9 +10,8 @@ interface IProps {
 export class ImageVideoInteractive extends React.PureComponent<IProps>  {
   render () {
     const { embeddable } =this.props;
-    console.log('embeddable.sources.url: ', embeddable);
     return(
-      <div className="image">
+      <div className="image" data-cy="image-video-interactive">
         <div className="content">
           { embeddable.type ==="VideoInteractive" ?
             this.renderVideo(embeddable)
@@ -26,7 +25,7 @@ export class ImageVideoInteractive extends React.PureComponent<IProps>  {
       </div>
     );
   }
-  
+
   private renderVideo(embeddable: any) {
     return (
       <video controls height={embeddable.height} width={embeddable.width}>
