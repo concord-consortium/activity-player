@@ -21,7 +21,7 @@ describe("Secondary Embeddable component", () => {
       },
       "section": null
     };
-    const wrapper = shallow(<SecondaryEmbeddable embeddable={embeddable} questionNumber={1} />);
+    const wrapper = shallow(<SecondaryEmbeddable embeddable={embeddable} questionNumber={1} isFullWidth={embeddable.embeddable.is_full_width}/>);
     expect(wrapper.find('[data-cy="secondary-embeddable"]').length).toBe(1);
   });
 });

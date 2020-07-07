@@ -13,11 +13,13 @@ import "./secondary-embeddable.scss";
 interface IProps {
   embeddable: any;
   questionNumber: number;
+  isFullWidth: boolean;
 }
 
 export const SecondaryEmbeddable: React.FC<IProps> = (props) => {
+  const secondaryEmbeddableClass = props.isFullWidth ? "secondary-embeddable full" : "secondary-embeddable";
   return (
-    <div className="secondary-embeddable" data-cy="secondary-embeddable">
+    <div className={secondaryEmbeddableClass} data-cy="secondary-embeddable">
       {renderEmbeddable(props.embeddable, props.questionNumber)}
     </div>
   );

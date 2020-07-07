@@ -3,9 +3,12 @@
 .secondary-embeddable {
   width: 365px;
   margin-bottom: 20px;
+  
+  &.full {
+    width: 100%;
+  }
 
   .header {
-    width: 365px;
     height: 30px;
     box-sizing: border-box;
     display: flex;
