@@ -1,0 +1,21 @@
+@import "../../vars.scss";
+
+.question {
+  p{
+    margin: 0;
+  }
+
+  .options {
+    border: none;
+    padding: 0;
+    margin: 0;
+
+    .choice-container {
+
+      .choice input{
+        margin-right: 8px;
+        vertical-align: text-bottom;
+      }
+    }
+  }
+}

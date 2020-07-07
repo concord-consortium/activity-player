@@ -1,0 +1,19 @@
+@import "../../vars.scss";
+
+.question {
+  .header {
+    position: relative;
+    padding: 4px 8px;
+    clear: both;
+    background-color: $cc-teal-light1;
+  }
+  .content {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+  }
+}

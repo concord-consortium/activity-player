@@ -2,7 +2,6 @@
 
 .secondary-embeddable {
   width: 365px;
-  height: 300px;
   margin-bottom: 20px;
 
   .header {
@@ -18,8 +17,8 @@
   }
 
   .content {
-    height: 250px;
     border-radius: 0 0 13px 13px;
-    border: 1px solid $cc-charcoal-light1;
+    border: 1px solid #ededed;
+    padding: 26px;
   }
 }
