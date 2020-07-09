@@ -1,6 +1,6 @@
 import React from "react";
 
-import './secondary-embeddable.scss';
+import "./secondary-embeddable.scss";
 
 interface IProps {
   embeddable: any;

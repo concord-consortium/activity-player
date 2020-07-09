@@ -1,7 +1,7 @@
 import React from "react";
 import IconHamburger from "../../assets/svg-icons/icon-hamburger.svg";
 
-import './nav-menu.scss';
+import "./nav-menu.scss";
 
 interface IProps {
   activityList: string[];

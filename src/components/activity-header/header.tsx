@@ -2,7 +2,7 @@ import React from "react";
 import ccLogo from "../../assets/cc-logo.png";
 import { ProjectTypes } from "../../utilities/project-utils";
 
-import './header.scss';
+import "./header.scss";
 
 interface IProps {
   fullWidth?: boolean;

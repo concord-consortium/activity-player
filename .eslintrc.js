@@ -40,6 +40,7 @@ module.exports = {
       "no-debugger": "off",
       "no-shadow": ["error", { "builtinGlobals": false, "hoist": "all", "allow": [] }],
       "no-unused-vars": "off",  // superceded by @typescript-eslint/no-unused-vars
+      "quotes": [2, "double", { "allowTemplateLiterals": true, "avoidEscape": true }],
       "react/prop-types": "off",
       semi: ["error", "always"]
     }

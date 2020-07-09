@@ -1,6 +1,6 @@
 import React from "react";
 
-import './activity-page-links.scss';
+import "./activity-page-links.scss";
 
 interface IProps {
   activityPages: any[];

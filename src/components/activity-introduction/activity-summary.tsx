@@ -2,7 +2,7 @@ import React from "react";
 import { EstimatedTime } from "./estimated-time";
 import { renderHTML } from "../../utilities/render-html";
 
-import './activity-summary.scss';
+import "./activity-summary.scss";
 
 interface IProps {
   activityName: string;

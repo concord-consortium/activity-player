@@ -1,7 +1,7 @@
 import React from "react";
 import IconClock from "../../assets/svg-icons/icon-clock.svg";
 
-import './estimated-time.scss';
+import "./estimated-time.scss";
 
 interface IProps {
   time: number;

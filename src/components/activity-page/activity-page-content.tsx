@@ -6,7 +6,7 @@ import { PageLayouts, EmbeddableSections } from "../../utilities/activity-utils"
 import { Sidebar } from "../page-sidebar/sidebar";
 import { renderHTML } from "../../utilities/render-html";
 
-import './activity-page-content.scss';
+import "./activity-page-content.scss";
 
 const kPinMargin = 20;
 
