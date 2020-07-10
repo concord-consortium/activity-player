@@ -1,10 +1,10 @@
 // example from:
 // https://stackoverflow.com/a/62640342
-export const colorShade = (col: string, amt: number) => {
-  col = col.replace(/^#/, "");
-  if (col.length === 3) col = col[0] + col[0] + col[1] + col[1] + col[2] + col[2];
+export const colorShade = (color: string, amt: number) => {
+  color = color.replace(/^#/, "");
+  if (color.length === 3) color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
 
-  let [r, g, b]: any = col.match(/.{2}/g);
+  let [r, g, b]: any = color.match(/.{2}/g);
   ([r, g, b] = [parseInt(r, 16) + amt, parseInt(g, 16) + amt, parseInt(b, 16) + amt]);
 
   r = Math.max(Math.min(255, r), 0).toString(16);
@@ -22,7 +22,21 @@ export const setThemeColors = (primary: string, secondary: string) => {
   document.documentElement.style.setProperty("--theme-primary-color", primary);
   document.documentElement.style.setProperty("--theme-primary-hover-color", colorShade(primary, -20));
   document.documentElement.style.setProperty("--theme-primary-active-color", colorShade(primary, -40));
+  document.documentElement.style.setProperty("--theme-primary-text-color", getContrastYIQColor(primary));
   document.documentElement.style.setProperty("--theme-secondary-color", secondary);
   document.documentElement.style.setProperty("--theme-secondary-hover-color", colorShade(secondary, -20));
   document.documentElement.style.setProperty("--theme-secondary-active-color", colorShade(secondary, -40));
+  document.documentElement.style.setProperty("--theme-secondary-text-color", getContrastYIQColor(secondary));
+};
+
+// example from:
+// https://24ways.org/2010/calculating-color-contrast
+const getContrastYIQColor = (color: string) => {
+  color = color.replace(/^#/, "");
+  if (color.length === 3) color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
+  const r = parseInt(color.substr(0,2),16);
+  const g = parseInt(color.substr(2,2),16);
+  const b = parseInt(color.substr(4,2),16);
+  const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
+  return (yiq >= 128) ? "#222222" : "#eeeeee";
 };
