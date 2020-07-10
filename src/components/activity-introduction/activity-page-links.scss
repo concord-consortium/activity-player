@@ -17,15 +17,15 @@
   }
 
   .page-link {
-    color: $cc-teal-light2;
+    color: var(--theme-primary-color);
     cursor: pointer;
 
     &:hover {
-      color: $cc-teal-light1;
+      color: var(--theme-primary-hover-color);
       text-decoration: underline;
     }
     &:active {
-      color: $cc-teal;
+      color: var(--theme-primary-active-color);
       text-decoration: underline;
     }
   }
@@ -35,7 +35,7 @@
     width: 275px;
     margin: 5px 0 5px 0;
     color: white;
-    background-color: $cc-teal-light2;
+    background-color: var(--theme-primary-color);
     font-size: 22px;
     border-radius: 4px;
     border: solid 2px $cc-charcoal-light2;
@@ -43,10 +43,10 @@
     cursor: pointer;
 
     &:hover {
-      background-color: $cc-teal-light1;
+      background-color: var(--theme-primary-hover-color);
     }
     &:active {
-      background-color: $cc-teal;
+      background-color: var(--theme-primary-active-color);
     }
   }
 

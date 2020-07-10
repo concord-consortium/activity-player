@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   color: #242424;
-  background-color: $cc-teal-light3;
+  background-color: var(--theme-primary-color);
   overflow-y: auto;
 }
 
