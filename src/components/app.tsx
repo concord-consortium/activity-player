@@ -6,11 +6,12 @@ import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import Footer from "./activity-introduction/footer";
 import { PageLayouts } from "../utilities/activity-utils";
-import sampleActivity from "../data/sample-activity-multiple-layout-types.json";
+import { ActivityDefinition, getActivityDefinition } from "../api";
 
 import "./app.scss";
 
 interface IState {
+  activity?: ActivityDefinition;
   currentPage: number;
 }
 interface IProps {}
@@ -23,6 +24,16 @@ export class App extends React.PureComponent<IProps, IState> {
       currentPage: 0
     };
   }
+
+  async componentDidMount() {
+    try {
+      const activity = await getActivityDefinition("sample-activity-multiple-layout-types");
+      this.setState({activity});
+    } catch (e) {
+      console.warn(e);
+    }
+  }
+
   render() {
     return (
       <div className="app">
@@ -32,28 +43,30 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { currentPage } = this.state;
+    const { activity, currentPage } = this.state;
+    if (!activity) return (<div>Loading</div>);
+
     let totalPreviousQuestions = 0;
 
     for (let page = 0; page < currentPage - 1; page++) {
-      for (let embeddable = 0; embeddable < sampleActivity.pages[page].embeddables.length; embeddable++) {
-        if (!sampleActivity.pages[page].embeddables[embeddable].section) {
+      for (let embeddable = 0; embeddable < activity.pages[page].embeddables.length; embeddable++) {
+        if (!activity.pages[page].embeddables[embeddable].section) {
           totalPreviousQuestions++;
         }
       }
     }
 
-    const fullWidth = (currentPage !== 0) && (sampleActivity.pages[currentPage - 1].layout === PageLayouts.Responsive);
+    const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
 
     return (
       <React.Fragment>
         <Header
           fullWidth={fullWidth}
-          projectId={sampleActivity.project_id}
+          projectId={activity.project_id}
         />
         <ActivityNavHeader
-          activityName={sampleActivity.name}
-          activityPages={sampleActivity.pages}
+          activityName={activity.name}
+          activityPages={activity.pages}
           currentPage={currentPage}
           fullWidth={fullWidth}
           onPageChange={this.handleChangePage}
@@ -66,10 +79,10 @@ export class App extends React.PureComponent<IProps, IState> {
           ? this.renderIntroductionContent()
           : <ActivityPageContent
               isFirstActivityPage={currentPage === 1}
-              isLastActivityPage={currentPage === sampleActivity.pages.length}
+              isLastActivityPage={currentPage === activity.pages.length}
               pageNumber={currentPage}
               onPageChange={this.handleChangePage}
-              page={sampleActivity.pages[currentPage - 1]}
+              page={activity.pages[currentPage - 1]}
               totalPreviousQuestions={totalPreviousQuestions}
             />
         }
@@ -81,7 +94,7 @@ export class App extends React.PureComponent<IProps, IState> {
     return (
       <React.Fragment>
         <IntroductionPageContent
-          activity={sampleActivity}
+          activity={this.state.activity}
           onPageChange={this.handleChangePage}
         />
         <Footer/ >
