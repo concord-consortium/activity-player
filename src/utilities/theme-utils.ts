@@ -1,3 +1,6 @@
+// cf. https://mattferderer.com/use-sass-variables-in-typescript-and-javascript
+import colors from "../components/vars.scss";
+
 // example from:
 // https://stackoverflow.com/a/62640342
 export const colorShade = (color: string, amt: number) => {
@@ -38,5 +41,5 @@ const getContrastYIQColor = (color: string) => {
   const g = parseInt(color.substr(2,2),16);
   const b = parseInt(color.substr(4,2),16);
   const yiq = ((r * 299) + (g * 587) + (b * 114)) / 1000;
-  return (yiq >= 128) ? "#222222" : "#eeeeee";
+  return (yiq >= 128) ? colors.darkFontColor : colors.lightFontColor;
 };
