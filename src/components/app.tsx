@@ -1,4 +1,5 @@
 import React from "react";
+import queryString from "query-string";
 import { Header } from "./activity-header/header";
 import { ActivityNavHeader } from "./activity-header/activity-nav-header";
 import { ProfileNavHeader } from "./activity-header/profile-nav-header";
@@ -9,6 +10,8 @@ import { PageLayouts } from "../utilities/activity-utils";
 import { ActivityDefinition, getActivityDefinition } from "../api";
 
 import "./app.scss";
+
+const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 
 interface IState {
   activity?: ActivityDefinition;
@@ -27,7 +30,12 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const activity = await getActivityDefinition("sample-activity-multiple-layout-types");
+      // ?activity=url or ?activity=sample-activity
+      const activityPath = queryString.parse(window.location.search).activity || kDefaultActivity;
+      if (typeof activityPath !== "string") {
+        throw "activity url parameter must be a string";
+      }
+      const activity = await getActivityDefinition(activityPath);
       this.setState({activity});
     } catch (e) {
       console.warn(e);
