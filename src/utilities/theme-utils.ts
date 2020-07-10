@@ -1,5 +1,5 @@
 // example from:
-// https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
+// https://stackoverflow.com/a/62640342
 export const colorShade = (col: string, amt: number) => {
   col = col.replace(/^#/, "");
   if (col.length === 3) col = col[0] + col[0] + col[1] + col[1] + col[2] + col[2];

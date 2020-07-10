@@ -13,7 +13,7 @@ export const ThemeButtons: React.FC = () => {
   const handleOrangeTheme = () => {
     setThemeColors("#ff8415", "#0592af");
   };
-  const handleCbioTheme = () => {
+  const handleCBioTheme = () => {
     setThemeColors("#008fd7", "#f15a24");
   };
   const handleWatersTheme = () => {
@@ -26,7 +26,7 @@ export const ThemeButtons: React.FC = () => {
     <div className="theme-buttons">
       <button className="button" onClick={handleTealTheme}>teal</button>
       <button className="button" onClick={handleOrangeTheme}>orange</button>
-      <button className="button" onClick={handleCbioTheme}>cbio</button>
+      <button className="button" onClick={handleCBioTheme}>cbio</button>
       <button className="button" onClick={handleWatersTheme}>waters</button>
       <button className="button" onClick={handleInteractionsTheme}>interactions</button>
     </div>
