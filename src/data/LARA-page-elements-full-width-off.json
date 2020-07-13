@@ -73,7 +73,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "prompt": "\u003Cp\u003EMultiple choice question\u003C/p\u003E",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -108,7 +108,7 @@
             "is_prediction": false,
             "name": null,
             "prediction_feedback": null,
-            "prompt": "why does ...",
+            "prompt": "open response question",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446697-Embeddable::OpenResponse"
@@ -123,7 +123,7 @@
             "is_full_width": false,
             "is_hidden": false,
             "name": "Labbook album",
-            "prompt": "This should have the Labbook button",
+            "prompt": "Labbook type question. This should have the Labbook button",
             "show_in_featured_question_report": true,
             "type": "Embeddable::Labbook",
             "ref_id": "209942-Embeddable::Labbook",
@@ -172,7 +172,7 @@
         {
           "embeddable": {
             "caption": "Bunny FuFu",
-            "credit": "https://www.radiantmediaplayer.com/",
+            "credit": "https://commondatastorage.googleapis.com",
             "height": 240,
             "is_full_width": false,
             "is_hidden": false,
@@ -181,7 +181,7 @@
             "sources": [
               {
                 "format": "video/mp4",
-                "url": "https://www.radiantmediaplayer.com/media/bbb-360p.mp4"
+                "url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
               }
             ],
             "type": "VideoInteractive",
@@ -201,7 +201,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EThis should have the Upload button why does ...\u003C/p\u003E",
+            "prompt": "\u003Cp\u003EUpload image question. This should have the Upload button why does ...\u003C/p\u003E",
             "show_in_featured_question_report": true,
             "type": "Embeddable::ImageQuestion",
             "ref_id": "211799-Embeddable::ImageQuestion"
