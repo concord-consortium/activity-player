@@ -72,6 +72,12 @@ Inside of your `package.json` file:
 2. `cypress run --headed --no-exit` will open cypress test runner when tests begin to run, and it will remain open when tests are finished running.
 3. `cypress run --spec 'cypress/integration/examples/smoke-test.js'` will point to a smoke-test file rather than running all of the test files for a project.
 
+## Url Parameters
+### Note: these are subject to change
+
+* activity={id}:     load sample-activity {id} or, if baseUrl is defined, load authored activity from `{baseUrl}/api/v1/activities/{activity}.json`
+* baseUrl={url}:     full url to authoring site, such as `https%3A%2F%2Fauthoring.concord.org` or `http%3A%2F%2Fapp.lara.docker%2F`
+
 ## License
 
 Activity Player is Copyright 2020 (c) by the Concord Consortium and is distributed under the [MIT license](http://www.opensource.org/licenses/MIT).

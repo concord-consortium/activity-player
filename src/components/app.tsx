@@ -30,12 +30,17 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      // ?activity=url or ?activity=sample-activity
-      const activityPath = queryString.parse(window.location.search).activity || kDefaultActivity;
-      if (typeof activityPath !== "string") {
-        throw "activity url parameter must be a string";
+      // ?activity=url&baseUrl=https%3A%2F%2Fauthoring.concord.org or ?activity=sample-activity
+      const query = queryString.parse(window.location.search);
+      const activityPath = query.activity || kDefaultActivity;
+      const baseUrl = query.baseUrl;
+      if (Array.isArray(activityPath)) {
+        throw "May only have one activity query parameter";
       }
-      const activity = await getActivityDefinition(activityPath);
+      if (Array.isArray(baseUrl)) {
+        throw "May only have one baseUrl query parameter";
+      }
+      const activity = await getActivityDefinition(activityPath, baseUrl);
       this.setState({activity});
     } catch (e) {
       console.warn(e);
