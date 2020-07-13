@@ -27,7 +27,8 @@ interface IState {
 }
 
 export class ActivityPageContent extends React.PureComponent <IProps, IState> {
-  private divRef: HTMLDivElement | null;
+  private primaryDivRef: HTMLDivElement | null;
+  private secondaryDivRef: HTMLDivElement | null;
   public constructor(props: IProps) {
     super(props);
     this.state = {
@@ -96,15 +97,20 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
   public componentDidUpdate(prevProps: any) {
     if (prevProps.pageNumber !== this.props.pageNumber) {
-      this.setState({ isSecondaryCollapsed: false });
+      this.setState({ isSecondaryCollapsed: false, scrollOffset: 0 });
     }
   }
 
   private handleScroll = (e: MouseEvent) => {
-    if (this.divRef) {
-      const scrollOffset = this.divRef.getBoundingClientRect().top < kPinMargin
-        ? kPinMargin - this.divRef.getBoundingClientRect().top
+    if (this.secondaryDivRef) {
+      const secondaryHeight = this.secondaryDivRef.getBoundingClientRect().height;
+      const primaryHeight = this.primaryDivRef?.getBoundingClientRect().height;
+      const potentialScrollOffset = this.secondaryDivRef.getBoundingClientRect().top < kPinMargin
+        ? kPinMargin - this.secondaryDivRef.getBoundingClientRect().top
         : 0;
+      const scrollOffset = primaryHeight && (potentialScrollOffset + primaryHeight) > secondaryHeight
+        ? secondaryHeight - primaryHeight
+        : potentialScrollOffset;
       this.setState({ scrollOffset });
     }
   }
@@ -119,7 +125,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   private renderPrimaryEmbeddables = (primaryEmbeddables: any[], vertical: boolean, leftContent: boolean, pinOffset: number) => {
     const position = { top: pinOffset };
     return (
-      <div className={`group fill-remaining ${vertical ? "top" : ""} ${leftContent ? "left" : ""}`} style={position}>
+      <div className={`group fill-remaining ${vertical ? "top" : ""} ${leftContent ? "left" : ""}`} style={position} ref={elt => this.primaryDivRef = elt}>
         {primaryEmbeddables.map((embeddable: any, i: number) => (
           <PrimaryEmbeddable key={`embeddable ${i}`} embeddable={embeddable} />
         ))}
@@ -130,7 +136,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   private renderSecondaryEmbeddables = (secondaryEmbeddables: any[], totalPreviousQuestions: number, leftContent: boolean, collapsible: boolean) => {
     const { isSecondaryCollapsed } = this.state;
     return (
-      <div className={`group ${leftContent ? "left" : ""} ${isSecondaryCollapsed ? "collapsed" : ""}`} ref={elt => this.divRef = elt}>
+      <div className={`group ${leftContent ? "left" : ""} ${isSecondaryCollapsed ? "collapsed" : ""}`} ref={elt => this.secondaryDivRef = elt}>
         { collapsible && this.renderCollapsibleHeader() }
         { !isSecondaryCollapsed && secondaryEmbeddables.map((embeddable: any, i: number) => (
           <SecondaryEmbeddable key={`embeddable ${i}`} embeddable={embeddable} questionNumber={totalPreviousQuestions + i + 1} />
