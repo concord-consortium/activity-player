@@ -5,6 +5,8 @@ cache:
   bundler: true
   pip: true
   npm: true
+  directories:
+  - ~/.cache
 before_install:
 - pyenv local 3.6
 install:
@@ -14,9 +16,11 @@ install:
 - travis_retry cypress install
 script:
 - npm run build
-- npm run test:coverage -- --runInBand
+- npx nyc --reporter=lcov npm run test:coverage -- --runInBand && npx codecov
 - npm run start &
 - wait-on http://localhost:8080
-- $(npm bin)/cypress run --config video=false
-after_script:
+- $(npm bin)/cypress run --config video=false --record
+after_success:
 - ./s3_deploy.sh
+after_script:
+- bash <(curl -s https://codecov.io/bash)
