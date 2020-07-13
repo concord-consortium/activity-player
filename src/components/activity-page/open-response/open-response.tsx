@@ -9,13 +9,14 @@ interface IProps {
 }
 
 export class OpenResponseQuestion extends React.PureComponent<IProps>  {
-  render () {
-    const { embeddable, questionNumber } =this.props;
-    return(
+  render() {
+    const { embeddable, questionNumber } = this.props;
+    return (
       <div className="question" data-cy="open-response-question">
         <div className="header">Question #{questionNumber}</div>
-        <div className="content">{renderHTML(embeddable.prompt)}</div>
-        <div className="answer"></div>
+        <div className="content">{renderHTML(embeddable.prompt)}
+          <div className="answer"></div>
+        </div>
       </div>
     );
   }
