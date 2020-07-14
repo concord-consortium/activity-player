@@ -21,7 +21,6 @@ export const getActivityDefinition = (activity: string, baseUrl?: string | null)
   });
 };
 
-// http://app.lara.docker/activities/5/pages/10/export
 const getActivityDefinitionFromLara = (activity: string, baseUrl: string): Promise<ActivityDefinition> => {
   return new Promise((resolve, reject) => {
     const exportUrl = `${baseUrl.replace(/\/$/, "")}/api/v1/activities/${activity}.json`;
