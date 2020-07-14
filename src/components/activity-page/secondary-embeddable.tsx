@@ -3,7 +3,7 @@ import { TextBox } from "./text-box/text-box";
 import { OpenResponseQuestion } from "./open-response/open-response";
 import { MultipleChoiceQuestion } from "./multiple-choice/multiple-choice";
 import { LabbookQuestion } from "./labbook-question/labbook";
-import { IframeInteractiveQuestion } from './iframe-interactive/iframe-interactive';
+import { IframeInteractiveQuestion } from "./iframe-interactive/iframe-interactive";
 import { ImageQuestion } from "./image-question/image-question";
 import { ImageVideoInteractive } from "./image-video-interactive/image-video-interactive";
 import { ManagedInteractive } from "./managed-interactive/managed-interactive";
