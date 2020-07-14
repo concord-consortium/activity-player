@@ -5,6 +5,8 @@ import { BottomButtons } from "./bottom-buttons";
 import { PageLayouts, EmbeddableSections } from "../../utilities/activity-utils";
 import { Sidebar } from "../page-sidebar/sidebar";
 import { renderHTML } from "../../utilities/render-html";
+import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
+import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
 
 import "./activity-page-content.scss";
 
@@ -21,14 +23,17 @@ interface IProps {
 
 interface IState {
   scrollOffset: number;
+  isSecondaryCollapsed: boolean;
 }
 
 export class ActivityPageContent extends React.PureComponent <IProps, IState> {
-  private divRef: HTMLDivElement | null;
+  private primaryDivRef: HTMLDivElement | null;
+  private secondaryDivRef: HTMLDivElement | null;
   public constructor(props: IProps) {
     super(props);
     this.state = {
-      scrollOffset: 0
+      scrollOffset: 0,
+      isSecondaryCollapsed: false,
     };
   }
 
@@ -49,7 +54,8 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const pinOffSet = page.layout !== PageLayouts.FullWidth && secondaryEmbeddables.length ? scrollOffset : 0;
 
     const renderPrimary = this.renderPrimaryEmbeddables(primaryEmbeddables, vertical, primaryFirst && !vertical, pinOffSet);
-    const renderSecondary = this.renderSecondaryEmbeddables(secondaryEmbeddables, totalPreviousQuestions, !primaryFirst && !vertical);
+    const collapsible = page.toggle_info_assessment && page.layout !== PageLayouts.FullWidth;
+    const renderSecondary = this.renderSecondaryEmbeddables(secondaryEmbeddables, totalPreviousQuestions, !primaryFirst && !vertical, collapsible);
     const [first, second] = primaryFirst
                             ? [renderPrimary, renderSecondary]
                             : [renderSecondary, renderPrimary];
@@ -89,11 +95,22 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     }
   }
 
+  public componentDidUpdate(prevProps: any) {
+    if (prevProps.pageNumber !== this.props.pageNumber) {
+      this.setState({ isSecondaryCollapsed: false, scrollOffset: 0 });
+    }
+  }
+
   private handleScroll = (e: MouseEvent) => {
-    if (this.divRef) {
-      const scrollOffset = this.divRef.getBoundingClientRect().top < kPinMargin
-        ? kPinMargin - this.divRef.getBoundingClientRect().top
+    if (this.secondaryDivRef) {
+      const secondaryHeight = this.secondaryDivRef.getBoundingClientRect().height;
+      const primaryHeight = this.primaryDivRef?.getBoundingClientRect().height;
+      const potentialScrollOffset = this.secondaryDivRef.getBoundingClientRect().top < kPinMargin
+        ? kPinMargin - this.secondaryDivRef.getBoundingClientRect().top
         : 0;
+      const scrollOffset = primaryHeight && (potentialScrollOffset + primaryHeight) > secondaryHeight
+        ? secondaryHeight - primaryHeight
+        : potentialScrollOffset;
       this.setState({ scrollOffset });
     }
   }
@@ -108,7 +125,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   private renderPrimaryEmbeddables = (primaryEmbeddables: any[], vertical: boolean, leftContent: boolean, pinOffset: number) => {
     const position = { top: pinOffset };
     return (
-      <div className={`group fill-remaining ${vertical ? "top" : ""} ${leftContent ? "left" : ""}`} style={position}>
+      <div className={`group fill-remaining ${vertical ? "top" : ""} ${leftContent ? "left" : ""}`} style={position} ref={elt => this.primaryDivRef = elt}>
         {primaryEmbeddables.map((embeddable: any, i: number) => (
           <PrimaryEmbeddable key={`embeddable ${i}`} embeddable={embeddable} />
         ))}
@@ -116,13 +133,60 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     );
   }
 
-  private renderSecondaryEmbeddables = (secondaryEmbeddables: any[], totalPreviousQuestions: number, leftContent: boolean) => {
+  private renderSecondaryEmbeddables = (secondaryEmbeddables: any[], totalPreviousQuestions: number, leftContent: boolean, collapsible: boolean) => {
+    const { isSecondaryCollapsed } = this.state;
     return (
-      <div className={`group ${leftContent ? "left" : ""}`} ref={elt => this.divRef = elt}>
-        {secondaryEmbeddables.map((embeddable: any, i: number) => (
+      <div className={`group ${leftContent ? "left" : ""} ${isSecondaryCollapsed ? "collapsed" : ""}`} ref={elt => this.secondaryDivRef = elt}>
+        { collapsible && this.renderCollapsibleHeader() }
+        { !isSecondaryCollapsed && secondaryEmbeddables.map((embeddable: any, i: number) => (
           <SecondaryEmbeddable key={`embeddable ${i}`} embeddable={embeddable} questionNumber={totalPreviousQuestions + i + 1} />
         ))}
       </div>
     );
+  }
+
+  private renderCollapsibleHeader = () => {
+    const { isSecondaryCollapsed } = this.state;
+    const { page } = this.props;
+    const rightOrientation = page.layout === PageLayouts.FortySixty;
+    const headerClass = `collapsible-header ${isSecondaryCollapsed ? "collapsed" : ""} ${rightOrientation ? "right" : ""}`;
+    return (
+      <div onClick={this.handleCollapseClick} className={headerClass}>
+        { isSecondaryCollapsed
+          ? <React.Fragment>
+              {this.renderCollapseArrow(rightOrientation)}
+              <div>Show Questions</div>
+            </React.Fragment>
+          : <React.Fragment>
+              { rightOrientation && <div>Hide Questions</div> }
+              {this.renderCollapseArrow(!rightOrientation)}
+              { !rightOrientation && <div>Hide Questions</div> }
+            </React.Fragment>
+        }
+      </div>
+    );
+  }
+
+  private renderCollapseArrow = (leftArrow: boolean) => {
+    return (
+      <React.Fragment>
+        { leftArrow
+          ? <IconChevronLeft
+              width={32}
+              height={32}
+              fill={"white"}
+            />
+          : <IconChevronRight
+              width={32}
+              height={32}
+              fill={"white"}
+            />
+        }
+      </React.Fragment>
+    );
+  }
+
+  private handleCollapseClick = () => {
+    this.setState({ isSecondaryCollapsed: !this.state.isSecondaryCollapsed });
   }
 }
