@@ -4,6 +4,8 @@ import { MultipleChoiceQuestion } from "../MI-multiple-choice/multiple-choice";
 import { LabbookQuestion } from "../labbook-question/labbook";
 import { ImageQuestion } from "../image-question/image-question";
 import { ImageVideoInteractive } from "../image-video-interactive/image-video-interactive";
+import { GenericInteractive } from "../generic-interactive/generic-interactive";
+
 
 import "./managed-interactive.scss";
 
@@ -21,21 +23,22 @@ export class ManagedInteractive extends React.PureComponent<IProps>  {
       "multiple_choice": MultipleChoiceQuestion,
       "image_interact": ImageVideoInteractive,
       "video_interactive": ImageVideoInteractive,
-      "labbook": LabbookQuestion
+      "labbook": LabbookQuestion,
+      "generic": GenericInteractive
     };
     const { embeddable, questionNumber } =this.props;
-    const authoredState = JSON.parse(embeddable.authored_state);
-    const type  = authoredState.questionType;
-    const MIComponent = embeddable ? ManagedInteractiveComponent[type] : undefined;
+    const authoredState = embeddable.authored_state && JSON.parse(embeddable.authored_state);
+    const type  = authoredState ? authoredState.questionType : "generic";
+    const MIComponent = type ? ManagedInteractiveComponent[type] : undefined;
 
     if (!MIComponent) {
       return (
         <div>Question type not supported.</div>
       );
-    }
+    } 
     else {
       return (
-        <MIComponent embeddable={authoredState} questionNumber={questionNumber} />
+        <MIComponent embeddable={authoredState ? authoredState : embeddable} questionNumber={questionNumber} />
       );
     }
   }
