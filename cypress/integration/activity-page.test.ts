@@ -33,14 +33,5 @@ context("Test the overall app", () => {
       activityPage.getSecondaryEmbeddable("iframe-interactive-question").scrollIntoView().should("be.visible");
       activityPage.getSecondaryEmbeddable("iframe-interactive-question").find("iframe").should("have.attr", "src","https://lab.concord.org/embeddable-staging.html#interactives/interaction-tests/viewport.json");
     });
-    it("verify multiple choice question",()=>{
-      activityPage.getNavPage("2").click();
-      activityPage.getSecondaryEmbeddable("multiple-choice-question").should("have.length", 4);
-      activityPage.getSecondaryEmbeddable("multiple-choice-question").eq(0).find(".choice").should("have.length", 4); 
-    });
-    it("verify open response question", ()=>{
-      activityPage.getNavPage("3").click();
-      activityPage.getSecondaryEmbeddable("open-response-question").should("have.length", 2);
-    });
   });
 });
