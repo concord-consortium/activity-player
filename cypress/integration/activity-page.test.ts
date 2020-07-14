@@ -4,7 +4,7 @@ const activityPage = new ActivityPage;
 
 context("Test the overall app", () => {
   before(() => {
-    cy.visit("");
+    cy.visit("?activity=sample-activity-multiple-layout-types");
     activityPage.getPage(2).click();
   });
   describe("Sidebar",() => {
