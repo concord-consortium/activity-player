@@ -33,7 +33,7 @@ export class ManagedInteractive extends React.PureComponent<IProps>  {
 
     if (!MIComponent) {
       return (
-        <div>Question type not supported.</div>
+        <div>Managed Interactive type not supported.</div>
       );
     } 
     else {
