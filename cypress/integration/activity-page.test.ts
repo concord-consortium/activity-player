@@ -9,7 +9,7 @@ context("Test the overall app", () => {
   });
   describe("Sidebar",() => {
     it("verify sidebar opens",()=>{
-      const content="the same type of protein that makes up hair and fingernails";
+      const content="Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
       activityPage.getSidebarTab().click();
       activityPage.getSidebarContent().should("be.visible").and("contain", content);
     });
@@ -26,12 +26,9 @@ context("Test the overall app", () => {
   });
   describe("Info/Assess (secondary embeddables)",()=>{
     it("verify textbox",()=>{
+      activityPage.getNavPage(3).click();
       activityPage.getSecondaryEmbeddable("text-box").scrollIntoView()
-        .should("be.visible").and("contain","We want to see some text here");
-    });
-    it("verify iframe interactive question",()=>{
-      activityPage.getSecondaryEmbeddable("iframe-interactive-question").scrollIntoView().should("be.visible");
-      activityPage.getSecondaryEmbeddable("iframe-interactive-question").find("iframe").should("have.attr", "src","https://lab.concord.org/embeddable-staging.html#interactives/interaction-tests/viewport.json");
+        .should("be.visible").and("contain","Duis vitae ultrices augue, eu fermentum elit.");
     });
   });
 });
