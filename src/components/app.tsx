@@ -33,7 +33,11 @@ export class App extends React.PureComponent<IProps, IState> {
       const activityPath = queryValue("activity") || kDefaultActivity;
       const baseUrl = queryValue("baseUrl");
       const activity = await getActivityDefinition(activityPath, baseUrl);
-      this.setState({activity});
+
+      // page 0 is introduction, inner pages start from 1 and match page.position in exported activity
+      const currentPage = Number(queryValue("page")) || 0;
+
+      this.setState({activity, currentPage});
     } catch (e) {
       console.warn(e);
     }

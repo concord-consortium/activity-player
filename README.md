@@ -76,6 +76,7 @@ Inside of your `package.json` file:
 ### Note: these are subject to change
 
 * activity={id}:     load sample-activity {id} or, if baseUrl is defined, load authored activity from `{baseUrl}/api/v1/activities/{activity}.json`
+* page={n}:          load page n, where 0 is the activity introduction and 1 is the first page
 * baseUrl={url}:     full url to authoring site, such as `https%3A%2F%2Fauthoring.concord.org` or `http%3A%2F%2Fapp.lara.docker%2F`
 
 ## License
