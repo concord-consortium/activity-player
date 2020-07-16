@@ -139,7 +139,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
       <div className={`group ${leftContent ? "left" : ""} ${isSecondaryCollapsed ? "collapsed" : ""}`} ref={elt => this.secondaryDivRef = elt}>
         { collapsible && this.renderCollapsibleHeader() }
         { !isSecondaryCollapsed && secondaryEmbeddables.map((embeddable: any, i: number) => (
-          <SecondaryEmbeddable key={`embeddable ${i}`} embeddable={embeddable} questionNumber={totalPreviousQuestions + i + 1} />
+          <SecondaryEmbeddable key={`embeddable ${i}`} embeddable={embeddable} questionNumber={totalPreviousQuestions + i + 1} isFullWidth={embeddable.embeddable.is_full_width}/>
         ))}
       </div>
     );
