@@ -389,17 +389,6 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>Duis vitae ultrices augue, eu fermentum elit. Sed vel tincidunt nisi. Praesent eget erat in augue efficitur lobortis in sed massa. Suspendisse vehicula tellus quam, ut convallis mauris vehicula a. Nam suscipit facilisis felis in convallis. Curabitur consectetur lorem vitae nunc luctus, id laoreet mauris suscipit. Maecenas vehicula egestas augue, at pellentesque urna convallis vitae. Integer velit sem, egestas eu nunc sed, pellentesque mattis purus. Nunc eu condimentum augue. Suspendisse potenti. Vestibulum varius suscipit mauris eget semper. Nullam consequat gravida finibus. Phasellus scelerisque metus velit, sit amet fermentum eros sollicitudin maximus. Cras pharetra enim non eros congue ultricies.</p>",
-            "is_full_width": false,
-            "is_hidden": false,
-            "name": "Lorem Ipsum",
-            "type": "Embeddable::Xhtml",
-            "ref_id": "272099-Embeddable::Xhtml"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
             "name": "",
             "url_fragment": null,
             "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
@@ -445,6 +434,17 @@
             },
             "type": "ManagedInteractive",
             "ref_id": "316-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "<p>Duis vitae ultrices augue, eu fermentum elit. Sed vel tincidunt nisi. Praesent eget erat in augue efficitur lobortis in sed massa. Suspendisse vehicula tellus quam, ut convallis mauris vehicula a. Nam suscipit facilisis felis in convallis. Curabitur consectetur lorem vitae nunc luctus, id laoreet mauris suscipit. Maecenas vehicula egestas augue, at pellentesque urna convallis vitae. Integer velit sem, egestas eu nunc sed, pellentesque mattis purus. Nunc eu condimentum augue. Suspendisse potenti. Vestibulum varius suscipit mauris eget semper. Nullam consequat gravida finibus. Phasellus scelerisque metus velit, sit amet fermentum eros sollicitudin maximus. Cras pharetra enim non eros congue ultricies.</p>",
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "Lorem Ipsum",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272099-Embeddable::Xhtml"
           },
           "section": null
         },
@@ -504,17 +504,6 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>There. You see Lord Vader, she can be reasonable. Continue with the operation. You may fire when ready. What? You&rsquo;re far too trusting. Dantooine is too remote to make an effective demonstration. But don&rsquo;t worry. We will deal with your Rebel friends soon enough. No! Commence primary ignition.</p>",
-            "is_full_width": false,
-            "is_hidden": false,
-            "name": "Star Wars Ipsum",
-            "type": "Embeddable::Xhtml",
-            "ref_id": "272100-Embeddable::Xhtml"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
             "name": "",
             "url_fragment": null,
             "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
@@ -560,6 +549,17 @@
             },
             "type": "ManagedInteractive",
             "ref_id": "317-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "<p>There. You see Lord Vader, she can be reasonable. Continue with the operation. You may fire when ready. What? You&rsquo;re far too trusting. Dantooine is too remote to make an effective demonstration. But don&rsquo;t worry. We will deal with your Rebel friends soon enough. No! Commence primary ignition.</p>",
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "Star Wars Ipsum",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272100-Embeddable::Xhtml"
           },
           "section": null
         },

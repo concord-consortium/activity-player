@@ -74,7 +74,7 @@ export const IframeRuntime: React.FC<IProps> =
   }, [url, authoredState, report]);
 
   return (
-    <div>
+    <div data-cy="iframe-runtime">
       <iframe ref={iframeRef} src={url} width="100%" height={iframeHeight} frameBorder={0} />
       { hint &&
         <div className="hint">{renderHTML(hint)}</div> }

@@ -26,6 +26,6 @@ export class ManagedInteractive extends React.PureComponent<IProps>  {
   }
 
   private handleNewInteractiveState = (state: any) => {
-    console.log("handleNewInteractiveState");
+    // TODO: handle interactive state
   };
 }
