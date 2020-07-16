@@ -1,0 +1,23 @@
+@import "../vars.scss";
+
+.introduction-embeddable {
+  width: 100%;
+  margin-bottom: 20px;
+
+  .header {
+    height: 30px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 0 0 0 10px;
+    color: white;
+    background-color: var(--theme-primary-color);
+  }
+
+  .content {
+    border-radius: 0 0 13px 13px;
+    border: 1px solid #ededed;
+    padding: 26px;
+  }
+}

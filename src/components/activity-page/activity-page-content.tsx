@@ -1,8 +1,9 @@
 import React from "react";
 import { PrimaryEmbeddable } from "./primary-embeddable";
 import { SecondaryEmbeddable } from "./secondary-embeddable";
+import { IntroductionEmbeddable } from "./introduction-embeddable";
 import { BottomButtons } from "./bottom-buttons";
-import { PageLayouts, EmbeddableSections, isQuestion } from "../../utilities/activity-utils";
+import { PageLayouts, EmbeddableSections, isQuestion, numIntroductionQuestionsOnPage } from "../../utilities/activity-utils";
 import { Sidebar } from "../page-sidebar/sidebar";
 import { renderHTML } from "../../utilities/render-html";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
@@ -40,6 +41,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   render() {
     const { isFirstActivityPage, isLastActivityPage, page, totalPreviousQuestions } = this.props;
     const { scrollOffset } = this.state;
+    const numIntroQuestions = numIntroductionQuestionsOnPage(page);
     // Layout types are named in a somewhat confusing manner - particularly in relation to container widths.
     // Responsive layout actually uses the entire page width, whereas the other layouts use only 960 horizontal pixels.
     // FullWidth layout, despite its name, does not use the full screen width (it would be better named "stacked").
@@ -48,6 +50,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const vertical = page.layout === PageLayouts.FullWidth;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
 
+    const introEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction);
     const primaryEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive);
     const secondaryEmbeddables = page.embeddables.filter((e: any) => !e.section);
 
@@ -55,7 +58,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
     const renderPrimary = this.renderPrimaryEmbeddables(primaryEmbeddables, vertical, primaryFirst && !vertical, pinOffSet);
     const collapsible = page.toggle_info_assessment && page.layout !== PageLayouts.FullWidth;
-    const renderSecondary = this.renderSecondaryEmbeddables(secondaryEmbeddables, totalPreviousQuestions, !primaryFirst && !vertical, collapsible);
+    const renderSecondary = this.renderSecondaryEmbeddables(secondaryEmbeddables, totalPreviousQuestions + numIntroQuestions, !primaryFirst && !vertical, collapsible);
     const [first, second] = primaryFirst
                             ? [renderPrimary, renderSecondary]
                             : [renderSecondary, renderPrimary];
@@ -64,7 +67,8 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
       <div className={`page-content ${useFullPageWidth ? "full" : ""}`} data-cy="page-content">
         <div className="name">{page.name}</div>
         <div className="introduction">
-          { renderHTML(page.text) }
+          { page.text && renderHTML(page.text) }
+          { introEmbeddables && this.renderIntroEmbeddables(introEmbeddables, totalPreviousQuestions) }
         </div>
         <div className={`embeddables ${vertical ? "vertical" : ""}`}>
           { first }
@@ -149,6 +153,27 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                 embeddable={embeddable}
                 questionNumber={questionNumber}
                 isFullWidth={embeddable.embeddable.is_full_width}
+              />
+            );
+          })
+        }
+      </div>
+    );
+  }
+
+  private renderIntroEmbeddables = (introEmbeddables: any[], totalPreviousQuestions: number) => {
+    let questionNumber = totalPreviousQuestions;
+    return (
+      <div>
+        { introEmbeddables.map((embeddable: any, i: number) => {
+            if (isQuestion(embeddable)) {
+              questionNumber++;
+            }
+            return (
+              <IntroductionEmbeddable
+                key={`embeddable ${i}`}
+                embeddable={embeddable}
+                questionNumber={questionNumber}
               />
             );
           })
