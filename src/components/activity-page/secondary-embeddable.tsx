@@ -22,15 +22,15 @@ export const SecondaryEmbeddable: React.FC<IProps> = (props) => {
   function renderEmbeddable (embeddable: any, questionNumber: number) {
     const EmbeddableComponent: any = {
       "MwInteractive": IframeInteractiveQuestion,
+      "ManagedInteractive": ManagedInteractive,
       "Embeddable::Xhtml": TextBox,
-      "ManagedInteractive": ManagedInteractive
     };
     const type  = embeddable.embeddable.type;
     const QComponent = embeddable ? EmbeddableComponent[type] : undefined;
 
     if (!QComponent) {
       return (
-        <div>Question type not supported.</div>
+        <div>Content type not supported</div>
       );
     }
     else {
