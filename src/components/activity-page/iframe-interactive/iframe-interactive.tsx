@@ -12,7 +12,7 @@ export class IframeInteractiveQuestion extends React.PureComponent<IProps>  {
     const { embeddable } = this.props;
     return(
       <div className="question" data-cy="iframe-interactive-question">
-        <iframe className="frame-content" src={embeddable.url}></iframe>
+        <iframe className="content" src={embeddable.url}></iframe>
       </div>
     );
   }
