@@ -155,12 +155,12 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
         { isSecondaryCollapsed
           ? <React.Fragment>
               {this.renderCollapseArrow(rightOrientation)}
-              <div>Show Questions</div>
+              <div>Show</div>
             </React.Fragment>
           : <React.Fragment>
-              { rightOrientation && <div>Hide Questions</div> }
+              { rightOrientation && <div>Hide</div> }
               {this.renderCollapseArrow(!rightOrientation)}
-              { !rightOrientation && <div>Hide Questions</div> }
+              { !rightOrientation && <div>Hide</div> }
             </React.Fragment>
         }
       </div>
