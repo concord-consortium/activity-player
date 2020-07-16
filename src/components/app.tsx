@@ -5,7 +5,7 @@ import { ProfileNavHeader } from "./activity-header/profile-nav-header";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import Footer from "./activity-introduction/footer";
-import { PageLayouts } from "../utilities/activity-utils";
+import { PageLayouts, isQuestion } from "../utilities/activity-utils";
 import { ActivityDefinition, getActivityDefinition } from "../api";
 
 import "./app.scss";
@@ -59,7 +59,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
     for (let page = 0; page < currentPage - 1; page++) {
       for (let embeddable = 0; embeddable < activity.pages[page].embeddables.length; embeddable++) {
-        if (!activity.pages[page].embeddables[embeddable].section) {
+        if (!activity.pages[page].embeddables[embeddable].section && isQuestion(activity.pages[page].embeddables[embeddable])) {
           totalPreviousQuestions++;
         }
       }

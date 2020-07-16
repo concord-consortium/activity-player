@@ -2,7 +2,7 @@ import React from "react";
 import { PrimaryEmbeddable } from "./primary-embeddable";
 import { SecondaryEmbeddable } from "./secondary-embeddable";
 import { BottomButtons } from "./bottom-buttons";
-import { PageLayouts, EmbeddableSections } from "../../utilities/activity-utils";
+import { PageLayouts, EmbeddableSections, isQuestion } from "../../utilities/activity-utils";
 import { Sidebar } from "../page-sidebar/sidebar";
 import { renderHTML } from "../../utilities/render-html";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
@@ -135,12 +135,24 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
   private renderSecondaryEmbeddables = (secondaryEmbeddables: any[], totalPreviousQuestions: number, leftContent: boolean, collapsible: boolean) => {
     const { isSecondaryCollapsed } = this.state;
+    let questionNumber = totalPreviousQuestions;
     return (
       <div className={`group ${leftContent ? "left" : ""} ${isSecondaryCollapsed ? "collapsed" : ""}`} ref={elt => this.secondaryDivRef = elt}>
         { collapsible && this.renderCollapsibleHeader() }
-        { !isSecondaryCollapsed && secondaryEmbeddables.map((embeddable: any, i: number) => (
-          <SecondaryEmbeddable key={`embeddable ${i}`} embeddable={embeddable} questionNumber={totalPreviousQuestions + i + 1} isFullWidth={embeddable.embeddable.is_full_width}/>
-        ))}
+        { !isSecondaryCollapsed && secondaryEmbeddables.map((embeddable: any, i: number) => {
+            if (isQuestion(embeddable)) {
+              questionNumber++;
+            }
+            return (
+              <SecondaryEmbeddable
+                key={`embeddable ${i}`}
+                embeddable={embeddable}
+                questionNumber={questionNumber}
+                isFullWidth={embeddable.embeddable.is_full_width}
+              />
+            );
+          })
+        }
       </div>
     );
   }

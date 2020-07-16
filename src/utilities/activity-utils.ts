@@ -9,3 +9,7 @@ export enum EmbeddableSections {
   Interactive = "interactive_box",
 }
 
+export const isQuestion = (embeddable: any) => {
+  return (embeddable.embeddable.type === "ManagedInteractive");
+  // embeddable.embeddable.type === "Embeddable::MultipleChoice"); TODO: handle old question types?
+};
