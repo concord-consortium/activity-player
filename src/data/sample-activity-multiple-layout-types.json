@@ -21,31 +21,174 @@
       "layout": "l-full-width",
       "name": "Page 1 Full Width",
       "position": 1,
+      "show_header": true,
       "show_info_assessment": true,
       "show_interactive": true,
-      "show_introduction": true,
       "show_sidebar": false,
       "sidebar": null,
       "sidebar_title": "Did you know?",
-      "text": "<p><strong>This is a page with full width layout</strong>.&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
       "toggle_info_assessment": true,
       "embeddables": [
         {
           "embeddable": {
-            "default_text": "",
-            "give_prediction_feedback": false,
-            "hint": "",
-            "is_full_width": false,
-            "is_hidden": false,
-            "is_prediction": false,
             "name": "",
-            "prediction_feedback": "",
-            "prompt": "<p>why does ...</p>",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
+            "is_hidden": false,
+            "is_full_width": true,
             "show_in_featured_question_report": true,
-            "type": "Embeddable::OpenResponse",
-            "ref_id": "446815-Embeddable::OpenResponse"
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "312-ManagedInteractive"
           },
           "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This shouldn't be used by any real activities it is still under development.",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "313-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "<p><strong>This is a page with full width layout</strong>.&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "271776-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "319-ManagedInteractive"
+          },
+          "section": "header_block"
         },
         {
           "embeddable": {
@@ -82,31 +225,124 @@
       "layout": "l-responsive",
       "name": "Page 2 Responsive",
       "position": 2,
+      "show_header": true,
       "show_info_assessment": true,
       "show_interactive": true,
-      "show_introduction": true,
       "show_sidebar": true,
       "sidebar": "\n\n\u003Cp dir=\"ltr\" style=\"line-height:1.575;margin-top:0pt;margin-bottom:11pt;text-align: justify;\"\u003E\u003Cspan style=\"font-size:16px;font-family:Calibri;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;\"\u003ELorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vestibulum elit nulla, at convallis urna pretium vitae. Phasellus quis efficitur ipsum. Aliquam laoreet, ex pharetra facilisis volutpat, ante erat pretium sem, ac feugiat tortor metus vitae augue. Nulla orci arcu, elementum et dui eget, consequat elementum nisi. Donec sodales tempor libero at facilisis. Phasellus porta, arcu in pellentesque imperdiet, urna velit tristique enim, sed ultricies enim nunc vel urna. Suspendisse venenatis augue risus, vel euismod mi tincidunt id. Quisque a vehicula lacus. Sed elementum ornare purus id venenatis. Aenean enim velit, interdum eget tortor non, varius suscipit magna. Ut varius rutrum metus nec consequat. Sed tempus orci vitae dui elementum vulputate. Phasellus scelerisque purus id scelerisque sollicitudin. Morbi vehicula diam sit amet enim placerat efficitur. In hac habitasse platea dictumst. Morbi pulvinar, mi a interdum venenatis, nisl nunc fringilla sapien, et fermentum arcu nisl dictum leo.\u003C/span\u003E\u003C/p\u003E\u003Cp dir=\"ltr\" style=\"line-height:1.575;margin-top:0pt;margin-bottom:11pt;text-align: justify;\"\u003E\u003Cspan style=\"font-size:16px;font-family:Calibri;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;\"\u003E\u003Cimg src=\"https://s-media-cache-ak0.pinimg.com/originals/73/ec/f3/73ecf348c3ef190be4e8c4a3269fc0d8.jpg\" title=\"\" alt=\"\" style=\"width: 150px; height: 150px;\"\u003E\u003Cspan style=\"line-height: 14px;\"\u003E\u003Cbr\u003E\u003C/span\u003E\u003C/span\u003E\u003C/p\u003E\u003Cp dir=\"ltr\" style=\"line-height:1.575;margin-top:0pt;margin-bottom:11pt;text-align: justify;\"\u003E\u003Cspan style=\"font-size:16px;font-family:Calibri;color:#000000;background-color:transparent;font-weight:normal;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre-wrap;\"\u003E\u003Cspan style=\"line-height: 14px;\"\u003EAliquam a consequat diam, vitae porttitor tortor. Ut nec orci ex. Morbi lobortis, sem luctus tempus tincidunt, turpis nisi pharetra metus, at fringilla ipsum mi eget quam. Aliquam erat volutpat. Morbi consequat tellus elementum nulla mollis gravida. Integer venenatis sem sed libero fringilla pharetra. Vivamus congue ligula erat, non ultricies mi imperdiet a. Phasellus vitae odio elementum, pharetra turpis quis, vehicula nibh. Donec sit amet interdum ante. Maecenas at sapien sed est lacinia tristique vel ut urna. Vivamus feugiat mi id odio tincidunt facilisis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi varius vehicula massa, non suscipit libero faucibus at. Cras a tincidunt purus. Vestibulum at sodales turpis. Donec facilisis lacus sit amet bibendum dignissim.\u003C/span\u003E\u003Cbr\u003E\u003C/span\u003E\u003C/p\u003E\n\n",
       "sidebar_title": "Did you know?",
-      "text": "<p><strong>This is a page with responsive layout</strong>.&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
       "toggle_info_assessment": true,
       "embeddables": [
         {
           "embeddable": {
-            "default_text": "",
-            "give_prediction_feedback": false,
-            "hint": "",
-            "is_full_width": false,
-            "is_hidden": false,
-            "is_prediction": false,
             "name": "",
-            "prediction_feedback": "",
-            "prompt": "<p>why does ...</p>",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
+            "is_hidden": false,
+            "is_full_width": true,
             "show_in_featured_question_report": true,
-            "type": "Embeddable::OpenResponse",
-            "ref_id": "446816-Embeddable::OpenResponse"
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "314-ManagedInteractive"
           },
           "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This shouldn't be used by any real activities it is still under development.",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "315-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "<p><strong>This is a page with responsive layout</strong>.&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "271777-Embeddable::Xhtml"
+          },
+          "section": "header_block"
         },
         {
           "embeddable": {
@@ -143,42 +379,85 @@
       "layout": "l-6040",
       "name": "Page 3 60-40",
       "position": 3,
+      "show_header": true,
       "show_info_assessment": true,
       "show_interactive": true,
-      "show_introduction": true,
       "show_sidebar": false,
       "sidebar": null,
       "sidebar_title": "Did you know?",
-      "text": "<p><strong>This is a page with 60-40 layout</strong>.&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
       "toggle_info_assessment": true,
       "embeddables": [
         {
           "embeddable": {
-            "default_text": "",
-            "give_prediction_feedback": false,
-            "hint": "",
+            "content": "<p>Duis vitae ultrices augue, eu fermentum elit. Sed vel tincidunt nisi. Praesent eget erat in augue efficitur lobortis in sed massa. Suspendisse vehicula tellus quam, ut convallis mauris vehicula a. Nam suscipit facilisis felis in convallis. Curabitur consectetur lorem vitae nunc luctus, id laoreet mauris suscipit. Maecenas vehicula egestas augue, at pellentesque urna convallis vitae. Integer velit sem, egestas eu nunc sed, pellentesque mattis purus. Nunc eu condimentum augue. Suspendisse potenti. Vestibulum varius suscipit mauris eget semper. Nullam consequat gravida finibus. Phasellus scelerisque metus velit, sit amet fermentum eros sollicitudin maximus. Cras pharetra enim non eros congue ultricies.</p>",
             "is_full_width": false,
             "is_hidden": false,
-            "is_prediction": false,
-            "name": "",
-            "prediction_feedback": "",
-            "prompt": "<p>why does ...</p>",
-            "show_in_featured_question_report": true,
-            "type": "Embeddable::OpenResponse",
-            "ref_id": "446817-Embeddable::OpenResponse"
+            "name": "Lorem Ipsum",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272099-Embeddable::Xhtml"
           },
           "section": null
         },
         {
           "embeddable": {
-            "content": "\u003Cspan style=\"font-family: Arial, Helvetica, sans; font-size: 11px; line-height: 14px; text-align: justify;\"\u003EDuis vitae ultrices augue, eu fermentum elit. Sed vel tincidunt nisi. Praesent eget erat in augue efficitur lobortis in sed massa. Suspendisse vehicula tellus quam, ut convallis mauris vehicula a. Nam suscipit facilisis felis in convallis. Curabitur consectetur lorem vitae nunc luctus, id laoreet mauris suscipit. Maecenas vehicula egestas augue, at pellentesque urna convallis vitae. Integer velit sem, egestas eu nunc sed, pellentesque mattis purus. Nunc eu condimentum augue. Suspendisse potenti. Vestibulum varius suscipit mauris eget semper. Nullam consequat gravida finibus. Phasellus scelerisque metus velit, sit amet fermentum eros sollicitudin maximus. Cras pharetra enim non eros congue ultricies.\u003C/span\u003E",
-            "is_full_width": false,
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
             "is_hidden": false,
-            "name": "Lorem Ipsum",
-            "type": "Embeddable::Xhtml",
-            "ref_id": "4661-Embeddable::Xhtml"
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "316-ManagedInteractive"
           },
           "section": null
+        },
+        {
+          "embeddable": {
+            "content": "<p><strong>This is a page with 60-40 layout</strong>.&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "271778-Embeddable::Xhtml"
+          },
+          "section": "header_block"
         },
         {
           "embeddable": {
@@ -215,31 +494,85 @@
       "layout": "r-4060",
       "name": "Page 4 60-40L",
       "position": 4,
+      "show_header": true,
       "show_info_assessment": true,
       "show_interactive": true,
-      "show_introduction": true,
       "show_sidebar": false,
       "sidebar": null,
       "sidebar_title": "Did you know?",
-      "text": "<p style=\"text-align: left;\"><strong>This is a page with 60-40 (interactive left) layout</strong>.&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
       "toggle_info_assessment": true,
       "embeddables": [
         {
           "embeddable": {
-            "default_text": "",
-            "give_prediction_feedback": false,
-            "hint": "",
+            "content": "<p>There. You see Lord Vader, she can be reasonable. Continue with the operation. You may fire when ready. What? You&rsquo;re far too trusting. Dantooine is too remote to make an effective demonstration. But don&rsquo;t worry. We will deal with your Rebel friends soon enough. No! Commence primary ignition.</p>",
             "is_full_width": false,
             "is_hidden": false,
-            "is_prediction": false,
-            "name": "",
-            "prediction_feedback": "",
-            "prompt": "<p>why does ...</p>",
-            "show_in_featured_question_report": true,
-            "type": "Embeddable::OpenResponse",
-            "ref_id": "446818-Embeddable::OpenResponse"
+            "name": "Star Wars Ipsum",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272100-Embeddable::Xhtml"
           },
           "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "317-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "<p style=\"text-align: left;\"><strong>This is a page with 60-40 (interactive left) layout</strong>.&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "271779-Embeddable::Xhtml"
+          },
+          "section": "header_block"
         },
         {
           "embeddable": {
@@ -265,17 +598,6 @@
             "ref_id": "210510-MwInteractive"
           },
           "section": "interactive_box"
-        },
-        {
-          "embeddable": {
-            "content": "\u003Cspan style=\"font-family: Arial, Helvetica, sans; font-size: 11px; line-height: 14px; text-align: justify;\"\u003EThere. You see Lord Vader, she can be reasonable. Continue with the operation. You may fire when ready. What? You’re far too trusting. Dantooine is too remote to make an effective demonstration. But don’t worry. We will deal with your Rebel friends soon enough. No! Commence primary ignition.\u003C/span\u003E",
-            "is_full_width": false,
-            "is_hidden": false,
-            "name": "Star Wars Ipsum",
-            "type": "Embeddable::Xhtml",
-            "ref_id": "4661-Embeddable::Xhtml"
-          },
-          "section": null
         }
       ]
     },
@@ -287,13 +609,12 @@
       "layout": "l-6040",
       "name": "Page 5 Completion",
       "position": 5,
+      "show_header": false,
       "show_info_assessment": false,
       "show_interactive": false,
-      "show_introduction": false,
       "show_sidebar": false,
       "sidebar": null,
       "sidebar_title": "Did you know?",
-      "text": null,
       "toggle_info_assessment": false,
       "embeddables": []
     }
