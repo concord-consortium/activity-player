@@ -1,7 +1,6 @@
-module.exports = (on, config) => {
+import codeCoverageTask from "@cypress/code-coverage/task";
 
-  require("@cypress/code-coverage/task")(on, config);
-  // IMPORTANT to return the config object
-  // with the any changed environment variables
+export default (on, config) => {
+  codeCoverageTask(on, config);
   return config;
 };

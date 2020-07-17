@@ -18,9 +18,9 @@ install:
 script:
 - npm run build
 - npx nyc --reporter=lcov npm run test:coverage -- --runInBand
-- npm run start &
+- CODE_COVERAGE=true npm run start &
 - wait-on http://localhost:8080
-- CODE_COVERAGE=true && $(npm bin)/cypress run --config video=false --record
+- $(npm bin)/cypress run --config video=false --record
 - npx codecov
 after_success:
 - ./s3_deploy.sh

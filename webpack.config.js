@@ -66,13 +66,15 @@ module.exports = (env, argv) => {
         // the code larger and slower
         process.env.CODE_COVERAGE ? {
           test: /\.[tj]sx?$/,
-          loader: "istanbul-instrumenter-loader",
-          options: { esModules: true },
+          use: {
+            loader: "istanbul-instrumenter-loader",
+            options: { esModules: true },
+          },
           enforce: "post",
           // I"m not sure but I don"t think it is necessary to exclude the cypress and
           // tests folder. I think Jest does its own loading of tests. And cypress does
           // its own loading of cypress
-          exclude: path.join(__dirname, "node_modules"),
+          exclude: /node_modules|\.spec\.js$/,
 
         } : {}
       ]
