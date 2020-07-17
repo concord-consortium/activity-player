@@ -16,7 +16,7 @@ describe("Embeddable component", () => {
       },
       "section": "header_block"
     };
-    const wrapper = shallow(<Embeddable embeddable={embeddable} isIntroduction={false} questionNumber={1} />);
+    const wrapper = shallow(<Embeddable embeddable={embeddable} isPageIntroduction={false} questionNumber={1} />);
     expect(wrapper.find(TextBox).length).toBe(1);
   });
 });

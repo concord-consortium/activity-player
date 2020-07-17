@@ -173,6 +173,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
               <IntroductionEmbeddable
                 key={`embeddable ${i}`}
                 embeddable={embeddable}
+                isPageIntroduction={i === 0}
                 questionNumber={questionNumber}
               />
             );

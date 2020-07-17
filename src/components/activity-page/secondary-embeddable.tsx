@@ -5,8 +5,8 @@ import "./secondary-embeddable.scss";
 
 interface IProps {
   embeddable: any;
-  questionNumber: number;
   isFullWidth: boolean;
+  questionNumber: number;
 }
 
 export const SecondaryEmbeddable: React.FC<IProps> = (props) => {
@@ -15,8 +15,8 @@ export const SecondaryEmbeddable: React.FC<IProps> = (props) => {
     <div className={secondaryEmbeddableClass} data-cy="secondary-embeddable">
       <Embeddable
         embeddable={props.embeddable}
+        isPageIntroduction={false}
         questionNumber={props.questionNumber}
-        isIntroduction={false}
       />
     </div>
   );

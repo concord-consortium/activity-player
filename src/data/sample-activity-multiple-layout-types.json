@@ -192,6 +192,28 @@
         },
         {
           "embeddable": {
+            "content": "<p>This is a second text block that appears in the header.&nbsp; It should not be displayed as a the page introduction, but should be displayed as all other text blocks are displayed.</p>",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "Second text block",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272101-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "<p>This is a third text block that appears in the header.&nbsp; It should not be displayed as a the page introduction, but should be displayed as all other text blocks are displayed.&nbsp; It should NOT be displayed at full width.</p>",
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "Third text block",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272102-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
             "aspect_ratio_method": "DEFAULT",
             "authored_state": "",
             "click_to_play": false,

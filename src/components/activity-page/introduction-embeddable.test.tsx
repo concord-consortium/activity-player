@@ -15,7 +15,7 @@ describe("Introduction Embeddable component", () => {
       },
       "section": "header_block"
     };
-    const wrapper = shallow(<IntroductionEmbeddable embeddable={embeddable} questionNumber={1} />);
+    const wrapper = shallow(<IntroductionEmbeddable embeddable={embeddable} questionNumber={1} isPageIntroduction={false} />);
     expect(wrapper.find('[data-cy="introduction-embeddable"]').length).toBe(1);
   });
 });

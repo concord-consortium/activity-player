@@ -7,12 +7,12 @@ import "./embeddable.scss";
 
 interface IProps {
   embeddable: any;
-  isIntroduction: boolean;
+  isPageIntroduction: boolean;
   questionNumber: number;
 }
 
 export const Embeddable: React.FC<IProps> = (props) => {
-  const { embeddable, isIntroduction, questionNumber } = props;
+  const { embeddable, isPageIntroduction, questionNumber } = props;
   const EmbeddableComponent: any = {
     "MwInteractive": IframeInteractiveQuestion,
     "ManagedInteractive": ManagedInteractive,
@@ -23,7 +23,7 @@ export const Embeddable: React.FC<IProps> = (props) => {
   return (
     <React.Fragment>
       { QComponent
-        ? <QComponent embeddable={embeddable.embeddable} questionNumber={questionNumber} isIntroduction={isIntroduction} />
+        ? <QComponent embeddable={embeddable.embeddable} questionNumber={questionNumber} isPageIntroduction={isPageIntroduction} />
         : <div>Content type not supported</div>
       }
     </React.Fragment>
