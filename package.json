@@ -50,8 +50,7 @@
     "test:coverage:watch": "jest --coverage --watchAll",
     "test:cypress": "cypress run",
     "test:cypress:open": "cypress open",
-    "test:full": "npm-run-all test test:cypress",
-    "test:coverage:reporter": "CODE_COVERAGE=true npm-run-all test test:cypress -- --runInBand"
+    "test:full": "npm-run-all test test:cypress"
   },
   "repository": {
     "type": "git",
