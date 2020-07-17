@@ -25,16 +25,14 @@ You *do not* need to build to deploy the code, that is automatic.  See more info
 
 ## Deployment
 
-*TODO* Set up Travis Deployment
-
 Production releases to S3 are based on the contents of the /dist folder and are built automatically by Travis
 for each branch pushed to GitHub and each merge into production.
 
-Merges into production are deployed to http://starter-projects.concord.org.
+Merges into production are deployed to https://activity-player.concord.org/ (NOTE: production branch has not yet been created and deployment still needs to be configured).
 
-Other branches are deployed to http://starter-projects.concord.org/branch/<name>.
+Other branches are deployed to https://activity-player.concord.org/branch/<name>.
 
-You can view the status of all the branch deploys [here](https://travis-ci.org/concord-consortium/starter-projects/branches).
+You can view the status of all the branch deploys [here](https://travis-ci.org/concord-consortium/activity-player/branches).
 
 To deploy a production release:
 
@@ -48,7 +46,7 @@ To deploy a production release:
 8. Checkout production
 9. Run `git merge master --no-ff`
 10. Push production to GitHub
-11. Use https://github.com/concord-consortium/starter-projects/releases to create a new release tag
+11. Use https://github.com/concord-consortium/activity-player/releases to create a new release tag
 
 ### Testing
 
