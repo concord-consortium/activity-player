@@ -7,6 +7,7 @@ import { IntroductionPageContent } from "./activity-introduction/introduction-pa
 import Footer from "./activity-introduction/footer";
 import { PageLayouts } from "../utilities/activity-utils";
 import { ActivityDefinition, getActivityDefinition } from "../api";
+import { ThemeButtons } from "./theme-buttons";
 
 import "./app.scss";
 import { queryValue } from "../utilities/url-query";
@@ -16,6 +17,7 @@ const kDefaultActivity = "sample-activity-multiple-layout-types";   // may event
 interface IState {
   activity?: ActivityDefinition;
   currentPage: number;
+  showThemeButtons?: boolean;
 }
 interface IProps {}
 
@@ -37,7 +39,10 @@ export class App extends React.PureComponent<IProps, IState> {
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity
       const currentPage = Number(queryValue("page")) || 0;
 
-      this.setState({activity, currentPage});
+      const showThemeButtons = queryValue("themeButtons")?.toLowerCase() === "true";
+
+      this.setState({activity, currentPage, showThemeButtons});
+
     } catch (e) {
       console.warn(e);
     }
@@ -47,6 +52,7 @@ export class App extends React.PureComponent<IProps, IState> {
     return (
       <div className="app">
         { this.renderActivity() }
+        { this.state.showThemeButtons && <ThemeButtons/>}
       </div>
     );
   }
