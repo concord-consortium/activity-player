@@ -6,7 +6,7 @@ import "./secondary-embeddable.scss";
 interface IProps {
   embeddable: any;
   isFullWidth: boolean;
-  questionNumber: number;
+  questionNumber?: number;
 }
 
 export const SecondaryEmbeddable: React.FC<IProps> = (props) => {

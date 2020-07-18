@@ -1,13 +1,23 @@
 @import "../../vars.scss";
 
-.question {
-  .header {
+.iframe-interactive-question {
+  background-color: $cc-charcoal-light2;
+  position: relative;
+  width: 100%;
+  padding-top: 75%;
+
+  .iframe-interactive-question-header {
     position: relative;
     padding: 4px 8px;
     clear: both;
     background-color: $cc-teal-light1;
   }
-  .content {
+  .iframe-interactive-question-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
     border: 0;
@@ -16,4 +26,19 @@
     vertical-align: baseline;
     background: transparent;
   }
+}
+
+
+.aspect-ratio-box {
+  background-color: $cc-charcoal-light2;
+  position: relative;
+  width: 100%;
+  padding-top: 75%;
+}
+.aspect-ratio-box-inside {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }

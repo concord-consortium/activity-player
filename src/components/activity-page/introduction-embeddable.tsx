@@ -6,7 +6,7 @@ import "./introduction-embeddable.scss";
 interface IProps {
   embeddable: any;
   isPageIntroduction: boolean;
-  questionNumber: number;
+  questionNumber?: number;
 }
 
 export const IntroductionEmbeddable: React.FC<IProps> = (props) => {

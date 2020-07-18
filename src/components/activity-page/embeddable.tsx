@@ -3,12 +3,10 @@ import { TextBox } from "./text-box/text-box";
 import { IframeInteractiveQuestion } from "./iframe-interactive/iframe-interactive";
 import { ManagedInteractive } from "./managed-interactive/managed-interactive";
 
-import "./embeddable.scss";
-
 interface IProps {
   embeddable: any;
   isPageIntroduction: boolean;
-  questionNumber: number;
+  questionNumber?: number;
 }
 
 export const Embeddable: React.FC<IProps> = (props) => {

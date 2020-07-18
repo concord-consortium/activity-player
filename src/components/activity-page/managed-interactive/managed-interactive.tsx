@@ -9,7 +9,6 @@ interface IProps {
 }
 
 export class ManagedInteractive extends React.PureComponent<IProps>  {
-
   render() {
     const { embeddable, questionNumber } = this.props;
     return (

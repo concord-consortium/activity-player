@@ -5,7 +5,6 @@ import iframePhone from "iframe-phone";
 
 import "./iframe-runtime.scss";
 
-
 // This should be part of lara-interactive-api
 interface ILogRequest {
   action: string;
