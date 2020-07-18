@@ -1,7 +1,5 @@
 import React from "react";
-import { PrimaryEmbeddable } from "./primary-embeddable";
-import { SecondaryEmbeddable } from "./secondary-embeddable";
-import { IntroductionEmbeddable } from "./introduction-embeddable";
+import { Embeddable } from "./embeddable";
 import { BottomButtons } from "./bottom-buttons";
 import { PageLayouts, EmbeddableSections, isQuestion, getPageSectionQuestionCount } from "../../utilities/activity-utils";
 import { Sidebar } from "../page-sidebar/sidebar";
@@ -41,7 +39,6 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   render() {
     const { isFirstActivityPage, isLastActivityPage, page, totalPreviousQuestions } = this.props;
     const { scrollOffset } = this.state;
-    const pageSectionQuestionCount = getPageSectionQuestionCount(page);
     // Layout types are named in a somewhat confusing manner - particularly in relation to container widths.
     // Responsive layout actually uses the entire page width, whereas the other layouts use only 960 horizontal pixels.
     // FullWidth layout, despite its name, does not use the full screen width (it would be better named "stacked").
@@ -55,10 +52,14 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const secondaryEmbeddables = page.embeddables.filter((e: any) => !e.section);
 
     const pinOffSet = page.layout !== PageLayouts.FullWidth && secondaryEmbeddables.length ? scrollOffset : 0;
+    const pageSectionQuestionCount = getPageSectionQuestionCount(page);
+    const questionsBeforePrimary = totalPreviousQuestions + pageSectionQuestionCount.Header + pageSectionQuestionCount.InfoAssessment;
+    const renderPrimary = this.renderPrimaryEmbeddables(primaryEmbeddables, questionsBeforePrimary, vertical, primaryFirst && !vertical, pinOffSet);
 
-    const renderPrimary = this.renderPrimaryEmbeddables(primaryEmbeddables, totalPreviousQuestions + pageSectionQuestionCount.Header + pageSectionQuestionCount.InfoAssessment, vertical, primaryFirst && !vertical, pinOffSet);
     const collapsible = page.toggle_info_assessment && page.layout !== PageLayouts.FullWidth;
-    const renderSecondary = this.renderSecondaryEmbeddables(secondaryEmbeddables, totalPreviousQuestions + pageSectionQuestionCount.Header, !primaryFirst && !vertical, collapsible);
+    const questionsBeforeSecondary = totalPreviousQuestions + pageSectionQuestionCount.Header;
+    const renderSecondary = this.renderSecondaryEmbeddables(secondaryEmbeddables, questionsBeforeSecondary, !primaryFirst && !vertical, collapsible);
+
     const [first, second] = primaryFirst
                             ? [renderPrimary, renderSecondary]
                             : [renderSecondary, renderPrimary];
@@ -68,7 +69,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
         <div className="name">{page.name}</div>
         <div className="introduction">
           { page.text && renderHTML(page.text) }
-          { introEmbeddables && this.renderIntroEmbeddables(introEmbeddables, totalPreviousQuestions) }
+          { introEmbeddables && this.renderEmbeddables(introEmbeddables, EmbeddableSections.Introduction, totalPreviousQuestions) }
         </div>
         <div className={`embeddables ${vertical ? "vertical" : ""}`}>
           { first }
@@ -126,70 +127,48 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     this.props.onPageChange(this.props.pageNumber + 1);
   }
 
-  private renderPrimaryEmbeddables = (primaryEmbeddables: any[], totalPreviousQuestions: number, vertical: boolean, leftContent: boolean, pinOffset: number) => {
-    const position = { top: pinOffset };
+  private renderEmbeddables = (embeddables: any[], section: EmbeddableSections, totalPreviousQuestions: number) => {
     let questionNumber = totalPreviousQuestions;
     return (
-      <div className={`group fill-remaining ${vertical ? "top" : ""} ${leftContent ? "left" : ""}`} style={position} ref={elt => this.primaryDivRef = elt}>
-        {primaryEmbeddables.map((embeddable: any, i: number) => {
-          if (isQuestion(embeddable)) {
-            questionNumber++;
-          }
-          return (
-            <PrimaryEmbeddable
-              key={`embeddable ${i}`}
-              embeddable={embeddable}
-              questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
-            />
+      <React.Fragment>
+        { embeddables.map((embeddable: any, i: number) => {
+            if (isQuestion(embeddable)) {
+              questionNumber++;
+            }
+            return (
+              <Embeddable
+                key={`embeddable ${i}`}
+                embeddable={embeddable}
+                isPageIntroduction={i === 0 && section === EmbeddableSections.Introduction}
+                pageLayout={this.props.page.layout}
+                questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
+              />
             );
           })
         }
+      </React.Fragment>
+    );
+  }
+
+  private renderPrimaryEmbeddables = (primaryEmbeddables: any[], totalPreviousQuestions: number, vertical: boolean, leftContent: boolean, pinOffset: number) => {
+    const position = { top: pinOffset };
+    const containerClass = `group fill-remaining ${vertical ? "top" : ""} ${leftContent ? "left" : ""}`;
+    return (
+      <div className={containerClass} style={position} ref={elt => this.primaryDivRef = elt}>
+        { this.renderEmbeddables(primaryEmbeddables, EmbeddableSections.Interactive, totalPreviousQuestions) }
       </div>
     );
   }
 
   private renderSecondaryEmbeddables = (secondaryEmbeddables: any[], totalPreviousQuestions: number, leftContent: boolean, collapsible: boolean) => {
     const { isSecondaryCollapsed } = this.state;
-    let questionNumber = totalPreviousQuestions;
+    const pageLayout = this.props.page.layout;
+    const staticWidth = pageLayout === PageLayouts.FortySixty || pageLayout === PageLayouts.SixtyForty || pageLayout === PageLayouts.Responsive;
+    const containerClass = `group ${leftContent ? "left" : ""} ${staticWidth ? "static-width" : ""} ${isSecondaryCollapsed ? "collapsed" : ""}`;
     return (
-      <div className={`group ${leftContent ? "left" : ""} ${isSecondaryCollapsed ? "collapsed" : ""}`} ref={elt => this.secondaryDivRef = elt}>
+      <div className={containerClass} ref={elt => this.secondaryDivRef = elt}>
         { collapsible && this.renderCollapsibleHeader() }
-        { !isSecondaryCollapsed && secondaryEmbeddables.map((embeddable: any, i: number) => {
-            if (isQuestion(embeddable)) {
-              questionNumber++;
-            }
-            return (
-              <SecondaryEmbeddable
-                key={`embeddable ${i}`}
-                embeddable={embeddable}
-                questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
-                isFullWidth={embeddable.embeddable.is_full_width}
-              />
-            );
-          })
-        }
-      </div>
-    );
-  }
-
-  private renderIntroEmbeddables = (introEmbeddables: any[], totalPreviousQuestions: number) => {
-    let questionNumber = totalPreviousQuestions;
-    return (
-      <div>
-        { introEmbeddables.map((embeddable: any, i: number) => {
-            if (isQuestion(embeddable)) {
-              questionNumber++;
-            }
-            return (
-              <IntroductionEmbeddable
-                key={`embeddable ${i}`}
-                embeddable={embeddable}
-                isPageIntroduction={i === 0}
-                questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
-              />
-            );
-          })
-        }
+        { !isSecondaryCollapsed && this.renderEmbeddables(secondaryEmbeddables, EmbeddableSections.InfoAssessment, totalPreviousQuestions)}
       </div>
     );
   }

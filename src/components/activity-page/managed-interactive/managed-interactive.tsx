@@ -1,8 +1,6 @@
 import React from "react";
 import { IframeRuntime } from "./iframe-runtime";
 
-import "./managed-interactive.scss";
-
 interface IProps {
   embeddable: any;
   questionNumber?: number;

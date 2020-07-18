@@ -8,6 +8,7 @@ export enum PageLayouts {
 export enum EmbeddableSections {
   Interactive = "interactive_box",
   Introduction = "header_block",
+  InfoAssessment = "", // stored as null in JSON
 }
 
 export const isQuestion = (embeddable: any) => {

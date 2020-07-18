@@ -1,6 +1,7 @@
 import React from "react";
 import { Embeddable } from "./embeddable";
 import { TextBox } from "./text-box/text-box";
+import { PageLayouts } from "../../utilities/activity-utils";
 import { shallow } from "enzyme";
 
 describe("Embeddable component", () => {
@@ -16,7 +17,7 @@ describe("Embeddable component", () => {
       },
       "section": "header_block"
     };
-    const wrapper = shallow(<Embeddable embeddable={embeddable} isPageIntroduction={false} questionNumber={1} />);
+    const wrapper = shallow(<Embeddable embeddable={embeddable} isPageIntroduction={false} questionNumber={1} pageLayout={PageLayouts.Responsive}/>);
     expect(wrapper.find(TextBox).length).toBe(1);
   });
 });

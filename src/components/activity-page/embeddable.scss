@@ -1,15 +1,18 @@
 @import "../vars.scss";
 
-.introduction-embeddable {
-  width: 100%;
-  margin-bottom: 20px;
+.embeddable {
+  margin-bottom: 10px;
 
+  &.full-width {
+    width: 100%;
+  }
   &.reduced-width {
     width: 45%;
   }
 
   .header {
     height: 30px;
+    width: 100%;
     box-sizing: border-box;
     display: flex;
     justify-content: flex-start;
