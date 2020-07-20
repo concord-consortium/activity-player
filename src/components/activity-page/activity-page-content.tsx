@@ -53,11 +53,13 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
     const pinOffSet = page.layout !== PageLayouts.FullWidth && secondaryEmbeddables.length ? scrollOffset : 0;
     const pageSectionQuestionCount = getPageSectionQuestionCount(page);
-    const questionsBeforePrimary = totalPreviousQuestions + pageSectionQuestionCount.Header + pageSectionQuestionCount.InfoAssessment;
+    const questionsBeforePrimary = totalPreviousQuestions + pageSectionQuestionCount.Header
+                                   + (primaryFirst ? 0 : pageSectionQuestionCount.InfoAssessment );
     const renderPrimary = this.renderPrimaryEmbeddables(primaryEmbeddables, questionsBeforePrimary, vertical, primaryFirst && !vertical, pinOffSet);
 
     const collapsible = page.toggle_info_assessment && page.layout !== PageLayouts.FullWidth;
-    const questionsBeforeSecondary = totalPreviousQuestions + pageSectionQuestionCount.Header;
+    const questionsBeforeSecondary = totalPreviousQuestions + pageSectionQuestionCount.Header
+                                     + (primaryFirst ? pageSectionQuestionCount.InteractiveBlock : 0);
     const renderSecondary = this.renderSecondaryEmbeddables(secondaryEmbeddables, questionsBeforeSecondary, !primaryFirst && !vertical, collapsible);
 
     const [first, second] = primaryFirst
