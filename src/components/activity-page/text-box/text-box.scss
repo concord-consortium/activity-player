@@ -1,5 +1,13 @@
 @import "../../vars.scss";
 
-p {
-  margin: 0;
+.textbox {
+  p {
+    margin: 0;
+  }
+  .text-name {
+    position: relative;
+    padding: 4px 8px;
+    clear: both;
+    background-color: $cc-charcoal-light2;
+  }
 }

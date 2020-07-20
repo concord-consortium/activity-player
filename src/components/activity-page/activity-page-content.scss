@@ -45,6 +45,10 @@
         height: fit-content;
       }
 
+      &.static-width {
+        width: 365px;
+      }
+
       &.collapsed {
         width: 50px;
       }

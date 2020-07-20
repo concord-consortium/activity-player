@@ -27,7 +27,7 @@ context("Test the overall app", () => {
   describe("Info/Assess (secondary embeddables)",()=>{
     it("verify textbox",()=>{
       activityPage.getNavPage(3).click();
-      activityPage.getSecondaryEmbeddable("text-box").scrollIntoView()
+      activityPage.getSecondaryEmbeddable("text-box").eq(1).scrollIntoView()
         .should("be.visible").and("contain","Duis vitae ultrices augue, eu fermentum elit.");
     });
   });

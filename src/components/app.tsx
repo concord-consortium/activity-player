@@ -5,7 +5,7 @@ import { ProfileNavHeader } from "./activity-header/profile-nav-header";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import Footer from "./activity-introduction/footer";
-import { PageLayouts } from "../utilities/activity-utils";
+import { PageLayouts, numQuestionsOnPreviousPages } from "../utilities/activity-utils";
 import { ActivityDefinition, getActivityDefinition } from "../api";
 import { ThemeButtons } from "./theme-buttons";
 
@@ -62,15 +62,7 @@ export class App extends React.PureComponent<IProps, IState> {
     const { activity, currentPage } = this.state;
     if (!activity) return (<div>Loading</div>);
 
-    let totalPreviousQuestions = 0;
-
-    for (let page = 0; page < currentPage - 1; page++) {
-      for (let embeddable = 0; embeddable < activity.pages[page].embeddables.length; embeddable++) {
-        if (!activity.pages[page].embeddables[embeddable].section) {
-          totalPreviousQuestions++;
-        }
-      }
-    }
+    const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
 
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
 
