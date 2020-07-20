@@ -49,7 +49,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
     const introEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction);
     const primaryEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive);
-    const secondaryEmbeddables = page.embeddables.filter((e: any) => !e.section);
+    const secondaryEmbeddables = page.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction));
 
     const pinOffSet = page.layout !== PageLayouts.FullWidth && secondaryEmbeddables.length ? scrollOffset : 0;
     const pageSectionQuestionCount = getPageSectionQuestionCount(page);
