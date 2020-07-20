@@ -1,5 +1,4 @@
 import React from "react";
-import queryString from "query-string";
 import { Header } from "./activity-header/header";
 import { ActivityNavHeader } from "./activity-header/activity-nav-header";
 import { ProfileNavHeader } from "./activity-header/profile-nav-header";
@@ -10,6 +9,7 @@ import { PageLayouts } from "../utilities/activity-utils";
 import { ActivityDefinition, getActivityDefinition } from "../api";
 
 import "./app.scss";
+import { queryValue } from "../utilities/url-query";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 
@@ -30,18 +30,14 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      // ?activity=url&baseUrl=https%3A%2F%2Fauthoring.concord.org or ?activity=sample-activity
-      const query = queryString.parse(window.location.search);
-      const activityPath = query.activity || kDefaultActivity;
-      const baseUrl = query.baseUrl;
-      if (Array.isArray(activityPath)) {
-        throw "May only have one activity query parameter";
-      }
-      if (Array.isArray(baseUrl)) {
-        throw "May only have one baseUrl query parameter";
-      }
+      const activityPath = queryValue("activity") || kDefaultActivity;
+      const baseUrl = queryValue("baseUrl");
       const activity = await getActivityDefinition(activityPath, baseUrl);
-      this.setState({activity});
+
+      // page 0 is introduction, inner pages start from 1 and match page.position in exported activity
+      const currentPage = Number(queryValue("page")) || 0;
+
+      this.setState({activity, currentPage});
     } catch (e) {
       console.warn(e);
     }
