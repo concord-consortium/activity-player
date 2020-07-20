@@ -31,9 +31,9 @@
       "embeddables": [
         {
           "embeddable": {
-            "name": "",
+            "name": "Info/Assess Multiple Choice Library Interactive",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"<p>Info/Assess Multiple Choice Library Interactive</p>\"}",
             "is_hidden": false,
             "is_full_width": false,
             "show_in_featured_question_report": true,
@@ -81,9 +81,9 @@
         },
         {
           "embeddable": {
-            "name": "",
+            "name": "Info/Assess Open Response Library Interactive",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Info/Assess Open Response Library Interactive</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -131,7 +131,7 @@
         },
         {
           "embeddable": {
-            "content": "<p><strong>This is a page with full width layout</strong>.&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
+            "content": "<p><strong>This is a page with full width layout</strong>. This page contains:</p>\r\n<ul>\r\n<li>a text box in the header that is displayed as a page intro</li>\r\n<li>a multiple choice question in the header</li>\r\n<li>a 2nd text box in the header at full width</li>\r\n<li>a 3rd text box in the header not at full width</li>\r\n<li>an interactive iframe in the interactive block</li>\r\n<li>a multiple choice question in the info/assess section not at full width</li>\r\n<li>an open response question in the info/asses section at full width</li>\r\n</ul>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -142,9 +142,9 @@
         },
         {
           "embeddable": {
-            "name": "",
+            "name": "Header Multiple Choice Library Interactive",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"<p>Header Multiple Choice Library Interactive</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -192,7 +192,7 @@
         },
         {
           "embeddable": {
-            "content": "<p>This is a second text block that appears in the header.&nbsp; It should not be displayed as a the page introduction, but should be displayed as all other text blocks are displayed.</p>",
+            "content": "<p>This is a second text block that appears in the header.&nbsp; It should not be displayed as the page introduction, but should be displayed as all other text blocks are displayed.</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "Second text block",
@@ -203,7 +203,7 @@
         },
         {
           "embeddable": {
-            "content": "<p>This is a third text block that appears in the header.&nbsp; It should not be displayed as a the page introduction, but should be displayed as all other text blocks are displayed.&nbsp; It should NOT be displayed at full width.</p>",
+            "content": "<p>This is a third text block that appears in the header.&nbsp; It should not be displayed as the page introduction, but should be displayed as all other text blocks are displayed.&nbsp; It should NOT be displayed at full width.</p>",
             "is_full_width": false,
             "is_hidden": false,
             "name": "Third text block",
@@ -225,13 +225,13 @@
             "is_full_width": true,
             "is_hidden": false,
             "model_library_url": null,
-            "name": "wikipedia",
+            "name": "Connected Bio",
             "native_height": 435,
             "native_width": 576,
             "no_snapshots": false,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://www.wikipedia.org/",
+            "url": "https://connected-bio-spaces.concord.org/",
             "type": "MwInteractive",
             "ref_id": "210507-MwInteractive"
           },
@@ -257,59 +257,20 @@
       "embeddables": [
         {
           "embeddable": {
-            "name": "this is a multiple choice question",
-            "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\"}",
+            "content": "<p>This is a text block.</p>",
+            "is_full_width": false,
             "is_hidden": false,
-            "is_full_width": true,
-            "show_in_featured_question_report": true,
-            "inherit_aspect_ratio_method": true,
-            "custom_aspect_ratio_method": "DEFAULT",
-            "inherit_native_width": true,
-            "custom_native_width": 576,
-            "inherit_native_height": true,
-            "custom_native_height": 435,
-            "inherit_click_to_play": true,
-            "custom_click_to_play": false,
-            "inherit_full_window": true,
-            "custom_full_window": false,
-            "inherit_click_to_play_prompt": true,
-            "custom_click_to_play_prompt": null,
-            "inherit_image_url": true,
-            "custom_image_url": null,
-            "library_interactive": {
-              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
-              "data": {
-                "aspect_ratio_method": "DEFAULT",
-                "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
-                "click_to_play": false,
-                "click_to_play_prompt": null,
-                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
-                "enable_learner_state": true,
-                "full_window": false,
-                "has_report_url": false,
-                "image_url": null,
-                "name": "Multiple Choice (master)",
-                "native_height": 435,
-                "native_width": 576,
-                "no_snapshots": false,
-                "show_delete_data_button": false,
-                "thumbnail_url": "",
-                "customizable": true,
-                "authorable": true
-              }
-            },
-            "type": "ManagedInteractive",
-            "ref_id": "314-ManagedInteractive"
+            "name": "text block",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272115-Embeddable::Xhtml"
           },
           "section": null
         },
         {
           "embeddable": {
-            "name": "",
+            "name": "this is a multiple choice question",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -457,7 +418,7 @@
         },
         {
           "embeddable": {
-            "content": "<p><strong>This is a page with responsive layout</strong>.&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
+            "content": "<p><strong>This is a page with responsive layout</strong>.&nbsp; This page contains:</p>\r\n<ul>\r\n<li>A text box in the header section which should be displayed as a page introduction.&nbsp;</li>\r\n<li>The left, info/assessment section contains a text box, a multiple choice question, an open response question, and a library interactive with&nbsp;enable_learner_state set to true (so that it should get a question number and header).&nbsp;</li>\r\n<li>The right, interactive box section contains an iframe interactive with&nbsp;enable_learner_state set to true (so that it should get a question number and header).</li>\r\n<li>A page sidebar.</li>\r\n</ul>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -472,7 +433,7 @@
             "authored_state": "",
             "click_to_play": false,
             "click_to_play_prompt": null,
-            "enable_learner_state": false,
+            "enable_learner_state": true,
             "full_window": false,
             "has_report_url": false,
             "image_url": null,
@@ -498,9 +459,249 @@
       "embeddable_display_mode": "stacked",
       "is_completion": false,
       "is_hidden": false,
-      "layout": "l-6040",
-      "name": "Page 3 60-40",
+      "layout": "l-responsive",
+      "name": "Page 3 Responsive",
       "position": 3,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p>Duis vitae ultrices augue, eu fermentum elit. Sed vel tincidunt nisi. Praesent eget erat in augue efficitur lobortis in sed massa. Suspendisse vehicula tellus quam, ut convallis mauris vehicula a. Nam suscipit facilisis felis in convallis. Curabitur consectetur lorem vitae nunc luctus, id laoreet mauris suscipit. Maecenas vehicula egestas augue, at pellentesque urna convallis vitae. Integer velit sem, egestas eu nunc sed, pellentesque mattis purus. Nunc eu condimentum augue. Suspendisse potenti. Vestibulum varius suscipit mauris eget semper. Nullam consequat gravida finibus. Phasellus scelerisque metus velit, sit amet fermentum eros sollicitudin maximus. Cras pharetra enim non eros congue ultricies.</p>",
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "text block header",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272117-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "340-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This shouldn't be used by any real activities it is still under development.",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "341-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "cbio from library interactive",
+            "url_fragment": "",
+            "authored_state": "",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "53f9a6e00236e2c86b5c3dbf2fe186e179ed8872",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "<p>Author a model at&nbsp;<a href=\"https://connected-bio-spaces.concord.org/?authoring\">https://connected-bio-spaces.concord.org/?authoring</a>, hit Submit, then copy the fragment of the url after \"?\".</p>",
+                "base_url": "https://connected-bio-spaces.concord.org/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Connected Bio",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": false
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "342-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "<p><strong>This is a page with responsive layout.</strong>&nbsp; This page contains:</p>\r\n<ul>\r\n<li>A text box in the header section which should be displayed as a page introduction.&nbsp;</li>\r\n<li>The left, info/assessment section contains a text box, a multiple choice question, an open response question, and a library interactive with&nbsp;enable_learner_state set to false (so that it should NOT get a question number and header).&nbsp;</li>\r\n<li>The right, interactive box section contains a library interactive with&nbsp;enable_learner_state set to true (so that it should get a question number and header).&nbsp;&nbsp;</li>\r\n</ul>",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272116-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": "cbio from library interactive",
+            "url_fragment": "",
+            "authored_state": "",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "53f9a6e00236e2c86b5c3dbf2fe186e179ed8872",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "<p>Author a model at&nbsp;<a href=\"https://connected-bio-spaces.concord.org/?authoring\">https://connected-bio-spaces.concord.org/?authoring</a>, hit Submit, then copy the fragment of the url after \"?\".</p>",
+                "base_url": "https://connected-bio-spaces.concord.org/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Connected Bio",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": false
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "344-ManagedInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "Page 4 60-40",
+      "position": 4,
       "show_header": true,
       "show_info_assessment": true,
       "show_interactive": true,
@@ -509,6 +710,17 @@
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": true,
       "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p>Duis vitae ultrices augue, eu fermentum elit. Sed vel tincidunt nisi. Praesent eget erat in augue efficitur lobortis in sed massa. Suspendisse vehicula tellus quam, ut convallis mauris vehicula a. Nam suscipit facilisis felis in convallis. Curabitur consectetur lorem vitae nunc luctus, id laoreet mauris suscipit. Maecenas vehicula egestas augue, at pellentesque urna convallis vitae. Integer velit sem, egestas eu nunc sed, pellentesque mattis purus. Nunc eu condimentum augue. Suspendisse potenti. Vestibulum varius suscipit mauris eget semper. Nullam consequat gravida finibus. Phasellus scelerisque metus velit, sit amet fermentum eros sollicitudin maximus. Cras pharetra enim non eros congue ultricies.</p>",
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "Lorem Ipsum",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272099-Embeddable::Xhtml"
+          },
+          "section": null
+        },
         {
           "embeddable": {
             "name": "",
@@ -561,18 +773,7 @@
         },
         {
           "embeddable": {
-            "content": "<p>Duis vitae ultrices augue, eu fermentum elit. Sed vel tincidunt nisi. Praesent eget erat in augue efficitur lobortis in sed massa. Suspendisse vehicula tellus quam, ut convallis mauris vehicula a. Nam suscipit facilisis felis in convallis. Curabitur consectetur lorem vitae nunc luctus, id laoreet mauris suscipit. Maecenas vehicula egestas augue, at pellentesque urna convallis vitae. Integer velit sem, egestas eu nunc sed, pellentesque mattis purus. Nunc eu condimentum augue. Suspendisse potenti. Vestibulum varius suscipit mauris eget semper. Nullam consequat gravida finibus. Phasellus scelerisque metus velit, sit amet fermentum eros sollicitudin maximus. Cras pharetra enim non eros congue ultricies.</p>",
-            "is_full_width": false,
-            "is_hidden": false,
-            "name": "Lorem Ipsum",
-            "type": "Embeddable::Xhtml",
-            "ref_id": "272099-Embeddable::Xhtml"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "content": "<p><strong>This is a page with 60-40 layout</strong>.&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
+            "content": "<p><strong>This is a page with 60-40 layout</strong>.&nbsp;This page contains:</p>\r\n<ul>\r\n<li>A text box in the header section which should be displayed as a page introduction.&nbsp;</li>\r\n<li>The left, info/assessment section contains a text box, a multiple choice question</li>\r\n<li>The right, interactive box section contains a library interactive with&nbsp;enable_learner_state set to true (so that it should get a question number and header), a multiple choice question, and an open response question.&nbsp;&nbsp;</li>\r\n</ul>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -730,56 +931,6 @@
             "ref_id": "337-ManagedInteractive"
           },
           "section": "interactive_box"
-        },
-        {
-          "embeddable": {
-            "name": "",
-            "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
-            "is_hidden": false,
-            "is_full_width": true,
-            "show_in_featured_question_report": true,
-            "inherit_aspect_ratio_method": true,
-            "custom_aspect_ratio_method": "DEFAULT",
-            "inherit_native_width": true,
-            "custom_native_width": 576,
-            "inherit_native_height": true,
-            "custom_native_height": 435,
-            "inherit_click_to_play": true,
-            "custom_click_to_play": false,
-            "inherit_full_window": true,
-            "custom_full_window": false,
-            "inherit_click_to_play_prompt": true,
-            "custom_click_to_play_prompt": null,
-            "inherit_image_url": true,
-            "custom_image_url": null,
-            "library_interactive": {
-              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
-              "data": {
-                "aspect_ratio_method": "DEFAULT",
-                "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
-                "click_to_play": false,
-                "click_to_play_prompt": null,
-                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
-                "enable_learner_state": true,
-                "full_window": false,
-                "has_report_url": false,
-                "image_url": null,
-                "name": "Multiple Choice (master)",
-                "native_height": 435,
-                "native_width": 576,
-                "no_snapshots": false,
-                "show_delete_data_button": false,
-                "thumbnail_url": "",
-                "customizable": true,
-                "authorable": true
-              }
-            },
-            "type": "ManagedInteractive",
-            "ref_id": "338-ManagedInteractive"
-          },
-          "section": "interactive_box"
         }
       ]
     },
@@ -789,8 +940,8 @@
       "is_completion": false,
       "is_hidden": false,
       "layout": "r-4060",
-      "name": "Page 4 60-40L",
-      "position": 4,
+      "name": "Page 5 60-40L",
+      "position": 5,
       "show_header": true,
       "show_info_assessment": true,
       "show_interactive": true,
@@ -799,6 +950,17 @@
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": true,
       "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p>There. You see Lord Vader, she can be reasonable. Continue with the operation. You may fire when ready. What? You&rsquo;re far too trusting. Dantooine is too remote to make an effective demonstration. But don&rsquo;t worry. We will deal with your Rebel friends soon enough. No! Commence primary ignition.</p>",
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "Star Wars Ipsum",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272100-Embeddable::Xhtml"
+          },
+          "section": null
+        },
         {
           "embeddable": {
             "name": "",
@@ -851,18 +1013,7 @@
         },
         {
           "embeddable": {
-            "content": "<p>There. You see Lord Vader, she can be reasonable. Continue with the operation. You may fire when ready. What? You&rsquo;re far too trusting. Dantooine is too remote to make an effective demonstration. But don&rsquo;t worry. We will deal with your Rebel friends soon enough. No! Commence primary ignition.</p>",
-            "is_full_width": false,
-            "is_hidden": false,
-            "name": "Star Wars Ipsum",
-            "type": "Embeddable::Xhtml",
-            "ref_id": "272100-Embeddable::Xhtml"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "content": "<p style=\"text-align: left;\"><strong>This is a page with 60-40 (interactive left) layout</strong>.&nbsp;&nbsp;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>",
+            "content": "<p style=\"text-align: left;\"><strong>This is a page with 60-40 (interactive left) layout</strong>. This page contains:</p>\r\n<ul>\r\n<li>A text box in the header section which should be displayed as a page introduction.&nbsp;</li>\r\n<li>The right, info/assessment section contains a text box, a multiple choice question</li>\r\n<li>The left, interactive box section contains an interactive iframe with&nbsp;enable_learner_state set to true (so that it should get a question number and header).&nbsp;&nbsp;</li>\r\n</ul>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
