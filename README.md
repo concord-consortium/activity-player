@@ -32,7 +32,7 @@ Merges into production are deployed to https://activity-player.concord.org/ (NOT
 
 Other branches are deployed to https://activity-player.concord.org/branch/<name>.
 
-You can view the status of all the branch deploys [here](https://travis-ci.org/concord-consortium/activity-player/branches).
+You can view the status of all the branch deploys [here](https://travis-ci.com/github/concord-consortium/activity-player/branches).
 
 To deploy a production release:
 
