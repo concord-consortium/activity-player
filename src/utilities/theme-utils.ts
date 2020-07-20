@@ -1,8 +1,7 @@
 // cf. https://mattferderer.com/use-sass-variables-in-typescript-and-javascript
 import colors from "../components/vars.scss";
 
-// example from:
-// https://stackoverflow.com/a/62640342
+// cf. https://stackoverflow.com/a/62640342
 export const colorShade = (color: string, amt: number) => {
   color = color.replace(/^#/, "");
   if (color.length === 3) color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
@@ -32,8 +31,7 @@ export const setThemeColors = (primary: string, secondary: string) => {
   document.documentElement.style.setProperty("--theme-secondary-text-color", getContrastYIQColor(secondary));
 };
 
-// example from:
-// https://24ways.org/2010/calculating-color-contrast
+// cf. https://24ways.org/2010/calculating-color-contrast
 const getContrastYIQColor = (color: string) => {
   color = color.replace(/^#/, "");
   if (color.length === 3) color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
