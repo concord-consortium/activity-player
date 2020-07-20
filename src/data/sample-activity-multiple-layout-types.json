@@ -31,7 +31,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "name": "Info/Assess Multiple Choice Library Interactive",
+            "name": "",
             "url_fragment": null,
             "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"<p>Info/Assess Multiple Choice Library Interactive</p>\"}",
             "is_hidden": false,
@@ -81,7 +81,7 @@
         },
         {
           "embeddable": {
-            "name": "Info/Assess Open Response Library Interactive",
+            "name": "",
             "url_fragment": null,
             "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Info/Assess Open Response Library Interactive</p>\"}",
             "is_hidden": false,
@@ -192,7 +192,7 @@
         },
         {
           "embeddable": {
-            "name": "Header Multiple Choice Library Interactive",
+            "name": "",
             "url_fragment": null,
             "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"<p>Header Multiple Choice Library Interactive</p>\"}",
             "is_hidden": false,
@@ -318,7 +318,7 @@
         },
         {
           "embeddable": {
-            "name": "this is a multiple choice question",
+            "name": "",
             "url_fragment": null,
             "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>\"}",
             "is_hidden": false,

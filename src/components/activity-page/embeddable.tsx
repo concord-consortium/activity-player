@@ -1,6 +1,5 @@
 import React from "react";
 import { TextBox } from "./text-box/text-box";
-import { IframeInteractiveQuestion } from "./iframe-interactive/iframe-interactive";
 import { ManagedInteractive } from "./managed-interactive/managed-interactive";
 import { PageLayouts } from "../../utilities/activity-utils";
 
@@ -16,7 +15,7 @@ interface IProps {
 export const Embeddable: React.FC<IProps> = (props) => {
   const { embeddable, isPageIntroduction, pageLayout, questionNumber } = props;
   const EmbeddableComponent: any = {
-    "MwInteractive": IframeInteractiveQuestion,
+    "MwInteractive": ManagedInteractive,
     "ManagedInteractive": ManagedInteractive,
     "Embeddable::Xhtml": TextBox,
   };
