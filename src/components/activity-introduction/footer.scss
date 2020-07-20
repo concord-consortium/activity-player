@@ -3,11 +3,11 @@
 .footer {
   width: $content-width;
   font-size: 13px;
-  color: white;
+  color: var(--theme-primary-text-color);
   margin: 10px 0 10px 0;
 
   a:link, a:visited, a:hover, a:active {
-    color: white;
+    color: var(--theme-primary-text-color);
   }
 
 }
