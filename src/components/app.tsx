@@ -26,7 +26,8 @@ export class App extends React.PureComponent<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
     this.state = {
-      currentPage: 0
+      currentPage: 0,
+      showThemeButtons: false
     };
   }
 
