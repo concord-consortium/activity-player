@@ -683,7 +683,7 @@
         },
         {
           "embeddable": {
-            "content": "<p><strong>This is a page with responsive layout.</strong>&nbsp; This page contains:</p>\r\n<ul>\r\n<li>A text box in the header section which should be displayed as a page introduction.&nbsp;</li>\r\n<li>The left, info/assessment section contains a text box, a multiple choice question, an open response question, and a library interactive with&nbsp;enable_learner_state set to false (so that it should NOT get a question number and header).&nbsp;</li>\r\n<li>The right, interactive box section contains a library interactive with&nbsp;enable_learner_state set to true (so that it should get a question number and header).&nbsp;&nbsp;</li>\r\n</ul>",
+            "content": "<p><strong>This is a page with responsive layout.</strong>&nbsp; This page contains:</p>\r\n<ul>\r\n<li>A text box in the header section which should be displayed as a page introduction.&nbsp;</li>\r\n<li>The left, info/assessment section contains a text box, a multiple choice question, an open response question, and a library interactive with&nbsp;enable_learner_state set to true (so that it should get a question number and header).&nbsp;</li>\r\n<li>The right, interactive box section contains a library interactive with&nbsp;enable_learner_state set to true (so that it should get a question number and header).&nbsp;&nbsp;</li>\r\n</ul>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -1063,7 +1063,7 @@
         },
         {
           "embeddable": {
-            "content": "<p style=\"text-align: left;\"><strong>This is a page with 60-40 (interactive left) layout</strong>. This page contains:</p>\r\n<ul>\r\n<li>A text box in the header section which should be displayed as a page introduction.&nbsp;</li>\r\n<li>The right, info/assessment section contains a text box, a multiple choice question</li>\r\n<li>The left, interactive box section contains an interactive iframe with&nbsp;enable_learner_state set to true (so that it should get a question number and header).&nbsp;&nbsp;</li>\r\n</ul>",
+            "content": "<p style=\"text-align: left;\"><strong>This is a page with 60-40 (interactive left) layout</strong>. This page contains:</p>\r\n<ul>\r\n<li>A text box in the header section which should be displayed as a page introduction.&nbsp;</li>\r\n<li>The right, info/assessment section contains a text box, a multiple choice question</li>\r\n<li>The left, interactive box section contains an interactive iframe with&nbsp;enable_learner_state set to false (so that it should NOT get a question number and header).&nbsp;&nbsp;</li>\r\n</ul>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",

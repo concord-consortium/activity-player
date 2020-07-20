@@ -18,11 +18,12 @@ interface IProps {
   interactiveState: any;
   setInteractiveState: (state: any) => void;
   report?: boolean;
+  initialHeight?: number;
 }
 
 export const IframeRuntime: React.FC<IProps> =
-  ({ url, authoredState, interactiveState, setInteractiveState, report }) => {
-  const [ iframeHeight, setIframeHeight ] = useState(300);
+  ({ url, authoredState, interactiveState, setInteractiveState, report, initialHeight }) => {
+  const [ iframeHeight, setIframeHeight ] = useState(initialHeight ? initialHeight : 300);
   const [ hint, setHint ] = useState("");
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const phoneRef = useRef<IframePhone>();
@@ -72,6 +73,12 @@ export const IframeRuntime: React.FC<IProps> =
       }
     };
   }, [url, authoredState, report]);
+
+  useEffect(() => {
+    if (initialHeight) {
+      setIframeHeight(initialHeight);
+    }
+  }, [initialHeight]);
 
   return (
     <div data-cy="iframe-runtime">
