@@ -3,7 +3,6 @@
   "viewportWidth": 1400,
   "viewportHeight": 1000,
   "video": false,
-  "pluginsFile": false,
   "fixturesFolder": "src/data",
   "defaultCommandTimeout": 8000,
   "projectId": "voj5ej"
