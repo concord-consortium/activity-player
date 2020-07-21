@@ -60,7 +60,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const collapsible = page.toggle_info_assessment && page.layout !== PageLayouts.FullWidth;
     const questionsBeforeSecondary = totalPreviousQuestions + pageSectionQuestionCount.Header
                                      + (primaryFirst ? pageSectionQuestionCount.InteractiveBlock : 0);
-    const renderSecondary = this.renderSecondaryEmbeddables(secondaryEmbeddables, questionsBeforeSecondary, !primaryFirst && !vertical, collapsible);
+    const renderSecondary = this.renderSecondaryEmbeddables(secondaryEmbeddables, questionsBeforeSecondary, vertical, !primaryFirst && !vertical, collapsible);
 
     const [first, second] = primaryFirst
                             ? [renderPrimary, renderSecondary]
@@ -71,7 +71,13 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
         <div className="name">{page.name}</div>
         <div className="introduction">
           { page.text && renderHTML(page.text) }
-          { introEmbeddables && this.renderEmbeddables(introEmbeddables, EmbeddableSections.Introduction, totalPreviousQuestions) }
+          { introEmbeddables &&
+            <div className="embeddables">
+              <div className="group responsive">
+                {this.renderEmbeddables(introEmbeddables, EmbeddableSections.Introduction, totalPreviousQuestions)}
+              </div>
+            </div>
+          }
         </div>
         <div className={`embeddables ${vertical ? "vertical" : ""}`}>
           { first }
@@ -154,7 +160,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
   private renderPrimaryEmbeddables = (primaryEmbeddables: any[], totalPreviousQuestions: number, vertical: boolean, leftContent: boolean, pinOffset: number) => {
     const position = { top: pinOffset };
-    const containerClass = `group fill-remaining ${vertical ? "top" : ""} ${leftContent ? "left" : ""}`;
+    const containerClass = `group fill-remaining ${vertical ? "responsive" : ""} ${vertical ? "top" : ""} ${leftContent ? "left" : ""}`;
     return (
       <div className={containerClass} style={position} ref={elt => this.primaryDivRef = elt}>
         { this.renderEmbeddables(primaryEmbeddables, EmbeddableSections.Interactive, totalPreviousQuestions) }
@@ -162,11 +168,11 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     );
   }
 
-  private renderSecondaryEmbeddables = (secondaryEmbeddables: any[], totalPreviousQuestions: number, leftContent: boolean, collapsible: boolean) => {
+  private renderSecondaryEmbeddables = (secondaryEmbeddables: any[], totalPreviousQuestions: number, vertical: boolean, leftContent: boolean, collapsible: boolean) => {
     const { isSecondaryCollapsed } = this.state;
     const pageLayout = this.props.page.layout;
     const staticWidth = pageLayout === PageLayouts.FortySixty || pageLayout === PageLayouts.SixtyForty || pageLayout === PageLayouts.Responsive;
-    const containerClass = `group ${leftContent ? "left" : ""} ${staticWidth ? "static-width" : ""} ${isSecondaryCollapsed ? "collapsed" : ""}`;
+    const containerClass = `group ${vertical ? "responsive" : ""} ${leftContent ? "left" : ""} ${staticWidth ? "static-width" : ""} ${isSecondaryCollapsed ? "collapsed" : ""}`;
     return (
       <div className={containerClass} ref={elt => this.secondaryDivRef = elt}>
         { collapsible && this.renderCollapsibleHeader() }
