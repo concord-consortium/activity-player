@@ -4,7 +4,8 @@ import IconArrow from "../../assets/svg-icons/icon-arrow-circle-left.svg";
 import "./sidebar-tab.scss";
 
 interface IProps {
-  handleShowSidebarContent: (show: boolean) => void;
+  handleShowSidebarContent: (index: number, show: boolean) => void;
+  index: number;
   title: string;
   sidebarOpen: boolean
 }
@@ -26,6 +27,6 @@ export class SidebarTab extends React.PureComponent <IProps>{
   }
 
   private handleSidebarClick = () => {
-    this.props.handleShowSidebarContent(!this.props.sidebarOpen);
+    this.props.handleShowSidebarContent(this.props.index, !this.props.sidebarOpen);
   }
 }

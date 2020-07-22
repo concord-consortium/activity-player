@@ -1,14 +1,11 @@
 import React from "react";
 import { ActivityLayouts, EmbeddableSections, PageLayouts, isQuestion } from "../../utilities/activity-utils";
 import { Embeddable } from "../activity-page/embeddable";
-import { Sidebar } from "../page-sidebar/sidebar";
+import { SidebarWrapper, SidebarConfiguration } from "../page-sidebar/sidebar-wrapper";
 import { RelatedContent } from "./related-content";
 import { SubmitButton } from "./submit-button";
 
 import "./single-page-content.scss";
-
-const kSidebarTop = 200;
-const kSidebarOffset = 100;
 
 interface IProps {
   activity: any;
@@ -18,17 +15,12 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
   const { activity } = props;
   let questionNumber = 0;
   let embeddableNumber = 0;
-  let sidebarNumber = 0;
 
   const renderPageContent = (page: any, index: number) => {
     const introEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction);
     const primaryEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive);
     const secondaryEmbeddables = page.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction));
     const embeddables = [...introEmbeddables, ...primaryEmbeddables, ...secondaryEmbeddables];
-    const position = { top: kSidebarTop + kSidebarOffset * sidebarNumber};
-    if (page.show_sidebar) {
-      sidebarNumber++;
-    }
     return (
       <React.Fragment key={index}>
         { embeddables.map((embeddable: any, i: number) => {
@@ -48,13 +40,20 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
             );
           })
         }
-        {page.show_sidebar &&
-          <Sidebar content={page.sidebar} title={page.sidebar_title} style={position} />
-        }
       </React.Fragment>
     );
   };
 
+  const renderSidebars = () => {
+    const sidebars: SidebarConfiguration[] = activity.pages.filter((page: any) => page.show_sidebar).map((page: any) => (
+      {content: page.sidebar, title: page.sidebar_title }
+    ));
+    return (
+      <React.Fragment>
+        <SidebarWrapper sidebars={sidebars}/>
+      </React.Fragment>
+    );
+  };
 
   return (
     <div className="single-page-content" data-cy="single-page-content">
@@ -63,6 +62,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
       ))}
       { activity.related && <RelatedContent relatedContentText={activity.related} /> }
       { activity.show_submit_button && <SubmitButton/> }
+      { renderSidebars() }
     </div>
   );
 };

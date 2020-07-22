@@ -6,6 +6,9 @@ import "./sidebar.scss";
 
 interface IProps {
   content: string | null;
+  handleShowSidebar: (index: number, show: boolean) => void;
+  index: number;
+  show: boolean;
   style?: any;
   title: string;
 }
@@ -20,24 +23,23 @@ export class Sidebar extends React.PureComponent<IProps, IState> {
     this.state = { showSidebarContent: false };
   }
   render() {
-    const { content, style, title } = this.props;
+    const { content, handleShowSidebar, index, show, style, title } = this.props;
     return (
-      <div className={`sidebarContainer ${this.state.showSidebarContent ? "sidebarContainer expanded" : ""}`} style={style}>
+      <div className={`sidebar-container ${show ? "sidebar-container expanded" : ""}`} style={style} data-cy="sidebar">
         <SidebarTab
+          handleShowSidebarContent={handleShowSidebar}
+          index={index}
+          sidebarOpen={show}
           title={title}
-          handleShowSidebarContent={this.setShowSidebarContent}
-          sidebarOpen={this.state.showSidebarContent}
         />
         <SidebarPanel
-          title={title}
           content={content}
-          handleCloseSidebarContent={this.setShowSidebarContent}
+          handleCloseSidebarContent={handleShowSidebar}
+          index={index}
+          title={title}
         />
       </div>
     );
   }
 
-  private setShowSidebarContent = (show: boolean) => {
-    this.setState({ showSidebarContent: show });
-  }
 }
