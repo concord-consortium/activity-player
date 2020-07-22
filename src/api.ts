@@ -2,32 +2,27 @@ import sampleActivities from "./data";
 
 export type ActivityDefinition = any;
 
-export const getActivityDefinition = (activity: string, baseUrl?: string | null): Promise<ActivityDefinition> => {
+export const getActivityDefinition = (activity: string): Promise<ActivityDefinition> => {
   return new Promise((resolve, reject) => {
-    if (!baseUrl) {
+    const urlRegex = /^(https:|http:)\/\/\S+/;
+    if (activity.match(urlRegex)) {
+      getActivityDefinitionFromLara(activity).then(resolve);
+    } else {
       if (sampleActivities[activity]) {
         setTimeout(() => resolve(sampleActivities[activity]), 250);
       } else {
-        reject(`No sample activity matches ${activity}. For an authored activity, use "baseUrl=..."`);
-      }
-    } else {
-      const urlRegex = /^(https:|http:)\/\/\S+/;
-      if (baseUrl.match(urlRegex)) {
-        getActivityDefinitionFromLara(activity, baseUrl).then(resolve);
-      } else {
-        reject(`${baseUrl} must be a valid url, e.g. baseUrl=https%3A%2F%2Fauthoring.concord.org`);
+        reject(`No sample activity matches ${activity}`);
       }
     }
   });
 };
 
-const getActivityDefinitionFromLara = (activity: string, baseUrl: string): Promise<ActivityDefinition> => {
+const getActivityDefinitionFromLara = (activityUrl: string): Promise<ActivityDefinition> => {
   return new Promise((resolve, reject) => {
-    const exportUrl = `${baseUrl.replace(/\/$/, "")}/api/v1/activities/${activity}.json`;
-    fetch(exportUrl)
+    fetch(activityUrl)
     .then(response => {
       if (response.status !== 200) {
-        reject(`Errored fetching ${exportUrl}. Status Code: ${response.status}`);
+        reject(`Errored fetching ${activityUrl}. Status Code: ${response.status}`);
         return;
       }
 
@@ -36,7 +31,7 @@ const getActivityDefinitionFromLara = (activity: string, baseUrl: string): Promi
       });
     })
     .catch(function(err) {
-      reject(`Errored fetching ${exportUrl}. ${err}`);
+      reject(`Errored fetching ${activityUrl}. ${err}`);
     });
   });
 };
