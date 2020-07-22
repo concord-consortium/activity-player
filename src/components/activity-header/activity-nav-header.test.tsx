@@ -7,7 +7,7 @@ describe("Activity Nav Header component", () => {
     const stubFunction = () => {
       // do nothing.
     };
-    const wrapper = shallow(<ActivityNavHeader activityName="activity name" activityPages={["1", "2", "3"]} currentPage={0} onPageChange={stubFunction} />);
+    const wrapper = shallow(<ActivityNavHeader activityName="activity name" activityPages={["1", "2", "3"]} currentPage={0} onPageChange={stubFunction} singlePage={false} />);
     expect(wrapper.find('[data-cy="activity-nav-header"]').length).toBe(1);
     expect(wrapper.find('[data-cy="activity-nav-header-left"]').length).toBe(1);
     expect(wrapper.find('[data-cy="activity-nav-header-right"]').length).toBe(1);

@@ -10,26 +10,31 @@ interface IProps {
   currentPage: number;
   fullWidth?: boolean;
   onPageChange: (page: number) => void;
+  singlePage: boolean;
 }
 
 export class ActivityNavHeader extends React.PureComponent <IProps> {
   render() {
-    const { activityName, activityPages, currentPage, fullWidth, onPageChange} = this.props;
+    const { activityName, activityPages, currentPage, fullWidth, onPageChange, singlePage} = this.props;
     return (
       <div className={`activity-nav-header ${fullWidth ? "full" : ""}`} data-cy="activity-nav-header">
         <div className="left" data-cy="activity-nav-header-left">
-          <NavMenu
-            activityList={[activityName]}
-          />
+          { !singlePage &&
+            <NavMenu
+              activityList={[activityName]}
+            />
+          }
           <div className="activity-name">{`Activity: ${activityName}`}</div>
         </div>
-        <div className="right" data-cy="activity-nav-header-right">
-          <NavPages
-            pages={activityPages}
-            onPageChange={onPageChange}
-            currentPage={currentPage}
-          />
-        </div>
+        { !singlePage &&
+          <div className="right" data-cy="activity-nav-header-right">
+            <NavPages
+              pages={activityPages}
+              onPageChange={onPageChange}
+              currentPage={currentPage}
+            />
+          </div>
+        }
       </div>
     );
   }

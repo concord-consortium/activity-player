@@ -5,6 +5,10 @@
   flex-direction: row;
   justify-content: space-between;
 
+  &.center {
+    justify-content: center;
+  }
+
   .button {
     height: 45px;
     width: 120px;

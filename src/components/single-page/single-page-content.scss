@@ -1,0 +1,9 @@
+@import "../vars.scss";
+
+.single-page-content {
+  width: $content-width;
+  box-sizing: border-box;
+  background-color: rgba(255,255,255,0.95);
+  padding: 20px;
+  margin-bottom: 40px;
+}

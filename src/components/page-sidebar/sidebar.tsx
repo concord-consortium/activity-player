@@ -6,6 +6,7 @@ import "./sidebar.scss";
 
 interface IProps {
   content: string | null;
+  style?: any;
   title: string;
 }
 
@@ -19,9 +20,9 @@ export class Sidebar extends React.PureComponent<IProps, IState> {
     this.state = { showSidebarContent: false };
   }
   render() {
-    const { content, title } = this.props;
+    const { content, style, title } = this.props;
     return (
-      <div className={`sidebarContainer ${this.state.showSidebarContent ? "sidebarContainer expanded" : ""}`}>
+      <div className={`sidebarContainer ${this.state.showSidebarContent ? "sidebarContainer expanded" : ""}`} style={style}>
         <SidebarTab
           title={title}
           handleShowSidebarContent={this.setShowSidebarContent}
@@ -37,6 +38,6 @@ export class Sidebar extends React.PureComponent<IProps, IState> {
   }
 
   private setShowSidebarContent = (show: boolean) => {
-    this.setState({ showSidebarContent: show }); 
+    this.setState({ showSidebarContent: show });
   }
 }

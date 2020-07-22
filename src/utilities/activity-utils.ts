@@ -1,3 +1,8 @@
+export enum ActivityLayouts {
+  MultiplePages = 0,
+  SinglePage = 1,
+}
+
 export enum PageLayouts {
   FullWidth = "l-full-width",
   Responsive = "l-responsive",

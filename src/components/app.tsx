@@ -5,9 +5,10 @@ import { ProfileNavHeader } from "./activity-header/profile-nav-header";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import Footer from "./activity-introduction/footer";
-import { PageLayouts, numQuestionsOnPreviousPages } from "../utilities/activity-utils";
+import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages } from "../utilities/activity-utils";
 import { ActivityDefinition, getActivityDefinition } from "../api";
 import { ThemeButtons } from "./theme-buttons";
+import { SinglePageContent } from "./single-page/single-page-content";
 
 import "./app.scss";
 import { queryValue } from "../utilities/url-query";
@@ -78,22 +79,36 @@ export class App extends React.PureComponent<IProps, IState> {
           currentPage={currentPage}
           fullWidth={fullWidth}
           onPageChange={this.handleChangePage}
+          singlePage={activity.layout === ActivityLayouts.SinglePage}
         />
         <ProfileNavHeader
           fullWidth={fullWidth}
           name={"test student"}
         />
-        { currentPage === 0
-          ? this.renderIntroductionContent()
-          : <ActivityPageContent
-              isFirstActivityPage={currentPage === 1}
-              isLastActivityPage={currentPage === activity.pages.length}
-              pageNumber={currentPage}
-              onPageChange={this.handleChangePage}
-              page={activity.pages[currentPage - 1]}
-              totalPreviousQuestions={totalPreviousQuestions}
-            />
+        { activity.layout === ActivityLayouts.SinglePage
+          ? this.renderSinglePageContent()
+          : currentPage === 0
+            ? this.renderIntroductionContent()
+            : <ActivityPageContent
+                isFirstActivityPage={currentPage === 1}
+                isLastActivityPage={currentPage === activity.pages.length}
+                pageNumber={currentPage}
+                onPageChange={this.handleChangePage}
+                page={activity.pages[currentPage - 1]}
+                totalPreviousQuestions={totalPreviousQuestions}
+              />
         }
+      </React.Fragment>
+    );
+  }
+
+  private renderSinglePageContent = () => {
+    return (
+      <React.Fragment>
+        <SinglePageContent
+          activity={this.state.activity}
+        />
+        <Footer/ >
       </React.Fragment>
     );
   }
