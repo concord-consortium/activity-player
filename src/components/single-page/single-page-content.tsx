@@ -2,6 +2,7 @@ import React from "react";
 import { ActivityLayouts, EmbeddableSections, PageLayouts, isQuestion } from "../../utilities/activity-utils";
 import { Embeddable } from "../activity-page/embeddable";
 import { Sidebar } from "../page-sidebar/sidebar";
+import { RelatedContent } from "./related-content";
 import { SubmitButton } from "./submit-button";
 
 import "./single-page-content.scss";
@@ -60,7 +61,8 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
       {activity.pages.map((page: any, index: number) => (
         renderPageContent(page, index)
       ))}
-      { activity.show_submit_button && <SubmitButton/>}
+      { activity.related && <RelatedContent relatedContentText={activity.related} /> }
+      { activity.show_submit_button && <SubmitButton/> }
     </div>
   );
 };
