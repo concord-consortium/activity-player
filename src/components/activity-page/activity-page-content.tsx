@@ -39,41 +39,36 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   render() {
     const { isFirstActivityPage, isLastActivityPage, page, totalPreviousQuestions } = this.props;
     const { scrollOffset } = this.state;
-    // Layout types are named in a somewhat confusing manner - particularly in relation to container widths.
-    // Responsive layout actually uses the entire page width, whereas the other layouts use only 960 horizontal pixels.
-    // FullWidth layout, despite its name, does not use the full screen width (it would be better named "stacked").
-    // However, in an effort to sync names with the authoring and activity JSON we will continue to use the previously defined naming conventions.
-    const useFullPageWidth = page.layout === PageLayouts.Responsive;
-    const vertical = page.layout === PageLayouts.FullWidth;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
-
+    const pageSectionQuestionCount = getPageSectionQuestionCount(page);
     const introEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction);
     const primaryEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive);
     const secondaryEmbeddables = page.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction));
 
-    const pinOffSet = page.layout !== PageLayouts.FullWidth && secondaryEmbeddables.length ? scrollOffset : 0;
-    const pageSectionQuestionCount = getPageSectionQuestionCount(page);
     const questionsBeforePrimary = totalPreviousQuestions + pageSectionQuestionCount.Header
                                    + (primaryFirst ? 0 : pageSectionQuestionCount.InfoAssessment);
-    const renderPrimary = this.renderPrimaryEmbeddables(primaryEmbeddables, questionsBeforePrimary, vertical, primaryFirst && !vertical, pinOffSet);
+    const primaryIsOnLeft = page.layout === PageLayouts.FortySixty;
+    const pinOffSet = page.layout !== PageLayouts.FullWidth && secondaryEmbeddables.length ? scrollOffset : 0;
+    const renderPrimary = this.renderPrimaryEmbeddables(primaryEmbeddables, questionsBeforePrimary, page.layout, primaryIsOnLeft, pinOffSet);
 
-    const collapsible = page.toggle_info_assessment && page.layout !== PageLayouts.FullWidth;
     const questionsBeforeSecondary = totalPreviousQuestions + pageSectionQuestionCount.Header
                                      + (primaryFirst ? pageSectionQuestionCount.InteractiveBlock : 0);
-    const renderSecondary = this.renderSecondaryEmbeddables(secondaryEmbeddables, questionsBeforeSecondary, !primaryFirst && !vertical, collapsible);
+    const secondaryIsOnLeft = page.layout === PageLayouts.Responsive || page.layout === PageLayouts.SixtyForty;
+    const collapsible = page.toggle_info_assessment && page.layout !== PageLayouts.FullWidth;
+    const renderSecondary = this.renderSecondaryEmbeddables(secondaryEmbeddables, questionsBeforeSecondary, page.layout, secondaryIsOnLeft, collapsible);
 
     const [first, second] = primaryFirst
                             ? [renderPrimary, renderSecondary]
                             : [renderSecondary, renderPrimary];
 
     return (
-      <div className={`page-content ${useFullPageWidth ? "full" : ""}`} data-cy="page-content">
+      <div className={`page-content ${page.layout === PageLayouts.Responsive ? "full" : ""}`} data-cy="page-content">
         <div className="name">{page.name}</div>
         <div className="introduction">
           { page.text && renderHTML(page.text) }
-          { introEmbeddables && this.renderEmbeddables(introEmbeddables, EmbeddableSections.Introduction, totalPreviousQuestions) }
+          { introEmbeddables && this.renderIntroEmbeddables(introEmbeddables, totalPreviousQuestions) }
         </div>
-        <div className={`embeddables ${vertical ? "vertical" : ""}`}>
+        <div className={`embeddables ${page.layout === PageLayouts.FullWidth ? "vertical" : ""}`}>
           { first }
           { second }
         </div>
@@ -152,25 +147,36 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     );
   }
 
-  private renderPrimaryEmbeddables = (primaryEmbeddables: any[], totalPreviousQuestions: number, vertical: boolean, leftContent: boolean, pinOffset: number) => {
-    const position = { top: pinOffset };
-    const containerClass = `group fill-remaining ${vertical ? "top" : ""} ${leftContent ? "left" : ""}`;
+  private renderIntroEmbeddables = (embeddables: any[], totalPreviousQuestions: number) => {
     return (
-      <div className={containerClass} style={position} ref={elt => this.primaryDivRef = elt}>
-        { this.renderEmbeddables(primaryEmbeddables, EmbeddableSections.Interactive, totalPreviousQuestions) }
+      <div className="embeddables">
+        <div className="group responsive">
+          {this.renderEmbeddables(embeddables, EmbeddableSections.Introduction, totalPreviousQuestions)}
+        </div>
       </div>
     );
   }
 
-  private renderSecondaryEmbeddables = (secondaryEmbeddables: any[], totalPreviousQuestions: number, leftContent: boolean, collapsible: boolean) => {
+  private renderPrimaryEmbeddables = (embeddables: any[], totalPreviousQuestions: number, layout: string, isLeft: boolean, pinOffset: number) => {
+    const position = { top: pinOffset };
+    const isFullWidth = layout === PageLayouts.FullWidth;
+    const containerClass = `group fill-remaining ${isFullWidth ? "responsive top" : ""} ${isLeft ? "left" : ""}`;
+    return (
+      <div className={containerClass} style={position} ref={elt => this.primaryDivRef = elt}>
+        { this.renderEmbeddables(embeddables, EmbeddableSections.Interactive, totalPreviousQuestions) }
+      </div>
+    );
+  }
+
+  private renderSecondaryEmbeddables = (embeddables: any[], totalPreviousQuestions: number, layout: string, isLeft: boolean, collapsible: boolean) => {
     const { isSecondaryCollapsed } = this.state;
-    const pageLayout = this.props.page.layout;
-    const staticWidth = pageLayout === PageLayouts.FortySixty || pageLayout === PageLayouts.SixtyForty || pageLayout === PageLayouts.Responsive;
-    const containerClass = `group ${leftContent ? "left" : ""} ${staticWidth ? "static-width" : ""} ${isSecondaryCollapsed ? "collapsed" : ""}`;
+    const isFullWidth = layout === PageLayouts.FullWidth;
+    const staticWidth = layout === PageLayouts.FortySixty || layout === PageLayouts.SixtyForty || layout === PageLayouts.Responsive;
+    const containerClass = `group ${isFullWidth ? "responsive" : ""} ${isLeft ? "left" : ""} ${staticWidth ? "static-width" : ""} ${isSecondaryCollapsed ? "collapsed" : ""}`;
     return (
       <div className={containerClass} ref={elt => this.secondaryDivRef = elt}>
         { collapsible && this.renderCollapsibleHeader() }
-        { !isSecondaryCollapsed && this.renderEmbeddables(secondaryEmbeddables, EmbeddableSections.InfoAssessment, totalPreviousQuestions)}
+        { !isSecondaryCollapsed && this.renderEmbeddables(embeddables, EmbeddableSections.InfoAssessment, totalPreviousQuestions)}
       </div>
     );
   }

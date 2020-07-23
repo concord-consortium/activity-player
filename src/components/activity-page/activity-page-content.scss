@@ -32,6 +32,13 @@
     }
 
     .group {
+      &.responsive {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
       &.left {
         margin-right: 20px;
       }
