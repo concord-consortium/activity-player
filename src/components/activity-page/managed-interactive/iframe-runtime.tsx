@@ -6,6 +6,8 @@ import iframePhone from "iframe-phone";
 
 import "./iframe-runtime.scss";
 
+const kDefaultHeight = 300;
+
 // This should be part of lara-interactive-api
 interface ILogRequest {
   action: string;
@@ -18,12 +20,14 @@ interface IProps {
   interactiveState: any;
   setInteractiveState: (state: any) => void;
   report?: boolean;
-  initialHeight?: number;
+  proposedHeight?: number;
+  containerWidth?: number;
 }
 
 export const IframeRuntime: React.FC<IProps> =
-  ({ url, authoredState, interactiveState, setInteractiveState, report, initialHeight }) => {
-  const [ iframeHeight, setIframeHeight ] = useState(initialHeight ? initialHeight : 300);
+  ({ url, authoredState, interactiveState, setInteractiveState, report, proposedHeight, containerWidth }) => {
+  const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
+  const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
   const [ hint, setHint ] = useState("");
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const phoneRef = useRef<IframePhone>();
@@ -47,7 +51,12 @@ export const IframeRuntime: React.FC<IProps> =
         setInteractiveStateRef.current?.(newInteractiveState);
       });
       phone.addListener("height", (newHeight: number) => {
-        setIframeHeight(newHeight);
+        setHeightFromInteractive(newHeight);
+      });
+      phone.addListener("supportedFeatures", (info: any) => {
+        if (info.features.aspectRatio) {
+          setARFromSupportedFeatures(info.features.aspectRatio);
+        }
       });
       phone.addListener("hint", (newHint: any) => {
         setHint(newHint.text || "");
@@ -74,15 +83,19 @@ export const IframeRuntime: React.FC<IProps> =
     };
   }, [url, authoredState, report]);
 
-  useEffect(() => {
-    if (initialHeight) {
-      setIframeHeight(initialHeight);
-    }
-  }, [initialHeight]);
+  const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;
+  // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone
+  // "height" listener), height based on aspect ratio specified by interactive (from IframePhone "supportedFeatures" listener),
+  // or height from container dimensions and embeddable specifications.
+  const height = heightFromInteractive
+                 ? heightFromInteractive
+                 : heightFromSupportedFeatures
+                    ? heightFromSupportedFeatures
+                    : proposedHeight ? proposedHeight : kDefaultHeight;
 
   return (
     <div data-cy="iframe-runtime">
-      <iframe ref={iframeRef} src={url} width="100%" height={iframeHeight} frameBorder={0} />
+      <iframe ref={iframeRef} src={url} width="100%" height={height} frameBorder={0} />
       { hint &&
         <div className="hint">{renderHTML(hint)}</div> }
     </div>

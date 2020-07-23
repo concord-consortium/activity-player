@@ -100,6 +100,10 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
   public componentDidUpdate(prevProps: any) {
     if (prevProps.pageNumber !== this.props.pageNumber) {
+      const el = document.querySelector("#app");
+      if (el) {
+        el.scrollTo(0, 0);
+      }
       this.setState({ isSecondaryCollapsed: false, scrollOffset: 0 });
     }
   }
