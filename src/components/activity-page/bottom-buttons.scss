@@ -5,14 +5,18 @@
   flex-direction: row;
   justify-content: space-between;
 
+  &.center {
+    justify-content: center;
+  }
+
   .button {
     height: 45px;
     width: 120px;
     margin: 5px 0 5px 0;
-    color: white;
+    color: var(--theme-primary-text-color);;
     background-color: var(--theme-primary-color);
-    font-size: 22px;
-    border-radius: 4px;
+    font-size: 20px;
+    border-radius: 8px;
     border: solid 2px $cc-charcoal-light2;
     outline: none;
     cursor: pointer;

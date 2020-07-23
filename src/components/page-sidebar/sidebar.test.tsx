@@ -9,8 +9,10 @@ describe("SidebarTab component", () => {
       // do nothing.
     };
     const title = "Did you know?";
-    const wrapper = shallow(<SidebarTab title={title}
+    const wrapper = shallow(<SidebarTab
+      title={title}
       handleShowSidebarContent={stubFunction}
+      index={0}
       sidebarOpen={false} />);
     expect(wrapper.find('[data-cy="sidebar-tab-title"]').text()).toContain(title);
   });
@@ -20,8 +22,9 @@ describe("SidebarTab component", () => {
     };
     const title = "Did you know?";
     const content = "This is the content of the sidebar.";
-    const wrapper = shallow(<SidebarPanel           
+    const wrapper = shallow(<SidebarPanel
       title={title}
+      index={0}
       content={content}
       handleCloseSidebarContent={stubFunction} />);
     expect(wrapper.find('[data-cy="sidebar-title"]').text()).toContain(title);

@@ -5,7 +5,8 @@ import { renderHTML } from "../../utilities/render-html";
 import "./sidebar-panel.scss";
 
 interface IProps {
-  handleCloseSidebarContent: (show: boolean) => void;
+  handleCloseSidebarContent: (index: number, show: boolean) => void;
+  index: number;
   content: string | null;
   title: string;
 }
@@ -28,6 +29,6 @@ export class SidebarPanel extends React.PureComponent<IProps>{
   }
 
   private handleCloseButtonClick = () => {
-    this.props.handleCloseSidebarContent(false);
+    this.props.handleCloseSidebarContent(this.props.index, false);
   }
 }
