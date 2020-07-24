@@ -87,11 +87,7 @@ export const IframeRuntime: React.FC<IProps> =
   // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone
   // "height" listener), height based on aspect ratio specified by interactive (from IframePhone "supportedFeatures" listener),
   // or height from container dimensions and embeddable specifications.
-  const height = heightFromInteractive
-                 ? heightFromInteractive
-                 : heightFromSupportedFeatures
-                    ? heightFromSupportedFeatures
-                    : proposedHeight ? proposedHeight : kDefaultHeight;
+  const height = heightFromInteractive || heightFromSupportedFeatures || proposedHeight || kDefaultHeight;
 
   return (
     <div data-cy="iframe-runtime">
