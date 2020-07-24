@@ -16,6 +16,12 @@ export enum EmbeddableSections {
   InfoAssessment = "", // stored as null in JSON
 }
 
+export interface VisibleEmbeddables {
+  interactiveBox: any[],
+  headerBlock: any[],
+  infoAssessment: any[],
+}
+
 export const isQuestion = (embeddable: any) => {
   return ((embeddable.embeddable.type === "ManagedInteractive" && embeddable.embeddable.library_interactive.data.enable_learner_state)
           || (embeddable.embeddable.type === "MwInteractive" && embeddable.embeddable.enable_learner_state));
@@ -32,6 +38,20 @@ export const isEmbeddableSectionHidden = (page: any, section: string | null) => 
     || (section === EmbeddableSections.Interactive && !page.show_interactive)
     || (!section && !page.show_info_assessment));
   return isSectionHidden;
+};
+
+export const getVisibleEmbeddablesOnPage = (page: any) => {
+  const headerEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Introduction)
+    ? []
+    : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction && !e.embeddable.is_hidden);
+  const interactiveEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Interactive)
+    ? []
+    : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive && !e.embeddable.is_hidden);
+  const infoAssessEmbeddables = isEmbeddableSectionHidden(page, null)
+    ? []
+    : page.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction && !e.embeddable.is_hidden));
+
+  return { interactiveBox: interactiveEmbeddables, headerBlock: headerEmbeddables, infoAssessment: infoAssessEmbeddables };
 };
 
 export const getPageSectionQuestionCount = (page: any) => {
