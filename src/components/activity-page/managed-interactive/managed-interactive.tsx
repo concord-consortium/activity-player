@@ -25,7 +25,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     const questionName = embeddable.name ? `: ${embeddable.name}` : "";
     const url = embeddable.url
                 ? embeddable.url
-                : (embeddable.library_interactive.data.base_url ? embeddable.library_interactive.data.base_url : "");
+                : (embeddable.library_interactive?.data?.base_url ? embeddable.library_interactive.data.base_url : "");
     return (
       <div ref={divRef}>
         { questionNumber && <div className="header">Question #{questionNumber}{questionName}</div> }
