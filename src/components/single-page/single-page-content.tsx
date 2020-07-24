@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityLayouts, EmbeddableSections, PageLayouts, isQuestion } from "../../utilities/activity-utils";
+import { ActivityLayouts, EmbeddableSections, PageLayouts, isQuestion, isEmbeddableSectionHidden } from "../../utilities/activity-utils";
 import { Embeddable } from "../activity-page/embeddable";
 import { SidebarWrapper, SidebarConfiguration } from "../page-sidebar/sidebar-wrapper";
 import { RelatedContent } from "./related-content";
@@ -17,9 +17,15 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
   let embeddableNumber = 0;
 
   const renderPageContent = (page: any, index: number) => {
-    const introEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction);
-    const primaryEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive);
-    const secondaryEmbeddables = page.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction));
+    const introEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Introduction)
+                             ? []
+                             : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction && !e.embeddable.is_hidden);
+    const primaryEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Interactive)
+                               ? []
+                               : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive && !e.embeddable.is_hidden);
+    const secondaryEmbeddables = isEmbeddableSectionHidden(page, null)
+                                 ? []
+                                 : page.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction && !e.embeddable.is_hidden));
     const embeddables = [...introEmbeddables, ...primaryEmbeddables, ...secondaryEmbeddables];
     return (
       <React.Fragment key={index}>

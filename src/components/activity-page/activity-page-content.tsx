@@ -1,7 +1,7 @@
 import React from "react";
 import { Embeddable } from "./embeddable";
 import { BottomButtons } from "./bottom-buttons";
-import { PageLayouts, EmbeddableSections, isQuestion, getPageSectionQuestionCount } from "../../utilities/activity-utils";
+import { PageLayouts, EmbeddableSections, isQuestion, getPageSectionQuestionCount, isEmbeddableSectionHidden } from "../../utilities/activity-utils";
 import { SidebarWrapper } from "../page-sidebar/sidebar-wrapper";
 import { renderHTML } from "../../utilities/render-html";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
@@ -41,9 +41,15 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const { scrollOffset } = this.state;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
     const pageSectionQuestionCount = getPageSectionQuestionCount(page);
-    const introEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction && !e.embeddable.is_hidden);
-    const primaryEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive && !e.embeddable.is_hidden);
-    const secondaryEmbeddables = page.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction && !e.embeddable.is_hidden));
+    const introEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Introduction)
+                             ? []
+                             : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction && !e.embeddable.is_hidden);
+    const primaryEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Interactive)
+                               ? []
+                               : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive && !e.embeddable.is_hidden);
+    const secondaryEmbeddables = isEmbeddableSectionHidden(page, null)
+                                 ? []
+                                 : page.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction && !e.embeddable.is_hidden));
 
     const questionsBeforePrimary = totalPreviousQuestions + pageSectionQuestionCount.Header
                                    + (primaryFirst ? 0 : pageSectionQuestionCount.InfoAssessment);

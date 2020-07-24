@@ -27,16 +27,23 @@ export interface PageSectionQuestionCount {
   InteractiveBlock: number;
 }
 
+export const isEmbeddableSectionHidden = (page: any, section: string | null) => {
+  const isSectionHidden = ((section === EmbeddableSections.Introduction && !page.show_header)
+    || (section === EmbeddableSections.Interactive && !page.show_interactive)
+    || (!section && !page.show_info_assessment));
+  return isSectionHidden;
+};
+
 export const getPageSectionQuestionCount = (page: any) => {
   const pageSectionQuestionCount: PageSectionQuestionCount = { Header: 0, InfoAssessment: 0, InteractiveBlock: 0 };
   for (let embeddableNum = 0; embeddableNum < page.embeddables.length; embeddableNum++) {
     const embeddable = page.embeddables[embeddableNum];
     if (isQuestion(embeddable) && !embeddable.embeddable.is_hidden) {
-      if (embeddable.section === EmbeddableSections.Introduction) {
+      if (embeddable.section === EmbeddableSections.Introduction && !isEmbeddableSectionHidden(page, embeddable.section)) {
         pageSectionQuestionCount.Header++;
-      } else if (!embeddable.section) {
+      } else if (!embeddable.section && !isEmbeddableSectionHidden(page, embeddable.section)) {
         pageSectionQuestionCount.InfoAssessment++;
-      } else if (embeddable.section === EmbeddableSections.Interactive) {
+      } else if (embeddable.section === EmbeddableSections.Interactive && !isEmbeddableSectionHidden(page, embeddable.section)) {
         pageSectionQuestionCount.InteractiveBlock++;
       }
     }
@@ -50,7 +57,7 @@ export const numQuestionsOnPreviousPages = (currentPage: number, activity: any) 
     if (!activity.pages[page].is_hidden) {
       for (let embeddableNum = 0; embeddableNum < activity.pages[page].embeddables.length; embeddableNum++) {
         const embeddable = activity.pages[page].embeddables[embeddableNum];
-        if (isQuestion(embeddable) && !embeddable.embeddable.is_hidden) {
+        if (isQuestion(embeddable) && !embeddable.embeddable.is_hidden && !isEmbeddableSectionHidden(activity.pages[page], embeddable.embeddable.section)) {
           numQuestions++;
         }
       }
