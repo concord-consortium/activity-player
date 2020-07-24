@@ -12,7 +12,7 @@ export class ActivityPageLinks extends React.PureComponent <IProps> {
     return (
       <div className="activity-page-links" data-cy="activity-page-links">
         <div className="pages">Pages in this Activity</div>
-        { this.props.activityPages.map((page: any, index: number) => (
+        { this.props.activityPages.filter((page: any) => !page.is_hidden).map((page: any, index: number) => (
           <div className="page-item" key={`index ${index}`} onClick={this.handleButtonClick(index + 1)}>
             <span>{`${index + 1}. `}</span>
             <span className="page-link" onClick={this.handleButtonClick(index + 1)}>{`Page ${index + 1}`}</span>

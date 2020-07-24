@@ -31,7 +31,7 @@ export const getPageSectionQuestionCount = (page: any) => {
   const pageSectionQuestionCount: PageSectionQuestionCount = { Header: 0, InfoAssessment: 0, InteractiveBlock: 0 };
   for (let embeddableNum = 0; embeddableNum < page.embeddables.length; embeddableNum++) {
     const embeddable = page.embeddables[embeddableNum];
-    if (isQuestion(embeddable)) {
+    if (isQuestion(embeddable) && !embeddable.embeddable.is_hidden) {
       if (embeddable.section === EmbeddableSections.Introduction) {
         pageSectionQuestionCount.Header++;
       } else if (!embeddable.section) {
@@ -47,10 +47,12 @@ export const getPageSectionQuestionCount = (page: any) => {
 export const numQuestionsOnPreviousPages = (currentPage: number, activity: any) => {
   let numQuestions = 0;
   for (let page = 0; page < currentPage - 1; page++) {
-    for (let embeddableNum = 0; embeddableNum < activity.pages[page].embeddables.length; embeddableNum++) {
-      const embeddable = activity.pages[page].embeddables[embeddableNum];
-      if (isQuestion(embeddable)) {
-        numQuestions++;
+    if (!activity.pages[page].is_hidden) {
+      for (let embeddableNum = 0; embeddableNum < activity.pages[page].embeddables.length; embeddableNum++) {
+        const embeddable = activity.pages[page].embeddables[embeddableNum];
+        if (isQuestion(embeddable) && !embeddable.embeddable.is_hidden) {
+          numQuestions++;
+        }
       }
     }
   }

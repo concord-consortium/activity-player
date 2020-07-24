@@ -14,7 +14,7 @@ export class NavPages extends React.PureComponent <IProps> {
     return (
       <div className="nav-pages" data-cy="nav-pages">
         { this.renderHomePageButton() }
-        { this.props.pages.map((page: any, index: number) => (
+        { this.props.pages.filter((page: any) => !page.is_hidden).map((page: any, index: number) => (
             this.renderPageButton(page, index)
           ))
         }
