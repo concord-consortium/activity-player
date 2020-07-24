@@ -9,6 +9,7 @@ import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages } from "../ut
 import { ActivityDefinition, getActivityDefinition } from "../api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
+import { WarningBanner } from "./warning-banner";
 
 import "./app.scss";
 import { queryValue } from "../utilities/url-query";
@@ -52,6 +53,7 @@ export class App extends React.PureComponent<IProps, IState> {
   render() {
     return (
       <div className="app">
+        <WarningBanner/>
         { this.renderActivity() }
         { this.state.showThemeButtons && <ThemeButtons/>}
       </div>
