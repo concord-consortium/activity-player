@@ -17,7 +17,7 @@ export enum EmbeddableSections {
 }
 
 export const isQuestion = (embeddable: any) => {
-  return ((embeddable.embeddable.type === "ManagedInteractive" && embeddable.embeddable.library_interactive.data.enable_learner_state)
+  return ((embeddable.embeddable.type === "ManagedInteractive" && embeddable.embeddable.library_interactive?.data?.enable_learner_state)
           || (embeddable.embeddable.type === "MwInteractive" && embeddable.embeddable.enable_learner_state));
 };
 
