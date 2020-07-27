@@ -77,7 +77,7 @@ export const numQuestionsOnPreviousPages = (currentPage: number, activity: any) 
     if (!activity.pages[page].is_hidden) {
       for (let embeddableNum = 0; embeddableNum < activity.pages[page].embeddables.length; embeddableNum++) {
         const embeddable = activity.pages[page].embeddables[embeddableNum];
-        if (isQuestion(embeddable) && !embeddable.embeddable.is_hidden && !isEmbeddableSectionHidden(activity.pages[page], embeddable.embeddable.section)) {
+        if (isQuestion(embeddable) && !embeddable.embeddable.is_hidden && !isEmbeddableSectionHidden(activity.pages[page], embeddable.section)) {
           numQuestions++;
         }
       }
