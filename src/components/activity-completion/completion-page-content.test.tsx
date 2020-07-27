@@ -7,7 +7,7 @@ describe("Completion Page Content component", () => {
     const stubFunction = () => {
       // do nothing.
     };
-    const wrapper = shallow(<CompletionPageContent activityName={"test"} isComplete={true} onPageChange={stubFunction} showStudentReport={true} thumbnailURL={""} />);
+    const wrapper = shallow(<CompletionPageContent activityName={"test"} isActivityComplete={true} onPageChange={stubFunction} showStudentReport={true} thumbnailURL={""} />);
     expect(wrapper.find('[data-cy="completion-page-content"]').length).toBe(1);
   });
 });

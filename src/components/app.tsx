@@ -136,7 +136,7 @@ export class App extends React.PureComponent<IProps, IState> {
       <React.Fragment>
         <CompletionPageContent
           activityName={activity.name}
-          isComplete={true}
+          isActivityComplete={true} // TODO: should be based on student progress
           onPageChange={this.handleChangePage}
           showStudentReport={activity.student_report_enabled}
           thumbnailURL={activity.thumbnail_url}
