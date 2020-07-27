@@ -4,7 +4,7 @@ import { ActivityNavHeader } from "./activity-header/activity-nav-header";
 import { ProfileNavHeader } from "./activity-header/profile-nav-header";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
-import Footer from "./activity-introduction/footer";
+import { Footer } from "./activity-introduction/footer";
 import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton } from "../utilities/activity-utils";
 import { ActivityDefinition, getActivityDefinition } from "../api";
 import { ThemeButtons } from "./theme-buttons";
@@ -66,9 +66,7 @@ export class App extends React.PureComponent<IProps, IState> {
     if (!activity) return (<div>Loading</div>);
 
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
-
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
-
     return (
       <React.Fragment>
         <Header
@@ -88,8 +86,9 @@ export class App extends React.PureComponent<IProps, IState> {
           name={"test student"}
         />
         { activity.layout === ActivityLayouts.SinglePage
-          ? this.renderSinglePageContent()
+          ? this.renderSinglePageContent(fullWidth, activity.project_id, activity.theme_name)
           : currentPage === 0
+<<<<<<< HEAD
             ? this.renderIntroductionContent()
             : activity.pages[currentPage - 1].is_completion
               ? this.renderCompletionContent()
@@ -102,30 +101,49 @@ export class App extends React.PureComponent<IProps, IState> {
                   page={activity.pages.filter((page: any) => !page.is_hidden)[currentPage - 1]}
                   totalPreviousQuestions={totalPreviousQuestions}
                 />
+=======
+            ? this.renderIntroductionContent(fullWidth, activity.project_id, activity.theme_name)
+            : <ActivityPageContent
+                isFirstActivityPage={currentPage === 1}
+                isLastActivityPage={currentPage === activity.pages.length}
+                pageNumber={currentPage}
+                onPageChange={this.handleChangePage}
+                page={activity.pages[currentPage - 1]}
+                totalPreviousQuestions={totalPreviousQuestions}
+              />
+>>>>>>> Adds partner logos for activity footersAdds project/theme specific text for footersChanged theme names in the sample docs to show a variety of themes
         }
       </React.Fragment>
     );
   }
 
-  private renderSinglePageContent = () => {
+  private renderSinglePageContent = (fullWidth: boolean, projectId: number | null, theme: string | null) => {
     return (
       <React.Fragment>
         <SinglePageContent
           activity={this.state.activity}
         />
-        <Footer/ >
+        <Footer
+          fullWidth={fullWidth}
+          // projectId={projectId}
+          theme = {theme}
+        />
       </React.Fragment>
     );
   }
 
-  private renderIntroductionContent = () => {
+  private renderIntroductionContent = (fullWidth: boolean, projectId: number | null, theme: string | null) => {
     return (
       <React.Fragment>
         <IntroductionPageContent
           activity={this.state.activity}
           onPageChange={this.handleChangePage}
         />
-        <Footer/ >
+        <Footer
+          fullWidth={fullWidth}
+          // projectId={projectId}
+          theme={theme}
+        />
       </React.Fragment>
     );
   }
