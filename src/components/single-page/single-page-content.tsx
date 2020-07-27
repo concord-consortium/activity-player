@@ -55,7 +55,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
 
   return (
     <div className="single-page-content" data-cy="single-page-content">
-      {activity.pages.map((page: any, index: number) => (
+      {activity.pages.filter((page: any) => !page.is_hidden).map((page: any, index: number) => (
         renderPageContent(page, index)
       ))}
       { activity.related && <RelatedContent relatedContentText={activity.related} /> }
