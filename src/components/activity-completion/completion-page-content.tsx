@@ -30,20 +30,20 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
       : `You haven't completed ${quotedActivityName} yet. You can go back to complete it, or you can exit.`;
   return (
     <div className="completion-page-content" data-cy="completion-page-content">
-      { isActivityComplete && <div className="completion-text">{completionText}</div> }
-      <div className="progress-container">
+      { isActivityComplete && <div className="completion-text" data-cy="completion-text">{completionText}</div> }
+      <div className="progress-container" data-cy="progress-container">
         <div>
           { isActivityComplete &&  <IconCheck width={32} height={32} className="check" /> }
           {progressText}
         </div>
         { showStudentReport && <button className="button" onClick={handleShowAnswers}>Show All Answers</button> }
       </div>
-      <div className="exit-container">
+      <div className="exit-container" data-cy="exit-container">
         <div className="box">
           { thumbnailURL && <img src={thumbnailURL} /> }
           { isActivityComplete && <div className="ribbon"><span>Completed</span></div> }
         </div>
-        <div className="next-step">
+        <div className="next-step" data-cy="next-step">
           <div>{nextStepText}</div>
           <button className="button" onClick={handleExit}>Exit</button>
         </div>
