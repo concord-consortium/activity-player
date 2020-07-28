@@ -6,13 +6,13 @@ import "./footer.scss";
 
 interface IProps {
   fullWidth?: boolean;
-  theme: string | null;
+  projectId: number | null;
 }
 
 export class Footer extends React.PureComponent<IProps> {
   render() {
-    const { fullWidth, theme } = this.props;
-    const projectType = ProjectTypes.find(pt => pt.name === theme);
+    const { fullWidth, projectId } = this.props;
+    const projectType = ProjectTypes.find(pt => pt.id === projectId);
     const footer = projectType?.footer || "";
     const footerLogos = projectType?.footerLogo || [];
 

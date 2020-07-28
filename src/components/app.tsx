@@ -86,9 +86,8 @@ export class App extends React.PureComponent<IProps, IState> {
           name={"test student"}
         />
         { activity.layout === ActivityLayouts.SinglePage
-          ? this.renderSinglePageContent(fullWidth, activity.project_id, activity.theme_name)
+          ? this.renderSinglePageContent(fullWidth, activity.project_id)
           : currentPage === 0
-<<<<<<< HEAD
             ? this.renderIntroductionContent()
             : activity.pages[currentPage - 1].is_completion
               ? this.renderCompletionContent()
@@ -101,23 +100,12 @@ export class App extends React.PureComponent<IProps, IState> {
                   page={activity.pages.filter((page: any) => !page.is_hidden)[currentPage - 1]}
                   totalPreviousQuestions={totalPreviousQuestions}
                 />
-=======
-            ? this.renderIntroductionContent(fullWidth, activity.project_id, activity.theme_name)
-            : <ActivityPageContent
-                isFirstActivityPage={currentPage === 1}
-                isLastActivityPage={currentPage === activity.pages.length}
-                pageNumber={currentPage}
-                onPageChange={this.handleChangePage}
-                page={activity.pages[currentPage - 1]}
-                totalPreviousQuestions={totalPreviousQuestions}
-              />
->>>>>>> Adds partner logos for activity footersAdds project/theme specific text for footersChanged theme names in the sample docs to show a variety of themes
         }
       </React.Fragment>
     );
   }
 
-  private renderSinglePageContent = (fullWidth: boolean, projectId: number | null, theme: string | null) => {
+  private renderSinglePageContent = (fullWidth: boolean, projectId: number | null) => {
     return (
       <React.Fragment>
         <SinglePageContent
@@ -125,14 +113,13 @@ export class App extends React.PureComponent<IProps, IState> {
         />
         <Footer
           fullWidth={fullWidth}
-          // projectId={projectId}
-          theme = {theme}
+          projectId={projectId}
         />
       </React.Fragment>
     );
   }
 
-  private renderIntroductionContent = (fullWidth: boolean, projectId: number | null, theme: string | null) => {
+  private renderIntroductionContent = (fullWidth: boolean, projectId: number | null) => {
     return (
       <React.Fragment>
         <IntroductionPageContent
@@ -141,8 +128,7 @@ export class App extends React.PureComponent<IProps, IState> {
         />
         <Footer
           fullWidth={fullWidth}
-          // projectId={projectId}
-          theme={theme}
+          projectId={projectId}
         />
       </React.Fragment>
     );

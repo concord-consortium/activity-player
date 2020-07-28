@@ -4,14 +4,14 @@
   "layout": 0,
   "name": "Sample Layout Types",
   "notes": "",
-  "project_id": null,
-  "related": "<p>Activity Related Content</p>",
-  "show_submit_button": false,
+  "project_id": 1,
+  "related": "<p>Related content here.</p>",
+  "show_submit_button": true,
   "student_report_enabled": true,
   "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/c/c1/Six_weeks_old_cat_%28aka%29.jpg",
   "time_to_complete": 20,
   "version": 1,
-  "theme_name": "InquirySpace",
+  "theme_name": null,
   "pages": [
     {
       "additional_sections": {},

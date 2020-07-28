@@ -4,14 +4,14 @@
   "layout": 1,
   "name": "Single Page Layout",
   "notes": "",
-  "project_id": null,
+  "project_id": 6,
   "related": "<p><strong>Activity related content</strong>: activity related content goes here.</p>",
   "show_submit_button": true,
   "student_report_enabled": true,
   "thumbnail_url": "",
   "time_to_complete": 10,
   "version": 1,
-  "theme_name": "ITSI",
+  "theme_name": null,
   "pages": [
     {
       "additional_sections": {},
