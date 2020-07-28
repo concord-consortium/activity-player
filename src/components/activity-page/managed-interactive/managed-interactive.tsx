@@ -49,7 +49,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
         <IframeRuntime
           url={url}
           authoredState={embeddable.authored_state}
-          interactiveState={null}
+          interactiveState={embeddable.interactiveState}
           setInteractiveState={handleNewInteractiveState}
           proposedHeight={proposedHeight}
           containerWidth={containerWidth}

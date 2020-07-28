@@ -45,9 +45,7 @@ export class App extends React.PureComponent<IProps, IState> {
         const portalData = await fetchPortalData();
         await initializeDB(portalData.database.appName);
         await signInWithToken(portalData.database.rawFirebaseJWT);
-        watchAnswers(portalData, (answers) => {
-          //
-        });
+        watchAnswers(portalData, this.handleAnswersUpdated);
       }
 
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity
@@ -160,6 +158,44 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleChangePage = (page: number) => {
     this.setState({currentPage: page});
+  }
+
+  // updates `state.activity` to add `interactiveState` to embeddables
+  private handleAnswersUpdated = (answers: firebase.firestore.DocumentData[]) => {
+    // this is annoying and possibly a bug? Embeddables are coming through with `refId`'s such
+    // as "404-ManagedInteractive", while answers are coming through with `question_id`'s such
+    // as "managed_interactive_404"
+    const questionIdToRefId = (questionId: string) => {
+      const snakeCaseRegEx = /(\D*)_(\d*)/gm;
+      const parsed = snakeCaseRegEx.exec(questionId);
+      if (parsed && parsed.length) {
+        const [ , embeddableType, embeddableId] = parsed;
+        const camelCased = embeddableType.split("_").map(str => str.charAt(0).toUpperCase() + str.slice(1)).join("");
+        return `${embeddableId}-${camelCased}`;
+      }
+      return questionId;
+    };
+
+    const getInteractiveState = (answer: firebase.firestore.DocumentData) => {
+      const reportState = JSON.parse(answer.report_state);
+      return JSON.parse(reportState.interactiveState);
+    };
+
+    // restructure answers to key off question_id
+    const questionAnswers: {[id: string]: firebase.firestore.DocumentData} = {};
+    answers.forEach(answer => questionAnswers[questionIdToRefId(answer.question_id)] = getInteractiveState(answer));
+
+    const newActivityState = JSON.parse(JSON.stringify(this.state.activity));   // clone
+    newActivityState.pages.forEach((page: any) => {
+      page.embeddables.forEach((embeddable: any) => {
+        const refId = embeddable.embeddable.ref_id;
+        if (questionAnswers[refId]) {
+          embeddable.embeddable.interactiveState = questionAnswers[refId];
+        }
+      });
+    });
+
+    this.setState({activity: newActivityState});
   }
 
 }
