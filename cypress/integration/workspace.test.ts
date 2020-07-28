@@ -25,7 +25,7 @@ context("Test the overall app", () => {
   });
   describe("footer",()=>{
       it("verify footer loads",()=>{
-          cy.get("[data-cy=footer]").should("be.visible");
+          cy.get("[data-cy=footer]").scrollIntoView().should("be.visible");
       });
   });
 
