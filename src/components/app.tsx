@@ -88,7 +88,7 @@ export class App extends React.PureComponent<IProps, IState> {
         { activity.layout === ActivityLayouts.SinglePage
           ? this.renderSinglePageContent(fullWidth, activity.project_id)
           : currentPage === 0
-            ? this.renderIntroductionContent()
+            ? this.renderIntroductionContent(fullWidth, activity.project_id)
             : activity.pages[currentPage - 1].is_completion
               ? this.renderCompletionContent()
               : <ActivityPageContent
@@ -145,7 +145,6 @@ export class App extends React.PureComponent<IProps, IState> {
           showStudentReport={activity.student_report_enabled}
           thumbnailURL={activity.thumbnail_url}
         />
-        <Footer/ >
       </React.Fragment>
     );
   }
