@@ -11,7 +11,7 @@ import geniLogo from "../assets/project-images/geni-logo.png";
 import cbioLogo from "../assets/project-images/connectedbio-logo.png";
 import watersLogo from "../assets/project-images/waters-logo.png";
 import codapLogo from "../assets/project-images/CODAP.png";
-import concordLogo from "../assets/concord.png";
+import ccFooterLogo from "../assets/concord-footer-logo.png";
 //partner logos
 import natgeoLogo from "../assets/partner-logos/natgeo-logo.png";
 import ucscLogo from "../assets/partner-logos/ucsc-logo.png";
@@ -51,7 +51,7 @@ export const ProjectTypes: ProjectType[] = [
     url: "http://has.concord.org/",
     footer: 
     "<p>This <a title=\"High-Adventure Science | The Concord Consortium\" href=\"http://has.concord.org\">High-Adventure Science</a> activity was developed under a series of grants from the <a title=\"nsf.gov - National Science Foundation - US National Science Foundation (NSF)\" href=\"http://nsf.gov/\">National Science Foundation</a> (DRL-0929774, DRL-1220756 ) in partnership with the <a title=\"University of California, Santa Cruz\" href=\"http://www.ucsc.edu/\">University of California, Santa Cruz</a> and <a title=\"Teachers Homepage - National Geographic Education\" href=\"http://education.nationalgeographic.com/\">National Geographic Society</a>.</p><p>Copyright 2018 <a title=\"The Concord Consortium | Revolutionary digital learning for science, math and engineering\" href=\"http://concord.org/\">The Concord Consortium</a>. All rights reserved. This is licensed under a Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. Please provide attribution to The Concord Consortium and the URL http://concord.org.</p><p>Questions? Comments? You can reach us at <a href=\"mailto:HAS@concord.org\">HAS@concord.org</a>.</p>",
-    footerLogo: [ concordLogo, natgeoLogo, ucscLogo, nsfLogo ],
+    footerLogo: [ ccFooterLogo, natgeoLogo, ucscLogo, nsfLogo ],
   },
   {
     id: 3,
@@ -67,7 +67,7 @@ export const ProjectTypes: ProjectType[] = [
     headerLogo: interactionsLogo,
     url: "https://concord.org/our-work/research-projects/interactions/",
     footer: "<p>The Interactions Project materials are being developed and researched with funding from the National Science Foundation (DRL-1232388) in partnership with Michigan State University.</p><p>This open educational resource is free for use under the Creative Commons Attribution International license (<a title=\"CC BY-NC-SA 4.0\" href=\"https://creativecommons.org/licenses/by-nc-sa/4.0/\" target=\"_blank\" rel=\"noopener\">CC BY-NC-SA 4.0</a>) and powered by open source software packages. When sharing this resource, please include attribution to the Concord Consortium and the CREATE for STEM Institute at MSU, and the CC BY-NC-SA 4.0 license.&nbsp;</p><p>Questions? Comments? You can reach us at&nbsp;<a title=\"\" href=\"mailto:interactions@concord.org\" target=\"\">interactions@concord.org.</a></p>",
-    footerLogo: [ concordLogo, stemCreateLogo ],
+    footerLogo: [ ccFooterLogo, stemCreateLogo ],
   },
   {
     id: 5,
@@ -91,7 +91,7 @@ export const ProjectTypes: ProjectType[] = [
     headerLogo: undefined,
     url: "",
     footer: "<p>The <a title=\"The Concord Consortium: InquirySpace\" href=\"http://concord.org/inquiryspace\" target=\"\">InquirySpace</a>&nbsp;materials were developed and researched with funding from the <a title=\"National Science Foundation\" href=\"http://nsf.gov\" target=\"\">National Science Foundation</a> (IIS-1147621) in partnership with <a title=\"Northwestern University\" href=\"http://www.northwestern.edu/\" target=\"\">Northwestern University</a>.</p><p>This open educational resource from&nbsp;<a title=\"The Concord Consortium\" href=\"http://concord.org/\" target=\"\">The Concord Consortium</a>&nbsp;is free for use under the&nbsp;Creative Commons Attribution International license (<a title=\"\" href=\"http://creativecommons.org/licenses/by/4.0/\" target=\"\">CC-BY 4.0</a>) and powered by open source software packages. When sharing this resource, please include attribution to the Concord Consortium and links to <a title=\"\" href=\"http://concord.org\" target=\"\">concord.org</a>&nbsp;and the CC-BY-4.0 license (see&nbsp;<a title=\"\" href=\"http://concord.org/licenses\" target=\"\">licensing details</a>). Copyright 2017 The Concord Consortium.</p><p><br />Questions? Comments? You can reach us at <a href=\"mailto:inquiryspace@concord.org\">inquiryspace@concord.org</a>.</p>",
-    footerLogo: [ concordLogo, nsfLogo ],
+    footerLogo: [ ccFooterLogo, nsfLogo ],
   },
   {
     id: 8,
@@ -155,7 +155,7 @@ export const ProjectTypes: ProjectType[] = [
     headerLogo: undefined,
     url: "",
     footer: "<p>This <a title=\"GEODE Project\" href=\"http://concord.org/geode\" target=\"\">GEODE</a> activity was developed under a grant from the <a title=\"nsf.gov - National Science Foundation - US National Science Foundation (NSF)\" href=\"http://nsf.gov/\">National Science Foundation</a> (DRL-1621176) in partnership with <a title=\"Penn State\" href=\"http://www.psu.edu/\" target=\"\">Pennsylvania State University</a>.</p><p>Copyright 2018 <a title=\"The Concord Consortium | Revolutionary digital learning for science, math and engineering\" href=\"http://concord.org/\">The Concord Consortium</a>. All rights reserved. This is licensed under a <a href=\"https://creativecommons.org/licenses/by/4.0/\"> Creative Commons Attribution 4.0 International License</a>. Please provide attribution to The Concord Consortium and the URL http://concord.org.</p><p>Questions? Comments? You can reach us at <a title=\"\" href=\"mailto:GEODE@concord.org\" target=\"\">GEODE@concord.org</a>.</p>",
-    footerLogo: [ concordLogo, pennStateLogo, nsfLogo ], 
+    footerLogo: [ ccFooterLogo, pennStateLogo, nsfLogo ], 
   },
   {
     id: 16,
@@ -171,7 +171,7 @@ export const ProjectTypes: ProjectType[] = [
     headerLogo: ipumsLogo,
     url: "https://www.terrapop.org/",
     footer: "<div style=\"color: darkblue; text-align: center;\"><p>This open educational resource is free for use under the Creative Commons Attribution International license (<a title=\"CC BY 4.0\" href=\"https://creativecommons.org/licenses/by/4.0/\" target=\"\"><strong>CC BY 4.0</strong></a>) and powered by open source software packages. When sharing this resource, please include attribution to the Minnesota Population Center, the Concord Consortium, and the CC-BY-4.0 license.&nbsp;</p><p>&nbsp;</p><div style=\"text-align: center;\">Questions? Comments? You can reach us at&nbsp;<a title=\"\" href=\"mailto:ipums@umn.edu\" target=\"\">ipums@umn.edu</a>.</div>",
-    footerLogo: [ ipumsUsaLogo],
+    footerLogo: [ ipumsUsaLogo ],
   },
   {
     id: 18,
@@ -187,7 +187,7 @@ export const ProjectTypes: ProjectType[] = [
     headerLogo: undefined,
     url: "http://learn.concord.org",
     footer: "<p>The SEPA Project materials are being developed and researched with funding from the National Institutes of Health in partnership with Michigan State University.</p><p>Copyright 2017 The Concord Consortium. All rights reserved.</p>",
-    footerLogo: [ concordLogo, msuWoodmarkLogo],
+    footerLogo: [ ccFooterLogo, msuWoodmarkLogo],
   },
   {
     id: 20,
@@ -203,7 +203,7 @@ export const ProjectTypes: ProjectType[] = [
     headerLogo: undefined,
     url: "",
     footer: "<p>The <a title=\"Building Models\" href=\"http://concord.org/projects/building-models\" target=\"_blank\" rel=\"noopener\"><strong>Building Models</strong></a> materials were developed in partnership with the <strong>CREATE for STEM Institute</strong> at Michigan State University with funding from the National Science Foundation (grants DRL-1417809 and DRL-1417900).</p><p>This open educational resource is free for use under the Creative Commons Attribution International license (<a title=\"CC BY-NC-SA 4.0\" href=\"https://creativecommons.org/licenses/by-nc-sa/4.0/\" target=\"_blank\" rel=\"noopener\">CC BY-NC-SA 4.0</a>) and powered by open source software packages. When sharing this resource, please include attribution to the Concord Consortium and the CREATE for STEM Institute at MSU, and the CC BY-NC-SA 4.0 license (see <a title=\"licensing details\" href=\"http://concord.org/software-license\" target=\"_blank\" rel=\"noopener\">licensing details</a>).&nbsp;</p><p>Questions? Comments? You can reach us at <a href=\"mailto:building-models@concord.org\">building-models@concord.org.</a></p>",
-    footerLogo: [ nsfLogo, concordLogo, stemCreateLogo ],
+    footerLogo: [ nsfLogo, ccFooterLogo, stemCreateLogo ],
   },
   {
     id: 22,
@@ -227,7 +227,7 @@ export const ProjectTypes: ProjectType[] = [
     headerLogo: undefined,
     url: "",
     footer: "<p>These <a title=\"The Concord Consortium: InSPECT\" href=\"http://concord.org/inspect\" target=\"\">InSPECT</a>&nbsp;materials were developed and researched with funding from the&nbsp;<a title=\"National Science Foundation\" href=\"http://nsf.gov/\" target=\"\">National Science Foundation</a>&nbsp;(DRL-1640054).</p><p>This open educational resource from&nbsp;<a title=\"The Concord Consortium\" href=\"http://concord.org/\" target=\"\">The Concord Consortium</a>&nbsp;is free for use under the&nbsp;Creative Commons Attribution International license (<a title=\"\" href=\"http://creativecommons.org/licenses/by/4.0/\" target=\"\">CC-BY 4.0</a>) and powered by open source software packages. When sharing this resource, please include attribution to the Concord Consortium and links to&nbsp;<a title=\"\" href=\"http://concord.org/\" target=\"\">concord.org</a>&nbsp;and the CC-BY-4.0 license (see&nbsp;<a title=\"\" href=\"http://concord.org/licenses\" target=\"\">licensing details</a>). Copyright 2018 The Concord Consortium.</p><p><br />Questions? Comments? You can reach us at&nbsp;<a href=\"mailto:inspect@concord.org\">inspect@concord.org</a>.</p>",
-    footerLogo: [ concordLogo, nsfLogo ],
+    footerLogo: [ ccFooterLogo, nsfLogo ],
   },
   {
     id: 25,

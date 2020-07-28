@@ -10,4 +10,13 @@
     color: var(--theme-primary-text-color);
   }
 
+  .footer-logo-container {
+    background-color: white;
+  }
+  .footer-logo {
+    line-height: 0;
+    vertical-align: middle;
+    margin: 10px;
+  }
+
 }
