@@ -15,6 +15,7 @@ import { CompletionPageContent } from "./activity-completion/completion-page-con
 import "./app.scss";
 import { queryValue } from "../utilities/url-query";
 import { fetchPortalData } from "../portal-api";
+import { signInWithToken, initializeDB } from "../firebase-db";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 
@@ -41,7 +42,9 @@ export class App extends React.PureComponent<IProps, IState> {
       const activity = await getActivityDefinition(activityPath);
 
       if (queryValue("token")) {
-        await fetchPortalData();
+        const portalData = await fetchPortalData();
+        await initializeDB(portalData.database.appName);
+        await signInWithToken(portalData.database.rawFirebaseJWT);
       }
 
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity

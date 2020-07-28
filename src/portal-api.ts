@@ -81,7 +81,7 @@ interface FirebaseData {
 export interface IPortalData extends ILTIPartial{
   offering: OfferingData;
   userType: "teacher" | "learner";
-  rawFirebaseJWT: string;
+  database: FirebaseData;
 }
 
 interface BasePortalJWT {
@@ -335,6 +335,13 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
   const offeringData = await getOfferingData({portalJWT, rawPortalJWT, offeringId});
   const [rawFirebaseJWT, firebaseJWT] = await getFirebaseJWTWithBearerToken(basePortalUrl, "Bearer", bearerToken, classInfo.classHash);
 
+  // student data gets saved in different buckets of the DB, the "source," depending on the domain
+  // of the activity.
+  // This works fine, but for testing the activity player, we may want to load data that was previously
+  // saved in a different domain (e.g. authoring.concord.org), so we first check for a "url-source"
+  // query parameter.
+  const sourceKey = queryValue("report-source") || parseUrl(offeringData.activityUrl.toLowerCase()).hostname;
+
   const rawPortalData: IPortalData = {
     offering: offeringData,
     resourceLinkId: offeringData.id.toString(),
@@ -342,7 +349,11 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     platformId: firebaseJWT.claims.platform_id,
     platformUserId: firebaseJWT.claims.platform_user_id.toString(),
     contextId: classInfo.classHash,
-    rawFirebaseJWT
+    database: {
+      appName: firebaseAppName,
+      sourceKey,
+      rawFirebaseJWT,
+    }
   };
   return rawPortalData;
 };
