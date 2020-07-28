@@ -1,7 +1,8 @@
 import React from "react";
 import { Embeddable } from "./embeddable";
 import { BottomButtons } from "./bottom-buttons";
-import { PageLayouts, EmbeddableSections, isQuestion, getPageSectionQuestionCount } from "../../utilities/activity-utils";
+import { PageLayouts, EmbeddableSections, isQuestion, getPageSectionQuestionCount,
+         VisibleEmbeddables, getVisibleEmbeddablesOnPage } from "../../utilities/activity-utils";
 import { SidebarWrapper } from "../page-sidebar/sidebar-wrapper";
 import { renderHTML } from "../../utilities/render-html";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
@@ -41,21 +42,19 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const { scrollOffset } = this.state;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
     const pageSectionQuestionCount = getPageSectionQuestionCount(page);
-    const introEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction);
-    const primaryEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive);
-    const secondaryEmbeddables = page.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction));
+    const visibleEmbeddables: VisibleEmbeddables = getVisibleEmbeddablesOnPage(page);
 
     const questionsBeforePrimary = totalPreviousQuestions + pageSectionQuestionCount.Header
                                    + (primaryFirst ? 0 : pageSectionQuestionCount.InfoAssessment);
     const primaryIsOnLeft = page.layout === PageLayouts.FortySixty;
-    const pinOffSet = page.layout !== PageLayouts.FullWidth && secondaryEmbeddables.length ? scrollOffset : 0;
-    const renderPrimary = this.renderPrimaryEmbeddables(primaryEmbeddables, questionsBeforePrimary, page.layout, primaryIsOnLeft, pinOffSet);
+    const pinOffSet = page.layout !== PageLayouts.FullWidth && visibleEmbeddables.infoAssessment.length ? scrollOffset : 0;
+    const renderPrimary = this.renderPrimaryEmbeddables(visibleEmbeddables.interactiveBox, questionsBeforePrimary, page.layout, primaryIsOnLeft, pinOffSet);
 
     const questionsBeforeSecondary = totalPreviousQuestions + pageSectionQuestionCount.Header
                                      + (primaryFirst ? pageSectionQuestionCount.InteractiveBlock : 0);
     const secondaryIsOnLeft = page.layout === PageLayouts.Responsive || page.layout === PageLayouts.SixtyForty;
     const collapsible = page.toggle_info_assessment && page.layout !== PageLayouts.FullWidth;
-    const renderSecondary = this.renderSecondaryEmbeddables(secondaryEmbeddables, questionsBeforeSecondary, page.layout, secondaryIsOnLeft, collapsible);
+    const renderSecondary = this.renderSecondaryEmbeddables(visibleEmbeddables.infoAssessment, questionsBeforeSecondary, page.layout, secondaryIsOnLeft, collapsible);
 
     const [first, second] = primaryFirst
                             ? [renderPrimary, renderSecondary]
@@ -66,7 +65,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
         <div className="name">{page.name}</div>
         <div className="introduction">
           { page.text && renderHTML(page.text) }
-          { introEmbeddables && this.renderIntroEmbeddables(introEmbeddables, totalPreviousQuestions) }
+          { visibleEmbeddables.headerBlock.length > 0 && this.renderIntroEmbeddables(visibleEmbeddables.headerBlock, totalPreviousQuestions) }
         </div>
         <div className={`embeddables ${page.layout === PageLayouts.FullWidth ? "vertical" : ""}`}>
           { first }

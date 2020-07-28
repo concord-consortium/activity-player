@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityLayouts, EmbeddableSections, PageLayouts, isQuestion } from "../../utilities/activity-utils";
+import { ActivityLayouts, PageLayouts, isQuestion, VisibleEmbeddables, getVisibleEmbeddablesOnPage } from "../../utilities/activity-utils";
 import { Embeddable } from "../activity-page/embeddable";
 import { SidebarWrapper, SidebarConfiguration } from "../page-sidebar/sidebar-wrapper";
 import { RelatedContent } from "./related-content";
@@ -17,10 +17,8 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
   let embeddableNumber = 0;
 
   const renderPageContent = (page: any, index: number) => {
-    const introEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction);
-    const primaryEmbeddables = page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive);
-    const secondaryEmbeddables = page.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction));
-    const embeddables = [...introEmbeddables, ...primaryEmbeddables, ...secondaryEmbeddables];
+    const visibleEmbeddables: VisibleEmbeddables = getVisibleEmbeddablesOnPage(page);
+    const embeddables = [...visibleEmbeddables.headerBlock, ...visibleEmbeddables.interactiveBox, ...visibleEmbeddables.infoAssessment];
     return (
       <React.Fragment key={index}>
         { embeddables.map((embeddable: any, i: number) => {
@@ -57,7 +55,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
 
   return (
     <div className="single-page-content" data-cy="single-page-content">
-      {activity.pages.map((page: any, index: number) => (
+      {activity.pages.filter((page: any) => !page.is_hidden).map((page: any, index: number) => (
         renderPageContent(page, index)
       ))}
       { activity.related && <RelatedContent relatedContentText={activity.related} /> }

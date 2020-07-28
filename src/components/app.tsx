@@ -92,10 +92,10 @@ export class App extends React.PureComponent<IProps, IState> {
             ? this.renderIntroductionContent()
             : <ActivityPageContent
                 isFirstActivityPage={currentPage === 1}
-                isLastActivityPage={currentPage === activity.pages.length}
+                isLastActivityPage={currentPage === activity.pages.filter((page: any) => !page.is_hidden).length}
                 pageNumber={currentPage}
                 onPageChange={this.handleChangePage}
-                page={activity.pages[currentPage - 1]}
+                page={activity.pages.filter((page: any) => !page.is_hidden)[currentPage - 1]}
                 totalPreviousQuestions={totalPreviousQuestions}
               />
         }
