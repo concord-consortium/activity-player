@@ -23,10 +23,9 @@ export class Footer extends React.PureComponent<IProps> {
             {renderHTML(footer)}
           </div>
           <div className="footer-logo-container">
-            {footerLogos.length > 0 ? footerLogos.map((logo: any, i: number) => 
+            {footerLogos.map((logo: any, i: number) => 
               <img key={i} src={logo} className="footer-logo" data-cy="partner-logo" />
               ) 
-              : ""
             }
           </div>
         </div>
