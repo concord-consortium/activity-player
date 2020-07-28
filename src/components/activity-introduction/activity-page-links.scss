@@ -31,23 +31,7 @@
   }
 
   .begin {
-    height: 45px;
     width: 275px;
-    margin: 5px 0 5px 0;
-    color: var(--theme-primary-text-color);;
-    background-color: var(--theme-primary-color);
-    font-size: 20px;
-    border-radius: 8px;
-    border: solid 2px $cc-charcoal-light2;
-    outline: none;
-    cursor: pointer;
-
-    &:hover {
-      background-color: var(--theme-primary-hover-color);
-    }
-    &:active {
-      background-color: var(--theme-primary-active-color);
-    }
   }
 
 }

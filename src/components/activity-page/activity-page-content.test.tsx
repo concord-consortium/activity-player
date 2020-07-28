@@ -9,6 +9,7 @@ describe("Activity Page Content component", () => {
     };
     const page = { layout: "l-responsive", embeddables: [] };
     const wrapper = shallow(<ActivityPageContent
+      enableReportButton={false}
       isFirstActivityPage={false}
       isLastActivityPage={false}
       onPageChange={stubFunction}

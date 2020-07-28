@@ -13,6 +13,7 @@ import "./activity-page-content.scss";
 const kPinMargin = 20;
 
 interface IProps {
+  enableReportButton: boolean;
   isFirstActivityPage: boolean;
   isLastActivityPage: boolean;
   onPageChange: (page: number) => void;
@@ -38,7 +39,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   render() {
-    const { isFirstActivityPage, isLastActivityPage, page, totalPreviousQuestions } = this.props;
+    const { enableReportButton, isFirstActivityPage, isLastActivityPage, page, totalPreviousQuestions } = this.props;
     const { scrollOffset } = this.state;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
     const pageSectionQuestionCount = getPageSectionQuestionCount(page);
@@ -74,6 +75,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
         <BottomButtons
           onBack={!isFirstActivityPage ? this.handleBack : undefined}
           onNext={!isLastActivityPage ? this.handleNext : undefined}
+          onGenerateReport={enableReportButton ? this.handleReport : undefined}
         />
         {page.show_sidebar &&
           <SidebarWrapper sidebars={[{content: page.sidebar, title: page.sidebar_title }]}/>
@@ -121,6 +123,9 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
   private handleNext = () => {
     this.props.onPageChange(this.props.pageNumber + 1);
+  }
+  private handleReport = () => {
+    // TODO: create report when pressed
   }
 
   private renderEmbeddables = (embeddables: any[], section: EmbeddableSections, totalPreviousQuestions: number) => {

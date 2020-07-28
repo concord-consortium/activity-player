@@ -5,11 +5,12 @@ import { ProfileNavHeader } from "./activity-header/profile-nav-header";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import Footer from "./activity-introduction/footer";
-import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages } from "../utilities/activity-utils";
+import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton } from "../utilities/activity-utils";
 import { ActivityDefinition, getActivityDefinition } from "../api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
+import { CompletionPageContent } from "./activity-completion/completion-page-content";
 
 import "./app.scss";
 import { queryValue } from "../utilities/url-query";
@@ -90,14 +91,17 @@ export class App extends React.PureComponent<IProps, IState> {
           ? this.renderSinglePageContent()
           : currentPage === 0
             ? this.renderIntroductionContent()
-            : <ActivityPageContent
-                isFirstActivityPage={currentPage === 1}
-                isLastActivityPage={currentPage === activity.pages.filter((page: any) => !page.is_hidden).length}
-                pageNumber={currentPage}
-                onPageChange={this.handleChangePage}
-                page={activity.pages.filter((page: any) => !page.is_hidden)[currentPage - 1]}
-                totalPreviousQuestions={totalPreviousQuestions}
-              />
+            : activity.pages[currentPage - 1].is_completion
+              ? this.renderCompletionContent()
+              : <ActivityPageContent
+                  enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
+                  isFirstActivityPage={currentPage === 1}
+                  isLastActivityPage={currentPage === activity.pages.filter((page: any) => !page.is_hidden).length}
+                  pageNumber={currentPage}
+                  onPageChange={this.handleChangePage}
+                  page={activity.pages.filter((page: any) => !page.is_hidden)[currentPage - 1]}
+                  totalPreviousQuestions={totalPreviousQuestions}
+                />
         }
       </React.Fragment>
     );
@@ -120,6 +124,22 @@ export class App extends React.PureComponent<IProps, IState> {
         <IntroductionPageContent
           activity={this.state.activity}
           onPageChange={this.handleChangePage}
+        />
+        <Footer/ >
+      </React.Fragment>
+    );
+  }
+
+  private renderCompletionContent = () => {
+    const { activity } = this.state;
+    return (
+      <React.Fragment>
+        <CompletionPageContent
+          activityName={activity.name}
+          isActivityComplete={true} // TODO: should be based on student progress
+          onPageChange={this.handleChangePage}
+          showStudentReport={activity.student_report_enabled}
+          thumbnailURL={activity.thumbnail_url}
         />
         <Footer/ >
       </React.Fragment>

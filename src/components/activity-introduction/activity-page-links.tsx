@@ -19,7 +19,7 @@ export class ActivityPageLinks extends React.PureComponent <IProps> {
           </div>
           ))
         }
-        <button className="begin" onClick={this.handleButtonClick(1)}>Begin Activity</button>
+        <button className="button begin" onClick={this.handleButtonClick(1)}>Begin Activity</button>
       </div>
     );
   }

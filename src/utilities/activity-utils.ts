@@ -85,3 +85,8 @@ export const numQuestionsOnPreviousPages = (currentPage: number, activity: any) 
   }
   return numQuestions;
 };
+
+export const enableReportButton = (activity: any) => {
+  const hasCompletionPage = activity.pages.find((page: any) => page.is_completion);
+  return !hasCompletionPage && activity.student_report_enabled;
+};
