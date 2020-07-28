@@ -1,5 +1,6 @@
 import * as firebase from "firebase";
 import "firebase/firestore";
+import { IPortalData } from "./portal-api";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 export const DEFAULT_FIREBASE_APP: FirebaseAppName = "report-service-pro";
@@ -49,4 +50,31 @@ export const signInWithToken = async (rawFirestoreJWT: string) => {
   // It's actually useful to sign out first, as firebase seems to stay signed in between page reloads otherwise.
   await firebase.auth().signOut();
   return firebase.auth().signInWithCustomToken(rawFirestoreJWT);
+};
+
+const watchCollection = (path: string, portalData: IPortalData, listener: IDocumentsListener) => {
+  let query = firebase.firestore().collection(path)
+    .where("platform_id", "==", portalData.platformId)
+    .where("resource_link_id", "==", portalData.resourceLinkId);
+  if (portalData.userType === "learner") {
+    query = query.where("platform_user_id", "==", portalData.platformUserId.toString());
+  } else {
+    // "context_id" is theoretically redundant here, since we already filter by resource_link_id,
+    // but that lets us use context_id value in the Firestore security rules.
+    query = query.where("context_id", "==", portalData.contextId);
+  }
+
+  query.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
+    if (!snapshot.empty) {
+      const docs = snapshot.docs.map(doc => doc.data());
+      listener(docs);
+    }
+  }, (err) => {
+    console.error(err);
+  });
+};
+
+export const watchAnswers = (portalData: IPortalData, listener: IDocumentsListener) => {
+  const answersPath = `sources/${portalData.database.sourceKey}/answers`;
+  watchCollection(answersPath, portalData, listener);
 };
