@@ -6,7 +6,7 @@ import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
 import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton } from "../utilities/activity-utils";
-import { ActivityDefinition, getActivityDefinition } from "../api";
+import { ActivityDefinition, getActivityDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
@@ -14,6 +14,7 @@ import { CompletionPageContent } from "./activity-completion/completion-page-con
 
 import "./app.scss";
 import { queryValue } from "../utilities/url-query";
+import { fetchPortalData } from "../portal-api";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 
@@ -38,6 +39,10 @@ export class App extends React.PureComponent<IProps, IState> {
     try {
       const activityPath = queryValue("activity") || kDefaultActivity;
       const activity = await getActivityDefinition(activityPath);
+
+      if (queryValue("token")) {
+        await fetchPortalData();
+      }
 
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity
       const currentPage = Number(queryValue("page")) || 0;
