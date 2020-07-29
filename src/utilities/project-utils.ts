@@ -34,13 +34,15 @@ export interface ProjectType {
   footerLogo: Array<any>;
 }
 
+export const DefaultFooter = "<p><span>Copyright &copy; 2020 <a href=\"https://concord.org\" title=\"The Concord Consortium\" rel=\"noreferrer\" target=\"_blank\">The Concord Consortium</a>. All rights reserved. This material is licensed under a <a href=\"https://creativecommons.org/licenses/by/4.0/\" rel=\"noreferrer\" target=\"_blank\">Creative Commons Attribution 4.0 License</a>. The software is licensed under <a href=\"http://opensource.org/licenses/BSD-2-Clause\" rel=\"noreferrer\" target=\"_blank\">Simplified BSD</a>, <a href=\"http://opensource.org/licenses/MIT\" rel=\"noreferrer\" target=\"_blank\">MIT</a> or <a href=\"http://opensource.org/licenses/Apache-2.0\" rel=\"noreferrer\" target=\"_blank\">Apache 2.0</a> licenses. Please provide attribution to the Concord Consortium and the URL <a href=\"https://concord.org/\" title=\"The Concord Consortium\" rel=\"noreferrer\" target=\"_blank\">http://concord.org</a>.</span></p>";
+
 export const ProjectTypes: ProjectType[] = [
   {
     id: 1,
     name: "Molecular Workbench",
     headerLogo: mwLogo,
     url: "http://mw.concord.org/nextgen/",
-    footer: 
+    footer:
     "<p class=\"footer-txt\">This open educational resource from the Concord Consortium is free for use under the Creative Commons Attribution International license (<a title=\"\" href=\"http://creativecommons.org/licenses/by/4.0/\" target=\"\">CC-BY 4.0</a>) and powered by open source software packages. For info about our licenses, please see our <a title='' href='http://concord.org/software-license' target=''>licenses page</a>. When sharing this resource, include attribution to the Concord Consortium and links to <a title='' href='http://concord.org/' target=''>concord.org</a> and the CC-BY-4.0 license. Copyright &copy; 2017 The Concord Consortium.</p><p class='footer-txt'>This Next-Generation Molecular Workbench activity was developed with a grant from <a href='http://www.google.org/'>Google.org</a>. The original <a href='http://mw.concord.org/modeler/'>Classic Molecular Workbench</a> was supported by a series of grants from the <a href='http://nsf.gov/'>National Science Foundation</a>.</p><p class='footer-txt'>Questions? Comments? You can reach us at <a href='mailto:nextgenmw@concord.org'>nextgenmw@concord.org</a>.</p>",
     footerLogo: [],
   },
@@ -49,7 +51,7 @@ export const ProjectTypes: ProjectType[] = [
     name: "High Adventure Science",
     headerLogo: hasLogo,
     url: "http://has.concord.org/",
-    footer: 
+    footer:
     "<p>This <a title=\"High-Adventure Science | The Concord Consortium\" href=\"http://has.concord.org\">High-Adventure Science</a> activity was developed under a series of grants from the <a title=\"nsf.gov - National Science Foundation - US National Science Foundation (NSF)\" href=\"http://nsf.gov/\">National Science Foundation</a> (DRL-0929774, DRL-1220756 ) in partnership with the <a title=\"University of California, Santa Cruz\" href=\"http://www.ucsc.edu/\">University of California, Santa Cruz</a> and <a title=\"Teachers Homepage - National Geographic Education\" href=\"http://education.nationalgeographic.com/\">National Geographic Society</a>.</p><p>Copyright 2018 <a title=\"The Concord Consortium | Revolutionary digital learning for science, math and engineering\" href=\"http://concord.org/\">The Concord Consortium</a>. All rights reserved. This is licensed under a Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. Please provide attribution to The Concord Consortium and the URL http://concord.org.</p><p>Questions? Comments? You can reach us at <a href=\"mailto:HAS@concord.org\">HAS@concord.org</a>.</p>",
     footerLogo: [ ccFooterLogo, natgeoLogo, ucscLogo, nsfLogo ],
   },
@@ -82,7 +84,7 @@ export const ProjectTypes: ProjectType[] = [
     name: "ITSI",
     headerLogo: itsiLogo,
     url: "https://itsi.portal.concord.org/",
-    footer: "<p><span style=\"color: black;\">Copyright &copy; 2017 The Concord Consortium. All rights reserved. This activity is licensed under a Creative Commons Attribution 3.0 Unported License . The software is licensed under Simplified BSD , MIT or Apache 2.0 licenses. Please provide attribution to the Concord Consortium and the URL <a title=\"\" href=\"http://authoring.concord.org\" target=\"http://concord.org\">http://concord.org</a>.</span></p>",
+    footer: "<p><span style=\"color: black;\">Copyright &copy; 2017 The Concord Consortium. All rights reserved. This activity is licensed under a Creative Commons Attribution 3.0 Unported License. The software is licensed under Simplified BSD , MIT or Apache 2.0 licenses. Please provide attribution to the Concord Consortium and the URL <a title=\"\" href=\"http://authoring.concord.org\" target=\"http://concord.org\">http://concord.org</a>.</span></p>",
     footerLogo: [],
   },
   {
@@ -138,7 +140,7 @@ export const ProjectTypes: ProjectType[] = [
     name: "ConnectedBio",
     headerLogo: cbioLogo,
     url: "",
-    footer: "<p>Copyright &copy; 2020 The Concord Consortium. All rights reserved. This activity is licensed under a&nbsp;Creative Commons Attribution 3.0 Unported License&nbsp;. The software is licensed under&nbsp;Simplified BSD&nbsp;,&nbsp;MIT&nbsp;or&nbsp;Apache 2.0&nbsp;licenses. Please provide attribution to the Concord Consortium and the URL&nbsp;http://concord.org.</p><p>This ConnectedBio activity was developed with a grant from the National Science Foundation (DRL-1620910) in collaboration with Michigan State University.</p>",
+    footer: "<p>Copyright &copy; 2020 The Concord Consortium. All rights reserved. This activity is licensed under a&nbsp;Creative Commons Attribution 3.0 Unported License. The software is licensed under&nbsp;Simplified BSD,&nbsp;MIT&nbsp;or&nbsp;Apache 2.0&nbsp;licenses. Please provide attribution to the Concord Consortium and the URL&nbsp;http://concord.org.</p><p>This ConnectedBio activity was developed with a grant from the National Science Foundation (DRL-1620910) in collaboration with Michigan State University.</p>",
     footerLogo: [],
   },
   {
@@ -155,7 +157,7 @@ export const ProjectTypes: ProjectType[] = [
     headerLogo: undefined,
     url: "",
     footer: "<p>This <a title=\"GEODE Project\" href=\"http://concord.org/geode\" target=\"\">GEODE</a> activity was developed under a grant from the <a title=\"nsf.gov - National Science Foundation - US National Science Foundation (NSF)\" href=\"http://nsf.gov/\">National Science Foundation</a> (DRL-1621176) in partnership with <a title=\"Penn State\" href=\"http://www.psu.edu/\" target=\"\">Pennsylvania State University</a>.</p><p>Copyright 2018 <a title=\"The Concord Consortium | Revolutionary digital learning for science, math and engineering\" href=\"http://concord.org/\">The Concord Consortium</a>. All rights reserved. This is licensed under a <a href=\"https://creativecommons.org/licenses/by/4.0/\"> Creative Commons Attribution 4.0 International License</a>. Please provide attribution to The Concord Consortium and the URL http://concord.org.</p><p>Questions? Comments? You can reach us at <a title=\"\" href=\"mailto:GEODE@concord.org\" target=\"\">GEODE@concord.org</a>.</p>",
-    footerLogo: [ ccFooterLogo, pennStateLogo, nsfLogo ], 
+    footerLogo: [ ccFooterLogo, pennStateLogo, nsfLogo ],
   },
   {
     id: 16,
