@@ -4,14 +4,14 @@
   "layout": 0,
   "name": "Single Page Test Activity Long Intro",
   "notes": "notes here",
-  "project_id": null,
+  "project_id": 9,
   "related": "<p>Related content for the&nbsp;sample activity used to test the LARA single page application.</p>",
   "show_submit_button": true,
   "student_report_enabled": true,
   "thumbnail_url": "",
   "time_to_complete": 20,
   "version": 1,
-  "theme_name": "HAS National Geographic: Water",
+  "theme_name": "Interactions",
   "pages": [
     {
       "additional_sections": {},

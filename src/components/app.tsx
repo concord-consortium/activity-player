@@ -4,7 +4,7 @@ import { ActivityNavHeader } from "./activity-header/activity-nav-header";
 import { ProfileNavHeader } from "./activity-header/profile-nav-header";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
-import Footer from "./activity-introduction/footer";
+import { Footer } from "./activity-introduction/footer";
 import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton } from "../utilities/activity-utils";
 import { ActivityDefinition, getActivityDefinition } from "../api";
 import { ThemeButtons } from "./theme-buttons";
@@ -66,9 +66,7 @@ export class App extends React.PureComponent<IProps, IState> {
     if (!activity) return (<div>Loading</div>);
 
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
-
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
-
     return (
       <React.Fragment>
         <Header
@@ -103,6 +101,12 @@ export class App extends React.PureComponent<IProps, IState> {
                   totalPreviousQuestions={totalPreviousQuestions}
                 />
         }
+        { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
+          <Footer
+            fullWidth={fullWidth}
+            projectId={activity.project_id}
+          />
+        }
       </React.Fragment>
     );
   }
@@ -113,7 +117,6 @@ export class App extends React.PureComponent<IProps, IState> {
         <SinglePageContent
           activity={this.state.activity}
         />
-        <Footer/ >
       </React.Fragment>
     );
   }
@@ -125,7 +128,6 @@ export class App extends React.PureComponent<IProps, IState> {
           activity={this.state.activity}
           onPageChange={this.handleChangePage}
         />
-        <Footer/ >
       </React.Fragment>
     );
   }
@@ -141,7 +143,6 @@ export class App extends React.PureComponent<IProps, IState> {
           showStudentReport={activity.student_report_enabled}
           thumbnailURL={activity.thumbnail_url}
         />
-        <Footer/ >
       </React.Fragment>
     );
   }

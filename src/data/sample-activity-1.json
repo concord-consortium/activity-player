@@ -4,14 +4,14 @@
   "layout": 0,
   "name": "Single Page Test Activity",
   "notes": "",
-  "project_id": 9,
+  "project_id": null,
   "related": "<p>Related content for the&nbsp;sample activity used to test the LARA single page application.</p>",
   "show_submit_button": true,
   "student_report_enabled": true,
   "thumbnail_url": "https://images.unsplash.com/photo-1583524505974-6facd53f4597?ixlib=rb-1.2.1&w=1000&q=80",
   "time_to_complete": 10,
   "version": 1,
-  "theme_name": "HAS National Geographic: Water",
+  "theme_name": null,
   "pages": [
     {
       "additional_sections": {},

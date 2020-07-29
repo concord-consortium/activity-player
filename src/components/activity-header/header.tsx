@@ -13,7 +13,7 @@ export class Header extends React.PureComponent <IProps> {
   render() {
     const { fullWidth, projectId } = this.props;
     const projectType = ProjectTypes.find(pt => pt.id === projectId);
-    const logo = projectType?.logo;
+    const logo = projectType?.headerLogo;
     const projectURL = projectType?.url || "";
     const linkClass = projectURL ? "" : "no-link";
     return (
