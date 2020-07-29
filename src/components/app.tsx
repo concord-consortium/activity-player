@@ -86,9 +86,9 @@ export class App extends React.PureComponent<IProps, IState> {
           name={"test student"}
         />
         { activity.layout === ActivityLayouts.SinglePage
-          ? this.renderSinglePageContent(fullWidth, activity.project_id)
+          ? this.renderSinglePageContent()
           : currentPage === 0
-            ? this.renderIntroductionContent(fullWidth, activity.project_id)
+            ? this.renderIntroductionContent()
             : activity.pages[currentPage - 1].is_completion
               ? this.renderCompletionContent()
               : <ActivityPageContent
@@ -101,34 +101,32 @@ export class App extends React.PureComponent<IProps, IState> {
                   totalPreviousQuestions={totalPreviousQuestions}
                 />
         }
+        { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
+          <Footer
+            fullWidth={fullWidth}
+            projectId={activity.project_id}
+          />
+        }
       </React.Fragment>
     );
   }
 
-  private renderSinglePageContent = (fullWidth: boolean, projectId: number | null) => {
+  private renderSinglePageContent = () => {
     return (
       <React.Fragment>
         <SinglePageContent
           activity={this.state.activity}
         />
-        <Footer
-          fullWidth={fullWidth}
-          projectId={projectId}
-        />
       </React.Fragment>
     );
   }
 
-  private renderIntroductionContent = (fullWidth: boolean, projectId: number | null) => {
+  private renderIntroductionContent = () => {
     return (
       <React.Fragment>
         <IntroductionPageContent
           activity={this.state.activity}
           onPageChange={this.handleChangePage}
-        />
-        <Footer
-          fullWidth={fullWidth}
-          projectId={projectId}
         />
       </React.Fragment>
     );
