@@ -76,6 +76,11 @@ Inside of your `package.json` file:
 * activity={id|url}: load sample-activity {id} or load json from specified url
 * page={n}:          load page n, where 0 is the activity introduction and 1 is the first page
 
+#### User data loading:
+* firebase-app={id}: needed to load data from the correct firebase app
+* token={n}:         set by the portal when launching external activity, to authenticate with portal API
+* domain={n}:        set by the portal when launching external activity
+
 ## License
 
 Activity Player is Copyright 2020 (c) by the Concord Consortium and is distributed under the [MIT license](http://www.opensource.org/licenses/MIT).

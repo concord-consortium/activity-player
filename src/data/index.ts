@@ -1,5 +1,5 @@
 
-import { ActivityDefinition } from "../api";
+import { ActivityDefinition } from "../lara-api";
 import sampleActivity1 from "../data/sample-activity-1.json";
 import sampleActivity2 from "../data/sample-activity-2.json";
 import sampleActivityCbio from "../data/sample-activity-CBIO.json";
