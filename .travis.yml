@@ -5,6 +5,8 @@ cache:
   bundler: true
   pip: true
   npm: true
+  directories:
+  - ~/.cache
 before_install:
 - pyenv local 3.6
 install:
@@ -12,11 +14,15 @@ install:
 - travis_retry pip install awscli --upgrade --user
 - travis_retry npm ci
 - travis_retry cypress install
+- travis_retry npm install codecov
 script:
 - npm run build
-- npm run test:coverage -- --runInBand
-- npm run start &
+- npx nyc --reporter=lcov npm run test:coverage -- --runInBand
+- CODE_COVERAGE=true npm run start &
 - wait-on http://localhost:8080
-- $(npm bin)/cypress run --config video=false
-after_script:
+- $(npm bin)/cypress run --config video=false --record
+- npx codecov
+after_success:
 - ./s3_deploy.sh
+after_script:
+- bash <(curl -s https://codecov.io/bash)

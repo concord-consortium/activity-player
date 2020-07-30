@@ -4,7 +4,12 @@ node_modules
 npm-error.log
 .DS_Store
 cypress/screenshots
+cypress/videos
+coverage-cypress
+coverage-jest
+.nyc_output
 
 # Editors
 .idea
+.vscode
 
