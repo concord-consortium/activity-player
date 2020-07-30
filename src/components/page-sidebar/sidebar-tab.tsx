@@ -6,7 +6,7 @@ import "./sidebar-tab.scss";
 interface IProps {
   handleShowSidebarContent: (index: number, show: boolean) => void;
   index: number;
-  title: string;
+  title: string | null;
   sidebarOpen: boolean
 }
 

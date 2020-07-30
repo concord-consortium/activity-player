@@ -1,10 +1,19 @@
 import React from "react";
 import { IframeRuntime } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
+import { Embeddable } from "../../../types";
 
 interface IProps {
-  embeddable: any;
+  embeddable: Embeddable;
   questionNumber?: number;
+}
+
+interface x {
+  foo: string;
+}
+
+interface y {
+  bar: string;
 }
 
 const kDefaultAspectRatio = 4 / 3;

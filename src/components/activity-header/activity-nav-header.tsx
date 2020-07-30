@@ -3,10 +3,11 @@ import { NavMenu } from "./nav-menu";
 import { NavPages } from "./nav-pages";
 
 import "./activity-nav-header.scss";
+import { Page } from "../../types";
 
 interface IProps {
   activityName: string;
-  activityPages: any[];
+  activityPages: Page[];
   currentPage: number;
   fullWidth?: boolean;
   onPageChange: (page: number) => void;

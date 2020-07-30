@@ -96,18 +96,18 @@ export class App extends React.PureComponent<IProps, IState> {
           name={"test student"}
         />
         { activity.layout === ActivityLayouts.SinglePage
-          ? this.renderSinglePageContent()
+          ? this.renderSinglePageContent(activity)
           : currentPage === 0
-            ? this.renderIntroductionContent()
+            ? this.renderIntroductionContent(activity)
             : activity.pages[currentPage - 1].is_completion
-              ? this.renderCompletionContent()
+              ? this.renderCompletionContent(activity)
               : <ActivityPageContent
                   enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
                   isFirstActivityPage={currentPage === 1}
-                  isLastActivityPage={currentPage === activity.pages.filter((page: any) => !page.is_hidden).length}
+                  isLastActivityPage={currentPage === activity.pages.filter((page) => !page.is_hidden).length}
                   pageNumber={currentPage}
                   onPageChange={this.handleChangePage}
-                  page={activity.pages.filter((page: any) => !page.is_hidden)[currentPage - 1]}
+                  page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
                   totalPreviousQuestions={totalPreviousQuestions}
                 />
         }
@@ -121,29 +121,28 @@ export class App extends React.PureComponent<IProps, IState> {
     );
   }
 
-  private renderSinglePageContent = () => {
+  private renderSinglePageContent = (activity: Activity) => {
     return (
       <React.Fragment>
         <SinglePageContent
-          activity={this.state.activity}
+          activity={activity}
         />
       </React.Fragment>
     );
   }
 
-  private renderIntroductionContent = () => {
+  private renderIntroductionContent = (activity: Activity) => {
     return (
       <React.Fragment>
         <IntroductionPageContent
-          activity={this.state.activity}
+          activity={activity}
           onPageChange={this.handleChangePage}
         />
       </React.Fragment>
     );
   }
 
-  private renderCompletionContent = () => {
-    const { activity } = this.state;
+  private renderCompletionContent = (activity: Activity) => {
     return (
       <React.Fragment>
         <CompletionPageContent
@@ -186,9 +185,9 @@ export class App extends React.PureComponent<IProps, IState> {
     const questionAnswers: {[id: string]: firebase.firestore.DocumentData} = {};
     answers.forEach(answer => questionAnswers[questionIdToRefId(answer.question_id)] = getInteractiveState(answer));
 
-    const newActivityState = JSON.parse(JSON.stringify(this.state.activity));   // clone
-    newActivityState.pages.forEach((page: any) => {
-      page.embeddables.forEach((embeddable: any) => {
+    const newActivityState = JSON.parse(JSON.stringify(this.state.activity)) as Activity;   // clone
+    newActivityState.pages.forEach((page) => {
+      page.embeddables.forEach((embeddable) => {
         const refId = embeddable.embeddable.ref_id;
         if (questionAnswers[refId]) {
           embeddable.embeddable.interactiveState = questionAnswers[refId];

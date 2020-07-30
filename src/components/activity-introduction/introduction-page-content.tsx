@@ -4,9 +4,10 @@ import { ActivitySummary } from "../activity-introduction/activity-summary";
 import { ActivityPageLinks } from "../activity-introduction/activity-page-links";
 
 import "./introduction-page-content.scss";
+import { Activity } from "../../types";
 
 interface IProps {
-  activity: any;
+  activity: Activity;
   onPageChange: (page: number) => void;
 }
 

@@ -10,7 +10,7 @@ interface IProps {
   index: number;
   show: boolean;
   style?: any;
-  title: string;
+  title: string | null;
 }
 
 interface IState {
