@@ -1,7 +1,12 @@
+import { Activity } from "../types";
 import { isQuestion, isEmbeddableSectionHidden, getVisibleEmbeddablesOnPage, VisibleEmbeddables,
   EmbeddableSections, getPageSectionQuestionCount, numQuestionsOnPreviousPages } from "./activity-utils";
-import activityHidden from "../data/sample-activity-hidden-content.json";
-import activity from "../data/sample-activity-multiple-layout-types.json";
+import _activityHidden from "../data/sample-activity-hidden-content.json";
+import _activity from "../data/sample-activity-multiple-layout-types.json";
+
+const activityHidden = _activityHidden as Activity;
+const activity = _activity as Activity;
+
 describe("Activity utility functions", () => {
   it("determines if embeddable is a question", () => {
     const isE0Question = isQuestion(activity.pages[0].embeddables[0]);
