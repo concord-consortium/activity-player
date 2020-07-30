@@ -1,5 +1,5 @@
 
-import { ActivityDefinition } from "../lara-api";
+import { Activity } from "../types";
 import sampleActivity1 from "../data/sample-activity-1.json";
 import sampleActivity2 from "../data/sample-activity-2.json";
 import sampleActivityCbio from "../data/sample-activity-CBIO.json";
@@ -11,17 +11,17 @@ import sampleActivitySinglePageLayout from "../data/sample-activity-single-page-
 import sampleActivityFullWidthOff from "../data/LARA-page-elements-full-width-off.json";
 import sampleActivityFullWidthOn from "../data/LARA-page-elements-full-width-on.json";
 
-const sampleActivities: {[name: string]: ActivityDefinition} = {
-  "sample-activity-1": sampleActivity1,
-  "sample-activity-2": sampleActivity2,
-  "sample-activity-cbio": sampleActivityCbio,
-  "sample-activity-has": sampleActivityHas,
-  "sample-activity-hidden-content": sampleActivityHiddenContent,
-  "sample-activity-multiple-layout-types": sampleActivityMultipleLayoutTypes,
-  "sample-activity-responsive-layout": sampleActivityResponsive,
-  "sample-activity-single-page-layout": sampleActivitySinglePageLayout,
-  "LARA-page-elements-full-width-off": sampleActivityFullWidthOff,
-  "LARA-page-elements-full-width-on": sampleActivityFullWidthOn,
+const sampleActivities: {[name: string]: Activity} = {
+  "sample-activity-1": sampleActivity1 as Activity,
+  "sample-activity-2": sampleActivity2 as Activity,
+  "sample-activity-cbio": sampleActivityCbio as Activity,
+  "sample-activity-has": sampleActivityHas as Activity,
+  "sample-activity-hidden-content": sampleActivityHiddenContent as Activity,
+  "sample-activity-multiple-layout-types": sampleActivityMultipleLayoutTypes as Activity,
+  "sample-activity-responsive-layout": sampleActivityResponsive as Activity,
+  "sample-activity-single-page-layout": sampleActivitySinglePageLayout as Activity,
+  "LARA-page-elements-full-width-off": sampleActivityFullWidthOff as Activity,
+  "LARA-page-elements-full-width-on": sampleActivityFullWidthOn as Activity,
 };
 
 export default sampleActivities;

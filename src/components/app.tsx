@@ -6,21 +6,22 @@ import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
 import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton } from "../utilities/activity-utils";
-import { ActivityDefinition, getActivityDefinition } from "../lara-api";
+import { getActivityDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
-
-import "./app.scss";
 import { queryValue } from "../utilities/url-query";
 import { fetchPortalData } from "../portal-api";
 import { signInWithToken, watchAnswers, initializeDB } from "../firebase-db";
+import { Activity } from "../types";
+
+import "./app.scss";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 
 interface IState {
-  activity?: ActivityDefinition;
+  activity?: Activity;
   currentPage: number;
   showThemeButtons?: boolean;
 }
@@ -39,7 +40,7 @@ export class App extends React.PureComponent<IProps, IState> {
   async componentDidMount() {
     try {
       const activityPath = queryValue("activity") || kDefaultActivity;
-      const activity = await getActivityDefinition(activityPath);
+      const activity: Activity = await getActivityDefinition(activityPath);
 
       if (queryValue("token")) {
         const portalData = await fetchPortalData();

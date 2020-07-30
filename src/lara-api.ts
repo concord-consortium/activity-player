@@ -1,8 +1,7 @@
 import sampleActivities from "./data";
+import { Activity } from "./types";
 
-export type ActivityDefinition = any;
-
-export const getActivityDefinition = (activity: string): Promise<ActivityDefinition> => {
+export const getActivityDefinition = (activity: string): Promise<Activity> => {
   return new Promise((resolve, reject) => {
     const urlRegex = /^(https:|http:)\/\/\S+/;
     if (activity.match(urlRegex)) {
@@ -17,7 +16,7 @@ export const getActivityDefinition = (activity: string): Promise<ActivityDefinit
   });
 };
 
-const getActivityDefinitionFromLara = (activityUrl: string): Promise<ActivityDefinition> => {
+const getActivityDefinitionFromLara = (activityUrl: string): Promise<Activity> => {
   return new Promise((resolve, reject) => {
     fetch(activityUrl)
     .then(response => {
