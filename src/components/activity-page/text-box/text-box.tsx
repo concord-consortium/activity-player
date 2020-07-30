@@ -2,10 +2,10 @@ import React from "react";
 import { renderHTML } from "../../../utilities/render-html";
 
 import "./text-box.scss";
-import { EmbeddableXhtmlInteractive } from "../../../types";
+import { Embeddable } from "../../../types";
 
 interface IProps {
-  embeddable: EmbeddableXhtmlInteractive;
+  embeddable: Embeddable
   isPageIntroduction: boolean;
 }
 
