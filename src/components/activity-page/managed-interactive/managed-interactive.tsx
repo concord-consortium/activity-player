@@ -8,14 +8,6 @@ interface IProps {
   questionNumber?: number;
 }
 
-interface x {
-  foo: string;
-}
-
-interface y {
-  bar: string;
-}
-
 const kDefaultAspectRatio = 4 / 3;
 
 export const ManagedInteractive: React.FC<IProps> = (props) => {
