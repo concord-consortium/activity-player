@@ -8,7 +8,7 @@ interface IProps {
   handleCloseSidebarContent: (index: number, show: boolean) => void;
   index: number;
   content: string | null;
-  title: string;
+  title: string | null;
 }
 
 export class SidebarPanel extends React.PureComponent<IProps>{

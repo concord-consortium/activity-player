@@ -1,13 +1,14 @@
 import React from "react";
 import { ActivityPageContent } from "./activity-page-content";
 import { shallow } from "enzyme";
+import { DefaultTestPage } from "../../test-utils/model-for-tests";
 
 describe("Activity Page Content component", () => {
   it("renders component", () => {
     const stubFunction = () => {
       // do nothing.
     };
-    const page = { layout: "l-responsive", embeddables: [] };
+    const page = { ...DefaultTestPage, layout: "l-responsive" };
     const wrapper = shallow(<ActivityPageContent
       enableReportButton={false}
       isFirstActivityPage={false}

@@ -6,8 +6,8 @@ import "./activity-summary.scss";
 
 interface IProps {
   activityName: string;
-  introText: string;
-  time: number;
+  introText: string | null;
+  time: number | null;
 }
 
 export class ActivitySummary extends React.PureComponent <IProps> {
@@ -16,9 +16,9 @@ export class ActivitySummary extends React.PureComponent <IProps> {
       <div className="activity-summary" data-cy="activity-summary">
         <div className="activity-title"><h2>{this.props.activityName}</h2></div>
         <div className="activity-content">
-          { renderHTML(this.props.introText) }
+          { this.props.introText && renderHTML(this.props.introText) }
         </div>
-        <EstimatedTime time={this.props.time} />
+        { this.props.time && <EstimatedTime time={this.props.time} /> }
       </div>
     );
   }

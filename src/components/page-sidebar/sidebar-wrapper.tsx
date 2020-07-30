@@ -6,7 +6,7 @@ const kSidebarOffset = 100;
 
 export interface SidebarConfiguration {
   content: string | null;
-  title: string;
+  title: string | null;
 }
 
 interface IProps {

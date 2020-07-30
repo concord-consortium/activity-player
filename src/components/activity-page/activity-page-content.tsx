@@ -9,6 +9,7 @@ import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
 
 import "./activity-page-content.scss";
+import { Page, EmbeddableWrapper } from "../../types";
 
 const kPinMargin = 20;
 
@@ -17,7 +18,7 @@ interface IProps {
   isFirstActivityPage: boolean;
   isLastActivityPage: boolean;
   onPageChange: (page: number) => void;
-  page: any;
+  page: Page;
   pageNumber: number;
   totalPreviousQuestions: number;
 }
@@ -132,11 +133,11 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     // TODO: create report when pressed
   }
 
-  private renderEmbeddables = (embeddables: any[], section: EmbeddableSections, totalPreviousQuestions: number) => {
+  private renderEmbeddables = (embeddables: EmbeddableWrapper[], section: EmbeddableSections, totalPreviousQuestions: number) => {
     let questionNumber = totalPreviousQuestions;
     return (
       <React.Fragment>
-        { embeddables.map((embeddable: any, i: number) => {
+        { embeddables.map((embeddable, i: number) => {
             if (isQuestion(embeddable)) {
               questionNumber++;
             }
@@ -155,7 +156,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     );
   }
 
-  private renderIntroEmbeddables = (embeddables: any[], totalPreviousQuestions: number) => {
+  private renderIntroEmbeddables = (embeddables: EmbeddableWrapper[], totalPreviousQuestions: number) => {
     return (
       <div className="embeddables">
         <div className="group responsive">
@@ -165,7 +166,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     );
   }
 
-  private renderPrimaryEmbeddables = (embeddables: any[], totalPreviousQuestions: number, layout: string, isLeft: boolean, pinOffset: number) => {
+  private renderPrimaryEmbeddables = (embeddables: EmbeddableWrapper[], totalPreviousQuestions: number, layout: string, isLeft: boolean, pinOffset: number) => {
     const position = { top: pinOffset };
     const isFullWidth = layout === PageLayouts.FullWidth;
     const containerClass = `group fill-remaining ${isFullWidth ? "responsive top" : ""} ${isLeft ? "left" : ""}`;
@@ -176,7 +177,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     );
   }
 
-  private renderSecondaryEmbeddables = (embeddables: any[], totalPreviousQuestions: number, layout: string, isLeft: boolean, collapsible: boolean) => {
+  private renderSecondaryEmbeddables = (embeddables: EmbeddableWrapper[], totalPreviousQuestions: number, layout: string, isLeft: boolean, collapsible: boolean) => {
     const { isSecondaryCollapsed } = this.state;
     const isFullWidth = layout === PageLayouts.FullWidth;
     const staticWidth = layout === PageLayouts.FortySixty || layout === PageLayouts.SixtyForty || layout === PageLayouts.Responsive;

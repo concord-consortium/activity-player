@@ -1,3 +1,5 @@
+import { Page, Activity, EmbeddableWrapper } from "../types";
+
 export enum ActivityLayouts {
   MultiplePages = 0,
   SinglePage = 1,
@@ -17,12 +19,12 @@ export enum EmbeddableSections {
 }
 
 export interface VisibleEmbeddables {
-  interactiveBox: any[],
-  headerBlock: any[],
-  infoAssessment: any[],
+  interactiveBox: EmbeddableWrapper[],
+  headerBlock: EmbeddableWrapper[],
+  infoAssessment: EmbeddableWrapper[],
 }
 
-export const isQuestion = (embeddable: any) => {
+export const isQuestion = (embeddable: EmbeddableWrapper) => {
   return ((embeddable.embeddable.type === "ManagedInteractive" && embeddable.embeddable.library_interactive?.data?.enable_learner_state)
           || (embeddable.embeddable.type === "MwInteractive" && embeddable.embeddable.enable_learner_state));
 };
@@ -33,14 +35,14 @@ export interface PageSectionQuestionCount {
   InteractiveBlock: number;
 }
 
-export const isEmbeddableSectionHidden = (page: any, section: string | null) => {
+export const isEmbeddableSectionHidden = (page: Page, section: string | null) => {
   const isSectionHidden = ((section === EmbeddableSections.Introduction && !page.show_header)
     || (section === EmbeddableSections.Interactive && !page.show_interactive)
     || (!section && !page.show_info_assessment));
   return isSectionHidden;
 };
 
-export const getVisibleEmbeddablesOnPage = (page: any) => {
+export const getVisibleEmbeddablesOnPage = (page: Page) => {
   const headerEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Introduction)
     ? []
     : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction && !e.embeddable.is_hidden);
@@ -54,7 +56,7 @@ export const getVisibleEmbeddablesOnPage = (page: any) => {
   return { interactiveBox: interactiveEmbeddables, headerBlock: headerEmbeddables, infoAssessment: infoAssessEmbeddables };
 };
 
-export const getPageSectionQuestionCount = (page: any) => {
+export const getPageSectionQuestionCount = (page: Page) => {
   const pageSectionQuestionCount: PageSectionQuestionCount = { Header: 0, InfoAssessment: 0, InteractiveBlock: 0 };
   for (let embeddableNum = 0; embeddableNum < page.embeddables.length; embeddableNum++) {
     const embeddable = page.embeddables[embeddableNum];
@@ -71,7 +73,7 @@ export const getPageSectionQuestionCount = (page: any) => {
   return pageSectionQuestionCount;
 };
 
-export const numQuestionsOnPreviousPages = (currentPage: number, activity: any) => {
+export const numQuestionsOnPreviousPages = (currentPage: number, activity: Activity) => {
   let numQuestions = 0;
   for (let page = 0; page < currentPage - 1; page++) {
     if (!activity.pages[page].is_hidden) {
@@ -86,7 +88,7 @@ export const numQuestionsOnPreviousPages = (currentPage: number, activity: any) 
   return numQuestions;
 };
 
-export const enableReportButton = (activity: any) => {
+export const enableReportButton = (activity: Activity) => {
   const hasCompletionPage = activity.pages.find((page: any) => page.is_completion);
   return !hasCompletionPage && activity.student_report_enabled;
 };

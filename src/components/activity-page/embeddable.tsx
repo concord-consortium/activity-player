@@ -4,10 +4,11 @@ import { ManagedInteractive } from "./managed-interactive/managed-interactive";
 import { ActivityLayouts, PageLayouts } from "../../utilities/activity-utils";
 
 import "./embeddable.scss";
+import { EmbeddableWrapper } from "../../types";
 
 interface IProps {
   activityLayout?: number;
-  embeddable: any;
+  embeddable: EmbeddableWrapper;
   isPageIntroduction: boolean;
   pageLayout: string;
   questionNumber?: number;
@@ -15,7 +16,7 @@ interface IProps {
 
 export const Embeddable: React.FC<IProps> = (props) => {
   const { activityLayout, embeddable, isPageIntroduction, pageLayout, questionNumber } = props;
-  const EmbeddableComponent: any = {
+  const EmbeddableComponent = {
     "MwInteractive": ManagedInteractive,
     "ManagedInteractive": ManagedInteractive,
     "Embeddable::Xhtml": TextBox,

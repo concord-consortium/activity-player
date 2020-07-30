@@ -2,9 +2,10 @@ import React from "react";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
 
 import "./nav-pages.scss";
+import { Page } from "../../types";
 
 interface IProps {
-  pages: any[];
+  pages: Page[];
   currentPage: number;
   onPageChange: (page: number) => void;
 }
@@ -14,7 +15,7 @@ export class NavPages extends React.PureComponent <IProps> {
     return (
       <div className="nav-pages" data-cy="nav-pages">
         { this.renderHomePageButton() }
-        { this.props.pages.filter((page: any) => !page.is_hidden).map((page: any, index: number) => (
+        { this.props.pages.filter((page) => !page.is_hidden).map((page, index: number) => (
             this.renderPageButton(page, index)
           ))
         }
@@ -35,7 +36,7 @@ export class NavPages extends React.PureComponent <IProps> {
     );
   }
 
-  private renderPageButton = (page: any, index: number) => {
+  private renderPageButton = (page: Page, index: number) => {
     const currentClass = this.props.currentPage === (index + 1) ? "current" : "";
     return (
       <div className={`page-button ${currentClass}`} key={`index ${index}`} onClick={this.handleButtonClick(index + 1)}>

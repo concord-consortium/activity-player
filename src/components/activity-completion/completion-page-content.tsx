@@ -9,7 +9,7 @@ interface IProps {
   onPageChange: (page: number) => void;
   onShowAllAnswers?: () => void;
   showStudentReport: boolean;
-  thumbnailURL: string;
+  thumbnailURL: string | null;
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
