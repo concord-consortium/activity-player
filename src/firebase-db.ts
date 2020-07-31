@@ -1,3 +1,12 @@
+/**
+ * The firebase-db handles initializing the connection to the firestore database, signing in, listening
+ * to data and updating data.
+ * We want to start listening for data such as student answers as soon as possible when the activity
+ * player is loaded, but we also want individual components such as embeddables to request the data and
+ * be notified of changes. To support this, we kick off the data watching by calling e.g. `watchAnswers`,
+ * and then later can request the current data or to append a listener for that data.
+ */
+
 import * as firebase from "firebase";
 import "firebase/firestore";
 import { IPortalData } from "./portal-api";
@@ -5,7 +14,20 @@ import { IPortalData } from "./portal-api";
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 export const DEFAULT_FIREBASE_APP: FirebaseAppName = "report-service-pro";
 
-type IDocumentsListener = (docs: firebase.firestore.DocumentData[]) => void;
+// The LocalDB stores the data fetched from the DB by the `watchX` methods. The data gets added to keys
+// such as `${refId}/interactiveState`, which can that be listened to by listeners. By keeping this
+// local copy, we can provide listeners with data even if the listener is added after the data is fetched.
+interface LocalDB {
+  [path: string]: any;
+}
+
+const localDB: LocalDB = {};
+
+export const interactiveStatePath = (refId: string) => `${refId}/interactiveState`;
+
+export type DBChangeListener = (value: any) => void;
+
+const listeners: {[path: string]: DBChangeListener[]} = {};
 
 interface IConfig {
   apiKey: string;
@@ -52,7 +74,9 @@ export const signInWithToken = async (rawFirestoreJWT: string) => {
   return firebase.auth().signInWithCustomToken(rawFirestoreJWT);
 };
 
-const watchCollection = (path: string, portalData: IPortalData, listener: IDocumentsListener) => {
+type DocumentsListener = (docs: firebase.firestore.DocumentData[]) => void;
+
+const watchCollection = (path: string, portalData: IPortalData, listener: DocumentsListener) => {
   let query = firebase.firestore().collection(path)
     .where("platform_id", "==", portalData.platformId)
     .where("resource_link_id", "==", portalData.resourceLinkId);
@@ -74,7 +98,72 @@ const watchCollection = (path: string, portalData: IPortalData, listener: IDocum
   });
 };
 
-export const watchAnswers = (portalData: IPortalData, listener: IDocumentsListener) => {
+export const addDBListener = (path: string, listener: DBChangeListener) => {
+  if (!listeners[path]) {
+    listeners[path] = [];
+  }
+  listeners[path].push(listener);
+
+  // notify right away if we already have data (asynchronously, so that a listener that wants
+  // to immediately unsubscribe will get the unsubscribe method first).
+  if (localDB[path]) {
+    setTimeout(() => {
+      listener(localDB[path]);
+    }, 0);
+  }
+
+  const unsubscribe = () => {
+    const idx = listeners[path].indexOf(listener);
+    if (idx > -1) {
+      listeners[path].splice(idx, 1);
+    }
+  };
+  return unsubscribe;
+};
+
+const notifyListeners = (path: string, value: any) => {
+  listeners[path]?.forEach(listener => listener(value));
+};
+
+// returns value immediately if it exists, or gets the value once on the first update.
+// equivalent to `firebase.once`
+export const getCurrentDBValue = (path: string, listener: DBChangeListener) => {
+  const unsubscribe = addDBListener(path, (val => {
+    listener(val);
+    unsubscribe();
+  }));
+};
+
+// updates `state.activity` to add `interactiveState` to embeddables
+const handleAnswersUpdated = (answers: firebase.firestore.DocumentData[]) => {
+  // this is annoying and possibly a bug? Embeddables are coming through with `refId`'s such
+  // as "404-ManagedInteractive", while answers are coming through with `question_id`'s such
+  // as "managed_interactive_404". This transforms the answer's version to the embeddable's version.
+  const questionIdToRefId = (questionId: string) => {
+    const snakeCaseRegEx = /(\D*)_(\d*)/gm;
+    const parsed = snakeCaseRegEx.exec(questionId);
+    if (parsed && parsed.length) {
+      const [ , embeddableType, embeddableId] = parsed;
+      const camelCased = embeddableType.split("_").map(str => str.charAt(0).toUpperCase() + str.slice(1)).join("");
+      return `${embeddableId}-${camelCased}`;
+    }
+    return questionId;
+  };
+
+  const getInteractiveState = (answer: firebase.firestore.DocumentData) => {
+    const reportState = JSON.parse(answer.report_state);
+    return JSON.parse(reportState.interactiveState);
+  };
+
+  answers.forEach(answer => {
+    const refId = questionIdToRefId(answer.question_id);
+    const interactiveState = getInteractiveState(answer);
+    notifyListeners(interactiveStatePath(refId), interactiveState);
+    localDB[interactiveStatePath(refId)] = interactiveState;
+  });
+};
+
+export const watchAnswers = (portalData: IPortalData) => {
   const answersPath = `sources/${portalData.database.sourceKey}/answers`;
-  watchCollection(answersPath, portalData, listener);
+  watchCollection(answersPath, portalData, handleAnswersUpdated);
 };
