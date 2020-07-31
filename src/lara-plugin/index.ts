@@ -61,6 +61,6 @@ export const initializePlugin = (container: HTMLElement, authoredData: string) =
     wrappedEmbeddable: null,
     resourceUrl: "",
   };
-  console.log("Adding #{plugin.name} runtime plugin as #{v3_plugin_label} with V3 LARA Plugin API");
+  // console.log("Adding #{plugin.name} runtime plugin as #{v3_plugin_label} with V3 LARA Plugin API");
   (window as any).LARA.Plugins.initPlugin("#{v3_plugin_label}", pluginContext);
 };
