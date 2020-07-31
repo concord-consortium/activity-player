@@ -15,7 +15,8 @@ import { queryValue } from "../utilities/url-query";
 import { fetchPortalData } from "../portal-api";
 import { signInWithToken, watchAnswers, initializeDB } from "../firebase-db";
 import { Activity } from "../types";
-
+import { loadPluginScripts } from "../lara-plugin/index";
+import { TeacherEditionBanner }  from "./teacher-edition-banner";
 import "./app.scss";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
@@ -23,21 +24,23 @@ const kDefaultActivity = "sample-activity-multiple-layout-types";   // may event
 interface IState {
   activity?: Activity;
   currentPage: number;
+  teacherEditionMode?: boolean;
   showThemeButtons?: boolean;
 }
 interface IProps {}
 
 export class App extends React.PureComponent<IProps, IState> {
-
   public constructor(props: IProps) {
     super(props);
     this.state = {
       currentPage: 0,
+      teacherEditionMode: false,
       showThemeButtons: false
     };
   }
 
   async componentDidMount() {
+    loadPluginScripts(); // TODO: this should parse the activity to determine which plugins to load
     try {
       const activityPath = queryValue("activity") || kDefaultActivity;
       const activity: Activity = await getActivityDefinition(activityPath);
@@ -53,8 +56,9 @@ export class App extends React.PureComponent<IProps, IState> {
       const currentPage = Number(queryValue("page")) || 0;
 
       const showThemeButtons = queryValue("themeButtons")?.toLowerCase() === "true";
+      const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
 
-      this.setState({activity, currentPage, showThemeButtons});
+      this.setState({activity, currentPage, showThemeButtons, teacherEditionMode});
 
     } catch (e) {
       console.warn(e);
@@ -65,6 +69,7 @@ export class App extends React.PureComponent<IProps, IState> {
     return (
       <div className="app">
         <WarningBanner/>
+        { this.state.teacherEditionMode && <TeacherEditionBanner/>}
         { this.renderActivity() }
         { this.state.showThemeButtons && <ThemeButtons/>}
       </div>
