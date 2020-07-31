@@ -14,7 +14,7 @@ interface ILogRequest {
 interface IProps {
   url: string;
   authoredState: any;
-  interactiveState: any;
+  initialInteractiveState: any;
   setInteractiveState: (state: any) => void;
   report?: boolean;
   proposedHeight?: number;
@@ -23,7 +23,7 @@ interface IProps {
 }
 
 export const IframeRuntime: React.FC<IProps> =
-  ({ url, authoredState, interactiveState, setInteractiveState, report, proposedHeight, containerWidth, setNewHint }) => {
+  ({ url, authoredState, initialInteractiveState, setInteractiveState, report, proposedHeight, containerWidth, setNewHint }) => {
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -33,9 +33,9 @@ export const IframeRuntime: React.FC<IProps> =
   // it reloads the iframe each time it's called, it's not a great experience for user when that happens while he is
   // interacting with the iframe (e.g. typing in textarea). And interactiveState is being updated very often,
   // as well as setInteractiveState that is generated during each render of the parent component.
-  const interactiveStateRef = useRef<any>(interactiveState);
+  const interactiveStateRef = useRef<any>(initialInteractiveState);
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
-  interactiveStateRef.current = interactiveState;
+  interactiveStateRef.current = initialInteractiveState;
   setInteractiveStateRef.current = setInteractiveState;
 
   useEffect(() => {
@@ -78,7 +78,7 @@ export const IframeRuntime: React.FC<IProps> =
         phoneRef.current.disconnect();
       }
     };
-  }, [url, authoredState, report, setNewHint]);
+  }, [url, authoredState, report, initialInteractiveState, setNewHint]);
 
   const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;
   // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone

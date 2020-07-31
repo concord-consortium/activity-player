@@ -11,6 +11,7 @@ import "./managed-interactive.scss";
 interface IProps {
   embeddable: IManagedInteractive | IMwInteractive;
   questionNumber?: number;
+  initialInteractiveState: any;     // user state that existed in DB when embeddable was first loaded
 }
 
 const kDefaultAspectRatio = 4 / 3;
@@ -21,7 +22,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       // TODO: handle interactive state
     };
 
-    const { embeddable, questionNumber } = props;
+    const { embeddable, questionNumber, initialInteractiveState } = props;
     const questionName = embeddable.name ? `: ${embeddable.name}` : "";
     // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
     // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
@@ -90,7 +91,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
         <IframeRuntime
           url={url}
           authoredState={embeddable.authored_state}
-          interactiveState={embeddable.interactiveState}
+          initialInteractiveState={initialInteractiveState}
           setInteractiveState={handleNewInteractiveState}
           proposedHeight={proposedHeight}
           containerWidth={containerWidth}
