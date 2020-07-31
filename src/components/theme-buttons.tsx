@@ -2,7 +2,7 @@
 // and is not intended to be displayed in a production release.
 // Add this component to enable buttons to toggle color theme.
 import React from "react";
-import { setThemeColors } from "../utilities/theme-utils";
+import { setThemeColors, setBackgroundImage } from "../utilities/theme-utils";
 
 import "./theme-buttons.scss";
 
@@ -22,6 +22,9 @@ export const ThemeButtons: React.FC = () => {
   const handleInteractionsTheme = () => {
     setThemeColors("#414546", "#2f70b0");
   };
+  const handleImageTheme = () => {
+    setBackgroundImage("https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Hubble%27s_Wide_View_of_%27Mystic_Mountain%27_in_Infrared.jpg/678px-Hubble%27s_Wide_View_of_%27Mystic_Mountain%27_in_Infrared.jpg");
+  };
   return (
     <div className="theme-buttons" data-cy="theme-buttons">
       <button className="button" onClick={handleTealTheme} data-cy="theme-button-teal">teal</button>
@@ -29,6 +32,7 @@ export const ThemeButtons: React.FC = () => {
       <button className="button" onClick={handleCBioTheme} data-cy="theme-button-cbio">cbio</button>
       <button className="button" onClick={handleWatersTheme} data-cy="theme-button-waters">waters</button>
       <button className="button" onClick={handleInteractionsTheme} data-cy="theme-button-interactions">interactions</button>
+      <button className="button" onClick={handleImageTheme} data-cy="theme-button-image">image</button>
     </div>
   );
 };

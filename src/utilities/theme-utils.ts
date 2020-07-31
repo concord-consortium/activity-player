@@ -21,6 +21,8 @@ export const colorShade = (color: string, amt: number) => {
 };
 
 export const setThemeColors = (primary: string, secondary: string) => {
+  const el = document.querySelector(".app") as HTMLElement;
+  el && el.style.setProperty("background-image",`linear-gradient(to bottom, #fff, rgba(255,255,255,0), rgba(255,255,255,0))`);
   document.documentElement.style.setProperty("--theme-primary-color", primary);
   document.documentElement.style.setProperty("--theme-primary-hover-color", colorShade(primary, -20));
   document.documentElement.style.setProperty("--theme-primary-active-color", colorShade(primary, -40));
@@ -29,6 +31,11 @@ export const setThemeColors = (primary: string, secondary: string) => {
   document.documentElement.style.setProperty("--theme-secondary-hover-color", colorShade(secondary, -20));
   document.documentElement.style.setProperty("--theme-secondary-active-color", colorShade(secondary, -40));
   document.documentElement.style.setProperty("--theme-secondary-text-color", getContrastYIQColor(secondary));
+};
+
+export const setBackgroundImage = (imageUrl:string) => {
+  const el = document.querySelector(".app") as HTMLElement;
+  el && el.style.setProperty("background-image",`url("${imageUrl}")`);
 };
 
 // cf. https://24ways.org/2010/calculating-color-contrast
