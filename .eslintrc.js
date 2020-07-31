@@ -32,7 +32,7 @@ module.exports = {
       "@typescript-eslint/interface-name-prefix": "off",
       "@typescript-eslint/no-empty-interface": "off",
       "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-unused-vars": ["error", { "args": "none", "ignoreRestSiblings": true }],
+      "@typescript-eslint/no-unused-vars": ["warn", { "args": "none", "ignoreRestSiblings": true }],
       '@typescript-eslint/no-var-requires': "off",
       curly: ["error", "multi-line", "consistent"],
       eqeqeq: ["error", "smart"],
