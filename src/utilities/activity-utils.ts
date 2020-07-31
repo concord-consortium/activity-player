@@ -24,9 +24,9 @@ export interface VisibleEmbeddables {
   infoAssessment: EmbeddableWrapper[],
 }
 
-export const isQuestion = (embeddable: EmbeddableWrapper) => {
-  return ((embeddable.embeddable.type === "ManagedInteractive" && embeddable.embeddable.library_interactive?.data?.enable_learner_state)
-          || (embeddable.embeddable.type === "MwInteractive" && embeddable.embeddable.enable_learner_state));
+export const isQuestion = (embeddableWrapper: EmbeddableWrapper) => {
+  return ((embeddableWrapper.embeddable.type === "ManagedInteractive" && embeddableWrapper.embeddable.library_interactive?.data?.enable_learner_state)
+          || (embeddableWrapper.embeddable.type === "MwInteractive" && embeddableWrapper.embeddable.enable_learner_state));
 };
 
 export interface PageSectionQuestionCount {
@@ -59,13 +59,13 @@ export const getVisibleEmbeddablesOnPage = (page: Page) => {
 export const getPageSectionQuestionCount = (page: Page) => {
   const pageSectionQuestionCount: PageSectionQuestionCount = { Header: 0, InfoAssessment: 0, InteractiveBlock: 0 };
   for (let embeddableNum = 0; embeddableNum < page.embeddables.length; embeddableNum++) {
-    const embeddable = page.embeddables[embeddableNum];
-    if (isQuestion(embeddable) && !embeddable.embeddable.is_hidden) {
-      if (embeddable.section === EmbeddableSections.Introduction && !isEmbeddableSectionHidden(page, embeddable.section)) {
+    const embeddableWrapper = page.embeddables[embeddableNum];
+    if (isQuestion(embeddableWrapper) && !embeddableWrapper.embeddable.is_hidden) {
+      if (embeddableWrapper.section === EmbeddableSections.Introduction && !isEmbeddableSectionHidden(page, embeddableWrapper.section)) {
         pageSectionQuestionCount.Header++;
-      } else if (!embeddable.section && !isEmbeddableSectionHidden(page, embeddable.section)) {
+      } else if (!embeddableWrapper.section && !isEmbeddableSectionHidden(page, embeddableWrapper.section)) {
         pageSectionQuestionCount.InfoAssessment++;
-      } else if (embeddable.section === EmbeddableSections.Interactive && !isEmbeddableSectionHidden(page, embeddable.section)) {
+      } else if (embeddableWrapper.section === EmbeddableSections.Interactive && !isEmbeddableSectionHidden(page, embeddableWrapper.section)) {
         pageSectionQuestionCount.InteractiveBlock++;
       }
     }
@@ -78,8 +78,8 @@ export const numQuestionsOnPreviousPages = (currentPage: number, activity: Activ
   for (let page = 0; page < currentPage - 1; page++) {
     if (!activity.pages[page].is_hidden) {
       for (let embeddableNum = 0; embeddableNum < activity.pages[page].embeddables.length; embeddableNum++) {
-        const embeddable = activity.pages[page].embeddables[embeddableNum];
-        if (isQuestion(embeddable) && !embeddable.embeddable.is_hidden && !isEmbeddableSectionHidden(activity.pages[page], embeddable.section)) {
+        const embeddableWrapper = activity.pages[page].embeddables[embeddableNum];
+        if (isQuestion(embeddableWrapper) && !embeddableWrapper.embeddable.is_hidden && !isEmbeddableSectionHidden(activity.pages[page], embeddableWrapper.section)) {
           numQuestions++;
         }
       }

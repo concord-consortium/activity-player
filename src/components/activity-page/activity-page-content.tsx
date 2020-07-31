@@ -137,17 +137,17 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     let questionNumber = totalPreviousQuestions;
     return (
       <React.Fragment>
-        { embeddables.map((embeddable, i: number) => {
-            if (isQuestion(embeddable)) {
+        { embeddables.map((embeddableWrapper, i: number) => {
+            if (isQuestion(embeddableWrapper)) {
               questionNumber++;
             }
             return (
               <Embeddable
                 key={`embeddable ${i}`}
-                embeddable={embeddable}
+                embeddableWrapper={embeddableWrapper}
                 isPageIntroduction={i === 0 && section === EmbeddableSections.Introduction}
                 pageLayout={this.props.page.layout}
-                questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
+                questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
               />
             );
           })
