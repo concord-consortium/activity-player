@@ -4,17 +4,17 @@
   display: flex;
   justify-content: flex-end;
   width: $content-width;
-  color: $cc-charcoal-hint;
+  align-items: center;
 
   &.full {
     width: 100%;
   }
 
   .profile-name {
-    height: 25px;
-    padding: 0 0 5px 0;
+    padding: 7px;
     font-size: 16px;
-    line-height: 20px;
+    background-color: #8282824e;
+    color: var(--theme-primary-text-color);
 
     .userName {
       cursor: pointer;
