@@ -34,6 +34,13 @@ export interface LibraryInteractive {
   data: LibraryInteractiveData;
 }
 
+export interface Plugin {
+  description: string;
+  author_data: string;
+  approved_script_label: string;
+  component_label: string;
+}
+
 export interface EmbeddableBase {
   type: string;
   name: string;
