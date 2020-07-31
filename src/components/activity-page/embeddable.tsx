@@ -2,6 +2,7 @@ import React from "react";
 import { TextBox } from "./text-box/text-box";
 import { ManagedInteractive } from "./managed-interactive/managed-interactive";
 import { ActivityLayouts, PageLayouts } from "../../utilities/activity-utils";
+import { EmbeddablePlugin } from "./plugins/embeddable-plugin";
 
 import "./embeddable.scss";
 import { EmbeddableWrapper } from "../../types";
