@@ -126,3 +126,64 @@ export interface Activity {
   export_site?: string | null;
   pages: Page[];
 }
+
+export interface IReportState {
+  version?: number;
+  mode: "report";
+  authoredState: string;
+  interactiveState: string;
+}
+
+export interface ILTIPartial {
+  platform_id: string;      // portal
+  platform_user_id: string;
+  context_id: string;       // class hash
+  resource_link_id: string;  // offering ID
+  resource_url: string;
+  run_key: string;
+  source_key: string;
+  tool_id: string;
+  tool_user_id: string;
+}
+
+/**
+ * cf. IRunTimeMetadataBase, from
+ * https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/interactive-api-client/metadata-types.ts#L47
+ * and partial export code at
+ * https://github.com/concord-consortium/lara/blob/c40304a14ef495acdf4f9fd09ea892c7cc98247b/app/models/interactive_run_state.rb#L110
+ */
+export interface IExportalbleAnswerMetadataBase {
+  remote_endpoint: string;
+  question_id: string;
+  question_type: string;
+  id: string;
+  type: string;
+  answer_text?: string;
+  answer?: any;
+  submitted: boolean | null;
+  report_state: string;
+}
+
+export interface IExportableInteractiveAnswerMetadata extends IExportalbleAnswerMetadataBase {
+  type: "interactive_state";
+  answer: string;
+}
+
+export interface IExportableOpenResponseAnswerMetadata extends IExportalbleAnswerMetadataBase {
+  type: "open_response_answer";
+  answer: string;
+}
+
+export interface IExportableMultipleChoiceAnswerMetadata extends IExportalbleAnswerMetadataBase {
+  type: "multiple_choice_answer";
+  answer: {
+    choice_ids: string[];
+  }
+}
+
+export type IExportableAnswerMetadata =
+  IExportableInteractiveAnswerMetadata |
+  IExportableOpenResponseAnswerMetadata |
+  IExportableMultipleChoiceAnswerMetadata;
+
+export interface LTIRuntimeAnswerMetadata extends ILTIPartial, IExportalbleAnswerMetadataBase { }
