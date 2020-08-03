@@ -187,10 +187,10 @@ export class App extends React.PureComponent<IProps, IState> {
 
     const newActivityState = JSON.parse(JSON.stringify(this.state.activity)) as Activity;   // clone
     newActivityState.pages.forEach((page) => {
-      page.embeddables.forEach((embeddable) => {
-        const refId = embeddable.embeddable.ref_id;
+      page.embeddables.forEach((embeddableWrapper) => {
+        const refId = embeddableWrapper.embeddable.ref_id;
         if (questionAnswers[refId]) {
-          embeddable.embeddable.interactiveState = questionAnswers[refId];
+          embeddableWrapper.embeddable.interactiveState = questionAnswers[refId];
         }
       });
     });

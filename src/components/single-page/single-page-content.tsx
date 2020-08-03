@@ -22,8 +22,8 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
     const embeddables = [...visibleEmbeddables.headerBlock, ...visibleEmbeddables.interactiveBox, ...visibleEmbeddables.infoAssessment];
     return (
       <React.Fragment key={index}>
-        { embeddables.map((embeddable, i: number) => {
-            if (isQuestion(embeddable)) {
+        { embeddables.map((embeddableWrapper, i: number) => {
+            if (isQuestion(embeddableWrapper)) {
               questionNumber++;
             }
             embeddableNumber++;
@@ -31,10 +31,10 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
               <Embeddable
                 activityLayout={ActivityLayouts.SinglePage}
                 key={`embeddable ${embeddableNumber}`}
-                embeddable={embeddable}
+                embeddableWrapper={embeddableWrapper}
                 isPageIntroduction={questionNumber === 0}
                 pageLayout={PageLayouts.FullWidth}
-                questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
+                questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
               />
             );
           })
