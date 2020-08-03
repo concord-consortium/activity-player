@@ -1,10 +1,10 @@
 import React from "react";
 import { IframeRuntime } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
-import { Embeddable } from "../../../types";
+import { IManagedInteractive, IMwInteractive, LibraryInteractiveData } from "../../../types";
 
 interface IProps {
-  embeddable: Embeddable;
+  embeddable: IManagedInteractive | IMwInteractive;
   questionNumber?: number;
 }
 
@@ -20,7 +20,12 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     const questionName = embeddable.name ? `: ${embeddable.name}` : "";
     // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
     // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
-    const embeddableData = embeddable.library_interactive?.data || embeddable;
+    let embeddableData: IMwInteractive | LibraryInteractiveData;
+    if (embeddable.type === "ManagedInteractive") {
+      embeddableData = embeddable.library_interactive.data;
+    } else {
+      embeddableData = embeddable;
+    }
     const url = embeddableData.base_url || embeddableData.url || "";
     // TODO: handle different aspect ration methods
     // const aspectRatioMethod = data.aspect_ratio_method ? data.aspect_ratio_method : "";
