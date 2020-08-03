@@ -1,10 +1,7 @@
 // cf. https://github.com/concord-consortium/question-interactives/blob/master/src/scaffolded-question/components/iframe-runtime.tsx
 import React, { useEffect, useRef, useState } from "react";
-import { renderHTML } from "../../../utilities/render-html";
 import { IframePhone } from "../../../types";
 import iframePhone from "iframe-phone";
-
-import "./iframe-runtime.scss";
 
 const kDefaultHeight = 300;
 
@@ -22,13 +19,13 @@ interface IProps {
   report?: boolean;
   proposedHeight?: number;
   containerWidth?: number;
+  setNewHint: (newHint: string) => void;
 }
 
 export const IframeRuntime: React.FC<IProps> =
-  ({ url, authoredState, interactiveState, setInteractiveState, report, proposedHeight, containerWidth }) => {
+  ({ url, authoredState, interactiveState, setInteractiveState, report, proposedHeight, containerWidth, setNewHint }) => {
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
-  const [ hint, setHint ] = useState("");
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const phoneRef = useRef<IframePhone>();
   // Why is interativeState and setInteractiveState kept in refs? So it's not necessary to declare these variables as
@@ -59,7 +56,7 @@ export const IframeRuntime: React.FC<IProps> =
         }
       });
       phone.addListener("hint", (newHint: any) => {
-        setHint(newHint.text || "");
+        setNewHint(newHint.text || "");
       });
       phone.post("initInteractive", {
         mode: report ? "report" : "runtime",
@@ -81,7 +78,7 @@ export const IframeRuntime: React.FC<IProps> =
         phoneRef.current.disconnect();
       }
     };
-  }, [url, authoredState, report]);
+  }, [url, authoredState, report, setNewHint]);
 
   const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;
   // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone
@@ -92,8 +89,6 @@ export const IframeRuntime: React.FC<IProps> =
   return (
     <div data-cy="iframe-runtime">
       <iframe ref={iframeRef} src={url} width="100%" height={height} frameBorder={0} />
-      { hint &&
-        <div className="hint">{renderHTML(hint)}</div> }
     </div>
   );
 };
