@@ -29,7 +29,6 @@ describe("Plugins", () => {
       expect(registerPlugin({runtimeClass, authoringClass})).toEqual(false);
       // @ts-ignore
       expect(registerPlugin("anotherTest")).toEqual(false); // missing constructor
-      // tslint:disable-next-line:no-console
       expect(console.error).toHaveBeenCalledTimes(2);
     });
 
@@ -118,7 +117,6 @@ describe("Plugins", () => {
       initPlugin("testPlugin2", authoringContextOptions);
       expect(runtimeConstructor).toHaveBeenCalledTimes(1);
       expect(authoringConstructor).toHaveBeenCalledTimes(1);
-      // tslint:disable-next-line:no-console
       expect(console.error).toHaveBeenCalledTimes(2);
     });
   });

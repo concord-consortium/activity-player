@@ -44,6 +44,7 @@ const initRuntimePlugin = (label: string, options: IPluginRuntimeContextOptions)
   const Constructor = pluginClasses[label].runtimeClass;
   if (typeof Constructor === "function") {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const plugin = new Constructor(generateRuntimePluginContext(options));
     } catch (e) {
       pluginError(e, options);
@@ -58,6 +59,7 @@ const initAuthoringPlugin = (label: string, options: IPluginAuthoringContextOpti
   const Constructor = pluginClasses[label].authoringClass;
   if (typeof Constructor === "function") {
     try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const plugin = new Constructor(generateAuthoringPluginContext(options));
     } catch (e) {
       pluginError(e, options);

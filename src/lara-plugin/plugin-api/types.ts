@@ -1,4 +1,5 @@
 import { ILogData, IInteractiveAvailableEventHandler } from "../events";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IPortalClaims, IJwtClaims, IJwtResponse } from "../shared/types";
 
 // Export some shared types.
