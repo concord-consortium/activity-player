@@ -40,7 +40,6 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   async componentDidMount() {
-    loadPluginScripts(); // TODO: this should parse the activity to determine which plugins to load
     try {
       const activityPath = queryValue("activity") || kDefaultActivity;
       const activity: Activity = await getActivityDefinition(activityPath);
@@ -59,6 +58,8 @@ export class App extends React.PureComponent<IProps, IState> {
       const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
 
       this.setState({activity, currentPage, showThemeButtons, teacherEditionMode});
+
+      teacherEditionMode && loadPluginScripts(activity);
 
     } catch (e) {
       console.warn(e);
