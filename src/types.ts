@@ -7,35 +7,35 @@ export interface IframePhone {
   disconnect: () => void;
 }
 
-export interface LibraryInteractive {
-  hash: string;
-  data: {
-    aspect_ratio_method?: "DEFAULT" | null;
-    authoring_guidance?: string;
-    base_url: string;
-    url?: string;
-    click_to_play: boolean;
-    click_to_play_prompt?: string | null;
-    description?: string;
-    enable_learner_state: boolean;
-    full_window: boolean;
-    has_report_url: boolean;
-    image_url?: string | null;
-    name?: string;
-    native_height: number;
-    native_width: number;
-    no_snapshots: boolean;
-    show_delete_data_button: boolean;
-    thumbnail_url?: string;
-    customizable: boolean;
-    authorable: boolean;
-  }
+export interface LibraryInteractiveData {
+  aspect_ratio_method?: "DEFAULT" | null;
+  authoring_guidance?: string;
+  base_url: string;
+  url?: string;
+  click_to_play: boolean;
+  click_to_play_prompt?: string | null;
+  description?: string;
+  enable_learner_state: boolean;
+  full_window: boolean;
+  has_report_url: boolean;
+  image_url?: string | null;
+  name?: string;
+  native_height: number;
+  native_width: number;
+  no_snapshots: boolean;
+  show_delete_data_button: boolean;
+  thumbnail_url?: string;
+  customizable: boolean;
+  authorable: boolean;
 }
 
-// This could in theory be split into three types, with a Base and a union Embeddable type.
-// This makes some of the component code a lot more messy. It may still be worth it, though.
-export interface Embeddable {
-  type: "ManagedInteractive" | "MwInteractive" | "Embeddable::Xhtml";
+export interface LibraryInteractive {
+  hash: string;
+  data: LibraryInteractiveData;
+}
+
+export interface EmbeddableBase {
+  type: string;
   name: string;
   authored_state?: string | null;
   interactiveState?: any | null;
@@ -43,9 +43,13 @@ export interface Embeddable {
   is_hidden: boolean;
   is_full_width: boolean;
   ref_id: string;
-  library_interactive?: LibraryInteractive;         // ManagedInteractive
-  show_in_featured_question_report?: boolean;       //    "
-  inherit_aspect_ratio_method?: boolean;            //    v
+}
+
+export interface IManagedInteractive extends EmbeddableBase {
+  type: "ManagedInteractive";
+  library_interactive: LibraryInteractive;
+  show_in_featured_question_report?: boolean;
+  inherit_aspect_ratio_method?: boolean;
   custom_aspect_ratio_method?: "DEFAULT" | null;
   inherit_native_width?: boolean;
   custom_native_width?: number;
@@ -59,13 +63,23 @@ export interface Embeddable {
   custom_click_to_play_prompt?: string | null
   inherit_image_url?: boolean;
   custom_image_url?: string | null;
-  base_url?: string;                                // non-ManagedInteractive
-  url?: string;                                     //  "
-  native_height?: number;                           //  "
-  native_width?: number;                            //  "
-  content?: string;                                 // Embeddable::Xhtml
-  enable_learner_state?: boolean;                   // MwInteractive
 }
+
+export interface IMwInteractive extends EmbeddableBase {
+  type: "MwInteractive";
+  base_url?: string;
+  url?: string;
+  native_height?: number;
+  native_width?: number;
+  enable_learner_state?: boolean;
+}
+
+export interface IEmbeddableXhtml extends EmbeddableBase {
+  type: "Embeddable::Xhtml";
+  content?: string;
+}
+
+export type Embeddable = IManagedInteractive | IMwInteractive | IEmbeddableXhtml;
 
 export interface EmbeddableWrapper {
   section: "header_block" | "interactive_box" | null;
