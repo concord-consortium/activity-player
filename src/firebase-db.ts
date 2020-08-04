@@ -14,6 +14,8 @@ import { IPortalData } from "./portal-api";
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 export const DEFAULT_FIREBASE_APP: FirebaseAppName = "report-service-pro";
 
+let portalData: IPortalData;
+
 // The LocalDB stores the data fetched from the DB by the `watchX` methods. The data gets added to keys
 // such as `${refId}/interactiveState`, which can that be listened to by listeners. By keeping this
 // local copy, we can provide listeners with data even if the listener is added after the data is fetched.
@@ -74,9 +76,17 @@ export const signInWithToken = async (rawFirestoreJWT: string) => {
   return firebase.auth().signInWithCustomToken(rawFirestoreJWT);
 };
 
+export const setPortalData = (_portalData: IPortalData) => {
+  portalData = _portalData;
+};
+
 type DocumentsListener = (docs: firebase.firestore.DocumentData[]) => void;
 
-const watchCollection = (path: string, portalData: IPortalData, listener: DocumentsListener) => {
+const watchCollection = (path: string, listener: DocumentsListener) => {
+  if (!portalData) {
+    throw new Error("Must set portal data first");
+  }
+
   let query = firebase.firestore().collection(path)
     .where("platform_id", "==", portalData.platformId)
     .where("resource_link_id", "==", portalData.resourceLinkId);
