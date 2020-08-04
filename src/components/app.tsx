@@ -13,7 +13,7 @@ import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue } from "../utilities/url-query";
 import { fetchPortalData } from "../portal-api";
-import { signInWithToken, watchAnswers, initializeDB } from "../firebase-db";
+import { signInWithToken, watchAnswers, initializeDB, setPortalData } from "../firebase-db";
 import { Activity } from "../types";
 import { createPluginNamespace } from "../lara-plugin/index";
 import { loadPluginScripts } from "../utilities/plugin-utils";
@@ -51,7 +51,8 @@ export class App extends React.PureComponent<IProps, IState> {
         const portalData = await fetchPortalData();
         await initializeDB(portalData.database.appName);
         await signInWithToken(portalData.database.rawFirebaseJWT);
-        watchAnswers(portalData);
+        setPortalData(portalData);
+        watchAnswers();
       }
 
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity
