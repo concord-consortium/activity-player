@@ -34,6 +34,7 @@ module.exports = {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": ["warn", { "args": "none", "ignoreRestSiblings": true }],
       '@typescript-eslint/no-var-requires': "off",
+      '@typescript-eslint/no-non-null-assertion': "off",
       curly: ["error", "multi-line", "consistent"],
       eqeqeq: ["error", "smart"],
       "eslint-comments/no-unused-disable": "warn",
