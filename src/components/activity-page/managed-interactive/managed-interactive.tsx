@@ -68,12 +68,12 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     }, []);
 
     return (
-      <div ref={divTarget}>
+      <div ref={divTarget} data-cy="managed-interactive">
         { questionNumber &&
           <div className="header">
             Question #{questionNumber}{questionName}
            { hint &&
-             <div className="question-container" onClick={handleQuestionClick}>
+             <div className="question-container" onClick={handleQuestionClick} data-cy="open-hint">
                <IconQuestion className="question" height={22} width={22}/>
              </div>
             }
@@ -81,9 +81,9 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
         }
         { hint &&
           <div className={`hint-container ${showHint ? "" : "collapsed"}`}>
-            <div className="hint">{renderHTML(hint)}</div>
+            <div className="hint" data-cy="hint">{renderHTML(hint)}</div>
             <div className="close-container">
-              <IconArrowUp className={"close"} width={26} height={26} onClick={handleHintCloseClick}/>
+              <IconArrowUp className={"close"} width={26} height={26} onClick={handleHintCloseClick} data-cy="close-hint" />
             </div>
           </div>
         }
