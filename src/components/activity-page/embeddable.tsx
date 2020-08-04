@@ -21,7 +21,7 @@ export const Embeddable: React.FC<IProps> = (props) => {
   let qComponent;
   if (embeddable.type === "MwInteractive" || embeddable.type === "ManagedInteractive") {
     qComponent = <ManagedInteractive embeddable={embeddable} questionNumber={questionNumber} />;
-  } else {
+  } else if (embeddable.type === "Embeddable::Xhtml") {
     qComponent = <TextBox embeddable={embeddable} isPageIntroduction={isPageIntroduction} />;
   }
 
