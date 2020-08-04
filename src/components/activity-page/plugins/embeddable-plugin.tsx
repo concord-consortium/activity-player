@@ -1,12 +1,11 @@
 import React, { useRef, useEffect } from "react";
-import { Embeddable } from "../../../types";
+import { IEmbeddablePlugin } from "../../../types";
 import { initializePlugin } from "../../../lara-plugin/index";
 
 import "./embeddable-plugin.scss";
 
 interface IProps {
-  embeddable: Embeddable;
-  questionNumber?: number;
+  embeddable: IEmbeddablePlugin;
 }
 
 export const EmbeddablePlugin: React.FC<IProps> = (props) => {

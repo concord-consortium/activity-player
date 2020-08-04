@@ -86,7 +86,12 @@ export interface IEmbeddableXhtml extends EmbeddableBase {
   content?: string;
 }
 
-export type Embeddable = IManagedInteractive | IMwInteractive | IEmbeddableXhtml;
+export interface IEmbeddablePlugin extends EmbeddableBase {
+  type: "Embeddable::EmbeddablePlugin";
+  plugin?: Plugin;
+}
+
+export type Embeddable = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin;
 
 export interface EmbeddableWrapper {
   section: "header_block" | "interactive_box" | null;
