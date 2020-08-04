@@ -23,12 +23,12 @@ export const ThemeButtons: React.FC = () => {
     setThemeColors("#414546", "#2f70b0");
   };
   return (
-    <div className="theme-buttons">
-      <button className="button" onClick={handleTealTheme}>teal</button>
-      <button className="button" onClick={handleOrangeTheme}>orange</button>
-      <button className="button" onClick={handleCBioTheme}>cbio</button>
-      <button className="button" onClick={handleWatersTheme}>waters</button>
-      <button className="button" onClick={handleInteractionsTheme}>interactions</button>
+    <div className="theme-buttons" data-cy="theme-buttons">
+      <button className="button" onClick={handleTealTheme} data-cy="theme-button-teal">teal</button>
+      <button className="button" onClick={handleOrangeTheme} data-cy="theme-button-orange">orange</button>
+      <button className="button" onClick={handleCBioTheme} data-cy="theme-button-cbio">cbio</button>
+      <button className="button" onClick={handleWatersTheme} data-cy="theme-button-waters">waters</button>
+      <button className="button" onClick={handleInteractionsTheme} data-cy="theme-button-interactions">interactions</button>
     </div>
   );
 };
