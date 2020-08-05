@@ -6,7 +6,7 @@ import "./teacher-edition-banner.scss";
 export const TeacherEditionBanner: React.FC = () => {
   return (
     <div className="teacher-edition-banner" data-cy="teacher-edition-banner">
-      <IconTeacherEdition height={32} width={32}/>
+      <IconTeacherEdition height={48} width={48}/>
       Teacher Edition
     </div>
   );

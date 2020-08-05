@@ -8,7 +8,7 @@ describe("Teacher Edition Banner component", () => {
     const wrapper = shallow(<TeacherEditionBanner/>);
     expect(wrapper.find('[data-cy="teacher-edition-banner"]').length).toBe(1);
     expect(wrapper.find('[data-cy="teacher-edition-banner"]').text()).toContain("Teacher Edition");
-    expect(wrapper.containsMatchingElement(<IconTeacherEdition width={32} height={32}/>)).toEqual(true);
+    expect(wrapper.containsMatchingElement(<IconTeacherEdition width={48} height={48}/>)).toEqual(true);
 
   });
 });
