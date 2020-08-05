@@ -3,6 +3,7 @@ import { IframeRuntime } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
+import { createOrUpdateAnswer } from "../../../firebase-db";
 import { getAnswerWithMetadata } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
@@ -23,6 +24,9 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
 
     const handleNewInteractiveState = (state: IRuntimeMetadata) => {
       const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, props.initialAnswerMeta);
+      if (exportableAnswer) {
+        createOrUpdateAnswer(exportableAnswer);
+      }
     };
 
     const { embeddable, questionNumber, initialInteractiveState } = props;
