@@ -126,6 +126,7 @@
     "@react-hook/resize-observer": "^1.1.0",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/superagent": "^4.1.8",
+    "@types/uuid": "^8.0.0",
     "dompurify": "^2.0.12",
     "firebase": "^7.17.1",
     "html-react-parser": "^0.13.0",

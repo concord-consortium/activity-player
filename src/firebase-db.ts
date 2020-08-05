@@ -10,6 +10,7 @@
 import * as firebase from "firebase";
 import "firebase/firestore";
 import { IPortalData } from "./portal-api";
+import { answersQuestionIdToRefId } from "./utilities/embeddable-utils";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 export const DEFAULT_FIREBASE_APP: FirebaseAppName = "report-service-pro";
@@ -166,7 +167,7 @@ const handleAnswersUpdated = (answers: firebase.firestore.DocumentData[]) => {
   };
 
   answers.forEach(answer => {
-    const refId = questionIdToRefId(answer.question_id);
+    const refId = answersQuestionIdToRefId(answer.question_id);
     const interactiveState = getInteractiveState(answer);
     notifyListeners(interactiveStatePath(refId), interactiveState);
     localDB[interactiveStatePath(refId)] = interactiveState;
