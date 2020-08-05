@@ -1,20 +1,23 @@
 import React from "react";
 import { IframeRuntime } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
-import { IManagedInteractive, IMwInteractive, LibraryInteractiveData } from "../../../types";
+import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
+import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
+import { getAnswerWithMetadata } from "../../../utilities/embeddable-utils";
 
 interface IProps {
   embeddable: IManagedInteractive | IMwInteractive;
   questionNumber?: number;
   initialInteractiveState: any;     // user state that existed in DB when embeddable was first loaded
+  initialAnswerMeta?: IExportableAnswerMetadata;   // saved metadata for that initial user state
 }
 
 const kDefaultAspectRatio = 4 / 3;
 
 export const ManagedInteractive: React.FC<IProps> = (props) => {
 
-    const handleNewInteractiveState = (state: any) => {
-      // TODO: handle interactive state
+    const handleNewInteractiveState = (state: IRuntimeMetadata) => {
+      const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, props.initialAnswerMeta);
     };
 
     const { embeddable, questionNumber, initialInteractiveState } = props;
