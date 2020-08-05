@@ -11,14 +11,18 @@ import * as firebase from "firebase";
 import "firebase/firestore";
 import { IPortalData } from "./portal-api";
 import { answersQuestionIdToRefId } from "./utilities/embeddable-utils";
+import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata } from "./types";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 export const DEFAULT_FIREBASE_APP: FirebaseAppName = "report-service-pro";
 
 let portalData: IPortalData;
 
+const answersPath = (answerId?: string) =>
+  `sources/${portalData?.database.sourceKey}/answers${answerId ? "/" + answerId : ""}`;
+
 // The LocalDB stores the data fetched from the DB by the `watchX` methods. The data gets added to keys
-// such as `${refId}/interactiveState`, which can that be listened to by listeners. By keeping this
+// such as `${refId}/answers`, which can that be listened to by listeners. By keeping this
 // local copy, we can provide listeners with data even if the listener is added after the data is fetched.
 interface LocalDB {
   [path: string]: any;
@@ -26,7 +30,7 @@ interface LocalDB {
 
 const localDB: LocalDB = {};
 
-export const interactiveStatePath = (refId: string) => `${refId}/interactiveState`;
+export const localAnswerPath = (refId: string) => `${refId}/answers`;
 
 export type DBChangeListener = (value: any) => void;
 
@@ -90,13 +94,10 @@ const watchCollection = (path: string, listener: DocumentsListener) => {
 
   let query = firebase.firestore().collection(path)
     .where("platform_id", "==", portalData.platformId)
-    .where("resource_link_id", "==", portalData.resourceLinkId);
+    .where("resource_link_id", "==", portalData.resourceLinkId)
+    .where("context_id", "==", portalData.contextId);
   if (portalData.userType === "learner") {
     query = query.where("platform_user_id", "==", portalData.platformUserId.toString());
-  } else {
-    // "context_id" is theoretically redundant here, since we already filter by resource_link_id,
-    // but that lets us use context_id value in the Firestore security rules.
-    query = query.where("context_id", "==", portalData.contextId);
   }
 
   query.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
@@ -147,19 +148,6 @@ export const getCurrentDBValue = (path: string, listener: DBChangeListener) => {
 
 // updates `state.activity` to add `interactiveState` to embeddables
 const handleAnswersUpdated = (answers: firebase.firestore.DocumentData[]) => {
-  // this is annoying and possibly a bug? Embeddables are coming through with `refId`'s such
-  // as "404-ManagedInteractive", while answers are coming through with `question_id`'s such
-  // as "managed_interactive_404". This transforms the answer's version to the embeddable's version.
-  const questionIdToRefId = (questionId: string) => {
-    const snakeCaseRegEx = /(\D*)_(\d*)/gm;
-    const parsed = snakeCaseRegEx.exec(questionId);
-    if (parsed && parsed.length) {
-      const [ , embeddableType, embeddableId] = parsed;
-      const camelCased = embeddableType.split("_").map(str => str.charAt(0).toUpperCase() + str.slice(1)).join("");
-      return `${embeddableId}-${camelCased}`;
-    }
-    return questionId;
-  };
 
   const getInteractiveState = (answer: firebase.firestore.DocumentData) => {
     const reportState = JSON.parse(answer.report_state);
@@ -169,12 +157,38 @@ const handleAnswersUpdated = (answers: firebase.firestore.DocumentData[]) => {
   answers.forEach(answer => {
     const refId = answersQuestionIdToRefId(answer.question_id);
     const interactiveState = getInteractiveState(answer);
-    notifyListeners(interactiveStatePath(refId), interactiveState);
-    localDB[interactiveStatePath(refId)] = interactiveState;
+    const wrappedAnswer = {
+      meta: answer,
+      interactiveState
+    };
+    notifyListeners(localAnswerPath(refId), wrappedAnswer);
+    localDB[localAnswerPath(refId)] = wrappedAnswer;
   });
 };
 
-export const watchAnswers = (portalData: IPortalData) => {
-  const answersPath = `sources/${portalData.database.sourceKey}/answers`;
-  watchCollection(answersPath, portalData, handleAnswersUpdated);
+export const watchAnswers = () => {
+  watchCollection(answersPath(), handleAnswersUpdated);
 };
+
+export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
+  if (!portalData) {
+    throw new Error("Must set portal data first");
+  }
+
+  const postAnswer: LTIRuntimeAnswerMetadata = {
+    ...answer,
+    platform_id: portalData.platformId,
+    platform_user_id: portalData.platformUserId.toString(),
+    context_id: portalData.contextId,
+    resource_link_id: portalData.resourceLinkId,
+    source_key: portalData.database.sourceKey,
+    tool_id: portalData.toolId,
+    resource_url: portalData.resourceUrl,
+    run_key: "",
+    tool_user_id: portalData.toolUserId,
+  };
+
+  return firebase.firestore()
+      .doc(answersPath(answer.id))
+      .set(postAnswer, {merge: true});
+}
