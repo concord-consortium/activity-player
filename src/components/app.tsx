@@ -15,8 +15,10 @@ import { queryValue } from "../utilities/url-query";
 import { fetchPortalData } from "../portal-api";
 import { signInWithToken, watchAnswers, initializeDB } from "../firebase-db";
 import { Activity } from "../types";
-import { loadPluginScripts } from "../lara-plugin/index";
+import { createPluginNamespace } from "../lara-plugin/index";
+import { loadPluginScripts } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
+
 import "./app.scss";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
@@ -30,6 +32,7 @@ interface IState {
 interface IProps {}
 
 export class App extends React.PureComponent<IProps, IState> {
+
   public constructor(props: IProps) {
     super(props);
     this.state = {
@@ -59,7 +62,10 @@ export class App extends React.PureComponent<IProps, IState> {
 
       this.setState({activity, currentPage, showThemeButtons, teacherEditionMode});
 
-      teacherEditionMode && loadPluginScripts(activity);
+      if (teacherEditionMode) {
+        createPluginNamespace();
+        loadPluginScripts(activity);
+      }
 
     } catch (e) {
       console.warn(e);

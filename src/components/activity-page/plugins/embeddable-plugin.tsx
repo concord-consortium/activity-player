@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 import { IEmbeddablePlugin } from "../../../types";
-import { initializePlugin } from "../../../lara-plugin/index";
+import { initializePlugin } from "../../../utilities/plugin-utils";
 
 import "./embeddable-plugin.scss";
 
