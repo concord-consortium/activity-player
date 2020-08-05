@@ -10,6 +10,7 @@
 import * as firebase from "firebase";
 import "firebase/firestore";
 import { IPortalData } from "./portal-api";
+import { answersQuestionIdToRefId } from "./utilities/embeddable-utils";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 export const DEFAULT_FIREBASE_APP: FirebaseAppName = "report-service-pro";
@@ -146,19 +147,6 @@ export const getCurrentDBValue = (path: string, listener: DBChangeListener) => {
 
 // updates `state.activity` to add `interactiveState` to embeddables
 const handleAnswersUpdated = (answers: firebase.firestore.DocumentData[]) => {
-  // this is annoying and possibly a bug? Embeddables are coming through with `refId`'s such
-  // as "404-ManagedInteractive", while answers are coming through with `question_id`'s such
-  // as "managed_interactive_404". This transforms the answer's version to the embeddable's version.
-  const questionIdToRefId = (questionId: string) => {
-    const snakeCaseRegEx = /(\D*)_(\d*)/gm;
-    const parsed = snakeCaseRegEx.exec(questionId);
-    if (parsed && parsed.length) {
-      const [ , embeddableType, embeddableId] = parsed;
-      const camelCased = embeddableType.split("_").map(str => str.charAt(0).toUpperCase() + str.slice(1)).join("");
-      return `${embeddableId}-${camelCased}`;
-    }
-    return questionId;
-  };
 
   const getInteractiveState = (answer: firebase.firestore.DocumentData) => {
     const reportState = JSON.parse(answer.report_state);
@@ -166,14 +154,14 @@ const handleAnswersUpdated = (answers: firebase.firestore.DocumentData[]) => {
   };
 
   answers.forEach(answer => {
-    const refId = questionIdToRefId(answer.question_id);
+    const refId = answersQuestionIdToRefId(answer.question_id);
     const interactiveState = getInteractiveState(answer);
     notifyListeners(interactiveStatePath(refId), interactiveState);
     localDB[interactiveStatePath(refId)] = interactiveState;
   });
 };
 
-export const watchAnswers = (portalData: IPortalData) => {
+export const watchAnswers = () => {
   const answersPath = `sources/${portalData.database.sourceKey}/answers`;
-  watchCollection(answersPath, portalData, handleAnswersUpdated);
+  watchCollection(answersPath, handleAnswersUpdated);
 };
