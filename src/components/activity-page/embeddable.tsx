@@ -19,7 +19,7 @@ export const Embeddable: React.FC<IProps> = (props) => {
   const { activityLayout, embeddableWrapper, isPageIntroduction, pageLayout, questionNumber } = props;
   const embeddable = embeddableWrapper.embeddable;
 
-  let qComponent = undefined;
+  let qComponent;
   if (embeddable.type === "MwInteractive" || embeddable.type === "ManagedInteractive") {
     qComponent = <ManagedInteractive embeddable={embeddable} questionNumber={questionNumber} />;
   } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {

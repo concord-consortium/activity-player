@@ -9,13 +9,13 @@ interface IProps {
 }
 
 export const EmbeddablePlugin: React.FC<IProps> = (props) => {
-    const { embeddable } = props;
+    const { embeddable: { plugin } } = props;
     const divTarget = useRef<HTMLInputElement>(null);
     useEffect(() => {
-      if (divTarget.current && embeddable.plugin) {
-        initializePlugin(divTarget.current, embeddable.plugin.author_data);
+      if (divTarget.current && plugin) {
+        initializePlugin(divTarget.current, plugin.author_data);
       }
-    }, [embeddable.plugin]);
+    }, [plugin]);
     return (
       <div className="plugin-container" ref={divTarget}/>
     );
