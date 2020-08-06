@@ -162,6 +162,14 @@ export interface ILTIPartial {
   tool_id: string;
 }
 
+export interface IAnonymousMetadataPartial {
+  resource_url: string;
+  run_key: string;
+  source_key: string;
+  tool_id: string;
+  tool_user_id: "anonymous";
+}
+
 /**
  * cf. IRunTimeMetadataBase, from
  * https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/interactive-api-client/metadata-types.ts#L47
@@ -203,3 +211,5 @@ export type IExportableAnswerMetadata =
   IExportableMultipleChoiceAnswerMetadata;
 
 export interface LTIRuntimeAnswerMetadata extends ILTIPartial, IExportalbleAnswerMetadataBase { }
+
+export interface AnonymousRuntimeAnswerMetadata extends IAnonymousMetadataPartial, IExportalbleAnswerMetadataBase { }

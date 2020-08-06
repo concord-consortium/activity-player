@@ -13,7 +13,7 @@ import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue } from "../utilities/url-query";
 import { fetchPortalData } from "../portal-api";
-import { signInWithToken, watchAnswers, initializeDB, setPortalData } from "../firebase-db";
+import { signInWithToken, watchAnswers, initializeDB, setPortalData, initializeAnonymousDB } from "../firebase-db";
 import { Activity } from "../types";
 import { createPluginNamespace } from "../lara-plugin/index";
 import { loadPluginScripts } from "../utilities/plugin-utils";
@@ -58,6 +58,9 @@ export class App extends React.PureComponent<IProps, IState> {
         await initializeDB(portalData.database.appName);
         await signInWithToken(portalData.database.rawFirebaseJWT);
         setPortalData(portalData);
+        watchAnswers();
+      } else {
+        await initializeAnonymousDB();
         watchAnswers();
       }
       this.setState({activity, currentPage, showThemeButtons, teacherEditionMode});

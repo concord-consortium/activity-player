@@ -9,14 +9,13 @@
 
 import * as firebase from "firebase";
 import "firebase/firestore";
-import { IPortalData } from "./portal-api";
+import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal-api";
 import { answersQuestionIdToRefId } from "./utilities/embeddable-utils";
-import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata } from "./types";
+import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata } from "./types";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
-export const DEFAULT_FIREBASE_APP: FirebaseAppName = "report-service-pro";
 
-let portalData: IPortalData;
+let portalData: IPortalData | IAnonymousPortalData;
 
 const answersPath = (answerId?: string) =>
   `sources/${portalData?.database.sourceKey}/answers${answerId ? "/" + answerId : ""}`;
@@ -82,6 +81,11 @@ export async function initializeDB(name: FirebaseAppName) {
   return firebase.firestore();
 }
 
+export async function initializeAnonymousDB() {
+  portalData = anonymousPortalData();
+  return initializeDB(portalData.database.appName);
+}
+
 export const signInWithToken = async (rawFirestoreJWT: string) => {
   // It's actually useful to sign out first, as firebase seems to stay signed in between page reloads otherwise.
   await firebase.auth().signOut();
@@ -99,12 +103,18 @@ const watchCollection = (path: string, listener: DocumentsListener) => {
     throw new Error("Must set portal data first");
   }
 
-  let query = firebase.firestore().collection(path)
-    .where("platform_id", "==", portalData.platformId)
-    .where("resource_link_id", "==", portalData.resourceLinkId)
-    .where("context_id", "==", portalData.contextId);
-  if (portalData.userType === "learner") {
-    query = query.where("platform_user_id", "==", portalData.platformUserId.toString());
+  let query: firebase.firestore.Query<firebase.firestore.DocumentData>;
+  if (portalData.type === "authenticated") {     // logged in user
+    query = firebase.firestore().collection(path)
+      .where("platform_id", "==", portalData.platformId)
+      .where("resource_link_id", "==", portalData.resourceLinkId)
+      .where("context_id", "==", portalData.contextId);
+    if (portalData.userType === "learner") {
+      query = query.where("platform_user_id", "==", portalData.platformUserId.toString());
+    }
+  } else {
+    query = firebase.firestore().collection(path)
+      .where("run_key", "==", portalData.runKey);
   }
 
   query.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
@@ -204,17 +214,30 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     return;
   }
 
-  const postAnswer: LTIRuntimeAnswerMetadata = {
-    ...answer,
-    platform_id: portalData.platformId,
-    platform_user_id: portalData.platformUserId.toString(),
-    context_id: portalData.contextId,
-    resource_link_id: portalData.resourceLinkId,
-    source_key: portalData.database.sourceKey,
-    tool_id: portalData.toolId,
-    resource_url: portalData.resourceUrl,
-    run_key: "",
-  };
+  let postAnswer;
+
+  if (portalData.type === "authenticated") {
+    postAnswer = {
+      ...answer,
+      platform_id: portalData.platformId,
+      platform_user_id: portalData.platformUserId.toString(),
+      context_id: portalData.contextId,
+      resource_link_id: portalData.resourceLinkId,
+      source_key: portalData.database.sourceKey,
+      tool_id: portalData.toolId,
+      resource_url: portalData.resourceUrl,
+      run_key: "",
+    } as LTIRuntimeAnswerMetadata;
+  } else {
+    postAnswer = {
+      ...answer,
+      run_key: portalData.runKey,
+      source_key: portalData.database.sourceKey,
+      resource_url: portalData.resourceUrl,
+      tool_id: portalData.toolId,
+      tool_user_id: "anonymous",
+    } as AnonymousRuntimeAnswerMetadata;
+  }
 
   return firebase.firestore()
       .doc(answersPath(answer.id))
