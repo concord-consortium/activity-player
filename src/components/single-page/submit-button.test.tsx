@@ -4,7 +4,7 @@ import { shallow } from "enzyme";
 
 describe("Submit Button component", () => {
   it("renders submit button", () => {
-    const wrapperBackNext = shallow(<SubmitButton/>);
-    expect(wrapperBackNext.find('[data-cy="submit-button"]').length).toBe(1);
+    const wrapper = shallow(<SubmitButton/>);
+    expect(wrapper.find('[data-cy="submit-button"]').length).toBe(1);
   });
 });

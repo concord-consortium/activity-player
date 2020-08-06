@@ -1,8 +1,9 @@
 import { Activity } from "../types";
 import { isQuestion, isEmbeddableSectionHidden, getVisibleEmbeddablesOnPage, VisibleEmbeddables,
-  EmbeddableSections, getPageSectionQuestionCount, numQuestionsOnPreviousPages } from "./activity-utils";
+  EmbeddableSections, getPageSectionQuestionCount, numQuestionsOnPreviousPages, enableReportButton } from "./activity-utils";
 import _activityHidden from "../data/sample-activity-hidden-content.json";
 import _activity from "../data/sample-activity-multiple-layout-types.json";
+import { DefaultTestActivity } from "../test-utils/model-for-tests";
 
 const activityHidden = _activityHidden as Activity;
 const activity = _activity as Activity;
@@ -71,5 +72,12 @@ describe("Activity utility functions", () => {
     expect(numQuestionBeforePage1).toBe(0); // should never be questions before page 1
     expect(numQuestionBeforePage2).toBe(2); // should never be questions before page 1, 1 question should be hidden
     expect(numQuestionBeforePage3).toBe(2); // hidden page should not be counted
+  });
+  it("determines if report button is enabled", () => {
+    const defaultActivityReportEnabled = enableReportButton(DefaultTestActivity);
+    expect(defaultActivityReportEnabled).toBe(false);
+    DefaultTestActivity.student_report_enabled = true;
+    const modifiedDefaultActivityReportEnabled = enableReportButton(DefaultTestActivity);
+    expect(modifiedDefaultActivityReportEnabled).toBe(true);
   });
 });

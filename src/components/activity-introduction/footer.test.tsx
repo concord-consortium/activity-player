@@ -14,4 +14,9 @@ describe("Footer component", () => {
     const wrapper = shallow(<Footer fullWidth={true} projectId={null} />);
     expect(wrapper.text()).toContain(footerText);
   });
+  it("renders footer logos", () => {
+    const wrapper = shallow(<Footer fullWidth={true} projectId={2} />);
+    expect(wrapper.find('[data-cy="footer-logo-container"]').length).toBe(1);
+    expect(wrapper.find('[data-cy="partner-logo"]').length).toBe(4);
+  });
 });
