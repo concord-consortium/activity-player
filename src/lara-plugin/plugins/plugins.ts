@@ -5,9 +5,13 @@ import {
 } from "./plugin-context";
 
 const pluginError = (e: string, other: any) => {
+  // LARA_CODE tslint:disable-next-line:no-console
   console.group("LARA Plugin Error");
+  // LARA_CODE tslint:disable-next-line:no-console
   console.error(e);
+  // LARA_CODE tslint:disable-next-line:no-console
   console.dir(other);
+  // LARA_CODE tslint:disable-next-line:no-console
   console.groupEnd();
 };
 
@@ -19,6 +23,7 @@ const pluginClasses: { [label: string]: IRegisterPluginOptions } = {};
  * to override the plugin's passed label.  This removes the previous need for the plugin's label to
  * match the label in LARA's database.
  */
+// LARA_CODE let nextPluginLabel: string = "";
 let nextPluginLabel = "";
 export const setNextPluginLabel = (override: string) => {
   nextPluginLabel = override;
@@ -44,13 +49,16 @@ const initRuntimePlugin = (label: string, options: IPluginRuntimeContextOptions)
   const Constructor = pluginClasses[label].runtimeClass;
   if (typeof Constructor === "function") {
     try {
+      // ACTIVITY_PLAYER_CODE:
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const plugin = new Constructor(generateRuntimePluginContext(options));
     } catch (e) {
       pluginError(e, options);
     }
+    // LARA_CODE tslint:disable-next-line:no-console
     console.info("Plugin", label, "is now registered");
   } else {
+    // LARA_CODE tslint:disable-next-line:no-console
     console.error("No plugin registered for label:", label);
   }
 };
@@ -59,13 +67,16 @@ const initAuthoringPlugin = (label: string, options: IPluginAuthoringContextOpti
   const Constructor = pluginClasses[label].authoringClass;
   if (typeof Constructor === "function") {
     try {
+      // ACTIVITY_PLAYER_CODE:
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const plugin = new Constructor(generateAuthoringPluginContext(options));
     } catch (e) {
       pluginError(e, options);
     }
+    // LARA_CODE tslint:disable-next-line:no-console
     console.info("Plugin", label, "is now registered");
   } else {
+    // LARA_CODE tslint:disable-next-line:no-console
     console.error("No plugin registered for label:", label);
   }
 };

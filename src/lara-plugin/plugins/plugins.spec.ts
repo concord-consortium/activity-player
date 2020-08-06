@@ -2,7 +2,9 @@ import { generateRuntimePluginContext,
          IPluginRuntimeContextOptions,
          IPluginAuthoringContextOptions } from "./plugin-context";
 import { initPlugin, registerPlugin, setNextPluginLabel } from "./plugins";
-import $ from "jquery"; // import * as $ from "jquery";
+// ACTIVITY_PLAYER_CODE:
+import $ from "jquery";
+// LARA_CODE import * as $ from "jquery";
 
 describe("Plugins", () => {
   beforeEach(() => {
@@ -29,6 +31,7 @@ describe("Plugins", () => {
       expect(registerPlugin({runtimeClass, authoringClass})).toEqual(false);
       // @ts-ignore
       expect(registerPlugin("anotherTest")).toEqual(false); // missing constructor
+      // LARA_CODE tslint:disable-next-line:no-console
       expect(console.error).toHaveBeenCalledTimes(2);
     });
 

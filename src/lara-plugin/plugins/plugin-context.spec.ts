@@ -4,8 +4,11 @@ import { generateRuntimePluginContext,
          IPluginAuthoringContextOptions,
          generateAuthoringPluginContext} from "./plugin-context";
 import { IClassInfo } from "../plugin-api";
-import fetch from "jest-fetch-mock"; // import * as fetch from "jest-fetch-mock";
-import $ from "jquery"; // import * as $ from "jquery";
+// ACTIVITY_PLAYER_CODE:
+import fetch from "jest-fetch-mock";
+import $ from "jquery";
+// LARA_CODE import * as fetch from "jest-fetch-mock";
+// LARA_CODE import * as $ from "jquery";
 (window as any).fetch = fetch;
 
 describe("Plugin runtime context helper", () => {

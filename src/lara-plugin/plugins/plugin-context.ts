@@ -1,7 +1,9 @@
 import { IPluginRuntimeContext, IJwtResponse, IClassInfo, IPluginAuthoringContext } from "../plugin-api";
 import { ILogData } from "../events";
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
-import $ from "jquery"; // import * as $ from "jquery";
+// ACTIVITY_PLAYER_CODE:
+import $ from "jquery";
+// LARA_CODE import * as $ from "jquery";
 
 export type IPluginContextOptions = IPluginRuntimeContextOptions | IPluginAuthoringContextOptions;
 

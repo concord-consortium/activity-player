@@ -1,19 +1,20 @@
-// import "./plugin-api/normalize.scss"; // TODO: uncomment when needed
+// LARA_CODE import "./plugin-api/normalize.scss";
 
 import * as PluginAPI from "./plugin-api";
-// import * as InteractiveAPI from "./interactive-api-parent"; // TODO: uncomment when needed
+// LARA_CODE import * as InteractiveAPI from "./interactive-api-parent";
 import * as Plugins from "./plugins";
-// import * as Events from "./events"; // TODO: uncomment when needed
-// import * as PageItemAuthoring from "./page-item-authoring"; // TODO: uncomment when needed
+// LARA_CODE import * as Events from "./events";
+// LARA_CODE import * as PageItemAuthoring from "./page-item-authoring";
 
 export {
   PluginAPI as PluginAPI_V3,
-  // InteractiveAPI, // TODO: uncomment when needed
+  // LARA_CODE InteractiveAPI,
   Plugins,
-  // Events, // TODO: uncomment when needed
-  // PageItemAuthoring // TODO: uncomment when needed
+  // LARA_CODE Events,
+  // LARA_CODE PageItemAuthoring
 };
 
+// ACTIVITY_PLAYER_CODE: wrap namespace creation into function createPluginNamespace
 export const createPluginNamespace = () => {
   // add empty LARA namespace to window
   (window as any).LARA = {};
@@ -22,7 +23,7 @@ export const createPluginNamespace = () => {
   // removed and "library": "LARA" option in webpack.config.js should be re-enabled.
   (window as any).LARA.PluginAPI_V3 = PluginAPI;
   (window as any).LARA.Plugins = Plugins;
-  // (window as any).LARA.Events = Events; // TODO: uncomment when needed
-  // (window as any).LARA.InteractiveAPI = InteractiveAPI; // TODO: uncomment when needed
-  // (window as any).LARA.PageItemAuthoring = PageItemAuthoring; // TODO: uncomment when needed
+  // LARA_CODE (window as any).LARA.Events = Events;
+  // LARA_CODE (window as any).LARA.InteractiveAPI = InteractiveAPI;
+  // LARA_CODE (window as any).LARA.PageItemAuthoring = PageItemAuthoring;
 };

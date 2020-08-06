@@ -1,7 +1,9 @@
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
 import { IInteractiveState } from "../plugin-api";
 import { emitInteractiveAvailable } from "../events";
-import fetch from "jest-fetch-mock"; // import * as fetch from "jest-fetch-mock";
+// ACTIVITY_PLAYER_CODE:
+import fetch from "jest-fetch-mock";
+// LARA_CODE import * as fetch from "jest-fetch-mock";
 
 import { IEmbeddableContextOptions } from "./plugin-context";
 (window as any).fetch = fetch;

@@ -28,6 +28,7 @@ const getReportingUrl = (
       return null;
     }
     catch (error) {
+      // LARA_CODE tslint:disable-next-line:no-console
       console.error(error);
       return null;
     }
