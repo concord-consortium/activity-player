@@ -20,6 +20,7 @@ describe("Firestore", () => {
 
   it("creates answers with the correct metadata", () => {
     setPortalData({
+      type: "authenticated",
       contextId: "context-id",
       database: {
         appName: "report-service-dev",

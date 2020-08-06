@@ -1,7 +1,10 @@
 import jwt from "jsonwebtoken";
 import superagent from "superagent";
-import { queryValue } from "./utilities/url-query";
-import { FirebaseAppName, DEFAULT_FIREBASE_APP } from "./firebase-db";
+import { v4 as uuidv4 } from "uuid";
+import { queryValue, setQueryValue } from "./utilities/url-query";
+import { FirebaseAppName } from "./firebase-db";
+
+export const DEFAULT_FIREBASE_APP: FirebaseAppName = "report-service-pro";
 
 interface PortalClassOffering {
   className: string;
@@ -79,12 +82,26 @@ interface FirebaseData {
 }
 
 export interface IPortalData extends ILTIPartial {
+  type: "authenticated";
   offering: OfferingData;
   userType: "teacher" | "learner";
   database: FirebaseData;
   toolId: string;
   resourceUrl: string;
   toolUserId: string;
+}
+
+export interface IAnonymousPortalData {
+  type: "anonymous";
+  userType: "learner";
+  runKey: string;
+  resourceUrl: string;
+  toolId: string;
+  toolUserId: "anonymous";
+  database: {
+    appName: FirebaseAppName,
+    sourceKey: string;
+  };
 }
 
 interface BasePortalJWT {
@@ -347,6 +364,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
   const sourceKey = queryValue("report-source") || parseUrl(offeringData.activityUrl.toLowerCase()).hostname;
 
   const rawPortalData: IPortalData = {
+    type: "authenticated",
     offering: offeringData,
     resourceLinkId: offeringData.id.toString(),
     userType: firebaseJWT.claims.user_type,
@@ -360,6 +378,34 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
       appName: firebaseAppName,
       sourceKey,
       rawFirebaseJWT,
+    }
+  };
+  return rawPortalData;
+};
+
+// metadata for saving and loading work for anonymous users, not actually loaded from the portal
+export const anonymousPortalData = () => {
+  const runKey = queryValue("runKey") || uuidv4();
+  setQueryValue("runKey", runKey);
+
+  const hostname = window.location.hostname;
+  // for the tool id we want to distinguish activity-player branches, incase this is ever helpful for
+  // dealing with mis-matched data when we load data in originally saved on another branch.
+  // This is currently unused for the purpose of saving and loading data
+  const toolId = hostname + window.location.pathname;
+  // just save the host and loaded activity-url as the resourceUrl, omitting any other url parameters.
+  // This is currently unused for the purpose of saving and loading data
+  const resourceUrl = hostname + "?activity=" + queryValue("activity");
+  const rawPortalData: IAnonymousPortalData = {
+    type: "anonymous",
+    userType: "learner",
+    runKey,
+    resourceUrl,
+    toolId,
+    toolUserId: "anonymous",
+    database: {
+      appName: firebaseAppName,
+      sourceKey: hostname
     }
   };
   return rawPortalData;
