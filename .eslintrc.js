@@ -28,14 +28,12 @@ module.exports = {
       "plugin:react-hooks/recommended"
     ],
     rules: {
-      "@typescript-eslint/ban-ts-comment": "off",
       "@typescript-eslint/explicit-module-boundary-types": "off",
       "@typescript-eslint/interface-name-prefix": "off",
       "@typescript-eslint/no-empty-interface": "off",
       "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-unused-vars": ["warn", { "args": "none", "ignoreRestSiblings": true }],
-      '@typescript-eslint/no-var-requires': "off",
-      '@typescript-eslint/no-non-null-assertion': "off",
+      "@typescript-eslint/no-unused-vars": ["error", { "args": "none", "ignoreRestSiblings": true }],
+      "@typescript-eslint/no-var-requires": "off",
       curly: ["error", "multi-line", "consistent"],
       eqeqeq: ["error", "smart"],
       "eslint-comments/no-unused-disable": "warn",
