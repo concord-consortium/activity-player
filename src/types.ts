@@ -34,6 +34,13 @@ export interface LibraryInteractive {
   data: LibraryInteractiveData;
 }
 
+export interface Plugin {
+  description: string;
+  author_data: string;
+  approved_script_label: string;
+  component_label: string;
+}
+
 export interface EmbeddableBase {
   type: string;
   name: string;
@@ -79,7 +86,12 @@ export interface IEmbeddableXhtml extends EmbeddableBase {
   content?: string;
 }
 
-export type Embeddable = IManagedInteractive | IMwInteractive | IEmbeddableXhtml;
+export interface IEmbeddablePlugin extends EmbeddableBase {
+  type: "Embeddable::EmbeddablePlugin";
+  plugin?: Plugin;
+}
+
+export type Embeddable = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin;
 
 export interface EmbeddableWrapper {
   section: "header_block" | "interactive_box" | null;

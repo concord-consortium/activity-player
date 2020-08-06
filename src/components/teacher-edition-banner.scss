@@ -1,0 +1,16 @@
+@import "./vars.scss";
+
+.teacher-edition-banner {
+  display: flex;
+  flex-direction: row;
+  background-color: $cc-orange-light1;
+  color: $light-font-color;
+  font-size: 26px;
+  padding: 8px;
+  min-height: 40px;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  fill: $light-font-color;
+}
