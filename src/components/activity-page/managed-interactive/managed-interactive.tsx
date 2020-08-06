@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState, useCallback } from "react";
 import { IframeRuntime } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData } from "../../../types";
+import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
+import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
+import { renderHTML } from "../../../utilities/render-html";
+
+import "./managed-interactive.scss";
 
 interface IProps {
   embeddable: IManagedInteractive | IMwInteractive;
@@ -49,9 +54,39 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     const divSize: any = useSize(divTarget);
     const proposedHeight: number = divSize && divSize.width / aspectRatio;
     const containerWidth: number = divSize && divSize.width;
+
+    const [ showHint, setShowHint ] = useState(false);
+    const [ hint, setHint ] = useState("");
+    const handleHintCloseClick = () => {
+      setShowHint(false);
+    };
+    const handleQuestionClick = () => {
+      setShowHint(!showHint);
+    };
+    const setNewHint = useCallback((newHint: string) => {
+      setHint(newHint);
+    }, []);
+
     return (
-      <div ref={divTarget}>
-        { questionNumber && <div className="header">Question #{questionNumber}{questionName}</div> }
+      <div ref={divTarget} data-cy="managed-interactive">
+        { questionNumber &&
+          <div className="header">
+            Question #{questionNumber}{questionName}
+           { hint &&
+             <div className="question-container" onClick={handleQuestionClick} data-cy="open-hint">
+               <IconQuestion className="question" height={22} width={22}/>
+             </div>
+            }
+          </div>
+        }
+        { hint &&
+          <div className={`hint-container ${showHint ? "" : "collapsed"}`}>
+            <div className="hint" data-cy="hint">{renderHTML(hint)}</div>
+            <div className="close-container">
+              <IconArrowUp className={"close"} width={26} height={26} onClick={handleHintCloseClick} data-cy="close-hint" />
+            </div>
+          </div>
+        }
         <IframeRuntime
           url={url}
           authoredState={embeddable.authored_state}
@@ -59,6 +94,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
           setInteractiveState={handleNewInteractiveState}
           proposedHeight={proposedHeight}
           containerWidth={containerWidth}
+          setNewHint={setNewHint}
         />
       </div>
     );
