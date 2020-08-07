@@ -1,6 +1,6 @@
 context("Test the overall app", () => {
   before(() => {
-    cy.visit("");
+    cy.visit("/?preview");
   });
 
   describe("header",()=>{
