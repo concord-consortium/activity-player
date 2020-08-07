@@ -11,7 +11,7 @@ import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
-import { queryValue } from "../utilities/url-query";
+import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { fetchPortalData } from "../portal-api";
 import { signInWithToken, watchAnswers, initializeDB, setPortalData, initializeAnonymousDB } from "../firebase-db";
 import { Activity } from "../types";
@@ -42,16 +42,19 @@ export class App extends React.PureComponent<IProps, IState> {
       const activityPath = queryValue("activity") || kDefaultActivity;
       const activity: Activity = await getActivityDefinition(activityPath);
 
-      if (queryValue("token")) {
-        const portalData = await fetchPortalData();
-        await initializeDB(portalData.database.appName);
-        await signInWithToken(portalData.database.rawFirebaseJWT);
-        setPortalData(portalData);
-      } else {
-        await initializeAnonymousDB();
+      if (!queryValueBoolean("preview")) {
+        if (queryValue("token")) {
+          const portalData = await fetchPortalData();
+          await initializeDB(portalData.database.appName);
+          await signInWithToken(portalData.database.rawFirebaseJWT);
+          setPortalData(portalData);
+        } else {
+          await initializeAnonymousDB();
+        }
+
+        watchAnswers();
       }
 
-      watchAnswers();
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity
       const currentPage = Number(queryValue("page")) || 0;
 
