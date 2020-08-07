@@ -23,6 +23,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
   };
 
   const { embeddable, questionNumber } = props;
+
   const questionName = embeddable.name ? `: ${embeddable.name}` : "";
   // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
   // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
@@ -56,6 +57,12 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
   const proposedHeight: number = divSize && divSize.width / aspectRatio;
   const containerWidth: number = divSize && divSize.width;
 
+  const embeddableAuthoredState = () => {
+    const parsedState = embeddable.authored_state ? JSON.parse(embeddable.authored_state) : {};
+    parsedState.modalSupported = true;
+    return JSON.stringify(parsedState);
+  };
+
   const [showHint, setShowHint] = useState(false);
   const [hint, setHint] = useState("");
   const handleHintCloseClick = () => {
@@ -72,15 +79,18 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     const container = modalParent ? modalParent : {};
     return container;
   };
-  const toggleModal = () => {
+  const toggleModal = (modalProps?: any) => {
     setShowModal(!showModal);
+    if (modalProps) {
+      console.log(modalProps);
+    }
   };
 
   const interactiveIframe = () => {
     return (
       <IframeRuntime
         url={url}
-        authoredState={embeddable.authored_state}
+        authoredState={embeddableAuthoredState()}
         interactiveState={embeddable.interactiveState}
         setInteractiveState={handleNewInteractiveState}
         proposedHeight={proposedHeight}

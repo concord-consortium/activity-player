@@ -60,8 +60,7 @@ export const IframeRuntime: React.FC<IProps> =
         setNewHint(newHint.text || "");
       });
       phone.addListener("showModal", (modalProps: any) => {
-        // console.log("component wants to go modal: ", modalProps);
-        toggleModal();
+        toggleModal(modalProps);
       });
       phone.post("initInteractive", {
         mode: report ? "report" : "runtime",
