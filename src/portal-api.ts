@@ -84,7 +84,6 @@ export interface IPortalData extends ILTIPartial {
   database: FirebaseData;
   toolId: string;
   resourceUrl: string;
-  toolUserId: string;
 }
 
 interface BasePortalJWT {
@@ -355,7 +354,6 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     contextId: classInfo.classHash,
     toolId: "https://" + sourceKey,
     resourceUrl: offeringData.activityUrl,
-    toolUserId: firebaseJWT.claims.user_id,
     database: {
       appName: firebaseAppName,
       sourceKey,

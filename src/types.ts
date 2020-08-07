@@ -147,6 +147,10 @@ export interface IReportState {
   interactiveState: string;
 }
 
+/**
+ * To match LARA we would normally also include a tool_user_id, but the activity player
+ * keeps no user ids of its own.
+ */
 export interface ILTIPartial {
   platform_id: string;      // portal
   platform_user_id: string;
@@ -156,7 +160,6 @@ export interface ILTIPartial {
   run_key: string;
   source_key: string;
   tool_id: string;
-  tool_user_id: string;
 }
 
 /**

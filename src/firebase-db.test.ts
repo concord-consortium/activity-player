@@ -36,7 +36,6 @@ describe("Firestore", () => {
       resourceLinkId: "2",
       resourceUrl: "http://example/resource",
       toolId: "https://example",
-      toolUserId: "https://example/users/1",
       userType: "learner"
     });
 
@@ -73,7 +72,6 @@ describe("Firestore", () => {
       source_key: "localhost",
       submitted: null,
       tool_id: "https://example",
-      tool_user_id: "https://example/users/1",
       type: "open_response_answer",
     }, {merge: true});
   });

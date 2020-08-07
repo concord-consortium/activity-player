@@ -185,7 +185,6 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     tool_id: portalData.toolId,
     resource_url: portalData.resourceUrl,
     run_key: "",
-    tool_user_id: portalData.toolUserId,
   };
 
   return firebase.firestore()
