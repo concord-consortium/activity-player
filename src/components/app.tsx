@@ -47,6 +47,12 @@ export class App extends React.PureComponent<IProps, IState> {
       const activityPath = queryValue("activity") || kDefaultActivity;
       const activity: Activity = await getActivityDefinition(activityPath);
 
+      // page 0 is introduction, inner pages start from 1 and match page.position in exported activity
+      const currentPage = Number(queryValue("page")) || 0;
+
+      const showThemeButtons = queryValue("themeButtons")?.toLowerCase() === "true";
+      const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
+
       if (queryValue("token")) {
         const portalData = await fetchPortalData();
         await initializeDB(portalData.database.appName);
@@ -54,13 +60,6 @@ export class App extends React.PureComponent<IProps, IState> {
         setPortalData(portalData);
         watchAnswers();
       }
-
-      // page 0 is introduction, inner pages start from 1 and match page.position in exported activity
-      const currentPage = Number(queryValue("page")) || 0;
-
-      const showThemeButtons = queryValue("themeButtons")?.toLowerCase() === "true";
-      const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
-
       this.setState({activity, currentPage, showThemeButtons, teacherEditionMode});
 
       if (teacherEditionMode) {
