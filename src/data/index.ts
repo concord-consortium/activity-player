@@ -11,6 +11,8 @@ import sampleActivityResponsive from "../data/sample-activity-responsive-layout.
 import sampleActivitySinglePageLayout from "../data/sample-activity-single-page-layout.json";
 import sampleActivityFullWidthOff from "../data/LARA-page-elements-full-width-off.json";
 import sampleActivityFullWidthOn from "../data/LARA-page-elements-full-width-on.json";
+import sampleActivityQISimple from "../data/sample-question-interactive-simple.json";
+import sampleActivityQIComplex from "../data/sample-question-interactive-complex.json";
 
 const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-1": sampleActivity1 as Activity,
@@ -24,6 +26,8 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-single-page-layout": sampleActivitySinglePageLayout as Activity,
   "LARA-page-elements-full-width-off": sampleActivityFullWidthOff as Activity,
   "LARA-page-elements-full-width-on": sampleActivityFullWidthOn as Activity,
+  "sample-question-interactive-simple": sampleActivityQISimple as Activity,
+  "sample-question-interactive-complex": sampleActivityQIComplex as Activity,
 };
 
 export default sampleActivities;
