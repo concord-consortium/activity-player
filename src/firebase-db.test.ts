@@ -35,7 +35,7 @@ describe("Firestore", () => {
       platformUserId: "1",
       resourceLinkId: "2",
       resourceUrl: "http://example/resource",
-      toolId: "https://example",
+      toolId: "activity-player.concord.org",
       userType: "learner"
     });
 
@@ -71,7 +71,7 @@ describe("Firestore", () => {
       run_key: "",
       source_key: "localhost",
       submitted: null,
-      tool_id: "https://example",
+      tool_id: "activity-player.concord.org",
       type: "open_response_answer",
     }, {merge: true});
   });

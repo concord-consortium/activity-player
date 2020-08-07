@@ -352,7 +352,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     platformId: firebaseJWT.claims.platform_id,
     platformUserId: firebaseJWT.claims.platform_user_id.toString(),
     contextId: classInfo.classHash,
-    toolId: "https://" + sourceKey,
+    toolId: window.location.hostname,
     resourceUrl: offeringData.activityUrl,
     database: {
       appName: firebaseAppName,
