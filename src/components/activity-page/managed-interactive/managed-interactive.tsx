@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { IframeRuntime } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData } from "../../../types";
@@ -17,12 +17,16 @@ interface IProps {
 const kDefaultAspectRatio = 4 / 3;
 
 export const ManagedInteractive: React.FC<IProps> = (props) => {
-  const [showModal, setShowModal] = useState(false);
-  const handleNewInteractiveState = (state: any) => {
-    // TODO: handle interactive state
-  };
-
   const { embeddable, questionNumber } = props;
+
+  const [showModal, setShowModal] = useState(false);
+
+  // both Modal and inline versions of interactive should reflect the same state
+  const iframeInteractiveState = useRef(embeddable.interactiveState);
+  const handleNewInteractiveState = (state: any) => {
+    iframeInteractiveState.current = state;
+    // TODO: handle interactive state storage
+  };
 
   const questionName = embeddable.name ? `: ${embeddable.name}` : "";
   // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
@@ -68,37 +72,42 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
   const handleHintCloseClick = () => {
     setShowHint(false);
   };
+
   const handleQuestionClick = () => {
     setShowHint(!showHint);
   };
+
   const setNewHint = useCallback((newHint: string) => {
     setHint(newHint);
   }, []);
+
   const getModalContainer = () => {
     const modalParent = document.getElementById("app");
     const container = modalParent ? modalParent : {};
     return container;
   };
-  const toggleModal = (modalProps?: any) => {
+
+  const toggleModal = () => {
     setShowModal(!showModal);
+  };
+
+  const closeModal = (modalProps?: any) => {
     if (modalProps) {
-      console.log(modalProps);
+      handleNewInteractiveState(modalProps.interactiveState);
     }
   };
 
-  const interactiveIframe = () => {
-    return (
-      <IframeRuntime
-        url={url}
-        authoredState={embeddableAuthoredState()}
-        interactiveState={embeddable.interactiveState}
-        setInteractiveState={handleNewInteractiveState}
-        proposedHeight={proposedHeight}
-        containerWidth={containerWidth}
-        setNewHint={setNewHint}
-        toggleModal={toggleModal}
-      />);
-  };
+  const interactiveIframe =
+    <IframeRuntime
+      url={url}
+      authoredState={embeddableAuthoredState()}
+      interactiveState={iframeInteractiveState.current}
+      setInteractiveState={handleNewInteractiveState}
+      proposedHeight={proposedHeight}
+      containerWidth={containerWidth}
+      setNewHint={setNewHint}
+      toggleModal={toggleModal}
+    />;
 
   return (
     <div ref={divTarget} data-cy="managed-interactive">
@@ -120,9 +129,9 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
           </div>
         </div>
       }
-      {!showModal && interactiveIframe()}
-      <Modal isOpen={showModal} appElement={getModalContainer()}>
-        {interactiveIframe()}
+      {!showModal && interactiveIframe}
+      <Modal isOpen={showModal} appElement={getModalContainer()} onRequestClose={closeModal}>
+        {interactiveIframe}
       </Modal>
     </div>
   );
