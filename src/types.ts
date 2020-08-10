@@ -50,6 +50,7 @@ export interface EmbeddableBase {
   is_hidden: boolean;
   is_full_width: boolean;
   ref_id: string;
+  embeddable_ref_id?: string;
 }
 
 export interface IManagedInteractive extends EmbeddableBase {

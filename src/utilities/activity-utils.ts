@@ -45,13 +45,13 @@ export const isEmbeddableSectionHidden = (page: Page, section: string | null) =>
 export const getVisibleEmbeddablesOnPage = (page: Page) => {
   const headerEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Introduction)
     ? []
-    : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction && !e.embeddable.is_hidden);
+    : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction && !e.embeddable.is_hidden && !e.embeddable.embeddable_ref_id);
   const interactiveEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Interactive)
     ? []
-    : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive && !e.embeddable.is_hidden);
+    : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive && !e.embeddable.is_hidden && !e.embeddable.embeddable_ref_id);
   const infoAssessEmbeddables = isEmbeddableSectionHidden(page, null)
     ? []
-    : page.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction && !e.embeddable.is_hidden));
+    : page.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction && !e.embeddable.is_hidden && !e.embeddable.embeddable_ref_id));
 
   return { interactiveBox: interactiveEmbeddables, headerBlock: headerEmbeddables, infoAssessment: infoAssessEmbeddables };
 };
@@ -91,4 +91,9 @@ export const numQuestionsOnPreviousPages = (currentPage: number, activity: Activ
 export const enableReportButton = (activity: Activity) => {
   const hasCompletionPage = activity.pages.find((page: any) => page.is_completion);
   return !hasCompletionPage && activity.student_report_enabled;
+};
+
+export const getLinkedPluginEmbeddable = (page: Page, id: string) => {
+  const linkedPluginEmbeddable = page.embeddables.find((e: EmbeddableWrapper) => e.embeddable.embeddable_ref_id === id);
+  return linkedPluginEmbeddable?.embeddable.type === "Embeddable::EmbeddablePlugin" ? linkedPluginEmbeddable.embeddable : undefined;
 };

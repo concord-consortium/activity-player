@@ -2,14 +2,14 @@ import React from "react";
 import { Embeddable } from "./embeddable";
 import { BottomButtons } from "./bottom-buttons";
 import { PageLayouts, EmbeddableSections, isQuestion, getPageSectionQuestionCount,
-         VisibleEmbeddables, getVisibleEmbeddablesOnPage } from "../../utilities/activity-utils";
+         VisibleEmbeddables, getVisibleEmbeddablesOnPage, getLinkedPluginEmbeddable } from "../../utilities/activity-utils";
 import { SidebarWrapper } from "../page-sidebar/sidebar-wrapper";
 import { renderHTML } from "../../utilities/render-html";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
+import { Page, EmbeddableWrapper } from "../../types";
 
 import "./activity-page-content.scss";
-import { Page, EmbeddableWrapper } from "../../types";
 
 const kPinMargin = 20;
 
@@ -141,6 +141,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
             if (isQuestion(embeddableWrapper)) {
               questionNumber++;
             }
+            const linkedPluginEmbeddable = getLinkedPluginEmbeddable(this.props.page, embeddableWrapper.embeddable.ref_id);
             return (
               <Embeddable
                 key={`embeddable ${i}`}
@@ -148,6 +149,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                 isPageIntroduction={i === 0 && section === EmbeddableSections.Introduction}
                 pageLayout={this.props.page.layout}
                 questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
+                linkedPluginEmbeddable={linkedPluginEmbeddable}
               />
             );
           })
