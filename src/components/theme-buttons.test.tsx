@@ -1,7 +1,7 @@
 import React from "react";
 import { ThemeButtons } from "./theme-buttons";
 import { shallow } from "enzyme";
-import { setBackgroundImage } from "../utilities/theme-utils";
+import { setBackgroundImage } from "../utilities/activity-utils";
 
 describe("Theme Button component", () => {
   it("renders theme buttons", () => {

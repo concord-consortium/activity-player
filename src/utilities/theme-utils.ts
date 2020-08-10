@@ -33,11 +33,6 @@ export const setThemeColors = (primary: string, secondary: string) => {
   document.documentElement.style.setProperty("--theme-secondary-text-color", getContrastYIQColor(secondary));
 };
 
-export const setBackgroundImage = (imageUrl:string) => {
-  const el = document.querySelector(".app") as HTMLElement;
-  el && el.style.setProperty("background-image",`url("${imageUrl}")`);
-};
-
 // cf. https://24ways.org/2010/calculating-color-contrast
 const getContrastYIQColor = (color: string) => {
   color = color.replace(/^#/, "");

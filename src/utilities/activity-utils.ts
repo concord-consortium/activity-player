@@ -96,4 +96,8 @@ export const enableReportButton = (activity: Activity) => {
 export const getLinkedPluginEmbeddable = (page: Page, id: string) => {
   const linkedPluginEmbeddable = page.embeddables.find((e: EmbeddableWrapper) => e.embeddable.embeddable_ref_id === id);
   return linkedPluginEmbeddable?.embeddable.type === "Embeddable::EmbeddablePlugin" ? linkedPluginEmbeddable.embeddable : undefined;
+
+export const setBackgroundImage = (imageUrl:string) => {
+  const el = document.querySelector(".app") as HTMLElement;
+  el && el.style.setProperty("background-image",`url("${imageUrl}")`);
 };
