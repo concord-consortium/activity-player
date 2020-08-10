@@ -98,6 +98,10 @@ export const getLinkedPluginEmbeddable = (page: Page, id: string) => {
   return linkedPluginEmbeddable?.embeddable.type === "Embeddable::EmbeddablePlugin" ? linkedPluginEmbeddable.embeddable : undefined;
 
 export const setBackgroundImage = (imageUrl:string) => {
+export const setBackground = (background?:string) => {
+  const gradient = "linear-gradient(to bottom, #fff, rgba(255,255,255,0), rgba(255,255,255,0))";
   const el = document.querySelector(".app") as HTMLElement;
-  el && el.style.setProperty("background-image",`url("${imageUrl}")`);
+  el && ( background? el.style.setProperty("background-image",background) 
+                    : el.style.setProperty("background-image",gradient)
+        );
 };

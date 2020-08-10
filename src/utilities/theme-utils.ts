@@ -21,8 +21,6 @@ export const colorShade = (color: string, amt: number) => {
 };
 
 export const setThemeColors = (primary: string, secondary: string) => {
-  const el = document.querySelector(".app") as HTMLElement;
-  el && el.style.setProperty("background-image",`linear-gradient(to bottom, #fff, rgba(255,255,255,0), rgba(255,255,255,0))`);
   document.documentElement.style.setProperty("--theme-primary-color", primary);
   document.documentElement.style.setProperty("--theme-primary-hover-color", colorShade(primary, -20));
   document.documentElement.style.setProperty("--theme-primary-active-color", colorShade(primary, -40));

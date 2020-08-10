@@ -1,7 +1,7 @@
 import React from "react";
 import { ThemeButtons } from "./theme-buttons";
 import { shallow } from "enzyme";
-import { setBackgroundImage } from "../utilities/activity-utils";
+import { setBackground } from "../utilities/activity-utils";
 
 describe("Theme Button component", () => {
   it("renders theme buttons", () => {
@@ -32,9 +32,6 @@ describe("Theme Button component", () => {
     interactionsButton.simulate("click");
     primary = document.documentElement.style.getPropertyValue("--theme-primary-color");
     expect(primary).toBe("#414546");
-
-    const imageButton = wrapper.find('[data-cy="theme-button-image"]');
-    imageButton.simulate("click");
-    expect(setBackgroundImage).toHaveBeenCalled;
+    expect(setBackground).toHaveBeenCalled;
   });
 });
