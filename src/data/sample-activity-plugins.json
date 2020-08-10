@@ -398,7 +398,7 @@
         },
         {
           "embeddable": {
-            "content": "<p>This page contain 4 window shade plugins</p>",
+            "content": "<p>This page contains 4 window shade plugins</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",

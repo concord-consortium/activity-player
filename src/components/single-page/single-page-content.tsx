@@ -10,10 +10,11 @@ import { Activity, Page } from "../../types";
 
 interface IProps {
   activity: Activity;
+  teacherEditionMode?: boolean;
 }
 
 export const SinglePageContent: React.FC<IProps> = (props) => {
-  const { activity } = props;
+  const { activity, teacherEditionMode } = props;
   let questionNumber = 0;
   let embeddableNumber = 0;
 
@@ -35,6 +36,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
                 isPageIntroduction={questionNumber === 0}
                 pageLayout={PageLayouts.FullWidth}
                 questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
+                teacherEditionMode={teacherEditionMode}
               />
             );
           })

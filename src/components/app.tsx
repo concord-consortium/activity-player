@@ -121,6 +121,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   onPageChange={this.handleChangePage}
                   page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
                   totalPreviousQuestions={totalPreviousQuestions}
+                  teacherEditionMode={this.state.teacherEditionMode}
                 />
         }
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
@@ -138,6 +139,7 @@ export class App extends React.PureComponent<IProps, IState> {
       <React.Fragment>
         <SinglePageContent
           activity={activity}
+          teacherEditionMode={this.state.teacherEditionMode}
         />
       </React.Fragment>
     );

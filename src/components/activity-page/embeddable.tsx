@@ -15,19 +15,22 @@ interface IProps {
   linkedPluginEmbeddable?: IEmbeddablePlugin;
   pageLayout: string;
   questionNumber?: number;
+  teacherEditionMode?: boolean;
 }
 
 export const Embeddable: React.FC<IProps> = (props) => {
-  const { activityLayout, embeddableWrapper, isPageIntroduction, linkedPluginEmbeddable, pageLayout, questionNumber } = props;
+  const { activityLayout, embeddableWrapper, isPageIntroduction, linkedPluginEmbeddable, pageLayout, questionNumber, teacherEditionMode } = props;
   const embeddable = embeddableWrapper.embeddable;
 
   let qComponent;
   if (embeddable.type === "MwInteractive" || embeddable.type === "ManagedInteractive") {
     qComponent = <ManagedInteractive embeddable={embeddable} questionNumber={questionNumber} />;
   } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {
-    qComponent = <EmbeddablePlugin embeddable={embeddable} />;
+    qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} /> : undefined;
   } else if (embeddable.type === "Embeddable::Xhtml") {
     qComponent = <TextBox embeddable={embeddable} isPageIntroduction={isPageIntroduction} />;
+  } else {
+    qComponent = <div>Content type not supported</div>;
   }
 
   const staticWidth = pageLayout === PageLayouts.FortySixty || pageLayout === PageLayouts.SixtyForty || pageLayout === PageLayouts.Responsive;
@@ -36,7 +39,7 @@ export const Embeddable: React.FC<IProps> = (props) => {
   const embeddableWrapperDivTarget = useRef<HTMLInputElement>(null);
   const embeddableDivTarget = useRef<HTMLInputElement>(null);
   useEffect(() => {
-    if (embeddableWrapperDivTarget.current && embeddableDivTarget.current && linkedPluginEmbeddable) {
+    if (embeddableWrapperDivTarget.current && embeddableDivTarget.current && linkedPluginEmbeddable && teacherEditionMode) {
       initializePlugin(linkedPluginEmbeddable, embeddable, embeddableWrapperDivTarget.current, embeddableDivTarget.current);
     }
   }, [linkedPluginEmbeddable, embeddable]);
@@ -49,7 +52,7 @@ export const Embeddable: React.FC<IProps> = (props) => {
     >
       { linkedPluginEmbeddable && <div ref={embeddableWrapperDivTarget}></div> }
       <div ref={embeddableDivTarget}>
-        { qComponent || <div>Content type not supported</div> }
+        { qComponent }
       </div>
     </div>
   );

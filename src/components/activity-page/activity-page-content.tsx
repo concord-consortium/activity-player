@@ -20,6 +20,7 @@ interface IProps {
   onPageChange: (page: number) => void;
   page: Page;
   pageNumber: number;
+  teacherEditionMode?: boolean;
   totalPreviousQuestions: number;
 }
 
@@ -150,6 +151,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                 pageLayout={this.props.page.layout}
                 questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
                 linkedPluginEmbeddable={linkedPluginEmbeddable}
+                teacherEditionMode={this.props.teacherEditionMode}
               />
             );
           })
