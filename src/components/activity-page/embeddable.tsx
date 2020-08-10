@@ -45,6 +45,7 @@ export const Embeddable: React.FC<IProps> = (props) => {
     <div
       className={`embeddable ${embeddableWrapper.embeddable.is_full_width || staticWidth || singlePageLayout ? "full-width" : "reduced-width"}`}
       data-cy="embeddable"
+      key={embeddableWrapper.embeddable.ref_id}
     >
       { linkedPluginEmbeddable && <div ref={embeddableWrapperDivTarget}></div> }
       <div ref={embeddableDivTarget}>
