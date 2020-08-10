@@ -8,9 +8,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 24px;
-    height: 24px;
-    margin: 0 4px 0 4px;
+    width: 44px;
+    height: 44px;
+    margin: 0 5px 0 5px;
     border-radius: 50%;
     border: solid $cc-charcoal-light1 2px;
     background-color: white;
@@ -36,7 +36,7 @@
 
     .label {
       color: $cc-charcoal-light1;
-      font-size: 14px;
+      font-size: 20px;
 
       &.current {
         color: white;

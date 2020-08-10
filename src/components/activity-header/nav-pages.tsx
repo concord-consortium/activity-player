@@ -28,8 +28,8 @@ export class NavPages extends React.PureComponent <IProps> {
     return (
       <div className={`page-button ${currentClass}`} onClick={this.handleButtonClick(0)}>
         <IconHome
-          width={18}
-          height={18}
+          width={28}
+          height={28}
           fill={this.props.currentPage === 0 ? "white" : "#979797"}
         />
       </div>

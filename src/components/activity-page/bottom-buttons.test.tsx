@@ -15,11 +15,11 @@ describe("Bottom Buttons component", () => {
     const wrapperBack = shallow(<BottomButtons onBack={stubFunction} />);
 
     expect(wrapperBack.find('[data-cy="bottom-button-back"]').length).toBe(1);
-    expect(wrapperBack.find('[data-cy="bottom-button-next"]').length).toBe(0);
+    expect(wrapperBack.find('[data-cy="bottom-button-next"]').length).toBe(1);
 
     const wrapperNext = shallow(<BottomButtons onNext={stubFunction} />);
 
-    expect(wrapperNext.find('[data-cy="bottom-button-back"]').length).toBe(0);
+    expect(wrapperNext.find('[data-cy="bottom-button-back"]').length).toBe(1);
     expect(wrapperNext.find('[data-cy="bottom-button-next"]').length).toBe(1);
 
   });

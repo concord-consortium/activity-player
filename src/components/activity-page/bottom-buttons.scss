@@ -9,4 +9,12 @@
     justify-content: center;
   }
 
+  button:disabled {
+    opacity: 0.35;
+    cursor: auto;
+    &:hover {
+      opacity: 0.35;
+      background-color: var(--theme-primary-color);
+    }
+  }
 }
