@@ -10,9 +10,11 @@
   }
 
   button:disabled {
-    background-color: $cc-teal-light2;
+    opacity: 0.35;
+    cursor: auto;
     &:hover {
-      background-color: $cc-teal-light2;
+      opacity: 0.35;
+      background-color: var(--theme-primary-color);
     }
   }
 }

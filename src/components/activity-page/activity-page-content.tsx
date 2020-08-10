@@ -57,7 +57,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const secondaryIsOnLeft = page.layout === PageLayouts.Responsive || page.layout === PageLayouts.SixtyForty;
     const collapsible = page.toggle_info_assessment && page.layout !== PageLayouts.FullWidth;
     const renderSecondary = this.renderSecondaryEmbeddables(visibleEmbeddables.infoAssessment, questionsBeforeSecondary, page.layout, secondaryIsOnLeft, collapsible);
-    const pageTitle = page.name || ``;
+    const pageTitle = page.name || "";
 
     const [first, second] = primaryFirst
                             ? [renderPrimary, renderSecondary]
