@@ -23,18 +23,31 @@ export const Embeddable: React.FC<IProps> = (props) => {
   const { activityLayout, embeddableWrapper, isPageIntroduction, linkedPluginEmbeddable, pageLayout, questionNumber, teacherEditionMode } = props;
   const embeddable = embeddableWrapper.embeddable;
 
+  const [loadedInitialInteractiveState, setLoadedInitialInteractiveState] = useState(false);
   const [initialInteractiveState, setInitialInteractiveState] = useState();
   const [answerMeta, setAnswerMeta] = useState();
 
-  // A one-time grab of the initial user state. We don't currently support live-updating the embeddable
-  // with new user state from the database.
-  // Although the request to start watching the data happens in app.ts, we have to assume that the
-  // initialInteractiveState may be delayed for network reasons, and so this listener may return after
-  // if the embeddable has already loaded. In that case, the embeddble will rerender.
-  getCurrentDBValue(localAnswerPath(embeddable.ref_id), (wrappedAnswer) => {
-    setInitialInteractiveState(wrappedAnswer.interactiveState);
-    setAnswerMeta(wrappedAnswer.meta);
-  });
+  // `loadedInitialInteractiveState` will be set to true the moment our initial request for `answers` data
+  // comes through, whether or not there is any particular initial state for this interactive.
+  // Once this has happened, we won't be setting `initialInteractiveState` again, so we won't rerender.
+  if (!loadedInitialInteractiveState) {
+
+    // A one-time grab of the initial user state. We don't currently support live-updating the embeddable
+    // with new user state from the database.
+    // If the request is still pending, we will delay rendering the component. If we're not requesting data
+    // from firestore, we will return instantly with no data.
+    getCurrentDBValue(localAnswerPath(embeddable.ref_id)).then(wrappedAnswer => {
+      if (wrappedAnswer) {
+        setInitialInteractiveState(wrappedAnswer.interactiveState);
+        setAnswerMeta(wrappedAnswer.meta);
+      }
+      setLoadedInitialInteractiveState(true);
+    });
+
+    return (
+      <div>Loading...</div>
+    );
+  }
 
   let qComponent;
   if (embeddable.type === "MwInteractive" || embeddable.type === "ManagedInteractive") {

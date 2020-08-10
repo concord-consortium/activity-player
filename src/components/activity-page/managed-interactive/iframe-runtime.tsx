@@ -28,15 +28,6 @@ export const IframeRuntime: React.FC<IProps> =
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const phoneRef = useRef<IframePhone>();
-  // Why is interativeState and setInteractiveState kept in refs? So it's not necessary to declare these variables as
-  // useEffect's dependencies. Theoretically this useEffect callback is perfectly fine either way, but since
-  // it reloads the iframe each time it's called, it's not a great experience for user when that happens while he is
-  // interacting with the iframe (e.g. typing in textarea). And interactiveState is being updated very often,
-  // as well as setInteractiveState that is generated during each render of the parent component.
-  const interactiveStateRef = useRef<any>(initialInteractiveState);
-  const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
-  interactiveStateRef.current = initialInteractiveState;
-  setInteractiveStateRef.current = setInteractiveState;
 
   useEffect(() => {
     const initInteractive = () => {
@@ -45,7 +36,7 @@ export const IframeRuntime: React.FC<IProps> =
         return;
       }
       phone.addListener("interactiveState", (newInteractiveState: any) => {
-        setInteractiveStateRef.current?.(newInteractiveState);
+        setInteractiveState(newInteractiveState);
       });
       phone.addListener("height", (newHeight: number) => {
         setHeightFromInteractive(newHeight);
@@ -61,8 +52,7 @@ export const IframeRuntime: React.FC<IProps> =
       phone.post("initInteractive", {
         mode: report ? "report" : "runtime",
         authoredState,
-        // This is a trick not to depend on interactiveState.
-        interactiveState: interactiveStateRef.current
+        interactiveState: initialInteractiveState
       });
     };
 
@@ -78,7 +68,7 @@ export const IframeRuntime: React.FC<IProps> =
         phoneRef.current.disconnect();
       }
     };
-  }, [url, authoredState, report, initialInteractiveState, setNewHint]);
+  }, [url, authoredState, report, initialInteractiveState, setInteractiveState, setNewHint]);
 
   const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;
   // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone

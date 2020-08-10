@@ -29,12 +29,19 @@ interface LocalDB {
 }
 
 const localDB: LocalDB = {};
-
-export const localAnswerPath = (refId: string) => `${refId}/answers`;
+export const localAnswerPath = (refId: string) => `answers/${refId}`;
+const isAnswerPath = (path: string) => /^answers\/.*/.test(path);
 
 export type DBChangeListener = (value: any) => void;
 
 const listeners: {[path: string]: DBChangeListener[]} = {};
+
+type initialDataState = "NOT_REQUESTED" | "PENDING" | "COMPLETED";
+
+// whether we have completed an initil request for a collection
+const initialData: {[collection: string]: initialDataState} = {
+  answers: "NOT_REQUESTED"
+};
 
 interface IConfig {
   apiKey: string;
@@ -137,14 +144,22 @@ const notifyListeners = (path: string, value: any) => {
   listeners[path]?.forEach(listener => listener(value));
 };
 
-// returns value immediately if it exists, or gets the value once on the first update.
+// If we've already requested data for this collection before, return immediately whether or not
+// this path has a value. If we have a requestb pending, return the value once on the first update.
 // equivalent to `firebase.once`
-export const getCurrentDBValue = (path: string, listener: DBChangeListener) => {
-  const unsubscribe = addDBListener(path, (val => {
-    listener(val);
-    unsubscribe();
-  }));
-};
+export const getCurrentDBValue = (path: string) => new Promise<any>((resolve, reject) => {
+  const collection = path.split("/")[0];
+
+  if (initialData[collection] !== "PENDING") {
+    resolve(localDB[path]);
+  }
+  else {
+    const unsubscribe = addDBListener(path, (val => {
+      resolve(val);
+      unsubscribe();
+    }));
+  }
+});
 
 // updates `state.activity` to add `interactiveState` to embeddables
 const handleAnswersUpdated = (answers: firebase.firestore.DocumentData[]) => {
@@ -164,9 +179,23 @@ const handleAnswersUpdated = (answers: firebase.firestore.DocumentData[]) => {
     notifyListeners(localAnswerPath(refId), wrappedAnswer);
     localDB[localAnswerPath(refId)] = wrappedAnswer;
   });
+
+  // if this is our first notification, notify all `answers` listeners if they have empty data, as they
+  // would not have been notified of this above
+  if (initialData.answers === "PENDING") {
+    Object.keys(listeners).forEach(path => {
+      if (isAnswerPath(path) && !localDB[path]) {
+        notifyListeners(path, null);
+      }
+    });
+  }
+
+  // permanently set that we have completed initial request for answers data
+  initialData.answers = "COMPLETED";
 };
 
 export const watchAnswers = () => {
+  initialData.answers = "PENDING";
   watchCollection(answersPath(), handleAnswersUpdated);
 };
 

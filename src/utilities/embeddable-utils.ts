@@ -47,6 +47,7 @@ export const getAnswerWithMetadata = (
       answer: interactiveState.answerText
     } as IExportableOpenResponseAnswerMetadata;
   } else {
+    // note we don't current support has_report_url
     exportableAnswer = {
       ...exportableAnswerBase,
       answer: reportStateJSON
@@ -57,10 +58,12 @@ export const getAnswerWithMetadata = (
 };
 
 /**
- * this is annoying and possibly a bug? Embeddables are coming through with `refId`'s such
- * as "404-ManagedInteractive", while answers are coming through with `question_id`'s such
- * as "managed_interactive_404". This transforms the answer's version to the embeddable's version.
+ * Embeddables are coming through with `refId`'s such as "404-ManagedInteractive", while answers
+ * are coming through with `question_id`'s such as "managed_interactive_404".
  *
+ * See https://www.pivotaltracker.com/n/projects/736901/stories/174065787
+ *
+ * This transforms the answer's version to the embeddable's version.
  * "managed_interactive_404" => "404-ManagedInteractive"
  */
 export const answersQuestionIdToRefId = (questionId: string) => {
