@@ -17,6 +17,6 @@ export const EmbeddablePlugin: React.FC<IProps> = (props) => {
       }
     }, [embeddable]);
     return (
-      <div className="plugin-container" ref={divTarget}/>
+      <div className="plugin-container" ref={divTarget} data-cy="embeddable-plugin" />
     );
   };
