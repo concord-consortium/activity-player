@@ -3,7 +3,7 @@
 // Add this component to enable buttons to toggle color theme.
 import React from "react";
 import { setThemeColors } from "../utilities/theme-utils";
-import { setBackground } from "../utilities/activity-utils";
+import { setAppBackgroundImage } from "../utilities/activity-utils";
 
 import "./theme-buttons.scss";
 
@@ -11,23 +11,23 @@ export const ThemeButtons: React.FC = () => {
   const imageUrl  = `url("https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Hubble%27s_Wide_View_of_%27Mystic_Mountain%27_in_Infrared.jpg/678px-Hubble%27s_Wide_View_of_%27Mystic_Mountain%27_in_Infrared.jpg")`;
   const handleTealTheme = () => {
     setThemeColors("#0592af", "#ff8415");
-    setBackground();
+    setAppBackgroundImage();
   };
   const handleOrangeTheme = () => {
     setThemeColors("#ff8415", "#0592af");
-    setBackground();
+    setAppBackgroundImage();
   };
   const handleCBioTheme = () => {
     setThemeColors("#008fd7", "#f15a24");
-    setBackground();
+    setAppBackgroundImage();
   };
   const handleWatersTheme = () => {
     setThemeColors("#007c8B", "#e86e2f");
-    setBackground();
+    setAppBackgroundImage();
   };
   const handleInteractionsTheme = () => {
     setThemeColors("#414546", "#2f70b0");
-    setBackground(imageUrl);
+    setAppBackgroundImage(imageUrl);
   };
 
   return (
