@@ -12,6 +12,7 @@ import "firebase/firestore";
 import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal-api";
 import { answersQuestionIdToRefId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata } from "./types";
+import { queryValueBoolean } from "./utilities/url-query";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
@@ -78,6 +79,28 @@ const configurations: IConfigs = {
 export async function initializeDB(name: FirebaseAppName) {
   const config = configurations[name];
   firebase.initializeApp(config);
+
+  // The following flags are useful for tests. It makes it possible to clear the persistence
+  // at the beginning of a test, and enable perisistence on each visit call
+  // this way the tests can run offline but still share firestore state across visits
+  //
+  // WARNING: as far as I can tell persistence is based on the domain of the page.
+  // So if persistence is enabled on a page loaded from the
+  // portal-report.concord.org domain this will likely affect all tabs in the same browser
+  // regardless of what branch or version of the portal report code that tab is running.
+  // Cypress runs its test in a different browser instance so its persistence should not pollute
+  // non-cypress tabs
+  if (queryValueBoolean("clearFirestorePersistence")) {
+    // we cannot enable the persistence until the
+    // clearing is complete, so this await is necessary
+    await firebase.firestore().clearPersistence();
+  }
+
+  if (queryValueBoolean("enableFirestorePersistence")) {
+    await firebase.firestore().enablePersistence({ synchronizeTabs: true });
+    await firebase.firestore().disableNetwork();
+  }
+
   return firebase.firestore();
 }
 
@@ -121,6 +144,9 @@ const watchCollection = (path: string, listener: DocumentsListener) => {
     if (!snapshot.empty) {
       const docs = snapshot.docs.map(doc => doc.data());
       listener(docs);
+    }
+    else {
+      listener([]);
     }
   }, (err) => {
     console.error(err);
@@ -173,7 +199,6 @@ export const getCurrentDBValue = (path: string) => new Promise<any>((resolve, re
 
 // updates `state.activity` to add `interactiveState` to embeddables
 const handleAnswersUpdated = (answers: firebase.firestore.DocumentData[]) => {
-
   const getInteractiveState = (answer: firebase.firestore.DocumentData) => {
     const reportState = JSON.parse(answer.report_state);
     return JSON.parse(reportState.interactiveState);
