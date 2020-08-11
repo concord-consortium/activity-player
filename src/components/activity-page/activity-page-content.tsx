@@ -2,14 +2,14 @@ import React from "react";
 import { Embeddable } from "./embeddable";
 import { BottomButtons } from "./bottom-buttons";
 import { PageLayouts, EmbeddableSections, isQuestion, getPageSectionQuestionCount,
-         VisibleEmbeddables, getVisibleEmbeddablesOnPage } from "../../utilities/activity-utils";
+         VisibleEmbeddables, getVisibleEmbeddablesOnPage, getLinkedPluginEmbeddable } from "../../utilities/activity-utils";
 import { SidebarWrapper } from "../page-sidebar/sidebar-wrapper";
 import { renderHTML } from "../../utilities/render-html";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
+import { Page, EmbeddableWrapper } from "../../types";
 
 import "./activity-page-content.scss";
-import { Page, EmbeddableWrapper } from "../../types";
 
 const kPinMargin = 20;
 
@@ -20,6 +20,7 @@ interface IProps {
   onPageChange: (page: number) => void;
   page: Page;
   pageNumber: number;
+  teacherEditionMode?: boolean;
   totalPreviousQuestions: number;
 }
 
@@ -40,7 +41,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   render() {
-    const { enableReportButton, isFirstActivityPage, isLastActivityPage, page, totalPreviousQuestions } = this.props;
+    const { enableReportButton, isFirstActivityPage, isLastActivityPage, page, pageNumber, totalPreviousQuestions } = this.props;
     const { scrollOffset } = this.state;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
     const pageSectionQuestionCount = getPageSectionQuestionCount(page);
@@ -57,6 +58,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const secondaryIsOnLeft = page.layout === PageLayouts.Responsive || page.layout === PageLayouts.SixtyForty;
     const collapsible = page.toggle_info_assessment && page.layout !== PageLayouts.FullWidth;
     const renderSecondary = this.renderSecondaryEmbeddables(visibleEmbeddables.infoAssessment, questionsBeforeSecondary, page.layout, secondaryIsOnLeft, collapsible);
+    const pageTitle = page.name || "";
 
     const [first, second] = primaryFirst
                             ? [renderPrimary, renderSecondary]
@@ -64,7 +66,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
     return (
       <div className={`page-content ${page.layout === PageLayouts.Responsive ? "full" : ""}`} data-cy="page-content">
-        <div className="name">{page.name}</div>
+        <div className="name">{`Page ` + pageNumber + `: ` + pageTitle}</div>
         <div className="introduction">
           { page.text && renderHTML(page.text) }
           { visibleEmbeddables.headerBlock.length > 0 && this.renderIntroEmbeddables(visibleEmbeddables.headerBlock, totalPreviousQuestions) }
@@ -79,7 +81,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
           onGenerateReport={enableReportButton ? this.handleReport : undefined}
         />
         {page.show_sidebar &&
-          <SidebarWrapper sidebars={[{content: page.sidebar, title: page.sidebar_title }]}/>
+          <SidebarWrapper sidebars={[{ content: page.sidebar, title: page.sidebar_title }]} />
         }
       </div>
     );
@@ -141,6 +143,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
             if (isQuestion(embeddableWrapper)) {
               questionNumber++;
             }
+            const linkedPluginEmbeddable = getLinkedPluginEmbeddable(this.props.page, embeddableWrapper.embeddable.ref_id);
             return (
               <Embeddable
                 key={`embeddable ${i}`}
@@ -148,6 +151,8 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                 isPageIntroduction={i === 0 && section === EmbeddableSections.Introduction}
                 pageLayout={this.props.page.layout}
                 questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
+                linkedPluginEmbeddable={linkedPluginEmbeddable}
+                teacherEditionMode={this.props.teacherEditionMode}
               />
             );
           })
@@ -172,7 +177,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const containerClass = `group fill-remaining ${isFullWidth ? "responsive top" : ""} ${isLeft ? "left" : ""}`;
     return (
       <div className={containerClass} style={position} ref={elt => this.primaryDivRef = elt}>
-        { this.renderEmbeddables(embeddables, EmbeddableSections.Interactive, totalPreviousQuestions) }
+        {this.renderEmbeddables(embeddables, EmbeddableSections.Interactive, totalPreviousQuestions)}
       </div>
     );
   }
@@ -184,8 +189,8 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const containerClass = `group ${isFullWidth ? "responsive" : ""} ${isLeft ? "left" : ""} ${staticWidth ? "static-width" : ""} ${isSecondaryCollapsed ? "collapsed" : ""}`;
     return (
       <div className={containerClass} ref={elt => this.secondaryDivRef = elt}>
-        { collapsible && this.renderCollapsibleHeader() }
-        { !isSecondaryCollapsed && this.renderEmbeddables(embeddables, EmbeddableSections.InfoAssessment, totalPreviousQuestions)}
+        {collapsible && this.renderCollapsibleHeader()}
+        {!isSecondaryCollapsed && this.renderEmbeddables(embeddables, EmbeddableSections.InfoAssessment, totalPreviousQuestions)}
       </div>
     );
   }
@@ -197,16 +202,16 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const headerClass = `collapsible-header ${isSecondaryCollapsed ? "collapsed" : ""} ${rightOrientation ? "right" : ""}`;
     return (
       <div onClick={this.handleCollapseClick} className={headerClass}>
-        { isSecondaryCollapsed
+        {isSecondaryCollapsed
           ? <React.Fragment>
-              {this.renderCollapseArrow(rightOrientation)}
-              <div>Show</div>
-            </React.Fragment>
+            {this.renderCollapseArrow(rightOrientation)}
+            <div>Show</div>
+          </React.Fragment>
           : <React.Fragment>
-              { rightOrientation && <div>Hide</div> }
-              {this.renderCollapseArrow(!rightOrientation)}
-              { !rightOrientation && <div>Hide</div> }
-            </React.Fragment>
+            {rightOrientation && <div>Hide</div>}
+            {this.renderCollapseArrow(!rightOrientation)}
+            {!rightOrientation && <div>Hide</div>}
+          </React.Fragment>
         }
       </div>
     );
@@ -215,17 +220,17 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   private renderCollapseArrow = (leftArrow: boolean) => {
     return (
       <React.Fragment>
-        { leftArrow
+        {leftArrow
           ? <IconChevronLeft
-              width={32}
-              height={32}
-              fill={"white"}
-            />
+            width={32}
+            height={32}
+            fill={"white"}
+          />
           : <IconChevronRight
-              width={32}
-              height={32}
-              fill={"white"}
-            />
+            width={32}
+            height={32}
+            fill={"white"}
+          />
         }
       </React.Fragment>
     );

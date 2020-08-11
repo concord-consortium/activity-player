@@ -1,0 +1,1898 @@
+{
+  "description": "",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "U2020 - Lesson 1: Discover Your Local Watershed",
+  "notes": "",
+  "project_id": null,
+  "related": "",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "",
+  "time_to_complete": 45,
+  "version": 1,
+  "theme_name": "WATERS",
+  "pages": [
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "What is our school\u2019s watershed, and how do humans impact our watershed?",
+      "position": 1,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Introducing the WATERS Curriculum\\n\\nThe **Watershed Awareness using Technology and Environmental Research for Sustainability (WATERS)** Curriculum is designed to guide students through an investigation of their local watershed. Utilizing exploratory studies and scientific and educational technologies, students discover local watershed issues, investigate the health of their local watershed and the impact of humans on their watershed, and learn about water-related careers. At the end of this unit, students communicate their findings and develop a plan for improving their local watershed. Throughout students' daily exploration of their local watershed, information is collected and organized on a WATERS Idea Hub.\\n\\n###WATERS Idea Hub\\nThe WATERS Idea Hub is a place to collect and organize all of the big ideas that students discover throughout the WATERS Curriculum. A Hub can manifest in many ways convenient for the teacher and the students' unique learning needs, including a large piece of butcher paper, a cardboard report tri-fold, or an online app or shared document. Teachers may choose to have one Hub for all classes or one Hub for each individual class. \\n\\nThe WATERS Idea Hub is separated into three categories: **Discoveries**, **Issues**, and **Solutions**. For physical versions of the Hub in the classroom (e.g., whiteboard, poster, or tri-fold), it is recommended that students record their findings (using words or images) on Post-it Notes and add these to the appropriate Hub category during each lesson. All lessons include a reminder to add new findings to the WATERS Idea Hub near the end of the day, although teachers may allow students to add new information at any point in a lesson. The WATERS Idea Hub is instrumental in Lesson 9, when the class reviews the discoveries, issues, and solution learned and recorded in the Hub. They then identify one environmental issue in their school's local watershed and, in small groups, work together to develop an action plan to stop or improve this issue.\\n\\nTeachers may choose to modify this interactive learning tool by spreading the three categories across different areas of their classroom (e.g., one piece of paper or whiteboard for Discoveries, one for Issues, and one for Solutions), or by having students record ideas directly onto the Hub using markers or other writing utensils, rather than using sticky notes.\\n\\nCheck out \u003Ca href=\\\"https://project-resources.concord.org/waters/Lesson1/Images/WATERSIdeaHub_SampleCopy.pdf\\\" target=\\\"_blank\\\"\u003Ethis example\u003C/a\u003E of content that may accumulate in a WATERS Idea Hub and two examples of actual WATERS Idea Hubs: \u003Ca href=\\\"https://project-resources.concord.org/waters/ideahub.jpg\\\" target=\\\"_blank\\\"\u003EPost-it Note and tri-fold posterboard method\u003C/a\u003E and \u003Ca href=\\\"https://project-resources.concord.org/waters/Lesson1/Images/WATERSIDEAHUB.png\\\" target=\\\"_blank\\\"\u003EPadlet method\u003C/a\u003E. \\n\\n\u003Cimg style=\\\"float: left; padding-right: 50px;\\\" src=\\\"https://project-resources.concord.org/waters/ideahub.jpg\\\" target=\\\"_blank\\\" width=\\\"458px height=\\\"183px\\\" /\u003E   \\n\\n\u003Cimg src=\\\"https://project-resources.concord.org/waters/Lesson1/Images/WATERSIDEAHUB.png\\\" target=\\\"_blank\\\" width=\\\"360px height=\\\"144px\\\" /\u003E\\n\\n\\n###Lesson Background\\n\\nThe purpose of this first lesson is to orient students to their surroundings and establish the \u201cplace\u201d in this place-based curriculum. The location for all lessons in the WATERS Curriculum is a *watershed*, or a system defined by the area of land over which all water drains downhill through a series of streams and rivers to a common outlet (river, lake, bay or ocean). The local (or primary) watershed for any location is determined by following the topography downhill to the first body of water (stream, river, pond or lake), as this is the water that would be affected by any pollution issue that is carried by runoff into a waterway. The local watershed is defined by all of the land area that would impact that first body of water, including all of the land area upstream in the watershed. Smaller watersheds are nested inside larger watersheds. As rivers flow downhill and small tributaries combine to form large rivers, more land area affects the water quality in those waterways. \\n\\nThe river systems of most watersheds terminate in an ocean, bay, or gulf. In some watersheds, the river system terminates in an inland depression, known as a basin. The Great Basin of North America is the third largest basin in the world and encompasses most of Nevada, Oregon, and Utah, as well as parts of California, Idaho, and Wyoming. Runoff in these areas carries pollutants and soluble materials to lowland basins, where much of the water evaporates, concentrating the salts and pollutants.\\n\\nThe U.S. Geological Survey (USGS) created an extensive cataloging system to identify the major watersheds and sub-watersheds in the United States. The 50 U.S. States and part of the Caribbean are divided into 21 regions, which are each divided into subregions, accounting units, and cataloging units. Each of these land divisions is identified with a two-digit code to create an eight-digit land designation known as a HUC-8. \\\"HUC\\\" stands for \\\"Hydrologic Unit Code,\\\" which refers to the number of digits in their designation. The Model My Watershed\u00ae (ModelMW) web application used in the WATERS Curriculum includes three different boundary area layers from the USGS HUC-8, -10, and -12 codes. In the USGS HUC system, the HUC-8 level is described as a \u201csubbasin\u201d scale, the HUC-10 level is called a \u201cwatershed,\u201d and the HUC-12 level is labeled a \u201csubwatershed.\u201d \\n\\nThese terms are not equivalent to true watershed designations, which can be confusing. The Mississippi River Watershed is the largest watershed in North America by area. However, this watershed is divided up in the USGS HUC system and includes the following HUC-8 areas: the Ohio, Tennessee, Upper Mississippi, Lower Mississippi, Missouri, and Arkansas-White-Red regions. For our purposes in WATERS, the HUC designations \u201cname\u201d the watershed areas around your schools. All of the watersheds included in your school\u2019s local (or primary) watershed are NOT identified during WATERS, but teachers may pursue this as an engaging extension activity if time allows. \\n\\nFor more information on the boundaries included in ModelMW and used during WATERS, please view the ModelMW Technical Documentation (https://wikiwatershed.org/help/model-help/mmw-tech/#overlay-boundary). More information on the USGS HUC system can be found at USGS (https://water.usgs.gov/GIS/huc.html) or Wikipedia (https://en.wikipedia.org/wiki/Hydrological_code).\\n\\n\\n\\n###Learning Objectives\\n\\n* Students will define and describe a watershed.\\n\\n* Students will locate their school, identify their local watershed, and explore how watersheds are nested in larger watersheds.\\n\\n* Students will explain how human activities in the watershed impact water quality.\\n\\n\\n###NGSS Standards\\n\\n* MS-LS2-3: Develop a model to describe the cycling of matter and flow of energy among living and nonliving parts of an ecosystem.\\n\\n* MS-ESS2-2: Construct an explanation based on evidence for how geoscience processes have changed Earth\u2019s surface at varying time and spatial scales.\\n\\n* MS-ESS2-4: Develop a model to describe the cycling of water through Earth\u2019s systems driven by energy from the sun and the force of gravity.\\n\\n| Science \u0026 Engineering Practices | Disciplinary Core Ideas | Crosscutting Concepts |\\n|----------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\\n|\u003Cul\u003E\u003Cli\u003EDeveloping and Using Models\u003C/li\u003E\u003Cli\u003EAnalyzing and Interpreting Data\u003C/li\u003E\u003Cli\u003EEngaging in Argument from Evidence\u003C/li\u003E\u003Cli\u003EConstructing Explanations and Designing Solutions\u003C/li\u003E\u003C/ul\u003E | \u003Cul\u003E\u003Cli\u003EESS2.A Earth\u2019s Materials and Systems\u003C/li\u003E\u003Cli\u003EESS2.C The roles of water in Earth's surface processes\u003C/li\u003E\u003Cli\u003EESS3.A Natural Resources\u003C/li\u003E\u003Cli\u003EESS3.C Human impacts on Earth's systems.\u003C/li\u003E\u003C/ul\u003E | \u003Cul\u003E\u003Cli\u003ESystems and System Models\u003C/li\u003E\u003Cli\u003EPatterns Cause and Effect\u003C/li\u003E\u003Cli\u003EEnergy and Matter Stability and Change\u003C/li\u003E\u003Cli\u003EInfluence of Science, Engineering, and Technology on Society and the Natural World\u003C/li\u003E\u003C/ul\u003E |\\n\\n###Vocabulary\\n\\n* **Confluence**: The place where two streams or rivers flow together and become a larger stream or river.\\n* **Divide**: The highest points of land (mountains, hills, or ridges) where runoff would flow downhill in opposite directions and defines watershed boundaries. \\n* **Headwaters**: The small streams at the top of a watershed where the rivers begin, often called the source.\\n* **Mouth**: The end of a river where the water enters a lake, bay or ocean.\\n* **Pollution**: Chemicals, pathogens and other harmful things that could have a negative effect on people and other living things in an environment.\\n* **Runoff**: Water that does not infiltrate into the ground and runs across the surface of the land, which can cause erosion and carry pollutants and sediment into streams, rivers, lakes, stormwater basins, or sewers.\\n* **Slope:** The angle of the land compared to the horizontal, which affects the movement of water. Water flows from higher to lower elevations, down the slope of the land. Water flows faster down a steep slope, and slower on a gentle slope.\\n* **Sustainability**: An approach for human interactions that respects the value of the environment and employs methods of using resources wisely so they are not depleted or permanently damaged. Sustainably designed buildings conserve the use of resources such as water and energy.\\n* **Topography**: The physical features or shape of the land (mountains, hills, valleys, etc.), which affects where water flows.\\n* **Tributary**: A stream or river that flows into a larger stream, river, or lake.\\n* **Watershed**: A system defined by the area of land over which all water drains downhill through a series of streams and rivers to a common outlet (river, lake, bay or ocean).\\n\\n*Please note that vocabulary is comprehensive and serves only as a guide to teaching the lesson's major concepts. Teachers are encouraged to reinforce only the terms most meaningful to their students' unique learning needs and understanding.*\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7289-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Duration: 45 min\\n\\n* Opening (3 min)\\n\\n* What is a watershed? (Crumpled Paper Watershed) (10 min)\\n\\n* What is a watershed? (Video) (7 min)\\n\\n* Identifying Your School\u2019s Watersheds  (9 min)\\n\\n* What have you learned? (4 min)\\n\\n* WATERS Idea Hub (7 min)\\n\\n* STEM Career Connection (5 min)\\n\\n* _OPTIONAL:_ Exploring the Different Parts of a Watershed \\n\\n\\n###Materials\\n\\n* WATERS Idea Hub and Post-it Notes *May be adapted by teacher\\n\\n* Large piece of art paper (heavyweight), butcher paper, or kraft paper\\n\\n* Black permanent marker\\n\\n* Blue wet erase marker\\n\\n* Wash bottle or spray bottle filled with water\\n\\n* \u003Ca href=\\\"https://project-resources.concord.org/waters/Lesson1/Images/Lesson1MMWDirectionsforWatershed%20Discovery.pdf\\\" target=\\\"_blank\\\"\u003ELesson 1: Discover Your Local Watershed Instructions\u003C/a\u003E \\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7290-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Water Cycle Review (Optional)\\n\\nThe water cycle (also known as the hydrologic cycle) is a foundational concept for understanding the dynamics of watersheds. If your students would benefit from a review of the water cycle before this lesson or before beginning the WATERS Curriculum, we suggest using the USGS Water Cycle for Schools Interactive \u003Ca href=\\\"https://water.usgs.gov/edu/watercycle-kids-int.html\\\" target=\\\"_blank\\\"\u003E(https://water.usgs.gov/edu/watercycle-kids-int.html)\u003C/a\u003E. This online, interactive diagram of the water cycle in English includes pop-up balloons that describe the terms included in the USGS diagram. There are three versions of the water cycle diagram with different numbers of terms explained (Beginner - 6 terms, Intermediate - 16 terms, and Advanced - 33 terms). \\n \\nUnfortunately, this interactive is not available in Spanish at this time. There is a non-interactive Spanish language version of the same diagram available on the USGS website that could be printed out or viewed when ELL students are using the online Water Cycle for Schools Interactive \u003Ca href=\\\"https://www.usgs.gov/media/images/el-ciclo-del-agua-para-ni-os-water-cycle-schools-spanish\\\" target=\\\"_blank\\\"\u003E(https://www.usgs.gov/media/images/el-ciclo-del-agua-para-ni-os-water-cycle-schools-spanish)\u003C/a\u003E. More information on Spanish language resources from USGS can be found on the USGS website (https://www.usgs.gov/special-topic/water-science-school/science/el-ciclo-del-agua-water-cycle-schools-spanish).\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7291-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"diggingDeeper\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Water is Amazing!\\n\\nWater is unique, as it is the only known substance that can exist in the three main forms of matter at the same time (solid, liquid, and gas). Picture a glass of ice water on a hot summer day. There is ice in the glass, water in the glass, and water vapor in the air around the glass (some of this water vapor will accumulate on the outside of the glass as condensation). \\n\\nWater is essential for life and has numerous special properties due to its chemical nature. Water is made of one oxygen atom (O) and two hydrogen atoms (H), hence the chemical formula H\u003Csub\u003E2\u003C/sub\u003EO.\\n\\n\u003Cimg src=\\\"https://project-resources.concord.org/waters/Lesson1/Images/H2O.jpeg\\\" alt=\\\"drawing\\\" width=\\\"300\\\" height=\\\"250\\\"/\u003E. \\n\\nOxygen has high electronegativity, or an affinity for electrons. This means oxygen atoms would have a hard time in kindergarten because they do not like to share their electrons! As electrons in a water molecule orbit around the three atoms (one oxygen and two hydrogen atoms), the negatively charged electrons spend more time near the larger oxygen atom, creating a \\\"polar\\\" molecule, or a molecule with oppositely charged regions). This creates a unique \\\"Mickey Mouse\\\" shaped molecule with a large oxygen \\\"face\\\" with two hydrogen \\\"ears\\\" that do not touch, as these \\\"ears\\\" are both positively charged. Opposite charges attract, which allow the negatively charged oxygen atom to \\\"stick\\\" to the positively charged hydrogen atom of an adjacent water molecule. The polar nature of water creates a \\\"stickiness\\\" between the water molecules that makes water sticky and creates water's special properties.\\n\\n\\n####Surface Tension\\n\\nWater molecules stick to each other on the surface. Water drops stick together on an object (e.g., dew beading on vegetation, water beading on a car), in a container (e.g., overfill a glass of water carefully to observe the water above the rim, count how many drops of water fit on a penny). These cohesive forces of polar water molecules on the surface allow water striders (Family Gerridae) to \\\"walk\\\" on top of water and paper clips to float on overfilled glasses of water.\\n\\n####Capillary Action\\n\\nThanks to the polar water molecule, water can climb up in small spaces and drag other water molecules up with them! This can be demonstrated by placing the bottom of a strip of paper towel in a glass of water, or when bricks sit in water the moisture will rise up the brick. This can also be seen in a straw sitting in a glass of water (the water will be higher in the straw than in the glass) or in a test tube or pipette as water forms a meniscus (curved surface as water climbs up the sides and leaves the middle lower). For this reason, scientists always measure from the bottom of a meniscus in a graduated cylinder. \\n\\n####High Specific Heat\\n\\nDue to the attraction between the polar water molecules, water takes longer to absorb and release heat (heat up and cool down). This can be witnessed at a swimming pool or the beach, where the cement around the pool or sand on the beach gets hot in the sun; meanwhile, the water in the pool or ocean is cooler. At night the cement or sand cools quickly below the temperature of the water. \\n\\n####Solid Water Floats\\n\\nThe molecules in most substances move closer together (becomes more dense) when changing from a liquid to a solid as the substance cools. Water molecules are most dense at 4 degrees Celsius. As liquid water cools and turns to ice, the water molecules form a crystal lattice that holds the water molecules further apart, making ice less dense than liquid water and causing ice to float. This property is a life-saver for organisms that live at the bottom of lakes, streams, and ponds that freeze over, as the organisms continue to survive in the liquid water below the ice.\\n\\nThere are many more properties caused by the polar nature of the water molecule.  For more on the properties of water, visit the USGS Water Science webpage (https://www.usgs.gov/special-topic/water-science-school/science/water-properties-information-topic?qt-science_center_objects=0#qt-science_center_objects). \",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7292-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThere is water, water everywhere!\u003C/p\u003E\r\n\u003Cp\u003E\u003Cimg class=\"tinymce-img-float-right\" src=\"https://project-resources.concord.org/waters/Lesson1/Images/Neelamriver-2669180_1920.jpg\" alt=\"Neelam River Watershed in Pakistan\" width=\"441\" height=\"294\" /\u003E\u003C/p\u003E\r\n\u003Cp\u003EYou are beginning a 10-day unit to explore how human choices on land and in water affect watershed health. Along the way, you will discover the critters who call streams home, dive into real scientific experiments, explore how to bring sustainability into your everyday choices, and learn so much more!\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003EToday you will:\u003C/strong\u003E\u003C/p\u003E\r\n\u003Cul\u003E\r\n\u003Cli\u003E\u003Cstrong\u003EDefine and describe a watershed.\u003C/strong\u003E\u003C/li\u003E\r\n\u003Cli\u003ELocate your school, \u003Cstrong\u003Eidentify your local watershed\u003C/strong\u003E, and explore how watersheds are nested in larger watersheds.\u003C/li\u003E\r\n\u003Cli\u003E\u003Cstrong\u003EExplain how human activities impact water quality\u003C/strong\u003E in a watershed.\u003C/li\u003E\r\n\u003C/ul\u003E\r\n\u003Cp\u003EEach day you will share what you learned in the WATERS Idea Hub. \u003Cstrong\u003EBe on the lookout for discoveries, issues, and solutions to put in your Hub!\u003C/strong\u003E\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "141067-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "What is a watershed?",
+      "position": 2,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"Students should recognize that a watershed is an area of land where water flows downhill to a specific location. Each tributary has a specific area of land that it drains, which is its watershed. When tributaries flow together, their watersheds combine to become a larger watershed.\",\"teacherTip\":\"\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7293-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "119-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Defining a Watershed \\nThe first activity is a teacher-led activity in which students to discover the concept of a watershed using crumpled paper as a visual representation of a watershed. Water that runs over the land as runoff or in streams and rivers can only flow in one direction \u2013 **downhill**. A **watershed** is a system defined by the area of land over which all water drains downhill through a series of streams and rivers to a common outlet (river, lake, bay or ocean). A **divide** is a ridge of land (or highest point) where water flows in opposite directions and forms the boundary of a watershed. Each stream has a divide that separates the area of land that drains to that stream from other watersheds. As streams flow together, the watersheds combine to form a larger land area that drains to the common river. The topography (or shape of the land) dictates where the water flows as it moves downhill by the force of gravity.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7294-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Crumpled Paper Watershed Materials\\n\\n* Large piece of art paper (heavyweight), butcher paper, or kraft paper\\n\\n* Black permanent marker\\n\\n* Blue wet erase marker\\n\\n* Wash bottle or spray bottle filled with water\\n\\n###Crumpled Paper Watershed Instructions\\n\\n1. Crumple up the piece of paper and then spread it out to create a mountain range with ridges (high points) and valleys (low points). If the paper is too thin, objects can be placed underneath to help maintain the shape of the land.\\n\\n2. Explain to students that this is a model of the surface of the Earth. Ask students to imagine what will happen when precipitation falls on this land. Find a ridge and define this as the divide that separates the flow of water into different paths across the land. Use the black marker to define the divides in your crumpled paper model.\\n\\n3. Look over the land model and identify the valleys where water will likely flow and the low areas where lakes will form. Use a blue wet erase marker to mark these areas (valleys and low areas). Teachers may want to create real or imagined names for the different areas formed by the model (e.g., California Condor Valley, Brook Trout Creek, Green River, Loch Ness Lake) to help students recognize the different watersheds. \\n\\n4. Spray or drip water over the model to show students how the divide separates the watersheds in the model and how the watersheds combine.\\n\\n###Important Vocabulary to Note\\n\\n* **watershed:** a system defined by the area of land over which all water drains downhill through a series of streams and rivers to a common outlet (river, lake, bay or ocean)\\n\\n* **divide:** the boundary of a watershed designated by the highest points (mountains, hills, or ridges) between watersheds where runoff would flow downhill in opposite directions into different watersheds\\n\\n* **headwaters:** the small streams at the top of a watershed where the rivers begin, often called the source\\n\\n* **tributary:** any stream or river that flows into another stream or river at a confluence\\n\\n* **confluence:**  the place where two streams or rivers flow together and become a larger stream or river\\n\\n* **mouth:** the end of a river where the water enters a lake, bay, or ocean\\n\\nThe above terms are also featured in a table that can be viewed by students on Page 8, \u201cOptional: Exploring the different parts of a watershed.\\\"\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7295-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Lead a class discussion on the watershed demonstration. See possible questions and answers below:\\n\\n* Where did the water flow when precipitation landed in the model?\\n * *Students should recognize that the water moved downhill as precipitation landed on the model. Runoff and streams flow downhill, along the path of least resistance, and the divides separate areas where water flows in different directions.*\\n\\n* What do the black lines represent in this model?\\n * *The black lines represent the divides.*\\n\\n* What do the blue lines represent in this model?\\n * *The blue lines represent the streams and rivers.*\\n\\n* What happened to the water that landed near the black lines?\\n  * *Water that landed near the divides flowed in different directions into separate areas.*\\n\\n* After watching this demonstration, how would you define a watershed?\\n  * *Students should recognize that a watershed is an area of land where water flows downhill to a specific location. Some watersheds may combine further downhill as tributaries flow together.*\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7296-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EYour teacher will lead a class discussion. Some of the questions that you may discuss are listed below:\u003C/p\u003E\r\n\u003Cul\u003E\r\n\u003Cli\u003EWhere did the water flow when precipitation landed in the model?\u0026nbsp;\u003C/li\u003E\r\n\u003Cli\u003EWhat did the black lines represent in this model?\u003C/li\u003E\r\n\u003Cli\u003EWhat did the blue lines represent in this model?\u003C/li\u003E\r\n\u003Cli\u003EWhat happened to the water that landed near the black lines?\u003C/li\u003E\r\n\u003C/ul\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "CLASS DISCUSSION",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "141068-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": "",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EAfter watching your teacher demonstrate a watershed, how would you \u003Cstrong\u003Edefine a watershed\u003C/strong\u003E?\u0026nbsp;\u003C/p\u003E\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "345f3fe57a70b2d2d77628d964bfe8afad9cb10b",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "119-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EWhile your teacher demonstrates a model of a\u0026nbsp;watershed, look for the main features of a\u0026nbsp;watershed\u0026nbsp;and how the shape of land (topography) changes the direction of the flow of water.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Lesson1Watershed.png\" width=\"672\" height=\"460\" /\u003E\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "141069-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "What is a watershed?",
+      "position": 3,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"Humans can have a negative impact on watersheds by the way they use and alter the land. If more humans upstream build on the land, do not prevent soil erosion, or add pollutants, this can damage the water quality and cause flooding, stream bank erosion, or pollute the water. \\n\\nExamples of human choices that negatively affect, or cause harm to, our watersheds:\\n\\n* Deforestation, especially along streams (riparian buffer)\\n\\n* Increasing impervious surfaces (sidewalks and parking lots with traditional impervious paving materials)\\n\\n* Pollutants like fertilizers, pesticides, oil, and gasoline \\n\",\"teacherTip\":\"\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7297-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "120-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"Humans can protect the water by holding the rain in place. We can help water soak into the ground by planting native plants in bare soil, tilling the soil less, building rain gardens, and adding less fertilizers or pollutants. We are all connected in a watershed and we need to depend on each other to be a good neighbor.\\n\\nExamples of human choices that can positively affect, or protect, our watersheds:\\n\\n* Restoring/planting streamside forests (riparian buffers)\\n\\n* Planting rain gardens\\n\\n* Using no or fewer fertilizers and pesticides\\n\",\"teacherTip\":\"\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7298-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "121-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"As a class, discuss how human choices on land and in water affect the health of our watersheds. Discuss the following questions:\\n\\n* What negative effects did the students list?\\n\\n* What positive effects did students list?\\n\\n* Could some of the positive choices be solutions or alternatives to the negative effects?\\n\\n* How do our human choices affect not just our own watershed, but also many other watersheds? \\n(Hint: Nesting, We all live downstream, etc.)\\n\\nRemember what **WATERS** stands for: **Watershed Awareness using Technology and Environmental Research for Sustainability**. So far in the WATERS Curriculum, students have increased their watershed awareness and began thinking about how their everyday choices affect watershed health. As they discuss positive effects of their choices, encourage them to think about how those choices support sustainability, or using natural resources in a way that meets the needs of the present without compromising the ability of future generations to meet their own needs. \",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7299-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": "",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EList 1-2 human choices that \u003Cstrong\u003Enegatively affect\u003C/strong\u003E, or cause harm to, our watersheds.\u003C/p\u003E\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "345f3fe57a70b2d2d77628d964bfe8afad9cb10b",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "120-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": "",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EList 1-2 human choices that can \u003Cstrong\u003Epositively affect\u003C/strong\u003E, or protect, our watersheds.\u003C/p\u003E\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "345f3fe57a70b2d2d77628d964bfe8afad9cb10b",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "121-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EWatch the \u0026ldquo;What is a watershed?\u0026rdquo; video and learn how humans affect the health of our watershed. Think about sustainability, or wisely using natural resources in a way that meets our needs today without hurting the ability of others to meet their own needs in the future. Why is sustainability important in watersheds around the world?\u003Cbr /\u003E\u0026nbsp;\u003Cbr /\u003E\u003Cstrong\u003EThen answer the questions below!\u003C/strong\u003E\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "141070-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/waters/Lesson1/Movies/USDAWatershedLearningVideo.mp4\",\"credit\":\"Missouri and Mississippi Resource Conservation and Development, Inc. and USDA Natural Resources Conservation Sources\",\"prompt\":\"This video explains what a watershed is and how what happens in the watershed affects the rest of the watershed.\",\"captionUrl\":\"https://project-resources.concord.org/waters/Lesson1/Movies/L1USDAWatershedLearningVideo.vtt\"}",
+            "is_hidden": false,
+            "is_full_width": false,
+            "show_in_featured_question_report": false,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "dcc3f77896462208853553db05fad582cbecae7e",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/video-player/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
+                "enable_learner_state": false,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Video Player",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "122-ManagedInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Identifying Your School\u2019s Watersheds",
+      "position": 4,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": true,
+      "embeddables": [
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"The answer is the address for your school.\",\"teacherTip\":\"\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7300-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "123-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"This could be a stream, river, pond, lake or ocean. If the waterway is \\\"unnamed,\\\" then it should be considered an \\\"unnamed tributary\\\" of the next body of water that it flows into.\",\"teacherTip\":\"You should identify this during training/preparation. This could be a named river, lake, or pond, or it could be an unnamed tributary of the next named body of water downhill from your school. Examples: Crystal Brook Watershed, Mirror Lake Watershed, Unnamed Tributary of White Clay Creek Watershed, Unnamed Tributary of an unnamed tributary of Chester Creek\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7301-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "124-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"Answers will vary based on your school's location.\",\"teacherTip\":\"Teachers and students should see this name appear when they hover the cursor over the area delineated by red lines around their school.\\n\\nWrite answers on the board and add these to your WATERS Idea Hub by the end of the lesson.\\n \",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7302-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "125-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": "",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"What is your school's address?\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "345f3fe57a70b2d2d77628d964bfe8afad9cb10b",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "123-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": "",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EWhat is the closest body of water downhill from your school? \u003C/p\u003E\\n\u003Cp\u003E(\u003Cem\u003EHint: This is your school\u2019s local watershed!\u003C/em\u003E)\u003C/p\u003E\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "345f3fe57a70b2d2d77628d964bfe8afad9cb10b",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "124-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": "",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"What is the name of your the USGS Subwatershed unit (HUC-12) where your school is located?\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "345f3fe57a70b2d2d77628d964bfe8afad9cb10b",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "125-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Lead students through an online tour of your school\u2019s watershed using [Model My Watershed\u00ae (ModelMW)](https://modelmywatershed.org/). Demonstrate this for the whole class to explore together, or allow students to complete the tour at the same time on their own devices using the [Student Directions for Watershed Discovery](https://cc-project-resources.s3.amazonaws.com/waters/Lesson1/Images/Lesson%201%20MMW%20Student%20Directions%20for%20Watershed%20Discovery.pdf) to help guide them through the steps.\\n\\nFor additional support, please consult the ModelMW Help Page (https://wikiwatershed.org/help/model-help/).\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7303-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Identifying Your School\u2019s Watersheds \\n\\n1. Write the street address for your school on the board for all the students to see. Also, put it on a sticky note and and add it to the WATERS Idea HUB. Students will need this information later so it may be best to post it somewhere accessible for the duration of the unit. Review the school\u2019s address with the students to recognize how the school\u2019s location is \u201cnested\u201d within larger entities. Example: 24 Broad Street Springfield Park County Ohio USA North America. The address 24 Broad Street is one specific part of Broad Street, Broad Street is a specific area in Springfield, and Springfield is one of many cities in Ohio. Watersheds work the same way and most watersheds end in an ocean. \\n\\n2. Lead students through an online tour of their school's watershed with the Model My Watershed\u00ae (ModelMW)(https://modelmywatershed.org/) app, emphasizing how their watershed is nested within a larger watershed.\u003Cbr\u003E\\n\\n**How to Use Model My Watershed\u00ae (ModelMW) to locate your school and delineate the local watershed. \\n\\n\u003Cimg src=\\\"https://cc-project-resources.s3.amazonaws.com/waters/Lesson1/Images/LESSON1MMWSEARCHBOX.png\\\" width=\\\"500\\\" height=\\\"400\\\" align=\\\"right\\\"\u003E\\n\\n1. Go to [ModelMyWatershed.org](https://modelmywatershed.org/). Type your School\u2019s Address in the search box in the top right corner of the map and press \u201center.\u201d\\n\\n2. Click the \u201cBasemaps\u201d icon (![](https://cc-project-resources.s3.amazonaws.com/waters/Lesson1/Images/Lesson1BasemapLayers.png)) in the \u201cLayers\u201d control box in the bottom left corner of the map and toggle between the different layers to explore the area around your school (Streets, Satellite, Satellite with Roads, and Terrain). \\n\\n3. Look for bodies of water around your school and work together with students to identify the first body of water downhill from your school. This is your school\u2019s \u201cprimary watershed.\u201d Record this answer in the question box below the interactive.\\n\\n4. Set the basemap to \u201cSatellite with Roads\u201d and click on \u201cGet started\u201d (![](https://cc-project-resources.s3.amazonaws.com/waters/Lesson1/Images/Lesson1MMWGetStarted.png)) in the left panel.\\n\\n5. In the left panel, click the down arrow in \u201cSelect boundary\u201d and choose \u201cUSGS Subwatershed unit (HUC-12).\u201d  \\n\\n\u003Cimg src=\\\"https://cc-project-resources.s3.amazonaws.com/waters/Lesson1/Images/Lesson2MMWHUC12.png\\\" width=\\\"500 height=\\\"400\\\"\u003E\\n\\n6. Red lines appear on the map to outline your local watershed. Hover the cursor over your school to see the name of your HUC-12 watershed. Record this name in the question box below. (Hint: Do not click on the map, or you will need to start over!)\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7304-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"diggingDeeper\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Nested Watersheds\\nDemonstrate how watersheds are \u201cnested\u201d as smaller watersheds join together to form larger watersheds wherever streams flow together at a confluence. After demonstrating how your school\u2019s address is nested much like watersheds (See Teacher Tip, #1 above), we recommend showing students the \u003Ca href=\\\"https://waters-resources.concord.org/Lesson1/Images/WatershedTourofClaybankBrookPresentation.pdf\\\" target=\\\"_blank\\\"\u003EWatershed Tour of Claybank Brook\u003C/a\u003E if time allows. Point out the components of a watershed (e.g., divides, tributaries, confluences), as well as how smaller watersheds are nested in larger watersheds and how the land area that impacts watersheds expands as rivers flow downhill and combine.\\n\\n###Delineate Your Local Watershed\\n\\nYou may be able to delineate their local watershed with ModelMW, although this does not work well for all locations and should be tested during preparations.\\n\\n1. Go to \u003Ca href=\\\"https://modelmywatershed.org/\\\" target=\\\"_blank\\\"\u003EModelMyWatershed\u003C/a\u003E and enter your school\u2019s address in the search box in the upper right hand corner of the map.\\n2. Click on \u201cGet started\u201d to select an area.\\n3. Click on the dropdown arrow to the right of \u201cDelineate watershed\u201d and select \u201cContinental US Medium Resolution.\u201d\\n4. Click on your school property to drop a pin (blue balloon) and the MMW program draws a watershed boundary around the area that includes your school\u2019s property, which impacts your local waters. The MMW program identifies the location where you dropped the pin with a purple circle, and follows the topography downhill to the place where runoff flows into a stream, pond, or lake (indicated with a blue circle).\\n5. Look near the blue circle to identify the name of the closest body of water that is impacted by runoff from your school\u2019s property. Toggle between different basemaps to find the names of the local waterways (Hint: Usually the \u201cStreets\u201d basemap works best). This is your school\u2019s local watershed! This could be a lake, pond, river, or unnamed tributary. Write your school's watershed on the board and add this to your WATERS Idea Hub. Examples: Crystal Brook Watershed, Unnamed Tributary of Mongo Creek Watershed, Lake Mary Watershed, etc.\\n\\n###Do You Live in the Same Watershed as Your School?\\n**Extension Activity:** Ask students to locate their home address using ModelMW and answer the question below:\\n\\n* Use your home address to find out if you live in the same HUC-12 watershed as your school?  Y/N (If no, name your HUC-12.)\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7305-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EYour teacher will guide you on a watershed discovery for your own school using the Model My Watershed\u0026reg; (ModelMW) web application!\u003C/p\u003E\r\n\u003Cp\u003E\u003Cimg class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://project-resources.concord.org/waters/Lesson1/Images/Lesson1P4ModelMyWatershedHomePage.JPG\" alt=\"The Model My Watershed App\" width=\"754\" height=\"491\" /\u003E\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "141071-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": null,
+            "click_to_play": null,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": null,
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": null,
+            "type": "MwInteractive",
+            "ref_id": "92799-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "What have you learned?",
+      "position": 5,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"Water in a watershed flows downhill to a common outlet (e.g., river, lake, bay, or ocean)\\n\",\"teacherTip\":\"\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7306-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "126-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": "",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EWhere does \u003Cstrong\u003Ewater flow \u003C/strong\u003Ein a watershed?\u003C/p\u003E\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "345f3fe57a70b2d2d77628d964bfe8afad9cb10b",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "126-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"prompt\":\"\u003Cp\u003EIf pollutants were added to the local watershed around your school, what other \u003Cstrong\u003Eareas would be affected\u003C/strong\u003E by the pollution? \u003C/p\u003E\",\"required\":true,\"subinteractives\":[{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003E \u003C/p\u003E\"},\"id\":\"7bfc641f-2877-4979-9ab4-766a3647209b\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EIf pollutants were added to the local watershed around your school, what other areas would be affected by the pollution? \u003C/p\u003E\",\"hint\":\"\u003Cp\u003EThink about what direction the water flows in a watershed. \u003C/p\u003E\\n\u003Cp\u003E\u003C/p\u003E\"},\"id\":\"7a555aa0-3411-4fe4-8268-5f9146a659fb\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.3.0/fill-in-the-blank\",\"authoredState\":{\"version\":1,\"questionType\":\"iframe_interactive\",\"blanks\":[{\"id\":\"[blank-1]\",\"size\":20}],\"prompt\":\"\u003Cp\u003EIf pollutants were added to the local watershed around the school, the areas that would be affected are located [blank-1].\u003C/p\u003E\"},\"id\":\"f4d28052-1601-4d5d-a6c8-d750f5ec6c34\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.3.0/multiple-choice\",\"authoredState\":{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"The areas upstream are affected by the pollutants. \",\"correct\":false},{\"id\":\"2\",\"content\":\"The areas downstream are affected by the pollutants.\",\"correct\":false}]},\"id\":\"dd1d46c0-302a-492b-92ee-650308fe8bc6\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EAny pollutants added to the local watershed around our school would affect all of the areas downstream in the watershed.\u003C/p\u003E\",\"defaultAnswer\":\"Please rewrite the answer in your own words.\"},\"id\":\"7934c11b-7d36-493b-9238-9d493fe17f9b\"}]}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "209c21c87040de9701f6e360d31901fab4464433",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/scaffolded-question/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Scaffolded Question",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "206-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"Any pollutants added to the local watershed around our school would affect all of the areas downstream in the watershed.\",\"teacherTip\":\"\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7419-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "206-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EToday you explored what a watershed is and how human activities affect water quality in watersheds everywhere!\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cimg class=\"tinymce-img-float-right\" src=\"https://project-resources.concord.org/waters/Lesson1/Images/city-4627143_1920.jpg\" width=\"490\" height=\"325\" /\u003E\u003C/p\u003E\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003EYou also explored how \u003Cstrong\u003Ehuman choices affect the natural resources\u003C/strong\u003E that not only meet the needs of the present (us!), but must someday meet the needs of the future (the generations to come after us!). You will learn more about this important approach to \u003Cstrong\u003Eusing resources wisely\u003C/strong\u003E, or sustainability, in future lessons.\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003ETake a moment to think about everything you learned today and answer the following questions.\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "141072-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "WATERS Idea Hub ",
+      "position": 6,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": true,
+      "sidebar": "\u003Cp\u003EConfluence\u003C/p\u003E\n\u003Cp\u003EDivide\u003C/p\u003E\n\u003Cp\u003EHeadwaters\u003C/p\u003E\n\u003Cp\u003EMouth\u003C/p\u003E\n\u003Cp\u003EPollution\u003C/p\u003E\n\u003Cp\u003EPrecipitation\u003C/p\u003E\n\u003Cp\u003ERunoff\u003C/p\u003E\n\u003Cp\u003ESlope\u003C/p\u003E\n\u003Cp\u003ESustainability\u003C/p\u003E\n\u003Cp\u003ETopography\u003C/p\u003E\n\u003Cp\u003ETributary\u003C/p\u003E\n\u003Cp\u003EWatershed\u003C/p\u003E",
+      "sidebar_title": "Lesson 1 Word Bank",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"The following questions may help guide your discussion:\\n\\n* What did you **discover** about your school\u2019s local watershed? This includes the name of the closest body of water downhill from your school and the name of your school\u2019s USGS Subwatershed unit (HUC-12).\\n\\n* While exploring Model My Watershed, did you learn about any potential **issues** in your school\u2019s watershed (e.g., farms, businesses, major developments or other land use near your school, or other interesting observations students made while exploring Basemap Layers)?\\n\\n* What are potential **solutions** to these issues in your watershed? How do these solutions support sustainability, ensuring that our use of natural resources meets the needs of the present without compromising the ability of future generations to meet their own needs?\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7308-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "WATERS Idea Hub Discoveries",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EList your \u003Cstrong\u003Ediscoveries\u003C/strong\u003E here. \u003C/p\u003E\\n\u003Cp\u003E(\u003Cem\u003EHint: What exciting facts, findings, or realizations did you make?\u003C/em\u003E)\u003C/p\u003E\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "345f3fe57a70b2d2d77628d964bfe8afad9cb10b",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "128-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "WATERS Idea Hub Issues",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EList the \u003Cstrong\u003Eissues\u003C/strong\u003E you found here. \u003C/p\u003E\\n\u003Cp\u003E(\u003Cem\u003EHint: Issues are problems that negatively affect or harm watershed health.\u003C/em\u003E)\u003C/p\u003E\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "345f3fe57a70b2d2d77628d964bfe8afad9cb10b",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "129-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "WATERS Idea Hub Solutions",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EList any \u003Cstrong\u003Esolutions\u003C/strong\u003E here. \u003C/p\u003E\\n\u003Cp\u003E(\u003Cem\u003EHint: Did you learn about any\u0026nbsp;actions that humans can take to help protect watersheds or stop/improve an issue?\u003C/em\u003E)\u003C/p\u003E\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "345f3fe57a70b2d2d77628d964bfe8afad9cb10b",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "130-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003E\u003Cimg class=\"tinymce-img-float-right\" src=\"https://project-resources.concord.org/waters/new_cropped_new-bulb.gif\" alt=\"WATERS Idea Hub graphic\" width=\"195\" height=\"264\" /\u003ETake a few minutes to think about all that you learned and explored in today\u0026rsquo;s lesson. Follow your teacher\u0026rsquo;s instructions on how to add these ideas to the Hub (Example: Writing ideas on sticky notes).\u003C/p\u003E\r\n\u003Cp\u003ESort your ideas into three categories:\u003C/p\u003E\r\n\u003Col\u003E\r\n\u003Cli\u003E\u003Cstrong\u003EDiscoveries\u003C/strong\u003E - The exciting facts, findings, or realizations from a lesson.\u0026nbsp;\u003C/li\u003E\r\n\u003Cli\u003E\u003Cstrong\u003EIssues\u003C/strong\u003E - Problems that negatively affect (harm) the health of watersheds.\u003C/li\u003E\r\n\u003Cli\u003E\u003Cstrong\u003ESolutions\u003C/strong\u003E - Human actions that help protect watersheds or stop or improve an issue.\u003C/li\u003E\r\n\u003C/ol\u003E\r\n\u003Cp\u003EAs a class, add to the WATERS Idea Hub now!\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "141073-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "STEM Career Connection",
+      "position": 7,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EWhat interests you most about Nathaniel\u2019s job?\u003C/p\u003E\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "345f3fe57a70b2d2d77628d964bfe8afad9cb10b",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "131-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"Student answers will vary and may include working outside, working with land owners, surveying fish, or collecting and analyzing data.\",\"teacherTip\":\"\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7309-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "131-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EWhy is Nathaniel\u0026#x27;s job important?\u003C/p\u003E\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "345f3fe57a70b2d2d77628d964bfe8afad9cb10b",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "132-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"Nathan helps to educate the public to conserve the water quality in the watershed.\",\"teacherTip\":\"\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7310-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "132-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EA \u003Cstrong\u003Ewatershed specialist\u003C/strong\u003E leads policies, projects, and programs that protect and improve watershed functions that benefit plant, animal, and human communities. What is a typical day in the life of this special scientist, and how does someone become an Assistant Watershed Specialist?\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003EWatch the video to learn how STEM education and skills can lead to an exciting career!\u0026nbsp;\u003C/strong\u003E \u0026nbsp;\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "141074-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/waters/Lesson1/Movies/WATERS%20CAREERS_WATERSHED%20SPECIALIST_191212_V1.mp4\",\"prompt\":\"STEM Video to learn about a career as a watershed specialist.\",\"credit\":\"Nathaniel Straw, Assistant Watershed Specialist - Good Life Productions (GoodLife)\",\"captionUrl\":\"https://project-resources.concord.org/waters/Lesson1/Movies/WATERSCAREERS_WATERSHEDSPECIALIST_191212_V1.vtt\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "dcc3f77896462208853553db05fad582cbecae7e",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/video-player/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
+                "enable_learner_state": false,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Video Player",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "133-ManagedInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "Optional: Explore Parts of a Watershed",
+      "position": 8,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003ESelect the letter where there's a Divide.\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "A",
+                "is_correct": true,
+                "prompt": ""
+              },
+              {
+                "choice": "B",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "C",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "D",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "E",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "16176-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003ESelect the letter that matches Confluence.\u0026nbsp;\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "A",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "B",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "C",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "D",
+                "is_correct": true,
+                "prompt": ""
+              },
+              {
+                "choice": "E",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "16177-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003ESelect the letter where a Mouth appears in the diagram.\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "A",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "B",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "C",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "D",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "E",
+                "is_correct": true,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "16178-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003ESelect the letter where there's a Tributary in the diagram.\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "A",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "B",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "C",
+                "is_correct": true,
+                "prompt": ""
+              },
+              {
+                "choice": "D",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "E",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "16179-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003ESelect the letter that matches Headwaters.\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "A",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "B",
+                "is_correct": true,
+                "prompt": ""
+              },
+              {
+                "choice": "C",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "D",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "E",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "16180-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"\",\"teacherTip\":\"A divide is a ridge or high point on land that separates two watersheds.\\n\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7311-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "16176-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"\",\"teacherTip\":\"A confluence is a place where rivers (or a tributary and a river) flow together.\u003CP\u003E\\nCon = together  \u003Cp\u003E\\nFlu = flow \",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7312-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "16177-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"\",\"teacherTip\":\"The mouth of a river is where the river ends and enters a lake, bay, ocean, or even a larger river.\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7313-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "16178-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"\",\"teacherTip\":\"A tributary is a stream or river that flows into another river.\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7314-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "16179-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"\",\"teacherTip\":\"The headwaters are the small streams at the top of a river system.\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper"
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7315-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "16180-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": true,
+            "enable_check_answer": false,
+            "give_prediction_feedback": false,
+            "hint": "\n  \u003Cb\u003EStep 1: Select a claim.\u003C/b\u003E\n  \u003Cul\u003E\n  \u003Cli\u003EA good claim is based on the evidence.\u003C/li\u003E\n  \u003Cli\u003EEvidence may come from graphs and charts.\u003C/li\u003E\n  \u003Cli\u003EEvidence may also come from models that you run.\u003C/li\u003E\n  \u003C/ul\u003E\n  ",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": null,
+            "prompt": "why does ...",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "a",
+                "is_correct": null,
+                "prompt": null
+              },
+              {
+                "choice": "b",
+                "is_correct": null,
+                "prompt": null
+              },
+              {
+                "choice": "c",
+                "is_correct": null,
+                "prompt": null
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "16181-Embeddable::MultipleChoice"
+          },
+          "section": "arg_block"
+        },
+        {
+          "embeddable": {
+            "default_text": null,
+            "give_prediction_feedback": false,
+            "hint": "\n  \u003Cb\u003EStep 2: Write an explanation.\u003C/b\u003E\n  \u003Cul\u003E\n  \u003Cli\u003EA good explanation will cite specific evidence that backs up the claim.\u003C/li\u003E\n  \u003Cli\u003EWhen there is a graph or table, you can cite evidence directly from the source.\u003C/li\u003E\n  \u003Cli\u003EWhen there is a model, you can describe what happened in the model.\u003C/li\u003E\n  \u003Cli\u003EA good explanation combines evidence with scientific knowledge.\u003C/li\u003E\n  \u003C/ul\u003E\n  ",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": null,
+            "prediction_feedback": null,
+            "prompt": "Explain your answer.",
+            "show_in_featured_question_report": true,
+            "item_settings": {
+              "item_id": "HENRY001",
+              "score_mapping_id": 19
+            },
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "200140-Embeddable::OpenResponse"
+          },
+          "section": "arg_block"
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": false,
+            "give_prediction_feedback": false,
+            "hint": "\n  \u003Cb\u003EStep 3: Select a certainty rating.\u003C/b\u003E\n  \u003Cul\u003E\n  \u003Cli\u003EPicking a certainty rating is a way to signal how certain you are with your claim.\u003C/li\u003E\n  \u003Cli\u003EYour certainty rating can be based on how well the scientific knowledge fits the evidence from models, charts, or graphs.\u003C/li\u003E\n  \u003Cli\u003EYour certainty rating can also reflect on the quality of the evidence or investigation that produced the evidence.\u003C/li\u003E\n  \u003C/ul\u003E\n  ",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": null,
+            "prompt": "How certain are you about your claim based on your explanation?",
+            "show_as_menu": true,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "(1) Not at all certain",
+                "is_correct": null,
+                "prompt": null
+              },
+              {
+                "choice": "(2)",
+                "is_correct": null,
+                "prompt": null
+              },
+              {
+                "choice": "(3)",
+                "is_correct": null,
+                "prompt": null
+              },
+              {
+                "choice": "(4)",
+                "is_correct": null,
+                "prompt": null
+              },
+              {
+                "choice": "(5) Very certain",
+                "is_correct": null,
+                "prompt": null
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "16182-Embeddable::MultipleChoice"
+          },
+          "section": "arg_block"
+        },
+        {
+          "embeddable": {
+            "default_text": null,
+            "give_prediction_feedback": false,
+            "hint": "\n  \u003Cb\u003EStep 4: Write a certainty explanation.\u003C/b\u003E\n  \u003Cul\u003E\n  \u003Cli\u003EA good certainty explanation will explain why you are certain or uncertain about your response.\u003C/li\u003E\n  \u003Cli\u003ESome topics are more certain than others.\u003C/li\u003E\n  \u003Cli\u003EConsider the completeness of the evidence, biases in the evidence, and changes that could affect the trends over time.\u003C/li\u003E\n  \u003C/ul\u003E\n  ",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": null,
+            "prediction_feedback": null,
+            "prompt": "Explain what influenced your certainty rating.",
+            "show_in_featured_question_report": true,
+            "item_settings": {
+              "item_id": "HENRY001",
+              "score_mapping_id": 2
+            },
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "200141-Embeddable::OpenResponse"
+          },
+          "section": "arg_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EReview these watershed terms and match them to the diagram below:\u003C/p\u003E\n\u003Cp\u003E\u003Cimg class=\"\" src=\"https://cc-project-resources.s3.amazonaws.com/waters/Lesson1/Images/Lesson1WATERSHEDTable.png\" alt=\"\" width=\"640\" height=\"305\" /\u003E\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "141075-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Please see the watershed terms answer key below.\\n\\n\\n\\n\u003Cimg src=\\\"https://cc-project-resources.s3.amazonaws.com/waters/Lesson1/Images/WATERSHED%20WORDS%20ANSWERKEY.png\\\" width=\\\"500px height=\\\"200px\\\" /\u003E\\n\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "7316-Embeddable::EmbeddablePlugin"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/waters/Lesson1/Images/Lesson1WatershedMatch\",\"credit\":\"The Little Conestoga Watershed Alliance (LCWA)\",\"creditLink\":\"http://littleconestoga.org/our-watershed/what-is-a-watershed/\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "abffba7ac3d467f8beae589d749e72f19c88f8d1",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/image/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": false,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Image Interactive",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "134-ManagedInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    }
+  ],
+  "plugins": [
+    {
+      "description": null,
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"oRKDulC2nuAoBjeIaAIh\",\"s3Url\":\"https://models-resources.concord.org/glossary-resources/oRKDulC2nuAoBjeIaAIh/glossary.json\"}",
+      "approved_script_label": "glossary",
+      "component_label": "glossary"
+    }
+  ],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}
