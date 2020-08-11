@@ -50,7 +50,7 @@ export class App extends React.PureComponent<IProps, IState> {
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity
       const currentPage = Number(queryValue("page")) || 0;
 
-      const showThemeButtons = queryValue("themeButtons")?.toLowerCase() === "true";
+      const showThemeButtons = queryValueBoolean("themeButtons");
       const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
 
       const useAnonymousRunKey = !queryValue("token") && !queryValueBoolean("preview") && !teacherEditionMode;
