@@ -28,6 +28,7 @@ interface IState {
   currentPage: number;
   teacherEditionMode?: boolean;
   showThemeButtons?: boolean;
+  username?: string;
 }
 interface IProps {}
 
@@ -38,7 +39,8 @@ export class App extends React.PureComponent<IProps, IState> {
     this.state = {
       currentPage: 0,
       teacherEditionMode: false,
-      showThemeButtons: false
+      showThemeButtons: false,
+      username: "Anonymous",
     };
   }
 
@@ -55,8 +57,13 @@ export class App extends React.PureComponent<IProps, IState> {
 
       const useAnonymousRunKey = !queryValue("token") && !queryValueBoolean("preview") && !teacherEditionMode;
 
+      const newState: IState = {activity, currentPage, showThemeButtons, teacherEditionMode};
+
       if (queryValue("token")) {
         const portalData = await fetchPortalData();
+        if (portalData.fullName) {
+          newState.username = portalData.fullName;
+        }
         await initializeDB(portalData.database.appName);
         await signInWithToken(portalData.database.rawFirebaseJWT);
         setPortalData(portalData);
@@ -65,7 +72,8 @@ export class App extends React.PureComponent<IProps, IState> {
         await initializeAnonymousDB();
         watchAnswers();
       }
-      this.setState({activity, currentPage, showThemeButtons, teacherEditionMode});
+
+      this.setState(newState);
 
       if (teacherEditionMode) {
         createPluginNamespace();
@@ -89,7 +97,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, currentPage } = this.state;
+    const { activity, currentPage, username } = this.state;
     if (!activity) return (<div>Loading</div>);
 
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
@@ -100,10 +108,12 @@ export class App extends React.PureComponent<IProps, IState> {
           fullWidth={fullWidth}
           projectId={activity.project_id}
         />
-        <ProfileNavHeader
-          fullWidth={fullWidth}
-          name={"test student"}
-        />
+        { username &&
+          <ProfileNavHeader
+            fullWidth={fullWidth}
+            name={username}
+          />
+        }
         <ActivityNavHeader
           activityName={activity.name}
           activityPages={activity.pages}
@@ -112,7 +122,6 @@ export class App extends React.PureComponent<IProps, IState> {
           onPageChange={this.handleChangePage}
           singlePage={activity.layout === ActivityLayouts.SinglePage}
         />
-
         { activity.layout === ActivityLayouts.SinglePage
           ? this.renderSinglePageContent(activity)
           : currentPage === 0
