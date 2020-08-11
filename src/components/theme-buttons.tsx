@@ -27,6 +27,9 @@ export const ThemeButtons: React.FC = () => {
   };
   const handleInteractionsTheme = () => {
     setThemeColors("#414546", "#2f70b0");
+    setAppBackgroundImage();
+  };
+  const handleImagesBackground = () => {
     setAppBackgroundImage(imageUrl);
   };
 
@@ -37,6 +40,7 @@ export const ThemeButtons: React.FC = () => {
       <button className="button" onClick={handleCBioTheme} data-cy="theme-button-cbio">cbio</button>
       <button className="button" onClick={handleWatersTheme} data-cy="theme-button-waters">waters</button>
       <button className="button" onClick={handleInteractionsTheme} data-cy="theme-button-interactions">interactions</button>
+      <button className="button" onClick={handleImagesBackground} data-cy="theme-button-image">image</button>
     </div>
   );
 };

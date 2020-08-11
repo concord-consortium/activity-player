@@ -33,5 +33,9 @@ describe("Theme Button component", () => {
     primary = document.documentElement.style.getPropertyValue("--theme-primary-color");
     expect(primary).toBe("#414546");
     expect(setAppBackgroundImage).toHaveBeenCalled;
+
+    const imageButton = wrapper.find('[data-cy="theme-button-image"]');
+    imageButton.simulate("click");
+    expect(setAppBackgroundImage).toHaveBeenCalled;
   });
 });
