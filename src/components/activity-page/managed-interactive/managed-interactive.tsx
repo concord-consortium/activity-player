@@ -82,16 +82,14 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
   }, []);
 
   const getModalContainer = () => {
-    const modalParent = document.getElementById("app");
-    const container = modalParent ? modalParent : {};
-    return container;
+    return document.getElementById("app") || {};
   };
 
   const toggleModal = () => {
     setShowModal(!showModal);
   };
 
-  const closeModal = (modalProps?: any) => {
+  const handleCloseModalRequest = (modalProps?: any) => {
     if (modalProps) {
       handleNewInteractiveState(modalProps.interactiveState);
     }
@@ -130,7 +128,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
         </div>
       }
       {!showModal && interactiveIframe}
-      <Modal isOpen={showModal} appElement={getModalContainer()} onRequestClose={closeModal}>
+      <Modal isOpen={showModal} appElement={getModalContainer()} onRequestClose={handleCloseModalRequest}>
         {interactiveIframe}
       </Modal>
     </div>
