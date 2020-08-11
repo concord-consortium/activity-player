@@ -28,6 +28,8 @@ export const IframeRuntime: React.FC<IProps> =
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const phoneRef = useRef<IframePhone>();
+  const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
+  setInteractiveStateRef.current = setInteractiveState;
 
   useEffect(() => {
     const initInteractive = () => {
@@ -36,7 +38,7 @@ export const IframeRuntime: React.FC<IProps> =
         return;
       }
       phone.addListener("interactiveState", (newInteractiveState: any) => {
-        setInteractiveState(newInteractiveState);
+        setInteractiveStateRef.current(newInteractiveState);
       });
       phone.addListener("height", (newHeight: number) => {
         setHeightFromInteractive(newHeight);
@@ -68,7 +70,7 @@ export const IframeRuntime: React.FC<IProps> =
         phoneRef.current.disconnect();
       }
     };
-  }, [url, authoredState, report, initialInteractiveState, setInteractiveState, setNewHint]);
+  }, [url, authoredState, report, initialInteractiveState, setNewHint]);
 
   const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;
   // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone
