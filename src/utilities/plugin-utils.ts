@@ -1,4 +1,4 @@
-import { Activity } from "../types";
+import { Activity, Embeddable, IEmbeddablePlugin } from "../types";
 
 type PluginType = "TeacherEdition" | "Glossary";
 export interface PluginInfo {
@@ -13,7 +13,7 @@ export const Plugins: PluginInfo[] = [
   {
     url: "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
     type: "TeacherEdition",
-    name: "teacher edition plugin",
+    name: "Teacher Edition",
     id: 0
   },
 ];
@@ -51,24 +51,32 @@ export const loadPluginScripts = (activity: Activity) => {
   });
 };
 
-export const initializePlugin = (container: HTMLElement, authoredData: string) => {
-  // TODO: will need additions based as we implement other plugin types
+export const initializePlugin = (embeddable: IEmbeddablePlugin, wrappedEmbeddable: Embeddable | undefined, embeddableContainer: HTMLElement, wrappedEmbeddableContainer: HTMLElement | undefined) => {
+  // TODO: will need to change search as we implement other plugin types
   const plugin = Plugins.find(p => p.type === "TeacherEdition");
+
+  const embeddableContext = {
+    container: wrappedEmbeddableContainer,
+    laraJson: wrappedEmbeddable,
+    interactiveStateUrl: null,
+    interactiveAvailable: true
+  };
+
   const pluginContext = {
-    name: "plugin name",
-    url: "plugin url",
-    pluginId: "plugin id",
+    name: plugin?.name,
+    url: plugin?.url,
+    pluginId: embeddable.ref_id.substring(0, embeddable.ref_id.indexOf("-")),
     embeddablePluginId: null,
-    authoredState: authoredData,
+    authoredState: embeddable.plugin?.author_data,
     learnerState: null,
     learnerStateSaveUrl: "",
-    container: container,
-    runId: "run id",
+    container: embeddableContainer,
+    runId: "",
     remoteEndpoint: null,
     userEmail: null,
     classInfoUrl: null,
     firebaseJwtUrl: "",
-    wrappedEmbeddable: null,
+    wrappedEmbeddable: wrappedEmbeddable ? embeddableContext : null,
     resourceUrl: "",
   };
   // TODO: add sophistication to handle other types

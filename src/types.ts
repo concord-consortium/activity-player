@@ -35,7 +35,7 @@ export interface LibraryInteractive {
 }
 
 export interface Plugin {
-  description: string;
+  description: string | null;
   author_data: string;
   approved_script_label: string;
   component_label: string;
@@ -43,13 +43,14 @@ export interface Plugin {
 
 export interface EmbeddableBase {
   type: string;
-  name: string;
+  name?: string;
   authored_state?: string | null;
   interactiveState?: any | null;
   url_fragment?: string | null,
   is_hidden: boolean;
   is_full_width: boolean;
   ref_id: string;
+  embeddable_ref_id?: string;
 }
 
 export interface IManagedInteractive extends EmbeddableBase {
