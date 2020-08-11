@@ -26,22 +26,22 @@ export class NavPages extends React.PureComponent <IProps> {
   private renderHomePageButton = () => {
     const currentClass = this.props.currentPage === 0 ? "current" : "";
     return (
-      <div className={`page-button ${currentClass}`} onClick={this.handleButtonClick(0)}>
+      <button className={`page-button ${currentClass}`} onClick={this.handleButtonClick(0)}>
         <IconHome
           width={28}
           height={28}
           fill={this.props.currentPage === 0 ? "white" : "#979797"}
         />
-      </div>
+      </button>
     );
   }
 
   private renderPageButton = (page: Page, index: number) => {
     const currentClass = this.props.currentPage === (index + 1) ? "current" : "";
     return (
-      <div className={`page-button ${currentClass}`} key={`index ${index}`} onClick={this.handleButtonClick(index + 1)}>
+      <button className={`page-button ${currentClass}`} key={`index ${index}`} onClick={this.handleButtonClick(index + 1)}>
         <div className={`label ${currentClass}`}>{(index + 1).toString()}</div>
-      </div>
+      </button>
     );
   }
 
