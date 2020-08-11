@@ -95,6 +95,10 @@ export class App extends React.PureComponent<IProps, IState> {
           fullWidth={fullWidth}
           projectId={activity.project_id}
         />
+        <ProfileNavHeader
+          fullWidth={fullWidth}
+          name={"test student"}
+        />
         <ActivityNavHeader
           activityName={activity.name}
           activityPages={activity.pages}
@@ -103,10 +107,7 @@ export class App extends React.PureComponent<IProps, IState> {
           onPageChange={this.handleChangePage}
           singlePage={activity.layout === ActivityLayouts.SinglePage}
         />
-        <ProfileNavHeader
-          fullWidth={fullWidth}
-          name={"test student"}
-        />
+
         { activity.layout === ActivityLayouts.SinglePage
           ? this.renderSinglePageContent(activity)
           : currentPage === 0

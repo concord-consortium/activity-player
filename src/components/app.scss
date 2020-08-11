@@ -10,6 +10,7 @@
   justify-content: center;
   color: #242424;
   background-color: var(--theme-primary-color);
+  background-image: linear-gradient(to bottom, #fff, rgba(255,255,255,0), rgba(255,255,255,0));
   overflow-y: auto;
 }
 
@@ -20,7 +21,6 @@
   width: 100%;
   height: fit-content;
   padding: 0 20px;
-  background-image: linear-gradient(to bottom, #fff, rgba(255,255,255,0), rgba(255,255,255,0));
   line-height: 1.35;
   color: #444;
 
