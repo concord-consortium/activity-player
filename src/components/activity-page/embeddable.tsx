@@ -41,7 +41,7 @@ export const Embeddable: React.FC<IProps> = (props) => {
     if (embeddableWrapperDivTarget.current && embeddableDivTarget.current && linkedPluginEmbeddable && teacherEditionMode) {
       initializePlugin(linkedPluginEmbeddable, embeddable, embeddableWrapperDivTarget.current, embeddableDivTarget.current);
     }
-  }, [linkedPluginEmbeddable, embeddable]);
+  }, [linkedPluginEmbeddable, embeddable, initialInteractiveState, teacherEditionMode]);
 
   // `initialInteractiveState.loaded` will be set to true the moment our initial request for `answers` data
   // comes through, whether or not there is any particular initial state for this interactive.
@@ -63,7 +63,7 @@ export const Embeddable: React.FC<IProps> = (props) => {
       setInitialInteractiveState(newInitialInteractiveState);
     });
     return (
-      <div>Loading...</div>
+      <div key={embeddableWrapper.embeddable.ref_id}>Loading...</div>
     );
   }
 
