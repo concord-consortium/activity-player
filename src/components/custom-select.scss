@@ -21,12 +21,25 @@
       background-color: $cc-teal-light4;
     }
 
+    &.topHeader {
+      width: 300px;
+      background-color: $activity-header-gray;
+      &:hover {
+        background-color: $cc-charcoal-light1;
+      }
+      &.showList, &:active {
+        background-color: $cc-charcoal-light2;
+      } 
+      .current {
+        max-width: 236px;
+      }
+    }
+
     &.disabled {
       pointer-events: none;
     }
 
     &.show-list, &:active {
-      background-color: $cc-teal;
       color: white;
       border-color: white;
     }
@@ -42,7 +55,7 @@
       height: 20px;
       width: 20px;
       margin: 0 5px 0 5px;
-      fill: $cc-teal;
+      fill: var(--theme-primary-color);
 
       &.show-list {
         fill: white;
@@ -61,7 +74,7 @@
       height: 24px;
       width: 24px;
       margin: 0 5px 0 5px;
-      fill: $cc-teal;
+      fill: var(--theme-primary-color);
       transition-property: transform;
       transition-duration: .25s;
 
@@ -78,7 +91,7 @@
   .list {
     position: absolute;
     margin-top: 1px;
-    width: 200px;
+    width: 350px;
     border-radius: 0 0 4px 4px;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
     opacity: 0;
@@ -86,6 +99,11 @@
     transition-property: opacity;
     transition-duration: .25s;
     pointer-events: none;
+
+    &.topHeader {
+      width: 300px;
+      color: $activity-header-gray;
+    }
 
     &.show {
       opacity: 1;
@@ -108,14 +126,14 @@
       }
 
       &:hover {
-        background-color: $cc-teal-light6;
+        background-color: $cc-charcoal-light2;
       }
 
       &:active {
-        background-color: $cc-teal-light4;
+        background-color: $cc-charcoal;
       }
       &:active .check {
-        fill: $cc-teal;
+        fill: var(--theme-primary-color);
       }
 
       .check {
@@ -125,7 +143,7 @@
         fill: white;
 
         &.selected {
-          fill: $cc-teal;
+          fill: var(--theme-primary-color);
         }
       }
     }

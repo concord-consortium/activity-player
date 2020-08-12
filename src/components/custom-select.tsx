@@ -9,6 +9,7 @@ interface IProps {
   items: string[];
   onSelectItem: (value: string) => void;
   HeaderIcon?: SvgIcon;
+  isHeader?: boolean;
   isDisabled?: boolean;
 }
 
@@ -48,9 +49,10 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
     const { items, HeaderIcon, isDisabled } = this.props;
     const currentItem = items.find(i => i === this.state.current);
     const showListClass = this.state.showList ? "show-list" : "";
+    const useHeader = this.props.isHeader ? "topHeader" : "";
     const disabled = isDisabled ? "disabled" : "";
     return (
-      <div className={`header ${showListClass} ${disabled}`} onClick={this.handleHeaderClick}>
+      <div className={`header ${useHeader} ${showListClass} ${disabled}`} onClick={this.handleHeaderClick}>
         { HeaderIcon && <HeaderIcon className={`icon ${showListClass}`} /> }
         <div className="current">{currentItem && currentItem}</div>
         { <ArrowIcon className={`arrow ${showListClass} ${disabled}`} /> }
@@ -60,8 +62,9 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
 
   private renderList = () => {
     const { items } = this.props;
+    const useHeader = this.props.isHeader ? "topHeader" : "";
     return (
-      <div className={`list ${(this.state.showList ?"show" : "")}`}>
+      <div className={`list ${useHeader} ${(this.state.showList ?"show" : "")}`}>
         { items && items.map((item: string, i: number) => {
           const currentClass = this.state.current === item ? "selected" : "";
           return (
