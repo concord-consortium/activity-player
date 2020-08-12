@@ -201,7 +201,7 @@ export const watchAnswers = () => {
 
 export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   if (!portalData) {
-    throw new Error("Must set portal data first");
+    return;
   }
 
   const postAnswer: LTIRuntimeAnswerMetadata = {
