@@ -23,7 +23,7 @@ export const Embeddable: React.FC<IProps> = (props) => {
   const embeddable = embeddableWrapper.embeddable;
 
   let qComponent;
-  if (embeddable.type === "MwInteractive" || embeddable.type === "ManagedInteractive") {
+  if (embeddable.type === "MwInteractive" || (embeddable.type === "ManagedInteractive" && embeddable.library_interactive)) {
     qComponent = <ManagedInteractive embeddable={embeddable} questionNumber={questionNumber} />;
   } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {
     qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} /> : undefined;
