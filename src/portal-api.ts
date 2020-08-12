@@ -78,10 +78,12 @@ interface FirebaseData {
   rawFirebaseJWT: string;
 }
 
-export interface IPortalData extends ILTIPartial{
+export interface IPortalData extends ILTIPartial {
   offering: OfferingData;
   userType: "teacher" | "learner";
   database: FirebaseData;
+  toolId: string;
+  resourceUrl: string;
 }
 
 interface BasePortalJWT {
@@ -322,6 +324,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
   if (portalJWT.user_type !== "learner") {
     throw new Error("Only student logins are currently supported");
   }
+
   const portal = parseUrl(basePortalUrl).host;
 
   const classInfoUrl = portalJWT.class_info_url;
@@ -349,6 +352,8 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     platformId: firebaseJWT.claims.platform_id,
     platformUserId: firebaseJWT.claims.platform_user_id.toString(),
     contextId: classInfo.classHash,
+    toolId: window.location.hostname,
+    resourceUrl: offeringData.activityUrl,
     database: {
       appName: firebaseAppName,
       sourceKey,
