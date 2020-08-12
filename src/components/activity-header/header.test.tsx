@@ -1,5 +1,6 @@
 import React from "react";
 import { Header } from "./header";
+import { AccountOwnerDiv } from "./account-owner";
 import { shallow } from "enzyme";
 
 describe("Header component", () => {
@@ -10,6 +11,24 @@ describe("Header component", () => {
     expect(wrapperIcon.containsMatchingElement(headerLogo)).toEqual(true);
 
     const wrapperNoIcon = shallow(<Header projectId={9} userName={`test student`} activityName={`test activity`} singlePage={false} />);
-    expect(wrapperNoIcon.containsMatchingElement(headerLogo)).toEqual(false);
+    expect(wrapperNoIcon.containsMatchingElement(headerLogo)).toEqual(true);
+  });
+  it("renders activity title dropdown when appropriate", () => {
+    const activityDropdown = <div className={`activityTitle`}>Activity:</div>;
+    
+    const wrapperDropdown = shallow(<Header projectId={1} userName={`test student`} activityName={`test activity`} singlePage={false} />);
+    expect(wrapperDropdown.containsMatchingElement(activityDropdown)).toEqual(true);
+
+    const wrapperNoDropdown = shallow(<Header projectId={1} userName={`test student`} activityName={`test activity`} singlePage={true} />);
+    expect(wrapperNoDropdown.containsMatchingElement(activityDropdown)).toEqual(false);
+  });
+  it("renders user name", () => {
+      const user = "Student User";
+      const accountOwner = <AccountOwnerDiv userName={user} />;
+
+      const wrapperAccountOwner = shallow(accountOwner);
+      const wrapperHeader = shallow(<Header projectId={1} userName={user} activityName={`test activity`} singlePage={false} />);
+      expect(wrapperHeader.containsMatchingElement(accountOwner)).toEqual(true);
+      expect(wrapperAccountOwner.text()).toContain(user);
   });
 });

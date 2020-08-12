@@ -50,7 +50,7 @@ export class Header extends React.PureComponent<IProps> {
     const { activityName } = this.props;
     return (
       <React.Fragment>
-        <div className={`activityTitle`}>Activity:</div>
+        <div className={`activityTitle`} data-cy ="activity-title">Activity:</div>
         <CustomSelect
           items={[activityName]}
           onSelectItem={(item: any) => console.log(item)}
