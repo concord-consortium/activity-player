@@ -33,6 +33,26 @@ describe("Embeddable component", () => {
     });
   });
 
+  it("renders an empty managed interactive", async () => {
+
+    const embeddableWrapper: EmbeddableWrapper = {
+      "embeddable": {
+        ...DefaultManagedInteractive,
+        library_interactive: null // force to null for test, shouldn't be allowed on type
+      },
+      "section": "interactive_box"
+    };
+
+    let wrapper: ReactWrapper;
+    await act(async () => {
+      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} isPageIntroduction={false} questionNumber={1} pageLayout={PageLayouts.Responsive}/>);
+    });
+
+    await waitFor(() => {
+      expect(wrapper.text()).toContain("Content type not supported");
+    });
+  });
+
   it("renders a managed interactive", async () => {
     iframePhone.ParentEndpoint = jest.fn().mockImplementation(() => ({
       disconnect: jest.fn()

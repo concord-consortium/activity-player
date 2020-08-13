@@ -55,7 +55,7 @@ export interface EmbeddableBase {
 
 export interface IManagedInteractive extends EmbeddableBase {
   type: "ManagedInteractive";
-  library_interactive: LibraryInteractive;
+  library_interactive: LibraryInteractive | null;
   show_in_featured_question_report?: boolean;
   inherit_aspect_ratio_method?: boolean;
   custom_aspect_ratio_method?: "DEFAULT" | null;
