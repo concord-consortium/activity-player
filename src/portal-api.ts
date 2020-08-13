@@ -383,8 +383,11 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
 
 // metadata for saving and loading work for anonymous users, not actually loaded from the portal
 export const anonymousPortalData = () => {
-  const runKey = queryValue("runKey") || uuidv4();
-  setQueryValue("runKey", runKey);
+  let runKey = queryValue("runKey");
+  if (!runKey) {
+    runKey = uuidv4();
+    setQueryValue("runKey", runKey);
+  }
 
   const hostname = window.location.hostname;
   // for the tool id we want to distinguish activity-player branches, incase this is ever helpful for

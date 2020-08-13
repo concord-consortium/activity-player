@@ -22,7 +22,7 @@ context("Saving and loading data as an anonymous user", () => {
   describe("Saving and loading data", () => {
     const runKey = uuidv4();
 
-    it("we can use a runKey to retreive data previously persisted", () => {
+    it("we can use a runKey to retrieve data previously persisted", () => {
       const activityUrl = "?activity=sample-activity-1&firebase-app=report-service-dev&enableFirestorePersistence&runKey=" + runKey;
 
       cy.visit(activityUrl);
@@ -31,7 +31,7 @@ context("Saving and loading data as an anonymous user", () => {
       cy.wait(500);
       getIframeBody("body").find("[data-cy=choices-container] input").eq(1).click({force: true});
 
-      // unfortuntely we have to wait for the data to be posted to firestore, which happens after a
+      // unfortunately we have to wait for the data to be posted to firestore, which happens after a
       // delay to prevent spamming the database.
       // The fastest and most reliable way to kick it off seems to be 1. blur, 2. wait, 3. navigate away
       cy.get("[data-cy=profile-nav-header").click({force: true});
@@ -46,7 +46,7 @@ context("Saving and loading data as an anonymous user", () => {
       getIframeBody("body").find("[data-cy=choices-container] input").eq(1).should("be.checked");
     });
 
-    it("we can remove a runKey and we will no l0nger see our data", () => {
+    it("we can remove a runKey and we will no longer see our data", () => {
       const activityUrl = "?activity=sample-activity-1&firebase-app=report-service-dev&enableFirestorePersistence&runKey=" + runKey;
 
       cy.visit(activityUrl);
