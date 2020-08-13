@@ -33,17 +33,17 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     const questionName = embeddable.name ? `: ${embeddable.name}` : "";
     // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
     // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
-    let embeddableData: IMwInteractive | LibraryInteractiveData;
+    let embeddableData: IMwInteractive | LibraryInteractiveData | undefined;
     if (embeddable.type === "ManagedInteractive") {
-      embeddableData = embeddable.library_interactive.data;
+      embeddableData = embeddable.library_interactive?.data;
     } else {
       embeddableData = embeddable;
     }
-    const url = embeddableData.base_url || embeddableData.url || "";
+    const url = embeddableData?.base_url || embeddableData?.url || "";
     // TODO: handle different aspect ration methods
     // const aspectRatioMethod = data.aspect_ratio_method ? data.aspect_ratio_method : "";
-    const nativeHeight = embeddableData.native_height || 0;
-    const nativeWidth = embeddableData.native_width || 0;
+    const nativeHeight = embeddableData?.native_height || 0;
+    const nativeWidth = embeddableData?.native_width || 0;
     const aspectRatio = nativeHeight && nativeWidth ? nativeWidth / nativeHeight : kDefaultAspectRatio;
 
     // cf. https://www.npmjs.com/package/@react-hook/resize-observer
