@@ -362,6 +362,11 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
   // query parameter.
   const sourceKey = queryValue("report-source") || parseUrl(offeringData.activityUrl.toLowerCase()).hostname;
 
+  // for the tool id we want to distinguish activity-player branches, incase this is ever helpful for
+  // dealing with mis-matched data when we load data in originally saved on another branch.
+  // This is currently unused for the purpose of saving and loading data
+  const toolId = window.location.hostname + window.location.pathname;
+
   const rawPortalData: IPortalData = {
     type: "authenticated",
     offering: offeringData,
@@ -370,7 +375,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     platformId: firebaseJWT.claims.platform_id,
     platformUserId: firebaseJWT.claims.platform_user_id.toString(),
     contextId: classInfo.classHash,
-    toolId: window.location.hostname,
+    toolId,
     resourceUrl: offeringData.activityUrl,
     database: {
       appName: firebaseAppName,
@@ -390,9 +395,6 @@ export const anonymousPortalData = () => {
   }
 
   const hostname = window.location.hostname;
-  // for the tool id we want to distinguish activity-player branches, incase this is ever helpful for
-  // dealing with mis-matched data when we load data in originally saved on another branch.
-  // This is currently unused for the purpose of saving and loading data
   const toolId = hostname + window.location.pathname;
   // just save the host and loaded activity-url as the resourceUrl, omitting any other url parameters.
   // This is currently unused for the purpose of saving and loading data
