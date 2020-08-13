@@ -162,13 +162,21 @@ export interface ILTIPartial {
   tool_id: string;
 }
 
+export interface IAnonymousMetadataPartial {
+  resource_url: string;
+  run_key: string;
+  source_key: string;
+  tool_id: string;
+  tool_user_id: "anonymous";
+}
+
 /**
  * cf. IRunTimeMetadataBase, from
  * https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/interactive-api-client/metadata-types.ts#L47
  * and partial export code at
  * https://github.com/concord-consortium/lara/blob/c40304a14ef495acdf4f9fd09ea892c7cc98247b/app/models/interactive_run_state.rb#L110
  */
-export interface IExportalbleAnswerMetadataBase {
+export interface IExportableAnswerMetadataBase {
   remote_endpoint: string;
   question_id: string;
   question_type: string;
@@ -180,17 +188,17 @@ export interface IExportalbleAnswerMetadataBase {
   report_state: string;
 }
 
-export interface IExportableInteractiveAnswerMetadata extends IExportalbleAnswerMetadataBase {
+export interface IExportableInteractiveAnswerMetadata extends IExportableAnswerMetadataBase {
   type: "interactive_state";
   answer: string;
 }
 
-export interface IExportableOpenResponseAnswerMetadata extends IExportalbleAnswerMetadataBase {
+export interface IExportableOpenResponseAnswerMetadata extends IExportableAnswerMetadataBase {
   type: "open_response_answer";
   answer: string;
 }
 
-export interface IExportableMultipleChoiceAnswerMetadata extends IExportalbleAnswerMetadataBase {
+export interface IExportableMultipleChoiceAnswerMetadata extends IExportableAnswerMetadataBase {
   type: "multiple_choice_answer";
   answer: {
     choice_ids: string[];
@@ -202,4 +210,6 @@ export type IExportableAnswerMetadata =
   IExportableOpenResponseAnswerMetadata |
   IExportableMultipleChoiceAnswerMetadata;
 
-export interface LTIRuntimeAnswerMetadata extends ILTIPartial, IExportalbleAnswerMetadataBase { }
+export interface LTIRuntimeAnswerMetadata extends ILTIPartial, IExportableAnswerMetadataBase { }
+
+export interface AnonymousRuntimeAnswerMetadata extends IAnonymousMetadataPartial, IExportableAnswerMetadataBase { }

@@ -1,10 +1,11 @@
 import ActivityPage from "../support/elements/activity-page";
+import { getIframeBody } from "../support/elements/iframe";
 
 const activityPage = new ActivityPage;
 
 context("Test the overall app", () => {
   before(() => {
-    cy.visit("?activity=sample-activity-multiple-layout-types");
+    cy.visit("?activity=sample-activity-multiple-layout-types&preview");
     activityPage.getPage(2).click();
   });
   describe("Sidebar",() => {
@@ -29,6 +30,15 @@ context("Test the overall app", () => {
       activityPage.getNavPage(3).click();
       activityPage.getSecondaryEmbeddable("text-box").eq(1).scrollIntoView()
         .should("be.visible").and("contain","Duis vitae ultrices augue, eu fermentum elit.");
+    });
+  });
+  describe("Question Interactives",()=>{
+    it("verify we can load a managed interactive",()=>{
+      cy.visit("?activity=sample-activity-1&preview");
+      activityPage.getNavPage(2).click();
+      // eslint-disable-next-line cypress/no-unnecessary-waiting
+      cy.wait(500);
+      getIframeBody("body").find("[data-cy=choices-container]").should("be.visible");
     });
   });
 });

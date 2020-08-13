@@ -11,9 +11,9 @@ import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
-import { queryValue } from "../utilities/url-query";
+import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { fetchPortalData } from "../portal-api";
-import { signInWithToken, watchAnswers, initializeDB, setPortalData } from "../firebase-db";
+import { signInWithToken, watchAnswers, initializeDB, setPortalData, initializeAnonymousDB } from "../firebase-db";
 import { Activity } from "../types";
 import { createPluginNamespace } from "../lara-plugin/index";
 import { loadPluginScripts } from "../utilities/plugin-utils";
@@ -50,14 +50,19 @@ export class App extends React.PureComponent<IProps, IState> {
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity
       const currentPage = Number(queryValue("page")) || 0;
 
-      const showThemeButtons = queryValue("themeButtons")?.toLowerCase() === "true";
+      const showThemeButtons = queryValueBoolean("themeButtons");
       const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
+
+      const useAnonymousRunKey = !queryValue("token") && !queryValueBoolean("preview") && !teacherEditionMode;
 
       if (queryValue("token")) {
         const portalData = await fetchPortalData();
         await initializeDB(portalData.database.appName);
         await signInWithToken(portalData.database.rawFirebaseJWT);
         setPortalData(portalData);
+        watchAnswers();
+      } else if (useAnonymousRunKey) {
+        await initializeAnonymousDB();
         watchAnswers();
       }
       this.setState({activity, currentPage, showThemeButtons, teacherEditionMode});

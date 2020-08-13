@@ -9,14 +9,14 @@
 
 import * as firebase from "firebase";
 import "firebase/firestore";
-import { IPortalData } from "./portal-api";
+import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal-api";
 import { answersQuestionIdToRefId } from "./utilities/embeddable-utils";
-import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata } from "./types";
+import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata } from "./types";
+import { queryValueBoolean } from "./utilities/url-query";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
-export const DEFAULT_FIREBASE_APP: FirebaseAppName = "report-service-pro";
 
-let portalData: IPortalData;
+let portalData: IPortalData | IAnonymousPortalData;
 
 const answersPath = (answerId?: string) =>
   `sources/${portalData?.database.sourceKey}/answers${answerId ? "/" + answerId : ""}`;
@@ -79,7 +79,34 @@ const configurations: IConfigs = {
 export async function initializeDB(name: FirebaseAppName) {
   const config = configurations[name];
   firebase.initializeApp(config);
+
+  // The following flags are useful for tests. It makes it possible to clear the persistence
+  // at the beginning of a test, and enable perisistence on each visit call
+  // this way the tests can run offline but still share firestore state across visits
+  //
+  // WARNING: as far as I can tell persistence is based on the domain of the page.
+  // So if persistence is enabled on a page loaded from the
+  // portal-report.concord.org domain this will likely affect all tabs in the same browser
+  // regardless of what branch or version of the portal report code that tab is running.
+  // Cypress runs its test in a different browser instance so its persistence should not pollute
+  // non-cypress tabs
+  if (queryValueBoolean("clearFirestorePersistence")) {
+    // we cannot enable the persistence until the
+    // clearing is complete, so this await is necessary
+    await firebase.firestore().clearPersistence();
+  }
+
+  if (queryValueBoolean("enableFirestorePersistence")) {
+    await firebase.firestore().enablePersistence({ synchronizeTabs: true });
+    await firebase.firestore().disableNetwork();
+  }
+
   return firebase.firestore();
+}
+
+export async function initializeAnonymousDB() {
+  portalData = anonymousPortalData();
+  return initializeDB(portalData.database.appName);
 }
 
 export const signInWithToken = async (rawFirestoreJWT: string) => {
@@ -99,18 +126,27 @@ const watchCollection = (path: string, listener: DocumentsListener) => {
     throw new Error("Must set portal data first");
   }
 
-  let query = firebase.firestore().collection(path)
-    .where("platform_id", "==", portalData.platformId)
-    .where("resource_link_id", "==", portalData.resourceLinkId)
-    .where("context_id", "==", portalData.contextId);
-  if (portalData.userType === "learner") {
-    query = query.where("platform_user_id", "==", portalData.platformUserId.toString());
+  let query: firebase.firestore.Query<firebase.firestore.DocumentData>;
+  if (portalData.type === "authenticated") {     // logged in user
+    query = firebase.firestore().collection(path)
+      .where("platform_id", "==", portalData.platformId)
+      .where("resource_link_id", "==", portalData.resourceLinkId)
+      .where("context_id", "==", portalData.contextId);
+    if (portalData.userType === "learner") {
+      query = query.where("platform_user_id", "==", portalData.platformUserId.toString());
+    }
+  } else {
+    query = firebase.firestore().collection(path)
+      .where("run_key", "==", portalData.runKey);
   }
 
   query.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
     if (!snapshot.empty) {
       const docs = snapshot.docs.map(doc => doc.data());
       listener(docs);
+    }
+    else {
+      listener([]);
     }
   }, (err) => {
     console.error(err);
@@ -163,7 +199,6 @@ export const getCurrentDBValue = (path: string) => new Promise<any>((resolve, re
 
 // updates `state.activity` to add `interactiveState` to embeddables
 const handleAnswersUpdated = (answers: firebase.firestore.DocumentData[]) => {
-
   const getInteractiveState = (answer: firebase.firestore.DocumentData) => {
     const reportState = JSON.parse(answer.report_state);
     return JSON.parse(reportState.interactiveState);
@@ -204,17 +239,30 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     return;
   }
 
-  const postAnswer: LTIRuntimeAnswerMetadata = {
-    ...answer,
-    platform_id: portalData.platformId,
-    platform_user_id: portalData.platformUserId.toString(),
-    context_id: portalData.contextId,
-    resource_link_id: portalData.resourceLinkId,
-    source_key: portalData.database.sourceKey,
-    tool_id: portalData.toolId,
-    resource_url: portalData.resourceUrl,
-    run_key: "",
-  };
+  let postAnswer;
+
+  if (portalData.type === "authenticated") {
+    postAnswer = {
+      ...answer,
+      platform_id: portalData.platformId,
+      platform_user_id: portalData.platformUserId.toString(),
+      context_id: portalData.contextId,
+      resource_link_id: portalData.resourceLinkId,
+      source_key: portalData.database.sourceKey,
+      tool_id: portalData.toolId,
+      resource_url: portalData.resourceUrl,
+      run_key: "",
+    } as LTIRuntimeAnswerMetadata;
+  } else {
+    postAnswer = {
+      ...answer,
+      run_key: portalData.runKey,
+      source_key: portalData.database.sourceKey,
+      resource_url: portalData.resourceUrl,
+      tool_id: portalData.toolId,
+      tool_user_id: "anonymous",
+    } as AnonymousRuntimeAnswerMetadata;
+  }
 
   return firebase.firestore()
       .doc(answersPath(answer.id))

@@ -75,11 +75,18 @@ Inside of your `package.json` file:
 
 * activity={id|url}: load sample-activity {id} or load json from specified url
 * page={n}:          load page n, where 0 is the activity introduction and 1 is the first page
+* themeButtons:      whether to show theme buttons
+* mode={mode}:       sets mode. Values: "teacher-edition"
 
 #### User data loading:
 * firebase-app={id}: needed to load data from the correct firebase app
 * token={n}:         set by the portal when launching external activity, to authenticate with portal API
 * domain={n}:        set by the portal when launching external activity
+* report-source={id}: which source collection to sava data to in firestore (defaults to own hostname)
+* runkey={uuid}:     set by the app if we are running in anonymous datasaving mode
+* preview:           prevent running in anonymous datasaving mode
+* enableFirestorePersistence: uses local offline firestore cache only
+* clearFirestorePersistence: clears local offline firestore cache
 
 ## License
 
