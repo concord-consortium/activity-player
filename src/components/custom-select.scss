@@ -1,0 +1,136 @@
+@import "./vars.scss";
+
+.custom-select {
+  user-select: none;
+
+  .header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 200px;
+    height: 30px;
+    box-sizing: border-box;
+    border-radius: 4px;
+    border: solid 1.5px $cc-charcoal-light1;
+    background-color: $cc-teal-light6;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $cc-teal-light4;
+    }
+
+    &.disabled {
+      pointer-events: none;
+    }
+
+    &.show-list, &:active {
+      background-color: $cc-teal;
+      color: white;
+      border-color: white;
+    }
+
+    &:active .icon {
+      fill: white;
+    }
+    &:active .arrow {
+      fill: white;
+    }
+
+    .icon {
+      height: 20px;
+      width: 20px;
+      margin: 0 5px 0 5px;
+      fill: $cc-teal;
+
+      &.show-list {
+        fill: white;
+      }
+    }
+
+    .current {
+      flex-grow: 1;
+      max-width: 136px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .arrow {
+      height: 24px;
+      width: 24px;
+      margin: 0 5px 0 5px;
+      fill: $cc-teal;
+      transition-property: transform;
+      transition-duration: .25s;
+
+      &.show-list {
+        fill: white;
+        transform: rotate(180deg);
+      }
+      &.disabled {
+        display: none;
+      }
+    }
+  }
+
+  .list {
+    position: absolute;
+    margin-top: 1px;
+    width: 200px;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    z-index: 1;
+    transition-property: opacity;
+    transition-duration: .25s;
+    pointer-events: none;
+
+    &.show {
+      opacity: 1;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .list-item {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      box-sizing: border-box;
+      height: 40px;
+      padding: 0 5px 0 5px;
+      background-color: white;
+      font-size: 16px;
+
+      &.selected {
+        font-weight: bold;
+      }
+
+      &:hover {
+        background-color: $cc-teal-light6;
+      }
+
+      &:active {
+        background-color: $cc-teal-light4;
+      }
+      &:active .check {
+        fill: $cc-teal;
+      }
+
+      .check {
+        height: 24px;
+        width: 24px;
+        margin: 0 5px 0 5px;
+        fill: white;
+
+        &.selected {
+          fill: $cc-teal;
+        }
+      }
+    }
+    .list-item:last-child {
+      border-radius: 0 0 4px 4px;
+    }
+  }
+}
