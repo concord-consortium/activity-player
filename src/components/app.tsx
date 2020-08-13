@@ -101,7 +101,6 @@ export class App extends React.PureComponent<IProps, IState> {
           userName={"test student"}
           activityName={activity.name}
           singlePage={activity.layout === ActivityLayouts.SinglePage}
-          // trackEvent={()}
         />
         <ActivityNavHeader
           activityName={activity.name}

@@ -5,7 +5,6 @@ import "./account-owner.scss";
 
 interface IProps {
   userName: string;
-  fullWidth?: boolean;
 }
 export class AccountOwnerDiv extends React.PureComponent <IProps> {
   render() {
