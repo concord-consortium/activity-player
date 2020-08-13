@@ -1,7 +1,10 @@
 import React, { useState, useCallback } from "react";
 import { IframeRuntime } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
-import { IManagedInteractive, IMwInteractive, LibraryInteractiveData } from "../../../types";
+import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
+import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
+import { createOrUpdateAnswer } from "../../../firebase-db";
+import { getAnswerWithMetadata } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
 import { renderHTML } from "../../../utilities/render-html";
@@ -11,17 +14,22 @@ import "./managed-interactive.scss";
 interface IProps {
   embeddable: IManagedInteractive | IMwInteractive;
   questionNumber?: number;
+  initialInteractiveState: any;     // user state that existed in DB when embeddable was first loaded
+  initialAnswerMeta?: IExportableAnswerMetadata;   // saved metadata for that initial user state
 }
 
 const kDefaultAspectRatio = 4 / 3;
 
 export const ManagedInteractive: React.FC<IProps> = (props) => {
 
-    const handleNewInteractiveState = (state: any) => {
-      // TODO: handle interactive state
+    const handleNewInteractiveState = (state: IRuntimeMetadata) => {
+      const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, props.initialAnswerMeta);
+      if (exportableAnswer) {
+        createOrUpdateAnswer(exportableAnswer);
+      }
     };
 
-    const { embeddable, questionNumber } = props;
+    const { embeddable, questionNumber, initialInteractiveState } = props;
     const questionName = embeddable.name ? `: ${embeddable.name}` : "";
     // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
     // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
@@ -90,7 +98,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
         <IframeRuntime
           url={url}
           authoredState={embeddable.authored_state}
-          interactiveState={embeddable.interactiveState}
+          initialInteractiveState={initialInteractiveState}
           setInteractiveState={handleNewInteractiveState}
           proposedHeight={proposedHeight}
           containerWidth={containerWidth}

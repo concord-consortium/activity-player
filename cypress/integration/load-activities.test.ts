@@ -5,29 +5,29 @@ context("Loading activities", () => {
 
   describe("Loading sample activities", () => {
     it("can open one sample activity", () => {
-      cy.visit("?activity=sample-activity-1");
+      cy.visit("?activity=sample-activity-1&preview");
       cy.get("[data-cy=activity-summary]").should("contain", "Single Page Test Activity");
     });
 
     it("can open a different sample activity", () => {
-      cy.visit("?activity=sample-activity-multiple-layout-types");
+      cy.visit("?activity=sample-activity-multiple-layout-types&preview");
       cy.get("[data-cy=activity-summary]").should("contain", "Sample Layout Types");
     });
   });
 
   describe("Loading pages", () => {
     it("can open the introduction page by default", () => {
-      cy.visit("?activity=sample-activity-1");
+      cy.visit("?activity=sample-activity-1&preview");
       cy.get("[data-cy=activity-summary]").should("contain", "Single Page Test Activity");
     });
 
     it("can load page 0", () => {
-      cy.visit("?activity=sample-activity-multiple-layout-types&page=0");
+      cy.visit("?activity=sample-activity-multiple-layout-types&page=0&preview");
       cy.get("[data-cy=activity-summary]").should("contain", "Sample Layout Types");
     });
 
     it("can load page 4", () => {
-      cy.visit("?activity=sample-activity-multiple-layout-types&page=4");
+      cy.visit("?activity=sample-activity-multiple-layout-types&page=4&preview");
       activityPage.getSecondaryEmbeddable("text-box").eq(1).scrollIntoView()
         .should("be.visible").and("contain","Duis vitae ultrices augue, eu fermentum elit.");
     });
