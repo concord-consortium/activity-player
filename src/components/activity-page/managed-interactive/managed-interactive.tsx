@@ -40,7 +40,10 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       embeddableData = embeddable;
     }
     const url = embeddableData?.base_url || embeddableData?.url || "";
-    // TODO: handle different aspect ration methods
+    const linkedInteractives = (embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
+                                ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
+                                : undefined;
+    // TODO: handle different aspect ratio methods
     // const aspectRatioMethod = data.aspect_ratio_method ? data.aspect_ratio_method : "";
     const nativeHeight = embeddableData?.native_height || 0;
     const nativeWidth = embeddableData?.native_width || 0;
@@ -100,6 +103,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
           authoredState={embeddable.authored_state}
           initialInteractiveState={initialInteractiveState}
           setInteractiveState={handleNewInteractiveState}
+          linkedInteractives={linkedInteractives}
           proposedHeight={proposedHeight}
           containerWidth={containerWidth}
           setNewHint={setNewHint}
@@ -107,3 +111,4 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       </div>
     );
   };
+ManagedInteractive.displayName = "ManagedInteractive";

@@ -71,6 +71,7 @@ export interface IManagedInteractive extends EmbeddableBase {
   custom_click_to_play_prompt?: string | null
   inherit_image_url?: boolean;
   custom_image_url?: string | null;
+  linked_interactives?: { ref_id: string, label: string }[];
 }
 
 export interface IMwInteractive extends EmbeddableBase {
