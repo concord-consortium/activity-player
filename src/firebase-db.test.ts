@@ -3,7 +3,8 @@ import { setPortalData, createOrUpdateAnswer } from "./firebase-db";
 import { DefaultManagedInteractive } from "./test-utils/model-for-tests";
 import { getAnswerWithMetadata } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata } from "./types";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
 import { mockFirestore } from "./test-utils/firestore-mock";
 
 (firebase as any).firestore = mockFirestore;
