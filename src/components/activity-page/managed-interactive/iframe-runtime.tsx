@@ -1,8 +1,9 @@
 // cf. https://github.com/concord-consortium/question-interactives/blob/master/src/scaffolded-question/components/iframe-runtime.tsx
 import React, { useEffect, useRef, useState } from "react";
+import { getFirebaseJWT, IPortalData } from "../../../portal-api";
 import { IframePhone } from "../../../types";
 import iframePhone from "iframe-phone";
-import { ILinkedInteractive } from "@concord-consortium/lara-interactive-api";
+import { IGetFirebaseJwtRequest, ILinkedInteractive } from "@concord-consortium/lara-interactive-api";
 
 const kDefaultHeight = 300;
 
@@ -22,11 +23,38 @@ interface IProps {
   proposedHeight?: number;
   containerWidth?: number;
   setNewHint: (newHint: string) => void;
+  portalData?: IPortalData;
 }
+
+interface IGetFirebaseJWTArgs {
+  phone: IframePhone;
+  request: IGetFirebaseJwtRequest;
+  portalData?: IPortalData;
+}
+const handleGetFirebaseJWT = async ({ phone, request, portalData }: IGetFirebaseJWTArgs) => {
+  const { requestId, ...others } = request || {};
+  let errorMessage = "Error retrieving Firebase JWT!";
+  if (portalData?.basePortalUrl && portalData.rawPortalJWT) {
+    const { learnerKey, basePortalUrl, rawPortalJWT } = portalData;
+    const _learnerKey = learnerKey ? { learner_id_or_key: learnerKey } : undefined;
+    const queryParams: Record<string, string> = { ...others, ..._learnerKey };
+    try {
+      const [rawFirebaseJWT] = await getFirebaseJWT(basePortalUrl, rawPortalJWT, queryParams);
+      phone.post("firebaseJWT", { requestId, token: rawFirebaseJWT });
+      errorMessage = "";
+    }
+    catch(e) {
+      // extract error message from exception
+    }
+  }
+  if (errorMessage) {
+    phone.post("firebaseJWT", { requestId, response_type: "ERROR", message: errorMessage });
+  }
+};
 
 export const IframeRuntime: React.FC<IProps> =
   ({ url, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives,
-      report, proposedHeight, containerWidth, setNewHint }) => {
+      report, proposedHeight, containerWidth, setNewHint, portalData }) => {
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -52,6 +80,9 @@ export const IframeRuntime: React.FC<IProps> =
           setARFromSupportedFeatures(info.features.aspectRatio);
         }
       });
+      phone.addListener("getFirebaseJWT", (request: IGetFirebaseJwtRequest) => {
+        handleGetFirebaseJWT({ phone, request, portalData });
+      });
       phone.addListener("hint", (newHint: any) => {
         setNewHint(newHint.text || "");
       });
@@ -75,7 +106,7 @@ export const IframeRuntime: React.FC<IProps> =
         phoneRef.current.disconnect();
       }
     };
-  }, [url, authoredState, report, initialInteractiveState, setNewHint]);
+  }, [url, authoredState, report, initialInteractiveState, setNewHint, portalData]);
 
   const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;
   // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone

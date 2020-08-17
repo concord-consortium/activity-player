@@ -1,4 +1,5 @@
 import React from "react";
+import { PortalDataContext } from "./portal-data-context";
 import { Header } from "./activity-header/header";
 import { ActivityNavHeader } from "./activity-header/activity-nav-header";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
@@ -11,7 +12,7 @@ import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
-import { fetchPortalData } from "../portal-api";
+import { fetchPortalData, IPortalData } from "../portal-api";
 import { signInWithToken, watchAnswers, initializeDB, setPortalData, initializeAnonymousDB } from "../firebase-db";
 import { Activity } from "../types";
 import { createPluginNamespace } from "../lara-plugin/index";
@@ -28,6 +29,7 @@ interface IState {
   teacherEditionMode?: boolean;
   showThemeButtons?: boolean;
   username: string;
+  portalData?: IPortalData;
 }
 interface IProps {}
 
@@ -65,6 +67,7 @@ export class App extends React.PureComponent<IProps, IState> {
         }
         await initializeDB(portalData.database.appName);
         await signInWithToken(portalData.database.rawFirebaseJWT);
+        this.setState({ portalData });
         setPortalData(portalData);
         watchAnswers();
       } else if (useAnonymousRunKey) {
@@ -86,12 +89,14 @@ export class App extends React.PureComponent<IProps, IState> {
 
   render() {
     return (
-      <div className="app">
-        <WarningBanner/>
-        { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-        { this.renderActivity() }
-        { this.state.showThemeButtons && <ThemeButtons/>}
-      </div>
+      <PortalDataContext.Provider value={this.state.portalData}>
+        <div className="app">
+          <WarningBanner/>
+          { this.state.teacherEditionMode && <TeacherEditionBanner/>}
+          { this.renderActivity() }
+          { this.state.showThemeButtons && <ThemeButtons/>}
+        </div>
+      </PortalDataContext.Provider>
     );
   }
 

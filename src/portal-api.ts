@@ -89,6 +89,10 @@ export interface IPortalData extends ILTIPartial {
   toolId: string;
   resourceUrl: string;
   fullName?: string;
+  learnerKey?: string;
+  basePortalUrl?: string;
+  rawPortalJWT?: string;
+  portalJWT?: PortalJWT;
 }
 
 export interface IAnonymousPortalData {
@@ -159,7 +163,6 @@ const FIREBASE_JWT_URL_SUFFIX = "api/v1/jwt/firebase";
 const OFFERING_URL_SUFFIX = "api/v1/offerings";
 
 const firebaseAppName = (queryValue("firebase-app") as FirebaseAppName) || DEFAULT_FIREBASE_APP;
-const FIREBASE_JWT_QUERY = `?firebase_app=${firebaseAppName}`;
 
 const getErrorMessage = (err: any, res: superagent.Response) => {
   // The response should always be non-null, per the typedef and documentation:
@@ -175,12 +178,19 @@ const parseUrl = (url: string) => {
   return parser;
 };
 
-const getPortalJWTWithBearerToken = (basePortalUrl: string, type: string, rawToken: string) => {
+const getStudentLearnerKey = (portalJWT: PortalJWT, firebaseJWT: PortalFirebaseJWT) => {
+  // Currently for students, the learnerKey is the last part of the returnUrl of the firebaseJWT.
+  // The returnUrl field is deprecated, however, so there will presumably be another means of
+  // getting the learnerKey down the road, possibly from the portalJWT.
+  return firebaseJWT?.returnUrl.split("/").pop();
+};
+
+const getPortalJWTWithBearerToken = (basePortalUrl: string, rawToken: string) => {
   return new Promise<[string, PortalJWT]>((resolve, reject) => {
     const url = `${basePortalUrl}${PORTAL_JWT_URL_SUFFIX}`;
     superagent
       .get(url)
-      .set("Authorization", `${type} ${rawToken}`)
+      .set("Authorization", `Bearer ${rawToken}`)
       .end((err, res) => {
         if (err) {
           reject(getErrorMessage(err, res));
@@ -199,17 +209,20 @@ const getPortalJWTWithBearerToken = (basePortalUrl: string, type: string, rawTok
   });
 };
 
-const getFirebaseJWTParams = (classHash?: string) => {
-  return `${FIREBASE_JWT_QUERY}${classHash ? `&class_hash=${classHash}` : ""}`;
+const getActivityPlayerFirebaseJWT = (basePortalUrl: string, rawPortalJWT: string, classHash?: string) => {
+  const _classHash = classHash ? { class_hash: classHash } : undefined;
+  const queryParams = { firebase_app: firebaseAppName, ..._classHash };
+  return getFirebaseJWT(basePortalUrl, rawPortalJWT, queryParams);
 };
 
-const getFirebaseJWTWithBearerToken = (basePortalUrl: string, type: string,
-                                              rawToken: string, classHash?: string) => {
+export const getFirebaseJWT = (basePortalUrl: string, rawPortalJWT: string,
+                                queryParams: Record<string, string>) => {
   return new Promise<[string, PortalFirebaseJWT]>((resolve, reject) => {
-    const url = `${basePortalUrl}${FIREBASE_JWT_URL_SUFFIX}${getFirebaseJWTParams(classHash)}`;
+    const url = `${basePortalUrl}${FIREBASE_JWT_URL_SUFFIX}`;
     superagent
       .get(url)
-      .set("Authorization", `${type} ${rawToken}`)
+      .query(queryParams)
+      .set("Authorization", `Bearer/JWT ${rawPortalJWT}`)
       .end((err, res) => {
         if (err) {
           reject(getErrorMessage(err, res));
@@ -337,7 +350,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     throw new Error("No token provided for authentication (must launch from Portal)");
   }
 
-  const [rawPortalJWT, portalJWT] = await getPortalJWTWithBearerToken(basePortalUrl, "Bearer", bearerToken);
+  const [rawPortalJWT, portalJWT] = await getPortalJWTWithBearerToken(basePortalUrl, bearerToken);
 
   if (portalJWT.user_type !== "learner") {
     throw new Error("Only student logins are currently supported");
@@ -354,7 +367,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
 
   const classInfo = await getClassInfo({classInfoUrl, rawPortalJWT, portal, offeringId});
   const offeringData = await getOfferingData({portalJWT, rawPortalJWT, offeringId});
-  const [rawFirebaseJWT, firebaseJWT] = await getFirebaseJWTWithBearerToken(basePortalUrl, "Bearer", bearerToken, classInfo.classHash);
+  const [rawFirebaseJWT, firebaseJWT] = await getActivityPlayerFirebaseJWT(basePortalUrl, rawPortalJWT, classInfo.classHash);
 
   // student data gets saved in different buckets of the DB, the "source," depending on the domain
   // of the activity.
@@ -380,6 +393,12 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     toolId,
     resourceUrl: offeringData.activityUrl,
     fullName,
+    learnerKey: firebaseJWT.claims.user_type === "learner"
+                  ? getStudentLearnerKey(portalJWT, firebaseJWT)
+                  : undefined,
+    basePortalUrl,
+    rawPortalJWT,
+    portalJWT,
     database: {
       appName: firebaseAppName,
       sourceKey,
