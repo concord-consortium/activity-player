@@ -1,4 +1,5 @@
 import { Embeddable, EmbeddableWrapper, Page, Activity, LibraryInteractive, IManagedInteractive } from "../types";
+import { fetchPortalData } from "../portal-api";
 
 export const DefaultTestEmbeddable: Embeddable = {
   type: "MwInteractive",
@@ -69,4 +70,9 @@ export const DefaultManagedInteractive: IManagedInteractive = {
   name: "",
   is_hidden: false,
   is_full_width: false
+};
+
+export const testPortalMock = async () => {
+  const x = await fetchPortalData();
+  return x;
 };

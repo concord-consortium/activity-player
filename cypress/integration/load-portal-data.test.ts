@@ -1,4 +1,5 @@
 import * as PortalApi from "../../src/portal-api";
+import { testPortalMock } from "../../src/test-utils/model-for-tests";
 
 context("Test the app after loading mock data from the portal", () => {
 
@@ -27,10 +28,18 @@ context("Test the app after loading mock data from the portal", () => {
           fullName: "Some Student"
         });
       });
-      cy.visit("/?activity=sample-activity-1&token=abc&domain=abc&enableFirestorePersistence");
     });
 
+    // This example calls a function that also imports `fetchPortalData`, and it correctly calls
+    // the mock when it does so.
+    // it("silly example to show 'fetchPortalData' ought to be mocked", async () => {
+    //   const testPortalData = await testPortalMock();
+    //   expect(PortalApi.fetchPortalData).to.be.called;
+    //   expect(testPortalData.type).to.equal("authenticated");
+    // });
+
     it("calls 'fetchPortalData' when launches with a token", () => {
+      cy.visit("/?activity=sample-activity-1&token=abc&domain=abc&enableFirestorePersistence");
       expect(PortalApi.fetchPortalData).to.be.called;
     });
 
