@@ -1,6 +1,6 @@
 @import "../vars.scss";
 
-.activityHeader {
+.activity-header {
   height: 60px;
   width: 100%;
 
@@ -19,7 +19,7 @@
       width: 100%;
     }
 
-    .headerLeft {
+    .header-left {
       display: flex;
       flex: 1;
       flex-direction: row;
@@ -42,7 +42,7 @@
       }
     }
 
-    .headerCenter {
+    .header-center {
       display: flex;
       flex-direction: row;
       flex: 1;
@@ -53,12 +53,12 @@
       height: 100%;
       font-size: 18px;
   
-      .activityTitle{
+      .activity-title{
         margin-right: 10px;
       }
     }
 
-    .headerRight{
+    .header-right{
       display: flex;
       flex-direction: row;
       align-items: center;

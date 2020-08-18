@@ -1,6 +1,6 @@
 import React from "react";
 import { Header } from "./header";
-import { AccountOwnerDiv } from "./account-owner";
+import { AccountOwner } from "./account-owner";
 import { shallow } from "enzyme";
 
 describe("Header component", () => {
@@ -14,7 +14,7 @@ describe("Header component", () => {
     expect(wrapperNoIcon.containsMatchingElement(headerLogo)).toEqual(true);
   });
   it("renders activity title dropdown when appropriate", () => {
-    const activityDropdown = <div className={`activityTitle`}>Activity:</div>;
+    const activityDropdown =         <div className="activity-title" data-cy ="activity-title">Activity:</div>;
     
     const wrapperDropdown = shallow(<Header projectId={1} userName={`test student`} activityName={`test activity`} singlePage={false} />);
     expect(wrapperDropdown.containsMatchingElement(activityDropdown)).toEqual(true);
@@ -24,7 +24,7 @@ describe("Header component", () => {
   });
   it("renders user name", () => {
       const user = "Student User";
-      const accountOwner = <AccountOwnerDiv userName={user} />;
+      const accountOwner = <AccountOwner userName={user} />;
 
       const wrapperAccountOwner = shallow(accountOwner);
       const wrapperHeader = shallow(<Header projectId={1} userName={user} activityName={`test activity`} singlePage={false} />);

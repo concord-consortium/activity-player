@@ -5,9 +5,9 @@ context("Test the overall app", () => {
 
   describe("header",()=>{
     it("verify header loads",()=>{
-        cy.get("[data-cy=header]").should("be.visible");
+        cy.get("[data-cy=activity-header]").should("be.visible");
         cy.get("[data-cy=activity-title]").should("be.visible");
-        cy.get(".headerCenter .custom-select").should("be.visible");
+        cy.get(".header-center .custom-select").should("be.visible");
         cy.get("[data-cy=account-owner]").should("be.visible");
     });
   });

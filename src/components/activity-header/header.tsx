@@ -1,7 +1,7 @@
 import React from "react";
 import ccLogo from "../../assets/cc-logo.png";
 import { ProjectTypes } from "../../utilities/project-utils";
-import { AccountOwnerDiv } from "./account-owner";
+import { AccountOwner } from "./account-owner";
 import { CustomSelect } from "../custom-select";
 import AssignmentIcon from "../../assets/svg-icons/assignment-icon.svg";
 
@@ -20,20 +20,20 @@ export class Header extends React.PureComponent<IProps> {
     const ccLogoLink = "https://concord.org/";
     const { fullWidth, projectId, userName, singlePage } = this.props;
     const projectType = ProjectTypes.find(pt => pt.id === projectId);
-    const logo = (projectType?.headerLogo) || ccLogo;
+    const logo = projectType?.headerLogo || ccLogo;
     const projectURL = projectType?.url || ccLogoLink;
     const linkClass = projectURL ? "" : "no-link";
     return (
-      <div className="activityHeader" data-cy="header">
+      <div className="activity-header" data-cy="activity-header">
         <div className={`inner ${fullWidth ? "full" : ""}`}>
-          <div className={`headerLeft ${linkClass}`} onClick={this.handleProjectLogoClick(projectURL)}>
+          <div className={`header-left ${linkClass}`} onClick={this.handleProjectLogoClick(projectURL)}>
             {logo && <img src={logo} className="project-logo" data-cy="project-logo" />}
           </div>
-          <div className={`headerCenter`}>
+          <div className="header-center">
             {!singlePage && this.renderActivityMenu()}
           </div>
-          <div className={`headerRight`}>
-            <AccountOwnerDiv userName={userName} />
+          <div className="header-right">
+            <AccountOwner userName={userName} />
           </div>
         </div>
       </div>
@@ -50,13 +50,11 @@ export class Header extends React.PureComponent<IProps> {
     const { activityName } = this.props;
     return (
       <React.Fragment>
-        <div className={`activityTitle`} data-cy ="activity-title">Activity:</div>
+        <div className="activity-title" data-cy ="activity-title">Activity:</div>
         <CustomSelect
           items={[activityName]}
-          onSelectItem={(item: any) => console.log(item)}
           HeaderIcon={AssignmentIcon}
-          isHeader={true}
-          isDisabled={false}
+          isDisabled={true}
         />
       </React.Fragment>
     );
