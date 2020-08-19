@@ -1,40 +1,69 @@
 @import "../vars.scss";
 
-.header {
-  height: 86px;
+.activity-header {
+  height: 60px;
   width: 100%;
-  display: flex;
-  justify-content: center;
 
   .inner {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
     align-items: center;
     height: 100%;
     width: $content-width;
-    margin: 0 0 10px 0;
+    box-sizing: border-box;
+    margin: auto;
+    background-color: $activity-header-gray;
+    color: white;
 
     &.full {
       width: 100%;
     }
 
-    .left {
+    .header-left {
+      display: flex;
+      flex: 1;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100%;
       cursor: pointer;
-
       &.no-link {
         cursor: auto;
       }
-    }
-    .right {
-      cursor: pointer;
+      .logo {
+        height: 80%;
+        background-color: white;
+      }
+      .project-logo {
+        height: 80%;
+        background-color: white;
+        padding: 6px 10px;
+
+      }
     }
 
-    .logo {
-      height: 35px;
+    .header-center {
+      display: flex;
+      flex-direction: row;
+      flex: 1;
+      justify-content: center;
+      margin: 15px 0px 15px 0px;
+      align-items: center;
+      width: 400px;
+      height: 100%;
+      font-size: 18px;
+  
+      .activity-title{
+        margin-right: 10px;
+      }
     }
-    .project-logo {
-      height: 50px;
+
+    .header-right{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex: 1;
+      justify-content: flex-end;
     }
   }
-
 }

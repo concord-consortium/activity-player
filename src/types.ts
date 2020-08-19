@@ -55,7 +55,7 @@ export interface EmbeddableBase {
 
 export interface IManagedInteractive extends EmbeddableBase {
   type: "ManagedInteractive";
-  library_interactive: LibraryInteractive;
+  library_interactive: LibraryInteractive | null;
   show_in_featured_question_report?: boolean;
   inherit_aspect_ratio_method?: boolean;
   custom_aspect_ratio_method?: "DEFAULT" | null;
@@ -71,6 +71,7 @@ export interface IManagedInteractive extends EmbeddableBase {
   custom_click_to_play_prompt?: string | null
   inherit_image_url?: boolean;
   custom_image_url?: string | null;
+  linked_interactives?: { ref_id: string, label: string }[];
 }
 
 export interface IMwInteractive extends EmbeddableBase {
@@ -139,3 +140,77 @@ export interface Activity {
   export_site?: string | null;
   pages: Page[];
 }
+
+export interface IReportState {
+  version?: number;
+  mode: "report";
+  authoredState: string;
+  interactiveState: string;
+}
+
+/**
+ * To match LARA we would normally also include a tool_user_id, but the activity player
+ * keeps no user ids of its own.
+ */
+export interface ILTIPartial {
+  platform_id: string;      // portal
+  platform_user_id: string;
+  context_id: string;       // class hash
+  resource_link_id: string;  // offering ID
+  resource_url: string;
+  run_key: string;
+  source_key: string;
+  tool_id: string;
+}
+
+export interface IAnonymousMetadataPartial {
+  resource_url: string;
+  run_key: string;
+  source_key: string;
+  tool_id: string;
+  tool_user_id: "anonymous";
+}
+
+/**
+ * cf. IRunTimeMetadataBase, from
+ * https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/interactive-api-client/metadata-types.ts#L47
+ * and partial export code at
+ * https://github.com/concord-consortium/lara/blob/c40304a14ef495acdf4f9fd09ea892c7cc98247b/app/models/interactive_run_state.rb#L110
+ */
+export interface IExportableAnswerMetadataBase {
+  remote_endpoint: string;
+  question_id: string;
+  question_type: string;
+  id: string;
+  type: string;
+  answer_text?: string;
+  answer?: any;
+  submitted: boolean | null;
+  report_state: string;
+}
+
+export interface IExportableInteractiveAnswerMetadata extends IExportableAnswerMetadataBase {
+  type: "interactive_state";
+  answer: string;
+}
+
+export interface IExportableOpenResponseAnswerMetadata extends IExportableAnswerMetadataBase {
+  type: "open_response_answer";
+  answer: string;
+}
+
+export interface IExportableMultipleChoiceAnswerMetadata extends IExportableAnswerMetadataBase {
+  type: "multiple_choice_answer";
+  answer: {
+    choice_ids: string[];
+  }
+}
+
+export type IExportableAnswerMetadata =
+  IExportableInteractiveAnswerMetadata |
+  IExportableOpenResponseAnswerMetadata |
+  IExportableMultipleChoiceAnswerMetadata;
+
+export interface LTIRuntimeAnswerMetadata extends ILTIPartial, IExportableAnswerMetadataBase { }
+
+export interface AnonymousRuntimeAnswerMetadata extends IAnonymousMetadataPartial, IExportableAnswerMetadataBase { }

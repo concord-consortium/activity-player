@@ -14,9 +14,7 @@ describe("Activity Nav Header component", () => {
       {...DefaultTestPage, name: "3"},
     ];
 
-    const wrapper = shallow(<ActivityNavHeader activityName="activity name" activityPages={activityPages} currentPage={0} onPageChange={stubFunction} singlePage={false} />);
-    expect(wrapper.find('[data-cy="activity-nav-header"]').length).toBe(1);
-    expect(wrapper.find('[data-cy="activity-nav-header-left"]').length).toBe(1);
+    const wrapper = shallow(<ActivityNavHeader activityPages={activityPages} currentPage={0} onPageChange={stubFunction} singlePage={false} />);
     expect(wrapper.find('[data-cy="activity-nav-header-right"]').length).toBe(1);
   });
 });

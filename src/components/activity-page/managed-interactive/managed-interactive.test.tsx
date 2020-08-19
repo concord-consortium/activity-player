@@ -3,7 +3,7 @@ import { ManagedInteractive } from "./managed-interactive";
 import { Embeddable } from "../../../types";
 import { shallow } from "enzyme";
 
-describe("IframeRuntime component", () => {
+describe("ManagedInteractive component", () => {
   it("renders component", () => {
     const sampleEmbeddable: Embeddable = {
       name: "mc question",
@@ -52,7 +52,7 @@ describe("IframeRuntime component", () => {
       type: "ManagedInteractive",
       ref_id: "314-ManagedInteractive"
     };
-    const wrapper = shallow(<ManagedInteractive embeddable={sampleEmbeddable} questionNumber={1} />);
+    const wrapper = shallow(<ManagedInteractive embeddable={sampleEmbeddable} initialInteractiveState={null} questionNumber={1} />);
     expect(wrapper.find('[data-cy="managed-interactive"]').length).toBe(1);
   });
 });

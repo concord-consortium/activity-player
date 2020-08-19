@@ -1,4 +1,4 @@
-import { Embeddable, EmbeddableWrapper, Page, Activity } from "../types";
+import { Embeddable, EmbeddableWrapper, Page, Activity, LibraryInteractive, IManagedInteractive } from "../types";
 
 export const DefaultTestEmbeddable: Embeddable = {
   type: "MwInteractive",
@@ -43,4 +43,30 @@ export const DefaultTestActivity: Activity = {
   plugins: [],
   type: "LightweightActivity",
   pages: [],
+};
+
+export const DefaultLibraryInteractive: LibraryInteractive = {
+  hash: "",
+  data: {
+    base_url: "",
+    click_to_play: false,
+    enable_learner_state: true,
+    full_window: false,
+    has_report_url: false,
+    native_height: 1,
+    native_width: 1,
+    no_snapshots: false,
+    show_delete_data_button: false,
+    customizable: false,
+    authorable: false
+  }
+};
+
+export const DefaultManagedInteractive: IManagedInteractive = {
+  library_interactive: DefaultLibraryInteractive,
+  type: "ManagedInteractive",
+  ref_id: "",
+  name: "",
+  is_hidden: false,
+  is_full_width: false
 };
