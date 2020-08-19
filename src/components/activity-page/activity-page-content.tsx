@@ -146,7 +146,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
             const linkedPluginEmbeddable = getLinkedPluginEmbeddable(this.props.page, embeddableWrapper.embeddable.ref_id);
             return (
               <Embeddable
-                key={`embeddable ${i}`}
+                key={`embeddable-${embeddableWrapper.embeddable.ref_id}`}
                 embeddableWrapper={embeddableWrapper}
                 isPageIntroduction={i === 0 && section === EmbeddableSections.Introduction}
                 pageLayout={this.props.page.layout}
