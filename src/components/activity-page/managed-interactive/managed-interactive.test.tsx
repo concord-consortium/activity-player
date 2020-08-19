@@ -3,7 +3,7 @@ import { ManagedInteractive } from "./managed-interactive";
 import { Embeddable } from "../../../types";
 import { shallow } from "enzyme";
 
-describe("IframeRuntime component", () => {
+describe("ManagedInteractive component", () => {
   it("renders component", () => {
     const sampleEmbeddable: Embeddable = {
       name: "mc question",

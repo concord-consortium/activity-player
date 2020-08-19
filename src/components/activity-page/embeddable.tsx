@@ -94,3 +94,4 @@ export const Embeddable: React.FC<IProps> = (props) => {
     </div>
   );
 };
+Embeddable.displayName = "Embeddable";

@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IframePhone } from "../../../types";
 import iframePhone from "iframe-phone";
+import { ILinkedInteractive } from "@concord-consortium/lara-interactive-api";
 
 const kDefaultHeight = 300;
 
@@ -16,6 +17,7 @@ interface IProps {
   authoredState: any;
   initialInteractiveState: any;
   setInteractiveState: (state: any) => void;
+  linkedInteractives?: ILinkedInteractive[];
   report?: boolean;
   proposedHeight?: number;
   containerWidth?: number;
@@ -23,13 +25,15 @@ interface IProps {
 }
 
 export const IframeRuntime: React.FC<IProps> =
-  ({ url, authoredState, initialInteractiveState, setInteractiveState, report, proposedHeight, containerWidth, setNewHint }) => {
+  ({ url, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives,
+      report, proposedHeight, containerWidth, setNewHint }) => {
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const phoneRef = useRef<IframePhone>();
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
+  const linkedInteractivesRef = useRef(linkedInteractives?.length ? { linkedInteractives } : undefined);
 
   useEffect(() => {
     const initInteractive = () => {
@@ -54,7 +58,8 @@ export const IframeRuntime: React.FC<IProps> =
       phone.post("initInteractive", {
         mode: report ? "report" : "runtime",
         authoredState,
-        interactiveState: initialInteractiveState
+        interactiveState: initialInteractiveState,
+        ...linkedInteractivesRef.current
       });
     };
 
@@ -84,3 +89,4 @@ export const IframeRuntime: React.FC<IProps> =
     </div>
   );
 };
+IframeRuntime.displayName = "IframeRuntime";
