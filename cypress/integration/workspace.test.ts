@@ -18,8 +18,8 @@ context("Test the overall app", () => {
   });
   describe("ProfileNavHeader",()=>{
     it("verify ProfileNavHeader loads",()=>{
-        cy.get("[data-cy=profile-nav-header]").should("be.visible");
-        cy.get("[data-cy=profile-nav-header]").should("contain", "Welcome, Anonymous");
+        cy.get("[data-cy=account-owner]").should("be.visible");
+        cy.get("[data-cy=account-owner]").should("contain", "Anonymous");
     });
   });
   describe("content",()=>{
