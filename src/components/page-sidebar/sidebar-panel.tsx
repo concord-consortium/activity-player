@@ -21,7 +21,7 @@ export class SidebarPanel extends React.PureComponent<IProps>{
         <div className="sidebar-header">
           <div className="sidebar-title" data-cy="sidebar-title">{this.props.title}</div>
           <div className="icon" onClick={this.handleCloseButton} onKeyDown={this.handleCloseButton} 
-               data-cy="sidebar-close-button" tabIndex={3}>
+               data-cy="sidebar-close-button" tabIndex={0}>
             <IconClose />
           </div>
         </div>

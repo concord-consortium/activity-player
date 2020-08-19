@@ -15,19 +15,29 @@ export class ActivityPageLinks extends React.PureComponent <IProps> {
       <div className="activity-page-links" data-cy="activity-page-links">
         <div className="pages">Pages in this Activity</div>
         { this.props.activityPages.filter((page) => !page.is_hidden).map((page, index: number) => (
-          <div className="page-item" key={`index ${index}`} onClick={this.handleButtonClick(index + 1)} onKeyDown={this.handleButtonClick(index + 1)}>
+          <div className="page-item" key={`index ${index}`} 
+               onClick={this.handlePageChange(index + 1)} 
+               onKeyDown={this.handlePageChange(index + 1)}>
             <span>{`${index + 1}. `}</span>
-            <span className="page-link" onClick={this.handleButtonClick(index + 1)} onKeyDown={this.handleButtonClick(index + 1)} tabIndex={0}>{`Page ${index + 1}`}</span>
+            <span className="page-link" 
+                  onClick={this.handlePageChange(index + 1)} 
+                  onKeyDown={this.handlePageChange(index + 1)} 
+                  tabIndex={0}>{`Page ${index + 1}`}
+            </span>
           </div>
           ))
         }
-        <button className="button begin" onClick={this.handleButtonClick(1)} onKeyDown={this.handleButtonClick(1)}>Begin Activity</button>
+        <button className="button begin" 
+                onClick={this.handlePageChange(1)} 
+                onKeyDown={this.handlePageChange(1)}>
+                Begin Activity
+        </button>
       </div>
     );
   }
 
-  private handleButtonClick = (page: number) => () => {
-    if ( accessibilityClick(event) ) {
+  private handlePageChange = (page: number) => () => {
+    if (accessibilityClick(event)) {
       this.props.onPageChange(page);
     }
 	}

@@ -18,8 +18,8 @@ export class SidebarTab extends React.PureComponent<IProps>{
 
   render() {
     return (
-      <div className="sidebar-tab" onClick={this.handleSidebarClick} onKeyDown={this.handleSidebarClick} 
-           data-cy="sidebar-tab" tabIndex={2}>
+      <div className="sidebar-tab" onClick={this.handleSidebarShow} onKeyDown={this.handleSidebarShow} 
+           data-cy="sidebar-tab" tabIndex={0}>
         <div className={`icon ${this.props.sidebarOpen ? "open" : ""}`}>
           <IconArrow />
         </div>
@@ -28,7 +28,7 @@ export class SidebarTab extends React.PureComponent<IProps>{
     );
   }
 
-  private handleSidebarClick = () => {
+  private handleSidebarShow = () => {
     if (accessibilityClick(event)) {
       this.props.handleShowSidebarContent(this.props.index, !this.props.sidebarOpen);
     }

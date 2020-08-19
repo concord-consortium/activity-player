@@ -202,7 +202,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const rightOrientation = page.layout === PageLayouts.FortySixty;
     const headerClass = `collapsible-header ${isSecondaryCollapsed ? "collapsed" : ""} ${rightOrientation ? "right" : ""}`;
     return (
-      <div onClick={this.handleCollapseClick} onKeyDown={this.handleCollapseClick} className={headerClass} tabIndex={0}>
+      <div onClick={this.handleCollapseHeader} onKeyDown={this.handleCollapseHeader} className={headerClass} tabIndex={0}>
         {isSecondaryCollapsed
           ? <React.Fragment>
             {this.renderCollapseArrow(rightOrientation)}
@@ -237,7 +237,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     );
   }
 
-  private handleCollapseClick = () => {
+  private handleCollapseHeader = () => {
     if (accessibilityClick(event))  {  
       this.setState({ isSecondaryCollapsed: !this.state.isSecondaryCollapsed });
     }

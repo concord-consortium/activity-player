@@ -66,10 +66,10 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
 
     const [ showHint, setShowHint ] = useState(false);
     const [ hint, setHint ] = useState("");
-    const handleHintCloseClick = () => {
+    const handleHintClose = () => {
       setShowHint(false);
     };
-    const handleQuestionClick = () => {
+    const handleShowHint = () => {
       if (accessibilityClick(event)) {
         setShowHint(!showHint);
       }
@@ -84,7 +84,11 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
           <div className="header">
             Question #{questionNumber}{questionName}
            { hint &&
-             <div className="question-container" onClick={handleQuestionClick} onKeyDown={handleQuestionClick} data-cy="open-hint">
+             <div className="question-container" 
+                  onClick={handleShowHint} 
+                  onKeyDown={handleShowHint} 
+                  data-cy="open-hint"
+                  tabIndex={0}>
                <IconQuestion className="question" height={22} width={22}/>
              </div>
             }
@@ -94,7 +98,11 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
           <div className={`hint-container ${showHint ? "" : "collapsed"}`}>
             <div className="hint" data-cy="hint">{renderHTML(hint)}</div>
             <div className="close-container">
-              <IconArrowUp className={"close"} width={26} height={26} onClick={handleHintCloseClick} onKeyDown={handleQuestionClick} data-cy="close-hint" />
+              <IconArrowUp className={"close"} width={26} height={26} 
+                           onClick={handleHintClose} 
+                           onKeyDown={handleHintClose} 
+                           data-cy="close-hint" 
+                           tabIndex={0}/>
             </div>
           </div>
         }
