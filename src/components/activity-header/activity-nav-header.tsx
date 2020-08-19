@@ -5,7 +5,6 @@ import "./activity-nav-header.scss";
 import { Page } from "../../types";
 
 interface IProps {
-  activityName: string;
   activityPages: Page[];
   currentPage: number;
   fullWidth?: boolean;

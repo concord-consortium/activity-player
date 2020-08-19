@@ -103,7 +103,6 @@ export class App extends React.PureComponent<IProps, IState> {
           singlePage={activity.layout === ActivityLayouts.SinglePage}
         />
         <ActivityNavHeader
-          activityName={activity.name}
           activityPages={activity.pages}
           currentPage={currentPage}
           fullWidth={fullWidth}
