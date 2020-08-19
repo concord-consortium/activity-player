@@ -1,7 +1,6 @@
 import React from "react";
 import { Header } from "./activity-header/header";
 import { ActivityNavHeader } from "./activity-header/activity-nav-header";
-import { ProfileNavHeader } from "./activity-header/profile-nav-header";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
@@ -99,13 +98,11 @@ export class App extends React.PureComponent<IProps, IState> {
         <Header
           fullWidth={fullWidth}
           projectId={activity.project_id}
-        />
-        <ProfileNavHeader
-          fullWidth={fullWidth}
-          name={"test student"}
+          userName={"test student"}
+          activityName={activity.name}
+          singlePage={activity.layout === ActivityLayouts.SinglePage}
         />
         <ActivityNavHeader
-          activityName={activity.name}
           activityPages={activity.pages}
           currentPage={currentPage}
           fullWidth={fullWidth}

@@ -7,18 +7,18 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 200px;
+    width: 300px;
     height: 30px;
     box-sizing: border-box;
     border-radius: 4px;
     border: solid 1.5px $cc-charcoal-light1;
-    background-color: $cc-teal-light6;
+    background-color: $activity-header-gray;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
 
     &:hover {
-      background-color: $cc-teal-light4;
+      background-color: $cc-charcoal-light1;
     }
 
     &.disabled {
@@ -26,9 +26,10 @@
     }
 
     &.show-list, &:active {
-      background-color: $cc-teal;
       color: white;
       border-color: white;
+      background-color: $cc-charcoal-light2;
+
     }
 
     &:active .icon {
@@ -42,7 +43,7 @@
       height: 20px;
       width: 20px;
       margin: 0 5px 0 5px;
-      fill: $cc-teal;
+      fill: var(--theme-primary-color);
 
       &.show-list {
         fill: white;
@@ -51,7 +52,7 @@
 
     .current {
       flex-grow: 1;
-      max-width: 136px;
+      max-width: 236px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -61,7 +62,7 @@
       height: 24px;
       width: 24px;
       margin: 0 5px 0 5px;
-      fill: $cc-teal;
+      fill: var(--theme-primary-color);
       transition-property: transform;
       transition-duration: .25s;
 
@@ -78,7 +79,7 @@
   .list {
     position: absolute;
     margin-top: 1px;
-    width: 200px;
+    width: 350px;
     border-radius: 0 0 4px 4px;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
     opacity: 0;
@@ -86,6 +87,7 @@
     transition-property: opacity;
     transition-duration: .25s;
     pointer-events: none;
+    color: $activity-header-gray;
 
     &.show {
       opacity: 1;
@@ -108,14 +110,14 @@
       }
 
       &:hover {
-        background-color: $cc-teal-light6;
+        background-color: $cc-charcoal-light2;
       }
 
       &:active {
-        background-color: $cc-teal-light4;
+        background-color: $cc-charcoal;
       }
       &:active .check {
-        fill: $cc-teal;
+        fill: var(--theme-primary-color);
       }
 
       .check {
@@ -125,7 +127,7 @@
         fill: white;
 
         &.selected {
-          fill: $cc-teal;
+          fill: var(--theme-primary-color);
         }
       }
     }

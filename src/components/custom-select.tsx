@@ -7,7 +7,7 @@ import "./custom-select.scss";
 
 interface IProps {
   items: string[];
-  onSelectItem: (value: string) => void;
+  onSelectItem?: (value: string) => void;
   HeaderIcon?: SvgIcon;
   isDisabled?: boolean;
 }
@@ -95,7 +95,7 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
   }
 
   private handleListClick = (current: string) => () => {
-    this.props.onSelectItem(current);
+    this.props.onSelectItem && this.props.onSelectItem(current);
     this.setState({
       current,
       showList: false

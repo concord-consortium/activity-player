@@ -34,7 +34,7 @@ context("Saving and loading data as an anonymous user", () => {
       // unfortunately we have to wait for the data to be posted to firestore, which happens after a
       // delay to prevent spamming the database.
       // The fastest and most reliable way to kick it off seems to be 1. blur, 2. wait, 3. navigate away
-      cy.get("[data-cy=profile-nav-header").click({force: true});
+      cy.get("[data-cy=account-owner").click({force: true});
       // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(2000);
       activityPage.getNavPage(1).click();

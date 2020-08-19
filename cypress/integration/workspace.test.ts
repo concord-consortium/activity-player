@@ -5,17 +5,16 @@ context("Test the overall app", () => {
 
   describe("header",()=>{
     it("verify header loads",()=>{
-        cy.get("[data-cy=header]").should("be.visible");
+        cy.get("[data-cy=activity-header]").should("be.visible");
+        cy.get("[data-cy=activity-title]").should("be.visible");
+        cy.get(".header-center .custom-select").should("be.visible");
+        cy.get("[data-cy=account-owner]").should("be.visible");
     });
   });
   describe("ActivityNavHeader",()=>{
     it("verify ActivityNavHeader loads",()=>{
         cy.get("[data-cy=activity-nav-header]").should("be.visible");
-    });
-  });
-  describe("ProfileNavHeader",()=>{
-    it("verify ProfileNavHeader loads",()=>{
-        cy.get("[data-cy=profile-nav-header]").should("be.visible");
+
     });
   });
   describe("content",()=>{
