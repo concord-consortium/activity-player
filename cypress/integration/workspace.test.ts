@@ -14,7 +14,12 @@ context("Test the overall app", () => {
   describe("ActivityNavHeader",()=>{
     it("verify ActivityNavHeader loads",()=>{
         cy.get("[data-cy=activity-nav-header]").should("be.visible");
-
+    });
+  });
+  describe("ProfileNavHeader",()=>{
+    it("verify ProfileNavHeader loads",()=>{
+        cy.get("[data-cy=account-owner]").should("be.visible");
+        cy.get("[data-cy=account-owner]").should("contain", "Anonymous");
     });
   });
   describe("content",()=>{

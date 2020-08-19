@@ -88,6 +88,7 @@ export interface IPortalData extends ILTIPartial {
   database: FirebaseData;
   toolId: string;
   resourceUrl: string;
+  fullName?: string;
 }
 
 export interface IAnonymousPortalData {
@@ -366,6 +367,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
   // dealing with mis-matched data when we load data in originally saved on another branch.
   // This is currently unused for the purpose of saving and loading data
   const toolId = window.location.hostname + window.location.pathname;
+  const fullName = classInfo.students.find(s => s.id.toString() === portalJWT.uid.toString())?.fullName;
 
   const rawPortalData: IPortalData = {
     type: "authenticated",
@@ -377,6 +379,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     contextId: classInfo.classHash,
     toolId,
     resourceUrl: offeringData.activityUrl,
+    fullName,
     database: {
       appName: firebaseAppName,
       sourceKey,
