@@ -25,7 +25,7 @@ export class Sidebar extends React.PureComponent<IProps, IState> {
   render() {
     const { content, handleShowSidebar, index, show, style, title } = this.props;
     return (
-      <div className={`sidebar-container ${show ? "sidebar-container expanded" : ""}`} style={style} data-cy="sidebar">
+      <div className={`sidebar-container ${show ? "expanded " : ""}`} style={style} data-cy="sidebar">
         <SidebarTab
           handleShowSidebarContent={handleShowSidebar}
           index={index}
@@ -37,9 +37,9 @@ export class Sidebar extends React.PureComponent<IProps, IState> {
           handleCloseSidebarContent={handleShowSidebar}
           index={index}
           title={title}
+          show={show}
         />
       </div>
     );
   }
-
 }

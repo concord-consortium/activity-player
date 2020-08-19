@@ -3,6 +3,7 @@ import ccLogo from "../../assets/cc-logo.png";
 import { ProjectTypes } from "../../utilities/project-utils";
 import { AccountOwner } from "./account-owner";
 import { CustomSelect } from "../custom-select";
+import { accessibilityClick } from "../../utilities/accessibility-helper";
 import AssignmentIcon from "../../assets/svg-icons/assignment-icon.svg";
 
 import "./header.scss";
@@ -27,7 +28,9 @@ export class Header extends React.PureComponent<IProps> {
       <div className="activity-header" data-cy="activity-header">
         <div className={`inner ${fullWidth ? "full" : ""}`}>
           <div className={`header-left ${linkClass}`} onClick={this.handleProjectLogoClick(projectURL)}>
-            {logo && <img src={logo} className="project-logo" data-cy="project-logo" />}
+            {logo && <img src={logo} className="project-logo" alt="Project website" data-cy="project-logo" 
+                      onClick={this.handleProjectLogoClick(projectURL)} onKeyDown={this.handleProjectLogoClick(projectURL)}
+                      tabIndex={0}/>}
           </div>
           <div className="header-center">
             {!singlePage && this.renderActivityMenu()}
@@ -41,7 +44,7 @@ export class Header extends React.PureComponent<IProps> {
   }
 
   private handleProjectLogoClick = (url: string) => () => {
-    if (url) {
+    if ((accessibilityClick(event)) && url ) {
       window.open(url);
     }
   }

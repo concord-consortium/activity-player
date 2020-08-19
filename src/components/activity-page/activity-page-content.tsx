@@ -5,6 +5,7 @@ import { PageLayouts, EmbeddableSections, isQuestion, getPageSectionQuestionCoun
          VisibleEmbeddables, getVisibleEmbeddablesOnPage, getLinkedPluginEmbeddable } from "../../utilities/activity-utils";
 import { SidebarWrapper } from "../page-sidebar/sidebar-wrapper";
 import { renderHTML } from "../../utilities/render-html";
+import { accessibilityClick } from "../../utilities/accessibility-helper";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
 import { Page, EmbeddableWrapper } from "../../types";
@@ -201,7 +202,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const rightOrientation = page.layout === PageLayouts.FortySixty;
     const headerClass = `collapsible-header ${isSecondaryCollapsed ? "collapsed" : ""} ${rightOrientation ? "right" : ""}`;
     return (
-      <div onClick={this.handleCollapseClick} className={headerClass}>
+      <div onClick={this.handleCollapseClick} onKeyDown={this.handleCollapseClick} className={headerClass} tabIndex={0}>
         {isSecondaryCollapsed
           ? <React.Fragment>
             {this.renderCollapseArrow(rightOrientation)}
@@ -237,6 +238,8 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   private handleCollapseClick = () => {
-    this.setState({ isSecondaryCollapsed: !this.state.isSecondaryCollapsed });
+    if (accessibilityClick(event))  {  
+      this.setState({ isSecondaryCollapsed: !this.state.isSecondaryCollapsed });
+    }
   }
 }
