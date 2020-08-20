@@ -17,7 +17,7 @@ export class SocialMediaLinks extends React.PureComponent <IProps> {
     return (
       <div className="social-media-links" data-cy="social-media-links">
         <span className="share" data-cy="share-facebook">
-          <FacebookShareButton className="share-button" url={this.props.shareURL}>
+          <FacebookShareButton className="share-button" url={this.props.shareURL} tabIndex={0}>
             <FacebookIcon round size={24} />
           </FacebookShareButton>
         </span>

@@ -26,20 +26,6 @@
       align-items: center;
       justify-content: flex-start;
       height: 100%;
-      cursor: pointer;
-      &.no-link {
-        cursor: auto;
-      }
-      .logo {
-        height: 80%;
-        background-color: white;
-      }
-      .project-logo {
-        height: 80%;
-        background-color: white;
-        padding: 6px 10px;
-
-      }
     }
 
     .header-center {

@@ -26,6 +26,7 @@ describe("SidebarTab component", () => {
       title={title}
       index={0}
       content={content}
+      show={true}
       handleCloseSidebarContent={stubFunction} />);
     expect(wrapper.find('[data-cy="sidebar-title"]').text()).toContain(title);
     expect(wrapper.find('[data-cy="sidebar-content"]').length).toBe(1);
