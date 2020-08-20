@@ -1,13 +1,16 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useContext, useMemo } from "react";
 import { IframeRuntime } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
-import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
-import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
+import { IRuntimeMetadata, IGetFirebaseJwtRequest } from "@concord-consortium/lara-interactive-api";
+import { PortalDataContext } from "../../portal-data-context";
+import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, IframePhone } from "../../../types";
 import { createOrUpdateAnswer } from "../../../firebase-db";
+import { handleGetFirebaseJWTRequest } from "../../../portal-utils";
 import { getAnswerWithMetadata } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
 import { renderHTML } from "../../../utilities/render-html";
+import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 
 import "./managed-interactive.scss";
 
@@ -29,7 +32,13 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       }
     };
 
+    const portalData = useContext(PortalDataContext);
+    const handleGetFirebaseJWT = useCallback((phone: IframePhone, request: IGetFirebaseJwtRequest) => {
+      handleGetFirebaseJWTRequest({ phone, request, portalData });
+    }, [portalData]);
+
     const { embeddable, questionNumber, initialInteractiveState } = props;
+    const { authored_state } = embeddable;
     const questionName = embeddable.name ? `: ${embeddable.name}` : "";
     // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
     // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
@@ -40,6 +49,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       embeddableData = embeddable;
     }
     const url = embeddableData?.base_url || embeddableData?.url || "";
+    const authoredState = useMemo(() => safeJsonParseIfString(authored_state), [authored_state]);
     const linkedInteractives = (embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
                                 ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
                                 : undefined;
@@ -100,13 +110,14 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
         }
         <IframeRuntime
           url={url}
-          authoredState={embeddable.authored_state}
+          authoredState={authoredState}
           initialInteractiveState={initialInteractiveState}
           setInteractiveState={handleNewInteractiveState}
           linkedInteractives={linkedInteractives}
           proposedHeight={proposedHeight}
           containerWidth={containerWidth}
           setNewHint={setNewHint}
+          handleGetFirebaseJWT={handleGetFirebaseJWT}
         />
       </div>
     );

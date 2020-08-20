@@ -1,4 +1,4 @@
-import { handleGetFirebaseJWT } from "./use-interactive-phone-wrapper";
+import { handleGetFirebaseJWTRequest } from "./portal-utils";
 
 const requestId = "123456";
 const rawFirebaseJWT = "rawFirebaseJWT";
@@ -6,7 +6,7 @@ const rejectMessage = "Bad PortalJWT!";
 const resolvedFirebaseJWTResponse = { requestId, token: rawFirebaseJWT };
 const rejectedFirebaseJWTResponse = { requestId, response_type: "ERROR", message: rejectMessage };
 
-jest.mock("../../../portal-api", () => (
+jest.mock("./portal-api", () => (
   {
     getFirebaseJWT: (basePortalUrl: string, rawPortalJWT: string) => {
       return rawPortalJWT === "rawPortalJWT"
@@ -31,7 +31,7 @@ describe("handleGetFirebaseJWT", () => {
   });
 
   it("resolves with good portal data", async () => {
-    await handleGetFirebaseJWT({ phone, request, portalData });
+    await handleGetFirebaseJWTRequest({ phone, request, portalData });
     expect(phone.post.mock.calls.length).toBe(1);
     expect(phone.post.mock.calls[0][0]).toBe("firebaseJWT");
     expect(phone.post.mock.calls[0][1]).toEqual(resolvedFirebaseJWTResponse);
@@ -40,7 +40,7 @@ describe("handleGetFirebaseJWT", () => {
   it("rejects with bad portal data", async () => {
     portalData.rawPortalJWT = "badPortalJWT";
     try {
-      await handleGetFirebaseJWT({ phone, request, portalData });
+      await handleGetFirebaseJWTRequest({ phone, request, portalData });
     }
     catch(e) {
       // ignore errors
