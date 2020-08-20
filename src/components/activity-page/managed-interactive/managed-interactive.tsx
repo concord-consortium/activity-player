@@ -30,7 +30,9 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
   const iframeInteractiveState = useRef(initialInteractiveState);
 
   const handleNewInteractiveState = (state: IRuntimeMetadata) => {
+    // Keep interactive state in sync if iFrame is opened in modal popup
     iframeInteractiveState.current = state;
+
     const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, props.initialAnswerMeta);
     if (exportableAnswer) {
       createOrUpdateAnswer(exportableAnswer);
@@ -74,7 +76,9 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
   const divSize: any = useSize(divTarget);
   const proposedHeight: number = divSize && divSize.width / aspectRatio;
   const containerWidth: number = divSize && divSize.width;
+
   const embeddableAuthoredState = () => {
+    // enable modal support for activity player only
     const parsedState = embeddable.authored_state ? JSON.parse(embeddable.authored_state) : {};
     parsedState.modalSupported = true;
     return JSON.stringify(parsedState);
@@ -91,8 +95,8 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     setHint(newHint);
   }, []);
 
-  const getModalContainer = () => {
-    return document.getElementById("app") || {};
+  const getModalContainer = (): HTMLElement => {
+    return document.getElementById("app") || document.body;
   };
 
   const toggleModal = () => {
