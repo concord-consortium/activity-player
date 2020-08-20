@@ -30,6 +30,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
   const iframeInteractiveState = useRef(initialInteractiveState);
 
   const handleNewInteractiveState = (state: IRuntimeMetadata) => {
+    iframeInteractiveState.current = state;
     const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, props.initialAnswerMeta);
     if (exportableAnswer) {
       createOrUpdateAnswer(exportableAnswer);
@@ -73,7 +74,11 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
   const divSize: any = useSize(divTarget);
   const proposedHeight: number = divSize && divSize.width / aspectRatio;
   const containerWidth: number = divSize && divSize.width;
-
+  const embeddableAuthoredState = () => {
+    const parsedState = embeddable.authored_state ? JSON.parse(embeddable.authored_state) : {};
+    parsedState.modalSupported = true;
+    return JSON.stringify(parsedState);
+  };
   const [ showHint, setShowHint ] = useState(false);
   const [ hint, setHint ] = useState("");
   const handleHintCloseClick = () => {
@@ -103,7 +108,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
   const interactiveIframe =
     <IframeRuntime
       url={url}
-      authoredState={embeddable.authored_state}
+      authoredState={embeddableAuthoredState()}
       initialInteractiveState={iframeInteractiveState.current}
       setInteractiveState={handleNewInteractiveState}
       linkedInteractives={linkedInteractives}

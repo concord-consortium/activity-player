@@ -79,7 +79,7 @@ export const IframeRuntime: React.FC<IProps> =
         phoneRef.current.disconnect();
       }
     };
-  }, [url, authoredState, report, initialInteractiveState, setNewHint]);
+  }, [url, authoredState, report, initialInteractiveState, setNewHint, toggleModal]);
 
   const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;
   // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone
