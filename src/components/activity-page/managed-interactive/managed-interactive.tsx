@@ -24,104 +24,104 @@ const kDefaultAspectRatio = 4 / 3;
 
 export const ManagedInteractive: React.FC<IProps> = (props) => {
 
-  const handleNewInteractiveState = (state: IRuntimeMetadata) => {
-    // Keep interactive state in sync if iFrame is opened in modal popup
-    iframeInteractiveState.current = state;
+    const handleNewInteractiveState = (state: IRuntimeMetadata) => {
+      // Keep interactive state in sync if iFrame is opened in modal popup
+      iframeInteractiveState.current = state;
 
-    const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, props.initialAnswerMeta);
-    if (exportableAnswer) {
-      createOrUpdateAnswer(exportableAnswer);
+      const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, props.initialAnswerMeta);
+      if (exportableAnswer) {
+        createOrUpdateAnswer(exportableAnswer);
+      }
+    };
+
+    const { embeddable, questionNumber, initialInteractiveState } = props;
+    const [showModal, setShowModal] = useState(false);
+    // both Modal and inline versions of interactive should reflect the same state
+    const iframeInteractiveState = useRef(initialInteractiveState);
+    const questionName = embeddable.name ? `: ${embeddable.name}` : "";
+    // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
+    // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
+    let embeddableData: IMwInteractive | LibraryInteractiveData | undefined;
+    if (embeddable.type === "ManagedInteractive") {
+      embeddableData = embeddable.library_interactive?.data;
+    } else {
+      embeddableData = embeddable;
     }
-  };
+    const url = embeddableData?.base_url || embeddableData?.url || "";
+    const linkedInteractives = useRef((embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
+                                  ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
+                                  : undefined);
+    // TODO: handle different aspect ratio methods
+    // const aspectRatioMethod = data.aspect_ratio_method ? data.aspect_ratio_method : "";
+    const nativeHeight = embeddableData?.native_height || 0;
+    const nativeWidth = embeddableData?.native_width || 0;
+    const aspectRatio = nativeHeight && nativeWidth ? nativeWidth / nativeHeight : kDefaultAspectRatio;
 
-  const { embeddable, questionNumber, initialInteractiveState } = props;
-  const [showModal, setShowModal] = useState(false);
-  // both Modal and inline versions of interactive should reflect the same state
-  const iframeInteractiveState = useRef(initialInteractiveState);
-  const questionName = embeddable.name ? `: ${embeddable.name}` : "";
-  // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
-  // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
-  let embeddableData: IMwInteractive | LibraryInteractiveData | undefined;
-  if (embeddable.type === "ManagedInteractive") {
-    embeddableData = embeddable.library_interactive?.data;
-  } else {
-    embeddableData = embeddable;
-  }
-  const url = embeddableData?.base_url || embeddableData?.url || "";
-  const linkedInteractives = useRef((embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
-                                ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
-                                : undefined);
-  // TODO: handle different aspect ratio methods
-  // const aspectRatioMethod = data.aspect_ratio_method ? data.aspect_ratio_method : "";
-  const nativeHeight = embeddableData?.native_height || 0;
-  const nativeWidth = embeddableData?.native_width || 0;
-  const aspectRatio = nativeHeight && nativeWidth ? nativeWidth / nativeHeight : kDefaultAspectRatio;
+    // cf. https://www.npmjs.com/package/@react-hook/resize-observer
+    const useSize = (target: any) => {
+      const [size, setSize] = React.useState();
 
-  // cf. https://www.npmjs.com/package/@react-hook/resize-observer
-  const useSize = (target: any) => {
-    const [size, setSize] = React.useState();
+      React.useLayoutEffect(() => {
+        setSize(target.current.getBoundingClientRect());
+      }, [target]);
 
-    React.useLayoutEffect(() => {
-      setSize(target.current.getBoundingClientRect());
-    }, [target]);
+      useResizeObserver(target, (entry: any) => setSize(entry.contentRect));
+      return size;
+    };
 
-    useResizeObserver(target, (entry: any) => setSize(entry.contentRect));
-    return size;
-  };
+    const divTarget = React.useRef(null);
+    const divSize: any = useSize(divTarget);
+    const proposedHeight: number = divSize && divSize.width / aspectRatio;
+    const containerWidth: number = divSize && divSize.width;
 
-  const divTarget = React.useRef(null);
-  const divSize: any = useSize(divTarget);
-  const proposedHeight: number = divSize && divSize.width / aspectRatio;
-  const containerWidth: number = divSize && divSize.width;
+    const [ showHint, setShowHint ] = useState(false);
+    const [ hint, setHint ] = useState("");
+    const handleHintClose = () => {
+      setShowHint(false);
+    };
+    const handleShowHint = () => {
+      if (accessibilityClick(event)) {
+        setShowHint(!showHint);
+      }
+    };
+    const setNewHint = useCallback((newHint: string) => {
+      setHint(newHint);
+    }, []);
 
-  const [ showHint, setShowHint ] = useState(false);
-  const [ hint, setHint ] = useState("");
-  const handleHintClose = () => {
-    setShowHint(false);
-  };
-  const handleShowHint = () => {
-    if (accessibilityClick(event)) {
-      setShowHint(!showHint);
-    }
-  };
-  const setNewHint = useCallback((newHint: string) => {
-    setHint(newHint);
-  }, []);
+    const embeddableAuthoredState = () => {
+      // enable modal support for activity player only
+      const parsedState = embeddable.authored_state ? JSON.parse(embeddable.authored_state) : {};
+      parsedState.modalSupported = true;
+      return JSON.stringify(parsedState);
+    };
+    const getModalContainer = (): HTMLElement => {
+      return document.getElementById("app") || document.body;
+    };
 
-  const embeddableAuthoredState = () => {
-    // enable modal support for activity player only
-    const parsedState = embeddable.authored_state ? JSON.parse(embeddable.authored_state) : {};
-    parsedState.modalSupported = true;
-    return JSON.stringify(parsedState);
-  };
-  const getModalContainer = (): HTMLElement => {
-    return document.getElementById("app") || document.body;
-  };
+    const toggleModal = () => {
+      setShowModal(!showModal);
+    };
 
-  const toggleModal = () => {
-    setShowModal(!showModal);
-  };
+    const handleCloseModalRequest = (modalProps?: any) => {
+      if (modalProps) {
+        handleNewInteractiveState(modalProps.interactiveState);
+      }
+    };
 
-  const handleCloseModalRequest = (modalProps?: any) => {
-    if (modalProps) {
-      handleNewInteractiveState(modalProps.interactiveState);
-    }
-  };
+    const interactiveIframe =
+      <IframeRuntime
+        url={url}
+        authoredState={embeddableAuthoredState()}
+        initialInteractiveState={iframeInteractiveState.current}
+        setInteractiveState={handleNewInteractiveState}
+        linkedInteractives={linkedInteractives.current}
+        proposedHeight={proposedHeight}
+        containerWidth={containerWidth}
+        setNewHint={setNewHint}
+        toggleModal={toggleModal}
+      />;
 
-  const interactiveIframe =
-    <IframeRuntime
-      url={url}
-      authoredState={embeddableAuthoredState()}
-      initialInteractiveState={iframeInteractiveState.current}
-      setInteractiveState={handleNewInteractiveState}
-      linkedInteractives={linkedInteractives.current}
-      proposedHeight={proposedHeight}
-      containerWidth={containerWidth}
-      setNewHint={setNewHint}
-      toggleModal={toggleModal}
-    />;
-
-  return (
+    return (
       <div ref={divTarget} data-cy="managed-interactive">
         { questionNumber &&
           <div className="header">
@@ -142,10 +142,10 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
             <div className="hint" data-cy="hint">{renderHTML(hint)}</div>
             <div className="close-container">
               <IconArrowUp className={"close"} width={26} height={26}
-                           onClick={handleHintClose}
-                           onKeyDown={handleHintClose}
-                           data-cy="close-hint"
-                           tabIndex={0}/>
+                          onClick={handleHintClose}
+                          onKeyDown={handleHintClose}
+                          data-cy="close-hint"
+                          tabIndex={0}/>
             </div>
         </div>
       }
@@ -153,7 +153,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       <Modal isOpen={showModal} appElement={getModalContainer()} onRequestClose={handleCloseModalRequest}>
         {interactiveIframe}
       </Modal>
-    </div>
-  );
-};
+      </div>
+    );
+  };
 ManagedInteractive.displayName = "ManagedInteractive";
