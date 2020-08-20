@@ -50,7 +50,7 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
     const showListClass = this.state.showList ? "show-list" : "";
     const disabled = isDisabled ? "disabled" : "";
     return (
-      <div className={`header ${showListClass} ${disabled}`} onClick={this.handleHeaderClick}>
+      <div className={`header ${showListClass} ${disabled}`} onClick={this.handleHeaderClick} tabIndex={0}>
         { HeaderIcon && <HeaderIcon className={`icon ${showListClass}`} /> }
         <div className="current">{currentItem && currentItem}</div>
         { <ArrowIcon className={`arrow ${showListClass} ${disabled}`} /> }

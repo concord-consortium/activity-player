@@ -9,6 +9,7 @@ import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
 import { renderHTML } from "../../../utilities/render-html";
 import Modal from "react-modal";
+import { accessibilityClick } from "../../../utilities/accessibility-helper";
 
 import "./managed-interactive.scss";
 
@@ -84,12 +85,15 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     return JSON.stringify(parsedState);
   };
   const [ showHint, setShowHint ] = useState(false);
-  const [ hint, setHint ] = useState("");
-  const handleHintCloseClick = () => {
+  const [hint, setHint] = useState("");
+
+  const handleHintClose = () => {
     setShowHint(false);
   };
-  const handleQuestionClick = () => {
-    setShowHint(!showHint);
+  const handleShowHint = () => {
+    if (accessibilityClick(event)) {
+      setShowHint(!showHint);
+    }
   };
   const setNewHint = useCallback((newHint: string) => {
     setHint(newHint);
@@ -127,10 +131,14 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
         { questionNumber &&
           <div className="header">
             Question #{questionNumber}{questionName}
-           { hint &&
-             <div className="question-container" onClick={handleQuestionClick} data-cy="open-hint">
-               <IconQuestion className="question" height={22} width={22}/>
-             </div>
+            { hint &&
+              <div className="question-container"
+                onClick={handleShowHint}
+                onKeyDown={handleShowHint}
+                data-cy="open-hint"
+                tabIndex={0}>
+                <IconQuestion className="question" height={22} width={22}/>
+              </div>
             }
           </div>
         }
@@ -138,7 +146,11 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
           <div className={`hint-container ${showHint ? "" : "collapsed"}`}>
             <div className="hint" data-cy="hint">{renderHTML(hint)}</div>
             <div className="close-container">
-              <IconArrowUp className={"close"} width={26} height={26} onClick={handleHintCloseClick} data-cy="close-hint" />
+              <IconArrowUp className={"close"} width={26} height={26}
+                           onClick={handleHintClose}
+                           onKeyDown={handleHintClose}
+                           data-cy="close-hint"
+                           tabIndex={0}/>
             </div>
         </div>
       }

@@ -34,7 +34,6 @@
     font-size: 20px;
     border-radius: 8px;
     border: solid 2px $cc-charcoal-light2;
-    outline: none;
     white-space: nowrap;
     cursor: pointer;
     flex-shrink: 0;
@@ -46,6 +45,9 @@
     &:active {
       background-color: var(--theme-primary-active-color);
     }
-  }
+    &:focus {
+      outline: 3px solid var(--theme-primary-hover-color);
+    }
+  } 
 
 }
