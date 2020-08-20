@@ -23,12 +23,6 @@ interface IProps {
 const kDefaultAspectRatio = 4 / 3;
 
 export const ManagedInteractive: React.FC<IProps> = (props) => {
-  const { embeddable, questionNumber, initialInteractiveState } = props;
-
-  const [showModal, setShowModal] = useState(false);
-
-  // both Modal and inline versions of interactive should reflect the same state
-  const iframeInteractiveState = useRef(initialInteractiveState);
 
   const handleNewInteractiveState = (state: IRuntimeMetadata) => {
     // Keep interactive state in sync if iFrame is opened in modal popup
@@ -40,6 +34,10 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     }
   };
 
+  const { embeddable, questionNumber, initialInteractiveState } = props;
+  const [showModal, setShowModal] = useState(false);
+  // both Modal and inline versions of interactive should reflect the same state
+  const iframeInteractiveState = useRef(initialInteractiveState);
   const questionName = embeddable.name ? `: ${embeddable.name}` : "";
   // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
   // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
@@ -49,12 +47,10 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
   } else {
     embeddableData = embeddable;
   }
-
   const url = embeddableData?.base_url || embeddableData?.url || "";
-  const linkedInteractives = (embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
-                              ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
-                              : undefined;
-
+  const linkedInteractives = useRef((embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
+                                ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
+                                : undefined);
   // TODO: handle different aspect ratio methods
   // const aspectRatioMethod = data.aspect_ratio_method ? data.aspect_ratio_method : "";
   const nativeHeight = embeddableData?.native_height || 0;
@@ -78,15 +74,8 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
   const proposedHeight: number = divSize && divSize.width / aspectRatio;
   const containerWidth: number = divSize && divSize.width;
 
-  const embeddableAuthoredState = () => {
-    // enable modal support for activity player only
-    const parsedState = embeddable.authored_state ? JSON.parse(embeddable.authored_state) : {};
-    parsedState.modalSupported = true;
-    return JSON.stringify(parsedState);
-  };
   const [ showHint, setShowHint ] = useState(false);
-  const [hint, setHint] = useState("");
-
+  const [ hint, setHint ] = useState("");
   const handleHintClose = () => {
     setShowHint(false);
   };
@@ -99,6 +88,12 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     setHint(newHint);
   }, []);
 
+  const embeddableAuthoredState = () => {
+    // enable modal support for activity player only
+    const parsedState = embeddable.authored_state ? JSON.parse(embeddable.authored_state) : {};
+    parsedState.modalSupported = true;
+    return JSON.stringify(parsedState);
+  };
   const getModalContainer = (): HTMLElement => {
     return document.getElementById("app") || document.body;
   };
@@ -119,7 +114,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       authoredState={embeddableAuthoredState()}
       initialInteractiveState={iframeInteractiveState.current}
       setInteractiveState={handleNewInteractiveState}
-      linkedInteractives={linkedInteractives}
+      linkedInteractives={linkedInteractives.current}
       proposedHeight={proposedHeight}
       containerWidth={containerWidth}
       setNewHint={setNewHint}
