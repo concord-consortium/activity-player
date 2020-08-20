@@ -1,5 +1,6 @@
 import React from "react";
 import IconArrow from "../../assets/svg-icons/icon-arrow-circle-left.svg";
+import { accessibilityClick } from "../../utilities/accessibility-helper";
 
 import "./sidebar-tab.scss";
 
@@ -10,15 +11,16 @@ interface IProps {
   sidebarOpen: boolean
 }
 
-export class SidebarTab extends React.PureComponent <IProps>{
+export class SidebarTab extends React.PureComponent<IProps>{
   constructor(props: IProps) {
     super(props);
   }
 
   render() {
-    return(
-      <div className="sideBarTab" onClick={this.handleSidebarClick} data-cy="sidebar-tab">
-        <div className={`icon ${this.props.sidebarOpen ? "open" : "" }`}>
+    return (
+      <div className="sidebar-tab" onClick={this.handleSidebarShow} onKeyDown={this.handleSidebarShow} 
+           data-cy="sidebar-tab" tabIndex={0}>
+        <div className={`icon ${this.props.sidebarOpen ? "open" : ""}`}>
           <IconArrow />
         </div>
         <div className="tab-name" data-cy="sidebar-tab-title">{this.props.title}</div>
@@ -26,7 +28,9 @@ export class SidebarTab extends React.PureComponent <IProps>{
     );
   }
 
-  private handleSidebarClick = () => {
-    this.props.handleShowSidebarContent(this.props.index, !this.props.sidebarOpen);
+  private handleSidebarShow = () => {
+    if (accessibilityClick(event)) {
+      this.props.handleShowSidebarContent(this.props.index, !this.props.sidebarOpen);
+    }
   }
 }
