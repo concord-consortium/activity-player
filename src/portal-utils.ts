@@ -1,29 +1,14 @@
-import { IGetFirebaseJwtRequest } from "@concord-consortium/lara-interactive-api";
 import { getFirebaseJWT, IPortalData } from "./portal-api";
-import { IframePhone } from "./types";
 
-interface IGetFirebaseJWTArgs {
-  phone: IframePhone;
-  request: IGetFirebaseJwtRequest;
-  portalData?: IPortalData;
+export interface IHandleGetFirebaseJWTParams extends Record<string, any> {
+  firebase_app: string;
 }
-export const handleGetFirebaseJWTRequest = async ({ phone, request, portalData }: IGetFirebaseJWTArgs) => {
-  const { requestId, ...others } = request || {};
-  let errorMessage = "Error retrieving Firebase JWT!";
+export const handleGetFirebaseJWT = async (params: IHandleGetFirebaseJWTParams, portalData?: IPortalData) => {
   if (portalData?.basePortalUrl && portalData.rawPortalJWT) {
     const { learnerKey, basePortalUrl, rawPortalJWT } = portalData;
     const _learnerKey = learnerKey ? { learner_id_or_key: learnerKey } : undefined;
-    const queryParams: Record<string, string> = { ...others, ..._learnerKey };
-    try {
-      const [rawFirebaseJWT] = await getFirebaseJWT(basePortalUrl, rawPortalJWT, queryParams);
-      phone.post("firebaseJWT", { requestId, token: rawFirebaseJWT });
-      errorMessage = "";
-    }
-    catch(e) {
-      errorMessage = e.toString();
-    }
+    const [rawFirebaseJWT] = await getFirebaseJWT(basePortalUrl, rawPortalJWT, { ...params, ..._learnerKey });
+    return rawFirebaseJWT;
   }
-  if (errorMessage) {
-    phone.post("firebaseJWT", { requestId, response_type: "ERROR", message: errorMessage });
-  }
+  throw new Error("Error retrieving Firebase JWT!");
 };

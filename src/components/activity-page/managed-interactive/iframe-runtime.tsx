@@ -22,12 +22,12 @@ interface IProps {
   proposedHeight?: number;
   containerWidth?: number;
   setNewHint: (newHint: string) => void;
-  handleGetFirebaseJWT: (phone: IframePhone, request: IGetFirebaseJwtRequest) => void;
+  getFirebaseJWT: (firebaseApp: string, others: Record<string, any>) => Promise<string>;
 }
 
 export const IframeRuntime: React.FC<IProps> =
   ({ url, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives,
-      report, proposedHeight, containerWidth, setNewHint, handleGetFirebaseJWT }) => {
+      report, proposedHeight, containerWidth, setNewHint, getFirebaseJWT }) => {
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -53,8 +53,20 @@ export const IframeRuntime: React.FC<IProps> =
           setARFromSupportedFeatures(info.features.aspectRatio);
         }
       });
-      phone.addListener("getFirebaseJWT", (request: IGetFirebaseJwtRequest) => {
-        handleGetFirebaseJWT(phone, request);
+      phone.addListener("getFirebaseJWT", async (request: IGetFirebaseJwtRequest) => {
+        const { requestId, firebase_app, ...others } = request || {};
+        let errorMessage = "Error retrieving Firebase JWT!";
+        try {
+          const rawFirebaseJWT = await getFirebaseJWT(firebase_app, others);
+          phone.post("firebaseJWT", { requestId, token: rawFirebaseJWT });
+          errorMessage = "";
+        }
+        catch(e) {
+          errorMessage = e.toString();
+        }
+        if (errorMessage) {
+          phone.post("firebaseJWT", { requestId, response_type: "ERROR", message: errorMessage });
+        }
       });
       phone.addListener("hint", (newHint: any) => {
         setNewHint(newHint.text || "");
@@ -79,7 +91,7 @@ export const IframeRuntime: React.FC<IProps> =
         phoneRef.current.disconnect();
       }
     };
-  }, [url, authoredState, report, initialInteractiveState, setNewHint, handleGetFirebaseJWT]);
+  }, [url, authoredState, report, initialInteractiveState, setNewHint, getFirebaseJWT]);
 
   const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;
   // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone

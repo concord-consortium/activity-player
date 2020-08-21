@@ -9,6 +9,9 @@ describe("IframeRuntime component", () => {
     const stubFunction = () => {
       // do nothing.
     };
+    const firebaseJWTStub = () => {
+      return Promise.resolve("stub");
+    };
     // @testing-library tests more, including unmount
     const { getByTestId } = render(
       <IframeRuntime
@@ -17,7 +20,7 @@ describe("IframeRuntime component", () => {
         initialInteractiveState={null}
         setInteractiveState={stubFunction}
         setNewHint={stubFunction}
-        handleGetFirebaseJWT={stubFunction}
+        getFirebaseJWT={firebaseJWTStub}
       />);
     expect(getByTestId("iframe-runtime")).toBeDefined();
   });

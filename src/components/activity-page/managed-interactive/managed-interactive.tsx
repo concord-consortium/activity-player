@@ -1,11 +1,11 @@
 import React, { useState, useCallback, useContext, useMemo } from "react";
 import { IframeRuntime } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
-import { IRuntimeMetadata, IGetFirebaseJwtRequest } from "@concord-consortium/lara-interactive-api";
+import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
-import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, IframePhone } from "../../../types";
+import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
 import { createOrUpdateAnswer } from "../../../firebase-db";
-import { handleGetFirebaseJWTRequest } from "../../../portal-utils";
+import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
@@ -34,8 +34,8 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     };
 
     const portalData = useContext(PortalDataContext);
-    const handleGetFirebaseJWT = useCallback((phone: IframePhone, request: IGetFirebaseJwtRequest) => {
-      handleGetFirebaseJWTRequest({ phone, request, portalData });
+    const getFirebaseJWT = useCallback((firebaseApp: string, others: Record<string, any>) => {
+      return handleGetFirebaseJWT({ firebase_app: firebaseApp, ...others }, portalData);
     }, [portalData]);
 
     const { embeddable, questionNumber, initialInteractiveState } = props;
@@ -97,9 +97,9 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
           <div className="header">
             Question #{questionNumber}{questionName}
            { hint &&
-             <div className="question-container" 
-                  onClick={handleShowHint} 
-                  onKeyDown={handleShowHint} 
+             <div className="question-container"
+                  onClick={handleShowHint}
+                  onKeyDown={handleShowHint}
                   data-cy="open-hint"
                   tabIndex={0}>
                <IconQuestion className="question" height={22} width={22}/>
@@ -111,10 +111,10 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
           <div className={`hint-container ${showHint ? "" : "collapsed"}`}>
             <div className="hint" data-cy="hint">{renderHTML(hint)}</div>
             <div className="close-container">
-              <IconArrowUp className={"close"} width={26} height={26} 
-                           onClick={handleHintClose} 
-                           onKeyDown={handleHintClose} 
-                           data-cy="close-hint" 
+              <IconArrowUp className={"close"} width={26} height={26}
+                           onClick={handleHintClose}
+                           onKeyDown={handleHintClose}
+                           data-cy="close-hint"
                            tabIndex={0}/>
             </div>
           </div>
@@ -128,7 +128,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
           proposedHeight={proposedHeight}
           containerWidth={containerWidth}
           setNewHint={setNewHint}
-          handleGetFirebaseJWT={handleGetFirebaseJWT}
+          getFirebaseJWT={getFirebaseJWT}
         />
       </div>
     );

@@ -1,52 +1,60 @@
-import { handleGetFirebaseJWTRequest } from "./portal-utils";
+import { handleGetFirebaseJWT } from "./portal-utils";
 
-const requestId = "123456";
+const firebaseApp = "firebase-app";
+const params = { firebase_app: firebaseApp };
 const rawFirebaseJWT = "rawFirebaseJWT";
 const rejectMessage = "Bad PortalJWT!";
-const resolvedFirebaseJWTResponse = { requestId, token: rawFirebaseJWT };
-const rejectedFirebaseJWTResponse = { requestId, response_type: "ERROR", message: rejectMessage };
 
 jest.mock("./portal-api", () => (
   {
     getFirebaseJWT: (basePortalUrl: string, rawPortalJWT: string) => {
-      return rawPortalJWT === "rawPortalJWT"
-              ? Promise.resolve([rawFirebaseJWT])
-              : Promise.reject(rejectMessage);
+      if (rawPortalJWT === "rawPortalJWT") {
+        return Promise.resolve([rawFirebaseJWT]);
+      }
+      throw new Error(rejectMessage);
     }
   }
 ));
 
 describe("handleGetFirebaseJWT", () => {
 
-  const phone: any = { post: jest.fn() };
-  const request: any = { requestId };
   const portalData: any = {
           learnerKey: "learnerKey",
           basePortalUrl: "basePortalUrl",
           rawPortalJWT: "rawPortalJWT"
         };
 
-  beforeEach(() => {
-    phone.post.mockReset();
+  it("resolves with good portal data", async () => {
+    const response = await handleGetFirebaseJWT(params, portalData);
+    expect(response).toBe(rawFirebaseJWT);
   });
 
-  it("resolves with good portal data", async () => {
-    await handleGetFirebaseJWTRequest({ phone, request, portalData });
-    expect(phone.post.mock.calls.length).toBe(1);
-    expect(phone.post.mock.calls[0][0]).toBe("firebaseJWT");
-    expect(phone.post.mock.calls[0][1]).toEqual(resolvedFirebaseJWTResponse);
+  it("resolves without learnerKey in portal data", async () => {
+    delete portalData.learnerKey;
+    const response = await handleGetFirebaseJWT(params, portalData);
+    expect(response).toBe(rawFirebaseJWT);
   });
 
   it("rejects with bad portal data", async () => {
-    portalData.rawPortalJWT = "badPortalJWT";
+    let err = "";
     try {
-      await handleGetFirebaseJWTRequest({ phone, request, portalData });
+      portalData.rawPortalJWT = "badPortalJWT";
+      await handleGetFirebaseJWT(params, portalData);
     }
     catch(e) {
-      // ignore errors
+      err = e.toString();
     }
-    expect(phone.post.mock.calls.length).toBe(1);
-    expect(phone.post.mock.calls[0][0]).toBe("firebaseJWT");
-    expect(phone.post.mock.calls[0][1]).toEqual(rejectedFirebaseJWTResponse);
+    expect(err).toMatch(new RegExp(rejectMessage));
+  });
+
+  it("rejects with no portal data", async () => {
+    let err = "";
+    try {
+      await handleGetFirebaseJWT(params);
+    }
+    catch(e) {
+      err = e.toString();
+    }
+    expect(err).toMatch(new RegExp("Error"));
   });
 });
