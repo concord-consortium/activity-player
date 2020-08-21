@@ -23,11 +23,12 @@ interface IProps {
   containerWidth?: number;
   setNewHint: (newHint: string) => void;
   getFirebaseJWT: (firebaseApp: string, others: Record<string, any>) => Promise<string>;
+  toggleModal: () => void;
 }
 
 export const IframeRuntime: React.FC<IProps> =
   ({ url, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives,
-      report, proposedHeight, containerWidth, setNewHint, getFirebaseJWT }) => {
+      report, proposedHeight, containerWidth, setNewHint, getFirebaseJWT, toggleModal }) => {
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -71,6 +72,9 @@ export const IframeRuntime: React.FC<IProps> =
       phone.addListener("hint", (newHint: any) => {
         setNewHint(newHint.text || "");
       });
+      phone.addListener("showModal", () => {
+        toggleModal();
+      });
       phone.post("initInteractive", {
         mode: report ? "report" : "runtime",
         authoredState,
@@ -91,7 +95,7 @@ export const IframeRuntime: React.FC<IProps> =
         phoneRef.current.disconnect();
       }
     };
-  }, [url, authoredState, report, initialInteractiveState, setNewHint, getFirebaseJWT]);
+  }, [url, authoredState, report, initialInteractiveState, setNewHint, getFirebaseJWT, toggleModal]);
 
   const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;
   // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone
