@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { IframeRuntime } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
@@ -8,6 +8,7 @@ import { getAnswerWithMetadata } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
 import { renderHTML } from "../../../utilities/render-html";
+import Modal from "react-modal";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
 
 import "./managed-interactive.scss";
@@ -24,6 +25,9 @@ const kDefaultAspectRatio = 4 / 3;
 export const ManagedInteractive: React.FC<IProps> = (props) => {
 
     const handleNewInteractiveState = (state: IRuntimeMetadata) => {
+      // Keep interactive state in sync if iFrame is opened in modal popup
+      iframeInteractiveState.current = state;
+
       const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, props.initialAnswerMeta);
       if (exportableAnswer) {
         createOrUpdateAnswer(exportableAnswer);
@@ -31,6 +35,9 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     };
 
     const { embeddable, questionNumber, initialInteractiveState } = props;
+    const [showModal, setShowModal] = useState(false);
+    // both Modal and inline versions of interactive should reflect the same state
+    const iframeInteractiveState = useRef(initialInteractiveState);
     const questionName = embeddable.name ? `: ${embeddable.name}` : "";
     // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
     // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
@@ -41,9 +48,9 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       embeddableData = embeddable;
     }
     const url = embeddableData?.base_url || embeddableData?.url || "";
-    const linkedInteractives = (embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
-                                ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
-                                : undefined;
+    const linkedInteractives = useRef((embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
+                                  ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
+                                  : undefined);
     // TODO: handle different aspect ratio methods
     // const aspectRatioMethod = data.aspect_ratio_method ? data.aspect_ratio_method : "";
     const nativeHeight = embeddableData?.native_height || 0;
@@ -81,19 +88,53 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       setHint(newHint);
     }, []);
 
+    const embeddableAuthoredState = () => {
+      // enable modal support for activity player only
+      const parsedState = embeddable.authored_state ? JSON.parse(embeddable.authored_state) : {};
+      parsedState.modalSupported = true;
+      return JSON.stringify(parsedState);
+    };
+
+    const getModalContainer = (): HTMLElement => {
+      return document.getElementById("app") || document.body;
+    };
+
+    const toggleModal = useCallback(() => {
+      setShowModal(!showModal);
+    }, [showModal]);
+
+    const handleCloseModalRequest = (modalProps?: any) => {
+      if (modalProps) {
+        handleNewInteractiveState(modalProps.interactiveState);
+      }
+    };
+
+    const interactiveIframe =
+      <IframeRuntime
+        url={url}
+        authoredState={embeddableAuthoredState()}
+        initialInteractiveState={iframeInteractiveState.current}
+        setInteractiveState={handleNewInteractiveState}
+        linkedInteractives={linkedInteractives.current}
+        proposedHeight={proposedHeight}
+        containerWidth={containerWidth}
+        setNewHint={setNewHint}
+        toggleModal={toggleModal}
+      />;
+
     return (
       <div ref={divTarget} data-cy="managed-interactive">
         { questionNumber &&
           <div className="header">
             Question #{questionNumber}{questionName}
-           { hint &&
-             <div className="question-container" 
-                  onClick={handleShowHint} 
-                  onKeyDown={handleShowHint} 
-                  data-cy="open-hint"
-                  tabIndex={0}>
-               <IconQuestion className="question" height={22} width={22}/>
-             </div>
+            { hint &&
+              <div className="question-container"
+                onClick={handleShowHint}
+                onKeyDown={handleShowHint}
+                data-cy="open-hint"
+                tabIndex={0}>
+                <IconQuestion className="question" height={22} width={22}/>
+              </div>
             }
           </div>
         }
@@ -101,24 +142,18 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
           <div className={`hint-container ${showHint ? "" : "collapsed"}`}>
             <div className="hint" data-cy="hint">{renderHTML(hint)}</div>
             <div className="close-container">
-              <IconArrowUp className={"close"} width={26} height={26} 
-                           onClick={handleHintClose} 
-                           onKeyDown={handleHintClose} 
-                           data-cy="close-hint" 
-                           tabIndex={0}/>
+              <IconArrowUp className={"close"} width={26} height={26}
+                          onClick={handleHintClose}
+                          onKeyDown={handleHintClose}
+                          data-cy="close-hint"
+                          tabIndex={0}/>
             </div>
-          </div>
-        }
-        <IframeRuntime
-          url={url}
-          authoredState={embeddable.authored_state}
-          initialInteractiveState={initialInteractiveState}
-          setInteractiveState={handleNewInteractiveState}
-          linkedInteractives={linkedInteractives}
-          proposedHeight={proposedHeight}
-          containerWidth={containerWidth}
-          setNewHint={setNewHint}
-        />
+        </div>
+      }
+      {!showModal && interactiveIframe}
+      <Modal isOpen={showModal} appElement={getModalContainer()} onRequestClose={handleCloseModalRequest}>
+        {interactiveIframe}
+      </Modal>
       </div>
     );
   };

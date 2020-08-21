@@ -14,6 +14,7 @@ describe("IframeRuntime component", () => {
         initialInteractiveState={null}
         setInteractiveState={stubFunction}
         setNewHint={stubFunction}
+        toggleModal={stubFunction}
       />);
     expect(wrapper.find('[data-cy="iframe-runtime"]').length).toBe(1);
   });

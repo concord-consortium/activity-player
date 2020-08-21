@@ -130,6 +130,7 @@
     "@react-hook/resize-observer": "^1.1.0",
     "@types/jquery": "^3.5.1",
     "@types/jsonwebtoken": "^8.5.0",
+    "@types/react-modal": "^3.10.6",
     "@types/superagent": "^4.1.8",
     "@types/uuid": "^8.0.0",
     "dompurify": "^2.0.12",
@@ -141,6 +142,7 @@
     "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-modal": "^3.11.2",
     "react-share": "^4.2.0",
     "superagent": "^5.3.1"
   }

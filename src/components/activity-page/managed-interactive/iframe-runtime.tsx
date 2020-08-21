@@ -22,11 +22,12 @@ interface IProps {
   proposedHeight?: number;
   containerWidth?: number;
   setNewHint: (newHint: string) => void;
+  toggleModal: () => void;
 }
 
 export const IframeRuntime: React.FC<IProps> =
   ({ url, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives,
-      report, proposedHeight, containerWidth, setNewHint }) => {
+      report, proposedHeight, containerWidth, setNewHint, toggleModal }) => {
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -54,6 +55,9 @@ export const IframeRuntime: React.FC<IProps> =
       });
       phone.addListener("hint", (newHint: any) => {
         setNewHint(newHint.text || "");
+      });
+      phone.addListener("showModal", () => {
+        toggleModal();
       });
       phone.post("initInteractive", {
         mode: report ? "report" : "runtime",
