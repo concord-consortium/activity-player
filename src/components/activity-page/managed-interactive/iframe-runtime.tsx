@@ -22,7 +22,7 @@ interface IProps {
   proposedHeight?: number;
   containerWidth?: number;
   setNewHint: (newHint: string) => void;
-  toggleModal?: any;
+  toggleModal: () => void;
 }
 
 export const IframeRuntime: React.FC<IProps> =
@@ -56,8 +56,8 @@ export const IframeRuntime: React.FC<IProps> =
       phone.addListener("hint", (newHint: any) => {
         setNewHint(newHint.text || "");
       });
-      phone.addListener("showModal", (modalProps: any) => {
-        toggleModal(modalProps);
+      phone.addListener("showModal", () => {
+        toggleModal();
       });
       phone.post("initInteractive", {
         mode: report ? "report" : "runtime",
@@ -79,7 +79,7 @@ export const IframeRuntime: React.FC<IProps> =
         phoneRef.current.disconnect();
       }
     };
-  }, [url, authoredState, report, initialInteractiveState, setNewHint, toggleModal]);
+  }, [url, authoredState, report, initialInteractiveState, setNewHint]);
 
   const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;
   // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone

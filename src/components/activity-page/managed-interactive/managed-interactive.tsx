@@ -94,13 +94,14 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       parsedState.modalSupported = true;
       return JSON.stringify(parsedState);
     };
+
     const getModalContainer = (): HTMLElement => {
       return document.getElementById("app") || document.body;
     };
 
-    const toggleModal = () => {
+    const toggleModal = useCallback(() => {
       setShowModal(!showModal);
-    };
+    }, [showModal]);
 
     const handleCloseModalRequest = (modalProps?: any) => {
       if (modalProps) {
