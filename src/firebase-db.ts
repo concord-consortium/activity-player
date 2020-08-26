@@ -7,7 +7,8 @@
  * and then later can request the current data or to append a listener for that data.
  */
 
-import * as firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 import "firebase/firestore";
 import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal-api";
 import { answersQuestionIdToRefId } from "./utilities/embeddable-utils";

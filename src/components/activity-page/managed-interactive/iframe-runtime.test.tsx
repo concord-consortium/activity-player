@@ -1,21 +1,28 @@
 import React from "react";
 import { IframeRuntime } from "./iframe-runtime";
-import { shallow } from "enzyme";
+import { configure, render } from "@testing-library/react";
+
+configure({ testIdAttribute: "data-cy" });
 
 describe("IframeRuntime component", () => {
   it("renders component", () => {
     const stubFunction = () => {
       // do nothing.
     };
-    const wrapper = shallow(
+    const firebaseJWTStub = () => {
+      return Promise.resolve("stub");
+    };
+    // @testing-library tests more, including unmount
+    const { getByTestId } = render(
       <IframeRuntime
         url={"https://www.google.com/"}
         authoredState={null}
         initialInteractiveState={null}
         setInteractiveState={stubFunction}
         setNewHint={stubFunction}
+        getFirebaseJWT={firebaseJWTStub}
         toggleModal={stubFunction}
       />);
-    expect(wrapper.find('[data-cy="iframe-runtime"]').length).toBe(1);
+    expect(getByTestId("iframe-runtime")).toBeDefined();
   });
 });

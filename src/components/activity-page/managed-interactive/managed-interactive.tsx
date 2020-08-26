@@ -1,15 +1,18 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback, useContext, useMemo, useRef } from "react";
+import Modal from "react-modal";
 import { IframeRuntime } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
+import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
 import { createOrUpdateAnswer } from "../../../firebase-db";
+import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
-import { renderHTML } from "../../../utilities/render-html";
-import Modal from "react-modal";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
+import { renderHTML } from "../../../utilities/render-html";
+import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 
 import "./managed-interactive.scss";
 
@@ -34,7 +37,13 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       }
     };
 
+    const portalData = useContext(PortalDataContext);
+    const getFirebaseJWT = useCallback((firebaseApp: string, others: Record<string, any>) => {
+      return handleGetFirebaseJWT({ firebase_app: firebaseApp, ...others }, portalData);
+    }, [portalData]);
+
     const { embeddable, questionNumber, initialInteractiveState } = props;
+    const { authored_state } = embeddable;
     const [showModal, setShowModal] = useState(false);
     // both Modal and inline versions of interactive should reflect the same state
     const iframeInteractiveState = useRef(initialInteractiveState);
@@ -48,6 +57,12 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       embeddableData = embeddable;
     }
     const url = embeddableData?.base_url || embeddableData?.url || "";
+    const authoredState = useMemo(() => {
+      const state = safeJsonParseIfString(authored_state) || {};
+      // enable modal support for activity player only
+      state.modalSupported = true;
+      return state;
+    }, [authored_state]);
     const linkedInteractives = useRef((embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
                                   ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
                                   : undefined);
@@ -88,13 +103,6 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       setHint(newHint);
     }, []);
 
-    const embeddableAuthoredState = () => {
-      // enable modal support for activity player only
-      const parsedState = embeddable.authored_state ? JSON.parse(embeddable.authored_state) : {};
-      parsedState.modalSupported = true;
-      return JSON.stringify(parsedState);
-    };
-
     const getModalContainer = (): HTMLElement => {
       return document.getElementById("app") || document.body;
     };
@@ -112,13 +120,14 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     const interactiveIframe =
       <IframeRuntime
         url={url}
-        authoredState={embeddableAuthoredState()}
+        authoredState={authoredState}
         initialInteractiveState={iframeInteractiveState.current}
         setInteractiveState={handleNewInteractiveState}
         linkedInteractives={linkedInteractives.current}
         proposedHeight={proposedHeight}
         containerWidth={containerWidth}
         setNewHint={setNewHint}
+        getFirebaseJWT={getFirebaseJWT}
         toggleModal={toggleModal}
       />;
 
