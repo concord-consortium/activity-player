@@ -1,8 +1,12 @@
 import React from "react";
 import { NavPages } from "./nav-pages";
-import IconHome from "../../assets/svg-icons/icon-home.svg";
 import { shallow } from "enzyme";
 import { DefaultTestPage } from "../../test-utils/model-for-tests";
+// import  PaginationBoxView  from "react-paginate";
+// import ReactPaginate from "react-paginate";
+import IconHome from "../../assets/svg-icons/icon-home.svg";
+
+
 
 describe("Nav Pages component", () => {
   it("renders nav pages content", () => {
@@ -17,9 +21,7 @@ describe("Nav Pages component", () => {
 
     const wrapper = shallow(<NavPages pages={activityPages} currentPage={0
     } onPageChange={stubFunction} />);
-    expect(wrapper.containsMatchingElement(<IconHome width={28} height={28} fill="white" />)).toEqual(true);
-    expect(wrapper.containsMatchingElement(<div>1</div>)).toEqual(true);
-    expect(wrapper.containsMatchingElement(<div>2</div>)).toEqual(true);
-    expect(wrapper.containsMatchingElement(<div>3</div>)).toEqual(true);
+    console.log(wrapper.debug());
+    expect(wrapper.containsMatchingElement(<IconHome width={28} height={28}/>)).toEqual(true);
   });
 });

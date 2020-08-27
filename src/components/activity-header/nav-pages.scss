@@ -2,7 +2,39 @@
 
 .nav-pages {
   display: flex;
+  align-items: center;
+  width: 100%;
   margin: 0 10px 0 10px;
+  padding: 0px;
+
+  .paginate-container {
+    display: flex;
+    padding: 0;
+    max-width: 90%;
+    margin: 0;
+
+    .hide-dot {
+      list-style-type: none;
+    }
+    .hide-li {
+      display: none;
+    }
+    .gap {
+      border: none;
+      color: white;
+      background-color: inherit;
+      padding: 5px;
+      list-style-type: none;
+    }
+    .page-button {
+      color: $cc-charcoal-light1;
+      font-size: 20px;
+
+      &.current {
+        color: white;
+      }
+    }
+  }
 
   .page-button {
     display: flex;
@@ -13,6 +45,7 @@
     margin: 0 5px 0 5px;
     border-radius: 50%;
     border: solid $cc-charcoal-light1 2px;
+    box-sizing: border-box;
     background-color: white;
     cursor: pointer;
 
@@ -33,15 +66,12 @@
     &.current:active {
       background-color: var(--theme-primary-active-color);
     }
+    // .label {
+    //   color: $cc-charcoal-light1;
+    //   font-size: 20px;
 
-    .label {
-      color: $cc-charcoal-light1;
-      font-size: 20px;
-
-      &.current {
-        color: white;
-      }
-    }
-
-  }
+    //   &.current {
+    //     color: white;
+    //   }
+  }    
 }

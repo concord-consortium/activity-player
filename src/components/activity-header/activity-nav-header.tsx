@@ -18,13 +18,12 @@ export class ActivityNavHeader extends React.PureComponent <IProps> {
     return (
       <div className={`activity-nav-header ${fullWidth ? "full" : ""}`} data-cy="activity-nav-header">
         { !singlePage &&
-          <div className="right" data-cy="activity-nav-header-right">
             <NavPages
               pages={activityPages}
               onPageChange={onPageChange}
               currentPage={currentPage}
             />
-          </div>
+          // </div>
         }
       </div>
     );

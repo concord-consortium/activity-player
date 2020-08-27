@@ -2,6 +2,7 @@ import React from "react";
 import { ActivityNavHeader } from "./activity-nav-header";
 import { shallow } from "enzyme";
 import { DefaultTestPage } from "../../test-utils/model-for-tests";
+import { NavPages } from "./nav-pages";
 
 describe("Activity Nav Header component", () => {
   it("renders nav header content containers", () => {
@@ -15,6 +16,10 @@ describe("Activity Nav Header component", () => {
     ];
 
     const wrapper = shallow(<ActivityNavHeader activityPages={activityPages} currentPage={0} onPageChange={stubFunction} singlePage={false} />);
-    expect(wrapper.find('[data-cy="activity-nav-header-right"]').length).toBe(1);
+    expect(wrapper.containsMatchingElement(<NavPages
+      pages={activityPages}
+      onPageChange={stubFunction}
+      currentPage={0}
+    />)).toEqual(true);
   });
 });
