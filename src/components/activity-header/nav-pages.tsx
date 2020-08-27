@@ -11,7 +11,7 @@ interface IProps {
   onPageChange: (page: number) => void;
 }
 
-export class NavPages extends React.PureComponent<IProps> {
+export class NavPages extends React.PureComponent <IProps> {
   render() {
     return (
       <div className="nav-pages" data-cy="nav-pages" >
@@ -22,18 +22,18 @@ export class NavPages extends React.PureComponent<IProps> {
           breakLabel={"..."}
           breakLinkClassName={"page-button"}
           pageCount={this.props.pages.length}
-          onPageChange={this.handlePaginateClick}
+          onPageChange={this.handlePaginate}
           marginPagesDisplayed={2}
           pageRangeDisplayed={5}
           containerClassName={"paginate-container"}
-          pageClassName = {""}
+          pageClassName={""}
           pageLinkClassName={"page-button"}
-          activeClassName = {"current"}
+          activeClassName={"current"}
           activeLinkClassName={"current"}
           initialPage={this.props.currentPage - 1}
           forcePage={this.props.currentPage - 1}
-          previousLinkClassName = {"page-button"}
-          nextLinkClassName = {"page-button"}
+          previousLinkClassName={"page-button"}
+          nextLinkClassName={"page-button"}
         />
       </div>
     );
@@ -42,19 +42,19 @@ export class NavPages extends React.PureComponent<IProps> {
   private renderHomePageButton = () => {
     const currentClass = this.props.currentPage === 0 ? "current" : "";
     return (
-        <button className={`page-button ${currentClass}`} onClick={this.handlePaginateClick}>
-          <IconHome
-            width={28}
-            height={28}
-            fill={this.props.currentPage === 0 ? "white" : "#979797"}
-          />
-        </button>
+      <button className={`page-button ${currentClass}`} onClick={this.handlePaginate}>
+        <IconHome
+          width={28}
+          height={28}
+          fill={this.props.currentPage === 0 ? "white" : "#979797"}
+        />
+      </button>
     );
   }
 
-  private handlePaginateClick = (page: any) => {
-    if ( page.selected >= 0 ) {
-      this.props.onPageChange( page.selected + 1);
+  private handlePaginate = (page: any) => {
+    if (page.selected >= 0) {
+      this.props.onPageChange(page.selected + 1);
     } else {
       this.props.onPageChange(0);
     }

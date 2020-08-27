@@ -23,7 +23,6 @@ export class ActivityNavHeader extends React.PureComponent <IProps> {
               onPageChange={onPageChange}
               currentPage={currentPage}
             />
-          // </div>
         }
       </div>
     );

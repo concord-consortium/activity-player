@@ -2,11 +2,7 @@ import React from "react";
 import { NavPages } from "./nav-pages";
 import { shallow } from "enzyme";
 import { DefaultTestPage } from "../../test-utils/model-for-tests";
-// import  PaginationBoxView  from "react-paginate";
-// import ReactPaginate from "react-paginate";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
-
-
 
 describe("Nav Pages component", () => {
   it("renders nav pages content", () => {
