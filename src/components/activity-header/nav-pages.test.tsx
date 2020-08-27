@@ -21,7 +21,6 @@ describe("Nav Pages component", () => {
 
     const wrapper = shallow(<NavPages pages={activityPages} currentPage={0
     } onPageChange={stubFunction} />);
-    console.log(wrapper.debug());
     expect(wrapper.containsMatchingElement(<IconHome width={28} height={28}/>)).toEqual(true);
   });
 });

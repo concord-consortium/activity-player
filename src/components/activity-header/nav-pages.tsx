@@ -17,22 +17,23 @@ export class NavPages extends React.PureComponent<IProps> {
       <div className="nav-pages" data-cy="nav-pages" >
         {this.renderHomePageButton()}
         <ReactPaginate
-          previousLabel={""}
-          nextLabel={""}
+          previousLabel={"<"}
+          nextLabel={">"}
           breakLabel={"..."}
-          breakClassName={"gap"}
+          breakLinkClassName={"page-button"}
           pageCount={this.props.pages.length}
           onPageChange={this.handlePaginateClick}
-          marginPagesDisplayed={1}
-          pageRangeDisplayed={13}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
           containerClassName={"paginate-container"}
-          pageClassName = {"hide-dot"}
+          pageClassName = {""}
           pageLinkClassName={"page-button"}
-          activeClassName = {"hide-dot"}
+          activeClassName = {"current"}
           activeLinkClassName={"current"}
-          initialPage={-1}
-          previousClassName = {"hide-li"}
-          nextClassName = {"hide-li"}
+          initialPage={this.props.currentPage - 1}
+          forcePage={this.props.currentPage - 1}
+          previousLinkClassName = {"page-button"}
+          nextLinkClassName = {"page-button"}
         />
       </div>
     );
@@ -52,8 +53,8 @@ export class NavPages extends React.PureComponent<IProps> {
   }
 
   private handlePaginateClick = (page: any) => {
-    if(page.selected>=0) {
-      this.props.onPageChange(page.selected+1);
+    if ( page.selected >= 0 ) {
+      this.props.onPageChange( page.selected + 1);
     } else {
       this.props.onPageChange(0);
     }

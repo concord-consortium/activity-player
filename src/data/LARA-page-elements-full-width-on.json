@@ -18,7 +18,7 @@
       "embeddable_display_mode": "stacked",
       "is_completion": false,
       "is_hidden": false,
-      "layout": "l-full-width",
+      "layout": "l-responsive",
       "name": "Full Width All Info/Assess elements with interactive box",
       "position": 1,
       "show_header": true,
@@ -1637,6 +1637,2809 @@
             },
             "type": "ManagedInteractive",
             "ref_id": "79-ManagedInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Full Width All Info/Assess elements with interactive box",
+      "position": 1,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": true,
+      "sidebar": "\u003Cp\u003EThe\u0026nbsp;horns\u0026nbsp;are\u0026nbsp;made of\u0026nbsp;keratin, the same type of protein that makes up hair and fingernails. Both African species and the Sumatran\u0026nbsp;rhinoceros\u0026nbsp;have two\u0026nbsp;horns, while the Indian and Javan\u0026nbsp;rhinoceros\u0026nbsp;have a single\u0026nbsp;horn.\u003Cimg class=\"\" src=\"https://media.npr.org/assets/img/2018/11/26/gettyimages-1037119694-b96478b91b6b2bf29205ab0961b141d5a2ffc770-s800-c85.jpg\" alt=\"Rhino\" width=\"400\" height=\"299\" /\u003E\u003C/p\u003E",
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "bg_source": "Shutterbug",
+            "bg_url": "",
+            "drawing_prompt": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "211796-Embeddable::ImageQuestion",
+            "interactive_ref_id": "210428-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EWe want to see some text here\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "4631-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": false,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "Barbara",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "Manatee",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "Ball",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12789-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "446700-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "action_type": 1,
+            "custom_action_label": "",
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "Labbook album",
+            "prompt": "",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::Labbook",
+            "ref_id": "209943-Embeddable::Labbook",
+            "interactive_ref_id": "210428-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://lab.concord.org/embeddable-staging.html#interactives/interaction-tests/viewport.json",
+            "type": "MwInteractive",
+            "ref_id": "210429-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "caption": "What Me Worry?",
+            "credit": "New Yorker Magazine",
+            "credit_url": "https://media.newyorker.com/",
+            "is_full_width": true,
+            "is_hidden": false,
+            "url": "https://media.newyorker.com/photos/5d38c026347b0e000865de67/4:3/w_1555,h_1166,c_limit/Jordan-MadMagazine-1.jpg",
+            "type": "ImageInteractive",
+            "ref_id": "2501-ImageInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "caption": "Bunny FuFu",
+            "credit": "https://www.radiantmediaplayer.com/",
+            "height": 240,
+            "is_full_width": true,
+            "is_hidden": false,
+            "poster_url": "",
+            "width": 556,
+            "sources": [
+              {
+                "format": "video/mp4",
+                "url": "https://www.radiantmediaplayer.com/media/bbb-360p.mp4"
+              }
+            ],
+            "type": "VideoInteractive",
+            "ref_id": "308-VideoInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EExternal Script is not included. Feedback elements not included. Tracked Question not included\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "271705-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://lab.concord.org/embeddable-staging.html#interactives/interaction-tests/components.json",
+            "type": "MwInteractive",
+            "ref_id": "210428-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Full Width Multiple Choice stacked",
+      "position": 2,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Scooby\",\"correct\":false},{\"id\":\"2\",\"content\":\"Bugs\",\"correct\":false},{\"id\":\"3\",\"content\":\"Fred\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice vertical layout, single answer, not required, no hint. And no correct answer specified\u003C/p\u003E\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "291-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"horizontal\",\"choices\":[{\"id\":\"1\",\"content\":\"Wile E.\",\"correct\":true},{\"id\":\"2\",\"content\":\"Bluestone\",\"correct\":false},{\"id\":\"3\",\"content\":\"Mr. Slate\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice horizontal layout, single answer, not required, no hint. Correct answer specified but no custom feedback\u003C/p\u003E\",\"enableCheckAnswer\":true}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "292-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":true,\"layout\":\"likert\",\"choices\":[{\"id\":\"1\",\"content\":\"Kirk\",\"correct\":false,\"choiceFeedback\":\"too much trouble with tribbles\"},{\"id\":\"2\",\"content\":\"Picard\",\"correct\":true,\"choiceFeedback\":\"FLUTE!\"},{\"id\":\"3\",\"content\":\"Janeway\",\"correct\":true,\"choiceFeedback\":\"Red!\"}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice likert layout, multiple answers, not required, no hint. And correct answer specified with custom feedback\u003C/p\u003E\",\"enableCheckAnswer\":true,\"customFeedback\":true}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "293-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": true,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "\u003Cp\u003EPick the animal with four legs\u003C/p\u003E",
+            "prompt": "\u003Cp\u003Evertical layout with custom feedback and correct answer\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "dog",
+                "is_correct": true,
+                "prompt": "Woof"
+              },
+              {
+                "choice": "cat",
+                "is_correct": false,
+                "prompt": "Meow"
+              },
+              {
+                "choice": "turtle",
+                "is_correct": false,
+                "prompt": "I don't say anything"
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12791-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": false,
+            "give_prediction_feedback": true,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": true,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "\u003Cp\u003Ebaby shark doot doot do do do do dodoot\u003C/p\u003E",
+            "prompt": "\u003Cp\u003Ehorizontal layout allows multiple answers\u0026nbsp; provide prediction feedback\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "fish",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "frog",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "shark",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "whale",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12792-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": false,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "likert",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003ELikert layout no other options\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "duck",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "duck",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "goose",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12793-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": true,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003Evertical layout\u003C/p\u003E\r\n\u003Cp\u003Eshow as dropdown menu\u003C/p\u003E\r\n\u003Cp\u003Echeck answer\u003C/p\u003E\r\n\u003Cp\u003Eanswer required\u003C/p\u003E",
+            "show_as_menu": true,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "a kangaroo",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "b koala",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "c tasmanian devil",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12794-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EVariety of multiple choice questions\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "271706-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "60-40 Open response stacked",
+      "position": 3,
+      "show_header": false,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EWhat do you think of the managed interactive version of open response without hint of default answer and not required?\u003C/p\u003E\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This shouldn't be used by any real activities it is still under development.",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "289-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003Ethis is a managed interactive open response (master) prompt. This is required, has a hint and a default answer.\u003C/p\u003E\",\"hint\":\"\u003Cp\u003EPrime\u003C/p\u003E\",\"defaultAnswer\":\"Optimus\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This shouldn't be used by any real activities it is still under development.",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "290-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003EOpen text plain\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "446701-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "Who let the dogs out",
+            "give_prediction_feedback": true,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "\u003Cp\u003EThe squirrel\u003C/p\u003E",
+            "prompt": "\u003Cp\u003EOpen Response with default Text and prediction feedback\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "446702-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "\u003Cp\u003EThe rain in Spain stays mainly on the plane\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": true,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003EWith a hint and answer is required\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "446703-Embeddable::OpenResponse"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "r-4060",
+      "name": "60-40 interactive left stacked",
+      "position": 4,
+      "show_header": false,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "bg_source": "Shutterbug",
+            "bg_url": "",
+            "drawing_prompt": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "211797-Embeddable::ImageQuestion",
+            "interactive_ref_id": "67-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "horizontal",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003Ehorizontal choices\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "asleep",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "awake",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "lounging",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12795-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003Ewhy do hyenas laugh?\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "446704-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003E\u003Cstrong\u003E1. \"Do or do not. There is no try.\"\u003C/strong\u003E\u003Cbr /\u003EThis quote is a simple lesson in\u0026nbsp;commitment\u0026nbsp;and the power in giving something our all\u0026mdash;not just giving it a try.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E2. \"You must unlearn what you have learned.\"\u003C/strong\u003E\u003Cbr /\u003EAs creatures of habit, we tend to love our routines and our go-to methods. But sometimes, we have to\u0026nbsp;shake up our process\u0026mdash;and even unlearn our process\u0026mdash;to succeed.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E3. \"Named must be your fear before banish it you can.\"\u003C/strong\u003E\u003Cbr /\u003EWhen we\u0026nbsp;call out our fears directly, they become less of an ominous force and a challenge we can tackle head-on.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E4. \"Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. Hate leads to suffering.\"\u003C/strong\u003E\u003Cbr /\u003EIndulging our fears\u0026nbsp;(whether with our thoughts or actions) gives them power to hold us back. And Yoda points out how our fears can impact those around us, too.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E6. \"That is why you fail.\"\u003C/strong\u003E\u003Cbr /\u003EWhen Luke says he doesn't believe in the power of the force, Yoda serves up this piece of wisdom. We have to\u0026nbsp;believe in ourselves\u0026mdash;and our abilities\u0026mdash;in order to persevere and succeed. Without faith, we can only go so far.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E7. \"The greatest teacher, failure is.\"\u003C/strong\u003E\u003Cbr /\u003EWe\u0026nbsp;learn from our mistakes\u0026mdash;plain and simple.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E8. \"Pass on what you have learned.\"\u003C/strong\u003E\u003Cbr /\u003EThe wisdom we gain in life is a gift to pass along\u0026mdash;not to keep to ourselves. Make like Yoda and share your insights with others.\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "Yodaisms",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "4632-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://sagemodeler.concord.org/branch/master/app/?codap=staging",
+            "type": "MwInteractive",
+            "ref_id": "210430-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": null,
+            "url_fragment": null,
+            "authored_state": null,
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "8c6038c0bdb82e9de7f72842b7f35fde304244e6",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://connected-bio-spaces.concord.org/branch/master/index.html",
+                "click_to_play": false,
+                "click_to_play_prompt": "Click here please ..",
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": "https://picsum.photos/200/300",
+                "name": "Kevin's Test Library Interactive (CBio Master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": true,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "67-ManagedInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Responsive stacked",
+      "position": 5,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": true,
+      "sidebar": "\u003Cp\u003EThe\u0026nbsp;blue whale\u0026nbsp;(Balaenoptera musculus) is a marine mammal belonging to the baleen whale suborder Mysticeti. Reaching a maximum confirmed length of 29.9 meters (98 feet) and weight of 173 tonnes (190 tons), it is the largest animal known to have ever existed.\u003C/p\u003E\n\u003Cp\u003E\u003Cimg class=\"\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg/1600px-Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg\" alt=\"Blue Whale\" width=\"400\" height=\"277\" /\u003E\u003C/p\u003E",
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "bg_source": "Drawing",
+            "bg_url": "",
+            "drawing_prompt": "\u003Cp\u003EWhat do you want to draw\u003C/p\u003E",
+            "give_prediction_feedback": false,
+            "hint": "\u003Cp\u003Ehint\u003C/p\u003E",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003E\u003Cimg class=\"\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2016/07/15155435/Pug-puppies.464864288-1.jpg\" alt=\"sleepy pugs\" width=\"467\" height=\"311\" /\u003E\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "211798-Embeddable::ImageQuestion"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "horizontal",
+            "multi_answer": true,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003EHow many devs does it take to change a lightbulb?\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "12",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "2000",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "0",
+                "is_correct": true,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12796-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003EA puppy is a juvenile dog. Some puppies can weigh 1\u0026ndash;1.5 kg, while larger ones can weigh up to 7\u0026ndash;11 kg. All healthy puppies grow quickly after birth. A puppy's coat color may change as the puppy grows older, as is commonly seen in breeds such as the Yorkshire Terrier\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "446705-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThe beagle is a breed of small hound that is similar in appearance to the much larger foxhound. The beagle is a scent hound, developed primarily for hunting hare.\u003C/p\u003E",
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "4633-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": null,
+            "url_fragment": null,
+            "authored_state": null,
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "8c6038c0bdb82e9de7f72842b7f35fde304244e6",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://connected-bio-spaces.concord.org/branch/master/index.html",
+                "click_to_play": false,
+                "click_to_play_prompt": "Click here please ..",
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": "https://picsum.photos/200/300",
+                "name": "Kevin's Test Library Interactive (CBio Master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": true,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "68-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": null,
+            "url_fragment": null,
+            "authored_state": null,
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "69-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "caption": "Lab puppy",
+            "credit": "Labrador Site",
+            "credit_url": "photographer",
+            "is_full_width": false,
+            "is_hidden": false,
+            "url": "https://www.thelabradorsite.com/wp-content/uploads/2016/05/6t.jpg",
+            "type": "ImageInteractive",
+            "ref_id": "2502-ImageInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EAll elements in a responsive layout. Intro has an image floated right.\u003C/p\u003E\n\u003Cp\u003EThe\u0026nbsp;German Shepherd\u0026nbsp;(German:\u0026nbsp;Deutscher Sch\u0026auml;ferhund,\u0026nbsp;German pronunciation:\u0026nbsp;[\u02c8d\u0254\u028ft\u0283\u0250 \u02c8\u0283\u025b\u02d0f\u0250\u02cch\u028ant]) is a breed of medium to large-sized\u0026nbsp;working dog\u0026nbsp;that originated in Germany. In the English language, the breed's officially recognized name is\u0026nbsp;German Shepherd Dog\u0026nbsp;(GSD). The breed was officially known as the\u0026nbsp;Alsatian\u0026nbsp;in the UK from after the\u0026nbsp;First World War\u0026nbsp;until 1977 when its name was changed back to German Shepherd.[1]\u0026nbsp;Despite its primitive,\u0026nbsp;wolf-like appearance the German Shepherd is a relatively modern breed of dog, with their origin dating to 1899.\u003C/p\u003E\n\u003Cp\u003EAs a\u0026nbsp;herding dog, German Shepherds are working dogs developed originally for herding\u0026nbsp;sheep. Since that time, however, because of their strength, intelligence, trainability, and obedience, German Shepherds around the world are often the preferred breed for many types of work, including\u0026nbsp;disability assistance,\u0026nbsp;search-and-rescue,\u0026nbsp;police\u0026nbsp;and\u0026nbsp;military\u0026nbsp;roles and acting.[2]\u0026nbsp;The German Shepherd is the second-most registered breed by the\u0026nbsp;American Kennel Club[3]\u0026nbsp;and seventh-most registered breed by\u0026nbsp;The Kennel Club\u0026nbsp;in the United Kingdom\u003C/p\u003E\n\u003Cp\u003E\u003Cbr /\u003E\u003Cimg class=\"tinymce-img-float-right\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12193133/German-Shepherd-Puppy-Fetch-500x500.jpg\" alt=\"german shephard puppy\" width=\"250\" height=\"250\" /\u003E\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "271707-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": null,
+            "url_fragment": null,
+            "authored_state": null,
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "1daa0688797e259c9a0f0b831e48e3a70ce6f27d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://sagemodeler.concord.org/branch/master/app/?codap=staging",
+                "click_to_play": true,
+                "click_to_play_prompt": "",
+                "description": "Sagemodeler Master Branch with CODAP staging\r\nThis saves state, can be linked, and has a report URL",
+                "enable_learner_state": true,
+                "full_window": true,
+                "has_report_url": true,
+                "image_url": "https://www.thelabradorsite.com/wp-content/uploads/2016/05/6t.jpg",
+                "name": "Sagemodeler Master Branch with CODAP staging",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": true,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": false
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "70-ManagedInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "carousel",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Full Width carousel",
+      "position": 6,
+      "show_header": false,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": false,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003EMany many moons ago ....\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "b",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "i",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "n",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "g",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "o",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12799-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": null,
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"prompt\":\"Managed interactive open response\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This shouldn't be used by any real activities it is still under development.",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "76-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": null,
+            "url_fragment": null,
+            "authored_state": null,
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "1daa0688797e259c9a0f0b831e48e3a70ce6f27d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://sagemodeler.concord.org/branch/master/app/?codap=staging",
+                "click_to_play": true,
+                "click_to_play_prompt": "",
+                "description": "Sagemodeler Master Branch with CODAP staging\r\nThis saves state, can be linked, and has a report URL",
+                "enable_learner_state": true,
+                "full_window": true,
+                "has_report_url": true,
+                "image_url": "https://www.thelabradorsite.com/wp-content/uploads/2016/05/6t.jpg",
+                "name": "Sagemodeler Master Branch with CODAP staging",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": true,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": false
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "77-ManagedInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-7030",
+      "name": "70-30 carousel",
+      "position": 7,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003EDo dinosaurs sing?\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "446707-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": null,
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"multipleAnswers\":false,\"prompt\":\"Managed interactive multiple choice\",\"choices\":[{\"id\":\"1\",\"content\":\"zoom\",\"correct\":false},{\"id\":\"2\",\"content\":\"facetime\",\"correct\":false},{\"id\":\"3\",\"content\":\"hangouts\",\"correct\":false}]}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "78-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EDinosaurs\u0026nbsp;are a diverse group of\u0026nbsp;reptiles[note 1]\u0026nbsp;of the\u0026nbsp;clade\u0026nbsp;Dinosauria. They first appeared during the\u0026nbsp;Triassic\u0026nbsp;period, between 243 and 233.23\u0026nbsp;million years ago, although the exact origin and timing of the\u0026nbsp;evolution of dinosaurs\u0026nbsp;is the subject of active research. They became the dominant terrestrial\u0026nbsp;vertebrates\u0026nbsp;after the\u0026nbsp;Triassic\u0026ndash;Jurassic extinction event\u0026nbsp;201.3\u0026nbsp;million years ago; their dominance continued through the\u0026nbsp;Jurassic\u0026nbsp;and\u0026nbsp;Cretaceous\u0026nbsp;periods. The\u0026nbsp;fossil\u0026nbsp;record demonstrates that\u0026nbsp;birds\u0026nbsp;are modern\u0026nbsp;feathered dinosaurs, having\u0026nbsp;evolved\u0026nbsp;from earlier\u0026nbsp;theropods\u0026nbsp;during the\u0026nbsp;Late Jurassic\u0026nbsp;epoch. As such, birds were the only dinosaur lineage to survive the\u0026nbsp;Cretaceous\u0026ndash;Paleogene extinction event\u0026nbsp;approximately 66\u0026nbsp;million years ago. Dinosaurs can therefore be divided into\u0026nbsp;avian dinosaurs, or birds; and\u0026nbsp;non-avian dinosaurs, which are all dinosaurs other than birds.\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "271710-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://lab.concord.org/embeddable-staging.html#interactives/interaction-tests/add-remove.json",
+            "type": "MwInteractive",
+            "ref_id": "210432-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Full Width All Info/Assess elements with interactive box",
+      "position": 1,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": true,
+      "sidebar": "\u003Cp\u003EThe\u0026nbsp;horns\u0026nbsp;are\u0026nbsp;made of\u0026nbsp;keratin, the same type of protein that makes up hair and fingernails. Both African species and the Sumatran\u0026nbsp;rhinoceros\u0026nbsp;have two\u0026nbsp;horns, while the Indian and Javan\u0026nbsp;rhinoceros\u0026nbsp;have a single\u0026nbsp;horn.\u003Cimg class=\"\" src=\"https://media.npr.org/assets/img/2018/11/26/gettyimages-1037119694-b96478b91b6b2bf29205ab0961b141d5a2ffc770-s800-c85.jpg\" alt=\"Rhino\" width=\"400\" height=\"299\" /\u003E\u003C/p\u003E",
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "bg_source": "Shutterbug",
+            "bg_url": "",
+            "drawing_prompt": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "211796-Embeddable::ImageQuestion",
+            "interactive_ref_id": "210428-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EWe want to see some text here\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "4631-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": false,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "Barbara",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "Manatee",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "Ball",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12789-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "446700-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "action_type": 1,
+            "custom_action_label": "",
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "Labbook album",
+            "prompt": "",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::Labbook",
+            "ref_id": "209943-Embeddable::Labbook",
+            "interactive_ref_id": "210428-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://lab.concord.org/embeddable-staging.html#interactives/interaction-tests/viewport.json",
+            "type": "MwInteractive",
+            "ref_id": "210429-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "caption": "What Me Worry?",
+            "credit": "New Yorker Magazine",
+            "credit_url": "https://media.newyorker.com/",
+            "is_full_width": true,
+            "is_hidden": false,
+            "url": "https://media.newyorker.com/photos/5d38c026347b0e000865de67/4:3/w_1555,h_1166,c_limit/Jordan-MadMagazine-1.jpg",
+            "type": "ImageInteractive",
+            "ref_id": "2501-ImageInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "caption": "Bunny FuFu",
+            "credit": "https://www.radiantmediaplayer.com/",
+            "height": 240,
+            "is_full_width": true,
+            "is_hidden": false,
+            "poster_url": "",
+            "width": 556,
+            "sources": [
+              {
+                "format": "video/mp4",
+                "url": "https://www.radiantmediaplayer.com/media/bbb-360p.mp4"
+              }
+            ],
+            "type": "VideoInteractive",
+            "ref_id": "308-VideoInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EExternal Script is not included. Feedback elements not included. Tracked Question not included\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "271705-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://lab.concord.org/embeddable-staging.html#interactives/interaction-tests/components.json",
+            "type": "MwInteractive",
+            "ref_id": "210428-MwInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Full Width Multiple Choice stacked",
+      "position": 2,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Scooby\",\"correct\":false},{\"id\":\"2\",\"content\":\"Bugs\",\"correct\":false},{\"id\":\"3\",\"content\":\"Fred\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice vertical layout, single answer, not required, no hint. And no correct answer specified\u003C/p\u003E\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "291-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"horizontal\",\"choices\":[{\"id\":\"1\",\"content\":\"Wile E.\",\"correct\":true},{\"id\":\"2\",\"content\":\"Bluestone\",\"correct\":false},{\"id\":\"3\",\"content\":\"Mr. Slate\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice horizontal layout, single answer, not required, no hint. Correct answer specified but no custom feedback\u003C/p\u003E\",\"enableCheckAnswer\":true}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "292-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":true,\"layout\":\"likert\",\"choices\":[{\"id\":\"1\",\"content\":\"Kirk\",\"correct\":false,\"choiceFeedback\":\"too much trouble with tribbles\"},{\"id\":\"2\",\"content\":\"Picard\",\"correct\":true,\"choiceFeedback\":\"FLUTE!\"},{\"id\":\"3\",\"content\":\"Janeway\",\"correct\":true,\"choiceFeedback\":\"Red!\"}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice likert layout, multiple answers, not required, no hint. And correct answer specified with custom feedback\u003C/p\u003E\",\"enableCheckAnswer\":true,\"customFeedback\":true}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "293-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": true,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "\u003Cp\u003EPick the animal with four legs\u003C/p\u003E",
+            "prompt": "\u003Cp\u003Evertical layout with custom feedback and correct answer\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "dog",
+                "is_correct": true,
+                "prompt": "Woof"
+              },
+              {
+                "choice": "cat",
+                "is_correct": false,
+                "prompt": "Meow"
+              },
+              {
+                "choice": "turtle",
+                "is_correct": false,
+                "prompt": "I don't say anything"
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12791-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": false,
+            "give_prediction_feedback": true,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": true,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "\u003Cp\u003Ebaby shark doot doot do do do do dodoot\u003C/p\u003E",
+            "prompt": "\u003Cp\u003Ehorizontal layout allows multiple answers\u0026nbsp; provide prediction feedback\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "fish",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "frog",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "shark",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "whale",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12792-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": false,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "likert",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003ELikert layout no other options\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "duck",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "duck",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "goose",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12793-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": true,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003Evertical layout\u003C/p\u003E\r\n\u003Cp\u003Eshow as dropdown menu\u003C/p\u003E\r\n\u003Cp\u003Echeck answer\u003C/p\u003E\r\n\u003Cp\u003Eanswer required\u003C/p\u003E",
+            "show_as_menu": true,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "a kangaroo",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "b koala",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "c tasmanian devil",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12794-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EVariety of multiple choice questions\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "271706-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "60-40 Open response stacked",
+      "position": 3,
+      "show_header": false,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EWhat do you think of the managed interactive version of open response without hint of default answer and not required?\u003C/p\u003E\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This shouldn't be used by any real activities it is still under development.",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "289-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003Ethis is a managed interactive open response (master) prompt. This is required, has a hint and a default answer.\u003C/p\u003E\",\"hint\":\"\u003Cp\u003EPrime\u003C/p\u003E\",\"defaultAnswer\":\"Optimus\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This shouldn't be used by any real activities it is still under development.",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "290-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003EOpen text plain\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "446701-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "Who let the dogs out",
+            "give_prediction_feedback": true,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "\u003Cp\u003EThe squirrel\u003C/p\u003E",
+            "prompt": "\u003Cp\u003EOpen Response with default Text and prediction feedback\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "446702-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "\u003Cp\u003EThe rain in Spain stays mainly on the plane\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": true,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003EWith a hint and answer is required\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "446703-Embeddable::OpenResponse"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "r-4060",
+      "name": "60-40 interactive left stacked",
+      "position": 4,
+      "show_header": false,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "bg_source": "Shutterbug",
+            "bg_url": "",
+            "drawing_prompt": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "211797-Embeddable::ImageQuestion",
+            "interactive_ref_id": "67-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "horizontal",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003Ehorizontal choices\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "asleep",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "awake",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "lounging",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12795-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003Ewhy do hyenas laugh?\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "446704-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003E\u003Cstrong\u003E1. \"Do or do not. There is no try.\"\u003C/strong\u003E\u003Cbr /\u003EThis quote is a simple lesson in\u0026nbsp;commitment\u0026nbsp;and the power in giving something our all\u0026mdash;not just giving it a try.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E2. \"You must unlearn what you have learned.\"\u003C/strong\u003E\u003Cbr /\u003EAs creatures of habit, we tend to love our routines and our go-to methods. But sometimes, we have to\u0026nbsp;shake up our process\u0026mdash;and even unlearn our process\u0026mdash;to succeed.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E3. \"Named must be your fear before banish it you can.\"\u003C/strong\u003E\u003Cbr /\u003EWhen we\u0026nbsp;call out our fears directly, they become less of an ominous force and a challenge we can tackle head-on.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E4. \"Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. Hate leads to suffering.\"\u003C/strong\u003E\u003Cbr /\u003EIndulging our fears\u0026nbsp;(whether with our thoughts or actions) gives them power to hold us back. And Yoda points out how our fears can impact those around us, too.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E6. \"That is why you fail.\"\u003C/strong\u003E\u003Cbr /\u003EWhen Luke says he doesn't believe in the power of the force, Yoda serves up this piece of wisdom. We have to\u0026nbsp;believe in ourselves\u0026mdash;and our abilities\u0026mdash;in order to persevere and succeed. Without faith, we can only go so far.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E7. \"The greatest teacher, failure is.\"\u003C/strong\u003E\u003Cbr /\u003EWe\u0026nbsp;learn from our mistakes\u0026mdash;plain and simple.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E8. \"Pass on what you have learned.\"\u003C/strong\u003E\u003Cbr /\u003EThe wisdom we gain in life is a gift to pass along\u0026mdash;not to keep to ourselves. Make like Yoda and share your insights with others.\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "Yodaisms",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "4632-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://sagemodeler.concord.org/branch/master/app/?codap=staging",
+            "type": "MwInteractive",
+            "ref_id": "210430-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": null,
+            "url_fragment": null,
+            "authored_state": null,
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "8c6038c0bdb82e9de7f72842b7f35fde304244e6",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://connected-bio-spaces.concord.org/branch/master/index.html",
+                "click_to_play": false,
+                "click_to_play_prompt": "Click here please ..",
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": "https://picsum.photos/200/300",
+                "name": "Kevin's Test Library Interactive (CBio Master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": true,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "67-ManagedInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Responsive stacked",
+      "position": 5,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": true,
+      "sidebar": "\u003Cp\u003EThe\u0026nbsp;blue whale\u0026nbsp;(Balaenoptera musculus) is a marine mammal belonging to the baleen whale suborder Mysticeti. Reaching a maximum confirmed length of 29.9 meters (98 feet) and weight of 173 tonnes (190 tons), it is the largest animal known to have ever existed.\u003C/p\u003E\n\u003Cp\u003E\u003Cimg class=\"\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg/1600px-Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg\" alt=\"Blue Whale\" width=\"400\" height=\"277\" /\u003E\u003C/p\u003E",
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "bg_source": "Drawing",
+            "bg_url": "",
+            "drawing_prompt": "\u003Cp\u003EWhat do you want to draw\u003C/p\u003E",
+            "give_prediction_feedback": false,
+            "hint": "\u003Cp\u003Ehint\u003C/p\u003E",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003E\u003Cimg class=\"\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2016/07/15155435/Pug-puppies.464864288-1.jpg\" alt=\"sleepy pugs\" width=\"467\" height=\"311\" /\u003E\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::ImageQuestion",
+            "ref_id": "211798-Embeddable::ImageQuestion"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": true,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "horizontal",
+            "multi_answer": true,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003EHow many devs does it take to change a lightbulb?\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "12",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "2000",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "0",
+                "is_correct": true,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12796-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": false,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003EA puppy is a juvenile dog. Some puppies can weigh 1\u0026ndash;1.5 kg, while larger ones can weigh up to 7\u0026ndash;11 kg. All healthy puppies grow quickly after birth. A puppy's coat color may change as the puppy grows older, as is commonly seen in breeds such as the Yorkshire Terrier\u003C/p\u003E",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "446705-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThe beagle is a breed of small hound that is similar in appearance to the much larger foxhound. The beagle is a scent hound, developed primarily for hunting hare.\u003C/p\u003E",
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "4633-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": null,
+            "url_fragment": null,
+            "authored_state": null,
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "8c6038c0bdb82e9de7f72842b7f35fde304244e6",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://connected-bio-spaces.concord.org/branch/master/index.html",
+                "click_to_play": false,
+                "click_to_play_prompt": "Click here please ..",
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": "https://picsum.photos/200/300",
+                "name": "Kevin's Test Library Interactive (CBio Master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": true,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "68-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": null,
+            "url_fragment": null,
+            "authored_state": null,
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "69-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "caption": "Lab puppy",
+            "credit": "Labrador Site",
+            "credit_url": "photographer",
+            "is_full_width": false,
+            "is_hidden": false,
+            "url": "https://www.thelabradorsite.com/wp-content/uploads/2016/05/6t.jpg",
+            "type": "ImageInteractive",
+            "ref_id": "2502-ImageInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EAll elements in a responsive layout. Intro has an image floated right.\u003C/p\u003E\n\u003Cp\u003EThe\u0026nbsp;German Shepherd\u0026nbsp;(German:\u0026nbsp;Deutscher Sch\u0026auml;ferhund,\u0026nbsp;German pronunciation:\u0026nbsp;[\u02c8d\u0254\u028ft\u0283\u0250 \u02c8\u0283\u025b\u02d0f\u0250\u02cch\u028ant]) is a breed of medium to large-sized\u0026nbsp;working dog\u0026nbsp;that originated in Germany. In the English language, the breed's officially recognized name is\u0026nbsp;German Shepherd Dog\u0026nbsp;(GSD). The breed was officially known as the\u0026nbsp;Alsatian\u0026nbsp;in the UK from after the\u0026nbsp;First World War\u0026nbsp;until 1977 when its name was changed back to German Shepherd.[1]\u0026nbsp;Despite its primitive,\u0026nbsp;wolf-like appearance the German Shepherd is a relatively modern breed of dog, with their origin dating to 1899.\u003C/p\u003E\n\u003Cp\u003EAs a\u0026nbsp;herding dog, German Shepherds are working dogs developed originally for herding\u0026nbsp;sheep. Since that time, however, because of their strength, intelligence, trainability, and obedience, German Shepherds around the world are often the preferred breed for many types of work, including\u0026nbsp;disability assistance,\u0026nbsp;search-and-rescue,\u0026nbsp;police\u0026nbsp;and\u0026nbsp;military\u0026nbsp;roles and acting.[2]\u0026nbsp;The German Shepherd is the second-most registered breed by the\u0026nbsp;American Kennel Club[3]\u0026nbsp;and seventh-most registered breed by\u0026nbsp;The Kennel Club\u0026nbsp;in the United Kingdom\u003C/p\u003E\n\u003Cp\u003E\u003Cbr /\u003E\u003Cimg class=\"tinymce-img-float-right\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12193133/German-Shepherd-Puppy-Fetch-500x500.jpg\" alt=\"german shephard puppy\" width=\"250\" height=\"250\" /\u003E\u003C/p\u003E",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "271707-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": null,
+            "url_fragment": null,
+            "authored_state": null,
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "1daa0688797e259c9a0f0b831e48e3a70ce6f27d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://sagemodeler.concord.org/branch/master/app/?codap=staging",
+                "click_to_play": true,
+                "click_to_play_prompt": "",
+                "description": "Sagemodeler Master Branch with CODAP staging\r\nThis saves state, can be linked, and has a report URL",
+                "enable_learner_state": true,
+                "full_window": true,
+                "has_report_url": true,
+                "image_url": "https://www.thelabradorsite.com/wp-content/uploads/2016/05/6t.jpg",
+                "name": "Sagemodeler Master Branch with CODAP staging",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": true,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": false
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "70-ManagedInteractive"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "carousel",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Full Width carousel",
+      "position": 6,
+      "show_header": false,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": false,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "\u003Cp\u003EMany many moons ago ....\u003C/p\u003E",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "b",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "i",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "n",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "g",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "o",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "12799-Embeddable::MultipleChoice"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": null,
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"prompt\":\"Managed interactive open response\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This shouldn't be used by any real activities it is still under development.",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "76-ManagedInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": null,
+            "url_fragment": null,
+            "authored_state": null,
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "1daa0688797e259c9a0f0b831e48e3a70ce6f27d",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://sagemodeler.concord.org/branch/master/app/?codap=staging",
+                "click_to_play": true,
+                "click_to_play_prompt": "",
+                "description": "Sagemodeler Master Branch with CODAP staging\r\nThis saves state, can be linked, and has a report URL",
+                "enable_learner_state": true,
+                "full_window": true,
+                "has_report_url": true,
+                "image_url": "https://www.thelabradorsite.com/wp-content/uploads/2016/05/6t.jpg",
+                "name": "Sagemodeler Master Branch with CODAP staging",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": true,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": false
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "77-ManagedInteractive"
           },
           "section": "interactive_box"
         }

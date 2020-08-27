@@ -2,7 +2,7 @@
 
 .nav-pages {
   display: flex;
-  align-items: center;
+  justify-content: center;
   width: 100%;
   margin: 0 10px 0 10px;
   padding: 0px;
@@ -10,28 +10,29 @@
   .paginate-container {
     display: flex;
     padding: 0;
-    max-width: 90%;
+    max-width: 860px;
     margin: 0;
+    list-style-type: none;
 
-    .hide-dot {
-      list-style-type: none;
-    }
-    .hide-li {
-      display: none;
-    }
-    .gap {
-      border: none;
-      color: white;
-      background-color: inherit;
-      padding: 5px;
-      list-style-type: none;
-    }
     .page-button {
       color: $cc-charcoal-light1;
       font-size: 20px;
+      list-style-type: none;
 
       &.current {
         color: white;
+      }
+    }
+    .disabled .page-button {
+      outline: none;
+      cursor: auto;
+      color: $cc-charcoal-light2;
+
+      &:hover {
+        background-color: white;
+      }
+      &:active {
+        background-color: white;
       }
     }
   }
@@ -52,11 +53,9 @@
     &:hover {
       background-color: $cc-teal-light6;
     }
-
     &:active {
       background-color: $cc-teal-light4;
     }
-
     &.current {
       background-color: var(--theme-primary-color);
     }
@@ -66,12 +65,5 @@
     &.current:active {
       background-color: var(--theme-primary-active-color);
     }
-    // .label {
-    //   color: $cc-charcoal-light1;
-    //   font-size: 20px;
-
-    //   &.current {
-    //     color: white;
-    //   }
   }    
 }
