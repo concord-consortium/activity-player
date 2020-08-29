@@ -20,18 +20,17 @@ export class NavPages extends React.PureComponent <IProps> {
           previousLabel={"<"}
           nextLabel={">"}
           breakLabel={"..."}
-          breakLinkClassName={"page-button"}
+          breakClassName={"break"}
           pageCount={this.props.pages.length}
           onPageChange={this.handlePaginate}
-          marginPagesDisplayed={2}
-          pageRangeDisplayed={5}
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={8}
           containerClassName={"paginate-container"}
-          pageClassName={""}
           pageLinkClassName={"page-button"}
           activeClassName={"current"}
           activeLinkClassName={"current"}
-          initialPage={this.props.currentPage - 1}
           forcePage={this.props.currentPage - 1}
+          previousClassName={`${this.props.currentPage === 0 ? "disabled" : ""}`}
           previousLinkClassName={"page-button"}
           nextLinkClassName={"page-button"}
         />
@@ -53,10 +52,6 @@ export class NavPages extends React.PureComponent <IProps> {
   }
 
   private handlePaginate = (page: any) => {
-    if (page.selected >= 0) {
-      this.props.onPageChange(page.selected + 1);
-    } else {
-      this.props.onPageChange(0);
-    }
+    this.props.onPageChange(page.selected != null ? page.selected + 1 : 0);
   }
 }
