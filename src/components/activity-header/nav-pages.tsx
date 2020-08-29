@@ -1,5 +1,6 @@
 import React from "react";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
+import ReactPaginate from "react-paginate";
 
 import "./nav-pages.scss";
 import { Page } from "../../types";
@@ -13,12 +14,26 @@ interface IProps {
 export class NavPages extends React.PureComponent <IProps> {
   render() {
     return (
-      <div className="nav-pages" data-cy="nav-pages">
-        { this.renderHomePageButton() }
-        { this.props.pages.filter((page) => !page.is_hidden).map((page, index: number) => (
-            this.renderPageButton(page, index)
-          ))
-        }
+      <div className="nav-pages" data-cy="nav-pages" >
+        {this.renderHomePageButton()}
+        <ReactPaginate
+          previousLabel={"<"}
+          nextLabel={">"}
+          breakLabel={"..."}
+          breakClassName={"break"}
+          pageCount={this.props.pages.length}
+          onPageChange={this.handlePaginate}
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={8}
+          containerClassName={"paginate-container"}
+          pageLinkClassName={"page-button"}
+          activeClassName={"current"}
+          activeLinkClassName={"current"}
+          forcePage={this.props.currentPage - 1}
+          previousClassName={`${this.props.currentPage === 0 ? "disabled" : ""}`}
+          previousLinkClassName={"page-button"}
+          nextLinkClassName={"page-button"}
+        />
       </div>
     );
   }
@@ -26,7 +41,7 @@ export class NavPages extends React.PureComponent <IProps> {
   private renderHomePageButton = () => {
     const currentClass = this.props.currentPage === 0 ? "current" : "";
     return (
-      <button className={`page-button ${currentClass}`} onClick={this.handleButtonClick(0)}>
+      <button className={`page-button ${currentClass}`} onClick={this.handlePaginate}>
         <IconHome
           width={28}
           height={28}
@@ -36,16 +51,7 @@ export class NavPages extends React.PureComponent <IProps> {
     );
   }
 
-  private renderPageButton = (page: Page, index: number) => {
-    const currentClass = this.props.currentPage === (index + 1) ? "current" : "";
-    return (
-      <button className={`page-button ${currentClass}`} key={`index ${index}`} onClick={this.handleButtonClick(index + 1)}>
-        <div className={`label ${currentClass}`}>{(index + 1).toString()}</div>
-      </button>
-    );
+  private handlePaginate = (page: any) => {
+    this.props.onPageChange(page.selected != null ? page.selected + 1 : 0);
   }
-
-  private handleButtonClick = (page: number) => () => {
-    this.props.onPageChange(page);
-	}
 }
