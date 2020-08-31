@@ -19,12 +19,12 @@ export class NavPages extends React.PureComponent <IProps> {
         <ReactPaginate
           previousLabel={"<"}
           nextLabel={">"}
-          breakLabel={"..."}
-          breakClassName={"break"}
+          breakLabel={""}
+          // breakClassName={"break"}
           pageCount={this.props.pages.length}
           onPageChange={this.handlePaginate}
-          marginPagesDisplayed={1}
-          pageRangeDisplayed={8}
+          marginPagesDisplayed={0}
+          pageRangeDisplayed={10}
           containerClassName={"paginate-container"}
           pageLinkClassName={"page-button"}
           activeClassName={"current"}
