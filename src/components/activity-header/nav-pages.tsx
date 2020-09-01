@@ -20,7 +20,6 @@ export class NavPages extends React.PureComponent <IProps> {
           previousLabel={"<"}
           nextLabel={">"}
           breakLabel={""}
-          // breakClassName={"break"}
           pageCount={this.props.pages.length}
           onPageChange={this.handlePaginate}
           marginPagesDisplayed={0}
