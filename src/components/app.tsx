@@ -5,7 +5,7 @@ import { ActivityNavHeader } from "./activity-header/activity-nav-header";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton } from "../utilities/activity-utils";
+import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle } from "../utilities/activity-utils";
 import { getActivityDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
@@ -59,6 +59,7 @@ export class App extends React.PureComponent<IProps, IState> {
       const useAnonymousRunKey = !queryValue("token") && !queryValueBoolean("preview") && !teacherEditionMode;
 
       const newState: Partial<IState> = {activity, currentPage, showThemeButtons, teacherEditionMode};
+      setDocumentTitle(activity, currentPage);
 
       if (queryValue("token")) {
         const portalData = await fetchPortalData();
@@ -187,5 +188,6 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleChangePage = (page: number) => {
     this.setState({currentPage: page});
+    setDocumentTitle(this.state.activity, page);
   }
 }
