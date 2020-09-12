@@ -102,7 +102,15 @@ export const setAppBackgroundImage = (backgroundImageUrl?: string) => {
   const gradient = "linear-gradient(to bottom, #fff, rgba(255,255,255,0), rgba(255,255,255,0))";
   const el = document.querySelector(".app") as HTMLElement;
   el && ( backgroundImageUrl
-                    ? el.style.setProperty("background-image", backgroundImageUrl) 
+                    ? el.style.setProperty("background-image", backgroundImageUrl)
                     : el.style.setProperty("background-image", gradient)
         );
+};
+
+export const setDocumentTitle = (activity: Activity | undefined, pageNumber: number) => {
+  if (activity) {
+    document.title = pageNumber === 0
+      ? activity.name
+      : `Page ${pageNumber} ${activity.pages[pageNumber - 1].name || activity.name}`;
+  }
 };
