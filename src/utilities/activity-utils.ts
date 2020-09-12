@@ -111,6 +111,6 @@ export const setDocumentTitle = (activity: Activity | undefined, pageNumber: num
   if (activity) {
     document.title = pageNumber === 0
       ? activity.name
-      : `Page ${pageNumber} ${activity.pages[pageNumber - 1].name ? activity.pages[pageNumber - 1].name : activity.name}`;
+      : `Page ${pageNumber} ${activity.pages[pageNumber - 1].name || activity.name}`;
   }
 };
