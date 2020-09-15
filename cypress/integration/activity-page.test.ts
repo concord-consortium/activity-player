@@ -36,7 +36,6 @@ context("Test the overall app", () => {
     it("verify we can load a managed interactive",()=>{
       cy.visit("?activity=sample-activity-1&preview");
       activityPage.getNavPage(2).click();
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(500);
       getIframeBody("body").find("[data-cy=choices-container]").should("be.visible");
     });
