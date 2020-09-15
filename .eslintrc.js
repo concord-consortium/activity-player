@@ -5,7 +5,7 @@ module.exports = {
       ecmaVersion: 2018,
       sourceType: "module",
     },
-    plugins: ["@typescript-eslint", "react", "react-hooks"],
+    plugins: ["@typescript-eslint", "json", "react", "react-hooks"],
     env: {
       browser: true,
       es6: true,
@@ -27,21 +27,22 @@ module.exports = {
       "eslint:recommended",
       "plugin:eslint-comments/recommended",
       "plugin:@typescript-eslint/recommended",
+      "plugin:json/recommended",
       "plugin:react/recommended",
       "plugin:react-hooks/recommended"
     ],
     rules: {
       "@typescript-eslint/explicit-module-boundary-types": "off",
-      "@typescript-eslint/interface-name-prefix": "off",
       "@typescript-eslint/no-empty-interface": "off",
       "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-unused-vars": ["error", { "args": "none", "ignoreRestSiblings": true }],
+      "@typescript-eslint/no-shadow": ["error", { builtinGlobals: false, hoist: "all", allow: [] }],
+      "@typescript-eslint/no-unused-vars": ["error", { args: "none", ignoreRestSiblings: true }],
       "@typescript-eslint/no-var-requires": "off",
       curly: ["error", "multi-line", "consistent"],
       eqeqeq: ["error", "smart"],
       "eslint-comments/no-unused-disable": "warn",
       "no-debugger": "off",
-      "no-shadow": ["error", { "builtinGlobals": false, "hoist": "all", "allow": [] }],
+      "no-shadow": "off", // superceded by @typescript-eslint/no-shadow
       "no-unused-vars": "off",  // superceded by @typescript-eslint/no-unused-vars
       "quotes": [2, "double", { "allowTemplateLiterals": true, "avoidEscape": true }],
       "react/prop-types": "off",
