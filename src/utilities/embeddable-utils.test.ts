@@ -98,7 +98,7 @@ describe("Embeddable utility functions", () => {
     expect(exportableAnswer.answer_text).toBeUndefined();
     const expectedReport = JSON.stringify({
       mode: "report",
-      authoredState: authoredState,
+      authoredState,
       interactiveState: `{"answerType":"multiple_choice_answer","selectedChoiceIds":["1"]}`,
       version: 1
     });

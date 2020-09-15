@@ -6,12 +6,6 @@ import { IGetFirebaseJwtRequest, ILinkedInteractive } from "@concord-consortium/
 
 const kDefaultHeight = 300;
 
-// This should be part of lara-interactive-api
-interface ILogRequest {
-  action: string;
-  data: Record<string, unknown>;
-}
-
 interface IProps {
   url: string;
   authoredState: any;

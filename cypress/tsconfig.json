@@ -1,7 +1,8 @@
 {
   "extends": "../tsconfig",
   "compilerOptions": {
-    "baseUrl": "../node_modules"
+    "baseUrl": "../node_modules",
+    "sourceMap": false
   },
   "include": [
     "../node_modules/cypress/types",

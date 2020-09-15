@@ -27,7 +27,6 @@ context("Saving and loading data as an anonymous user", () => {
 
       cy.visit(activityUrl);
       activityPage.getNavPage(2).click();
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(500);
       getIframeBody("body").find("[data-cy=choices-container] input").eq(1).click({force: true});
 
@@ -35,13 +34,11 @@ context("Saving and loading data as an anonymous user", () => {
       // delay to prevent spamming the database.
       // The fastest and most reliable way to kick it off seems to be 1. blur, 2. wait, 3. navigate away
       cy.get("[data-cy=account-owner").click({force: true});
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(2000);
       activityPage.getNavPage(1).click();
 
       cy.visit(activityUrl);
       activityPage.getNavPage(2).click();
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(500);
       getIframeBody("body").find("[data-cy=choices-container] input").eq(1).should("be.checked");
     });
@@ -51,7 +48,6 @@ context("Saving and loading data as an anonymous user", () => {
 
       cy.visit(activityUrl);
       activityPage.getNavPage(2).click();
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(500);
       getIframeBody("body").find("[data-cy=choices-container] input").eq(1).should("be.checked");
 
@@ -59,7 +55,6 @@ context("Saving and loading data as an anonymous user", () => {
 
       cy.visit(activityUrlNoRunkey);
       activityPage.getNavPage(2).click();
-      // eslint-disable-next-line cypress/no-unnecessary-waiting
       cy.wait(500);
       getIframeBody("body").find("[data-cy=choices-container] input").eq(1).should("not.be.checked");
     });
