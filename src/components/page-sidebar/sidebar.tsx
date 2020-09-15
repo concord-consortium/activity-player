@@ -20,6 +20,7 @@ interface IState {
 export class Sidebar extends React.PureComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
+    // eslint-disable-next-line react/no-unused-state
     this.state = { showSidebarContent: false };
   }
   render() {

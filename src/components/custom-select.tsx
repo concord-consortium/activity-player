@@ -62,7 +62,7 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
     const { items } = this.props;
     return (
       <div className={`list ${(this.state.showList ?"show" : "")}`}>
-        { items && items.map((item: string, i: number) => {
+        { items?.map((item: string, i: number) => {
           const currentClass = this.state.current === item ? "selected" : "";
           return (
             <div
@@ -89,13 +89,11 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
   }
 
   private handleHeaderClick = () => {
-    this.setState({
-      showList: !this.state.showList
-    });
+    this.setState(state => ({ showList: !state.showList }));
   }
 
   private handleListClick = (current: string) => () => {
-    this.props.onSelectItem && this.props.onSelectItem(current);
+    this.props.onSelectItem?.(current);
     this.setState({
       current,
       showList: false

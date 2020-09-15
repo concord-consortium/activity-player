@@ -207,12 +207,12 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
           ? <React.Fragment>
             {this.renderCollapseArrow(rightOrientation)}
             <div>Show</div>
-          </React.Fragment>
+            </React.Fragment>
           : <React.Fragment>
             {rightOrientation && <div>Hide</div>}
             {this.renderCollapseArrow(!rightOrientation)}
             {!rightOrientation && <div>Hide</div>}
-          </React.Fragment>
+            </React.Fragment>
         }
       </div>
     );
@@ -220,26 +220,23 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
   private renderCollapseArrow = (leftArrow: boolean) => {
     return (
-      <React.Fragment>
-        {leftArrow
-          ? <IconChevronLeft
-            width={32}
-            height={32}
-            fill={"white"}
-          />
-          : <IconChevronRight
-            width={32}
-            height={32}
-            fill={"white"}
-          />
-        }
-      </React.Fragment>
+      leftArrow
+        ? <IconChevronLeft
+          width={32}
+          height={32}
+          fill={"white"}
+        />
+        : <IconChevronRight
+          width={32}
+          height={32}
+          fill={"white"}
+        />
     );
   }
 
   private handleCollapseHeader = () => {
-    if (accessibilityClick(event))  {  
-      this.setState({ isSecondaryCollapsed: !this.state.isSecondaryCollapsed });
+    if (accessibilityClick(event))  {
+      this.setState(state => ({ isSecondaryCollapsed: !state.isSecondaryCollapsed }));
     }
   }
 }

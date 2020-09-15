@@ -152,37 +152,31 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private renderSinglePageContent = (activity: Activity) => {
     return (
-      <React.Fragment>
-        <SinglePageContent
+      <SinglePageContent
           activity={activity}
           teacherEditionMode={this.state.teacherEditionMode}
         />
-      </React.Fragment>
     );
   }
 
   private renderIntroductionContent = (activity: Activity) => {
     return (
-      <React.Fragment>
-        <IntroductionPageContent
+      <IntroductionPageContent
           activity={activity}
           onPageChange={this.handleChangePage}
         />
-      </React.Fragment>
     );
   }
 
   private renderCompletionContent = (activity: Activity) => {
     return (
-      <React.Fragment>
-        <CompletionPageContent
+      <CompletionPageContent
           activityName={activity.name}
           isActivityComplete={true} // TODO: should be based on student progress
           onPageChange={this.handleChangePage}
           showStudentReport={activity.student_report_enabled}
           thumbnailURL={activity.thumbnail_url}
         />
-      </React.Fragment>
     );
   }
 

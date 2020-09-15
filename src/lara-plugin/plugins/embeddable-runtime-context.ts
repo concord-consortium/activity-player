@@ -22,7 +22,7 @@ const getReportingUrl = (
   return interactiveStatePromise.then(interactiveState => {
     try {
       const rawJSON = JSON.parse(interactiveState.raw_data);
-      if (rawJSON && rawJSON.lara_options && rawJSON.lara_options.reporting_url) {
+      if (rawJSON?.lara_options?.reporting_url) {
         return rawJSON.lara_options.reporting_url;
       }
       return null;
