@@ -202,16 +202,17 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const rightOrientation = page.layout === PageLayouts.FortySixty;
     const headerClass = `collapsible-header ${isSecondaryCollapsed ? "collapsed" : ""} ${rightOrientation ? "right" : ""}`;
     return (
-      <div onClick={this.handleCollapseHeader} onKeyDown={this.handleCollapseHeader} className={headerClass} tabIndex={0}>
+      <div className={headerClass} data-cy="collapsible-header" tabIndex={0}
+            onClick={this.handleCollapseHeader} onKeyDown={this.handleCollapseHeader} >
         {isSecondaryCollapsed
           ? <React.Fragment>
-            {this.renderCollapseArrow(rightOrientation)}
-            <div>Show</div>
+              {this.renderCollapseArrow(rightOrientation)}
+              <div>Show</div>
             </React.Fragment>
           : <React.Fragment>
-            {rightOrientation && <div>Hide</div>}
-            {this.renderCollapseArrow(!rightOrientation)}
-            {!rightOrientation && <div>Hide</div>}
+              {rightOrientation && <div>Hide</div>}
+              {this.renderCollapseArrow(!rightOrientation)}
+              {!rightOrientation && <div>Hide</div>}
             </React.Fragment>
         }
       </div>
@@ -234,8 +235,8 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     );
   }
 
-  private handleCollapseHeader = () => {
-    if (accessibilityClick(event))  {
+  private handleCollapseHeader = (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
+    if (accessibilityClick(e))  {
       this.setState(state => ({ isSecondaryCollapsed: !state.isSecondaryCollapsed }));
     }
   }

@@ -50,7 +50,8 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
     const showListClass = this.state.showList ? "show-list" : "";
     const disabled = isDisabled ? "disabled" : "";
     return (
-      <div className={`header ${showListClass} ${disabled}`} onClick={this.handleHeaderClick} tabIndex={0}>
+      <div className={`header ${showListClass} ${disabled}`} data-cy="custom-select-header"
+            onClick={this.handleHeaderClick} tabIndex={0}>
         { HeaderIcon && <HeaderIcon className={`icon ${showListClass}`} /> }
         <div className="current">{currentItem && currentItem}</div>
         { <ArrowIcon className={`arrow ${showListClass} ${disabled}`} /> }
@@ -61,7 +62,7 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
   private renderList = () => {
     const { items } = this.props;
     return (
-      <div className={`list ${(this.state.showList ?"show" : "")}`}>
+      <div className={`list ${(this.state.showList ?"show" : "")}`} data-cy="custom-select-list">
         { items?.map((item: string, i: number) => {
           const currentClass = this.state.current === item ? "selected" : "";
           return (

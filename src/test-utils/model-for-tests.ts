@@ -24,7 +24,7 @@ export const DefaultTestPage: Page = {
   show_sidebar: false,
   sidebar: null,
   sidebar_title: null,
-  toggle_info_assessment: false,
+  toggle_info_assessment: true,
   additional_sections: {},
   embeddables: [],
 };
