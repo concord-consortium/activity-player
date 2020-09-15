@@ -1,5 +1,4 @@
 import * as events from "./index";
-// eslint-disable-next-line no-duplicate-imports
 import { IInteractiveAvailableEvent } from "./index";
 
 describe("Events helper", () => {
