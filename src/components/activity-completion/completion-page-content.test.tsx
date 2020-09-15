@@ -8,7 +8,7 @@ describe("Completion Page Content component", () => {
     const stubFunction = () => {
       // do nothing.
     };
-    const quotedActivityName = "\"" + "test" + "\"";
+    const quotedActivityName = `"test"`;
     const wrapperComplete = shallow(<CompletionPageContent activityName={"test"} isActivityComplete={true} onPageChange={stubFunction} showStudentReport={true} thumbnailURL={""} />);
     expect(wrapperComplete.find('[data-cy="completion-page-content"]').length).toBe(1);
     expect(wrapperComplete.containsMatchingElement(<IconCheck width={32} height={32} className="check" />)).toEqual(true);

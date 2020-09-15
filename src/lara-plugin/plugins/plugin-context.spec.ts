@@ -86,7 +86,7 @@ describe("Plugin runtime context helper", () => {
 
   describe("#getClassInfo", () => {
     it("returns null when classInfoUrl is not available", () => {
-      const runtimeContext = generateRuntimePluginContext(Object.assign({}, pluginContext, {classInfoUrl: null}));
+      const runtimeContext = generateRuntimePluginContext({ ...pluginContext, classInfoUrl: null});
       const resp = runtimeContext.getClassInfo();
       expect(resp).toBeNull();
     });
@@ -164,7 +164,7 @@ describe("Plugin runtime context helper", () => {
         interactiveStateUrl: "http://interactive.state.url",
         interactiveAvailable: true
       };
-      const runtimeContext = generateRuntimePluginContext(Object.assign({}, pluginContext, { wrappedEmbeddable }));
+      const runtimeContext = generateRuntimePluginContext({ ...pluginContext, wrappedEmbeddable});
       expect(runtimeContext.wrappedEmbeddable).not.toBeNull();
     });
   });
@@ -183,8 +183,8 @@ describe("Plugin runtime context helper", () => {
       interactiveStateUrl: "http://interactive.state.url",
       interactiveAvailable: true
     };
-    const runtimeContextWithEmbeddable = generateRuntimePluginContext(Object.assign({},
-      pluginContext, { wrappedEmbeddable }));
+    const runtimeContextWithEmbeddable = generateRuntimePluginContext({
+      ...pluginContext, wrappedEmbeddable});
 
     describe("when logger_utils are available", () => {
       beforeEach(() => {

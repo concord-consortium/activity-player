@@ -42,8 +42,10 @@ export class SidebarWrapper extends React.PureComponent<IProps, IState> {
   }
 
   private setShowSidebarContent = (index: number, show: boolean) => {
-    const updatedShowSidebarContent = new Array(this.state.showSidebarContent.length).fill(false);
-    updatedShowSidebarContent[index] = show;
-    this.setState({ showSidebarContent: updatedShowSidebarContent });
+    this.setState(state => {
+      const updatedShowSidebarContent = new Array(state.showSidebarContent.length).fill(false);
+      updatedShowSidebarContent[index] = show;
+      return { showSidebarContent: updatedShowSidebarContent };
+    });
   }
 }

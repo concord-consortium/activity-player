@@ -169,7 +169,7 @@ const getErrorMessage = (err: any, res: superagent.Response) => {
   // cf. https://visionmedia.github.io/superagent/#error-handling
   // However, Rollbar has reported errors due to undefined responses
   // Using err.status or err.response, per the above link, may be preferable here
-  return (res && res.body ? res.body.message : null) || err;
+  return (res?.body ? res.body.message : null) || err;
 };
 
 const parseUrl = (url: string) => {

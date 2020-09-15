@@ -69,7 +69,7 @@ export const getAnswerWithMetadata = (
 export const answersQuestionIdToRefId = (questionId: string) => {
   const snakeCaseRegEx = /(\D*)_(\d*)/g;
   const parsed = snakeCaseRegEx.exec(questionId);
-  if (parsed && parsed.length) {
+  if (parsed?.length) {
     const [ , embeddableType, embeddableId] = parsed;
     const camelCased = embeddableType.split("_").map(str => str.charAt(0).toUpperCase() + str.slice(1)).join("");
     return `${embeddableId}-${camelCased}`;
@@ -83,7 +83,7 @@ export const answersQuestionIdToRefId = (questionId: string) => {
 export const refIdToAnswersQuestionId = (refId: string) => {
   const refIdRegEx = /(\d*)-(\D*)/g;
   const parsed = refIdRegEx.exec(refId);
-  if (parsed && parsed.length) {
+  if (parsed?.length) {
     const [ , embeddableId, embeddableType] = parsed;
     const snakeCased = embeddableType.replace(/(?!^)([A-Z])/g, "_$1").toLowerCase();
     return `${snakeCased}_${embeddableId}`;

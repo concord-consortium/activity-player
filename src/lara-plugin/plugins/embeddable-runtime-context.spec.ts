@@ -33,7 +33,7 @@ describe("Embeddable runtime context helper", () => {
   describe("#getInteractiveState", () => {
     it("returns null when interactiveStateUrl is not available", () => {
       const runtimeContext = generateEmbeddableRuntimeContext(
-        Object.assign({}, embeddableContext, {interactiveStateUrl: null})
+        { ...embeddableContext, interactiveStateUrl: null}
       );
       const resp = runtimeContext.getInteractiveState();
       expect(resp).toBeNull();
@@ -67,7 +67,7 @@ describe("Embeddable runtime context helper", () => {
   describe("#getReportingUrl", () => {
     it("returns null when interactiveStateUrl is not available", () => {
       const runtimeContext = generateEmbeddableRuntimeContext(
-        Object.assign({}, embeddableContext, {interactiveStateUrl: null})
+        { ...embeddableContext, interactiveStateUrl: null}
       );
       const resp = runtimeContext.getReportingUrl();
       expect(resp).toBeNull();
