@@ -86,6 +86,7 @@ export interface IMwInteractive extends EmbeddableBase {
 export interface IEmbeddableXhtml extends EmbeddableBase {
   type: "Embeddable::Xhtml";
   content?: string;
+  is_callout?: boolean;
 }
 
 export interface IEmbeddablePlugin extends EmbeddableBase {
