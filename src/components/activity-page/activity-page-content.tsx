@@ -149,7 +149,6 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
               <Embeddable
                 key={`embeddable-${embeddableWrapper.embeddable.ref_id}`}
                 embeddableWrapper={embeddableWrapper}
-                isPageIntroduction={i === 0 && section === EmbeddableSections.Introduction}
                 pageLayout={this.props.page.layout}
                 questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
                 linkedPluginEmbeddable={linkedPluginEmbeddable}

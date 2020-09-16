@@ -12,7 +12,6 @@ import "./embeddable.scss";
 interface IProps {
   activityLayout?: number;
   embeddableWrapper: EmbeddableWrapper;
-  isPageIntroduction: boolean;
   linkedPluginEmbeddable?: IEmbeddablePlugin;
   pageLayout: string;
   questionNumber?: number;
@@ -20,7 +19,7 @@ interface IProps {
 }
 
 export const Embeddable: React.FC<IProps> = (props) => {
-  const { activityLayout, embeddableWrapper, isPageIntroduction, linkedPluginEmbeddable, pageLayout, questionNumber, teacherEditionMode } = props;
+  const { activityLayout, embeddableWrapper, linkedPluginEmbeddable, pageLayout, questionNumber, teacherEditionMode } = props;
   const embeddable = embeddableWrapper.embeddable;
 
   interface InitialInteractiveState {
@@ -73,7 +72,7 @@ export const Embeddable: React.FC<IProps> = (props) => {
   } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {
     qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} /> : undefined;
   } else if (embeddable.type === "Embeddable::Xhtml") {
-    qComponent = <TextBox embeddable={embeddable} isPageIntroduction={isPageIntroduction} />;
+    qComponent = <TextBox embeddable={embeddable} />;
   } else {
     qComponent = <div>Content type not supported</div>;
   }
