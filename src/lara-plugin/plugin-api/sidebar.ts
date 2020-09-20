@@ -115,8 +115,7 @@ export const addSidebar = (_options: ISidebarOptions): ISidebarController => {
   // Final setup.
   $sidebar.append($handle);
   $sidebar.append($body);
-  $("body").append($sidebar);
-  $("#sidebar-holder").append($sidebar);
+  $("#sidetip-plugin-container").append($sidebar);
 
   // Add event handlers.
   const isOpen = () => {
