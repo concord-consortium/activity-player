@@ -3,7 +3,6 @@ import { Embeddable } from "./embeddable";
 import { BottomButtons } from "./bottom-buttons";
 import { PageLayouts, EmbeddableSections, isQuestion, getPageSectionQuestionCount,
          VisibleEmbeddables, getVisibleEmbeddablesOnPage, getLinkedPluginEmbeddable } from "../../utilities/activity-utils";
-import { SidebarWrapper } from "../page-sidebar/sidebar-wrapper";
 import { renderHTML } from "../../utilities/render-html";
 import { accessibilityClick } from "../../utilities/accessibility-helper";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
@@ -81,9 +80,6 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
           onNext={!isLastActivityPage ? this.handleNext : undefined}
           onGenerateReport={enableReportButton ? this.handleReport : undefined}
         />
-        {page.show_sidebar &&
-          <SidebarWrapper sidebars={[{ content: page.sidebar, title: page.sidebar_title }]} />
-        }
       </div>
     );
   }
