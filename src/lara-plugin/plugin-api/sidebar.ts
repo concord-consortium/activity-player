@@ -1,6 +1,6 @@
 // ACTIVITY_PLAYER_CODE:
 import $ from "jquery";
-// LARA_CODE import * as $ from "jquery";
+// LARA_CODE: import * as $ from "jquery";
 import "jquery-ui/ui/widgets/button";
 
 // Distance between sidebar handles (in pixels).
@@ -47,10 +47,14 @@ const controllers: ISidebarController[] = [];
 const positionMultipleSidebars = () => {
   // First, make sure that sidebars are below page navigation menu.
   let minOffset = 0;
-  const $navMenu = $(".activity-nav-mod");
+  // LARA_CODE: const $navMenu = $(".activity-nav-mod");
+  // ACTIVITY_PLAYER_CODE:
+  const $navMenu = $(".activity-header");
   // Note that .activity-nav-mod might not be present in test environment.
   if ($navMenu.length > 0) {
-    minOffset = $navMenu[0].getBoundingClientRect().bottom;
+    // LARA_CODE: minOffset = $navMenu[0].getBoundingClientRect().bottom;
+    // ACTIVITY_PLAYER_CODE:
+    minOffset = $navMenu[0].getBoundingClientRect().top;
   }
   // Also, take into account aet of small icons displayed on the side of the page. They look like mini-sidebar handles.
   // Not available in all the layouts, so this selector might not be present. Again, avoid overlapping.
@@ -58,7 +62,7 @@ const positionMultipleSidebars = () => {
   if ($sideNavigation.length > 0) {
     minOffset = Math.max(minOffset, $sideNavigation[0].getBoundingClientRect().bottom);
   }
-  minOffset = minOffset + SIDEBAR_SPACER; // add a little margin, it looks better.
+  // LARA_CODE: minOffset = minOffset + SIDEBAR_SPACER; // add a little margin, it looks better.
   // Then, make sure that multiple handles don't overlap and they don't go off screen.
   const $sidebarHdr = $(".sidebar-hdr");
   const sidebarSpacing = ($sidebarHdr.height() || 0) + SIDEBAR_SPACER;
@@ -108,14 +112,16 @@ export const addSidebar = (_options: ISidebarOptions): ISidebarController => {
   const $closeBtn = $('<button class="sidebar-bd-close">');
   // Note that ButtonOptions interface is out of date, `icon` is a valid option in jQuery UI 1.12.
   // @ts-ignore
-  $closeBtn.button({ icon: "ui-icon-closethick" });
+  // LARA_CODE: $closeBtn.button({ icon: "ui-icon-closethick" });
   $body.append($closeBtn);
   const $contentContainer = $('<div class="sidebar-content">');
   $body.append($contentContainer);
   // Final setup.
   $sidebar.append($handle);
   $sidebar.append($body);
-  $("#sidetip-plugin-container").append($sidebar);
+  // LARA_CODE: $("body").append($sidebar);
+  // ACTIVITY_PLAYER_CODE:
+  $("#expandable-container").append($sidebar);
 
   // Add event handlers.
   const isOpen = () => {
