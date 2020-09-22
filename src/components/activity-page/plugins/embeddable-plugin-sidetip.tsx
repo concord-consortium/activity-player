@@ -4,19 +4,18 @@ import { IEmbeddablePlugin } from "../../../types";
 
 interface IProps {
   embeddable: IEmbeddablePlugin;
-  teacherEditionMode?: boolean;
 }
 
 export const EmbeddablePluginSideTip: React.FC<IProps> = (props) => {
-  const { embeddable, teacherEditionMode } = props;
+  const { embeddable } = props;
 
   const embeddableDivTarget = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (embeddableDivTarget.current && teacherEditionMode) {
+    if (embeddableDivTarget.current) {
       initializePlugin(embeddable, undefined, embeddableDivTarget.current, undefined);
     }
-  }, [embeddable, teacherEditionMode]);
+  }, [embeddable]);
 
   return (
     <div className="embeddable-plugin-sidetip" ref={embeddableDivTarget} />
