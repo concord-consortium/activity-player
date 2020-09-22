@@ -62,7 +62,7 @@ module.exports = (env, argv) => {
             }
           ]
         },
-                // This code coverage instrumentation should only be added when needed. It makes
+        // This code coverage instrumentation should only be added when needed. It makes
         // the code larger and slower
         process.env.CODE_COVERAGE ? {
           test: /\.[tj]sx?$/,
@@ -94,9 +94,11 @@ module.exports = (env, argv) => {
         filename: "index.html",
         template: "src/index.html"
       }),
-      new CopyWebpackPlugin([
-        {from: "src/public"}
-      ])
+      new CopyWebpackPlugin({
+        patterns: [
+          {from: "src/public"}
+        ]
+      })
     ]
   };
 };

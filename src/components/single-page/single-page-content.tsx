@@ -49,9 +49,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
       {content: page.sidebar, title: page.sidebar_title }
     ));
     return (
-      <React.Fragment>
-        <SidebarWrapper sidebars={sidebars}/>
-      </React.Fragment>
+      <SidebarWrapper sidebars={sidebars}/>
     );
   };
 

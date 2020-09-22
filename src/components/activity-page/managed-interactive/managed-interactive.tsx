@@ -86,8 +86,8 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
 
     const divTarget = React.useRef(null);
     const divSize: any = useSize(divTarget);
-    const proposedHeight: number = divSize && divSize.width / aspectRatio;
-    const containerWidth: number = divSize && divSize.width;
+    const proposedHeight: number = divSize?.width / aspectRatio;
+    const containerWidth: number = divSize?.width;
 
     const [ showHint, setShowHint ] = useState(false);
     const [ hint, setHint ] = useState("");
@@ -157,7 +157,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
                           data-cy="close-hint"
                           tabIndex={0}/>
             </div>
-        </div>
+          </div>
       }
       {!showModal && interactiveIframe}
       <Modal isOpen={showModal} appElement={getModalContainer()} onRequestClose={handleCloseModalRequest}>

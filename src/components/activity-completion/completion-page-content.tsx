@@ -18,7 +18,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     onPageChange(0);
   };
   const handleShowAnswers = () => {
-    onShowAllAnswers && onShowAllAnswers(); // TODO: show report
+    onShowAllAnswers?.(); // TODO: show report
   };
   const quotedActivityName = "\"" + activityName + "\"";
   const completionText = `${quotedActivityName} activity complete!`;
@@ -51,4 +51,3 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     </div>
   );
 };
-

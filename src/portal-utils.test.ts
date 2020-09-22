@@ -55,6 +55,6 @@ describe("handleGetFirebaseJWT", () => {
     catch(e) {
       err = e.toString();
     }
-    expect(err).toMatch(new RegExp("Error"));
+    expect(err).toMatch("Error");
   });
 });
