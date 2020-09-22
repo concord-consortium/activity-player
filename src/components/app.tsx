@@ -15,7 +15,8 @@ import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { fetchPortalData, IPortalData } from "../portal-api";
 import { signInWithToken, watchAnswers, initializeDB, setPortalData, initializeAnonymousDB } from "../firebase-db";
 import { Activity } from "../types";
-import { createPluginNamespace } from "../lara-plugin/index";
+import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
+import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
 
@@ -34,6 +35,8 @@ interface IState {
 interface IProps {}
 
 export class App extends React.PureComponent<IProps, IState> {
+
+  private LARA: LaraGlobalType;
 
   public constructor(props: IProps) {
     super(props);
@@ -79,8 +82,8 @@ export class App extends React.PureComponent<IProps, IState> {
       this.setState(newState as IState);
 
       if (teacherEditionMode) {
-        createPluginNamespace();
-        loadPluginScripts(activity);
+        this.LARA = initializeLara();
+        loadPluginScripts(this.LARA, activity);
       }
 
     } catch (e) {
@@ -90,14 +93,16 @@ export class App extends React.PureComponent<IProps, IState> {
 
   render() {
     return (
-      <PortalDataContext.Provider value={this.state.portalData}>
-        <div className="app">
-          <WarningBanner/>
-          { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-          { this.renderActivity() }
-          { this.state.showThemeButtons && <ThemeButtons/>}
-        </div>
-      </PortalDataContext.Provider>
+      <LaraGlobalContext.Provider value={this.LARA}>
+        <PortalDataContext.Provider value={this.state.portalData}>
+          <div className="app">
+            <WarningBanner/>
+            { this.state.teacherEditionMode && <TeacherEditionBanner/>}
+            { this.renderActivity() }
+            { this.state.showThemeButtons && <ThemeButtons/>}
+          </div>
+        </PortalDataContext.Provider>
+      </LaraGlobalContext.Provider>
     );
   }
 
