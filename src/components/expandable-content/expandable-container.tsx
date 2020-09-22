@@ -6,6 +6,7 @@ import { getPageSideTipEmbeddables, getPageSideBars } from "../../utilities/acti
 
 import "./expandable-container.scss";
 
+const kExpandableContentTop = 152;
 const kExpandableContentMargin = 19;
 const kExpandableItemHeight = 79;
 
@@ -18,10 +19,8 @@ interface IProps {
 
 export const ExpandableContainer: React.FC<IProps> = (props) => {
   const { activity, page, pageNumber, teacherEditionMode } = props;
-  const activityHeader = document.getElementsByClassName("activity-header");
-  const contentTopPosition = activityHeader[0].getBoundingClientRect().top;
   const sideTips = getPageSideTipEmbeddables(page);
-  const verticalOffset = contentTopPosition + sideTips.length * (kExpandableItemHeight + kExpandableContentMargin);
+  const verticalOffset = kExpandableContentTop + sideTips.length * (kExpandableItemHeight + kExpandableContentMargin);
   const sidebars = getPageSideBars(activity, page);
   return (
     <div className="expandable-container" id="expandable-container" key={pageNumber}>
