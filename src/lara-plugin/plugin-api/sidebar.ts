@@ -1,7 +1,7 @@
 // ACTIVITY_PLAYER_CODE:
 import $ from "jquery";
 // LARA_CODE: import * as $ from "jquery";
-import "jquery-ui/ui/widgets/button";
+// LARA_CODE: import "jquery-ui/ui/widgets/button";
 
 // Distance between sidebar handles (in pixels).
 const SIDEBAR_SPACER = 35;
@@ -121,7 +121,11 @@ export const addSidebar = (_options: ISidebarOptions): ISidebarController => {
   $sidebar.append($body);
   // LARA_CODE: $("body").append($sidebar);
   // ACTIVITY_PLAYER_CODE:
-  $("#expandable-container").append($sidebar);
+  if ($("#expandable-container").length) {
+    $("#expandable-container").append($sidebar);
+  } else {
+    $("body").append($sidebar);
+  }
 
   // Add event handlers.
   const isOpen = () => {

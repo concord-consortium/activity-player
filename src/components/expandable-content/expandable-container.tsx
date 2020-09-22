@@ -23,7 +23,7 @@ export const ExpandableContainer: React.FC<IProps> = (props) => {
   const verticalOffset = kExpandableContentTop + sideTips.length * (kExpandableItemHeight + kExpandableContentMargin);
   const sidebars = getPageSideBars(activity, page);
   return (
-    <div className="expandable-container" id="expandable-container" key={pageNumber}>
+    <div className="expandable-container" id="expandable-container" key={pageNumber} data-cy="expandable-container">
       { teacherEditionMode && sideTips.map((sideTip: any) =>
           <EmbeddablePluginSideTip
             key={sideTip.embeddable.ref_id}

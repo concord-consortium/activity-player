@@ -18,6 +18,6 @@ export const EmbeddablePluginSideTip: React.FC<IProps> = (props) => {
   }, [embeddable]);
 
   return (
-    <div className="embeddable-plugin-sidetip" ref={embeddableDivTarget} />
+    <div className="embeddable-plugin-sidetip" data-cy="embeddable-plugin-sidetip"  ref={embeddableDivTarget} />
   );
 };
