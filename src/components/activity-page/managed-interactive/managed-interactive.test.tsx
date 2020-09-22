@@ -52,7 +52,13 @@ describe("ManagedInteractive component", () => {
       type: "ManagedInteractive",
       ref_id: "314-ManagedInteractive"
     };
-    const wrapper = shallow(<ManagedInteractive embeddable={sampleEmbeddable} initialInteractiveState={null} questionNumber={1} />);
+    const wrapper = shallow(<ManagedInteractive
+                              embeddable={sampleEmbeddable}
+                              initialInteractiveState={null}
+                              questionNumber={1}
+                              setSupportedFeatures={() => { /* nop */ }}
+                              setSendCustomMessage={() => { /* nop */ }}
+                              />);
     expect(wrapper.find('[data-cy="managed-interactive"]').length).toBe(1);
   });
 });

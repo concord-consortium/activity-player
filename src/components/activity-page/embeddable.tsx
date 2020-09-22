@@ -1,11 +1,15 @@
-import React, { useRef, useEffect, useState }  from "react";
+import React, { useCallback, useContext, useEffect, useRef, useState }  from "react";
 import { TextBox } from "./text-box/text-box";
+import { LaraGlobalContext } from "../lara-global-context";
 import { ManagedInteractive } from "./managed-interactive/managed-interactive";
 import { ActivityLayouts, PageLayouts } from "../../utilities/activity-utils";
 import { EmbeddablePlugin } from "./plugins/embeddable-plugin";
-import { initializePlugin } from "../../utilities/plugin-utils";
+import { initializePlugin, IPartialEmbeddablePluginContext, validateEmbeddablePluginContextForWrappedEmbeddable
+        } from "../../utilities/plugin-utils";
 import { EmbeddableWrapper, IEmbeddablePlugin, IExportableAnswerMetadata } from "../../types";
 import { localAnswerPath, getCurrentDBValue } from "../../firebase-db";
+import { IInteractiveSupportedFeaturesEvent } from "../../lara-plugin/events";
+import { ICustomMessage, ISupportedFeatures } from "@concord-consortium/lara-interactive-api";
 
 import "./embeddable.scss";
 
@@ -17,6 +21,8 @@ interface IProps {
   questionNumber?: number;
   teacherEditionMode?: boolean;
 }
+
+type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.FC<IProps> = (props) => {
   const { activityLayout, embeddableWrapper, linkedPluginEmbeddable, pageLayout, questionNumber, teacherEditionMode } = props;
@@ -35,12 +41,35 @@ export const Embeddable: React.FC<IProps> = (props) => {
 
   const embeddableWrapperDivTarget = useRef<HTMLInputElement>(null);
   const embeddableDivTarget = useRef<HTMLInputElement>(null);
+  const sendCustomMessage = useRef<ISendCustomMessage | undefined>(undefined);
+  const setSendCustomMessage = (sender: ISendCustomMessage) => {
+    sendCustomMessage.current = sender;
+  };
 
+  const LARA = useContext(LaraGlobalContext);
   useEffect(() => {
-    if (embeddableWrapperDivTarget.current && embeddableDivTarget.current && linkedPluginEmbeddable && teacherEditionMode) {
-      initializePlugin(linkedPluginEmbeddable, embeddable, embeddableWrapperDivTarget.current, embeddableDivTarget.current);
+    const pluginContext: IPartialEmbeddablePluginContext = {
+      LARA,
+      embeddable: linkedPluginEmbeddable,
+      embeddableContainer: embeddableWrapperDivTarget.current || undefined,
+      wrappedEmbeddable: embeddable,
+      wrappedEmbeddableContainer: embeddableDivTarget.current || undefined,
+      sendCustomMessage: sendCustomMessage.current
+    };
+    const validPluginContext = validateEmbeddablePluginContextForWrappedEmbeddable(pluginContext);
+    if (validPluginContext && teacherEditionMode) {
+      initializePlugin(validPluginContext);
     }
-  }, [linkedPluginEmbeddable, embeddable, initialInteractiveState, teacherEditionMode]);
+  // NOTE: initialInteractiveState is not used in the effect, but is required for plugin to work
+  }, [LARA, linkedPluginEmbeddable, embeddable, initialInteractiveState, teacherEditionMode]);
+
+  const handleSetSupportedFeatures = useCallback((container: HTMLElement, features: ISupportedFeatures) => {
+    const event: IInteractiveSupportedFeaturesEvent = {
+      container,
+      supportedFeatures: features
+    };
+    LARA?.Events.emitInteractiveSupportedFeatures(event);
+  }, [LARA?.Events]);
 
   // `initialInteractiveState.loaded` will be set to true the moment our initial request for `answers` data
   // comes through, whether or not there is any particular initial state for this interactive.
@@ -68,7 +97,13 @@ export const Embeddable: React.FC<IProps> = (props) => {
 
   let qComponent;
   if (embeddable.type === "MwInteractive" || (embeddable.type === "ManagedInteractive" && embeddable.library_interactive)) {
-    qComponent = <ManagedInteractive embeddable={embeddable} initialInteractiveState={initialInteractiveState.state} questionNumber={questionNumber} initialAnswerMeta={initialInteractiveState.answerMeta} />;
+    qComponent = <ManagedInteractive
+                    embeddable={embeddable}
+                    initialInteractiveState={initialInteractiveState.state}
+                    questionNumber={questionNumber}
+                    initialAnswerMeta={initialInteractiveState.answerMeta}
+                    setSupportedFeatures={handleSetSupportedFeatures}
+                    setSendCustomMessage={setSendCustomMessage} />;
   } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {
     qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} /> : undefined;
   } else if (embeddable.type === "Embeddable::Xhtml") {

@@ -1,3 +1,7 @@
+import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
+import { Optional } from "utility-types";
+import { LaraGlobalType } from "../lara-plugin";
+import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
 import { Activity, Embeddable, IEmbeddablePlugin } from "../types";
 
 type PluginType = "TeacherEdition" | "Glossary";
@@ -18,7 +22,7 @@ export const Plugins: PluginInfo[] = [
   },
 ];
 
-export const loadPluginScripts = (activity: Activity) => {
+export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity) => {
   // load any plugin scripts, each should call registerPlugin if correctly loaded
   const usedPlugins: PluginInfo[] = [];
   for (let page = 0; page < activity.pages.length - 1; page++) {
@@ -38,7 +42,7 @@ export const loadPluginScripts = (activity: Activity) => {
   usedPlugins.forEach((plugin) => {
     // set plugin label
     const pluginLabel = "plugin" + plugin.id;
-    (window as any).LARA.Plugins.setNextPluginLabel(pluginLabel);
+    LARA.Plugins.setNextPluginLabel(pluginLabel);
     // load the script
     const script = document.createElement("script");
     script.type = "text/javascript";
@@ -51,35 +55,69 @@ export const loadPluginScripts = (activity: Activity) => {
   });
 };
 
-export const initializePlugin = (embeddable: IEmbeddablePlugin, wrappedEmbeddable: Embeddable | undefined, embeddableContainer: HTMLElement, wrappedEmbeddableContainer: HTMLElement | undefined) => {
+export interface IEmbeddablePluginContext {
+  LARA: LaraGlobalType;
+  embeddable: IEmbeddablePlugin;
+  embeddableContainer: HTMLElement;
+  wrappedEmbeddable?: Embeddable;
+  wrappedEmbeddableContainer?: HTMLElement;
+  sendCustomMessage?: (message: ICustomMessage) => void;
+}
+export type IPartialEmbeddablePluginContext = Partial<IEmbeddablePluginContext>;
+
+export const validateEmbeddablePluginContextForPlugin =
+              (context: IPartialEmbeddablePluginContext): IEmbeddablePluginContext | undefined => {
+  const { LARA, embeddable, embeddableContainer, ...others } = context;
+  return LARA && embeddable && embeddableContainer
+          ? { LARA, embeddable, embeddableContainer, ...others }
+          : undefined;
+};
+
+export const validateEmbeddablePluginContextForWrappedEmbeddable =
+              (context: IPartialEmbeddablePluginContext): IEmbeddablePluginContext | undefined => {
+  const { wrappedEmbeddable, wrappedEmbeddableContainer } = context;
+  const validated = validateEmbeddablePluginContextForPlugin(context);
+  return validated && wrappedEmbeddable && wrappedEmbeddableContainer ? validated : undefined;
+};
+
+export const initializePlugin = (context: IEmbeddablePluginContext) => {
+  const { LARA, embeddable, embeddableContainer,
+          wrappedEmbeddable, wrappedEmbeddableContainer, sendCustomMessage } = context;
   // TODO: will need to change search as we implement other plugin types
   const plugin = Plugins.find(p => p.type === "TeacherEdition");
+  if (!plugin) return;
 
-  const embeddableContext = {
+  const embeddableContext: Optional<IEmbeddableContextOptions, "container"> = {
     container: wrappedEmbeddableContainer,
     laraJson: wrappedEmbeddable,
     interactiveStateUrl: null,
-    interactiveAvailable: true
+    interactiveAvailable: true,
+    sendCustomMessage
   };
+  // cast to any for usage below
+  const embeddableContextAny = embeddableContext as any;
 
-  const pluginContext = {
-    name: plugin?.name,
-    url: plugin?.url,
-    pluginId: embeddable.ref_id.substring(0, embeddable.ref_id.indexOf("-")),
+  const pluginId = plugin.id;
+  const pluginLabel = `plugin${pluginId}`;
+  const pluginContext: IPluginRuntimeContextOptions = {
+    type: "runtime",
+    name: plugin?.name || "",
+    url: plugin?.url || "",
+    pluginId,
     embeddablePluginId: null,
-    authoredState: embeddable.plugin?.author_data,
+    authoredState: embeddable.plugin?.author_data || null,
     learnerState: null,
     learnerStateSaveUrl: "",
     container: embeddableContainer,
-    runId: "",
+    componentLabel: pluginLabel,
+    runId: 0,
     remoteEndpoint: null,
     userEmail: null,
     classInfoUrl: null,
     firebaseJwtUrl: "",
-    wrappedEmbeddable: wrappedEmbeddable ? embeddableContext : null,
-    resourceUrl: "",
+    wrappedEmbeddable: wrappedEmbeddable ? embeddableContextAny : null,
+    resourceUrl: ""
   };
   // TODO: add sophistication to handle other types
-  const pluginLabel = "plugin" + plugin?.id;
-  (window as any).LARA.Plugins.initPlugin(pluginLabel, pluginContext);
+  LARA.Plugins.initPlugin(pluginLabel, pluginContext);
 };
