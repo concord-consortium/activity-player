@@ -1,7 +1,7 @@
 import * as Sidebar from "./sidebar";
 // ACTIVITY_PLAYER_CODE:
 import $ from "jquery";
-// LARA_CODE import * as $ from "jquery";
+// LARA_CODE: import * as $ from "jquery";
 
 describe("Sidebar", () => {
   it("should exist", () => {
