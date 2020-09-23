@@ -11,7 +11,7 @@ interface IProps {
 export const TextBox: React.FC<IProps> = (props) => {
   const { embeddable} = props;
   return(
-    <div className={!embeddable.is_callout ? "textbox" : "textbox callout"} data-cy="text-box">
+    <div className={`textbox ${embeddable.is_callout ? "callout" : ""}`} data-cy="text-box">
       { embeddable.name && <div className="text-name">{embeddable.name}</div> }
       <div className="content">
         {embeddable.content && renderHTML(embeddable.content)}
