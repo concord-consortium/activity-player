@@ -27,8 +27,9 @@ describe("Embeddable component", () => {
     });
 
     await waitFor(() => {
+      wrapper.update();
+      expect(wrapper.find(".textbox").hasClass("callout")).toBe(false);
       expect(wrapper.text()).toContain("This is a page");
-      expect(wrapper.html()).toContain('class="textbox"');
     });
   });
 
@@ -49,8 +50,9 @@ describe("Embeddable component", () => {
     });
 
     await waitFor(() => {
+      wrapper.update();
+      expect(wrapper.find(".textbox").hasClass("callout")).toBe(true);
       expect(wrapper.text()).toContain("This is a callout text box");
-      expect(wrapper.html()).toContain('class="textbox callout"');
     });
   });
 
