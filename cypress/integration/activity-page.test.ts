@@ -41,3 +41,33 @@ context("Test the overall app", () => {
     });
   });
 });
+
+context("Test the teacher edition plugin", () => {
+  describe("text page 1 teacher edition features", () => {
+    before(() => {
+      cy.visit("?mode=teacher-edition&activity=sample-activity-plugins");
+      cy.wait(1000);
+      activityPage.getPage(1).click();
+    });
+    it("should show teacher edition banner", () => {
+      cy.get(".teacher-edition-banner").should("be.visible");
+    });
+    it("should have the right number of decorated interactives and window shades", () => {
+      cy.get(".question-wrapper--questionWrapper--TETipsPluginV1").should("have.length", 3);
+      cy.get(".window-shade--windowShade--TETipsPluginV1").should("have.length", 1);
+    });
+  });
+  describe("text page 2 teacher edition features", () => {
+    before(() => {
+      cy.visit("?mode=teacher-edition&activity=sample-activity-plugins");
+      cy.wait(1000);
+      activityPage.getPage(2).click();
+    });
+    it("should show teacher edition banner", () => {
+      cy.get(".teacher-edition-banner").should("be.visible");
+    });
+    it("should have the right number of window shades", () => {
+      cy.get(".window-shade--windowShade--TETipsPluginV1").should("have.length", 4);
+    });
+  });
+});
