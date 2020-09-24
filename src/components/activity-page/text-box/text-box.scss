@@ -5,9 +5,20 @@
     margin: 0;
   }
   .text-name {
-    position: relative;
-    padding: 4px 8px;
-    clear: both;
-    background-color: $cc-charcoal-light2;
+    font-weight: bold;
+    padding: 8px 0 5px;
+  }
+
+  &.callout {
+    .text-name {
+      background-color: $cc-charcoal-light2;
+      clear: both;
+      position: relative;
+      padding: 8px 20px 5px;
+    }
+    .content {
+      background: $cc-charcoal-light3;
+      padding: 20px !important;
+    }
   }
 }

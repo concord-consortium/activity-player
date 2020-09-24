@@ -33,7 +33,6 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
                 activityLayout={ActivityLayouts.SinglePage}
                 key={`embeddable ${embeddableNumber}`}
                 embeddableWrapper={embeddableWrapper}
-                isPageIntroduction={questionNumber === 0}
                 pageLayout={PageLayouts.FullWidth}
                 questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
                 teacherEditionMode={teacherEditionMode}
@@ -65,4 +64,3 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
     </div>
   );
 };
-

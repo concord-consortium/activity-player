@@ -1,4 +1,4 @@
-import { Embeddable, EmbeddableWrapper, Page, Activity, LibraryInteractive, IManagedInteractive } from "../types";
+import { Embeddable, EmbeddableWrapper, Page, Activity, LibraryInteractive, IManagedInteractive, IEmbeddableXhtml } from "../types";
 
 export const DefaultTestEmbeddable: Embeddable = {
   type: "MwInteractive",
@@ -69,4 +69,14 @@ export const DefaultManagedInteractive: IManagedInteractive = {
   name: "",
   is_hidden: false,
   is_full_width: false
+};
+
+export const DefaultXhtmlComponent: IEmbeddableXhtml = {
+  content: "<p>This is a text component.</p>",
+  name: "",
+  type: "Embeddable::Xhtml",
+  ref_id: "123-Embeddable::Xhtml",
+  is_hidden: false,
+  is_full_width: false,
+  is_callout: true
 };
