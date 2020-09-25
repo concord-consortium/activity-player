@@ -1,8 +1,6 @@
-import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { ILogData, IInteractiveAvailableEventHandler, IInteractiveSupportedFeaturesEventHandler } from "../events";
-// ACTIVITY_PLAYER_CODE:
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { IPortalClaims, IJwtClaims, IJwtResponse } from "../shared/types";
+import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
+import { IJwtResponse } from "../shared/types";
 
 // Export some shared types.
 export { IPortalClaims, IJwtClaims, IJwtResponse } from "../shared/types";

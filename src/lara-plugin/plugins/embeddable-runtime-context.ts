@@ -2,8 +2,8 @@ import { IEmbeddableRuntimeContext, IInteractiveState } from "../plugin-api";
 import { onInteractiveAvailable, IInteractiveAvailableEvent, IInteractiveAvailableEventHandler,
         onInteractiveSupportedFeatures, IInteractiveSupportedFeaturesEvent, IInteractiveSupportedFeaturesEventHandler
         } from "../events";
-import { IEmbeddableContextOptions } from "./plugin-context";
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
+import { IEmbeddableContextOptions } from "./plugin-context";
 
 const getInteractiveState = (interactiveStateUrl: string | null): Promise<IInteractiveState> | null => {
   if (!interactiveStateUrl) {
@@ -31,7 +31,7 @@ const getReportingUrl = (
       return null;
     }
     catch (error) {
-      // LARA_CODE tslint:disable-next-line:no-console
+      // tslint:disable-next-line:no-console
       console.error(error);
       return null;
     }
