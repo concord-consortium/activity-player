@@ -1,8 +1,8 @@
 import { IPluginRuntimeContext, IJwtResponse, IClassInfo, IPluginAuthoringContext } from "../plugin-api";
 import { ILogData } from "../events";
+import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
 // ACTIVITY_PLAYER_CODE:
-import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import $ from "jquery";
 // LARA_CODE import * as $ from "jquery";
 
