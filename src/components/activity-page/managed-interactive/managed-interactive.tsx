@@ -63,8 +63,13 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       const state = safeJsonParseIfString(authored_state) || {};
       // enable modal support for activity player only
       state.modalSupported = true;
+      if (showModal) {
+        // adding isShowingModal to authored state allows image interactive to know if it is modal and subsequently
+        // decide to show a low or high res image.
+        state.isShowingModal = true;
+      }
       return state;
-    }, [authored_state]);
+    }, [authored_state, showModal]);
     const linkedInteractives = useRef((embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
                                   ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
                                   : undefined);
