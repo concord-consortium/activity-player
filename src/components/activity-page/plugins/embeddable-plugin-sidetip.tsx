@@ -1,6 +1,7 @@
-import React, { useRef, useEffect }  from "react";
+import React, { useContext, useEffect, useRef }  from "react";
 import { initializePlugin } from "../../../utilities/plugin-utils";
 import { IEmbeddablePlugin } from "../../../types";
+import { LaraGlobalContext } from "../../lara-global-context";
 
 interface IProps {
   embeddable: IEmbeddablePlugin;
@@ -11,11 +12,16 @@ export const EmbeddablePluginSideTip: React.FC<IProps> = (props) => {
 
   const embeddableDivTarget = useRef<HTMLInputElement>(null);
 
+  const LARA = useContext(LaraGlobalContext);
   useEffect(() => {
-    if (embeddableDivTarget.current) {
-      initializePlugin(embeddable, undefined, embeddableDivTarget.current, undefined);
+    if (LARA && embeddableDivTarget.current) {
+      initializePlugin({
+        LARA,
+        embeddable,
+        embeddableContainer: embeddableDivTarget.current
+      });
     }
-  }, [embeddable]);
+  }, [LARA, embeddable]);
 
   return (
     <div className="embeddable-plugin-sidetip" data-cy="embeddable-plugin-sidetip"  ref={embeddableDivTarget} />
