@@ -77,7 +77,7 @@ export class App extends React.PureComponent<IProps, IState> {
           watchAnswers();
         } catch (err) {
           this.setState({ authError: "fetchPortalData failed." });
-          alert("AUTHENTICATION ERROR (" + this.state.authError + ")\n\nWe've lost track of who you are. You may have been automatically logged out. Please close this page, return to the portal, and relaunch the activity.\n\nFull error message: " + err);
+          console.error("Authentication Error: " + this.state.authError);
         }
       } else if (useAnonymousRunKey) {
         try {
@@ -85,7 +85,7 @@ export class App extends React.PureComponent<IProps, IState> {
           watchAnswers();
         } catch (err) {
           this.setState({ authError: "initializeAnonymousDB failed." });
-          alert("AUTHENTICATION ERROR (" + this.state.authError + ")\n\nWe've lost track of who you are. You may have been automatically logged out. Please close this page, return to the portal, and relaunch the activity.\n\nFull error message: " + err);
+          console.error("Authentication Error: " + this.state.authError);
         }
       }
 
@@ -115,7 +115,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, currentPage, username } = this.state;
+    const { activity, authError, currentPage, username } = this.state;
     if (!activity) return (<div>Loading</div>);
 
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
@@ -129,29 +129,35 @@ export class App extends React.PureComponent<IProps, IState> {
           activityName={activity.name}
           singlePage={activity.layout === ActivityLayouts.SinglePage}
         />
-        <ActivityNavHeader
-          activityPages={activity.pages}
-          currentPage={currentPage}
-          fullWidth={fullWidth}
-          onPageChange={this.handleChangePage}
-          singlePage={activity.layout === ActivityLayouts.SinglePage}
-        />
-        { activity.layout === ActivityLayouts.SinglePage
-          ? this.renderSinglePageContent(activity)
-          : currentPage === 0
-            ? this.renderIntroductionContent(activity)
-            : activity.pages[currentPage - 1].is_completion
-              ? this.renderCompletionContent(activity)
-              : <ActivityPageContent
-                  enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
-                  isFirstActivityPage={currentPage === 1}
-                  isLastActivityPage={currentPage === activity.pages.filter((page) => !page.is_hidden).length}
-                  pageNumber={currentPage}
-                  onPageChange={this.handleChangePage}
-                  page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
-                  totalPreviousQuestions={totalPreviousQuestions}
-                  teacherEditionMode={this.state.teacherEditionMode}
-                />
+        { authError === ""
+          ? <ActivityNavHeader
+              activityPages={activity.pages}
+              currentPage={currentPage}
+              fullWidth={fullWidth}
+              onPageChange={this.handleChangePage}
+              singlePage={activity.layout === ActivityLayouts.SinglePage}
+            />
+          : ""
+        }
+        {
+          authError === ""
+            ? activity.layout === ActivityLayouts.SinglePage
+              ? this.renderSinglePageContent(activity)
+              : currentPage === 0
+                ? this.renderIntroductionContent(activity)
+                : activity.pages[currentPage - 1].is_completion
+                  ? this.renderCompletionContent(activity)
+                  : <ActivityPageContent
+                      enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
+                      isFirstActivityPage={currentPage === 1}
+                      isLastActivityPage={currentPage === activity.pages.filter((page) => !page.is_hidden).length}
+                      pageNumber={currentPage}
+                      onPageChange={this.handleChangePage}
+                      page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
+                      totalPreviousQuestions={totalPreviousQuestions}
+                      teacherEditionMode={this.state.teacherEditionMode}
+                    />
+            : this.renderAuthError()
         }
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
           <Footer
@@ -190,6 +196,21 @@ export class App extends React.PureComponent<IProps, IState> {
           showStudentReport={activity.student_report_enabled}
           thumbnailURL={activity.thumbnail_url}
         />
+    );
+  }
+
+  private renderAuthError = () => {
+    return (
+      <div className="single-page-content" data-cy="single-page-content">
+        <h1>Session Timed Out</h1>
+        <p>Sorry, but we&apos;ve lost track of who you are. Please do the following...</p>
+        <ol>
+          <li>Close this window or browser tab.</li>
+          <li>Go back to the portal from which you launched the activity.</li>
+          <li>Re-launch the activity.</li>
+        </ol>
+        <p>If you are stuck or surprised to see this, please <a href="mailto:help@concord.org">let us know</a>.</p>
+      </div>
     );
   }
 
