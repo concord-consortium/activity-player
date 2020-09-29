@@ -30,6 +30,7 @@ interface IState {
   teacherEditionMode?: boolean;
   showThemeButtons?: boolean;
   username: string;
+  authError: string;
   portalData?: IPortalData;
 }
 interface IProps {}
@@ -45,6 +46,7 @@ export class App extends React.PureComponent<IProps, IState> {
       teacherEditionMode: false,
       showThemeButtons: false,
       username: "Anonymous",
+      authError: ""
     };
   }
 
@@ -65,18 +67,29 @@ export class App extends React.PureComponent<IProps, IState> {
       setDocumentTitle(activity, currentPage);
 
       if (queryValue("token")) {
-        const portalData = await fetchPortalData();
-        if (portalData.fullName) {
-          newState.username = portalData.fullName;
+        try {
+          const portalData = await fetchPortalData();
+          if (portalData.fullName) {
+            newState.username = portalData.fullName;
+          }
+          await initializeDB(portalData.database.appName);
+          await signInWithToken(portalData.database.rawFirebaseJWT);
+          this.setState({ portalData });
+
+          setPortalData(portalData);
+          watchAnswers();
+        } catch (err) {
+          this.setState({ authError: "fetchPortalData failed." });
+          alert("AUTHENTICATION ERROR (" + this.state.authError + ")\n\nWe've lost track of who you are. You may have been automatically logged out. Please close this page, return to the portal, and relaunch the activity.\n\nFull error message: " + err);
         }
-        await initializeDB(portalData.database.appName);
-        await signInWithToken(portalData.database.rawFirebaseJWT);
-        this.setState({ portalData });
-        setPortalData(portalData);
-        watchAnswers();
       } else if (useAnonymousRunKey) {
-        await initializeAnonymousDB();
-        watchAnswers();
+        try {
+          await initializeAnonymousDB();
+          watchAnswers();
+        } catch (err) {
+          this.setState({ authError: "initializeAnonymousDB failed." });
+          alert("AUTHENTICATION ERROR (" + this.state.authError + ")\n\nWe've lost track of who you are. You may have been automatically logged out. Please close this page, return to the portal, and relaunch the activity.\n\nFull error message: " + err);
+        }
       }
 
       this.setState(newState as IState);
