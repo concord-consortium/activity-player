@@ -140,6 +140,21 @@ export interface Activity {
   type: "LightweightActivity";
   export_site?: string | null;
   pages: Page[];
+  position?: number | null;
+}
+
+export interface Sequence {
+  abstract: string | null;
+  description: string | null;
+  display_title: string;
+  logo: string | null;
+  project_id: number | null;
+  theme_id: number | null;
+  thumbnail_url: string | null;
+  title: string;
+  activities: Activity[];
+  type: string;
+  export_site: string | null;
 }
 
 export interface IReportState {
