@@ -19,9 +19,11 @@ describe("IframeRuntime component", () => {
         authoredState={null}
         initialInteractiveState={null}
         setInteractiveState={stubFunction}
+        setSupportedFeatures={stubFunction}
         setNewHint={stubFunction}
         getFirebaseJWT={firebaseJWTStub}
         toggleModal={stubFunction}
+        setSendCustomMessage={stubFunction}
       />);
     expect(getByTestId("iframe-runtime")).toBeDefined();
   });

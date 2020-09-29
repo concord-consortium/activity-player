@@ -5,13 +5,13 @@ import {
 } from "./plugin-context";
 
 const pluginError = (e: string, other: any) => {
-  // LARA_CODE tslint:disable-next-line:no-console
+  // tslint:disable-next-line:no-console
   console.group("LARA Plugin Error");
-  // LARA_CODE tslint:disable-next-line:no-console
+  // tslint:disable-next-line:no-console
   console.error(e);
-  // LARA_CODE tslint:disable-next-line:no-console
+  // tslint:disable-next-line:no-console
   console.dir(other);
-  // LARA_CODE tslint:disable-next-line:no-console
+  // tslint:disable-next-line:no-console
   console.groupEnd();
 };
 
@@ -23,7 +23,6 @@ const pluginClasses: { [label: string]: IRegisterPluginOptions } = {};
  * to override the plugin's passed label.  This removes the previous need for the plugin's label to
  * match the label in LARA's database.
  */
-// LARA_CODE let nextPluginLabel: string = "";
 let nextPluginLabel = "";
 export const setNextPluginLabel = (override: string) => {
   nextPluginLabel = override;
@@ -55,10 +54,10 @@ const initRuntimePlugin = (label: string, options: IPluginRuntimeContextOptions)
     } catch (e) {
       pluginError(e, options);
     }
-    // LARA_CODE tslint:disable-next-line:no-console
+    // tslint:disable-next-line:no-console
     console.info("Plugin", label, "is now registered");
   } else {
-    // LARA_CODE tslint:disable-next-line:no-console
+    // tslint:disable-next-line:no-console
     console.error("No plugin registered for label:", label);
   }
 };
@@ -73,10 +72,10 @@ const initAuthoringPlugin = (label: string, options: IPluginAuthoringContextOpti
     } catch (e) {
       pluginError(e, options);
     }
-    // LARA_CODE tslint:disable-next-line:no-console
+    // tslint:disable-next-line:no-console
     console.info("Plugin", label, "is now registered");
   } else {
-    // LARA_CODE tslint:disable-next-line:no-console
+    // tslint:disable-next-line:no-console
     console.error("No plugin registered for label:", label);
   }
 };
@@ -91,19 +90,23 @@ const initAuthoringPlugin = (label: string, options: IPluginAuthoringContextOpti
  ***************************************************************************/
 export const registerPlugin = (options: IRegisterPluginOptions): boolean => {
   if (nextPluginLabel === "") {
+    // tslint:disable-next-line:no-console
     console.error("nextPluginLabel not set via #setNextPluginLabel before plugin loaded!");
     return false;
   }
   const {runtimeClass, authoringClass} = options;
   if (typeof runtimeClass !== "function") {
+    // tslint:disable-next-line:no-console
     console.error("Plugin did not provide a runtime constructor", nextPluginLabel);
     return false;
   }
   if (typeof authoringClass !== "function") {
+    // tslint:disable-next-line:no-console
     console.warn(`Plugin did not provide an authoring constructor. This is ok if "guiAuthoring"
                   is not set for this component.`, nextPluginLabel);
 }
   if (pluginClasses[nextPluginLabel]) {
+    // tslint:disable-next-line:no-console
     console.error("Duplicate Plugin for label", nextPluginLabel);
     return false;
   } else {

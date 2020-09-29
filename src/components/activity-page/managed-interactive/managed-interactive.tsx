@@ -2,7 +2,7 @@ import React, { useState, useCallback, useContext, useMemo, useRef } from "react
 import Modal from "react-modal";
 import { IframeRuntime } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
-import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
+import { ICustomMessage, IRuntimeMetadata, ISupportedFeatures } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
 import { createOrUpdateAnswer } from "../../../firebase-db";
@@ -21,6 +21,8 @@ interface IProps {
   questionNumber?: number;
   initialInteractiveState: any;     // user state that existed in DB when embeddable was first loaded
   initialAnswerMeta?: IExportableAnswerMetadata;   // saved metadata for that initial user state
+  setSupportedFeatures: (container: HTMLElement, features: ISupportedFeatures) => void;
+  setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
 }
 
 const kDefaultAspectRatio = 4 / 3;
@@ -42,7 +44,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       return handleGetFirebaseJWT({ firebase_app: firebaseApp, ...others }, portalData);
     }, [portalData]);
 
-    const { embeddable, questionNumber, initialInteractiveState } = props;
+    const { embeddable, questionNumber, initialInteractiveState, setSupportedFeatures, setSendCustomMessage } = props;
     const { authored_state } = embeddable;
     const [showModal, setShowModal] = useState(false);
     // both Modal and inline versions of interactive should reflect the same state
@@ -123,12 +125,14 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
         authoredState={authoredState}
         initialInteractiveState={iframeInteractiveState.current}
         setInteractiveState={handleNewInteractiveState}
+        setSupportedFeatures={setSupportedFeatures}
         linkedInteractives={linkedInteractives.current}
         proposedHeight={proposedHeight}
         containerWidth={containerWidth}
         setNewHint={setNewHint}
         getFirebaseJWT={getFirebaseJWT}
         toggleModal={toggleModal}
+        setSendCustomMessage={setSendCustomMessage}
       />;
 
     return (
