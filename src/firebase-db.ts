@@ -150,9 +150,7 @@ const watchCollection = (path: string, listener: DocumentsListener) => {
       listener([]);
     }
   }, (err) => {
-    alert("AUTHENTICATION ERROR\nWe've lost track of who you are. You may have been automatically logged out. Please close this page, return to the portal, and relaunch the activity.\n\nFull error message: " + err);
-    console.error(err);
-    // throw err;
+    throw new Error(err.message);
   });
 };
 
