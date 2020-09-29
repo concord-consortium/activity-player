@@ -14,6 +14,7 @@ interface IProps {
   userName: string;
   activityName: string;
   singlePage: boolean;
+  showSequence?: boolean;
 }
 
 export class Header extends React.PureComponent<IProps> {
@@ -43,10 +44,12 @@ export class Header extends React.PureComponent<IProps> {
 
 
   private renderActivityMenu = () => {
-    const { activityName } = this.props;
+    const { activityName, showSequence } = this.props;
     return (
       <React.Fragment>
-        <div className="activity-title" data-cy ="activity-title">Activity:</div>
+        <div className="activity-title" data-cy ="activity-title">
+          { showSequence ? "Sequence:" : "Activity:" }
+        </div>
         <CustomSelect
           items={[activityName]}
           HeaderIcon={AssignmentIcon}
