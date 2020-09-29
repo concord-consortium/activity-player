@@ -27,6 +27,15 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
     };
   }
 
+  public componentDidUpdate(prevProps: IProps) {
+    if (prevProps.items !== this.props.items) {
+      this.setState({
+        current: this.props.items[0],
+        showList: false
+      });
+    }
+  }
+
   public componentDidMount() {
     document.addEventListener("mousedown", this.handleClick, false);
   }
