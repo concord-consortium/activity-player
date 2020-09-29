@@ -1,0 +1,41 @@
+@import "../vars.scss";
+
+.sequence-content {
+  width: $content-width;
+  box-sizing: border-box;
+  background-color: white;
+  padding: 12px;
+  margin-top: 5px;
+
+  .introduction {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    .thumb-holder {
+      margin: 10px 0;
+      display: flex;
+      flex-wrap: wrap;
+
+      .thumb {
+        flex-grow: 0;
+        flex-shrink: 0;
+        width: 300px;
+        height: 315px;
+        border: 1px solid $cc-charcoal-light2;
+        margin: 5px;
+        overflow: hidden;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $cc-charcoal-light2;
+        }
+
+        img {
+          width: 300px;
+          height: auto;
+        }
+      }
+    }
+  }
+}
