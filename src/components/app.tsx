@@ -19,6 +19,7 @@ import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
+import { AuthError }  from "./auth-error/auth-error";
 
 import "./app.scss";
 
@@ -79,7 +80,7 @@ export class App extends React.PureComponent<IProps, IState> {
           setPortalData(portalData);
           watchAnswers();
         } catch (err) {
-          this.setState({ authError: "fetchPortalData failed." });
+          this.setState({ authError: err });
           console.error("Authentication Error: " + this.state.authError);
         }
       } else if (useAnonymousRunKey) {
@@ -87,7 +88,7 @@ export class App extends React.PureComponent<IProps, IState> {
           await initializeAnonymousDB();
           watchAnswers();
         } catch (err) {
-          this.setState({ authError: "initializeAnonymousDB failed." });
+          this.setState({ authError: err });
           console.error("Authentication Error: " + this.state.authError);
         }
       }
@@ -142,10 +143,6 @@ export class App extends React.PureComponent<IProps, IState> {
               onPageChange={this.handleChangePage}
               singlePage={activity.layout === ActivityLayouts.SinglePage}
             />
-          : ""
-        }
-        {
-          authError === ""
             ? activity.layout === ActivityLayouts.SinglePage
               ? this.renderSinglePageContent(activity)
               : currentPage === 0
@@ -162,7 +159,8 @@ export class App extends React.PureComponent<IProps, IState> {
                       totalPreviousQuestions={totalPreviousQuestions}
                       teacherEditionMode={this.state.teacherEditionMode}
                     />
-            : this.renderAuthError()
+            : ""
+          : this.renderAuthError()
         }
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
           <Footer
@@ -206,16 +204,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private renderAuthError = () => {
     return (
-      <div className="single-page-content" data-cy="single-page-content">
-        <h1>Session Timed Out</h1>
-        <p>Sorry, but we&apos;ve lost track of who you are. Please do the following...</p>
-        <ol>
-          <li>Close this window or browser tab.</li>
-          <li>Go back to the portal from which you launched the activity.</li>
-          <li>Re-launch the activity.</li>
-        </ol>
-        <p>If you are stuck or surprised to see this, please <a href="mailto:help@concord.org">let us know</a>.</p>
-      </div>
+      <AuthError />
     );
   }
 
