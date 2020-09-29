@@ -13,7 +13,7 @@ import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { fetchPortalData, IPortalData } from "../portal-api";
-import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB } from "../firebase-db";
+import { signInWithToken, watchAnswers, initializeDB, setPortalData, initializeAnonymousDB } from "../firebase-db";
 import { Activity, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
@@ -87,6 +87,9 @@ export class App extends React.PureComponent<IProps, IState> {
       const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
+
+
+      const useAnonymousRunKey = !queryValue("token") && !queryValueBoolean("preview") && !teacherEditionMode;
 
       const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showSequence, sequence, teacherEditionMode};
       setDocumentTitle(activity, currentPage);
@@ -163,6 +166,31 @@ export class App extends React.PureComponent<IProps, IState> {
           </div>
         </PortalDataContext.Provider>
       </LaraGlobalContext.Provider>
+    );
+  }
+
+  private renderSequence = () => {
+    const { sequence, username } = this.state;
+    if (!sequence) return (<div>Loading</div>);
+    return (
+      <React.Fragment>
+        <Header
+          fullWidth={false}
+          projectId={sequence.project_id}
+          userName={username}
+          activityName={sequence.display_title || sequence.title}
+          singlePage={false}
+          showSequence={true}
+        />
+        <SequencePageContent
+          sequence={sequence}
+          onSelectActivity={this.handleSelectActivity}
+        />
+        <Footer
+          fullWidth={true}
+          projectId={sequence.project_id}
+        />
+      </React.Fragment>
     );
   }
 
