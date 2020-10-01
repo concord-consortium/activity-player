@@ -29,7 +29,7 @@ export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity) => {
     if (!activity.pages[page].is_hidden) {
       for (let embeddableNum = 0; embeddableNum < activity.pages[page].embeddables.length; embeddableNum++) {
         const embeddable = activity.pages[page].embeddables[embeddableNum].embeddable;
-        if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {
+        if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.approved_script_label === "teacherEditionTips") {
           const plugin = Plugins.find(p => p.type === "TeacherEdition");
           if (plugin && !usedPlugins.some(p => p.type === "TeacherEdition")) {
             usedPlugins.push(plugin);

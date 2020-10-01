@@ -1,7 +1,6 @@
 import React from "react";
 import { ActivityLayouts, PageLayouts, isQuestion, VisibleEmbeddables, getVisibleEmbeddablesOnPage } from "../../utilities/activity-utils";
 import { Embeddable } from "../activity-page/embeddable";
-import { SidebarWrapper, SidebarConfiguration } from "../page-sidebar/sidebar-wrapper";
 import { RelatedContent } from "./related-content";
 import { SubmitButton } from "./submit-button";
 
@@ -44,15 +43,6 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
     );
   };
 
-  const renderSidebars = () => {
-    const sidebars: SidebarConfiguration[] = activity.pages.filter((page) => page.show_sidebar).map((page) => (
-      {content: page.sidebar, title: page.sidebar_title }
-    ));
-    return (
-      <SidebarWrapper sidebars={sidebars}/>
-    );
-  };
-
   return (
     <div className="single-page-content" data-cy="single-page-content">
       {activity.pages.filter((page) => !page.is_hidden).map((page, index: number) => (
@@ -60,7 +50,6 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
       ))}
       { activity.related && <RelatedContent relatedContentText={activity.related} /> }
       { activity.show_submit_button && <SubmitButton/> }
-      { renderSidebars() }
     </div>
   );
 };

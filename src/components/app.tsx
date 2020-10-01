@@ -19,6 +19,7 @@ import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
+import { ExpandableContainer } from "./expandable-content/expandable-container";
 
 import "./app.scss";
 
@@ -149,6 +150,14 @@ export class App extends React.PureComponent<IProps, IState> {
           <Footer
             fullWidth={fullWidth}
             projectId={activity.project_id}
+          />
+        }
+        { (activity.layout !== ActivityLayouts.SinglePage && currentPage !== 0 && !activity.pages[currentPage - 1].is_completion) &&
+          <ExpandableContainer
+            activity={activity}
+            pageNumber={currentPage}
+            page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
+            teacherEditionMode={this.state.teacherEditionMode}
           />
         }
       </React.Fragment>
