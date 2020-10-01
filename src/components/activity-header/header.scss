@@ -38,13 +38,19 @@
       width: 400px;
       height: 100%;
       font-size: 18px;
-  
-      .activity-title{
+
+      .activity-title {
         margin-right: 10px;
+      }
+
+      img {
+        height: 50px;
+        border: solid 1.5px $cc-charcoal-light1;
+        margin-right: 5px;
       }
     }
 
-    .header-right{
+    .header-right {
       display: flex;
       flex-direction: row;
       align-items: center;

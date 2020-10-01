@@ -140,6 +140,7 @@ export class App extends React.PureComponent<IProps, IState> {
           activityName={sequence.display_title || sequence.title}
           singlePage={false}
           showSequence={true}
+          sequenceLogo={sequence.logo}
         />
         <SequencePageContent
           sequence={sequence}

@@ -23,7 +23,7 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
         <div className="thumb-holder">
           {sequence.activities.map((a: Activity, index: number) => (
             <div className="thumb" key={`activity-${index}`} onClick={() => onSelectActivity(index)}>
-              {a.name}
+              <div className="name">{`${index + 1}. ${a.name}`}</div>
               {a.thumbnail_url && <img src={a.thumbnail_url} />}
             </div>
           ))}
