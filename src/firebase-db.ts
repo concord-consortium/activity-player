@@ -120,6 +120,10 @@ export const setPortalData = (_portalData: IPortalData) => {
   portalData = _portalData;
 };
 
+export const setAnonymousPortalData = (_portalData: IAnonymousPortalData) => {
+  portalData = _portalData;
+};
+
 type DocumentsListener = (docs: firebase.firestore.DocumentData[]) => void;
 
 const watchCollection = (path: string, listener: DocumentsListener) => {

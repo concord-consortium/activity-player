@@ -1,5 +1,5 @@
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
-import { setPortalData, createOrUpdateAnswer } from "./firebase-db";
+import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer } from "./firebase-db";
 import { DefaultManagedInteractive } from "./test-utils/model-for-tests";
 import { getAnswerWithMetadata } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata } from "./types";
@@ -11,15 +11,32 @@ import { mockFirestore } from "./test-utils/firestore-mock";
 
 describe("Firestore", () => {
 
-
-
   beforeEach(() => {
     jest.clearAllMocks();
 
     firebase.firestore();
   });
 
-  it("creates answers with the correct metadata", () => {
+  it("does nothing in the absence of metadata", () => {
+    const embeddable = {
+      ...DefaultManagedInteractive,
+      authored_state: `{"version":1,"questionType":"open_response","prompt":"<p>Write something:</p>"}`,
+      ref_id: "123-ManagedInteractive"
+    };
+
+    const interactiveState: IRuntimeMetadata = {
+      answerType: "open_response_answer",
+      answerText: "test"
+    };
+
+    const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableAnswerMetadata;
+
+    createOrUpdateAnswer(exportableAnswer);
+
+    expect(mockFirestore().doc().set).not.toHaveBeenCalled();
+  });
+
+  it("creates answers with the correct metadata for authenticated users", () => {
     setPortalData({
       type: "authenticated",
       contextId: "context-id",
@@ -75,6 +92,54 @@ describe("Firestore", () => {
       submitted: null,
       tool_id: "activity-player.concord.org",
       type: "open_response_answer",
+    }, {merge: true});
+  });
+
+  it("creates answers with the correct metadata for an anonymous user", () => {
+    setAnonymousPortalData({
+      type: "anonymous",
+      database: {
+        appName: "report-service-dev",
+        sourceKey: "localhost"
+      },
+      resourceUrl: "http://example/resource",
+      toolId: "activity-player.concord.org",
+      toolUserId: "anonymous",
+      userType: "learner",
+      runKey: ""
+    });
+
+    const embeddable = {
+      ...DefaultManagedInteractive,
+      authored_state: `{"version":1,"questionType":"open_response","prompt":"<p>Write something:</p>"}`,
+      ref_id: "123-ManagedInteractive"
+    };
+
+    const interactiveState: IRuntimeMetadata = {
+      answerType: "open_response_answer",
+      answerText: "anonymous test"
+    };
+
+    const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableAnswerMetadata;
+
+    createOrUpdateAnswer(exportableAnswer);
+
+    expect(mockFirestore().doc).toHaveBeenCalledWith(`sources/localhost/answers/${exportableAnswer.id}`);
+    expect(mockFirestore().doc().set).toHaveBeenCalledWith({
+      answer: "anonymous test",
+      answer_text: "anonymous test",
+      id: exportableAnswer.id,
+      question_id: "managed_interactive_123",
+      question_type: "open_response",
+      remote_endpoint: "",
+      report_state: "{\"mode\":\"report\",\"authoredState\":\"{\\\"version\\\":1,\\\"questionType\\\":\\\"open_response\\\",\\\"prompt\\\":\\\"<p>Write something:</p>\\\"}\",\"interactiveState\":\"{\\\"answerType\\\":\\\"open_response_answer\\\",\\\"answerText\\\":\\\"anonymous test\\\"}\",\"version\":1}",
+      resource_url: "http://example/resource",
+      run_key: "",
+      source_key: "localhost",
+      submitted: null,
+      tool_id: "activity-player.concord.org",
+      tool_user_id: "anonymous",
+      type: "open_response_answer"
     }, {merge: true});
   });
 });
