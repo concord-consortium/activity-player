@@ -78,7 +78,7 @@ export class App extends React.PureComponent<IProps, IState> {
           watchAnswers();
         } catch (err) {
           this.setState({ authError: err });
-          console.error("Authentication Error: " + this.state.authError);
+          console.error("Authentication Error: " + err);
         }
       } else if (useAnonymousRunKey) {
         try {
@@ -86,7 +86,7 @@ export class App extends React.PureComponent<IProps, IState> {
           watchAnswers();
         } catch (err) {
           this.setState({ authError: err });
-          console.error("Authentication Error: " + this.state.authError);
+          console.error("Authentication Error: " + err);
         }
       }
 
