@@ -144,23 +144,25 @@ export class App extends React.PureComponent<IProps, IState> {
               onPageChange={this.handleChangePage}
               singlePage={activity.layout === ActivityLayouts.SinglePage}
             />
-            ? activity.layout === ActivityLayouts.SinglePage
-              ? this.renderSinglePageContent(activity)
-              : currentPage === 0
-                ? this.renderIntroductionContent(activity)
-                : activity.pages[currentPage - 1].is_completion
-                  ? this.renderCompletionContent(activity)
-                  : <ActivityPageContent
-                      enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
-                      isFirstActivityPage={currentPage === 1}
-                      isLastActivityPage={currentPage === activity.pages.filter((page) => !page.is_hidden).length}
-                      pageNumber={currentPage}
-                      onPageChange={this.handleChangePage}
-                      page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
-                      totalPreviousQuestions={totalPreviousQuestions}
-                      teacherEditionMode={this.state.teacherEditionMode}
-                    />
-            : ""
+          : ""
+        }
+        { authError === ""
+          ? activity.layout === ActivityLayouts.SinglePage
+            ? this.renderSinglePageContent(activity)
+            : currentPage === 0
+              ? this.renderIntroductionContent(activity)
+              : activity.pages[currentPage - 1].is_completion
+                ? this.renderCompletionContent(activity)
+                : <ActivityPageContent
+                    enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
+                    isFirstActivityPage={currentPage === 1}
+                    isLastActivityPage={currentPage === activity.pages.filter((page) => !page.is_hidden).length}
+                    pageNumber={currentPage}
+                    onPageChange={this.handleChangePage}
+                    page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
+                    totalPreviousQuestions={totalPreviousQuestions}
+                    teacherEditionMode={this.state.teacherEditionMode}
+                  />
           : this.renderAuthError()
         }
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
