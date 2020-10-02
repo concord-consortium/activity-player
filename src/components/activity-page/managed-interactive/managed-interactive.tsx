@@ -73,7 +73,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     const linkedInteractives = useRef((embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
                                   ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
                                   : undefined);
-    // This value should not be changed, and it should always match IDs generated above in linkedInteractives array.
+    // interactiveId value should always match IDs generated above in the `linkedInteractives` array.
     const interactiveId = embeddable.ref_id;
     // TODO: handle different aspect ratio methods
     // const aspectRatioMethod = data.aspect_ratio_method ? data.aspect_ratio_method : "";
