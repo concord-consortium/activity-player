@@ -2,13 +2,21 @@
 import React, { useEffect, useRef, useState } from "react";
 import { IframePhone } from "../../../types";
 import iframePhone from "iframe-phone";
-import { ICustomMessage, IGetFirebaseJwtRequest, ILinkedInteractive, ISupportedFeatures
-      } from "@concord-consortium/lara-interactive-api";
+import {
+  ClientMessage,
+  IGetFirebaseJwtRequest,
+  IGetInteractiveSnapshotRequest,
+  IGetInteractiveSnapshotResponse,
+  ILinkedInteractive,
+  ServerMessage
+} from "@concord-consortium/lara-interactive-api";
+import Shutterbug from "shutterbug";
 
 const kDefaultHeight = 300;
 
 interface IProps {
   url: string;
+  id: string;
   authoredState: any;
   initialInteractiveState: any;
   setInteractiveState: (state: any) => void;
@@ -24,9 +32,8 @@ interface IProps {
 }
 
 export const IframeRuntime: React.FC<IProps> =
-  ({ url, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives,
-      report, proposedHeight, containerWidth, setNewHint, getFirebaseJWT, toggleModal,
-      setSupportedFeatures, setSendCustomMessage }) => {
+  ({ url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives,
+      report, proposedHeight, containerWidth, setNewHint, getFirebaseJWT, toggleModal }) => {
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -41,13 +48,17 @@ export const IframeRuntime: React.FC<IProps> =
       if (!phone) {
         return;
       }
-      phone.addListener("interactiveState", (newInteractiveState: any) => {
+      // Just to add some type checking to phone post (ServerMessage).
+      const post = (type: ServerMessage, data: any) => phone.post(type, data);
+      const addListener = (type: ClientMessage, handler: any) => phone.addListener(type, handler);
+
+      addListener("interactiveState", (newInteractiveState: any) => {
         setInteractiveStateRef.current(newInteractiveState);
       });
-      phone.addListener("height", (newHeight: number) => {
+      addListener("height", (newHeight: number) => {
         setHeightFromInteractive(newHeight);
       });
-      phone.addListener("supportedFeatures", (info: any) => {
+      addListener("supportedFeatures", (info: any) => {
         if (info.features.aspectRatio) {
           setARFromSupportedFeatures(info.features.aspectRatio);
         }
@@ -55,28 +66,49 @@ export const IframeRuntime: React.FC<IProps> =
           setSupportedFeatures(iframeRef.current, info.features);
         }
       });
-      phone.addListener("getFirebaseJWT", async (request: IGetFirebaseJwtRequest) => {
+      addListener("getFirebaseJWT", async (request: IGetFirebaseJwtRequest) => {
         const { requestId, firebase_app, ...others } = request || {};
         let errorMessage = "Error retrieving Firebase JWT!";
         try {
           const rawFirebaseJWT = await getFirebaseJWT(firebase_app, others);
-          phone.post("firebaseJWT", { requestId, token: rawFirebaseJWT });
+          post("firebaseJWT", { requestId, token: rawFirebaseJWT });
           errorMessage = "";
         }
         catch(e) {
           errorMessage = e.toString();
         }
         if (errorMessage) {
-          phone.post("firebaseJWT", { requestId, response_type: "ERROR", message: errorMessage });
+          post("firebaseJWT", { requestId, response_type: "ERROR", message: errorMessage });
         }
       });
-      phone.addListener("hint", (newHint: any) => {
+      addListener("getInteractiveSnapshot", ({ requestId, interactiveItemId }: IGetInteractiveSnapshotRequest) => {
+        Shutterbug.snapshot({
+          selector: `#${interactiveItemId}`,
+          done: (snapshotUrl: string) => {
+            const response: IGetInteractiveSnapshotResponse = {
+              requestId,
+              snapshotUrl,
+              success: true
+            };
+            post("interactiveSnapshot", response);
+          },
+          fail: (jqXHR: any, textStatus: any, errorThrown: any) => {
+            console.error("Snapshot request failed: ", textStatus, errorThrown);
+            const response: IGetInteractiveSnapshotResponse = {
+              requestId,
+              success: false
+            };
+            post("interactiveSnapshot", response);
+          }
+        });
+      });
+      addListener("hint", (newHint: any) => {
         setNewHint(newHint.text || "");
       });
-      phone.addListener("showModal", () => {
+      addListener("showModal", () => {
         toggleModal();
       });
-      phone.post("initInteractive", {
+      post("initInteractive", {
         mode: report ? "report" : "runtime",
         authoredState,
         interactiveState: initialInteractiveState,
@@ -110,7 +142,7 @@ export const IframeRuntime: React.FC<IProps> =
 
   return (
     <div data-cy="iframe-runtime">
-      <iframe ref={iframeRef} src={url} width="100%" height={height} frameBorder={0} />
+      <iframe ref={iframeRef} src={url} id={id} width="100%" height={height} frameBorder={0} />
     </div>
   );
 };
