@@ -1,5 +1,6 @@
 import { IPluginRuntimeContext, IJwtResponse, IClassInfo, IPluginAuthoringContext } from "../plugin-api";
 import { ILogData } from "../events";
+import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
 // ACTIVITY_PLAYER_CODE:
 import $ from "jquery";
@@ -84,6 +85,8 @@ export interface IEmbeddableContextOptions {
   interactiveStateUrl: string | null;
   /** True if the interactive is immediately available for use */
   interactiveAvailable: boolean;
+  /** Callback function which plugin can use to send custom messages to interactive */
+  sendCustomMessage?: (message: ICustomMessage) => void;
 }
 
 const ajaxPromise = (url: string, data: any): Promise<string> => {
