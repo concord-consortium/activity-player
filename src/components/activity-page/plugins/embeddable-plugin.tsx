@@ -1,6 +1,8 @@
-import React, { useRef, useEffect } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { IEmbeddablePlugin } from "../../../types";
-import { initializePlugin } from "../../../utilities/plugin-utils";
+import { initializePlugin, IPartialEmbeddablePluginContext, validateEmbeddablePluginContextForPlugin
+        } from "../../../utilities/plugin-utils";
+import { LaraGlobalContext } from "../../lara-global-context";
 
 import "./embeddable-plugin.scss";
 
@@ -11,11 +13,18 @@ interface IProps {
 export const EmbeddablePlugin: React.FC<IProps> = (props) => {
     const { embeddable } = props;
     const divTarget = useRef<HTMLInputElement>(null);
+    const LARA = useContext(LaraGlobalContext);
     useEffect(() => {
-      if (divTarget.current && embeddable) {
-        initializePlugin(embeddable, undefined, divTarget.current, undefined);
+      const pluginContext: IPartialEmbeddablePluginContext = {
+        LARA,
+        embeddable,
+        embeddableContainer: divTarget.current || undefined
+      };
+      const validPluginContext = validateEmbeddablePluginContextForPlugin(pluginContext);
+      if (validPluginContext) {
+        initializePlugin(validPluginContext);
       }
-    }, [embeddable]);
+    }, [LARA, embeddable]);
     return (
       <div className="plugin-container" ref={divTarget} data-cy="embeddable-plugin" key={embeddable.ref_id} />
     );

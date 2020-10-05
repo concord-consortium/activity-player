@@ -182,6 +182,7 @@
         {
           "embeddable": {
             "content": "<p><strong>This is a page with full width layout</strong>. This page contains:</p>\r\n<ul>\r\n<li>a text box in the header that is displayed as a page intro</li>\r\n<li>a multiple choice question in the header</li>\r\n<li>a 2nd text box in the header at full width</li>\r\n<li>a 3rd text box in the header not at full width</li>\r\n<li>an interactive iframe in the interactive block</li>\r\n<li>a multiple choice question in the info/assess section not at full width</li>\r\n<li>an open response question in the info/asses section not at full width</li>\r\n<li>a multiple choice question in the info/assess section at full width</li>\r\n</ul>",
+            "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -242,7 +243,8 @@
         },
         {
           "embeddable": {
-            "content": "<p>This is a second text block that appears in the header.&nbsp; It should not be displayed as the page introduction, but should be displayed as all other text blocks are displayed.</p>",
+            "content": "<p>This is a second text block that appears in the header.&nbsp; It should not be displayed as the page introduction. It has a heading/title and the callout option set to true. It should be displayed as a text box with a background color and padding. It should be full width.</p>",
+            "is_callout": true,
             "is_full_width": true,
             "is_hidden": false,
             "name": "Second text block",
@@ -253,12 +255,37 @@
         },
         {
           "embeddable": {
-            "content": "<p>This is a third text block that appears in the header.&nbsp; It should not be displayed as the page introduction, but should be displayed as all other text blocks are displayed.&nbsp; It should NOT be displayed at full width.</p>",
+            "content": "<p>This is a third text block that appears in the header.&nbsp; It has a heading/title and the callout option set to false. It should be displayed as a text block with no background or padding.&nbsp; It should NOT be displayed at full width.</p>",
+            "is_callout": false,
             "is_full_width": false,
             "is_hidden": false,
             "name": "Third text block",
             "type": "Embeddable::Xhtml",
             "ref_id": "272102-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "<p>This is a fourth text block that appears in the header.&nbsp; It has no heading/title value and the callout option set to true. It should be displayed as a text block with a background and padding.&nbsp; It should NOT be displayed at full width.</p>",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272103-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "<p>This is a fifth text block that appears in the header.&nbsp; It has no heading/title value and the callout option set to false. It should be displayed as a text block with no background color or padding.&nbsp; It should be displayed at full width.</p>",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272104-Embeddable::Xhtml"
           },
           "section": "header_block"
         },
@@ -308,6 +335,7 @@
         {
           "embeddable": {
             "content": "<p>This is a text block.</p>",
+            "is_callout": true,
             "is_full_width": false,
             "is_hidden": false,
             "name": "text block",
@@ -469,6 +497,7 @@
         {
           "embeddable": {
             "content": "<p><strong>This is a page with responsive layout</strong>.&nbsp; This page contains:</p>\r\n<ul>\r\n<li>A text box in the header section which should be displayed as a page introduction.&nbsp;</li>\r\n<li>The left, info/assessment section contains a text box, a multiple choice question, an open response question, and a library interactive with&nbsp;enable_learner_state set to true (so that it should get a question number and header).&nbsp;</li>\r\n<li>The right, interactive box section contains an iframe interactive with&nbsp;enable_learner_state set to true (so that it should get a question number and header).</li>\r\n<li>A page sidebar.</li>\r\n</ul>",
+            "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -523,6 +552,7 @@
         {
           "embeddable": {
             "content": "<p>Duis vitae ultrices augue, eu fermentum elit. Sed vel tincidunt nisi. Praesent eget erat in augue efficitur lobortis in sed massa. Suspendisse vehicula tellus quam, ut convallis mauris vehicula a. Nam suscipit facilisis felis in convallis. Curabitur consectetur lorem vitae nunc luctus, id laoreet mauris suscipit. Maecenas vehicula egestas augue, at pellentesque urna convallis vitae. Integer velit sem, egestas eu nunc sed, pellentesque mattis purus. Nunc eu condimentum augue. Suspendisse potenti. Vestibulum varius suscipit mauris eget semper. Nullam consequat gravida finibus. Phasellus scelerisque metus velit, sit amet fermentum eros sollicitudin maximus. Cras pharetra enim non eros congue ultricies.</p>",
+            "is_callout": true,
             "is_full_width": false,
             "is_hidden": false,
             "name": "text block header",
@@ -684,6 +714,7 @@
         {
           "embeddable": {
             "content": "<p><strong>This is a page with responsive layout.</strong>&nbsp; This page contains:</p>\r\n<ul>\r\n<li>A text box in the header section which should be displayed as a page introduction.&nbsp;</li>\r\n<li>The left, info/assessment section contains a text box, a multiple choice question, an open response question, and a library interactive with&nbsp;enable_learner_state set to true (so that it should get a question number and header).&nbsp;</li>\r\n<li>The right, interactive box section contains a library interactive with&nbsp;enable_learner_state set to true (so that it should get a question number and header).&nbsp;&nbsp;</li>\r\n</ul>",
+            "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -763,6 +794,7 @@
         {
           "embeddable": {
             "content": "<p>Duis vitae ultrices augue, eu fermentum elit. Sed vel tincidunt nisi. Praesent eget erat in augue efficitur lobortis in sed massa. Suspendisse vehicula tellus quam, ut convallis mauris vehicula a. Nam suscipit facilisis felis in convallis. Curabitur consectetur lorem vitae nunc luctus, id laoreet mauris suscipit. Maecenas vehicula egestas augue, at pellentesque urna convallis vitae. Integer velit sem, egestas eu nunc sed, pellentesque mattis purus. Nunc eu condimentum augue. Suspendisse potenti. Vestibulum varius suscipit mauris eget semper. Nullam consequat gravida finibus. Phasellus scelerisque metus velit, sit amet fermentum eros sollicitudin maximus. Cras pharetra enim non eros congue ultricies.</p>",
+            "is_callout": true,
             "is_full_width": false,
             "is_hidden": false,
             "name": "Lorem Ipsum",
@@ -824,6 +856,7 @@
         {
           "embeddable": {
             "content": "<p><strong>This is a page with 60-40 layout</strong>.&nbsp;This page contains:</p>\r\n<ul>\r\n<li>A text box in the header section which should be displayed as a page introduction.&nbsp;</li>\r\n<li>The left, info/assessment section contains a text box, a multiple choice question</li>\r\n<li>The right, interactive box section contains a library interactive with&nbsp;enable_learner_state set to true (so that it should get a question number and header), a multiple choice question, and an open response question.&nbsp;&nbsp;</li>\r\n</ul>",
+            "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -1003,6 +1036,7 @@
         {
           "embeddable": {
             "content": "<p>There. You see Lord Vader, she can be reasonable. Continue with the operation. You may fire when ready. What? You&rsquo;re far too trusting. Dantooine is too remote to make an effective demonstration. But don&rsquo;t worry. We will deal with your Rebel friends soon enough. No! Commence primary ignition.</p>",
+            "is_callout": true,
             "is_full_width": false,
             "is_hidden": false,
             "name": "Star Wars Ipsum",
@@ -1064,6 +1098,7 @@
         {
           "embeddable": {
             "content": "<p style=\"text-align: left;\"><strong>This is a page with 60-40 (interactive left) layout</strong>. This page contains:</p>\r\n<ul>\r\n<li>A text box in the header section which should be displayed as a page introduction.&nbsp;</li>\r\n<li>The right, info/assessment section contains a text box, a multiple choice question</li>\r\n<li>The left, interactive box section contains an interactive iframe with&nbsp;enable_learner_state set to false (so that it should NOT get a question number and header).&nbsp;&nbsp;</li>\r\n</ul>",
+            "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -1418,6 +1453,7 @@
         {
           "embeddable": {
             "content": "<p><strong>This is a page with 60-40 layout</strong>.&nbsp;This page contains:</p>\r\n<ul>\r\n<li>A text box in the header section which should be displayed as a page introduction.&nbsp;</li>\r\n<li>The left, info/assessment section contains 6 multiple choice questions</li>\r\n<li>The right, interactive box section contains a library interactive and a multiple choice question.</li>\r\n</ul>",
+            "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -1847,6 +1883,7 @@
         {
           "embeddable": {
             "content": "<p><strong>This is a page with 60-40L layout</strong>.&nbsp;This page contains:</p>\r\n<ul>\r\n<li>A text box in the header section which should be displayed as a page introduction.&nbsp;</li>\r\n<li>The right, info/assessment section contains 6 multiple choice questions</li>\r\n<li>The left, interactive box section contains a library interactive and a multiple choice question.</li>\r\n</ul>",
+            "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
             "name": "",

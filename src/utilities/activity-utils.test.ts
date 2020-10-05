@@ -46,7 +46,7 @@ describe("Activity utility functions", () => {
   it("gets the number of visible embeddables on a page", () => {
     const visibleEmbeddablesDefaultActivity: VisibleEmbeddables = getVisibleEmbeddablesOnPage(activity.pages[0]);
     const visibleEmbeddablesDefaultActivityHidden: VisibleEmbeddables = getVisibleEmbeddablesOnPage(activityHidden.pages[0]);
-    expect(visibleEmbeddablesDefaultActivity.headerBlock.length).toBe(4);
+    expect(visibleEmbeddablesDefaultActivity.headerBlock.length).toBe(6);
     expect(visibleEmbeddablesDefaultActivity.infoAssessment.length).toBe(3);
     expect(visibleEmbeddablesDefaultActivity.interactiveBox.length).toBe(1);
     expect(visibleEmbeddablesDefaultActivityHidden.headerBlock.length).toBe(1);

@@ -1,4 +1,5 @@
 import { Page, Activity, EmbeddableWrapper } from "../types";
+import { SidebarConfiguration } from "../components/page-sidebar/sidebar-wrapper";
 
 export enum ActivityLayouts {
   MultiplePages = 0,
@@ -45,15 +46,36 @@ export const isEmbeddableSectionHidden = (page: Page, section: string | null) =>
 export const getVisibleEmbeddablesOnPage = (page: Page) => {
   const headerEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Introduction)
     ? []
-    : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction && !e.embeddable.is_hidden && !e.embeddable.embeddable_ref_id);
+    : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction && isVisibleEmbeddable(e));
   const interactiveEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Interactive)
     ? []
-    : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive && !e.embeddable.is_hidden && !e.embeddable.embeddable_ref_id);
+    : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive && isVisibleEmbeddable(e));
   const infoAssessEmbeddables = isEmbeddableSectionHidden(page, null)
     ? []
-    : page.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction && !e.embeddable.is_hidden && !e.embeddable.embeddable_ref_id));
+    : page.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction && isVisibleEmbeddable(e)));
 
   return { interactiveBox: interactiveEmbeddables, headerBlock: headerEmbeddables, infoAssessment: infoAssessEmbeddables };
+};
+
+function isVisibleEmbeddable(e: EmbeddableWrapper) {
+  return !e.embeddable.is_hidden && !e.embeddable.embeddable_ref_id && !isEmbeddableSideTip(e);
+}
+
+export const isEmbeddableSideTip = (e: EmbeddableWrapper) => {
+  return (e.embeddable.type === "Embeddable::EmbeddablePlugin" && e.embeddable.plugin?.component_label === "sideTip");
+};
+
+export const getPageSideTipEmbeddables = (page: Page) => {
+  return page.embeddables.filter((e: any) => isEmbeddableSideTip(e));
+};
+
+export const getPageSideBars = (activity: Activity, currentPage: Page) => {
+  const sidebars: SidebarConfiguration[] = activity.layout === ActivityLayouts.SinglePage
+    ? activity.pages.filter((page) => page.show_sidebar).map((page) => (
+        {content: page.sidebar, title: page.sidebar_title }
+      ))
+    : currentPage.show_sidebar? [{ content: currentPage.sidebar, title: currentPage.sidebar_title }]: [];
+  return sidebars;
 };
 
 export const getPageSectionQuestionCount = (page: Page) => {

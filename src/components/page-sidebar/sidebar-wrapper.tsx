@@ -1,7 +1,6 @@
 import React from "react";
 import { Sidebar } from "./sidebar";
 
-const kSidebarTop = 200;
 const kSidebarOffset = 100;
 
 export interface SidebarConfiguration {
@@ -11,6 +10,7 @@ export interface SidebarConfiguration {
 
 interface IProps {
   sidebars: SidebarConfiguration[];
+  verticalOffset: number;
 }
 
 interface IState {
@@ -23,7 +23,7 @@ export class SidebarWrapper extends React.PureComponent<IProps, IState> {
     this.state = { showSidebarContent: new Array(props.sidebars.length).fill(false) };
   }
   render() {
-    const { sidebars } = this.props;
+    const { sidebars, verticalOffset } = this.props;
     return (
       <React.Fragment>
         {sidebars.map((sidebar: SidebarConfiguration, index: number) => (
@@ -33,7 +33,7 @@ export class SidebarWrapper extends React.PureComponent<IProps, IState> {
             handleShowSidebar={this.setShowSidebarContent}
             index={index}
             show={this.state.showSidebarContent[index]}
-            style={{ top: kSidebarTop + kSidebarOffset * index}}
+            style={{ top: verticalOffset + kSidebarOffset * index}}
             title={sidebar.title}
           />
         ))}
