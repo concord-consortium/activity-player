@@ -21,7 +21,7 @@ export class ActivityNavHeader extends React.PureComponent <IProps> {
     return (
       <div className={`activity-nav-header ${fullWidth ? "full" : ""}`} data-cy="activity-nav-header">
         { sequenceName &&
-          <div className="sequence-name" onClick={onShowSequence}>
+          <div className="sequence-name" data-cy="activity-nav-header-sequence-name" onClick={onShowSequence}>
             <IconChevronLeft
               width={32}
               height={32}
