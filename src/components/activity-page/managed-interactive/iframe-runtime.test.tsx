@@ -16,6 +16,7 @@ describe("IframeRuntime component", () => {
     const { getByTestId } = render(
       <IframeRuntime
         url={"https://www.google.com/"}
+        id={"123-Interactive"}
         authoredState={null}
         initialInteractiveState={null}
         setInteractiveState={stubFunction}
