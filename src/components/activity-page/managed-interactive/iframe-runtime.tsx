@@ -127,6 +127,12 @@ export const IframeRuntime: React.FC<IProps> =
                   ...baseProps,
                   error: "",
                   mode: "runtime",
+                  hostFeatures: {
+                    modalDialog: {
+                      version: "1.0.0",
+                      imageLightbox: false
+                    }
+                  },
                   globalInteractiveState: null,
                   interactiveStateUrl: "",
                   collaboratorUrls: null,
