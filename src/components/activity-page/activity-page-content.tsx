@@ -27,6 +27,7 @@ interface IProps {
 interface IState {
   scrollOffset: number;
   isSecondaryCollapsed: boolean;
+  enableForwardNav: boolean;
 }
 
 export class ActivityPageContent extends React.PureComponent <IProps, IState> {
@@ -37,6 +38,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     this.state = {
       scrollOffset: 0,
       isSecondaryCollapsed: false,
+      enableForwardNav: true,
     };
   }
 
@@ -77,7 +79,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
         </div>
         <BottomButtons
           onBack={!isFirstActivityPage ? this.handleBack : undefined}
-          onNext={!isLastActivityPage ? this.handleNext : undefined}
+          onNext={!isLastActivityPage && this.state.enableForwardNav ? this.handleNext : undefined}
           onGenerateReport={enableReportButton ? this.handleReport : undefined}
         />
       </div>
@@ -149,6 +151,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                 questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
                 linkedPluginEmbeddable={linkedPluginEmbeddable}
                 teacherEditionMode={this.props.teacherEditionMode}
+                setNavigation={this.hanldeSetNavigation}
               />
             );
           })
@@ -234,5 +237,10 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     if (accessibilityClick(e))  {
       this.setState(state => ({ isSecondaryCollapsed: !state.isSecondaryCollapsed }));
     }
+  }
+
+  private hanldeSetNavigation = (enable: boolean) => {
+    console.log(enable);
+    this.setState(state => ({ enableForwardNav: enable }));
   }
 }

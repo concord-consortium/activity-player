@@ -20,12 +20,13 @@ interface IProps {
   pageLayout: string;
   questionNumber?: number;
   teacherEditionMode?: boolean;
+  setNavigation?: (enable: boolean) => void;
 }
 
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.FC<IProps> = (props) => {
-  const { activityLayout, embeddableWrapper, linkedPluginEmbeddable, pageLayout, questionNumber, teacherEditionMode } = props;
+  const { activityLayout, embeddableWrapper, linkedPluginEmbeddable, pageLayout, questionNumber, setNavigation, teacherEditionMode } = props;
   const embeddable = embeddableWrapper.embeddable;
 
   interface InitialInteractiveState {
@@ -103,7 +104,8 @@ export const Embeddable: React.FC<IProps> = (props) => {
                     questionNumber={questionNumber}
                     initialAnswerMeta={initialInteractiveState.answerMeta}
                     setSupportedFeatures={handleSetSupportedFeatures}
-                    setSendCustomMessage={setSendCustomMessage} />;
+                    setSendCustomMessage={setSendCustomMessage}
+                    setNavigation={setNavigation} />;
   } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {
     qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} /> : undefined;
   } else if (embeddable.type === "Embeddable::Xhtml") {
