@@ -20,7 +20,7 @@ import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
-import { SequencePageContent } from "./sequence-introduction/sequence-page-content";
+import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
 
 import "./app.scss";
 
@@ -106,37 +106,13 @@ export class App extends React.PureComponent<IProps, IState> {
           <div className="app">
             <WarningBanner/>
             { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-            { this.state.showSequence ? this.renderSequence() : this.renderActivity() }
+            { this.state.showSequence 
+              ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
+              : this.renderActivity() }
             { this.state.showThemeButtons && <ThemeButtons/>}
           </div>
         </PortalDataContext.Provider>
       </LaraGlobalContext.Provider>
-    );
-  }
-
-  private renderSequence = () => {
-    const { sequence, username } = this.state;
-    if (!sequence) return (<div>Loading</div>);
-    return (
-      <React.Fragment>
-        <Header
-          fullWidth={false}
-          projectId={sequence.project_id}
-          userName={username}
-          activityName={sequence.display_title || sequence.title}
-          singlePage={false}
-          showSequence={true}
-          sequenceLogo={sequence.logo}
-        />
-        <SequencePageContent
-          sequence={sequence}
-          onSelectActivity={this.handleSelectActivity}
-        />
-        <Footer
-          fullWidth={true}
-          projectId={sequence.project_id}
-        />
-      </React.Fragment>
     );
   }
 
