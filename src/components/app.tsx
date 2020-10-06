@@ -136,34 +136,9 @@ export class App extends React.PureComponent<IProps, IState> {
           activityName={activity.name}
           singlePage={activity.layout === ActivityLayouts.SinglePage}
         />
-        { authError === ""
-          ? <ActivityNavHeader
-              activityPages={activity.pages}
-              currentPage={currentPage}
-              fullWidth={fullWidth}
-              onPageChange={this.handleChangePage}
-              singlePage={activity.layout === ActivityLayouts.SinglePage}
-            />
-          : ""
-        }
-        { authError === ""
-          ? activity.layout === ActivityLayouts.SinglePage
-            ? this.renderSinglePageContent(activity)
-            : currentPage === 0
-              ? this.renderIntroductionContent(activity)
-              : activity.pages[currentPage - 1].is_completion
-                ? this.renderCompletionContent(activity)
-                : <ActivityPageContent
-                    enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
-                    isFirstActivityPage={currentPage === 1}
-                    isLastActivityPage={currentPage === activity.pages.filter((page) => !page.is_hidden).length}
-                    pageNumber={currentPage}
-                    onPageChange={this.handleChangePage}
-                    page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
-                    totalPreviousQuestions={totalPreviousQuestions}
-                    teacherEditionMode={this.state.teacherEditionMode}
-                  />
-          : this.renderAuthError()
+        { authError
+          ? <AuthError />
+          : this.renderNavAndContent(activity, currentPage, totalPreviousQuestions, fullWidth)
         }
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
           <Footer
@@ -180,6 +155,37 @@ export class App extends React.PureComponent<IProps, IState> {
           />
         }
       </React.Fragment>
+    );
+  }
+
+  private renderNavAndContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
+    return (
+      <>
+        <ActivityNavHeader
+          activityPages={activity.pages}
+          currentPage={currentPage}
+          fullWidth={fullWidth}
+          onPageChange={this.handleChangePage}
+          singlePage={activity.layout === ActivityLayouts.SinglePage}
+        />
+        { activity.layout === ActivityLayouts.SinglePage
+          ? this.renderSinglePageContent(activity)
+          : currentPage === 0
+            ? this.renderIntroductionContent(activity)
+            : activity.pages[currentPage - 1].is_completion
+              ? this.renderCompletionContent(activity)
+              : <ActivityPageContent
+                  enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
+                  isFirstActivityPage={currentPage === 1}
+                  isLastActivityPage={currentPage === activity.pages.filter((page) => !page.is_hidden).length}
+                  pageNumber={currentPage}
+                  onPageChange={this.handleChangePage}
+                  page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
+                  totalPreviousQuestions={totalPreviousQuestions}
+                  teacherEditionMode={this.state.teacherEditionMode}
+                />
+        }
+      </>
     );
   }
 
@@ -210,12 +216,6 @@ export class App extends React.PureComponent<IProps, IState> {
           showStudentReport={activity.student_report_enabled}
           thumbnailURL={activity.thumbnail_url}
         />
-    );
-  }
-
-  private renderAuthError = () => {
-    return (
-      <AuthError />
     );
   }
 
