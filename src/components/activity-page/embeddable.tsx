@@ -42,9 +42,9 @@ export const Embeddable: React.FC<IProps> = (props) => {
   const embeddableWrapperDivTarget = useRef<HTMLInputElement>(null);
   const embeddableDivTarget = useRef<HTMLInputElement>(null);
   const sendCustomMessage = useRef<ISendCustomMessage | undefined>(undefined);
-  const setSendCustomMessage = (sender: ISendCustomMessage) => {
+  const setSendCustomMessage = useCallback((sender: ISendCustomMessage) => {
     sendCustomMessage.current = sender;
-  };
+  }, []);
 
   const LARA = useContext(LaraGlobalContext);
   useEffect(() => {
