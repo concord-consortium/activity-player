@@ -58,6 +58,7 @@ describe("ManagedInteractive component", () => {
                               questionNumber={1}
                               setSupportedFeatures={() => { /* nop */ }}
                               setSendCustomMessage={() => { /* nop */ }}
+                              setNavigation={() => { /* nop */ }}
                               />);
     expect(wrapper.find('[data-cy="managed-interactive"]').length).toBe(1);
   });

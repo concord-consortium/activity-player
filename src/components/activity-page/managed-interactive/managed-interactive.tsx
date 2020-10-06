@@ -26,6 +26,7 @@ interface IProps {
   initialAnswerMeta?: IExportableAnswerMetadata;   // saved metadata for that initial user state
   setSupportedFeatures: (container: HTMLElement, features: ISupportedFeatures) => void;
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
+  setNavigation?: (enable: boolean) => void;
 }
 
 const kDefaultAspectRatio = 4 / 3;
@@ -57,7 +58,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       return handleGetFirebaseJWT({ firebase_app: firebaseApp, ...others }, portalData);
     }, [portalData]);
 
-    const { embeddable, questionNumber, initialInteractiveState, setSupportedFeatures, setSendCustomMessage } = props;
+    const { embeddable, questionNumber, initialInteractiveState, setSupportedFeatures, setSendCustomMessage, setNavigation } = props;
     const { authored_state } = embeddable;
     const [ activeDialog, setActiveDialog ] = useState<IShowDialog | null>(null);
     const [ activeLightbox, setActiveLightbox ] = useState<IShowLightbox | null>(null);
@@ -165,6 +166,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
         showModal={showModal}
         closeModal={closeModal}
         setSendCustomMessage={setSendCustomMessage}
+        setNavigation={setNavigation}
       />;
 
     return (

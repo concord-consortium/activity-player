@@ -26,6 +26,7 @@ describe("IframeRuntime component", () => {
         showModal={stubFunction}
         closeModal={stubFunction}
         setSendCustomMessage={stubFunction}
+        setNavigation={stubFunction}
       />);
     expect(getByTestId("iframe-runtime")).toBeDefined();
   });
