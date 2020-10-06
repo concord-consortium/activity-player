@@ -144,14 +144,37 @@ export class App extends React.PureComponent<IProps, IState> {
           activityName={activity.name}
           singlePage={activity.layout === ActivityLayouts.SinglePage}
         />
+        { authError
+          ? <AuthError />
+          : this.renderNavAndContent(activity, currentPage, totalPreviousQuestions, fullWidth)
+        }
+        { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
+          <Footer
+            fullWidth={fullWidth}
+            projectId={activity.project_id}
+          />
+        }
+        { (activity.layout !== ActivityLayouts.SinglePage && currentPage !== 0 && !activity.pages[currentPage - 1].is_completion) &&
+          <ExpandableContainer
+            activity={activity}
+            pageNumber={currentPage}
+            page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
+            teacherEditionMode={this.state.teacherEditionMode}
+          />
+        }
+      </React.Fragment>
+    );
+  }
+
+  private renderNavAndContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
+    return (
+      <>
         <ActivityNavHeader
           activityPages={activity.pages}
           currentPage={currentPage}
           fullWidth={fullWidth}
           onPageChange={this.handleChangePage}
           singlePage={activity.layout === ActivityLayouts.SinglePage}
-          sequenceName={this.state.sequence?.display_title}
-          onShowSequence={this.handleShowSequence}
         />
         { activity.layout === ActivityLayouts.SinglePage
           ? this.renderSinglePageContent(activity)
@@ -170,21 +193,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   teacherEditionMode={this.state.teacherEditionMode}
                 />
         }
-        { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
-          <Footer
-            fullWidth={fullWidth}
-            projectId={activity.project_id}
-          />
-        }
-        { (activity.layout !== ActivityLayouts.SinglePage && currentPage !== 0 && !activity.pages[currentPage - 1].is_completion) &&
-          <ExpandableContainer
-            activity={activity}
-            pageNumber={currentPage}
-            page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
-            teacherEditionMode={this.state.teacherEditionMode}
-          />
-        }
-      </React.Fragment>
+      </>
     );
   }
 
@@ -215,12 +224,6 @@ export class App extends React.PureComponent<IProps, IState> {
           showStudentReport={activity.student_report_enabled}
           thumbnailURL={activity.thumbnail_url}
         />
-    );
-  }
-
-  private renderAuthError = () => {
-    return (
-      <AuthError />
     );
   }
 
