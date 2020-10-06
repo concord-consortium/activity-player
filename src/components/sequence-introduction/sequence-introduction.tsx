@@ -14,7 +14,7 @@ export const SequenceIntroduction: React.FC<IProps> = (props) => {
   const { sequence, username, onSelectActivity } = props;
   return (
     !sequence 
-    ? <div>Loading</div>
+    ? <div data-cy="sequence-loading">Loading</div>
     : <React.Fragment>
         <Header
           fullWidth={false}
