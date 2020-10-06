@@ -4,7 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 import { queryValue, setQueryValue } from "./utilities/url-query";
 import { FirebaseAppName } from "./firebase-db";
 
-export const DEFAULT_FIREBASE_APP: FirebaseAppName = "report-service-pro";
+// TODO: switch default to "report-service-pro" before production deploy
+export const DEFAULT_FIREBASE_APP: FirebaseAppName = "report-service-dev";
 
 interface PortalClassOffering {
   className: string;
