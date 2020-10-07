@@ -7,7 +7,7 @@
   height: 64px;
   width: $content-width;
   border-radius: 2px;
-  background-color: #414546;
+  background-color: $activity-header-gray;
   color: white;
   font-size: 18px;
   margin: 5px 20px;
@@ -24,5 +24,19 @@
 
   .activity-name {
     margin: 0 5px 0 10px;
+  }
+
+  .sequence-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+    font-size: 12px;
+    height: 100%;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $cc-charcoal-light1;
+    }
   }
 }

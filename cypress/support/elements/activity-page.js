@@ -14,6 +14,9 @@ class ActivityPage {
   getSidebarCloseButton() {
     return cy.get("[data-cy=sidebar-close-button");
   }
+  getHeader() {
+    return cy.get("[data-cy=activity-header]");
+  }
   getSecondaryEmbeddable(type) { 
     //types=["image-question","text-box","multiple-choice-question","open-response-question", 
     //      "labbook-question", "iframe-interactive-question","image-video-interactive", ]
