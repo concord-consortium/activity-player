@@ -146,7 +146,7 @@ export class App extends React.PureComponent<IProps, IState> {
         />
         { authError
           ? <AuthError />
-          : this.renderNavAndContent(activity, currentPage, totalPreviousQuestions, fullWidth)
+          : this.renderActivityContent(activity, currentPage, totalPreviousQuestions, fullWidth)
         }
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
           <Footer
@@ -166,7 +166,7 @@ export class App extends React.PureComponent<IProps, IState> {
     );
   }
 
-  private renderNavAndContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
+  private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
     return (
       <>
         <ActivityNavHeader
