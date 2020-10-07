@@ -73,6 +73,8 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     const linkedInteractives = useRef((embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
                                   ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
                                   : undefined);
+    // interactiveId value should always match IDs generated above in the `linkedInteractives` array.
+    const interactiveId = embeddable.ref_id;
     // TODO: handle different aspect ratio methods
     // const aspectRatioMethod = data.aspect_ratio_method ? data.aspect_ratio_method : "";
     const nativeHeight = embeddableData?.native_height || 0;
@@ -127,6 +129,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     const interactiveIframe =
       <IframeRuntime
         url={url}
+        id={interactiveId}
         authoredState={authoredState}
         initialInteractiveState={iframeInteractiveState.current}
         setInteractiveState={handleNewInteractiveState}
