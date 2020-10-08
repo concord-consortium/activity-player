@@ -31,7 +31,7 @@ interface IProps {
   showModal: (options: IShowModal) => void;
   closeModal: (options: ICloseModal) => void;
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
-  setNavigation?: (enable: boolean) => void;
+  setNavigation?: (options: INavigationOptions) => void;
   ref?: React.Ref<IframeRuntimeImperativeAPI>;
 }
 
@@ -65,16 +65,17 @@ export const IframeRuntime: React.FC<IProps> = forwardRef((props, ref) => {
         setHeightFromInteractive(newHeight);
       });
       addListener("supportedFeatures", (info: any) => {
-        if (info.features.aspectRatio) {
-          setARFromSupportedFeatures(info.features.aspectRatio);
+        const features: ISupportedFeatures = info.features;
+        if (features.aspectRatio) {
+          setARFromSupportedFeatures(features.aspectRatio);
         }
         if (iframeRef.current) {
-          setSupportedFeatures(iframeRef.current, info.features);
+          setSupportedFeatures(iframeRef.current, features);
         }
       });
       addListener("navigation", (options: INavigationOptions) => {
         if (options?.enableForwardNav != null && setNavigation) {
-          setNavigation(options.enableForwardNav);
+          setNavigation(options);
         }
       });
       addListener("getFirebaseJWT", async (request: IGetFirebaseJwtRequest) => {

@@ -1,9 +1,9 @@
 import React from "react";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
 import ReactPaginate from "react-paginate";
+import { Page } from "../../types";
 
 import "./nav-pages.scss";
-import { Page } from "../../types";
 
 interface IProps {
   pages: Page[];
