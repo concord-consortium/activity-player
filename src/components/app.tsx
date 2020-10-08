@@ -22,6 +22,7 @@ import { TeacherEditionBanner }  from "./teacher-edition-banner";
 import { AuthError }  from "./auth-error/auth-error";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
 import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
+import { ModalDialog } from "./modal-dialog";
 
 import "./app.scss";
 
@@ -38,6 +39,7 @@ interface IState {
   sequence?: Sequence;
   showSequence?: boolean;
   lockedNavigationMessage: string;
+  showModal: boolean;
 }
 interface IProps {}
 
@@ -54,6 +56,7 @@ export class App extends React.PureComponent<IProps, IState> {
       username: "Anonymous",
       authError: "",
       lockedNavigationMessage: "",
+      showModal: false,
     };
   }
 
@@ -126,6 +129,11 @@ export class App extends React.PureComponent<IProps, IState> {
               ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
               : this.renderActivity() }
             { this.state.showThemeButtons && <ThemeButtons/>}
+            <ModalDialog
+              label={this.state.lockedNavigationMessage}
+              setShowModal={this.setShowModal}
+              showModal={this.state.showModal}
+            />
           </div>
         </PortalDataContext.Provider>
       </LaraGlobalContext.Provider>
@@ -233,7 +241,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleChangePage = (page: number) => {
     if (page > this.state.currentPage && this.state.lockedNavigationMessage) {
-      window.alert(this.state.lockedNavigationMessage);
+      this.setShowModal(true);
     } else {
       this.setState({currentPage: page, lockedNavigationMessage: ""});
       setDocumentTitle(this.state.activity, page);  
@@ -253,4 +261,9 @@ export class App extends React.PureComponent<IProps, IState> {
   private handleShowSequence = () => {
     this.setState({showSequence: true});
   }
+
+  private setShowModal = (show: boolean) => {
+    this.setState({showModal: show});
+  }
+
 }
