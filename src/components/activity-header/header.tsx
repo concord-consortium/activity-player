@@ -14,12 +14,14 @@ interface IProps {
   userName: string;
   activityName: string;
   singlePage: boolean;
+  showSequence?: boolean;
+  sequenceLogo?: string | null;
 }
 
 export class Header extends React.PureComponent<IProps> {
   render() {
     const ccLogoLink = "https://concord.org/";
-    const { fullWidth, projectId, userName, singlePage } = this.props;
+    const { fullWidth, projectId, userName, singlePage, sequenceLogo } = this.props;
     const projectType = ProjectTypes.find(pt => pt.id === projectId);
     const logo = projectType?.headerLogo || ccLogo;
     const projectURL = projectType?.url || ( logo === ccLogo ? ccLogoLink : undefined );
@@ -28,9 +30,10 @@ export class Header extends React.PureComponent<IProps> {
       <div className="activity-header" data-cy="activity-header">
         <div className={`inner ${fullWidth ? "full" : ""}`}>
           <div className="header-left">
-            {<Logo logo={logo} url={projectURL}/>}
+            <Logo logo={logo} url={projectURL}/>
           </div>
           <div className="header-center">
+            {sequenceLogo && <img src={sequenceLogo} /> }
             {!singlePage && this.renderActivityMenu()}
           </div>
           <div className="header-right">
@@ -43,10 +46,12 @@ export class Header extends React.PureComponent<IProps> {
 
 
   private renderActivityMenu = () => {
-    const { activityName } = this.props;
+    const { activityName, showSequence } = this.props;
     return (
       <React.Fragment>
-        <div className="activity-title" data-cy ="activity-title">Activity:</div>
+        <div className="activity-title" data-cy ="activity-title">
+          { showSequence ? "Sequence:" : "Activity:" }
+        </div>
         <CustomSelect
           items={[activityName]}
           HeaderIcon={AssignmentIcon}
