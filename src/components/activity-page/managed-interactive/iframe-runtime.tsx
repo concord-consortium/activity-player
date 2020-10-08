@@ -74,9 +74,7 @@ export const IframeRuntime: React.FC<IProps> = forwardRef((props, ref) => {
         }
       });
       addListener("navigation", (options: INavigationOptions) => {
-        if (options?.enableForwardNav != null && setNavigation) {
-          setNavigation(options);
-        }
+        setNavigation?.(options);
       });
       addListener("getFirebaseJWT", async (request: IGetFirebaseJwtRequest) => {
         const { requestId, firebase_app, ...others } = request || {};

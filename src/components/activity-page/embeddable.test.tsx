@@ -22,7 +22,7 @@ describe("Embeddable component", () => {
 
     let wrapper: ReactWrapper;
     await act(async () => {
-      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} setNavigation={() => { /* nop */ }}/>);
+      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive}/>);
       expect(wrapper.containsMatchingElement(<div>Loading...</div>)).toEqual(true);
     });
 
@@ -45,7 +45,7 @@ describe("Embeddable component", () => {
 
     let wrapper: ReactWrapper;
     await act(async () => {
-      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} setNavigation={() => { /* nop */ }}/>);
+      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive}/>);
       expect(wrapper.containsMatchingElement(<div>Loading...</div>)).toEqual(true);
     });
 
@@ -68,7 +68,7 @@ describe("Embeddable component", () => {
 
     let wrapper: ReactWrapper;
     await act(async () => {
-      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} setNavigation={() => { /* nop */ }}/>);
+      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive}/>);
     });
 
     await waitFor(() => {
@@ -92,7 +92,7 @@ describe("Embeddable component", () => {
 
     let wrapper: ReactWrapper;
     await act(async () => {
-      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} setNavigation={() => { /* nop */ }}/>);
+      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive}/>);
     });
 
     await waitFor(() => {

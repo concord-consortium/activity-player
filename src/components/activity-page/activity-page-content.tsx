@@ -88,7 +88,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
         <BottomButtons
           onBack={!isFirstActivityPage ? this.handleBack : undefined}
           onNext={!isLastActivityPage ? this.handleNext : undefined}
-          lockedForwardNav={incompleteQuestions.length > 0}
+          lockForwardNav={incompleteQuestions.length > 0}
           onGenerateReport={enableReportButton ? this.handleReport : undefined}
         />
       </div>
@@ -255,7 +255,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const updatedIncompleteQuestions = [...incompleteQuestions];
     if (qIndex >= 0 && options.enableForwardNav) {
       updatedIncompleteQuestions.splice(qIndex, 1);
-      const message = updatedIncompleteQuestions.length > 0 
+      const message = updatedIncompleteQuestions.length > 0
         ? updatedIncompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage
         : "";
       setLockedNavigationMessage(message);
@@ -266,6 +266,6 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
       const message = updatedIncompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage;
       setLockedNavigationMessage(message);
       this.setState({ incompleteQuestions: updatedIncompleteQuestions });
-    } 
+    }
   }
 }
