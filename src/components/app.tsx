@@ -19,6 +19,7 @@ import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
+import { AuthError }  from "./auth-error/auth-error";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
 import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
 
@@ -32,6 +33,7 @@ interface IState {
   teacherEditionMode?: boolean;
   showThemeButtons?: boolean;
   username: string;
+  authError: string;
   portalData?: IPortalData;
   sequence?: Sequence;
   showSequence?: boolean;
@@ -49,6 +51,7 @@ export class App extends React.PureComponent<IProps, IState> {
       teacherEditionMode: false,
       showThemeButtons: false,
       username: "Anonymous",
+      authError: ""
     };
   }
 
@@ -73,18 +76,29 @@ export class App extends React.PureComponent<IProps, IState> {
       setDocumentTitle(activity, currentPage);
 
       if (queryValue("token")) {
-        const portalData = await fetchPortalData();
-        if (portalData.fullName) {
-          newState.username = portalData.fullName;
+        try {
+          const portalData = await fetchPortalData();
+          if (portalData.fullName) {
+            newState.username = portalData.fullName;
+          }
+          await initializeDB(portalData.database.appName);
+          await signInWithToken(portalData.database.rawFirebaseJWT);
+          this.setState({ portalData });
+
+          setPortalData(portalData);
+          watchAnswers();
+        } catch (err) {
+          this.setState({ authError: err });
+          console.error("Authentication Error: " + err);
         }
-        await initializeDB(portalData.database.appName);
-        await signInWithToken(portalData.database.rawFirebaseJWT);
-        this.setState({ portalData });
-        setPortalData(portalData);
-        watchAnswers();
       } else if (useAnonymousRunKey) {
-        await initializeAnonymousDB();
-        watchAnswers();
+        try {
+          await initializeAnonymousDB();
+          watchAnswers();
+        } catch (err) {
+          this.setState({ authError: err });
+          console.error("Authentication Error: " + err);
+        }
       }
 
       this.setState(newState as IState);
@@ -117,7 +131,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, currentPage, username } = this.state;
+    const { activity, authError, currentPage, username } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
@@ -130,6 +144,31 @@ export class App extends React.PureComponent<IProps, IState> {
           activityName={activity.name}
           singlePage={activity.layout === ActivityLayouts.SinglePage}
         />
+        { authError
+          ? <AuthError />
+          : this.renderActivityContent(activity, currentPage, totalPreviousQuestions, fullWidth)
+        }
+        { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
+          <Footer
+            fullWidth={fullWidth}
+            projectId={activity.project_id}
+          />
+        }
+        { (activity.layout !== ActivityLayouts.SinglePage && currentPage !== 0 && !activity.pages[currentPage - 1].is_completion) &&
+          <ExpandableContainer
+            activity={activity}
+            pageNumber={currentPage}
+            page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
+            teacherEditionMode={this.state.teacherEditionMode}
+          />
+        }
+      </React.Fragment>
+    );
+  }
+
+  private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
+    return (
+      <>
         <ActivityNavHeader
           activityPages={activity.pages}
           currentPage={currentPage}
@@ -156,21 +195,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   teacherEditionMode={this.state.teacherEditionMode}
                 />
         }
-        { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
-          <Footer
-            fullWidth={fullWidth}
-            projectId={activity.project_id}
-          />
-        }
-        { (activity.layout !== ActivityLayouts.SinglePage && currentPage !== 0 && !activity.pages[currentPage - 1].is_completion) &&
-          <ExpandableContainer
-            activity={activity}
-            pageNumber={currentPage}
-            page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
-            teacherEditionMode={this.state.teacherEditionMode}
-          />
-        }
-      </React.Fragment>
+      </>
     );
   }
 
