@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
 import {
-  ICloseModal,
+  ICloseModal, INavigationOptions,
   ICustomMessage, IRuntimeMetadata, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures
 } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
@@ -26,7 +26,7 @@ interface IProps {
   initialAnswerMeta?: IExportableAnswerMetadata;   // saved metadata for that initial user state
   setSupportedFeatures: (container: HTMLElement, features: ISupportedFeatures) => void;
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
-  setNavigation?: (enable: boolean) => void;
+  setNavigation?: (options: INavigationOptions) => void;
 }
 
 const kDefaultAspectRatio = 4 / 3;

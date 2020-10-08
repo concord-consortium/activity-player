@@ -9,7 +9,7 @@ import { initializePlugin, IPartialEmbeddablePluginContext, validateEmbeddablePl
 import { EmbeddableWrapper, IEmbeddablePlugin, IExportableAnswerMetadata } from "../../types";
 import { localAnswerPath, getCurrentDBValue } from "../../firebase-db";
 import { IInteractiveSupportedFeaturesEvent } from "../../lara-plugin/events";
-import { ICustomMessage, ISupportedFeatures } from "@concord-consortium/lara-interactive-api";
+import { ICustomMessage, ISupportedFeatures, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
 import "./embeddable.scss";
 
@@ -20,7 +20,7 @@ interface IProps {
   pageLayout: string;
   questionNumber?: number;
   teacherEditionMode?: boolean;
-  setNavigation?: (enable: boolean) => void;
+  setNavigation?: (id: string, options: INavigationOptions) => void;
 }
 
 type ISendCustomMessage = (message: ICustomMessage) => void;
@@ -39,6 +39,9 @@ export const Embeddable: React.FC<IProps> = (props) => {
     loaded: false
   } as InitialInteractiveState);
 
+  const handleSetNavigation = useCallback((options: INavigationOptions) => {
+    setNavigation?.(embeddable.ref_id, options);
+  }, [setNavigation, embeddable.ref_id]);
 
   const embeddableWrapperDivTarget = useRef<HTMLInputElement>(null);
   const embeddableDivTarget = useRef<HTMLInputElement>(null);
@@ -105,7 +108,7 @@ export const Embeddable: React.FC<IProps> = (props) => {
                     initialAnswerMeta={initialInteractiveState.answerMeta}
                     setSupportedFeatures={handleSetSupportedFeatures}
                     setSendCustomMessage={setSendCustomMessage}
-                    setNavigation={setNavigation} />;
+                    setNavigation={handleSetNavigation} />;
   } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {
     qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} /> : undefined;
   } else if (embeddable.type === "Embeddable::Xhtml") {

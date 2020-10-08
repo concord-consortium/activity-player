@@ -37,6 +37,7 @@ interface IState {
   portalData?: IPortalData;
   sequence?: Sequence;
   showSequence?: boolean;
+  lockedNavigationMessage: string;
 }
 interface IProps {}
 
@@ -51,7 +52,8 @@ export class App extends React.PureComponent<IProps, IState> {
       teacherEditionMode: false,
       showThemeButtons: false,
       username: "Anonymous",
-      authError: ""
+      authError: "",
+      lockedNavigationMessage: "",
     };
   }
 
@@ -191,6 +193,8 @@ export class App extends React.PureComponent<IProps, IState> {
                   page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
                   totalPreviousQuestions={totalPreviousQuestions}
                   teacherEditionMode={this.state.teacherEditionMode}
+                  setLockedNavigationMessage={this.setLockedNavigationMessage}
+                  key={`page-${currentPage}`}
                 />
         }
       </>
@@ -228,8 +232,16 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private handleChangePage = (page: number) => {
-    this.setState({currentPage: page});
-    setDocumentTitle(this.state.activity, page);
+    if (page > this.state.currentPage && this.state.lockedNavigationMessage) {
+      window.alert(this.state.lockedNavigationMessage);
+    } else {
+      this.setState({currentPage: page, lockedNavigationMessage: ""});
+      setDocumentTitle(this.state.activity, page);  
+    }
+  }
+
+  private setLockedNavigationMessage = (message: string) => {
+    this.setState({lockedNavigationMessage: message});
   }
 
   private handleSelectActivity = (activityNum: number) => {

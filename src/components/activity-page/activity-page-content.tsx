@@ -8,10 +8,17 @@ import { accessibilityClick } from "../../utilities/accessibility-helper";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
 import { Page, EmbeddableWrapper } from "../../types";
+import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
 import "./activity-page-content.scss";
 
 const kPinMargin = 20;
+const kDefaultIncompleteMessage = "Please submit an answer first.";
+
+interface IncompleteQuestion {
+  refId: string;
+  navOptions: INavigationOptions;
+}
 
 interface IProps {
   enableReportButton: boolean;
@@ -22,12 +29,13 @@ interface IProps {
   pageNumber: number;
   teacherEditionMode?: boolean;
   totalPreviousQuestions: number;
+  setLockedNavigationMessage: (message: string) => void;
 }
 
 interface IState {
   scrollOffset: number;
   isSecondaryCollapsed: boolean;
-  enableForwardNav: boolean;
+  incompleteQuestions: IncompleteQuestion[];
 }
 
 export class ActivityPageContent extends React.PureComponent <IProps, IState> {
@@ -38,13 +46,13 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     this.state = {
       scrollOffset: 0,
       isSecondaryCollapsed: false,
-      enableForwardNav: true,
+      incompleteQuestions: []
     };
   }
 
   render() {
     const { enableReportButton, isFirstActivityPage, isLastActivityPage, page, pageNumber, totalPreviousQuestions } = this.props;
-    const { scrollOffset } = this.state;
+    const { scrollOffset, incompleteQuestions } = this.state;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
     const pageSectionQuestionCount = getPageSectionQuestionCount(page);
     const visibleEmbeddables: VisibleEmbeddables = getVisibleEmbeddablesOnPage(page);
@@ -79,7 +87,8 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
         </div>
         <BottomButtons
           onBack={!isFirstActivityPage ? this.handleBack : undefined}
-          onNext={!isLastActivityPage && this.state.enableForwardNav ? this.handleNext : undefined}
+          onNext={!isLastActivityPage ? this.handleNext : undefined}
+          lockedForwardNav={incompleteQuestions.length > 0}
           onGenerateReport={enableReportButton ? this.handleReport : undefined}
         />
       </div>
@@ -151,7 +160,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                 questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
                 linkedPluginEmbeddable={linkedPluginEmbeddable}
                 teacherEditionMode={this.props.teacherEditionMode}
-                setNavigation={this.hanldeSetNavigation}
+                setNavigation={this.handleSetNavigation}
               />
             );
           })
@@ -239,8 +248,24 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     }
   }
 
-  private hanldeSetNavigation = (enable: boolean) => {
-    console.log(enable);
-    this.setState(state => ({ enableForwardNav: enable }));
+  private handleSetNavigation = (refId: string, options: INavigationOptions) => {
+    const { incompleteQuestions } = this.state;
+    const { setLockedNavigationMessage } = this.props;
+    const qIndex = incompleteQuestions.findIndex((q: IncompleteQuestion) => q.refId === refId);
+    const updatedIncompleteQuestions = [...incompleteQuestions];
+    if (qIndex >= 0 && options.enableForwardNav) {
+      updatedIncompleteQuestions.splice(qIndex, 1);
+      const message = updatedIncompleteQuestions.length > 0 
+        ? updatedIncompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage
+        : "";
+      setLockedNavigationMessage(message);
+      this.setState({ incompleteQuestions: updatedIncompleteQuestions });
+    } else if (qIndex < 0 && !options.enableForwardNav) {
+      const newIncompleteQuestion: IncompleteQuestion = { refId, navOptions: options };
+      updatedIncompleteQuestions.push(newIncompleteQuestion);
+      const message = updatedIncompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage;
+      setLockedNavigationMessage(message);
+      this.setState({ incompleteQuestions: updatedIncompleteQuestions });
+    } 
   }
 }
