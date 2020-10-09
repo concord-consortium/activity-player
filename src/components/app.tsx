@@ -254,10 +254,9 @@ export class App extends React.PureComponent<IProps, IState> {
   private handleChangePage = (page: number) => {
     if (page > this.state.currentPage && this.state.incompleteQuestions.length > 0) {
       const label = this.state.incompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage;
-      console.log(label);
       this.setShowModal(true, label);
     } else if (page >= 0 && (this.state.activity && page <= this.state.activity.pages.length)) {
-      this.setState({currentPage: page});
+      this.setState({currentPage: page, incompleteQuestions: []});
       setDocumentTitle(this.state.activity, page);
     }
   }
