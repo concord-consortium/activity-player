@@ -8,8 +8,9 @@ cypress/videos
 coverage-cypress
 coverage-jest
 .nyc_output
+.yalc
+yalc.lock
 
 # Editors
 .idea
 .vscode
-

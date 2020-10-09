@@ -65,7 +65,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       state.modalSupported = true;
       if (showModal) {
         // adding isShowingModal to authored state allows image interactive to know if it is modal and subsequently
-        // decide to show a low or high res image.
+        // decide to show a low or high res image. TODO: move this information to the initInteractive message
         state.isShowingModal = true;
       }
       return state;

@@ -3,8 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { IframePhone } from "../../../types";
 import iframePhone from "iframe-phone";
 import {
-  ClientMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest, IGetInteractiveSnapshotResponse,
-  ILinkedInteractive, ServerMessage, ICustomMessage, ISupportedFeatures
+  ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
+  IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
+  ISupportedFeatures, ServerMessage
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 
@@ -37,7 +38,7 @@ export const IframeRuntime: React.FC<IProps> =
   const phoneRef = useRef<IframePhone>();
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
-  const linkedInteractivesRef = useRef(linkedInteractives?.length ? { linkedInteractives } : undefined);
+  const linkedInteractivesRef = useRef(linkedInteractives?.length ? { linkedInteractives } : { linkedInteractives: [] });
 
   useEffect(() => {
     const initInteractive = () => {
@@ -105,12 +106,50 @@ export const IframeRuntime: React.FC<IProps> =
       addListener("showModal", () => {
         toggleModal();
       });
-      post("initInteractive", {
-        mode: report ? "report" : "runtime",
+      // note: many of the values here are placeholders that require further
+      // consideration to determine whether there are more appropriate values.
+      const baseProps: Omit<IReportInitInteractive, "mode"> = {
+        version: 1,
         authoredState,
         interactiveState: initialInteractiveState,
-        ...linkedInteractivesRef.current
-      });
+        themeInfo: {
+          colors: {
+              colorA: "",
+              colorB: ""
+          }
+        }
+      };
+      const initInteractiveMsg: IInitInteractive = report
+              ? {
+                  ...baseProps,
+                  mode: "report"
+                }
+              : {
+                  ...baseProps,
+                  error: "",
+                  mode: "runtime",
+                  hostFeatures: {
+                    modalDialog: {
+                      version: "1.0.0",
+                      imageLightbox: false
+                    }
+                  },
+                  globalInteractiveState: null,
+                  interactiveStateUrl: "",
+                  collaboratorUrls: null,
+                  classInfoUrl: "",
+                  interactive: {
+                    id: 0,
+                    name: ""
+                  },
+                  authInfo: {
+                    provider: "",
+                    loggedIn: false,
+                    email: ""
+                  },
+                  ...linkedInteractivesRef.current
+                };
+      phone.post("initInteractive", initInteractiveMsg);
     };
 
     if (iframeRef.current) {
