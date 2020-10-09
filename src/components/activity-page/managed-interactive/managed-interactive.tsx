@@ -16,9 +16,9 @@ import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
 import { renderHTML } from "../../../utilities/render-html";
 import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
-
-import "./managed-interactive.scss";
 import { Lightbox } from "./lightbox";
+import "./managed-interactive.scss";
+
 
 interface IProps {
   embeddable: IManagedInteractive | IMwInteractive;

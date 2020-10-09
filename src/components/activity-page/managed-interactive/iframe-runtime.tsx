@@ -3,8 +3,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { IframePhone } from "../../../types";
 import iframePhone from "iframe-phone";
 import {
-  ClientMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest, IGetInteractiveSnapshotResponse,
-  ILinkedInteractive, ServerMessage, ICustomMessage, ISupportedFeatures, IShowModal, ICloseModal
+  ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
+  IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
+  ISupportedFeatures, ServerMessage, IShowModal, ICloseModal
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 
