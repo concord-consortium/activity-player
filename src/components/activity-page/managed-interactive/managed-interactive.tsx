@@ -2,7 +2,10 @@ import React, { useState, useCallback, useContext, useMemo, useRef } from "react
 import Modal from "react-modal";
 import { IframeRuntime } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
-import { ICustomMessage, IRuntimeMetadata, ISupportedFeatures } from "@concord-consortium/lara-interactive-api";
+import {
+  ICloseModal,
+  ICustomMessage, IRuntimeMetadata, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures
+} from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
 import { createOrUpdateAnswer } from "../../../firebase-db";
@@ -13,8 +16,9 @@ import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
 import { renderHTML } from "../../../utilities/render-html";
 import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
-
+import { Lightbox } from "./lightbox";
 import "./managed-interactive.scss";
+
 
 interface IProps {
   embeddable: IManagedInteractive | IMwInteractive;
@@ -26,6 +30,10 @@ interface IProps {
 }
 
 const kDefaultAspectRatio = 4 / 3;
+
+const getModalContainer = (): HTMLElement => {
+  return document.getElementById("app") || document.body;
+};
 
 export const ManagedInteractive: React.FC<IProps> = (props) => {
 
@@ -46,7 +54,8 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
 
     const { embeddable, questionNumber, initialInteractiveState, setSupportedFeatures, setSendCustomMessage } = props;
     const { authored_state } = embeddable;
-    const [showModal, setShowModal] = useState(false);
+    const [ activeDialog, setActiveDialog ] = useState<IShowDialog | null>(null);
+    const [ activeLightbox, setActiveLightbox ] = useState<IShowLightbox | null>(null);
     // both Modal and inline versions of interactive should reflect the same state
     const iframeInteractiveState = useRef(initialInteractiveState);
     const questionName = embeddable.name ? `: ${embeddable.name}` : "";
@@ -59,17 +68,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       embeddableData = embeddable;
     }
     const url = embeddableData?.base_url || embeddableData?.url || "";
-    const authoredState = useMemo(() => {
-      const state = safeJsonParseIfString(authored_state) || {};
-      // enable modal support for activity player only
-      state.modalSupported = true;
-      if (showModal) {
-        // adding isShowingModal to authored state allows image interactive to know if it is modal and subsequently
-        // decide to show a low or high res image. TODO: move this information to the initInteractive message
-        state.isShowingModal = true;
-      }
-      return state;
-    }, [authored_state, showModal]);
+    const authoredState = useMemo(() => safeJsonParseIfString(authored_state) || {}, [authored_state]);
     const linkedInteractives = useRef((embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
                                   ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
                                   : undefined);
@@ -112,23 +111,39 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       setHint(newHint);
     }, []);
 
-    const getModalContainer = (): HTMLElement => {
-      return document.getElementById("app") || document.body;
-    };
-
-    const toggleModal = useCallback(() => {
-      setShowModal(!showModal);
-    }, [showModal]);
-
-    const handleCloseModalRequest = (modalProps?: any) => {
-      if (modalProps) {
-        handleNewInteractiveState(modalProps.interactiveState);
+    const showModal = useCallback((options: IShowModal) => {
+      // Difference between dialog and lightbox:
+      // - dialog will assume that the provided URL is an interactive, so it'll use iframe-runtime component to render this URL
+      // - lightbox does not use iframe-runtime. It just displays URL in a generic iframe or uses <img> tag when `options.isImage` === true
+      if (options.type === "dialog") {
+        setActiveDialog(options);
+      } else if (options.type === "lightbox") {
+        setActiveLightbox(options);
+      } else {
+        window.alert(`${options.type} modal type not implemented yet`);
       }
-    };
+    }, []);
 
-    const interactiveIframe =
+  const closeModal = useCallback((options: ICloseModal) => {
+    // This code should work even if uuid is not provided (undefined).
+    if (activeDialog?.uuid === options.uuid) {
+      setActiveDialog(null);
+    } else if (activeLightbox?.uuid === options.uuid) {
+      setActiveLightbox(null);
+    }
+  }, [activeDialog, activeLightbox]);
+
+  const handleCloseDialog = () => {
+    setActiveDialog(null);
+  };
+
+  const handleCloseLightbox = () => {
+    setActiveLightbox(null);
+  };
+
+  const interactiveIframeRuntime =
       <IframeRuntime
-        url={url}
+        url={activeDialog?.url || url}
         id={interactiveId}
         authoredState={authoredState}
         initialInteractiveState={iframeInteractiveState.current}
@@ -139,7 +154,8 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
         containerWidth={containerWidth}
         setNewHint={setNewHint}
         getFirebaseJWT={getFirebaseJWT}
-        toggleModal={toggleModal}
+        showModal={showModal}
+        closeModal={closeModal}
         setSendCustomMessage={setSendCustomMessage}
       />;
 
@@ -171,10 +187,16 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
             </div>
           </div>
       }
-      {!showModal && interactiveIframe}
-      <Modal isOpen={showModal} appElement={getModalContainer()} onRequestClose={handleCloseModalRequest}>
-        {interactiveIframe}
-      </Modal>
+      { !activeDialog && interactiveIframeRuntime }
+      {
+        activeDialog &&
+        <Modal isOpen={true} appElement={getModalContainer()} onRequestClose={handleCloseDialog}>
+          { interactiveIframeRuntime }
+        </Modal>
+      }
+      {
+        activeLightbox && <Lightbox onClose={handleCloseLightbox} {...activeLightbox} />
+      }
       </div>
     );
   };
