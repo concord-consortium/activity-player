@@ -22,7 +22,7 @@ describe("Activity Page Content component", () => {
       page={page}
       pageNumber={5}
       totalPreviousQuestions={5}
-      setLockedNavigationMessage={stubFunction}
+      setNavigation={stubFunction}
     />);
     expect(getByTestId("page-content")).toBeDefined();
     expect(getByTestId("bottom-button-back")).toBeEnabled();

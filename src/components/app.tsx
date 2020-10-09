@@ -23,10 +23,17 @@ import { AuthError }  from "./auth-error/auth-error";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
 import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
 import { ModalDialog } from "./modal-dialog";
+import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
 import "./app.scss";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
+const kDefaultIncompleteMessage = "Please submit an answer first.";
+
+interface IncompleteQuestion {
+  refId: string;
+  navOptions: INavigationOptions;
+}
 
 interface IState {
   activity?: Activity;
@@ -38,8 +45,9 @@ interface IState {
   portalData?: IPortalData;
   sequence?: Sequence;
   showSequence?: boolean;
-  lockedNavigationMessage: string;
   showModal: boolean;
+  modalLabel: string
+  incompleteQuestions: IncompleteQuestion[];
 }
 interface IProps {}
 
@@ -55,8 +63,9 @@ export class App extends React.PureComponent<IProps, IState> {
       showThemeButtons: false,
       username: "Anonymous",
       authError: "",
-      lockedNavigationMessage: "",
       showModal: false,
+      modalLabel: "",
+      incompleteQuestions: [],
     };
   }
 
@@ -130,7 +139,7 @@ export class App extends React.PureComponent<IProps, IState> {
               : this.renderActivity() }
             { this.state.showThemeButtons && <ThemeButtons/>}
             <ModalDialog
-              label={this.state.lockedNavigationMessage}
+              label={this.state.modalLabel}
               setShowModal={this.setShowModal}
               showModal={this.state.showModal}
             />
@@ -187,7 +196,7 @@ export class App extends React.PureComponent<IProps, IState> {
           singlePage={activity.layout === ActivityLayouts.SinglePage}
           sequenceName={this.state.sequence?.display_title}
           onShowSequence={this.handleShowSequence}
-          lockForwardNav={this.state.lockedNavigationMessage !== ""}
+          lockForwardNav={this.state.incompleteQuestions.length > 0}
         />
         { activity.layout === ActivityLayouts.SinglePage
           ? this.renderSinglePageContent(activity)
@@ -204,7 +213,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
                   totalPreviousQuestions={totalPreviousQuestions}
                   teacherEditionMode={this.state.teacherEditionMode}
-                  setLockedNavigationMessage={this.setLockedNavigationMessage}
+                  setNavigation={this.handleSetNavigation}
                   key={`page-${currentPage}`}
                 />
         }
@@ -243,16 +252,14 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private handleChangePage = (page: number) => {
-    if (page > this.state.currentPage && this.state.lockedNavigationMessage) {
-      this.setShowModal(true);
+    if (page > this.state.currentPage && this.state.incompleteQuestions.length > 0) {
+      const label = this.state.incompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage;
+      console.log(label);
+      this.setShowModal(true, label);
     } else {
-      this.setState({currentPage: page, lockedNavigationMessage: ""});
+      this.setState({currentPage: page});
       setDocumentTitle(this.state.activity, page);
     }
-  }
-
-  private setLockedNavigationMessage = (message: string) => {
-    this.setState({lockedNavigationMessage: message});
   }
 
   private handleSelectActivity = (activityNum: number) => {
@@ -265,8 +272,22 @@ export class App extends React.PureComponent<IProps, IState> {
     this.setState({showSequence: true});
   }
 
-  private setShowModal = (show: boolean) => {
-    this.setState({showModal: show});
+  private setShowModal = (show: boolean, label = "") => {
+    this.setState({showModal: show, modalLabel: label});
+  }
+
+  private handleSetNavigation = (refId: string, options: INavigationOptions) => {
+    const { incompleteQuestions } = this.state;
+    const qIndex = incompleteQuestions.findIndex((q: IncompleteQuestion) => q.refId === refId);
+    const updatedIncompleteQuestions = [...incompleteQuestions];
+    if (qIndex >= 0 && options.enableForwardNav) {
+      updatedIncompleteQuestions.splice(qIndex, 1);
+      this.setState({ incompleteQuestions: updatedIncompleteQuestions });
+    } else if (qIndex < 0 && !options.enableForwardNav) {
+      const newIncompleteQuestion: IncompleteQuestion = { refId, navOptions: options };
+      updatedIncompleteQuestions.push(newIncompleteQuestion);
+      this.setState({ incompleteQuestions: updatedIncompleteQuestions });
+    }
   }
 
 }
