@@ -13,7 +13,6 @@ import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import "./activity-page-content.scss";
 
 const kPinMargin = 20;
-const kDefaultIncompleteMessage = "Please submit an answer first.";
 
 interface IncompleteQuestion {
   refId: string;
@@ -29,7 +28,7 @@ interface IProps {
   pageNumber: number;
   teacherEditionMode?: boolean;
   totalPreviousQuestions: number;
-  setLockedNavigationMessage: (message: string) => void;
+  setNavigation: (refId: string, options: INavigationOptions) => void;
 }
 
 interface IState {
@@ -160,7 +159,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                 questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
                 linkedPluginEmbeddable={linkedPluginEmbeddable}
                 teacherEditionMode={this.props.teacherEditionMode}
-                setNavigation={this.handleSetNavigation}
+                setNavigation={this.props.setNavigation}
               />
             );
           })
@@ -248,24 +247,4 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     }
   }
 
-  private handleSetNavigation = (refId: string, options: INavigationOptions) => {
-    const { incompleteQuestions } = this.state;
-    const { setLockedNavigationMessage } = this.props;
-    const qIndex = incompleteQuestions.findIndex((q: IncompleteQuestion) => q.refId === refId);
-    const updatedIncompleteQuestions = [...incompleteQuestions];
-    if (qIndex >= 0 && options.enableForwardNav) {
-      updatedIncompleteQuestions.splice(qIndex, 1);
-      const message = updatedIncompleteQuestions.length > 0
-        ? updatedIncompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage
-        : "";
-      setLockedNavigationMessage(message);
-      this.setState({ incompleteQuestions: updatedIncompleteQuestions });
-    } else if (qIndex < 0 && !options.enableForwardNav) {
-      const newIncompleteQuestion: IncompleteQuestion = { refId, navOptions: options };
-      updatedIncompleteQuestions.push(newIncompleteQuestion);
-      const message = updatedIncompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage;
-      setLockedNavigationMessage(message);
-      this.setState({ incompleteQuestions: updatedIncompleteQuestions });
-    }
-  }
 }
