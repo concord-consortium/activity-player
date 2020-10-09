@@ -48,6 +48,7 @@ export class NavPages extends React.PureComponent <IProps> {
       </button>
     );
   }
+
   private renderButtons = () => {
     const { currentPage, pages, lockForwardNav } = this.props;
     const totalPages = pages.length;
@@ -78,7 +79,6 @@ export class NavPages extends React.PureComponent <IProps> {
         </button>
       )
     );
-
   }
 
   private renderHomePageButton = () => {
