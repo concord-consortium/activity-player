@@ -3,9 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { IframePhone } from "../../../types";
 import iframePhone from "iframe-phone";
 import {
-  ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
-  IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
-  ISupportedFeatures, ServerMessage
+  ClientMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest, IGetInteractiveSnapshotResponse,
+  ILinkedInteractive, ServerMessage, ICustomMessage, ISupportedFeatures, IShowModal, ICloseModal
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 
@@ -24,13 +23,15 @@ interface IProps {
   containerWidth?: number;
   setNewHint: (newHint: string) => void;
   getFirebaseJWT: (firebaseApp: string, others: Record<string, any>) => Promise<string>;
-  toggleModal: () => void;
+  showModal: (options: IShowModal) => void;
+  closeModal: (options: ICloseModal) => void;
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
 }
 
 export const IframeRuntime: React.FC<IProps> =
   ({ url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives,
-      report, proposedHeight, containerWidth, setNewHint, getFirebaseJWT, toggleModal }) => {
+      report, proposedHeight, containerWidth, setNewHint, getFirebaseJWT, showModal, closeModal,
+      setSupportedFeatures, setSendCustomMessage }) => {
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -102,8 +103,11 @@ export const IframeRuntime: React.FC<IProps> =
       addListener("hint", (newHint: any) => {
         setNewHint(newHint.text || "");
       });
-      addListener("showModal", () => {
-        toggleModal();
+      addListener("showModal", (options: IShowModal) => {
+        showModal(options);
+      });
+      addListener("closeModal", (options: ICloseModal) => {
+        closeModal(options);
       });
       // note: many of the values here are placeholders that require further
       // consideration to determine whether there are more appropriate values.
@@ -166,8 +170,8 @@ export const IframeRuntime: React.FC<IProps> =
         phoneRef.current.disconnect();
       }
     };
-  }, [url, authoredState, report, initialInteractiveState,
-      setNewHint, getFirebaseJWT, toggleModal, setSupportedFeatures, setSendCustomMessage]);
+  }, [url, authoredState, report, initialInteractiveState, setNewHint, getFirebaseJWT, setSupportedFeatures,
+      setSendCustomMessage, showModal, closeModal]);
 
   const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;
   // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone
