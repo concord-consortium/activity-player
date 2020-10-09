@@ -125,7 +125,7 @@ export class App extends React.PureComponent<IProps, IState> {
           <div className="app">
             <WarningBanner/>
             { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-            { this.state.showSequence 
+            { this.state.showSequence
               ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
               : this.renderActivity() }
             { this.state.showThemeButtons && <ThemeButtons/>}
@@ -185,6 +185,9 @@ export class App extends React.PureComponent<IProps, IState> {
           fullWidth={fullWidth}
           onPageChange={this.handleChangePage}
           singlePage={activity.layout === ActivityLayouts.SinglePage}
+          sequenceName={this.state.sequence?.display_title}
+          onShowSequence={this.handleShowSequence}
+          lockForwardNav={this.state.lockedNavigationMessage !== ""}
         />
         { activity.layout === ActivityLayouts.SinglePage
           ? this.renderSinglePageContent(activity)
@@ -244,7 +247,7 @@ export class App extends React.PureComponent<IProps, IState> {
       this.setShowModal(true);
     } else {
       this.setState({currentPage: page, lockedNavigationMessage: ""});
-      setDocumentTitle(this.state.activity, page);  
+      setDocumentTitle(this.state.activity, page);
     }
   }
 
