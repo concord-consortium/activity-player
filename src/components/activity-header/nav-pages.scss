@@ -22,19 +22,13 @@
     background-color: white;
     cursor: pointer;
 
-    &.disabled {
-      outline: none;
-      cursor: auto;
-      pointer-events: none;
-      color: $cc-charcoal-light2;
-    }
-
     &:hover {
       background-color: $cc-teal-light6;
     }
     &:active {
       background-color: $cc-teal-light4;
     }
+
     &.current {
       background-color: var(--theme-primary-color);
       color: white;
@@ -44,6 +38,18 @@
     }
     &.current:active {
       background-color: var(--theme-primary-active-color);
+    }
+
+    &.disabled {
+      outline: none;
+      cursor: auto;
+      color: $cc-charcoal-light2;
+    }
+    &.disabled:hover {
+      background-color: white;
+    }
+    &.disabled:active {
+      background-color: white;
     }
   }
 }
