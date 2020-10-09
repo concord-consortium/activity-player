@@ -1,0 +1,269 @@
+{
+  "abstract": "",
+  "description": "<p><em><strong>TEXT</strong></em>: This is sample text that appears on the index page of the sequence.</p>",
+  "display_title": "Test Sequence Display Title",
+  "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Small_red_damselfly_%28Ceriagrion_tenellum%29_female_form_melanogastrum.jpg/320px-Small_red_damselfly_%28Ceriagrion_tenellum%29_female_form_melanogastrum.jpg",
+  "project_id": 2,
+  "theme_id": 4,
+  "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Small_pincertail_%28Onychogomphus_forcipatus%29_male_Bulgaria.jpg/640px-Small_pincertail_%28Onychogomphus_forcipatus%29_male_Bulgaria.jpg",
+  "title": "Test Sequence",
+  "activities": [
+    {
+      "description": "<p>This is a sequence activity.&nbsp; It should appear first.</p>",
+      "editor_mode": 0,
+      "layout": 0,
+      "name": "Sample Sequence Activity 1",
+      "notes": "",
+      "project_id": null,
+      "related": "<p>Related content here</p>",
+      "show_submit_button": true,
+      "student_report_enabled": true,
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Pieris_rapae_-_Small_white_12.jpg/640px-Pieris_rapae_-_Small_white_12.jpg",
+      "time_to_complete": 10,
+      "version": 1,
+      "theme_name": "HAS National Geographic: Water",
+      "pages": [
+        {
+          "additional_sections": {},
+          "embeddable_display_mode": "stacked",
+          "is_completion": false,
+          "is_hidden": false,
+          "layout": "l-6040",
+          "name": null,
+          "position": 1,
+          "show_header": true,
+          "show_info_assessment": false,
+          "show_interactive": false,
+          "show_sidebar": false,
+          "sidebar": null,
+          "sidebar_title": "Did you know?",
+          "toggle_info_assessment": false,
+          "embeddables": [
+            {
+              "embeddable": {
+                "content": "<p>Sample activity page</p>",
+                "is_callout": true,
+                "is_full_width": true,
+                "is_hidden": false,
+                "name": "",
+                "type": "Embeddable::Xhtml",
+                "ref_id": "272294-Embeddable::Xhtml"
+              },
+              "section": "header_block"
+            }
+          ]
+        }
+      ],
+      "plugins": [],
+      "type": "LightweightActivity",
+      "export_site": "Lightweight Activities Runtime and Authoring",
+      "position": 1
+    },
+    {
+      "description": "<p>This is a sequence activity.&nbsp; It should appear second.</p>",
+      "editor_mode": 0,
+      "layout": 0,
+      "name": "Sample Sequence Activity 2",
+      "notes": "",
+      "project_id": null,
+      "related": "<p>Related content here</p>",
+      "show_submit_button": true,
+      "student_report_enabled": true,
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Small_pearl-bordered_fritillary_%28Boloria_selene%29.jpg/640px-Small_pearl-bordered_fritillary_%28Boloria_selene%29.jpg",
+      "time_to_complete": 10,
+      "version": 1,
+      "theme_name": "HAS National Geographic: Water",
+      "pages": [
+        {
+          "additional_sections": {},
+          "embeddable_display_mode": "stacked",
+          "is_completion": false,
+          "is_hidden": false,
+          "layout": "l-6040",
+          "name": null,
+          "position": 1,
+          "show_header": true,
+          "show_info_assessment": false,
+          "show_interactive": false,
+          "show_sidebar": false,
+          "sidebar": null,
+          "sidebar_title": "Did you know?",
+          "toggle_info_assessment": false,
+          "embeddables": [
+            {
+              "embeddable": {
+                "content": "<p>Sample activity page</p>",
+                "is_callout": true,
+                "is_full_width": true,
+                "is_hidden": false,
+                "name": "",
+                "type": "Embeddable::Xhtml",
+                "ref_id": "272295-Embeddable::Xhtml"
+              },
+              "section": "header_block"
+            }
+          ]
+        }
+      ],
+      "plugins": [],
+      "type": "LightweightActivity",
+      "export_site": "Lightweight Activities Runtime and Authoring",
+      "position": 2
+    },
+    {
+      "description": "<p>This is a sequence activity.&nbsp; It should appear third.</p>",
+      "editor_mode": 0,
+      "layout": 0,
+      "name": "Sample Sequence Activity 3",
+      "notes": "",
+      "project_id": null,
+      "related": "<p>Related content here</p>",
+      "show_submit_button": true,
+      "student_report_enabled": true,
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Small_heath_%28Coenonympha_pamphilus%29_P.jpg/480px-Small_heath_%28Coenonympha_pamphilus%29_P.jpg",
+      "time_to_complete": 10,
+      "version": 1,
+      "theme_name": "HAS National Geographic: Water",
+      "pages": [
+        {
+          "additional_sections": {},
+          "embeddable_display_mode": "stacked",
+          "is_completion": false,
+          "is_hidden": false,
+          "layout": "l-6040",
+          "name": null,
+          "position": 1,
+          "show_header": true,
+          "show_info_assessment": false,
+          "show_interactive": false,
+          "show_sidebar": false,
+          "sidebar": null,
+          "sidebar_title": "Did you know?",
+          "toggle_info_assessment": false,
+          "embeddables": [
+            {
+              "embeddable": {
+                "content": "<p>Sample activity page</p>",
+                "is_callout": true,
+                "is_full_width": true,
+                "is_hidden": false,
+                "name": "",
+                "type": "Embeddable::Xhtml",
+                "ref_id": "272296-Embeddable::Xhtml"
+              },
+              "section": "header_block"
+            }
+          ]
+        }
+      ],
+      "plugins": [],
+      "type": "LightweightActivity",
+      "export_site": "Lightweight Activities Runtime and Authoring",
+      "position": 3
+    },
+    {
+      "description": "<p>This is a sequence activity.&nbsp; It should appear fourth.</p>",
+      "editor_mode": 0,
+      "layout": 0,
+      "name": "Sample Sequence Activity 4",
+      "notes": "",
+      "project_id": null,
+      "related": "<p>Related content here</p>",
+      "show_submit_button": true,
+      "student_report_enabled": true,
+      "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Spider_with_prey_%288404951545%29.jpg/319px-Spider_with_prey_%288404951545%29.jpg",
+      "time_to_complete": 10,
+      "version": 1,
+      "theme_name": "HAS National Geographic: Water",
+      "pages": [
+        {
+          "additional_sections": {},
+          "embeddable_display_mode": "stacked",
+          "is_completion": false,
+          "is_hidden": false,
+          "layout": "l-6040",
+          "name": null,
+          "position": 1,
+          "show_header": true,
+          "show_info_assessment": false,
+          "show_interactive": false,
+          "show_sidebar": false,
+          "sidebar": null,
+          "sidebar_title": "Did you know?",
+          "toggle_info_assessment": false,
+          "embeddables": [
+            {
+              "embeddable": {
+                "content": "<p>Sample activity page</p>",
+                "is_callout": true,
+                "is_full_width": true,
+                "is_hidden": false,
+                "name": "",
+                "type": "Embeddable::Xhtml",
+                "ref_id": "272297-Embeddable::Xhtml"
+              },
+              "section": "header_block"
+            }
+          ]
+        }
+      ],
+      "plugins": [],
+      "type": "LightweightActivity",
+      "export_site": "Lightweight Activities Runtime and Authoring",
+      "position": 4
+    },
+    {
+      "description": "<p>This is a sequence activity.&nbsp; It should appear fifth.</p>",
+      "editor_mode": 0,
+      "layout": 0,
+      "name": "Sample Sequence Activity 5",
+      "notes": "",
+      "project_id": null,
+      "related": "<p>Related content here</p>",
+      "show_submit_button": true,
+      "student_report_enabled": true,
+      "thumbnail_url": "",
+      "time_to_complete": 10,
+      "version": 1,
+      "theme_name": "HAS National Geographic: Water",
+      "pages": [
+        {
+          "additional_sections": {},
+          "embeddable_display_mode": "stacked",
+          "is_completion": false,
+          "is_hidden": false,
+          "layout": "l-6040",
+          "name": null,
+          "position": 1,
+          "show_header": true,
+          "show_info_assessment": false,
+          "show_interactive": false,
+          "show_sidebar": false,
+          "sidebar": null,
+          "sidebar_title": "Did you know?",
+          "toggle_info_assessment": false,
+          "embeddables": [
+            {
+              "embeddable": {
+                "content": "<p>Sample activity page</p>",
+                "is_callout": true,
+                "is_full_width": true,
+                "is_hidden": false,
+                "name": "",
+                "type": "Embeddable::Xhtml",
+                "ref_id": "272298-Embeddable::Xhtml"
+              },
+              "section": "header_block"
+            }
+          ]
+        }
+      ],
+      "plugins": [],
+      "type": "LightweightActivity",
+      "export_site": "Lightweight Activities Runtime and Authoring",
+      "position": 5
+    }
+  ],
+  "type": "Sequence",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

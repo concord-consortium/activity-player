@@ -1,5 +1,5 @@
 
-import { Activity } from "../types";
+import { Activity, Sequence } from "../types";
 import sampleActivity1 from "../data/sample-activity-1.json";
 import sampleActivity2 from "../data/sample-activity-2.json";
 import sampleActivityCbio from "../data/sample-activity-CBIO.json";
@@ -34,4 +34,10 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-interactive-sizing": sampleActivityInteractiveSizing as Activity
 };
 
-export default sampleActivities;
+import sampleSequence from "../data/sample-sequence.json";
+
+const sampleSequences: {[name: string]: Sequence} = {
+  "sample-sequence": sampleSequence as Sequence,
+};
+
+export  { sampleActivities, sampleSequences };
