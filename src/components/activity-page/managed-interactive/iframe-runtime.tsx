@@ -138,9 +138,11 @@ export const IframeRuntime: React.FC<IProps> = forwardRef((props, ref) => {
                   error: "",
                   mode: "runtime",
                   hostFeatures: {
-                    modalDialog: {
+                    modal: {
                       version: "1.0.0",
-                      imageLightbox: false
+                      lightbox: true,
+                      dialog: true,
+                      alert: false
                     }
                   },
                   globalInteractiveState: null,
