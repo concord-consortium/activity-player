@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { IShowLightbox } from "@concord-consortium/lara-interactive-api";
 import ReactModal from "react-modal";
+import "./lightbox.scss";
 
 export interface IProps extends IShowLightbox {
   onClose: () => void;
@@ -80,11 +81,14 @@ export const Lightbox: React.FC<IProps> = (props) => {
   const iframeSizeOpts = getSizeOptions(props);
   return (
     <ReactModal isOpen={true} appElement={getModalContainer()} onRequestClose={onClose} style={customStyles} >
+      <div className="lightbox-content">
+      <div className="lightbox-close-icon" onClick={onClose}>✖</div>
       {
         isImage ?
         <img ref={imgRef} src={url} onLoad={imgLoaded} style={{ width: imgWidth, height: imgHeight, visibility: imgWidth === undefined ? "hidden" : "visible" }} /> :
         <iframe src={url} width={iframeSizeOpts.width} height={iframeSizeOpts.height} />
       }
+      </div>
     </ReactModal>
   );
 };
