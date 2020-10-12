@@ -1,5 +1,5 @@
 // cf. https://github.com/concord-consortium/question-interactives/blob/master/src/scaffolded-question/components/iframe-runtime.tsx
-import React, { useEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { IframePhone } from "../../../types";
 import iframePhone from "iframe-phone";
 import {
@@ -10,6 +10,10 @@ import {
 import Shutterbug from "shutterbug";
 
 const kDefaultHeight = 300;
+
+export interface IframeRuntimeImperativeAPI {
+  requestInteractiveState: () => void;
+}
 
 interface IProps {
   url: string;
@@ -27,12 +31,13 @@ interface IProps {
   showModal: (options: IShowModal) => void;
   closeModal: (options: ICloseModal) => void;
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
+  ref?: React.Ref<IframeRuntimeImperativeAPI>;
 }
 
-export const IframeRuntime: React.FC<IProps> =
-  ({ url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives,
-      report, proposedHeight, containerWidth, setNewHint, getFirebaseJWT, showModal, closeModal,
-      setSupportedFeatures, setSendCustomMessage }) => {
+export const IframeRuntime: React.FC<IProps> = forwardRef((props, ref) => {
+  const { url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives, report,
+    proposedHeight, containerWidth, setNewHint, getFirebaseJWT, showModal, closeModal, setSupportedFeatures,
+    setSendCustomMessage } = props;
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -174,6 +179,10 @@ export const IframeRuntime: React.FC<IProps> =
   }, [url, authoredState, report, initialInteractiveState, setNewHint, getFirebaseJWT, setSupportedFeatures,
       setSendCustomMessage, showModal, closeModal]);
 
+  useImperativeHandle(ref, () => ({
+    requestInteractiveState: () => phoneRef.current?.post("getInteractiveState")
+  }));
+
   const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;
   // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone
   // "height" listener), height based on aspect ratio specified by interactive (from IframePhone "supportedFeatures" listener),
@@ -185,5 +194,5 @@ export const IframeRuntime: React.FC<IProps> =
       <iframe ref={iframeRef} src={url} id={id} width="100%" height={height} frameBorder={0} />
     </div>
   );
-};
+});
 IframeRuntime.displayName = "IframeRuntime";
