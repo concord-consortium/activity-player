@@ -198,7 +198,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       { !activeDialog && interactiveIframeRuntime }
       {
         activeDialog &&
-        <Modal isOpen={true} appElement={getModalContainer()} onRequestClose={handleCloseDialog}>
+        <Modal isOpen={true} appElement={getModalContainer()} onRequestClose={activeDialog.notCloseable ? undefined : handleCloseDialog}>
           { interactiveIframeRuntime }
         </Modal>
       }
