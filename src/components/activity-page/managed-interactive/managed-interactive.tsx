@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useContext, useMemo, useRef } from "react";
 import Modal from "react-modal";
-import { IframeRuntime } from "./iframe-runtime";
+import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
 import {
   ICloseModal,
@@ -19,7 +19,6 @@ import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 import { Lightbox } from "./lightbox";
 import "./managed-interactive.scss";
 
-
 interface IProps {
   embeddable: IManagedInteractive | IMwInteractive;
   questionNumber?: number;
@@ -36,6 +35,8 @@ const getModalContainer = (): HTMLElement => {
 };
 
 export const ManagedInteractive: React.FC<IProps> = (props) => {
+  const iframeRuntimeRef = useRef<IframeRuntimeImperativeAPI>(null);
+  const onSetInteractiveStateCallback = useRef<() => void>();
 
     const handleNewInteractiveState = (state: IRuntimeMetadata) => {
       // Keep interactive state in sync if iFrame is opened in modal popup
@@ -45,6 +46,10 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       if (exportableAnswer) {
         createOrUpdateAnswer(exportableAnswer);
       }
+      // Custom callback set internally. Used by the modal dialog to close itself after the most recent
+      // interactive state is received.
+      onSetInteractiveStateCallback.current?.();
+      onSetInteractiveStateCallback.current = undefined;
     };
 
     const portalData = useContext(PortalDataContext);
@@ -134,7 +139,9 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
   }, [activeDialog, activeLightbox]);
 
   const handleCloseDialog = () => {
-    setActiveDialog(null);
+    // Request current interactive state in the dialog before closing it.
+    iframeRuntimeRef.current?.requestInteractiveState();
+    onSetInteractiveStateCallback.current = () => setActiveDialog(null);
   };
 
   const handleCloseLightbox = () => {
@@ -143,6 +150,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
 
   const interactiveIframeRuntime =
       <IframeRuntime
+        ref={iframeRuntimeRef}
         url={activeDialog?.url || url}
         id={interactiveId}
         authoredState={authoredState}
