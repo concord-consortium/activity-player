@@ -215,6 +215,14 @@ export interface IExportableOpenResponseAnswerMetadata extends IExportableAnswer
   answer: string;
 }
 
+export interface IExportableImageQuestionAnswerMetadata extends IExportableAnswerMetadataBase {
+  type: "image_question_answer";
+  answer: {
+    text: string;
+    image_url: string;
+  }
+}
+
 export interface IExportableMultipleChoiceAnswerMetadata extends IExportableAnswerMetadataBase {
   type: "multiple_choice_answer";
   answer: {
@@ -225,7 +233,8 @@ export interface IExportableMultipleChoiceAnswerMetadata extends IExportableAnsw
 export type IExportableAnswerMetadata =
   IExportableInteractiveAnswerMetadata |
   IExportableOpenResponseAnswerMetadata |
-  IExportableMultipleChoiceAnswerMetadata;
+  IExportableMultipleChoiceAnswerMetadata |
+  IExportableImageQuestionAnswerMetadata;
 
 export interface LTIRuntimeAnswerMetadata extends ILTIPartial, IExportableAnswerMetadataBase { }
 
