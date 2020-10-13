@@ -1,6 +1,9 @@
 import { v4 as uuidv4 } from "uuid";
 import { IAuthoringMetadata, IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
-import { IExportableAnswerMetadata, IManagedInteractive, IReportState, IExportableMultipleChoiceAnswerMetadata, IExportableOpenResponseAnswerMetadata, IExportableInteractiveAnswerMetadata } from "../types";
+import {
+  IExportableAnswerMetadata, IManagedInteractive, IReportState, IExportableMultipleChoiceAnswerMetadata,
+  IExportableOpenResponseAnswerMetadata, IExportableInteractiveAnswerMetadata, IExportableImageQuestionAnswerMetadata
+} from "../types";
 
 export const getAnswerWithMetadata = (
     interactiveState: IRuntimeMetadata,
@@ -46,6 +49,14 @@ export const getAnswerWithMetadata = (
       ...exportableAnswerBase,
       answer: interactiveState.answerText
     } as IExportableOpenResponseAnswerMetadata;
+  } else if (interactiveState.answerType === "image_question_answer") {
+    exportableAnswer = {
+      ...exportableAnswerBase,
+      answer: {
+        text: interactiveState.answerText,
+        image_url: interactiveState.answerImageUrl
+      }
+    } as IExportableImageQuestionAnswerMetadata;
   } else {
     // note we don't current support has_report_url
     exportableAnswer = {
