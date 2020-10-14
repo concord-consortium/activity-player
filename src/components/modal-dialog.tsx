@@ -10,8 +10,6 @@ interface IProps {
   showModal: boolean;
 }
 
-Modal.setAppElement("#app");
-
 export class ModalDialog extends React.PureComponent <IProps> {
   render() {
     const { title, label, showModal, setShowModal } = this.props;
@@ -23,9 +21,10 @@ export class ModalDialog extends React.PureComponent <IProps> {
         isOpen={showModal}
         contentLabel={title || "Alert"}
         className={"modal-dialog"}
+        data-cy="modal-dialog"
       >
-        <div className="header">{title || "Alert"}</div>
-        <div>{label}</div>
+        <div className="header" data-cy="modal-dialog-header">{title || "Alert"}</div>
+        <div data-cy="modal-dialog-label">{label}</div>
         <div className="footer">
           <button onClick={handleClose}>Close</button>
         </div>
