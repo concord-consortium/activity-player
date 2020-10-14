@@ -1,8 +1,13 @@
 import { IRuntimeMetadata, IRuntimeInteractiveMetadata, IRuntimeMultipleChoiceMetadata } from "@concord-consortium/lara-interactive-api";
 import { answersQuestionIdToRefId, refIdToAnswersQuestionId, getAnswerWithMetadata } from "./embeddable-utils";
 import { DefaultManagedInteractive } from "../test-utils/model-for-tests";
-import { IManagedInteractive, IExportableOpenResponseAnswerMetadata, IExportableInteractiveAnswerMetadata, IExportableAnswerMetadata } from "../types";
-
+import {
+  IManagedInteractive,
+  IExportableOpenResponseAnswerMetadata,
+  IExportableInteractiveAnswerMetadata,
+  IExportableAnswerMetadata,
+  IExportableImageQuestionAnswerMetadata
+} from "../types";
 
 describe("Embeddable utility functions", () => {
   it("correctly converts from answer's question-id to ref_id", () => {
@@ -45,6 +50,43 @@ describe("Embeddable utility functions", () => {
       mode: "report",
       authoredState: `{"version":1,"questionType":"open_response","prompt":"<p>Write something:</p>"}`,
       interactiveState: `{"answerType":"open_response_answer","answerText":"test"}`,
+      version: 1
+    });
+    expect(exportableAnswer.report_state).toBe(expectedReport);
+  });
+
+  it("can create an exportable answer for an image question embeddable", () => {
+    const embeddable: IManagedInteractive = {
+      ...DefaultManagedInteractive,
+      authored_state: `{"version":1,"questionType":"image_question","prompt":"<p>Write something:</p>"}`,
+      ref_id: "123-ManagedInteractive"
+    };
+
+    const interactiveState: IRuntimeMetadata = {
+      answerType: "image_question_answer",
+      answerText: "test",
+      answerImageUrl: "http://test.snapshot.com"
+    };
+
+    const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableImageQuestionAnswerMetadata;
+
+    expect(exportableAnswer).toBeDefined();
+
+    expect(exportableAnswer.remote_endpoint).toBe("");
+    expect(exportableAnswer.question_id).toBe("managed_interactive_123");
+    expect(exportableAnswer.question_type).toBe("image_question");
+    expect(exportableAnswer.id).toBeDefined();          // random uuid
+    expect(exportableAnswer.type).toBe("image_question_answer");
+    expect(exportableAnswer.answer_text).toBe("test");
+    expect(exportableAnswer.answer).toEqual({
+      text: "test",
+      image_url: "http://test.snapshot.com"
+    });
+    expect(exportableAnswer.submitted).toBeNull();
+    const expectedReport = JSON.stringify({
+      mode: "report",
+      authoredState: `{"version":1,"questionType":"image_question","prompt":"<p>Write something:</p>"}`,
+      interactiveState: `{"answerType":"image_question_answer","answerText":"test","answerImageUrl":"http://test.snapshot.com"}`,
       version: 1
     });
     expect(exportableAnswer.report_state).toBe(expectedReport);
