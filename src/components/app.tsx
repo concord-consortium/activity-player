@@ -23,6 +23,7 @@ import { AuthError }  from "./auth-error/auth-error";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
 import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
 import { ModalDialog } from "./modal-dialog";
+import Modal from "react-modal";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
 import "./app.scss";
@@ -122,6 +123,8 @@ export class App extends React.PureComponent<IProps, IState> {
         loadPluginScripts(this.LARA, activity);
       }
 
+      Modal.setAppElement("#app");
+
     } catch (e) {
       console.warn(e);
     }
@@ -215,6 +218,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   teacherEditionMode={this.state.teacherEditionMode}
                   setNavigation={this.handleSetNavigation}
                   key={`page-${currentPage}`}
+                  lockForwardNav={this.state.incompleteQuestions.length > 0}
                 />
         }
       </>
