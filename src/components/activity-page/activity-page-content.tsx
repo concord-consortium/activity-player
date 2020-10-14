@@ -14,11 +14,6 @@ import "./activity-page-content.scss";
 
 const kPinMargin = 20;
 
-interface IncompleteQuestion {
-  refId: string;
-  navOptions: INavigationOptions;
-}
-
 interface IProps {
   enableReportButton: boolean;
   isFirstActivityPage: boolean;
@@ -29,12 +24,12 @@ interface IProps {
   teacherEditionMode?: boolean;
   totalPreviousQuestions: number;
   setNavigation: (refId: string, options: INavigationOptions) => void;
+  lockForwardNav?: boolean;
 }
 
 interface IState {
   scrollOffset: number;
   isSecondaryCollapsed: boolean;
-  incompleteQuestions: IncompleteQuestion[];
 }
 
 export class ActivityPageContent extends React.PureComponent <IProps, IState> {
@@ -45,13 +40,12 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     this.state = {
       scrollOffset: 0,
       isSecondaryCollapsed: false,
-      incompleteQuestions: []
     };
   }
 
   render() {
-    const { enableReportButton, isFirstActivityPage, isLastActivityPage, page, pageNumber, totalPreviousQuestions } = this.props;
-    const { scrollOffset, incompleteQuestions } = this.state;
+    const { enableReportButton, isFirstActivityPage, isLastActivityPage, page, pageNumber, totalPreviousQuestions, lockForwardNav } = this.props;
+    const { scrollOffset } = this.state;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
     const pageSectionQuestionCount = getPageSectionQuestionCount(page);
     const visibleEmbeddables: VisibleEmbeddables = getVisibleEmbeddablesOnPage(page);
@@ -87,7 +81,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
         <BottomButtons
           onBack={!isFirstActivityPage ? this.handleBack : undefined}
           onNext={!isLastActivityPage ? this.handleNext : undefined}
-          lockForwardNav={incompleteQuestions.length > 0}
+          lockForwardNav={lockForwardNav}
           onGenerateReport={enableReportButton ? this.handleReport : undefined}
         />
       </div>
