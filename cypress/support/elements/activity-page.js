@@ -17,10 +17,16 @@ class ActivityPage {
   getHeader() {
     return cy.get("[data-cy=activity-header]");
   }
-  getSecondaryEmbeddable(type) { 
-    //types=["image-question","text-box","multiple-choice-question","open-response-question", 
+  getSecondaryEmbeddable(type) {
+    //types=["image-question","text-box","multiple-choice-question","open-response-question",
     //      "labbook-question", "iframe-interactive-question","image-video-interactive", ]
     return cy.get("[data-cy="+type+"]");
+  }
+  getModalDialogMessage() {
+    return cy.get("[data-cy=modal-dialog-label");
+  }
+  getModalDialogClose() {
+    return cy.get("[data-cy=modal-dialog-close");
   }
 }
 export default ActivityPage;

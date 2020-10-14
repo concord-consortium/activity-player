@@ -10,7 +10,6 @@ describe("Modal Dialog component", () => {
                               showModal={true}
                               setShowModal={() => { /* nop */ }}
                             />);
-    expect(wrapper.find('[data-cy="modal-dialog"]').length).toBe(1);
     expect(wrapper.find('[data-cy="modal-dialog-header"]').length).toBe(1);
     expect(wrapper.find('[data-cy="modal-dialog-header"]').text()).toContain("test");
     expect(wrapper.find('[data-cy="modal-dialog-label"]').length).toBe(1);

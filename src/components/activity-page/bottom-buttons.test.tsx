@@ -7,9 +7,10 @@ describe("Bottom Buttons component", () => {
     const stubFunction = () => {
       // do nothing.
     };
-    const wrapperBackNext = shallow(<BottomButtons onBack={stubFunction} onNext={stubFunction} />);
+    const wrapperBackNext = shallow(<BottomButtons onBack={stubFunction} onNext={stubFunction} onGenerateReport={stubFunction} />);
     expect(wrapperBackNext.find('[data-cy="bottom-button-back"]').length).toBe(1);
     expect(wrapperBackNext.find('[data-cy="bottom-button-next"]').length).toBe(1);
+    expect(wrapperBackNext.find('[data-cy="bottom-button-report"]').length).toBe(1);
 
     const wrapperBack = shallow(<BottomButtons onBack={stubFunction} />);
     expect(wrapperBack.find('[data-cy="bottom-button-back"]').length).toBe(1);
