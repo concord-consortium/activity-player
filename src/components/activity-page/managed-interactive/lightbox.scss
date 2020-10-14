@@ -1,0 +1,15 @@
+.lightbox-content {
+  position: relative;
+}
+
+.lightbox-close-icon {
+  font-size: 20px;
+  position: absolute;
+  top: -20px;
+  right: -17px;
+  cursor: pointer;
+  color: #808080;
+  &:hover {
+    color: #5a5a5a;
+  }
+}
