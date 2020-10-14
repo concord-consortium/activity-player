@@ -16,7 +16,7 @@ interface IProps {
 export class NavPages extends React.PureComponent <IProps> {
   render() {
     return (
-      <div className="nav-pages" data-cy="nav-pages" >
+      <div className="nav-pages" data-cy="nav-pages">
         {this.renderHomePageButton()}
         {this.renderPreviousButton()}
         {this.renderButtons()}
@@ -74,6 +74,7 @@ export class NavPages extends React.PureComponent <IProps> {
           className={`page-button ${currentPage === page ? "current" : ""} ${(lockForwardNav && currentPage < page) ? "disabled" : ""}`}
           onClick={this.handleChangePage(page)}
           key={`page ${page}`}
+          data-cy="nav-pages-button"
         >
           {page}
         </button>

@@ -8,19 +8,18 @@ describe("Bottom Buttons component", () => {
       // do nothing.
     };
     const wrapperBackNext = shallow(<BottomButtons onBack={stubFunction} onNext={stubFunction} />);
-
     expect(wrapperBackNext.find('[data-cy="bottom-button-back"]').length).toBe(1);
     expect(wrapperBackNext.find('[data-cy="bottom-button-next"]').length).toBe(1);
 
     const wrapperBack = shallow(<BottomButtons onBack={stubFunction} />);
-
     expect(wrapperBack.find('[data-cy="bottom-button-back"]').length).toBe(1);
     expect(wrapperBack.find('[data-cy="bottom-button-next"]').length).toBe(1);
 
     const wrapperNext = shallow(<BottomButtons onNext={stubFunction} />);
-
     expect(wrapperNext.find('[data-cy="bottom-button-back"]').length).toBe(1);
     expect(wrapperNext.find('[data-cy="bottom-button-next"]').length).toBe(1);
 
+    const wrapperLocked = shallow(<BottomButtons onNext={stubFunction} lockForwardNav={true} />);
+    expect(wrapperLocked.find('[data-cy="bottom-button-next"]').hasClass("disabled")).toBe(true);
   });
 });

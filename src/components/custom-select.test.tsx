@@ -2,8 +2,8 @@ import React from "react";
 import { CustomSelect } from "./custom-select";
 import { configure, fireEvent, render, waitForElementToBeRemoved } from "@testing-library/react";
 
-describe("Activity Page Content component", () => {
-  it("renders component", () => {
+describe("Custom Select component", () => {
+  it("renders Custom Select component", () => {
     let selectedItem = "";
     const handleSelectItem = (item: string) => {
       selectedItem = item;
