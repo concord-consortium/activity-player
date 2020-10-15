@@ -184,8 +184,9 @@ export const IframeRuntime: React.FC<IProps> = forwardRef((props, ref) => {
         phoneRef.current.disconnect();
       }
     };
-  }, [url, authoredState, report, initialInteractiveState, setNewHint, getFirebaseJWT, setSupportedFeatures,
-      setSendCustomMessage, showModal, closeModal, setNavigation]);
+    // Re-running the effect reloads the iframe.
+    // The _only_ time that's ever appropriate is when the url has changed.
+  }, [url]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   useImperativeHandle(ref, () => ({
     requestInteractiveState: () => phoneRef.current?.post("getInteractiveState")
