@@ -4,7 +4,7 @@ import { Page } from "../../types";
 
 import "./nav-pages.scss";
 
-const kMaxPages = 11;
+const kMaxPageNavigationButtons = 11;
 
 interface IProps {
   pages: Page[];
@@ -60,7 +60,7 @@ export class NavPages extends React.PureComponent <IProps> {
       maxPage = Math.min(totalPages, currentPage + 5 + (5 - maxPagesLeftOfCurrent));
     } else if (maxPagesRightOfCurrent < 5) {
       minPage = Math.max(1, currentPage - 5 - (5 - maxPagesRightOfCurrent));
-    } else if (totalPages > kMaxPages) {
+    } else if (totalPages > kMaxPageNavigationButtons) {
       minPage = currentPage - 5;
       maxPage = currentPage + 5;
     }

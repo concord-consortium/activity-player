@@ -6,15 +6,15 @@ import "./modal-dialog.scss";
 interface IProps {
   title?: string;
   label: string;
-  setShowModal: (show: boolean) => void;
+  onClose: () => void;
   showModal: boolean;
 }
 
 export class ModalDialog extends React.PureComponent <IProps> {
   render() {
-    const { title, label, showModal, setShowModal } = this.props;
+    const { title, label, showModal, onClose } = this.props;
     const handleClose = () => {
-      setShowModal(false);
+      onClose();
     };
     return (
       <Modal

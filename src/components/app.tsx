@@ -143,7 +143,7 @@ export class App extends React.PureComponent<IProps, IState> {
             { this.state.showThemeButtons && <ThemeButtons/>}
             <ModalDialog
               label={this.state.modalLabel}
-              setShowModal={this.setShowModal}
+              onClose={() => {this.setShowModal(false);}}
               showModal={this.state.showModal}
             />
           </div>
@@ -256,12 +256,13 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private handleChangePage = (page: number) => {
-    if (page > this.state.currentPage && this.state.incompleteQuestions.length > 0) {
-      const label = this.state.incompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage;
+    const { currentPage, incompleteQuestions, activity } = this.state;
+    if (page > currentPage && incompleteQuestions.length > 0) {
+      const label = incompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage;
       this.setShowModal(true, label);
-    } else if (page >= 0 && (this.state.activity && page <= this.state.activity.pages.length)) {
+    } else if (page >= 0 && (activity && page <= activity.pages.length)) {
       this.setState({currentPage: page, incompleteQuestions: []});
-      setDocumentTitle(this.state.activity, page);
+      setDocumentTitle(activity, page);
     }
   }
 
