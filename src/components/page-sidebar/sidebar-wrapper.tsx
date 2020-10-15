@@ -1,5 +1,6 @@
 import React from "react";
 import { Sidebar } from "./sidebar";
+import { Logger, LogEventName } from "../../lib/logger";
 
 const kSidebarOffset = 100;
 
@@ -42,6 +43,7 @@ export class SidebarWrapper extends React.PureComponent<IProps, IState> {
   }
 
   private setShowSidebarContent = (index: number, show: boolean) => {
+    Logger.log(LogEventName.SHOW_SIDEBAR, show);
     this.setState(state => {
       const updatedShowSidebarContent = new Array(state.showSidebarContent.length).fill(false);
       updatedShowSidebarContent[index] = show;
