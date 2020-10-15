@@ -8,7 +8,7 @@ describe("Modal Dialog component", () => {
                               title="test"
                               label="dialog test"
                               showModal={true}
-                              setShowModal={() => { /* nop */ }}
+                              onClose={() => { /* nop */ }}
                             />);
     expect(wrapper.find('[data-cy="modal-dialog-header"]').length).toBe(1);
     expect(wrapper.find('[data-cy="modal-dialog-header"]').text()).toContain("test");
