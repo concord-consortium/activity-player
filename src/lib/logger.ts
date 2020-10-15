@@ -8,6 +8,7 @@ interface LogMessage {
   application: string;
   run_remote_endpoint?: string;
   username: string;
+  userType: string;
   classHash: string;
   session: string;
   appMode: string;
@@ -34,11 +35,11 @@ export enum LogEventName {
 }
 
 export class Logger {
-  public static initializeLogger(LARA: LaraGlobalType, username: string, classHash: string, teacherEdition: boolean, sequence: string | undefined, activity: string, activityPage: number) {
+  public static initializeLogger(LARA: LaraGlobalType, username: string, userType: string, classHash: string, teacherEdition: boolean, sequence: string | undefined, activity: string, activityPage: number) {
     if (DEBUG_LOGGER) {
       console.log("Logger#initializeLogger called.");
     }
-    this._instance = new Logger(LARA, username, classHash, teacherEdition, sequence, activity, activityPage);
+    this._instance = new Logger(LARA, username, userType, classHash, teacherEdition, sequence, activity, activityPage);
   }
 
   public static updateActivity(activity: string) {
@@ -68,6 +69,7 @@ export class Logger {
 
   private LARA: LaraGlobalType;
   private username: string;
+  private userType: string;
   private classHash: string;
   private session: string;
   private appMode: string;
@@ -75,10 +77,11 @@ export class Logger {
   private activity: string;
   private activityPage: number;
 
-  private constructor(LARA: LaraGlobalType, username: string, classHash: string, teacherEdition: boolean, sequence: string | undefined, activity: string, activityPage: number) {
+  private constructor(LARA: LaraGlobalType, username: string, userType: string, classHash: string, teacherEdition: boolean, sequence: string | undefined, activity: string, activityPage: number) {
     this.LARA = LARA;
     this.session = uuid();
     this.username = username;
+    this.userType = userType;
     this.classHash= classHash;
     this.appMode = teacherEdition ? "teacher edition" : "";
     this.sequence = sequence;
@@ -97,6 +100,7 @@ export class Logger {
     const logMessage: LogMessage = {
       application: "Activity Player",
       username: this.username,
+      userType: this.userType,
       classHash: this.classHash,
       session: this.session,
       appMode: this.appMode,
