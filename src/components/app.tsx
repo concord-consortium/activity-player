@@ -128,8 +128,8 @@ export class App extends React.PureComponent<IProps, IState> {
 
       this.setState(newState as IState);
 
+      this.LARA = initializeLara();
       if (teacherEditionMode) {
-        this.LARA = initializeLara();
         loadPluginScripts(this.LARA, activity);
       }
 
