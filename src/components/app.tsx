@@ -25,6 +25,7 @@ import { SequenceIntroduction } from "./sequence-introduction/sequence-introduct
 import { ModalDialog } from "./modal-dialog";
 import Modal from "react-modal";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
+import { Logger, LogEventName } from "../lib/logger";
 
 import "./app.scss";
 
@@ -124,6 +125,8 @@ export class App extends React.PureComponent<IProps, IState> {
       }
 
       Modal.setAppElement("#app");
+
+      Logger.initializeLogger(this.LARA, newState.username || this.state.username, "", teacherEditionMode, sequencePath, activityPath, currentPage);
 
     } catch (e) {
       console.warn(e);
@@ -263,6 +266,8 @@ export class App extends React.PureComponent<IProps, IState> {
     } else if (page >= 0 && (activity && page <= activity.pages.length)) {
       this.setState({currentPage: page, incompleteQuestions: []});
       setDocumentTitle(activity, page);
+      Logger.updateActivityPage(page);
+      Logger.log(LogEventName.CHANGE_ACTIVITY_PAGE, page);
     }
   }
 
@@ -274,10 +279,12 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleShowSequence = () => {
     this.setState({showSequence: true});
+    Logger.log(LogEventName.SHOW_SEQUENCE_INTRO_PAGE);
   }
 
   private setShowModal = (show: boolean, label = "") => {
     this.setState({showModal: show, modalLabel: label});
+    Logger.log(LogEventName.TOGGLE_MODAL_DIALOG, show, { modal_label: label });
   }
 
   private handleSetNavigation = (refId: string, options: INavigationOptions) => {
