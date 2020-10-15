@@ -92,6 +92,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const el = document.querySelector("#app");
     if (el) {
       el.addEventListener("scroll", this.handleScroll, false);
+      el.scrollTo(0, 0);
     }
   }
 
@@ -99,16 +100,6 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const el = document.querySelector("#app");
     if (el) {
       el.removeEventListener("scroll", this.handleScroll, false);
-    }
-  }
-
-  public componentDidUpdate(prevProps: any) {
-    if (prevProps.pageNumber !== this.props.pageNumber) {
-      const el = document.querySelector("#app");
-      if (el) {
-        el.scrollTo(0, 0);
-      }
-      this.setState({ isSecondaryCollapsed: false, scrollOffset: 0 });
     }
   }
 
