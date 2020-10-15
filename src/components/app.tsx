@@ -91,11 +91,20 @@ export class App extends React.PureComponent<IProps, IState> {
       const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showSequence, sequence, teacherEditionMode};
       setDocumentTitle(activity, currentPage);
 
+      let classHash = "";
+      let userType = "";
+
       if (queryValue("token")) {
         try {
           const portalData = await fetchPortalData();
           if (portalData.fullName) {
             newState.username = portalData.fullName;
+          }
+          if (portalData.userType) {
+            userType = portalData.userType;
+          }
+          if (portalData.contextId) {
+            classHash = portalData.contextId;
           }
           await initializeDB(portalData.database.appName);
           await signInWithToken(portalData.database.rawFirebaseJWT);
@@ -126,7 +135,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
       Modal.setAppElement("#app");
 
-      Logger.initializeLogger(this.LARA, newState.username || this.state.username, "", teacherEditionMode, sequencePath, activityPath, currentPage);
+      Logger.initializeLogger(this.LARA, newState.username || this.state.username, userType, classHash, teacherEditionMode, sequencePath, activityPath, currentPage);
 
     } catch (e) {
       console.warn(e);
