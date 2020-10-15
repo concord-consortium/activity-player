@@ -56,13 +56,14 @@ export class NavPages extends React.PureComponent <IProps> {
     const maxPagesRightOfCurrent = totalPages - currentPage;
     let minPage = 1;
     let maxPage = totalPages;
-    if (maxPagesLeftOfCurrent < 5) {
-      maxPage = Math.min(totalPages, currentPage + 5 + (5 - maxPagesLeftOfCurrent));
-    } else if (maxPagesRightOfCurrent < 5) {
-      minPage = Math.max(1, currentPage - 5 - (5 - maxPagesRightOfCurrent));
+    const maxButtonsPerSide = Math.floor(kMaxPageNavigationButtons / 2);
+    if (maxPagesLeftOfCurrent < maxButtonsPerSide) {
+      maxPage = Math.min(totalPages, currentPage + maxButtonsPerSide + (maxButtonsPerSide - maxPagesLeftOfCurrent));
+    } else if (maxPagesRightOfCurrent < maxButtonsPerSide) {
+      minPage = Math.max(1, currentPage - maxButtonsPerSide - (maxButtonsPerSide - maxPagesRightOfCurrent));
     } else if (totalPages > kMaxPageNavigationButtons) {
-      minPage = currentPage - 5;
-      maxPage = currentPage + 5;
+      minPage = currentPage - maxButtonsPerSide;
+      maxPage = currentPage + maxButtonsPerSide;
     }
     const pageNums: number[] = [];
     for (let i = minPage; i <= maxPage; i++) {
