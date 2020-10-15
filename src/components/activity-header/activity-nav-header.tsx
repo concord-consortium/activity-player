@@ -13,11 +13,12 @@ interface IProps {
   singlePage: boolean;
   sequenceName?: string;
   onShowSequence?: () => void;
+  lockForwardNav?: boolean;
 }
 
 export class ActivityNavHeader extends React.PureComponent <IProps> {
   render() {
-    const { activityPages, currentPage, fullWidth, onPageChange, singlePage, sequenceName, onShowSequence} = this.props;
+    const { activityPages, currentPage, fullWidth, lockForwardNav, onPageChange, singlePage, sequenceName, onShowSequence} = this.props;
     return (
       <div className={`activity-nav-header ${fullWidth ? "full" : ""}`} data-cy="activity-nav-header">
         { sequenceName &&
@@ -35,6 +36,7 @@ export class ActivityNavHeader extends React.PureComponent <IProps> {
             pages={activityPages}
             onPageChange={onPageChange}
             currentPage={currentPage}
+            lockForwardNav={lockForwardNav}
           />
         }
       </div>

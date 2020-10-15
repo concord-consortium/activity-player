@@ -5,6 +5,9 @@ import { DefaultTestPage } from "../../test-utils/model-for-tests";
 
 describe("Activity Page Content component", () => {
   it("renders component", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
     let callCount = 0;
     const handlePageChange = () => {
       ++callCount;
@@ -19,6 +22,7 @@ describe("Activity Page Content component", () => {
       page={page}
       pageNumber={5}
       totalPreviousQuestions={5}
+      setNavigation={stubFunction}
     />);
     expect(getByTestId("page-content")).toBeDefined();
     expect(getByTestId("bottom-button-back")).toBeEnabled();

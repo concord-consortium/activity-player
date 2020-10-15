@@ -7,44 +7,6 @@
   margin: 0 10px 0 10px;
   padding: 0px;
 
-  .paginate-container {
-    display: flex;
-    padding: 0;
-    max-width: 860px;
-    margin: 0;
-    list-style-type: none;
-
-    .page-button {
-      color: $cc-charcoal-light1;
-      font-size: 20px;
-      list-style-type: none;
-
-      &.current {
-        color: white;
-      }
-    }
-    .disabled .page-button {
-      outline: none;
-      cursor: auto;
-      color: $cc-charcoal-light2;
-
-      &:hover {
-        background-color: white;
-      }
-      &:active {
-        background-color: white;
-      }
-    }
-
-    .break {
-      outline: none;
-      cursor: not-allowed;
-      pointer-events: none;
-      color: $cc-charcoal-light2;
-      padding: 5px;
-    }
-  }
-
   .page-button {
     display: flex;
     justify-content: center;
@@ -54,6 +16,8 @@
     margin: 0 5px 0 5px;
     border-radius: 50%;
     border: solid $cc-charcoal-light1 2px;
+    color: $cc-charcoal-light1;
+    font-size: 20px;
     box-sizing: border-box;
     background-color: white;
     cursor: pointer;
@@ -64,8 +28,10 @@
     &:active {
       background-color: $cc-teal-light4;
     }
+
     &.current {
       background-color: var(--theme-primary-color);
+      color: white;
     }
     &.current:hover {
       background-color: var(--theme-primary-hover-color);
@@ -73,5 +39,17 @@
     &.current:active {
       background-color: var(--theme-primary-active-color);
     }
-  }    
+
+    &.disabled {
+      outline: none;
+      cursor: auto;
+      color: $cc-charcoal-light2;
+    }
+    &.disabled:hover {
+      background-color: white;
+    }
+    &.disabled:active {
+      background-color: white;
+    }
+  }
 }

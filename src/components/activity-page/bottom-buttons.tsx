@@ -6,24 +6,25 @@ interface BottomButtonProps {
   onBack?: () => void;
   onNext?: () => void;
   onGenerateReport?: () => void;
+  lockForwardNav?: boolean;
 }
 
 export const BottomButtons: React.FC<BottomButtonProps> = (props) => {
   return (
     <div className="bottom-buttons">
       <div>
-        { <button className="button" 
-                  disabled={!props.onBack} 
-                  onClick={props.onBack} 
+        { <button className="button"
+                  disabled={!props.onBack}
+                  onClick={props.onBack}
                   data-cy="bottom-button-back"
                   tabIndex={1}>
             {"< Back"}
           </button> }
       </div>
       <div>
-        { props.onGenerateReport && 
-          <button className="button" 
-                  onClick={props.onGenerateReport} 
+        { props.onGenerateReport &&
+          <button className="button"
+                  onClick={props.onGenerateReport}
                   data-cy="bottom-button-report"
                   tabIndex={1}>
             {"Generate Report"}
@@ -31,13 +32,13 @@ export const BottomButtons: React.FC<BottomButtonProps> = (props) => {
         }
       </div>
       <div>
-        { <button className="button" 
-                  disabled={!props.onNext} 
-                  onClick={props.onNext} 
+        { <button className={`button ${props.lockForwardNav ? "disabled" : ""}`}
+                  disabled={!props.onNext && !props.lockForwardNav}
+                  onClick={props.onNext}
                   data-cy="bottom-button-next"
                   tabIndex={1}>
             {"Next >"}
-          </button> 
+          </button>
         }
       </div>
     </div>

@@ -1,46 +1,92 @@
 import React from "react";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
-import ReactPaginate from "react-paginate";
+import { Page } from "../../types";
 
 import "./nav-pages.scss";
-import { Page } from "../../types";
+
+const kMaxPageNavigationButtons = 11;
 
 interface IProps {
   pages: Page[];
   currentPage: number;
   onPageChange: (page: number) => void;
+  lockForwardNav?: boolean;
 }
 
 export class NavPages extends React.PureComponent <IProps> {
   render() {
     return (
-      <div className="nav-pages" data-cy="nav-pages" >
+      <div className="nav-pages" data-cy="nav-pages">
         {this.renderHomePageButton()}
-        <ReactPaginate
-          previousLabel={"<"}
-          nextLabel={">"}
-          breakLabel={""}
-          pageCount={this.props.pages.length}
-          onPageChange={this.handlePaginate}
-          marginPagesDisplayed={0}
-          pageRangeDisplayed={10}
-          containerClassName={"paginate-container"}
-          pageLinkClassName={"page-button"}
-          activeClassName={"current"}
-          activeLinkClassName={"current"}
-          forcePage={this.props.currentPage - 1}
-          previousClassName={`${this.props.currentPage === 0 ? "disabled" : ""}`}
-          previousLinkClassName={"page-button"}
-          nextLinkClassName={"page-button"}
-        />
+        {this.renderPreviousButton()}
+        {this.renderButtons()}
+        {this.renderNextButton()}
       </div>
+    );
+  }
+
+  private renderPreviousButton = () => {
+    const { currentPage } = this.props;
+    return (
+      <button
+        className={`page-button ${currentPage === 0 ? "disabled" : ""}`}
+        onClick={this.handleChangePage(currentPage - 1)}
+      >
+        {"<"}
+      </button>
+    );
+  }
+  private renderNextButton = () => {
+    const { currentPage, pages, lockForwardNav } = this.props;
+    const totalPages = pages.length;
+    return (
+      <button
+        className={`page-button ${currentPage === totalPages || lockForwardNav ? "disabled" : ""}`}
+        onClick={this.handleChangePage(currentPage + 1)}
+      >
+        {">"}
+      </button>
+    );
+  }
+
+  private renderButtons = () => {
+    const { currentPage, pages, lockForwardNav } = this.props;
+    const totalPages = pages.length;
+    const maxPagesLeftOfCurrent = currentPage - 1;
+    const maxPagesRightOfCurrent = totalPages - currentPage;
+    let minPage = 1;
+    let maxPage = totalPages;
+    const maxButtonsPerSide = Math.floor(kMaxPageNavigationButtons / 2);
+    if (maxPagesLeftOfCurrent < maxButtonsPerSide) {
+      maxPage = Math.min(totalPages, currentPage + maxButtonsPerSide + (maxButtonsPerSide - maxPagesLeftOfCurrent));
+    } else if (maxPagesRightOfCurrent < maxButtonsPerSide) {
+      minPage = Math.max(1, currentPage - maxButtonsPerSide - (maxButtonsPerSide - maxPagesRightOfCurrent));
+    } else if (totalPages > kMaxPageNavigationButtons) {
+      minPage = currentPage - maxButtonsPerSide;
+      maxPage = currentPage + maxButtonsPerSide;
+    }
+    const pageNums: number[] = [];
+    for (let i = minPage; i <= maxPage; i++) {
+      pageNums.push(i);
+    }
+    return (
+      pageNums.map((page: number) =>
+        <button
+          className={`page-button ${currentPage === page ? "current" : ""} ${(lockForwardNav && currentPage < page) ? "disabled" : ""}`}
+          onClick={this.handleChangePage(page)}
+          key={`page ${page}`}
+          data-cy="nav-pages-button"
+        >
+          {page}
+        </button>
+      )
     );
   }
 
   private renderHomePageButton = () => {
     const currentClass = this.props.currentPage === 0 ? "current" : "";
     return (
-      <button className={`page-button ${currentClass}`} onClick={this.handlePaginate}>
+      <button className={`page-button ${currentClass}`} onClick={this.handleChangePage(0)}>
         <IconHome
           width={28}
           height={28}
@@ -50,7 +96,7 @@ export class NavPages extends React.PureComponent <IProps> {
     );
   }
 
-  private handlePaginate = (page: any) => {
-    this.props.onPageChange(page.selected != null ? page.selected + 1 : 0);
+  private handleChangePage = (page: number) => () => {
+    this.props.onPageChange(page);
   }
 }

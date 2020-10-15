@@ -5,7 +5,7 @@ import iframePhone from "iframe-phone";
 import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
-  ISupportedFeatures, ServerMessage, IShowModal, ICloseModal
+  ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 
@@ -31,13 +31,15 @@ interface IProps {
   showModal: (options: IShowModal) => void;
   closeModal: (options: ICloseModal) => void;
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
+  setNavigation?: (options: INavigationOptions) => void;
   ref?: React.Ref<IframeRuntimeImperativeAPI>;
 }
 
 export const IframeRuntime: React.FC<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, showModal, closeModal, setSupportedFeatures,
-    setSendCustomMessage } = props;
+    setSendCustomMessage, setNavigation } = props;
+
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -63,12 +65,16 @@ export const IframeRuntime: React.FC<IProps> = forwardRef((props, ref) => {
         setHeightFromInteractive(newHeight);
       });
       addListener("supportedFeatures", (info: any) => {
-        if (info.features.aspectRatio) {
-          setARFromSupportedFeatures(info.features.aspectRatio);
+        const features: ISupportedFeatures = info.features;
+        if (features.aspectRatio) {
+          setARFromSupportedFeatures(features.aspectRatio);
         }
         if (iframeRef.current) {
-          setSupportedFeatures(iframeRef.current, info.features);
+          setSupportedFeatures(iframeRef.current, features);
         }
+      });
+      addListener("navigation", (options: INavigationOptions) => {
+        setNavigation?.(options);
       });
       addListener("getFirebaseJWT", async (request: IGetFirebaseJwtRequest) => {
         const { requestId, firebase_app, ...others } = request || {};
@@ -179,7 +185,7 @@ export const IframeRuntime: React.FC<IProps> = forwardRef((props, ref) => {
       }
     };
   }, [url, authoredState, report, initialInteractiveState, setNewHint, getFirebaseJWT, setSupportedFeatures,
-      setSendCustomMessage, showModal, closeModal]);
+      setSendCustomMessage, showModal, closeModal, setNavigation]);
 
   useImperativeHandle(ref, () => ({
     requestInteractiveState: () => phoneRef.current?.post("getInteractiveState")

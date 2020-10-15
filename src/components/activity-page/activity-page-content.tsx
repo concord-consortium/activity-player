@@ -8,6 +8,7 @@ import { accessibilityClick } from "../../utilities/accessibility-helper";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
 import { Page, EmbeddableWrapper } from "../../types";
+import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
 import "./activity-page-content.scss";
 
@@ -22,6 +23,8 @@ interface IProps {
   pageNumber: number;
   teacherEditionMode?: boolean;
   totalPreviousQuestions: number;
+  setNavigation: (refId: string, options: INavigationOptions) => void;
+  lockForwardNav?: boolean;
 }
 
 interface IState {
@@ -41,7 +44,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   render() {
-    const { enableReportButton, isFirstActivityPage, isLastActivityPage, page, pageNumber, totalPreviousQuestions } = this.props;
+    const { enableReportButton, isFirstActivityPage, isLastActivityPage, page, pageNumber, totalPreviousQuestions, lockForwardNav } = this.props;
     const { scrollOffset } = this.state;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
     const pageSectionQuestionCount = getPageSectionQuestionCount(page);
@@ -78,6 +81,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
         <BottomButtons
           onBack={!isFirstActivityPage ? this.handleBack : undefined}
           onNext={!isLastActivityPage ? this.handleNext : undefined}
+          lockForwardNav={lockForwardNav}
           onGenerateReport={enableReportButton ? this.handleReport : undefined}
         />
       </div>
@@ -88,6 +92,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const el = document.querySelector("#app");
     if (el) {
       el.addEventListener("scroll", this.handleScroll, false);
+      el.scrollTo(0, 0);
     }
   }
 
@@ -95,16 +100,6 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const el = document.querySelector("#app");
     if (el) {
       el.removeEventListener("scroll", this.handleScroll, false);
-    }
-  }
-
-  public componentDidUpdate(prevProps: any) {
-    if (prevProps.pageNumber !== this.props.pageNumber) {
-      const el = document.querySelector("#app");
-      if (el) {
-        el.scrollTo(0, 0);
-      }
-      this.setState({ isSecondaryCollapsed: false, scrollOffset: 0 });
     }
   }
 
@@ -149,6 +144,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                 questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
                 linkedPluginEmbeddable={linkedPluginEmbeddable}
                 teacherEditionMode={this.props.teacherEditionMode}
+                setNavigation={this.props.setNavigation}
               />
             );
           })
@@ -235,4 +231,5 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
       this.setState(state => ({ isSecondaryCollapsed: !state.isSecondaryCollapsed }));
     }
   }
+
 }

@@ -22,10 +22,19 @@ import { TeacherEditionBanner }  from "./teacher-edition-banner";
 import { AuthError }  from "./auth-error/auth-error";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
 import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
+import { ModalDialog } from "./modal-dialog";
+import Modal from "react-modal";
+import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
 import "./app.scss";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
+const kDefaultIncompleteMessage = "Please submit an answer first.";
+
+interface IncompleteQuestion {
+  refId: string;
+  navOptions: INavigationOptions;
+}
 
 interface IState {
   activity?: Activity;
@@ -37,6 +46,9 @@ interface IState {
   portalData?: IPortalData;
   sequence?: Sequence;
   showSequence?: boolean;
+  showModal: boolean;
+  modalLabel: string
+  incompleteQuestions: IncompleteQuestion[];
 }
 interface IProps {}
 
@@ -51,7 +63,10 @@ export class App extends React.PureComponent<IProps, IState> {
       teacherEditionMode: false,
       showThemeButtons: false,
       username: "Anonymous",
-      authError: ""
+      authError: "",
+      showModal: false,
+      modalLabel: "",
+      incompleteQuestions: [],
     };
   }
 
@@ -108,6 +123,8 @@ export class App extends React.PureComponent<IProps, IState> {
         loadPluginScripts(this.LARA, activity);
       }
 
+      Modal.setAppElement("#app");
+
     } catch (e) {
       console.warn(e);
     }
@@ -120,10 +137,15 @@ export class App extends React.PureComponent<IProps, IState> {
           <div className="app">
             <WarningBanner/>
             { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-            { this.state.showSequence 
+            { this.state.showSequence
               ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
               : this.renderActivity() }
             { this.state.showThemeButtons && <ThemeButtons/>}
+            <ModalDialog
+              label={this.state.modalLabel}
+              onClose={() => {this.setShowModal(false);}}
+              showModal={this.state.showModal}
+            />
           </div>
         </PortalDataContext.Provider>
       </LaraGlobalContext.Provider>
@@ -177,6 +199,7 @@ export class App extends React.PureComponent<IProps, IState> {
           singlePage={activity.layout === ActivityLayouts.SinglePage}
           sequenceName={this.state.sequence?.display_title}
           onShowSequence={this.handleShowSequence}
+          lockForwardNav={this.state.incompleteQuestions.length > 0}
         />
         { activity.layout === ActivityLayouts.SinglePage
           ? this.renderSinglePageContent(activity)
@@ -193,6 +216,9 @@ export class App extends React.PureComponent<IProps, IState> {
                   page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
                   totalPreviousQuestions={totalPreviousQuestions}
                   teacherEditionMode={this.state.teacherEditionMode}
+                  setNavigation={this.handleSetNavigation}
+                  key={`page-${currentPage}`}
+                  lockForwardNav={this.state.incompleteQuestions.length > 0}
                 />
         }
       </>
@@ -230,8 +256,14 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private handleChangePage = (page: number) => {
-    this.setState({currentPage: page});
-    setDocumentTitle(this.state.activity, page);
+    const { currentPage, incompleteQuestions, activity } = this.state;
+    if (page > currentPage && incompleteQuestions.length > 0) {
+      const label = incompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage;
+      this.setShowModal(true, label);
+    } else if (page >= 0 && (activity && page <= activity.pages.length)) {
+      this.setState({currentPage: page, incompleteQuestions: []});
+      setDocumentTitle(activity, page);
+    }
   }
 
   private handleSelectActivity = (activityNum: number) => {
@@ -243,4 +275,23 @@ export class App extends React.PureComponent<IProps, IState> {
   private handleShowSequence = () => {
     this.setState({showSequence: true});
   }
+
+  private setShowModal = (show: boolean, label = "") => {
+    this.setState({showModal: show, modalLabel: label});
+  }
+
+  private handleSetNavigation = (refId: string, options: INavigationOptions) => {
+    const { incompleteQuestions } = this.state;
+    const qIndex = incompleteQuestions.findIndex((q: IncompleteQuestion) => q.refId === refId);
+    const updatedIncompleteQuestions = [...incompleteQuestions];
+    if (qIndex >= 0 && options.enableForwardNav) {
+      updatedIncompleteQuestions.splice(qIndex, 1);
+      this.setState({ incompleteQuestions: updatedIncompleteQuestions });
+    } else if (qIndex < 0 && !options.enableForwardNav) {
+      const newIncompleteQuestion: IncompleteQuestion = { refId, navOptions: options };
+      updatedIncompleteQuestions.push(newIncompleteQuestion);
+      this.setState({ incompleteQuestions: updatedIncompleteQuestions });
+    }
+  }
+
 }

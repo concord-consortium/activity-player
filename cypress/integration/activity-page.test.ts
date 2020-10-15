@@ -32,6 +32,17 @@ context("Test the overall app", () => {
         .should("be.visible").and("contain","Duis vitae ultrices augue, eu fermentum elit.");
     });
   });
+  describe("Required questions",()=>{
+    it("verify locked navigation",()=>{
+      activityPage.getNavPage(5).click();
+      cy.wait(1000);
+      activityPage.getNavPage(6).should("have.class", "disabled");
+      activityPage.getNavPage(6).click();
+      activityPage.getModalDialogMessage().should("have.length", 1);
+      activityPage.getModalDialogClose().click();
+      activityPage.getModalDialogMessage().should("have.length", 0);
+    });
+  });
   describe("Question Interactives",()=>{
     it("verify we can load a managed interactive",()=>{
       cy.visit("?activity=sample-activity-1&preview");
