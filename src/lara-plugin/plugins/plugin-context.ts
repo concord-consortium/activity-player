@@ -5,6 +5,8 @@ import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
 // ACTIVITY_PLAYER_CODE:
 import $ from "jquery";
 // LARA_CODE import * as $ from "jquery";
+// ACTIVITY_PLAYER_CODE:
+import { Logger } from "../../lib/logger";
 
 export type IPluginContextOptions = IPluginRuntimeContextOptions | IPluginAuthoringContextOptions;
 
@@ -163,13 +165,18 @@ const getClassInfo = (classInfoUrl: string | null): Promise<IClassInfo> | null =
 };
 
 const log = (context: IPluginRuntimeContextOptions, logData: string | ILogData): void => {
-  const logger = (window as any).loggerUtils;
-  if (logger) {
+  // LARA_CODE const logger = (window as any).loggerUtils;
+  // LARA_CODE if (logger) {
+  // ACTIVITY_PLAYER_CODE:
+  if (Logger) {
     if (typeof(logData) === "string") {
       logData = {event: logData};
     }
     const pluginLogData = Object.assign(fetchPluginEventLogData(context), logData);
-    logger.log(pluginLogData);
+    // LARA_CODE logger.log(pluginLogData);
+    // ACTIVITY_PLAYER_CODE:
+    const { event, event_value, ...parameters } = pluginLogData;
+    Logger.log(event, event_value, parameters);
   }
 };
 
