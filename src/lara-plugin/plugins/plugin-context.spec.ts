@@ -186,7 +186,8 @@ describe("Plugin runtime context helper", () => {
     const runtimeContextWithEmbeddable = generateRuntimePluginContext(Object.assign({},
       pluginContext, { wrappedEmbeddable }));
 
-    describe("when logger_utils are available", () => {
+    // ACTIVITY_PLAYER_CODE:
+    describe.skip("when logger_utils are available", () => {
       beforeEach(() => {
         (window as any).loggerUtils = {
           log: jest.fn()
@@ -224,7 +225,8 @@ describe("Plugin runtime context helper", () => {
 
     });
 
-    describe("when logger_utils are not available", () => {
+    // ACTIVITY_PLAYER_CODE:
+    describe.skip("when logger_utils are not available", () => {
       beforeEach(() => {
         (window as any).loggerUtils = undefined;
       });
