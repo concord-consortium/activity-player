@@ -8,7 +8,7 @@ interface LogMessage {
   application: string;
   run_remote_endpoint?: string;
   username: string;
-  userType: string;
+  role: string;
   classHash: string;
   session: string;
   appMode: string;
@@ -36,11 +36,11 @@ export enum LogEventName {
 }
 
 export class Logger {
-  public static initializeLogger(LARA: LaraGlobalType, username: string, userType: string, classHash: string, teacherEdition: boolean, sequence: string | undefined, activity: string, activityPage: number) {
+  public static initializeLogger(LARA: LaraGlobalType, username: string, role: string, classHash: string, teacherEdition: boolean, sequence: string | undefined, activity: string, activityPage: number, loggingRemoteEndpoint: string) {
     if (DEBUG_LOGGER) {
       console.log("Logger#initializeLogger called.");
     }
-    this._instance = new Logger(LARA, username, userType, classHash, teacherEdition, sequence, activity, activityPage);
+    this._instance = new Logger(LARA, username, role, classHash, teacherEdition, sequence, activity, activityPage, loggingRemoteEndpoint);
   }
 
   public static updateActivity(activity: string) {
@@ -70,24 +70,26 @@ export class Logger {
 
   private LARA: LaraGlobalType;
   private username: string;
-  private userType: string;
+  private role: string;
   private classHash: string;
   private session: string;
   private appMode: string;
   private sequence: string | undefined;
   private activity: string;
   private activityPage: number;
+  private loggingRemoteEndpoint: string;
 
-  private constructor(LARA: LaraGlobalType, username: string, userType: string, classHash: string, teacherEdition: boolean, sequence: string | undefined, activity: string, activityPage: number) {
+  private constructor(LARA: LaraGlobalType, username: string, role: string, classHash: string, teacherEdition: boolean, sequence: string | undefined, activity: string, activityPage: number, loggingRemoteEndpoint: string) {
     this.LARA = LARA;
     this.session = uuid();
     this.username = username;
-    this.userType = userType;
+    this.role = role;
     this.classHash= classHash;
     this.appMode = teacherEdition ? "teacher edition" : "";
     this.sequence = sequence;
     this.activity = activity;
     this.activityPage = activityPage;
+    this.loggingRemoteEndpoint = loggingRemoteEndpoint;
   }
 
   private createLogMessage(
@@ -101,7 +103,7 @@ export class Logger {
     const logMessage: LogMessage = {
       application: "Activity Player",
       username: this.username,
-      userType: this.userType,
+      role: this.role,
       classHash: this.classHash,
       session: this.session,
       appMode: this.appMode,
@@ -114,12 +116,8 @@ export class Logger {
       parameters,
       interactive_id,
       interactive_url,
+      run_remote_endpoint: this.loggingRemoteEndpoint
     };
-
-    // WTD
-    // if (user.loggingRemoteEndpoint) {
-    //   logMessage.run_remote_endpoint = user.loggingRemoteEndpoint;
-    // }
 
     return logMessage;
   }

@@ -92,7 +92,8 @@ export class App extends React.PureComponent<IProps, IState> {
       setDocumentTitle(activity, currentPage);
 
       let classHash = "";
-      let userType = "";
+      let role = "unknown";
+      let loggingRemoteEndpoint = "";
 
       if (queryValue("token")) {
         try {
@@ -101,10 +102,13 @@ export class App extends React.PureComponent<IProps, IState> {
             newState.username = portalData.fullName;
           }
           if (portalData.userType) {
-            userType = portalData.userType;
+            role = portalData.userType;
           }
           if (portalData.contextId) {
             classHash = portalData.contextId;
+          }
+          if (portalData.loggingRemoteEndpoint) {
+            loggingRemoteEndpoint = portalData.loggingRemoteEndpoint;
           }
           await initializeDB(portalData.database.appName);
           await signInWithToken(portalData.database.rawFirebaseJWT);
@@ -135,7 +139,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
       Modal.setAppElement("#app");
 
-      Logger.initializeLogger(this.LARA, newState.username || this.state.username, userType, classHash, teacherEditionMode, sequencePath, activityPath, currentPage);
+      Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, activityPath, currentPage, loggingRemoteEndpoint);
 
     } catch (e) {
       console.warn(e);
