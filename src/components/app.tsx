@@ -139,7 +139,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
       Modal.setAppElement("#app");
 
-      Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, activityPath, currentPage, loggingRemoteEndpoint);
+      Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, loggingRemoteEndpoint);
 
     } catch (e) {
       console.warn(e);
@@ -280,11 +280,13 @@ export class App extends React.PureComponent<IProps, IState> {
       this.setState({currentPage: page, incompleteQuestions: []});
       setDocumentTitle(activity, page);
       Logger.updateActivityPage(page);
-      Logger.log(LogEventName.CHANGE_ACTIVITY_PAGE, page);
+      Logger.log(LogEventName.change_activity_page, { new_page: page });
     }
   }
 
   private handleSelectActivity = (activityNum: number) => {
+    Logger.updateSequenceActivityindex(activityNum + 1);
+    Logger.log(LogEventName.change_sequence_activity, { new_activity_index: activityNum + 1, new_activity_name: this.state.sequence?.activities[activityNum].name });
     this.setState((prevState) =>
       ({ activity: prevState.sequence?.activities[activityNum], showSequence: false })
     );
@@ -292,12 +294,12 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleShowSequence = () => {
     this.setState({showSequence: true});
-    Logger.log(LogEventName.SHOW_SEQUENCE_INTRO_PAGE);
+    Logger.log(LogEventName.show_sequence_intro_page);
   }
 
   private setShowModal = (show: boolean, label = "") => {
     this.setState({showModal: show, modalLabel: label});
-    Logger.log(LogEventName.TOGGLE_MODAL_DIALOG, show, { modal_label: label });
+    Logger.log(LogEventName.toggle_modal_dialog, { show_modal: show, modal_label: label });
   }
 
   private handleSetNavigation = (refId: string, options: INavigationOptions) => {

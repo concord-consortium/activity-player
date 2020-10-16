@@ -176,7 +176,7 @@ const log = (context: IPluginRuntimeContextOptions, logData: string | ILogData):
     // LARA_CODE logger.log(pluginLogData);
     // ACTIVITY_PLAYER_CODE:
     const { event, event_value, ...parameters } = pluginLogData;
-    Logger.log(event, event_value, parameters);
+    Logger.log(event, parameters, event_value);
   }
 };
 

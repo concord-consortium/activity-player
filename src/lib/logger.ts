@@ -13,7 +13,8 @@ interface LogMessage {
   session: string;
   appMode: string;
   sequence: string | undefined;
-  activity: string;
+  sequenceActivityIndex: number;
+  activity: string | undefined,
   activityPage: number;
   time: number;
   event: string;
@@ -24,23 +25,32 @@ interface LogMessage {
 }
 
 export enum LogEventName {
-  CHANGE_ACTIVITY,
-  CHANGE_ACTIVITY_PAGE,
-  SHOW_SEQUENCE_INTRO_PAGE,
-  TOGGLE_MODAL_DIALOG,
-  IFRAME_INTERACTION,
-  TOGGLE_SIDEBAR,
-  TOGGLE_COLLAPSIBLE_COLUMN,
-  CREATE_REPORT,
-  TOGGLE_HINT,
+  change_sequence_activity,
+  change_activity_page,
+  show_sequence_intro_page,
+  toggle_modal_dialog,
+  iframe_interaction,
+  toggle_sidebar,
+  toggle_collapsible_column,
+  create_report,
+  toggle_hint,
 }
 
 export class Logger {
-  public static initializeLogger(LARA: LaraGlobalType, username: string, role: string, classHash: string, teacherEdition: boolean, sequence: string | undefined, activity: string, activityPage: number, loggingRemoteEndpoint: string) {
+  public static initializeLogger(LARA: LaraGlobalType,
+                                 username: string,
+                                 role: string,
+                                 classHash: string,
+                                 teacherEdition: boolean,
+                                 sequence: string | undefined,
+                                 sequenceActivityIndex: number,
+                                 activity: string | undefined,
+                                 activityPage: number,
+                                 loggingRemoteEndpoint: string) {
     if (DEBUG_LOGGER) {
       console.log("Logger#initializeLogger called.");
     }
-    this._instance = new Logger(LARA, username, role, classHash, teacherEdition, sequence, activity, activityPage, loggingRemoteEndpoint);
+    this._instance = new Logger(LARA, username, role, classHash, teacherEdition, sequence, sequenceActivityIndex, activity, activityPage, loggingRemoteEndpoint);
   }
 
   public static updateActivity(activity: string) {
@@ -51,10 +61,14 @@ export class Logger {
     this._instance.activityPage = page;
   }
 
-  public static log(event: string | LogEventName, event_value?: any, parameters?: Record<string, unknown>, interactive_id?: string, interactive_url?: string) {
+  public static updateSequenceActivityindex(index: number) {
+    this._instance.sequenceActivityIndex = index;
+  }
+
+  public static log(event: string | LogEventName, parameters?: Record<string, unknown>, event_value?: any, interactive_id?: string, interactive_url?: string) {
     if (!this._instance) return;
     const eventString = typeof event === "string" ? event : LogEventName[event];
-    const logMessage = Logger.Instance.createLogMessage(eventString, event_value, parameters, interactive_id, interactive_url);
+    const logMessage = Logger.Instance.createLogMessage(eventString, parameters, event_value, interactive_id, interactive_url);
     this._instance.LARA.Events.emitLog(logMessage);
     sendToLoggingService(logMessage);
   }
@@ -75,11 +89,21 @@ export class Logger {
   private session: string;
   private appMode: string;
   private sequence: string | undefined;
-  private activity: string;
+  private sequenceActivityIndex: number;
+  private activity: string | undefined;
   private activityPage: number;
   private loggingRemoteEndpoint: string;
 
-  private constructor(LARA: LaraGlobalType, username: string, role: string, classHash: string, teacherEdition: boolean, sequence: string | undefined, activity: string, activityPage: number, loggingRemoteEndpoint: string) {
+  private constructor(LARA: LaraGlobalType,
+                      username: string,
+                      role: string,
+                      classHash: string,
+                      teacherEdition: boolean,
+                      sequence: string | undefined,
+                      sequenceActivityIndex: number,
+                      activity: string | undefined,
+                      activityPage: number,
+                      loggingRemoteEndpoint: string) {
     this.LARA = LARA;
     this.session = uuid();
     this.username = username;
@@ -87,6 +111,7 @@ export class Logger {
     this.classHash= classHash;
     this.appMode = teacherEdition ? "teacher edition" : "";
     this.sequence = sequence;
+    this.sequenceActivityIndex = sequenceActivityIndex;
     this.activity = activity;
     this.activityPage = activityPage;
     this.loggingRemoteEndpoint = loggingRemoteEndpoint;
@@ -94,8 +119,8 @@ export class Logger {
 
   private createLogMessage(
     event: string,
-    event_value?: any,
     parameters?: Record<string, unknown>,
+    event_value?: any,
     interactive_id?: string,
     interactive_url?: string,
   ): LogMessage {
@@ -108,6 +133,7 @@ export class Logger {
       session: this.session,
       appMode: this.appMode,
       sequence: this.sequence,
+      sequenceActivityIndex: this.sequenceActivityIndex,
       activity: this.activity,
       activityPage: this.activityPage,
       time: Date.now(), // eventually we will want server skew (or to add this via FB directly)
