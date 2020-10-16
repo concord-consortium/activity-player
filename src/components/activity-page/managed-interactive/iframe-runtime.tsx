@@ -123,7 +123,7 @@ export const IframeRuntime: React.FC<IProps> = forwardRef((props, ref) => {
         closeModal(options);
       });
       addListener("log", (logData: any) => {
-        Logger.log(logData.action, logData.value, logData.data, id, url);
+        Logger.log(logData.action, logData.data, logData.value, id, url);
       });
       // note: many of the values here are placeholders that require further
       // consideration to determine whether there are more appropriate values.

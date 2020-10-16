@@ -107,13 +107,13 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     const [ showHint, setShowHint ] = useState(false);
     const [ hint, setHint ] = useState("");
     const handleHintClose = () => {
+      Logger.log(LogEventName.toggle_hint, { show_hint: false, hint });
       setShowHint(false);
-      Logger.log(LogEventName.TOGGLE_HINT, false, { hint });
     };
     const handleShowHint = () => {
       if (accessibilityClick(event)) {
+        Logger.log(LogEventName.toggle_hint, { show_hint: !showHint, hint });
         setShowHint(!showHint);
-        Logger.log(LogEventName.TOGGLE_HINT, !showHint, { hint });
       }
     };
     const setNewHint = useCallback((newHint: string) => {
