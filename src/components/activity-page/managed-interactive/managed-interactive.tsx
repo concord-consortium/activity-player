@@ -17,6 +17,7 @@ import { accessibilityClick } from "../../../utilities/accessibility-helper";
 import { renderHTML } from "../../../utilities/render-html";
 import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 import { Lightbox } from "./lightbox";
+import { Logger, LogEventName } from "../../../lib/logger";
 import "./managed-interactive.scss";
 
 interface IProps {
@@ -107,10 +108,12 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     const [ hint, setHint ] = useState("");
     const handleHintClose = () => {
       setShowHint(false);
+      Logger.log(LogEventName.TOGGLE_HINT, false, { hint });
     };
     const handleShowHint = () => {
       if (accessibilityClick(event)) {
         setShowHint(!showHint);
+        Logger.log(LogEventName.TOGGLE_HINT, !showHint, { hint });
       }
     };
     const setNewHint = useCallback((newHint: string) => {

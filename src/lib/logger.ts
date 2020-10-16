@@ -32,6 +32,7 @@ export enum LogEventName {
   SHOW_SIDEBAR,
   TOGGLE_COLLAPSIBLE_COLUMN,
   CREATE_REPORT,
+  TOGGLE_HINT,
 }
 
 export class Logger {
