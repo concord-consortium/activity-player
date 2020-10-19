@@ -9,6 +9,7 @@ import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
 import { Page, EmbeddableWrapper } from "../../types";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
+import { Logger, LogEventName } from "../../lib/logger";
 
 import "./activity-page-content.scss";
 
@@ -125,6 +126,9 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
   private handleReport = () => {
     // TODO: create report when pressed
+    Logger.log({
+      event: LogEventName.create_report
+    });
   }
 
   private renderEmbeddables = (embeddables: EmbeddableWrapper[], section: EmbeddableSections, totalPreviousQuestions: number) => {
@@ -228,6 +232,10 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
   private handleCollapseHeader = (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
     if (accessibilityClick(e))  {
+      Logger.log({
+        event: LogEventName.toggle_collapsible_column,
+        parameters:{ hide_column: !this.state.isSecondaryCollapsed }
+      });
       this.setState(state => ({ isSecondaryCollapsed: !state.isSecondaryCollapsed }));
     }
   }

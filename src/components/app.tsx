@@ -25,6 +25,7 @@ import { SequenceIntroduction } from "./sequence-introduction/sequence-introduct
 import { ModalDialog } from "./modal-dialog";
 import Modal from "react-modal";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
+import { Logger, LogEventName } from "../lib/logger";
 
 import "./app.scss";
 
@@ -90,11 +91,24 @@ export class App extends React.PureComponent<IProps, IState> {
       const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showSequence, sequence, teacherEditionMode};
       setDocumentTitle(activity, currentPage);
 
+      let classHash = "";
+      let role = "unknown";
+      let runRemoteEndpoint = "";
+
       if (queryValue("token")) {
         try {
           const portalData = await fetchPortalData();
           if (portalData.fullName) {
             newState.username = portalData.fullName;
+          }
+          if (portalData.userType) {
+            role = portalData.userType;
+          }
+          if (portalData.contextId) {
+            classHash = portalData.contextId;
+          }
+          if (portalData.runRemoteEndpoint) {
+            runRemoteEndpoint = portalData.runRemoteEndpoint;
           }
           await initializeDB(portalData.database.appName);
           await signInWithToken(portalData.database.rawFirebaseJWT);
@@ -118,12 +132,14 @@ export class App extends React.PureComponent<IProps, IState> {
 
       this.setState(newState as IState);
 
+      this.LARA = initializeLara();
       if (teacherEditionMode) {
-        this.LARA = initializeLara();
         loadPluginScripts(this.LARA, activity);
       }
 
       Modal.setAppElement("#app");
+
+      Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint);
 
     } catch (e) {
       console.warn(e);
@@ -263,10 +279,20 @@ export class App extends React.PureComponent<IProps, IState> {
     } else if (page >= 0 && (activity && page <= activity.pages.length)) {
       this.setState({currentPage: page, incompleteQuestions: []});
       setDocumentTitle(activity, page);
+      Logger.updateActivityPage(page);
+      Logger.log({
+        event: LogEventName.change_activity_page,
+        parameters: { new_page: page }
+      });
     }
   }
 
   private handleSelectActivity = (activityNum: number) => {
+    Logger.updateSequenceActivityindex(activityNum + 1);
+    Logger.log({
+      event: LogEventName.change_sequence_activity,
+      parameters: { new_activity_index: activityNum + 1, new_activity_name: this.state.sequence?.activities[activityNum].name }
+    });
     this.setState((prevState) =>
       ({ activity: prevState.sequence?.activities[activityNum], showSequence: false })
     );
@@ -274,10 +300,17 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleShowSequence = () => {
     this.setState({showSequence: true});
+    Logger.log({
+      event: LogEventName.show_sequence_intro_page
+    });
   }
 
   private setShowModal = (show: boolean, label = "") => {
     this.setState({showModal: show, modalLabel: label});
+    Logger.log({
+      event: LogEventName.toggle_modal_dialog,
+      parameters: { show_modal: show, modal_label: label }
+    });
   }
 
   private handleSetNavigation = (refId: string, options: INavigationOptions) => {
