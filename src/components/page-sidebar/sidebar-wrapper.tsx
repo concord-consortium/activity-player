@@ -43,7 +43,10 @@ export class SidebarWrapper extends React.PureComponent<IProps, IState> {
   }
 
   private setShowSidebarContent = (index: number, show: boolean) => {
-    Logger.log(LogEventName.toggle_sidebar, { show_sidebar: show });
+    Logger.log({
+      event: LogEventName.toggle_sidebar,
+      parameters: { show_sidebar: show }
+    });
     this.setState(state => {
       const updatedShowSidebarContent = new Array(state.showSidebarContent.length).fill(false);
       updatedShowSidebarContent[index] = show;
