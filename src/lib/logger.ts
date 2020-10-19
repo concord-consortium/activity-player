@@ -4,6 +4,14 @@ import { LaraGlobalType } from "../lara-plugin/index";
 
 const logManagerUrl = "//cc-log-manager.herokuapp.com/api/logs";
 
+export interface LogParams {
+  event: string | LogEventName,
+  event_value?: any,
+  parameters?: any,
+  interactive_id?: string | undefined,
+  interactive_url?: string | undefined
+}
+
 interface LogMessage {
   application: string;
   run_remote_endpoint?: string;
@@ -65,8 +73,9 @@ export class Logger {
     this._instance.sequenceActivityIndex = index;
   }
 
-  public static log(event: string | LogEventName, parameters?: Record<string, unknown>, event_value?: any, interactive_id?: string, interactive_url?: string) {
+  public static log(logParams: LogParams) {
     if (!this._instance) return;
+    const { event, parameters, event_value, interactive_id, interactive_url  } = logParams;
     const eventString = typeof event === "string" ? event : LogEventName[event];
     const logMessage = Logger.Instance.createLogMessage(eventString, parameters, event_value, interactive_id, interactive_url);
     this._instance.LARA.Events.emitLog(logMessage);

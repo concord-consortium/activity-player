@@ -126,7 +126,9 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
   private handleReport = () => {
     // TODO: create report when pressed
-    Logger.log(LogEventName.create_report);
+    Logger.log({
+      event: LogEventName.create_report
+    });
   }
 
   private renderEmbeddables = (embeddables: EmbeddableWrapper[], section: EmbeddableSections, totalPreviousQuestions: number) => {
@@ -230,7 +232,10 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
   private handleCollapseHeader = (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
     if (accessibilityClick(e))  {
-      Logger.log(LogEventName.toggle_collapsible_column, { hide_column: !this.state.isSecondaryCollapsed });
+      Logger.log({
+        event: LogEventName.toggle_collapsible_column,
+        parameters:{ hide_column: !this.state.isSecondaryCollapsed }
+      });
       this.setState(state => ({ isSecondaryCollapsed: !state.isSecondaryCollapsed }));
     }
   }
