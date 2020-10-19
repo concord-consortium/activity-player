@@ -56,7 +56,7 @@ describe("Firestore", () => {
       resourceUrl: "http://example/resource",
       toolId: "activity-player.concord.org",
       userType: "learner",
-      loggingRemoteEndpoint: ""
+      runRemoteEndpoint: ""
     });
 
     const embeddable = {

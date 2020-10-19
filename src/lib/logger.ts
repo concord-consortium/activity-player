@@ -54,11 +54,11 @@ export class Logger {
                                  sequenceActivityIndex: number,
                                  activity: string | undefined,
                                  activityPage: number,
-                                 loggingRemoteEndpoint: string) {
+                                 runRemoteEndpoint: string) {
     if (DEBUG_LOGGER) {
       console.log("Logger#initializeLogger called.");
     }
-    this._instance = new Logger(LARA, username, role, classHash, teacherEdition, sequence, sequenceActivityIndex, activity, activityPage, loggingRemoteEndpoint);
+    this._instance = new Logger(LARA, username, role, classHash, teacherEdition, sequence, sequenceActivityIndex, activity, activityPage, runRemoteEndpoint);
   }
 
   public static updateActivity(activity: string) {
@@ -101,7 +101,7 @@ export class Logger {
   private sequenceActivityIndex: number;
   private activity: string | undefined;
   private activityPage: number;
-  private loggingRemoteEndpoint: string;
+  private runRemoteEndpoint: string;
 
   private constructor(LARA: LaraGlobalType,
                       username: string,
@@ -112,7 +112,7 @@ export class Logger {
                       sequenceActivityIndex: number,
                       activity: string | undefined,
                       activityPage: number,
-                      loggingRemoteEndpoint: string) {
+                      runRemoteEndpoint: string) {
     this.LARA = LARA;
     this.session = uuid();
     this.username = username;
@@ -123,7 +123,7 @@ export class Logger {
     this.sequenceActivityIndex = sequenceActivityIndex;
     this.activity = activity;
     this.activityPage = activityPage;
-    this.loggingRemoteEndpoint = loggingRemoteEndpoint;
+    this.runRemoteEndpoint = runRemoteEndpoint;
   }
 
   private createLogMessage(
@@ -151,7 +151,7 @@ export class Logger {
       parameters,
       interactive_id,
       interactive_url,
-      run_remote_endpoint: this.loggingRemoteEndpoint
+      run_remote_endpoint: this.runRemoteEndpoint
     };
 
     return logMessage;

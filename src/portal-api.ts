@@ -94,7 +94,7 @@ export interface IPortalData extends ILTIPartial {
   basePortalUrl?: string;
   rawPortalJWT?: string;
   portalJWT?: PortalJWT;
-  loggingRemoteEndpoint: string;
+  runRemoteEndpoint: string;
 }
 
 export interface IAnonymousPortalData {
@@ -406,7 +406,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
       sourceKey,
       rawFirebaseJWT,
     },
-    loggingRemoteEndpoint: firebaseJWT.returnUrl
+    runRemoteEndpoint: firebaseJWT.returnUrl
   };
   return rawPortalData;
 };
