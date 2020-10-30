@@ -160,7 +160,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   private renderIntroEmbeddables = (embeddables: EmbeddableWrapper[], totalPreviousQuestions: number) => {
     return (
       <div className="embeddables">
-        <div className="group responsive">
+        <div className="group fill-remaining">
           {this.renderEmbeddables(embeddables, EmbeddableSections.Introduction, totalPreviousQuestions)}
         </div>
       </div>
