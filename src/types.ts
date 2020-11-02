@@ -186,6 +186,7 @@ export interface IAnonymousMetadataPartial {
   source_key: string;
   tool_id: string;
   tool_user_id: "anonymous";
+  platform_user_id: string;
 }
 
 /**
