@@ -266,6 +266,7 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
       resource_url: portalData.resourceUrl,
       tool_id: portalData.toolId,
       tool_user_id: "anonymous",
+      platform_user_id: portalData.runKey
     } as AnonymousRuntimeAnswerMetadata;
   }
 
