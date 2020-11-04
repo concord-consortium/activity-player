@@ -2,7 +2,7 @@ import React from "react";
 import { waitFor } from "@testing-library/dom";
 import iframePhone from "iframe-phone";
 import { Embeddable } from "./embeddable";
-import { PageLayouts } from "../../utilities/activity-utils";
+import { PageLayouts, EmbeddableSections } from "../../utilities/activity-utils";
 import { mount, ReactWrapper } from "enzyme";
 import { EmbeddableWrapper } from "../../types";
 import { act } from "react-dom/test-utils";
@@ -22,7 +22,7 @@ describe("Embeddable component", () => {
 
     let wrapper: ReactWrapper;
     await act(async () => {
-      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive}/>);
+      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
       expect(wrapper.containsMatchingElement(<div>Loading...</div>)).toEqual(true);
     });
 
@@ -45,7 +45,7 @@ describe("Embeddable component", () => {
 
     let wrapper: ReactWrapper;
     await act(async () => {
-      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive}/>);
+      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
       expect(wrapper.containsMatchingElement(<div>Loading...</div>)).toEqual(true);
     });
 
@@ -68,7 +68,7 @@ describe("Embeddable component", () => {
 
     let wrapper: ReactWrapper;
     await act(async () => {
-      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive}/>);
+      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
     });
 
     await waitFor(() => {
@@ -92,7 +92,7 @@ describe("Embeddable component", () => {
 
     let wrapper: ReactWrapper;
     await act(async () => {
-      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive}/>);
+      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
     });
 
     await waitFor(() => {

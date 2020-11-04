@@ -1,5 +1,6 @@
 import React from "react";
-import { ActivityLayouts, PageLayouts, isQuestion, VisibleEmbeddables, getVisibleEmbeddablesOnPage } from "../../utilities/activity-utils";
+import { ActivityLayouts, PageLayouts, isQuestion, VisibleEmbeddables, getVisibleEmbeddablesOnPage,
+         EmbeddableSections } from "../../utilities/activity-utils";
 import { Embeddable } from "../activity-page/embeddable";
 import { RelatedContent } from "./related-content";
 import { SubmitButton } from "./submit-button";
@@ -33,6 +34,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
                 key={`embeddable ${embeddableNumber}`}
                 embeddableWrapper={embeddableWrapper}
                 pageLayout={PageLayouts.FullWidth}
+                pageSection={EmbeddableSections.InfoAssessment}
                 questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
                 teacherEditionMode={teacherEditionMode}
               />
