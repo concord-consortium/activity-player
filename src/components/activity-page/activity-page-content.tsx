@@ -135,7 +135,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     let questionNumber = totalPreviousQuestions;
     return (
       <React.Fragment>
-        { embeddables.map((embeddableWrapper, i: number) => {
+        { embeddables.map((embeddableWrapper) => {
             if (isQuestion(embeddableWrapper)) {
               questionNumber++;
             }
@@ -145,6 +145,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                 key={`embeddable-${embeddableWrapper.embeddable.ref_id}`}
                 embeddableWrapper={embeddableWrapper}
                 pageLayout={this.props.page.layout}
+                pageSection={section}
                 questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
                 linkedPluginEmbeddable={linkedPluginEmbeddable}
                 teacherEditionMode={this.props.teacherEditionMode}
@@ -160,7 +161,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   private renderIntroEmbeddables = (embeddables: EmbeddableWrapper[], totalPreviousQuestions: number) => {
     return (
       <div className="embeddables">
-        <div className="group fill-remaining">
+        <div className="group fill-remaining responsive">
           {this.renderEmbeddables(embeddables, EmbeddableSections.Introduction, totalPreviousQuestions)}
         </div>
       </div>

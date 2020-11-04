@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useEffect, useRef, useState }  from "re
 import { TextBox } from "./text-box/text-box";
 import { LaraGlobalContext } from "../lara-global-context";
 import { ManagedInteractive } from "./managed-interactive/managed-interactive";
-import { ActivityLayouts, PageLayouts } from "../../utilities/activity-utils";
+import { ActivityLayouts, PageLayouts, EmbeddableSections } from "../../utilities/activity-utils";
 import { EmbeddablePlugin } from "./plugins/embeddable-plugin";
 import { initializePlugin, IPartialEmbeddablePluginContext, validateEmbeddablePluginContextForWrappedEmbeddable
         } from "../../utilities/plugin-utils";
@@ -18,6 +18,7 @@ interface IProps {
   embeddableWrapper: EmbeddableWrapper;
   linkedPluginEmbeddable?: IEmbeddablePlugin;
   pageLayout: string;
+  pageSection: string;
   questionNumber?: number;
   teacherEditionMode?: boolean;
   setNavigation?: (id: string, options: INavigationOptions) => void;
@@ -26,7 +27,7 @@ interface IProps {
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.FC<IProps> = (props) => {
-  const { activityLayout, embeddableWrapper, linkedPluginEmbeddable, pageLayout, questionNumber, setNavigation, teacherEditionMode } = props;
+  const { activityLayout, embeddableWrapper, linkedPluginEmbeddable, pageLayout, pageSection, questionNumber, setNavigation, teacherEditionMode } = props;
   const embeddable = embeddableWrapper.embeddable;
 
   interface InitialInteractiveState {
@@ -117,12 +118,15 @@ export const Embeddable: React.FC<IProps> = (props) => {
     qComponent = <div>Content type not supported</div>;
   }
 
-  const staticWidth = pageLayout === PageLayouts.FortySixty || pageLayout === PageLayouts.SixtyForty || pageLayout === PageLayouts.Responsive;
+  const fillContainerWidth = pageSection !== EmbeddableSections.Introduction &&
+                             (pageLayout === PageLayouts.FortySixty ||
+                              pageLayout === PageLayouts.SixtyForty ||
+                              pageLayout === PageLayouts.Responsive);
   const singlePageLayout = activityLayout === ActivityLayouts.SinglePage;
 
   return (
     <div
-      className={`embeddable ${embeddableWrapper.embeddable.is_full_width || staticWidth || singlePageLayout ? "full-width" : "reduced-width"}`}
+      className={`embeddable ${embeddableWrapper.embeddable.is_full_width || fillContainerWidth || singlePageLayout ? "full-width" : "reduced-width"}`}
       data-cy="embeddable"
       key={embeddableWrapper.embeddable.ref_id}
     >
