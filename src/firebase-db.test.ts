@@ -130,6 +130,7 @@ describe("Firestore", () => {
       answer: "anonymous test",
       answer_text: "anonymous test",
       id: exportableAnswer.id,
+      platform_user_id: "",
       question_id: "managed_interactive_123",
       question_type: "open_response",
       remote_endpoint: "",
