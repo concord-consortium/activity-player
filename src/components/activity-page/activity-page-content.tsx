@@ -132,7 +132,6 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const activityUrl = activity? ((activity.split(".json"))[0]).replace("api/v1/","") : "";
     const answerSource = window.location.hostname;
     window.open(reportLink + "?runKey=" + runKey + "&activity=" + activityUrl + "&answerSource="+answerSource);
-    // TODO: create report when pressed
     Logger.log({
       event: LogEventName.create_report
     });
