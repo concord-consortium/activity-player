@@ -102,6 +102,13 @@ export async function initializeDB(name: FirebaseAppName) {
     await firebase.firestore().disableNetwork();
   }
 
+  // Save action seems to be failing when you try to save a document with a property explicitly set to undefined value.
+  // `null` or empty string are fine. ActivityPlayer was not saving some interactive states because of that.
+  // See: https://github.com/googleapis/nodejs-firestore/issues/1031#issuecomment-636308604
+  firebase.firestore().settings({
+    ignoreUndefinedProperties: true,
+  });
+
   return firebase.firestore();
 }
 
