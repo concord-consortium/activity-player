@@ -102,9 +102,9 @@ export async function initializeDB(name: FirebaseAppName) {
     await firebase.firestore().disableNetwork();
   }
 
-  // See: https://concord-consortium.slack.com/archives/C0303QUNU/p1604596779407700
-  // Or: https://github.com/googleapis/nodejs-firestore/issues/1031#issuecomment-636308604
-  // embeddable-utils.ts sometimes sets properties to undefined and it breaks interactive state saving (=> user data loss).
+  // Save action seems to be failing when you try to save a document with a property explicitly set to undefined value.
+  // `null` or empty string are fine. ActivityPlayer was not saving some interactive states because of that.
+  // See: https://github.com/googleapis/nodejs-firestore/issues/1031#issuecomment-636308604
   firebase.firestore().settings({
     ignoreUndefinedProperties: true,
   });
