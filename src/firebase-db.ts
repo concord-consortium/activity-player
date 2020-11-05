@@ -102,6 +102,13 @@ export async function initializeDB(name: FirebaseAppName) {
     await firebase.firestore().disableNetwork();
   }
 
+  // See: https://concord-consortium.slack.com/archives/C0303QUNU/p1604596779407700
+  // Or: https://github.com/googleapis/nodejs-firestore/issues/1031#issuecomment-636308604
+  // embeddable-utils.ts sometimes sets properties to undefined and it breaks interactive state saving (=> user data loss).
+  firebase.firestore().settings({
+    ignoreUndefinedProperties: true,
+  });
+
   return firebase.firestore();
 }
 
