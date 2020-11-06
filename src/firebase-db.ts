@@ -81,6 +81,13 @@ export async function initializeDB(name: FirebaseAppName) {
   const config = configurations[name];
   firebase.initializeApp(config);
 
+  // Save action seems to be failing when you try to save a document with a property explicitly set to undefined value.
+  // `null` or empty string are fine. ActivityPlayer was not saving some interactive states because of that.
+  // See: https://github.com/googleapis/nodejs-firestore/issues/1031#issuecomment-636308604
+  firebase.firestore().settings({
+    ignoreUndefinedProperties: true,
+  });
+
   // The following flags are useful for tests. It makes it possible to clear the persistence
   // at the beginning of a test, and enable perisistence on each visit call
   // this way the tests can run offline but still share firestore state across visits
@@ -101,13 +108,6 @@ export async function initializeDB(name: FirebaseAppName) {
     await firebase.firestore().enablePersistence({ synchronizeTabs: true });
     await firebase.firestore().disableNetwork();
   }
-
-  // Save action seems to be failing when you try to save a document with a property explicitly set to undefined value.
-  // `null` or empty string are fine. ActivityPlayer was not saving some interactive states because of that.
-  // See: https://github.com/googleapis/nodejs-firestore/issues/1031#issuecomment-636308604
-  firebase.firestore().settings({
-    ignoreUndefinedProperties: true,
-  });
 
   return firebase.firestore();
 }
