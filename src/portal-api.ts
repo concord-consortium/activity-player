@@ -412,11 +412,17 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
 };
 
 // metadata for saving and loading work for anonymous users, not actually loaded from the portal
-export const anonymousPortalData = () => {
-  let runKey = queryValue("runKey");
-  if (!runKey) {
-    runKey = uuidv4();
-    setQueryValue("runKey", runKey);
+export const anonymousPortalData = (preview: boolean) => {
+  let runKey;
+  if (preview) {
+    // Set runKey to any value, it'll be saved only locally in offline Firestore.
+    runKey = "preview";
+  } else {
+    runKey = queryValue("runKey");
+    if (!runKey) {
+      runKey = uuidv4();
+      setQueryValue("runKey", runKey);
+    }
   }
 
   const hostname = window.location.hostname;

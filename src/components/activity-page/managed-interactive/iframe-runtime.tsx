@@ -5,7 +5,7 @@ import iframePhone from "iframe-phone";
 import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
-  ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions
+  ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, IGetInteractiveSnapshotOptions
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
@@ -36,7 +36,7 @@ interface IProps {
   ref?: React.Ref<IframeRuntimeImperativeAPI>;
 }
 
-export const IframeRuntime: React.FC<IProps> = forwardRef((props, ref) => {
+export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, showModal, closeModal, setSupportedFeatures,
     setSendCustomMessage, setNavigation } = props;

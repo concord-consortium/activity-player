@@ -77,7 +77,8 @@ const configurations: IConfigs = {
   }
 };
 
-export async function initializeDB(name: FirebaseAppName) {
+// preview mode will run Firestore in offline mode and clear it (as otherwise the local data is persisted).
+export async function initializeDB({ name, preview }: { name: FirebaseAppName, preview: boolean }) {
   const config = configurations[name];
   firebase.initializeApp(config);
 
@@ -98,13 +99,13 @@ export async function initializeDB(name: FirebaseAppName) {
   // regardless of what branch or version of the portal report code that tab is running.
   // Cypress runs its test in a different browser instance so its persistence should not pollute
   // non-cypress tabs
-  if (queryValueBoolean("clearFirestorePersistence")) {
+  if (queryValueBoolean("clearFirestorePersistence") || preview) {
     // we cannot enable the persistence until the
     // clearing is complete, so this await is necessary
     await firebase.firestore().clearPersistence();
   }
 
-  if (queryValueBoolean("enableFirestorePersistence")) {
+  if (queryValueBoolean("enableFirestorePersistence") || preview) {
     await firebase.firestore().enablePersistence({ synchronizeTabs: true });
     await firebase.firestore().disableNetwork();
   }
@@ -112,9 +113,9 @@ export async function initializeDB(name: FirebaseAppName) {
   return firebase.firestore();
 }
 
-export async function initializeAnonymousDB() {
-  portalData = anonymousPortalData();
-  return initializeDB(portalData.database.appName);
+export async function initializeAnonymousDB(preview: boolean) {
+  portalData = anonymousPortalData(preview);
+  return initializeDB({ name: portalData.database.appName, preview });
 }
 
 export const signInWithToken = async (rawFirestoreJWT: string) => {

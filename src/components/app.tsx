@@ -85,8 +85,8 @@ export class App extends React.PureComponent<IProps, IState> {
 
       const showThemeButtons = queryValueBoolean("themeButtons");
       const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
-
-      const useAnonymousRunKey = !queryValue("token") && !queryValueBoolean("preview") && !teacherEditionMode;
+      // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
+      const preview = queryValueBoolean("preview") || teacherEditionMode;
 
       const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showSequence, sequence, teacherEditionMode};
       setDocumentTitle(activity, currentPage);
@@ -110,7 +110,7 @@ export class App extends React.PureComponent<IProps, IState> {
           if (portalData.runRemoteEndpoint) {
             runRemoteEndpoint = portalData.runRemoteEndpoint;
           }
-          await initializeDB(portalData.database.appName);
+          await initializeDB({ name: portalData.database.appName, preview: false });
           await signInWithToken(portalData.database.rawFirebaseJWT);
           this.setState({ portalData });
 
@@ -120,9 +120,9 @@ export class App extends React.PureComponent<IProps, IState> {
           this.setState({ authError: err });
           console.error("Authentication Error: " + err);
         }
-      } else if (useAnonymousRunKey) {
+      } else {
         try {
-          await initializeAnonymousDB();
+          await initializeAnonymousDB(preview);
           watchAnswers();
         } catch (err) {
           this.setState({ authError: err });
