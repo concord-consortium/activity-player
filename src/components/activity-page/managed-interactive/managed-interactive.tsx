@@ -76,7 +76,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     }
     const url = embeddableData?.base_url || embeddableData?.url || "";
     const authoredState = useMemo(() => safeJsonParseIfString(authored_state) || {}, [authored_state]);
-    const linkedInteractives = useRef((embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
+    const linkedInteractives = useRef(embeddable.linked_interactives?.length
                                   ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
                                   : undefined);
     // interactiveId value should always match IDs generated above in the `linkedInteractives` array.
