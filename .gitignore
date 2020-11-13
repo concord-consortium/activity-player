@@ -10,6 +10,7 @@ coverage-jest
 .nyc_output
 .yalc
 yalc.lock
+LocalhostCertificates
 
 # Editors
 .idea
