@@ -81,6 +81,7 @@ export interface IMwInteractive extends EmbeddableBase {
   native_height?: number;
   native_width?: number;
   enable_learner_state?: boolean;
+  linked_interactives?: { ref_id: string, label: string }[];
 }
 
 export interface IEmbeddableXhtml extends EmbeddableBase {

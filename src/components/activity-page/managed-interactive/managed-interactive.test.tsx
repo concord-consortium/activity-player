@@ -54,7 +54,6 @@ describe("ManagedInteractive component", () => {
     };
     const wrapper = shallow(<ManagedInteractive
                               embeddable={sampleEmbeddable}
-                              initialInteractiveState={null}
                               questionNumber={1}
                               setSupportedFeatures={() => { /* nop */ }}
                               setSendCustomMessage={() => { /* nop */ }}

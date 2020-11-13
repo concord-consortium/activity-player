@@ -5,7 +5,7 @@ import iframePhone from "iframe-phone";
 import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
-  ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, IGetInteractiveSnapshotOptions
+  ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";

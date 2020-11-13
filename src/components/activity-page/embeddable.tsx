@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState }  from "react";
+import React, { useCallback, useContext, useEffect, useRef }  from "react";
 import { TextBox } from "./text-box/text-box";
 import { LaraGlobalContext } from "../lara-global-context";
 import { ManagedInteractive } from "./managed-interactive/managed-interactive";
@@ -6,8 +6,7 @@ import { ActivityLayouts, PageLayouts, EmbeddableSections } from "../../utilitie
 import { EmbeddablePlugin } from "./plugins/embeddable-plugin";
 import { initializePlugin, IPartialEmbeddablePluginContext, validateEmbeddablePluginContextForWrappedEmbeddable
         } from "../../utilities/plugin-utils";
-import { EmbeddableWrapper, IEmbeddablePlugin, IExportableAnswerMetadata } from "../../types";
-import { localAnswerPath, getCurrentDBValue } from "../../firebase-db";
+import { EmbeddableWrapper, IEmbeddablePlugin } from "../../types";
 import { IInteractiveSupportedFeaturesEvent } from "../../lara-plugin/events";
 import { ICustomMessage, ISupportedFeatures, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
@@ -29,17 +28,6 @@ type ISendCustomMessage = (message: ICustomMessage) => void;
 export const Embeddable: React.FC<IProps> = (props) => {
   const { activityLayout, embeddableWrapper, linkedPluginEmbeddable, pageLayout, pageSection, questionNumber, setNavigation, teacherEditionMode } = props;
   const embeddable = embeddableWrapper.embeddable;
-
-  interface InitialInteractiveState {
-    state?: any;
-    answerMeta?: IExportableAnswerMetadata;
-    loaded: boolean;
-  }
-
-  const [initialInteractiveState, setInitialInteractiveState] = useState({
-    loaded: false
-  } as InitialInteractiveState);
-
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
   }, [setNavigation, embeddable.ref_id]);
@@ -65,8 +53,7 @@ export const Embeddable: React.FC<IProps> = (props) => {
     if (validPluginContext && teacherEditionMode) {
       initializePlugin(validPluginContext);
     }
-  // NOTE: initialInteractiveState is not used in the effect, but is required for plugin to work
-  }, [LARA, linkedPluginEmbeddable, embeddable, initialInteractiveState, teacherEditionMode]);
+  }, [LARA, linkedPluginEmbeddable, embeddable, teacherEditionMode]);
 
   const handleSetSupportedFeatures = useCallback((container: HTMLElement, features: ISupportedFeatures) => {
     const event: IInteractiveSupportedFeaturesEvent = {
@@ -76,37 +63,11 @@ export const Embeddable: React.FC<IProps> = (props) => {
     LARA?.Events.emitInteractiveSupportedFeatures(event);
   }, [LARA?.Events]);
 
-  // `initialInteractiveState.loaded` will be set to true the moment our initial request for `answers` data
-  // comes through, whether or not there is any particular initial state for this interactive.
-  // Once this has happened, we won't be setting `initialInteractiveState` again, so we won't rerender.
-  if (!initialInteractiveState.loaded) {
-
-    // A one-time grab of the initial user state. We don't currently support live-updating the embeddable
-    // with new user state from the database.
-    // If the request is still pending, we will delay rendering the component. If we're not requesting data
-    // from firestore, we will return instantly with no data.
-    getCurrentDBValue(localAnswerPath(embeddable.ref_id)).then(wrappedAnswer => {
-      const newInitialInteractiveState: InitialInteractiveState = {
-        loaded: true
-      };
-      if (wrappedAnswer) {
-        newInitialInteractiveState.state = wrappedAnswer.interactiveState;
-        newInitialInteractiveState.answerMeta = wrappedAnswer.meta;
-      }
-      setInitialInteractiveState(newInitialInteractiveState);
-    });
-    return (
-      <div key={embeddableWrapper.embeddable.ref_id}>Loading...</div>
-    );
-  }
-
   let qComponent;
   if (embeddable.type === "MwInteractive" || (embeddable.type === "ManagedInteractive" && embeddable.library_interactive)) {
     qComponent = <ManagedInteractive
                     embeddable={embeddable}
-                    initialInteractiveState={initialInteractiveState.state}
                     questionNumber={questionNumber}
-                    initialAnswerMeta={initialInteractiveState.answerMeta}
                     setSupportedFeatures={handleSetSupportedFeatures}
                     setSendCustomMessage={setSendCustomMessage}
                     setNavigation={handleSetNavigation} />;

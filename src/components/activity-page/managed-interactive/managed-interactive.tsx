@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext, useMemo, useRef } from "react";
+import React, { useState, useCallback, useContext, useMemo, useRef, useEffect } from "react";
 import Modal from "react-modal";
 import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
@@ -8,9 +8,9 @@ import {
 } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
-import { createOrUpdateAnswer } from "../../../firebase-db";
+import { createOrUpdateAnswer, watchAnswer } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
-import { getAnswerWithMetadata } from "../../../utilities/embeddable-utils";
+import { getAnswerWithMetadata, isQuestion } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
@@ -23,8 +23,6 @@ import "./managed-interactive.scss";
 interface IProps {
   embeddable: IManagedInteractive | IMwInteractive;
   questionNumber?: number;
-  initialInteractiveState: any;     // user state that existed in DB when embeddable was first loaded
-  initialAnswerMeta?: IExportableAnswerMetadata;   // saved metadata for that initial user state
   setSupportedFeatures: (container: HTMLElement, features: ISupportedFeatures) => void;
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
   setNavigation?: (options: INavigationOptions) => void;
@@ -39,12 +37,27 @@ const getModalContainer = (): HTMLElement => {
 export const ManagedInteractive: React.FC<IProps> = (props) => {
   const iframeRuntimeRef = useRef<IframeRuntimeImperativeAPI>(null);
   const onSetInteractiveStateCallback = useRef<() => void>();
+  const interactiveState = useRef<any>();
+  const answerMeta = useRef<IExportableAnswerMetadata>();
+  const shouldWatchAnswer = isQuestion(props.embeddable);
+  const [loading, setLoading] = useState(shouldWatchAnswer);
+
+  const embeddableRefId = props.embeddable.ref_id;
+  useEffect(() => {
+    if (shouldWatchAnswer) {
+      return watchAnswer(embeddableRefId, (wrappedAnswer) => {
+        answerMeta.current = wrappedAnswer?.meta;
+        interactiveState.current = wrappedAnswer?.interactiveState;
+        setLoading(false);
+      });
+    }
+  }, [embeddableRefId, shouldWatchAnswer]);
 
     const handleNewInteractiveState = (state: IRuntimeMetadata) => {
       // Keep interactive state in sync if iFrame is opened in modal popup
-      iframeInteractiveState.current = state;
+      interactiveState.current = state;
 
-      const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, props.initialAnswerMeta);
+      const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, answerMeta.current);
       if (exportableAnswer) {
         createOrUpdateAnswer(exportableAnswer);
       }
@@ -59,12 +72,10 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       return handleGetFirebaseJWT({ firebase_app: firebaseApp, ...others }, portalData);
     }, [portalData]);
 
-    const { embeddable, questionNumber, initialInteractiveState, setSupportedFeatures, setSendCustomMessage, setNavigation } = props;
+    const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation } = props;
     const { authored_state } = embeddable;
     const [ activeDialog, setActiveDialog ] = useState<IShowDialog | null>(null);
     const [ activeLightbox, setActiveLightbox ] = useState<IShowLightbox | null>(null);
-    // both Modal and inline versions of interactive should reflect the same state
-    const iframeInteractiveState = useRef(initialInteractiveState);
     const questionName = embeddable.name ? `: ${embeddable.name}` : "";
     // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
     // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
@@ -76,7 +87,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     }
     const url = embeddableData?.base_url || embeddableData?.url || "";
     const authoredState = useMemo(() => safeJsonParseIfString(authored_state) || {}, [authored_state]);
-    const linkedInteractives = useRef((embeddable.type === "ManagedInteractive") && embeddable.linked_interactives?.length
+    const linkedInteractives = useRef(embeddable.linked_interactives?.length
                                   ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
                                   : undefined);
     // interactiveId value should always match IDs generated above in the `linkedInteractives` array.
@@ -159,12 +170,14 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
   };
 
   const interactiveIframeRuntime =
+    loading ?
+      "Loading..." :
       <IframeRuntime
         ref={iframeRuntimeRef}
         url={activeDialog?.url || url}
         id={interactiveId}
         authoredState={authoredState}
-        initialInteractiveState={iframeInteractiveState.current}
+        initialInteractiveState={interactiveState.current}
         setInteractiveState={handleNewInteractiveState}
         setSupportedFeatures={setSupportedFeatures}
         linkedInteractives={linkedInteractives.current}
