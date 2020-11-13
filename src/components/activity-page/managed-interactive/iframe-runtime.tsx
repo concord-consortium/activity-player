@@ -5,10 +5,12 @@ import iframePhone from "iframe-phone";
 import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
-  ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions
+  ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, ILinkedInteractiveStateResponse,
+  IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
+import { watchAnswer } from "../../../firebase-db";
 
 const kDefaultHeight = 300;
 
@@ -112,6 +114,27 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
             post("interactiveSnapshot", response);
           }
         });
+      });
+      const unsubscribeLinkedInteractiveStateListener = new Map();
+      addListener("addLinkedInteractiveStateListener", (request: IAddLinkedInteractiveStateListenerRequest) => {
+        const { interactiveItemId, listenerId } = request;
+        const unsubscribe = watchAnswer(interactiveItemId, (wrappedAnswer) => {
+          const interactiveState = wrappedAnswer?.interactiveState;
+          const response: ILinkedInteractiveStateResponse<any> = {
+            listenerId,
+            interactiveState
+          };
+          post("linkedInteractiveState", response);
+        });
+        unsubscribeLinkedInteractiveStateListener.set(listenerId, unsubscribe);
+      });
+      addListener("removeLinkedInteractiveStateListener", (request: IRemoveLinkedInteractiveStateListenerRequest) => {
+        const { listenerId } = request;
+        const unsubscribe = unsubscribeLinkedInteractiveStateListener.get(listenerId);
+        if (unsubscribe) {
+          unsubscribe();
+          unsubscribeLinkedInteractiveStateListener.delete(listenerId);
+        }
       });
       addListener("hint", (newHint: any) => {
         setNewHint(newHint.text || "");
