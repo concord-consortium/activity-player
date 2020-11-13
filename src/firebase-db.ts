@@ -14,7 +14,6 @@ import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal
 import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
-import DocumentData = firebase.firestore.DocumentData;
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
@@ -228,5 +227,5 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
 
   return firebase.firestore()
       .doc(answersPath(answer.id))
-      .set(postAnswer as Partial<DocumentData>, {merge: true});
+      .set(postAnswer as Partial<firebase.firestore.DocumentData>, {merge: true});
 }
