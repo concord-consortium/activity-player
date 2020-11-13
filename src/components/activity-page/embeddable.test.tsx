@@ -1,15 +1,13 @@
 import React from "react";
-import { waitFor } from "@testing-library/dom";
 import iframePhone from "iframe-phone";
 import { Embeddable } from "./embeddable";
 import { PageLayouts, EmbeddableSections } from "../../utilities/activity-utils";
-import { mount, ReactWrapper } from "enzyme";
-import { EmbeddableWrapper } from "../../types";
-import { act } from "react-dom/test-utils";
+import { mount } from "enzyme";
+import { EmbeddableWrapper, IManagedInteractive } from "../../types";
 import { DefaultManagedInteractive, DefaultXhtmlComponent } from "../../test-utils/model-for-tests";
 
 describe("Embeddable component", () => {
-  it("renders a non-callout text component", async () => {
+  it("renders a non-callout text component", () => {
     const embeddableWrapper: EmbeddableWrapper = {
       "embeddable": {
         ...DefaultXhtmlComponent,
@@ -20,20 +18,12 @@ describe("Embeddable component", () => {
       "section": "header_block"
     };
 
-    let wrapper: ReactWrapper;
-    await act(async () => {
-      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
-      expect(wrapper.containsMatchingElement(<div>Loading...</div>)).toEqual(true);
-    });
-
-    await waitFor(() => {
-      wrapper.update();
-      expect(wrapper.find(".textbox").hasClass("callout")).toBe(false);
-      expect(wrapper.text()).toContain("This is a page");
-    });
+    const wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
+    expect(wrapper.find(".textbox").hasClass("callout")).toBe(false);
+    expect(wrapper.text()).toContain("This is a page");
   });
 
-  it("renders a callout text component", async () => {
+  it("renders a callout text component", () => {
     const embeddableWrapper: EmbeddableWrapper = {
       "embeddable": {
         ...DefaultXhtmlComponent,
@@ -43,21 +33,12 @@ describe("Embeddable component", () => {
       "section": "header_block"
     };
 
-    let wrapper: ReactWrapper;
-    await act(async () => {
-      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
-      expect(wrapper.containsMatchingElement(<div>Loading...</div>)).toEqual(true);
-    });
-
-    await waitFor(() => {
-      wrapper.update();
-      expect(wrapper.find(".textbox").hasClass("callout")).toBe(true);
-      expect(wrapper.text()).toContain("This is a callout text box");
-    });
+    const wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
+    expect(wrapper.find(".textbox").hasClass("callout")).toBe(true);
+    expect(wrapper.text()).toContain("This is a callout text box");
   });
 
-  it("renders an empty managed interactive", async () => {
-
+  it("renders an empty managed interactive", () => {
     const embeddableWrapper: EmbeddableWrapper = {
       "embeddable": {
         ...DefaultManagedInteractive,
@@ -66,17 +47,11 @@ describe("Embeddable component", () => {
       "section": "interactive_box"
     };
 
-    let wrapper: ReactWrapper;
-    await act(async () => {
-      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
-    });
-
-    await waitFor(() => {
-      expect(wrapper.text()).toContain("Content type not supported");
-    });
+    const wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
+    expect(wrapper.text()).toContain("Content type not supported");
   });
 
-  it("renders a managed interactive", async () => {
+  it("renders a managed interactive", () => {
     iframePhone.ParentEndpoint = jest.fn().mockImplementation(() => ({
       disconnect: jest.fn()
     }));
@@ -89,19 +64,13 @@ describe("Embeddable component", () => {
       },
       "section": "interactive_box"
     };
+    // Disable interactive state observing for this test.
+    (embeddableWrapper.embeddable as IManagedInteractive).library_interactive!.data!.enable_learner_state = false;
 
-    let wrapper: ReactWrapper;
-    await act(async () => {
-      wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
-    });
-
-    await waitFor(() => {
-      // for some reason, can't get any version of
-      //   expect(wrapper.find("ManagedInteractive").length).toBe(1);
-      //   expect(wrapper.find("iframe").length).toBe(1);
-      //   expect(wrapper.find('[data-cy="iframe-runtime"]').length).toBe(1);
-      // to work
-      expect(wrapper.html()).toContain("iframe-runtime");
-    });
+    const wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
+    expect(wrapper.find("ManagedInteractive").length).toBe(1);
+    expect(wrapper.find("iframe").length).toBe(1);
+    expect(wrapper.find('[data-cy="iframe-runtime"]').length).toBe(1);
+    expect(wrapper.html()).toContain("iframe-runtime");
   });
 });

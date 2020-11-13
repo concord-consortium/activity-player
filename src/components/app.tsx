@@ -13,7 +13,7 @@ import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { fetchPortalData, IPortalData } from "../portal-api";
-import { signInWithToken, watchAnswers, initializeDB, setPortalData, initializeAnonymousDB } from "../firebase-db";
+import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB } from "../firebase-db";
 import { Activity, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
@@ -115,7 +115,6 @@ export class App extends React.PureComponent<IProps, IState> {
           this.setState({ portalData });
 
           setPortalData(portalData);
-          watchAnswers();
         } catch (err) {
           this.setState({ authError: err });
           console.error("Authentication Error: " + err);
@@ -123,7 +122,6 @@ export class App extends React.PureComponent<IProps, IState> {
       } else {
         try {
           await initializeAnonymousDB(preview);
-          watchAnswers();
         } catch (err) {
           this.setState({ authError: err });
           console.error("Authentication Error: " + err);

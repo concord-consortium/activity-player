@@ -2,8 +2,13 @@ import { v4 as uuidv4 } from "uuid";
 import { IAuthoringMetadata, IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
 import {
   IExportableAnswerMetadata, IManagedInteractive, IReportState, IExportableMultipleChoiceAnswerMetadata,
-  IExportableOpenResponseAnswerMetadata, IExportableInteractiveAnswerMetadata, IExportableImageQuestionAnswerMetadata
+  IExportableOpenResponseAnswerMetadata, IExportableInteractiveAnswerMetadata, IExportableImageQuestionAnswerMetadata,
+  Embeddable
 } from "../types";
+
+export const isQuestion = (embeddable: Embeddable) =>
+  (embeddable.type === "ManagedInteractive" && embeddable.library_interactive?.data?.enable_learner_state) ||
+  (embeddable.type === "MwInteractive" && embeddable.enable_learner_state);
 
 export const getAnswerWithMetadata = (
     interactiveState: IRuntimeMetadata,

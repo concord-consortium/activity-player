@@ -11,9 +11,10 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal-api";
-import { answersQuestionIdToRefId } from "./utilities/embeddable-utils";
+import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
+import DocumentData = firebase.firestore.DocumentData;
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
@@ -22,27 +23,11 @@ let portalData: IPortalData | IAnonymousPortalData;
 const answersPath = (answerId?: string) =>
   `sources/${portalData?.database.sourceKey}/answers${answerId ? "/" + answerId : ""}`;
 
-// The LocalDB stores the data fetched from the DB by the `watchX` methods. The data gets added to keys
-// such as `${refId}/answers`, which can that be listened to by listeners. By keeping this
-// local copy, we can provide listeners with data even if the listener is added after the data is fetched.
-interface LocalDB {
-  [path: string]: any;
+export interface WrappedDBAnswer {
+  meta: IExportableAnswerMetadata;
+  interactiveState: any;
 }
-
-const localDB: LocalDB = {};
-export const localAnswerPath = (refId: string) => `answers/${refId}`;
-const isAnswerPath = (path: string) => /^answers\/.*/.test(path);
-
-export type DBChangeListener = (value: any) => void;
-
-const listeners: {[path: string]: DBChangeListener[]} = {};
-
-type initialDataState = "NOT_REQUESTED" | "PENDING" | "COMPLETED";
-
-// whether we have completed an initil request for a collection
-const initialData: {[collection: string]: initialDataState} = {
-  answers: "NOT_REQUESTED"
-};
+export type DBChangeListener = (wrappedDBAnswer: WrappedDBAnswer | null) => void;
 
 interface IConfig {
   apiKey: string;
@@ -134,14 +119,14 @@ export const setAnonymousPortalData = (_portalData: IAnonymousPortalData) => {
 
 type DocumentsListener = (docs: firebase.firestore.DocumentData[]) => void;
 
-const watchCollection = (path: string, listener: DocumentsListener) => {
+const watchAnswerDocs = (listener: DocumentsListener, questionId?: string) => {
   if (!portalData) {
     throw new Error("Must set portal data first");
   }
+  let query: firebase.firestore.Query = firebase.firestore().collection(answersPath());
 
-  let query: firebase.firestore.Query<firebase.firestore.DocumentData>;
   if (portalData.type === "authenticated") {     // logged in user
-    query = firebase.firestore().collection(path)
+    query = query
       .where("platform_id", "==", portalData.platformId)
       .where("resource_link_id", "==", portalData.resourceLinkId)
       .where("context_id", "==", portalData.contextId);
@@ -149,11 +134,16 @@ const watchCollection = (path: string, listener: DocumentsListener) => {
       query = query.where("platform_user_id", "==", portalData.platformUserId.toString());
     }
   } else {
-    query = firebase.firestore().collection(path)
-      .where("run_key", "==", portalData.runKey);
+    query = query.where("run_key", "==", portalData.runKey);
   }
 
-  query.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
+  // If questionId is provided, it'll limit answers to just one question.
+  if (questionId) {
+    query = query.where("question_id", "==", questionId);
+  }
+
+  // Note that query.onSnapshot returns unsubscribe method.
+  return query.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
     if (!snapshot.empty) {
       const docs = snapshot.docs.map(doc => doc.data());
       listener(docs);
@@ -166,85 +156,44 @@ const watchCollection = (path: string, listener: DocumentsListener) => {
   });
 };
 
-export const addDBListener = (path: string, listener: DBChangeListener) => {
-  if (!listeners[path]) {
-    listeners[path] = [];
-  }
-  listeners[path].push(listener);
-
-  // notify right away if we already have data (asynchronously, so that a listener that wants
-  // to immediately unsubscribe will get the unsubscribe method first).
-  if (localDB[path]) {
-    setTimeout(() => {
-      listener(localDB[path]);
-    }, 0);
-  }
-
-  const unsubscribe = () => {
-    const idx = listeners[path].indexOf(listener);
-    if (idx > -1) {
-      listeners[path].splice(idx, 1);
-    }
-  };
-  return unsubscribe;
-};
-
-const notifyListeners = (path: string, value: any) => {
-  listeners[path]?.forEach(listener => listener(value));
-};
-
-// If we've already requested data for this collection before, return immediately whether or not
-// this path has a value. If we have a requestb pending, return the value once on the first update.
-// equivalent to `firebase.once`
-export const getCurrentDBValue = (path: string) => new Promise<any>((resolve, reject) => {
-  const collection = path.split("/")[0];
-
-  if (initialData[collection] !== "PENDING") {
-    resolve(localDB[path]);
-  }
-  else {
-    const unsubscribe = addDBListener(path, (val => {
-      resolve(val);
-      unsubscribe();
-    }));
-  }
-});
-
-// updates `state.activity` to add `interactiveState` to embeddables
-const handleAnswersUpdated = (answers: firebase.firestore.DocumentData[]) => {
-  const getInteractiveState = (answer: firebase.firestore.DocumentData) => {
-    const reportState = JSON.parse(answer.report_state);
+const firestoreDocToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
+  const getInteractiveState = () => {
+    const reportState = JSON.parse(doc.report_state);
     return JSON.parse(reportState.interactiveState);
   };
-
-  answers.forEach(answer => {
-    const refId = answersQuestionIdToRefId(answer.question_id);
-    const interactiveState = getInteractiveState(answer);
-    const wrappedAnswer = {
-      meta: answer,
-      interactiveState
-    };
-    notifyListeners(localAnswerPath(refId), wrappedAnswer);
-    localDB[localAnswerPath(refId)] = wrappedAnswer;
-  });
-
-  // if this is our first notification, notify all `answers` listeners if they have empty data, as they
-  // would not have been notified of this above
-  if (initialData.answers === "PENDING") {
-    Object.keys(listeners).forEach(path => {
-      if (isAnswerPath(path) && !localDB[path]) {
-        notifyListeners(path, null);
-      }
-    });
-  }
-
-  // permanently set that we have completed initial request for answers data
-  initialData.answers = "COMPLETED";
+  const interactiveState = getInteractiveState();
+  const wrappedAnswer: WrappedDBAnswer = {
+    meta: doc as IExportableAnswerMetadata,
+    interactiveState
+  };
+  return wrappedAnswer;
 };
 
-export const watchAnswers = () => {
-  initialData.answers = "PENDING";
-  watchCollection(answersPath(), handleAnswersUpdated);
+// Watches ONE question answer defined by embeddableRefId.
+export const watchAnswer = (embeddableRefId: string, callback: (wrappedAnswer: WrappedDBAnswer | null) => void) => {
+  const questionId = refIdToAnswersQuestionId(embeddableRefId);
+  // Note that watchAnswerDocs returns unsubscribe method.
+  return watchAnswerDocs((answers: firebase.firestore.DocumentData[]) => {
+    if (answers.length === 0) {
+      callback(null);
+      return;
+    }
+    if (answers.length > 1) {
+      console.warn(
+        "Found multiple answer objects for the same question. It might be result of early " +
+        "ActivityPlayer versions. Your data might be corrupted."
+      );
+    }
+    callback(firestoreDocToWrappedAnswer(answers[0]));
+  }, questionId); // limit observer to single question
+};
+
+// Watches ALL the answers for the given activity.
+export const watchAllAnswers = (callback: (wrappedAnswer: WrappedDBAnswer[]) => void) => {
+  // Note that watchAnswerDocs returns unsubscribe method.
+  return watchAnswerDocs((answers: firebase.firestore.DocumentData[]) => {
+    callback(answers.map(doc => firestoreDocToWrappedAnswer(doc)));
+  });
 };
 
 export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
@@ -252,7 +201,7 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     return;
   }
 
-  let postAnswer;
+  let postAnswer: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata;
 
   if (portalData.type === "authenticated") {
     postAnswer = {
@@ -265,7 +214,7 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
       tool_id: portalData.toolId,
       resource_url: portalData.resourceUrl,
       run_key: "",
-    } as LTIRuntimeAnswerMetadata;
+    };
   } else {
     postAnswer = {
       ...answer,
@@ -274,10 +223,10 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
       resource_url: portalData.resourceUrl,
       tool_id: portalData.toolId,
       tool_user_id: "anonymous",
-    } as AnonymousRuntimeAnswerMetadata;
+    };
   }
 
   return firebase.firestore()
       .doc(answersPath(answer.id))
-      .set(postAnswer, {merge: true});
+      .set(postAnswer as Partial<DocumentData>, {merge: true});
 }

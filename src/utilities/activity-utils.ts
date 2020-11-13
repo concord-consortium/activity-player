@@ -1,5 +1,6 @@
 import { Page, Activity, EmbeddableWrapper } from "../types";
 import { SidebarConfiguration } from "../components/page-sidebar/sidebar-wrapper";
+import { isQuestion as isEmbeddableQuestion } from "./embeddable-utils";
 
 export enum ActivityLayouts {
   MultiplePages = 0,
@@ -25,10 +26,7 @@ export interface VisibleEmbeddables {
   infoAssessment: EmbeddableWrapper[],
 }
 
-export const isQuestion = (embeddableWrapper: EmbeddableWrapper) => {
-  return ((embeddableWrapper.embeddable.type === "ManagedInteractive" && embeddableWrapper.embeddable.library_interactive?.data?.enable_learner_state)
-          || (embeddableWrapper.embeddable.type === "MwInteractive" && embeddableWrapper.embeddable.enable_learner_state));
-};
+export const isQuestion = (embeddableWrapper: EmbeddableWrapper) => isEmbeddableQuestion(embeddableWrapper.embeddable);
 
 export interface PageSectionQuestionCount {
   Header: number;
