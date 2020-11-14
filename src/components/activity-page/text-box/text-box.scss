@@ -2,7 +2,10 @@
 
 .textbox {
   p {
-    margin: 0;
+    margin: 20px 0;
+  }
+  li {
+    line-height: 2;
   }
   .text-name {
     font-weight: bold;
