@@ -5,8 +5,9 @@
     margin: 20px 0;
   }
   li {
-    line-height: 2;
+    margin: 1em 0;
   }
+
   .text-name {
     font-weight: bold;
     padding: 8px 0 5px;
@@ -21,7 +22,7 @@
     }
     .content {
       background: $cc-charcoal-light3;
-      padding: 20px !important;
+      padding: 0 20px !important;
     }
   }
 }
