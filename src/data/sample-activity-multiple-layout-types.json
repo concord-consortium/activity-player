@@ -539,7 +539,7 @@
       "is_completion": false,
       "is_hidden": false,
       "layout": "l-responsive",
-      "name": "Responsive",
+      "name": "Responsive with a really long title that rambles on and on because I don't know how to limit myself to one line",
       "position": 3,
       "show_header": true,
       "show_info_assessment": true,
