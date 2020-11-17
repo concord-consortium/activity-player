@@ -41,7 +41,8 @@ context("Test the overall app", () => {
       activityPage.getNavPage(2).type("{enter}");
       activityPage.getSidebarTab().should("be.visible");
     });
-    it.skip("go to correct page when tabbed and keydown enter from page list ",()=>{
+
+    it.skip("go to correct page when tabbed and keydown enter from page list",()=>{
       cy.get("[data-cy=nav-pages] button").eq(0).type("{enter}");
       cy.get("[data-cy=intro-page-content]").should("be.visible");
       cy.get(".page-item .page-link").contains("Page 2").focus();

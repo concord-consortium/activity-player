@@ -35,9 +35,11 @@ const sampleActivities: {[name: string]: Activity} = {
 };
 
 import sampleSequence from "../data/sample-sequence.json";
+import sampleSequenceEmptyFields from "../data/sample-sequence-empty-fields.json";
 
 const sampleSequences: {[name: string]: Sequence} = {
   "sample-sequence": sampleSequence as Sequence,
+  "sample-sequence-empty-fields": sampleSequenceEmptyFields as Sequence,
 };
 
 export  { sampleActivities, sampleSequences };
