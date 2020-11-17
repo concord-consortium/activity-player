@@ -5,7 +5,6 @@ import { ActivityNavHeader } from "./activity-header/activity-nav-header";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { SequencePageContent } from "./sequence-introduction/sequence-page-content";
 import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle } from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
@@ -91,9 +90,6 @@ export class App extends React.PureComponent<IProps, IState> {
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
 
-
-      // const useAnonymousRunKey = !queryValue("token") && !queryValueBoolean("preview") && !teacherEditionMode;
-
       const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showSequence, sequence, teacherEditionMode};
       setDocumentTitle(activity, currentPage);
 
@@ -169,31 +165,6 @@ export class App extends React.PureComponent<IProps, IState> {
           </div>
         </PortalDataContext.Provider>
       </LaraGlobalContext.Provider>
-    );
-  }
-
-  private renderSequence = () => {
-    const { sequence, username } = this.state;
-    if (!sequence) return (<div>Loading</div>);
-    return (
-      <React.Fragment>
-        <Header
-          fullWidth={false}
-          projectId={sequence.project_id}
-          userName={username}
-          activityName={sequence.display_title || sequence.title}
-          singlePage={false}
-          showSequence={true}
-        />
-        <SequencePageContent
-          sequence={sequence}
-          onSelectActivity={this.handleSelectActivity}
-        />
-        <Footer
-          fullWidth={true}
-          projectId={sequence.project_id}
-        />
-      </React.Fragment>
     );
   }
 
