@@ -260,12 +260,12 @@ export class App extends React.PureComponent<IProps, IState> {
   private renderCompletionContent = (activity: Activity) => {
     return (
       <CompletionPageContent
-          activityName={activity.name}
-          isActivityComplete={true} // TODO: should be based on student progress
-          onPageChange={this.handleChangePage}
-          showStudentReport={activity.student_report_enabled}
-          thumbnailURL={activity.thumbnail_url}
-        />
+        activityName={activity.name}
+        isActivityComplete={true} // TODO: should be based on student progress
+        onPageChange={this.handleChangePage}
+        showStudentReport={activity.student_report_enabled}
+        thumbnailURL={activity.thumbnail_url}
+      />
     );
   }
 
