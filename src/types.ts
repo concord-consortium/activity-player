@@ -147,12 +147,12 @@ export interface Activity {
 export interface Sequence {
   abstract: string | null;
   description: string | null;
-  display_title: string;
+  display_title: string | null;
   logo: string | null;
   project_id: number | null;
   theme_id: number | null;
   thumbnail_url: string | null;
-  title: string;
+  title: string | null;
   activities: Activity[];
   type: string;
   export_site: string | null;
