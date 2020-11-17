@@ -27,7 +27,7 @@ context("Saving and loading data as an anonymous user", () => {
 
       cy.visit(activityUrl);
       activityPage.getNavPage(2).click();
-      cy.wait(500);
+      cy.wait(3000);
       getIframeBody("body").find("[data-cy=choices-container] input").eq(1).click({force: true});
 
       // unfortunately we have to wait for the data to be posted to firestore, which happens after a
