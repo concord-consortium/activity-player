@@ -12,7 +12,7 @@ interface IProps {
   fullWidth?: boolean;
   projectId: number | null;
   userName: string;
-  activityName: string;
+  contentName: string;
   singlePage: boolean;
   showSequence?: boolean;
   sequenceLogo?: string | null;
@@ -33,7 +33,7 @@ export class Header extends React.PureComponent<IProps> {
             <Logo logo={logo} url={projectURL}/>
           </div>
           <div className="header-center">
-            {sequenceLogo && <img src={sequenceLogo} /> }
+            {sequenceLogo && <img src={sequenceLogo} />}
             {!singlePage && this.renderActivityMenu()}
           </div>
           <div className="header-right">
@@ -44,16 +44,15 @@ export class Header extends React.PureComponent<IProps> {
     );
   }
 
-
   private renderActivityMenu = () => {
-    const { activityName, showSequence } = this.props;
+    const { contentName, showSequence } = this.props;
     return (
       <React.Fragment>
         <div className="activity-title" data-cy ="activity-title">
-          { showSequence ? "Sequence:" : "Activity:" }
+          {showSequence ? "Sequence:" : "Activity:"}
         </div>
         <CustomSelect
-          items={[activityName]}
+          items={[contentName]}
           HeaderIcon={AssignmentIcon}
           isDisabled={true}
         />
