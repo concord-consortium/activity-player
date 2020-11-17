@@ -177,7 +177,7 @@ export class App extends React.PureComponent<IProps, IState> {
           fullWidth={fullWidth}
           projectId={activity.project_id}
           userName={username}
-          activityName={activity.name}
+          contentName={activity.name}
           singlePage={activity.layout === ActivityLayouts.SinglePage}
         />
         { authError
@@ -211,7 +211,7 @@ export class App extends React.PureComponent<IProps, IState> {
           fullWidth={fullWidth}
           onPageChange={this.handleChangePage}
           singlePage={activity.layout === ActivityLayouts.SinglePage}
-          sequenceName={this.state.sequence?.display_title}
+          sequenceName={this.state.sequence?.display_title || (this.state.sequence && "Sequence")}
           onShowSequence={this.handleShowSequence}
           lockForwardNav={this.state.incompleteQuestions.length > 0}
         />

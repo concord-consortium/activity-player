@@ -13,14 +13,14 @@ interface IProps {
 export const SequenceIntroduction: React.FC<IProps> = (props) => {
   const { sequence, username, onSelectActivity } = props;
   return (
-    !sequence 
+    !sequence
     ? <div data-cy="sequence-loading">Loading</div>
     : <React.Fragment>
         <Header
           fullWidth={false}
           projectId={sequence.project_id}
           userName={username}
-          activityName={sequence.display_title || sequence.title}
+          contentName={sequence.display_title || sequence.title || ""}
           singlePage={false}
           showSequence={true}
           sequenceLogo={sequence.logo}
