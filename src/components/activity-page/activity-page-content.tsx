@@ -11,7 +11,8 @@ import { Page, EmbeddableWrapper } from "../../types";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../../lib/logger";
 import { queryValue } from "../../utilities/url-query";
-import { DEFAULT_PORTAL_REPORT_URL } from "../app";
+import { fetchPortalData } from "../../portal-api";
+// import { DEFAULT_PORTAL_REPORT_URL } from "../app";
 
 import "./activity-page-content.scss";
 
@@ -126,13 +127,39 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   private handleNext = () => {
     this.props.onPageChange(this.props.pageNumber + 1);
   }
-  private handleReport = () => {
-    const reportLink = (queryValue("portal-report") as string) || DEFAULT_PORTAL_REPORT_URL;
-    const runKey= queryValue("runKey");
+
+  private handleReport = async () => {
+    const reportLink = "https://localhost:8081";
+    // const reportLink = (queryValue("portal-report") as string) || DEFAULT_PORTAL_REPORT_URL;
     const activity = queryValue("activity");
     const activityUrl = activity? ((activity.split(".json"))[0]).replace("api/v1/","") : "";
-    const answerSource = window.location.hostname;
-    window.open(reportLink + "?runKey=" + runKey + "&activity=" + activityUrl + "&answerSource="+answerSource);
+
+    const runKey= queryValue("runKey");
+    if (runKey) {
+      const answerSource = window.location.hostname;
+      window.open(reportLink + "?runKey=" + runKey + "&activity=" + activityUrl + "&answerSource="+answerSource);
+    }
+    else {
+      const portalData = await fetchPortalData();
+      const classInfoUrl = portalData?.portalJWT?.class_info_url;
+      const classId = classInfoUrl?.split("classes/")[1];
+      const classOfferings = encodeURIComponent("https://learn.staging.concord.org/api/v1/offerings?class_id=" + classId);
+      const offeringId = portalData?.offering.id;
+      const offeringUrl = encodeURIComponent("https://learn.staging.concord.org/api/v1/offerings/" + offeringId);
+      const studentId = portalData?.platformUserId;
+      const reportURL = reportLink
+                        + "?"
+                        + "class=" + encodeURIComponent(classInfoUrl || "")
+                        + "&classOfferings=" + classOfferings
+                        + "&firebase-app=report-service-dev"
+                        + "&offering=" + offeringUrl
+                        + "&activityUrl=" + activityUrl
+                        + "&reportType=offering&studentId="+studentId
+                        + "&tool-id=https://authoring.staging.concord.org"
+                        + "&auth-domain=https://learn.staging.concord.org";
+      window.open(reportURL);
+    }
+
     Logger.log({
       event: LogEventName.create_report
     });
