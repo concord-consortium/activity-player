@@ -2,8 +2,12 @@
 
 .textbox {
   p {
-    margin: 0;
+    margin: 20px 0;
   }
+  li {
+    margin: .75em 0;
+  }
+
   .text-name {
     font-weight: bold;
     padding: 8px 0 5px;
@@ -18,7 +22,7 @@
     }
     .content {
       background: $cc-charcoal-light3;
-      padding: 20px !important;
+      padding: 0 20px !important;
     }
   }
 }
