@@ -12,7 +12,7 @@ import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../../lib/logger";
 import { queryValue } from "../../utilities/url-query";
 import { fetchPortalData } from "../../portal-api";
-// import { DEFAULT_PORTAL_REPORT_URL } from "../app";
+import { DEFAULT_PORTAL_REPORT_URL, DEFAULT_PORTAL_REPORT_FIREBASE_APP } from "../app";
 
 import "./activity-page-content.scss";
 
@@ -129,11 +129,11 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   private handleReport = async () => {
-    const reportLink = "https://localhost:8081";
-    // const reportLink = (queryValue("portal-report") as string) || DEFAULT_PORTAL_REPORT_URL;
+    // const reportLink = "https://localhost:8081";
+    const reportLink = (queryValue("portal-report") as string) || DEFAULT_PORTAL_REPORT_URL;
+    const reportFirebaseApp = (queryValue("tool-id") as string) || DEFAULT_PORTAL_REPORT_FIREBASE_APP;
     const activity = queryValue("activity");
     const activityUrl = activity? ((activity.split(".json"))[0]).replace("api/v1/","") : "";
-
     const runKey= queryValue("runKey");
     if (runKey) {
       const answerSource = window.location.hostname;
@@ -143,20 +143,23 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
       const portalData = await fetchPortalData();
       const classInfoUrl = portalData?.portalJWT?.class_info_url;
       const classId = classInfoUrl?.split("classes/")[1];
-      const classOfferings = encodeURIComponent("https://learn.staging.concord.org/api/v1/offerings?class_id=" + classId);
+      const activityHostUrl = activityUrl? ((activityUrl.split("/activities"))[0]) : "";
+      const authDomainUrl = classInfoUrl?.split("/api")[0];
+      const offeringBaseUrl = classInfoUrl?.split("/classes")[0]+"/offerings/";
+      const classOfferings = encodeURIComponent(offeringBaseUrl+"?class_id=" + classId);
       const offeringId = portalData?.offering.id;
-      const offeringUrl = encodeURIComponent("https://learn.staging.concord.org/api/v1/offerings/" + offeringId);
+      const offeringUrl = encodeURIComponent(offeringBaseUrl + offeringId);
       const studentId = portalData?.platformUserId;
       const reportURL = reportLink
                         + "?"
                         + "class=" + encodeURIComponent(classInfoUrl || "")
                         + "&classOfferings=" + classOfferings
-                        + "&firebase-app=report-service-dev"
+                        + "&firebase-app="+reportFirebaseApp
                         + "&offering=" + offeringUrl
                         + "&activityUrl=" + activityUrl
                         + "&reportType=offering&studentId="+studentId
-                        + "&tool-id=https://authoring.staging.concord.org"
-                        + "&auth-domain=https://learn.staging.concord.org";
+                        + "&tool-id="+activityHostUrl
+                        + "&auth-domain="+authDomainUrl;
       window.open(reportURL);
     }
 

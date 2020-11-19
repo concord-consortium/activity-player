@@ -32,7 +32,8 @@ import "./app.scss";
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "Please submit an answer first.";
 // TODO: switch default to production report version before production deploy
-export const DEFAULT_PORTAL_REPORT_URL = "https://portal-report.concord.org/branch/master/";
+export const DEFAULT_PORTAL_REPORT_URL = "https://portal-report.concord.org/branch/master/index.html";
+export const DEFAULT_PORTAL_REPORT_FIREBASE_APP = "report-service-dev";
 
 interface IncompleteQuestion {
   refId: string;
