@@ -11,14 +11,14 @@ interface IProps {
   activityName: string;
   isActivityComplete: boolean;
   onPageChange: (page: number) => void;
-  // onShowAllAnswers?: () => void;
   showStudentReport: boolean;
   thumbnailURL: string | null;
   onOpenReport?: () => void;
   sequence?: Sequence;
-  isLastActivityInSequence?: boolean;
   activityIndex?: number;
   onActivityChange: (activityNum: number) => void;
+  onShowSequence: () => void;
+  allActivititiesComplete?: boolean;
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
@@ -29,51 +29,50 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const handleShowAnswers = () => {
     showReport();
   const { activityName, isActivityComplete, onPageChange, showStudentReport, thumbnailURL, onOpenReport,
-          sequence, isLastActivityInSequence, activityIndex, onActivityChange } = props;
+          sequence, activityIndex, onActivityChange, onShowSequence } = props;
   const handleExit = () => {
-    onPageChange(0);
+    onShowSequence();
   };
   const handleNextActivity = () => {
     onActivityChange(activityNum+1);
     onPageChange(0); //TODO: This should go to the student's saved state page for the next activity
   };
 
-  const quotedActivityName = "\"" + activityName + "\"";
-  const completionText = `${quotedActivityName} activity complete!`;
+  const completionText = `"${activityName}" activity complete!`;
   const activityNum = activityIndex? activityIndex : 0;
-  const nextActivityTitle = sequence?.activities[activityNum].name;
-  const nextActivityDescriptionHTML = sequence?.activities[activityNum].description || "";
-  const nextActivityDescription = renderHTML(nextActivityDescriptionHTML);
+  const completedActivityProgressText =
+    `Congratulations! You have reached the end of "${activityName}" and your work has been saved.`;
+  const incompleteActivityProgressText =
+    `It looks like you haven't quite finished "${activityName}" yet. The answers you've given have been saved.`;
+  const allActivititiesComplete = true; //TODO this should be based on student progress
+  const isLastActivityInSequence = activityIndex? sequence?.activities.length === activityIndex+1: false;
+  const nextActivityTitle = !isLastActivityInSequence && sequence?.activities[activityNum+1].name;
+  const nextActivityDescription = !isLastActivityInSequence && renderHTML(sequence?.activities[activityNum+1].description || "");
+  const nextStepMainContentTitle = sequence? sequence.display_title : activityName;
+  const completedMainContentNextStepText = `You have completed "${nextStepMainContentTitle}" and you may exit now.`;
+  const incompletedMainContentNextStepText =
+    `You haven't completed "${nextStepMainContentTitle}" yet. You can go back to complete it, or you can exit.`;
   let progressText = "";
   let nextStepText = "";
 
   if (sequence) {
     if(isLastActivityInSequence) {
       progressText = isActivityComplete
-      ? `Congratulations! You have reached the end of ${quotedActivityName} and your work has been saved. You have completed all your work for this module!`
-      : `It looks like you haven't quite finished ${quotedActivityName} yet. The answers you've given have been saved.`;
-      nextStepText = isLastActivityInSequence
-      ? `You have completed ${sequence?.display_title} and you may exit now.`
-      : `You haven't completed ${sequence?.display_title} yet. You can go back to complete it, or you can exit.`;
+        ? completedActivityProgressText + `You have completed all your work for this module!` : incompleteActivityProgressText;
+      nextStepText = allActivititiesComplete? completedMainContentNextStepText : incompletedMainContentNextStepText;
     } else { //if !isLastActivity
-      progressText = isActivityComplete
-      ? `Congratulations! You have reached the end of ${quotedActivityName} and your work has been saved`
-      : `It looks like you haven't quite finished ${quotedActivityName} yet. The answers you've given have been saved.`;
-      nextStepText =``;
+      progressText = isActivityComplete? completedActivityProgressText : incompleteActivityProgressText;
+      nextStepText = "";
     }
   } else { //if (!sequence) Assumes is single activity
-    progressText = isActivityComplete
-    ? `Congratulations! You have reached the end of ${quotedActivityName} and your work has been saved`
-    : `It looks like you haven't quite finished ${quotedActivityName} yet. The answers you've given have been saved.`;
-    nextStepText = isActivityComplete
-    ? `You have completed ${quotedActivityName} and you may exit now.`
-    : `You haven't completed ${quotedActivityName} yet. You can go back to complete it, or you can exit.`;
+    progressText = isActivityComplete? completedActivityProgressText : incompleteActivityProgressText;
+    nextStepText = isActivityComplete? completedMainContentNextStepText : incompletedMainContentNextStepText;
   }
   return (
     <div className="completion-page-content" data-cy="completion-page-content">
       { isActivityComplete && <div className="completion-text" data-cy="completion-text">{completionText}</div> }
       <div className="progress-container" data-cy="progress-container">
-        <div>
+        <div className="progress-text">
           { isActivityComplete &&  <IconCheck width={32} height={32} className="check" /> }
           {progressText}
         </div>
@@ -89,7 +88,12 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           { !isLastActivityInSequence && <div className="next">Next Up ...</div>}
           {sequence && <div className="completion-text">{nextActivityTitle}</div>}
           {sequence && <div>{nextActivityDescription}</div>}
-          { (!isLastActivityInSequence && sequence) && <button className="button" onClick={handleNextActivity}>Start Next Activity</button>}
+          { (!isLastActivityInSequence && sequence) &&
+            <span>
+              <button className="button" onClick={handleNextActivity}>Start Next Activity</button>
+              <span> or </span>
+            </span>
+          }
           <button className="button" onClick={handleExit}>Exit</button>
         </div>
       </div>

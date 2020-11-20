@@ -48,8 +48,8 @@ interface IState {
   portalData?: IPortalData;
   sequence?: Sequence;
   showSequence?: boolean;
-  isLastActivityInSequence?: boolean;
   activityIndex?: number;
+  allActivitiesComplete?: boolean;
   showModal: boolean;
   modalLabel: string
   incompleteQuestions: IncompleteQuestion[];
@@ -271,19 +271,19 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderCompletionContent = (activity: Activity) => {
-    console.log("activity: ", activity);
     return (
       <CompletionPageContent
         activityName={activity.name}
         isActivityComplete={true} // TODO: should be based on student progress
+        allActivititiesComplete={true} //TODO: should be based on student progress
         onPageChange={this.handleChangePage}
         showStudentReport={activity.student_report_enabled}
         thumbnailURL={activity.thumbnail_url}
         onOpenReport={this.handleReport}
         sequence={this.state.sequence}
-        isLastActivityInSequence={this.state.isLastActivityInSequence}
         activityIndex={this.state.activityIndex}
         onActivityChange={this.handleSelectActivity}
+        onShowSequence={this.handleShowSequence}
       />
     );
   }
@@ -313,7 +313,6 @@ export class App extends React.PureComponent<IProps, IState> {
     this.setState((prevState) =>
       ({ activity: prevState.sequence?.activities[activityNum],
         showSequence: false,
-        isLastActivityInSequence: prevState.sequence?.activities.length === activityNum + 1,
         activityIndex: activityNum
       })
     );

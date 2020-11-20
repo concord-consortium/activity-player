@@ -10,16 +10,18 @@
   .completion-text {
     color: $cc-teal-dark1;
     font-size: 22px;
+    font-weight: bold;
   }
 
   .progress-container {
     display: flex;
-    padding: 20px;
+    padding: 0.5em;
     background-color: $cc-teal-light6;
     color: $cc-teal-dark1;
     margin: 10px 0 10px 0;
     font-size: 20px;
     font-style: italic;
+    font-weight: bold;
 
     .check {
       position: relative;
@@ -27,14 +29,18 @@
       fill: $cc-teal-dark1;
       margin-right: 6px;
     }
+
+    .progress-text {
+      padding: 0.5em;
+    }
   }
 
   .exit-container {
     display: flex;
-    padding: 20px;
+    padding: 0.5em;
     background-color: $cc-charcoal-light3;
     color: $cc-charcoal;
-    margin: 10px 0 10px 0;
+    margin: 20px 0 10px 0;
 
     .next {
       color: $cc-charcoal-light1;
@@ -42,7 +48,7 @@
     }
 
     .next-step {
-      margin: 10px;
+      padding: 0.5em;
     }
   }
 
@@ -56,6 +62,7 @@
     width: 200px;
     height: auto;
     position: relative;
+    margin: 0 10px 0 0;
   }
   .ribbon {
     position: absolute;
