@@ -9,13 +9,13 @@ describe("Completion Page Content component", () => {
       // do nothing.
     };
     const quotedActivityName = `"test"`;
-    const wrapperComplete = shallow(<CompletionPageContent activityName={"test"} isActivityComplete={true} onPageChange={stubFunction} showStudentReport={true} thumbnailURL={""} />);
+    const wrapperComplete = shallow(<CompletionPageContent activityName={"test"} isActivityComplete={true} onPageChange={stubFunction} showStudentReport={true} thumbnailURL={""} onActivityChange={stubFunction}/>);
     expect(wrapperComplete.find('[data-cy="completion-page-content"]').length).toBe(1);
     expect(wrapperComplete.containsMatchingElement(<IconCheck width={32} height={32} className="check" />)).toEqual(true);
     expect(wrapperComplete.find('[data-cy="completion-text"]').length).toBe(1);
     expect(wrapperComplete.containsMatchingElement(<div>{`You have completed ${quotedActivityName} and you may exit now.`}</div>)).toEqual(true);
 
-    const wrapperIncomplete = shallow(<CompletionPageContent activityName={"test"} isActivityComplete={false} onPageChange={stubFunction} showStudentReport={true} thumbnailURL={""} />);
+    const wrapperIncomplete = shallow(<CompletionPageContent activityName={"test"} isActivityComplete={false} onPageChange={stubFunction} showStudentReport={true} thumbnailURL={""} onActivityChange={stubFunction}/>);
     expect(wrapperIncomplete.find('[data-cy="completion-page-content"]').length).toBe(1);
     expect(wrapperIncomplete.containsMatchingElement(<IconCheck width={32} height={32} className="check" />)).toEqual(false);
     expect(wrapperIncomplete.find('[data-cy="completion-text"]').length).toBe(0);

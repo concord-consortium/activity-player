@@ -48,6 +48,8 @@ interface IState {
   portalData?: IPortalData;
   sequence?: Sequence;
   showSequence?: boolean;
+  isLastActivityInSequence?: boolean;
+  activityIndex?: number;
   showModal: boolean;
   modalLabel: string
   incompleteQuestions: IncompleteQuestion[];
@@ -269,6 +271,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderCompletionContent = (activity: Activity) => {
+    console.log("activity: ", activity);
     return (
       <CompletionPageContent
         activityName={activity.name}
@@ -276,6 +279,11 @@ export class App extends React.PureComponent<IProps, IState> {
         onPageChange={this.handleChangePage}
         showStudentReport={activity.student_report_enabled}
         thumbnailURL={activity.thumbnail_url}
+        onOpenReport={this.handleReport}
+        sequence={this.state.sequence}
+        isLastActivityInSequence={this.state.isLastActivityInSequence}
+        activityIndex={this.state.activityIndex}
+        onActivityChange={this.handleSelectActivity}
       />
     );
   }
@@ -303,7 +311,11 @@ export class App extends React.PureComponent<IProps, IState> {
       parameters: { new_activity_index: activityNum + 1, new_activity_name: this.state.sequence?.activities[activityNum].name }
     });
     this.setState((prevState) =>
-      ({ activity: prevState.sequence?.activities[activityNum], showSequence: false })
+      ({ activity: prevState.sequence?.activities[activityNum],
+        showSequence: false,
+        isLastActivityInSequence: prevState.sequence?.activities.length === activityNum + 1,
+        activityIndex: activityNum
+      })
     );
   }
 

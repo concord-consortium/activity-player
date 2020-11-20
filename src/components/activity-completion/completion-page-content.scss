@@ -19,6 +19,7 @@
     color: $cc-teal-dark1;
     margin: 10px 0 10px 0;
     font-size: 20px;
+    font-style: italic;
 
     .check {
       position: relative;
@@ -34,6 +35,11 @@
     background-color: $cc-charcoal-light3;
     color: $cc-charcoal;
     margin: 10px 0 10px 0;
+
+    .next {
+      color: $cc-charcoal-light1;
+      text-transform: capitalize;
+    }
 
     .next-step {
       margin: 10px;

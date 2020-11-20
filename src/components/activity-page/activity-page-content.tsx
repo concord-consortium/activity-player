@@ -47,7 +47,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   render() {
-    const { enableReportButton, isFirstActivityPage, isLastActivityPage, page, pageNumber, totalPreviousQuestions, lockForwardNav } = this.props;
+    const { enableReportButton, isFirstActivityPage, isLastActivityPage, page, pageNumber, totalPreviousQuestions, lockForwardNav, onOpenReport } = this.props;
     const { scrollOffset } = this.state;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
     const pageSectionQuestionCount = getPageSectionQuestionCount(page);
@@ -85,7 +85,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
           onBack={!isFirstActivityPage ? this.handleBack : undefined}
           onNext={!isLastActivityPage ? this.handleNext : undefined}
           lockForwardNav={lockForwardNav}
-          onGenerateReport={enableReportButton ? this.handleReport : undefined}
+          onGenerateReport={enableReportButton ? onOpenReport : undefined}
         />
       </div>
     );
