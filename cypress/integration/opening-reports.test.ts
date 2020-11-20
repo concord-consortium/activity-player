@@ -4,7 +4,7 @@ import ActivityPage from "../support/elements/activity-page";
 
 const activityPage = new ActivityPage;
 const portalReportUrl = "https://portal-report.concord.org/branch/master/";
-context("Test Opening Portal Reports from various places", () => {
+context.skip("Test Opening Portal Reports from various places", () => { //need to wait for corresponding portal-report work to be merged in
   describe("As an anonymous user", () => {
     const runKey = uuidv4();
     const activity = "activity=https://authoring.staging.concord.org/api/v1/activities/20819.json&firebase-app=report-service-dev&report-source=authoring.staging.concord.org&runKey="+runKey;
