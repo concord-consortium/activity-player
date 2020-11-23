@@ -13,7 +13,7 @@ export const TextBox: React.FC<IProps> = (props) => {
   return(
     <div className={`textbox ${embeddable.is_callout ? "callout" : ""}`} data-cy="text-box">
       { embeddable.name && <div className="text-name">{embeddable.name}</div> }
-      <div className="content">
+      <div className="content question-txt">
         {embeddable.content && renderHTML(embeddable.content)}
       </div>
     </div>

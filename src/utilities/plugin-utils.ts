@@ -2,7 +2,7 @@ import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { Optional } from "utility-types";
 import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
-import { Activity, Embeddable, IEmbeddablePlugin } from "../types";
+import { Activity, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
 
 type PluginType = "TeacherEdition" | "Glossary";
 export interface PluginInfo {
@@ -22,16 +22,24 @@ export const Plugins: PluginInfo[] = [
     id: 0,
     loaded: false
   },
+  {
+    url: "https://glossary-plugin.concord.org/version/v3.10.0/plugin.js",
+    type: "Glossary",
+    name: "Glossary",
+    id: 1,
+    loaded: false
+  },
 ];
 
-export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, handleLoadPlugins: () => void) => {
+export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, handleLoadPlugins: () => void, teacherEditionMode: boolean) => {
   // load any plugin scripts, each should call registerPlugin if correctly loaded
   const usedPlugins: PluginInfo[] = [];
+  // search each page for teacher edition plugin use
   for (let page = 0; page < activity.pages.length - 1; page++) {
     if (!activity.pages[page].is_hidden) {
       for (let embeddableNum = 0; embeddableNum < activity.pages[page].embeddables.length; embeddableNum++) {
         const embeddable = activity.pages[page].embeddables[embeddableNum].embeddable;
-        if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.approved_script_label === "teacherEditionTips") {
+        if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.approved_script_label === "teacherEditionTips" && teacherEditionMode) {
           const plugin = Plugins.find(p => p.type === "TeacherEdition");
           if (plugin && !usedPlugins.some(p => p.type === "TeacherEdition")) {
             usedPlugins.push(plugin);
@@ -40,6 +48,15 @@ export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, hand
       }
     }
   }
+  // seacrh plugin array for glossary plugin use
+  activity.plugins.forEach((activityPlugin: Plugin) => {
+    if (activityPlugin.approved_script_label === "glossary") {
+      const plugin = Plugins.find(p => p.type === "Glossary");
+      if (plugin && !usedPlugins.some(p => p.type === "Glossary")) {
+        usedPlugins.push(plugin);
+      }
+    }
+  });
 
   usedPlugins.forEach((plugin) => {
     // set plugin label
@@ -66,6 +83,7 @@ export interface IEmbeddablePluginContext {
   wrappedEmbeddable?: Embeddable;
   wrappedEmbeddableContainer?: HTMLElement;
   sendCustomMessage?: (message: ICustomMessage) => void;
+  pluginType?: string;
 }
 export type IPartialEmbeddablePluginContext = Partial<IEmbeddablePluginContext>;
 
@@ -86,9 +104,8 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 
 export const initializePlugin = (context: IEmbeddablePluginContext) => {
   const { LARA, embeddable, embeddableContainer,
-          wrappedEmbeddable, wrappedEmbeddableContainer, sendCustomMessage } = context;
-  // TODO: will need to change search as we implement other plugin types
-  const plugin = Plugins.find(p => p.type === "TeacherEdition");
+          wrappedEmbeddable, wrappedEmbeddableContainer, sendCustomMessage, pluginType } = context;
+  const plugin = Plugins.find(p => p.type === pluginType);
   if (!plugin) return;
 
   const embeddableContext: Optional<IEmbeddableContextOptions, "container"> = {
@@ -122,6 +139,18 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
     wrappedEmbeddable: wrappedEmbeddable ? embeddableContextAny : null,
     resourceUrl: ""
   };
-  // TODO: add sophistication to handle other types
   LARA.Plugins.initPlugin(pluginLabel, pluginContext);
+};
+
+export const getGlossaryEmbeddable = (activity: Activity) => {
+  const glossaryPlugin = activity.plugins.find((activityPlugin: Plugin) => activityPlugin.approved_script_label === "glossary");
+  const embeddablePlugin: IEmbeddablePlugin | undefined = glossaryPlugin
+    ? { type: "Embeddable::EmbeddablePlugin",
+        plugin: glossaryPlugin,
+        is_hidden: false,
+        is_full_width: false,
+        ref_id: ""
+      }
+    : undefined;
+  return embeddablePlugin;
 };
