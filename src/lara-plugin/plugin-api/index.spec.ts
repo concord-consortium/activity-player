@@ -1,3 +1,9 @@
+// ACTIVITY_PLAYER_CODE:
+import $ from "jquery";
+(window as any).jQuery = $;
+(window as any).$ = $;
+import "jquery-ui";
+
 import * as PluginAPI from "./index";
 
 describe("Plugin API", () => {

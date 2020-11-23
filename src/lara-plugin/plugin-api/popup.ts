@@ -1,6 +1,9 @@
+// LARA_CODE: import * as $ from "jquery";
 // ACTIVITY_PLAYER_CODE:
 import $ from "jquery";
-// LARA_CODE: import * as $ from "jquery";
+(window as any).jQuery = $;
+(window as any).$ = $;
+
 import "jquery-ui/ui/widgets/button";
 import "jquery-ui/ui/widgets/dialog";
 
