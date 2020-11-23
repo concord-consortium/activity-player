@@ -182,6 +182,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                       lightbox: true,
                       dialog: true,
                       alert: false
+                    },
+                    getFirebaseJwt: {
+                      version: "1.0.0"
                     }
                   },
                   globalInteractiveState: null,
