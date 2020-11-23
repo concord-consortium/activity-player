@@ -22,7 +22,7 @@ export const Plugins: PluginInfo[] = [
   },
 ];
 
-export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity) => {
+export const loadPluginScripts = async (LARA: LaraGlobalType, activity: Activity) => {
   // load any plugin scripts, each should call registerPlugin if correctly loaded
   const usedPlugins: PluginInfo[] = [];
   for (let page = 0; page < activity.pages.length - 1; page++) {
@@ -39,20 +39,27 @@ export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity) => {
     }
   }
 
-  usedPlugins.forEach((plugin) => {
-    // set plugin label
+  // load the plugin scripts
+  for (const plugin of usedPlugins) {
     const pluginLabel = "plugin" + plugin.id;
     LARA.Plugins.setNextPluginLabel(pluginLabel);
-    // load the script
-    const script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src = plugin.url;
-    document.body.appendChild(script);
+    await loadScript(plugin.url);
+  }
+};
+
+const loadScript = async (url: string) => {
+  const script = document.createElement("script");
+  script.type = "text/javascript";
+  script.src = url;
+  document.body.appendChild(script);
+
+  const promise = new Promise((resolve, reject) => {
     script.onload = function() {
-      // TODO: might need additional handling here
-      // console.log("plugin script loaded");
+      resolve(true);
     };
   });
+  const result = await promise;
+  return result;
 };
 
 export interface IEmbeddablePluginContext {

@@ -91,6 +91,11 @@ export class App extends React.PureComponent<IProps, IState> {
       const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showSequence, sequence, teacherEditionMode};
       setDocumentTitle(activity, currentPage);
 
+      this.LARA = initializeLara();
+      if (teacherEditionMode) {
+        await loadPluginScripts(this.LARA, activity);
+      }
+
       let classHash = "";
       let role = "unknown";
       let runRemoteEndpoint = "";
@@ -129,11 +134,6 @@ export class App extends React.PureComponent<IProps, IState> {
       }
 
       this.setState(newState as IState);
-
-      this.LARA = initializeLara();
-      if (teacherEditionMode) {
-        loadPluginScripts(this.LARA, activity);
-      }
 
       Modal.setAppElement("#app");
 
