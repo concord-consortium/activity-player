@@ -19,12 +19,12 @@
       "is_completion": false,
       "is_hidden": false,
       "layout": "l-6040",
-      "name": "test page 1",
+      "name": "",
       "position": 1,
       "show_header": true,
       "show_info_assessment": true,
       "show_interactive": false,
-      "show_sidebar": true,
+      "show_sidebar": false,
       "sidebar": "<p>This is a test page.</p>",
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": false,
@@ -91,23 +91,6 @@
             "linked_interactives": []
           },
           "section": null
-        },
-        {
-          "embeddable": {
-            "default_text": "",
-            "give_prediction_feedback": false,
-            "hint": "",
-            "is_full_width": false,
-            "is_hidden": false,
-            "is_prediction": false,
-            "name": "",
-            "prediction_feedback": "",
-            "prompt": "<p>this is also a test</p>",
-            "show_in_featured_question_report": true,
-            "type": "Embeddable::OpenResponse",
-            "ref_id": "447216-Embeddable::OpenResponse"
-          },
-          "section": null
         }
       ]
     },
@@ -144,11 +127,56 @@
     {
       "additional_sections": {},
       "embeddable_display_mode": "stacked",
-      "is_completion": true,
+      "is_completion": false,
       "is_hidden": false,
       "layout": "l-6040",
       "name": null,
       "position": 3,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p>This ia a test page that contains a header and some content.</p>",
+            "is_callout": true,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272339-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"This is test content\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"none\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "3279-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": true,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 4,
       "show_header": false,
       "show_info_assessment": false,
       "show_interactive": false,
