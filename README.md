@@ -25,14 +25,11 @@ You *do not* need to build to deploy the code, that is automatic.  See more info
 
 ## Deployment
 
-Production releases to S3 are based on the contents of the /dist folder and are built automatically by Travis
-for each branch pushed to GitHub and each merge into production.
+Production releases to S3 are based on the contents of the /dist folder and are built automatically by GitHub Actions for each branch pushed to GitHub and each merge into production.
 
 Merges into production are deployed to https://activity-player.concord.org/ (NOTE: production branch has not yet been created and deployment still needs to be configured).
 
 Other branches are deployed to https://activity-player.concord.org/branch/<name>.
-
-You can view the status of all the branch deploys [here](https://travis-ci.com/github/concord-consortium/activity-player/branches).
 
 To deploy a production release:
 
@@ -74,6 +71,7 @@ Inside of your `package.json` file:
 ### Note: these are subject to change
 
 * activity={id|url}: load sample-activity {id} or load json from specified url
+* sequence={id|url}: load sample-sequence {id} or load json from specified url
 * page={n}:          load page n, where 0 is the activity introduction and 1 is the first page
 * themeButtons:      whether to show theme buttons
 * mode={mode}:       sets mode. Values: "teacher-edition"
