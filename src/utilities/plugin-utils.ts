@@ -48,7 +48,7 @@ export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, hand
       }
     }
   }
-  // seacrh plugin array for glossary plugin use
+  // search plugin array for glossary plugin use
   activity.plugins.forEach((activityPlugin: Plugin) => {
     if (activityPlugin.approved_script_label === "glossary") {
       const plugin = Plugins.find(p => p.type === "Glossary");
@@ -66,8 +66,10 @@ export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, hand
     const script = document.createElement("script");
     script.type = "text/javascript";
     script.src = plugin.url;
+    script.setAttribute("data-id", pluginLabel);
     document.body.appendChild(script);
     script.onload = function() {
+      console.log(`plugin${plugin.id} script loaded`);
       plugin.loaded = true;
       if (usedPlugins.filter((p) => !p.loaded).length === 0) {
         handleLoadPlugins();
