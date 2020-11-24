@@ -1,6 +1,6 @@
 import React from "react";
 import { ActivityLayouts, PageLayouts, isQuestion, VisibleEmbeddables, getVisibleEmbeddablesOnPage,
-         EmbeddableSections } from "../../utilities/activity-utils";
+         EmbeddableSections, getLinkedPluginEmbeddable } from "../../utilities/activity-utils";
 import { Embeddable } from "../activity-page/embeddable";
 import { RelatedContent } from "./related-content";
 import { SubmitButton } from "./submit-button";
@@ -11,10 +11,11 @@ import { Activity, Page } from "../../types";
 interface IProps {
   activity: Activity;
   teacherEditionMode?: boolean;
+  pluginsLoaded: boolean;
 }
 
 export const SinglePageContent: React.FC<IProps> = (props) => {
-  const { activity, teacherEditionMode } = props;
+  const { activity, teacherEditionMode, pluginsLoaded } = props;
   let questionNumber = 0;
   let embeddableNumber = 0;
 
@@ -28,6 +29,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
               questionNumber++;
             }
             embeddableNumber++;
+            const linkedPluginEmbeddable = getLinkedPluginEmbeddable(page, embeddableWrapper.embeddable.ref_id);
             return (
               <Embeddable
                 activityLayout={ActivityLayouts.SinglePage}
@@ -36,7 +38,9 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
                 pageLayout={PageLayouts.FullWidth}
                 pageSection={EmbeddableSections.InfoAssessment}
                 questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
+                linkedPluginEmbeddable={linkedPluginEmbeddable}
                 teacherEditionMode={teacherEditionMode}
+                pluginsLoaded={pluginsLoaded}
               />
             );
           })

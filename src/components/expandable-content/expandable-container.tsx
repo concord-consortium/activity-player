@@ -19,7 +19,7 @@ interface IProps {
 
 export const ExpandableContainer: React.FC<IProps> = (props) => {
   const { activity, page, pageNumber, teacherEditionMode } = props;
-  const sideTips = getPageSideTipEmbeddables(page);
+  const sideTips = getPageSideTipEmbeddables(activity, page);
   const verticalOffset = kExpandableContentTop + sideTips.length * (kExpandableItemHeight + kExpandableContentMargin);
   const sidebars = getPageSideBars(activity, page);
   return (
