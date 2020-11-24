@@ -23,6 +23,7 @@ describe("Activity Page Content component", () => {
       pageNumber={5}
       totalPreviousQuestions={5}
       setNavigation={stubFunction}
+      pluginsLoaded={true}
     />);
     expect(getByTestId("page-content")).toBeDefined();
     expect(getByTestId("bottom-button-back")).toBeEnabled();

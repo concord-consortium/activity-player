@@ -10,6 +10,7 @@ export interface PluginInfo {
   type: PluginType,
   name: string;
   id: number;
+  loaded: boolean;
 }
 
 // TODO: this information should come from the activity JSON
@@ -18,11 +19,12 @@ export const Plugins: PluginInfo[] = [
     url: "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
     type: "TeacherEdition",
     name: "Teacher Edition",
-    id: 0
+    id: 0,
+    loaded: false
   },
 ];
 
-export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity) => {
+export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, handleLoadPlugins: () => void) => {
   // load any plugin scripts, each should call registerPlugin if correctly loaded
   const usedPlugins: PluginInfo[] = [];
   for (let page = 0; page < activity.pages.length - 1; page++) {
@@ -49,8 +51,10 @@ export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity) => {
     script.src = plugin.url;
     document.body.appendChild(script);
     script.onload = function() {
-      // TODO: might need additional handling here
-      // console.log("plugin script loaded");
+      plugin.loaded = true;
+      if (usedPlugins.filter((p) => !p.loaded).length === 0) {
+        handleLoadPlugins();
+      }
     };
   });
 };

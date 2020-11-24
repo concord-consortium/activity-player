@@ -27,6 +27,7 @@ interface IProps {
   totalPreviousQuestions: number;
   setNavigation: (refId: string, options: INavigationOptions) => void;
   lockForwardNav?: boolean;
+  pluginsLoaded: boolean;
 }
 
 interface IState {
@@ -151,6 +152,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                 linkedPluginEmbeddable={linkedPluginEmbeddable}
                 teacherEditionMode={this.props.teacherEditionMode}
                 setNavigation={this.props.setNavigation}
+                pluginsLoaded={this.props.pluginsLoaded}
               />
             );
           })
