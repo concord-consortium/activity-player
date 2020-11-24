@@ -8,10 +8,11 @@ import "./embeddable-plugin.scss";
 
 interface IProps {
   embeddable: IEmbeddablePlugin;
+  pluginsLoaded: boolean;
 }
 
 export const EmbeddablePlugin: React.FC<IProps> = (props) => {
-    const { embeddable } = props;
+    const { embeddable, pluginsLoaded } = props;
     const divTarget = useRef<HTMLInputElement>(null);
     const LARA = useContext(LaraGlobalContext);
     useEffect(() => {
@@ -21,10 +22,10 @@ export const EmbeddablePlugin: React.FC<IProps> = (props) => {
         embeddableContainer: divTarget.current || undefined
       };
       const validPluginContext = validateEmbeddablePluginContextForPlugin(pluginContext);
-      if (validPluginContext) {
+      if (validPluginContext && pluginsLoaded) {
         initializePlugin(validPluginContext);
       }
-    }, [LARA, embeddable]);
+    }, [LARA, embeddable, pluginsLoaded]);
     return (
       <div className="plugin-container" ref={divTarget} data-cy="embeddable-plugin" key={embeddable.ref_id} />
     );

@@ -50,6 +50,7 @@ interface IState {
   showModal: boolean;
   modalLabel: string
   incompleteQuestions: IncompleteQuestion[];
+  pluginsLoaded: boolean;
 }
 interface IProps {}
 
@@ -68,6 +69,7 @@ export class App extends React.PureComponent<IProps, IState> {
       showModal: false,
       modalLabel: "",
       incompleteQuestions: [],
+      pluginsLoaded: false,
     };
   }
 
@@ -132,7 +134,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
       this.LARA = initializeLara();
       if (teacherEditionMode) {
-        loadPluginScripts(this.LARA, activity);
+        loadPluginScripts(this.LARA, activity, this.handleLoadPlugins);
       }
 
       Modal.setAppElement("#app");
@@ -167,7 +169,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, authError, currentPage, username } = this.state;
+    const { activity, authError, currentPage, username, pluginsLoaded } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
@@ -189,7 +191,7 @@ export class App extends React.PureComponent<IProps, IState> {
             projectId={activity.project_id}
           />
         }
-        { (activity.layout !== ActivityLayouts.SinglePage && currentPage !== 0 && !activity.pages[currentPage - 1].is_completion) &&
+        { pluginsLoaded && (activity.layout === ActivityLayouts.SinglePage || (currentPage !== 0 && !activity.pages[currentPage - 1].is_completion)) &&
           <ExpandableContainer
             activity={activity}
             pageNumber={currentPage}
@@ -234,6 +236,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   setNavigation={this.handleSetNavigation}
                   key={`page-${currentPage}`}
                   lockForwardNav={this.state.incompleteQuestions.length > 0}
+                  pluginsLoaded={this.state.pluginsLoaded}
                 />
         }
       </>
@@ -245,6 +248,7 @@ export class App extends React.PureComponent<IProps, IState> {
       <SinglePageContent
         activity={activity}
         teacherEditionMode={this.state.teacherEditionMode}
+        pluginsLoaded={this.state.pluginsLoaded}
       />
     );
   }
@@ -324,6 +328,10 @@ export class App extends React.PureComponent<IProps, IState> {
       updatedIncompleteQuestions.push(newIncompleteQuestion);
       this.setState({ incompleteQuestions: updatedIncompleteQuestions });
     }
+  }
+
+  private handleLoadPlugins = () => {
+    this.setState({ pluginsLoaded: true });
   }
 
 }
