@@ -91,7 +91,7 @@ const initAuthoringPlugin = (label: string, options: IPluginAuthoringContextOpti
 export const registerPlugin = (options: IRegisterPluginOptions): boolean => {
   // ACTIVITY_PLAYER_CODE:
   const currentScriptId = document.currentScript?.getAttribute("data-id");
-  nextPluginLabel = currentScriptId || "";
+  nextPluginLabel = currentScriptId || nextPluginLabel;
 
   if (nextPluginLabel === "") {
     // tslint:disable-next-line:no-console
