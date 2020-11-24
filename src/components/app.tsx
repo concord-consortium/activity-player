@@ -169,7 +169,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, authError, currentPage, username, pluginsLoaded } = this.state;
+    const { activity, authError, currentPage, username, pluginsLoaded, teacherEditionMode } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
@@ -191,12 +191,13 @@ export class App extends React.PureComponent<IProps, IState> {
             projectId={activity.project_id}
           />
         }
-        { pluginsLoaded && (activity.layout === ActivityLayouts.SinglePage || (currentPage !== 0 && !activity.pages[currentPage - 1].is_completion)) &&
+        { (activity.layout === ActivityLayouts.SinglePage || (currentPage !== 0 && !activity.pages[currentPage - 1].is_completion)) &&
           <ExpandableContainer
             activity={activity}
             pageNumber={currentPage}
             page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
-            teacherEditionMode={this.state.teacherEditionMode}
+            teacherEditionMode={teacherEditionMode}
+            pluginsLoaded={pluginsLoaded}
           />
         }
       </React.Fragment>
