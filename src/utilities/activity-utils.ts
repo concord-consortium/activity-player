@@ -63,8 +63,21 @@ export const isEmbeddableSideTip = (e: EmbeddableWrapper) => {
   return (e.embeddable.type === "Embeddable::EmbeddablePlugin" && e.embeddable.plugin?.component_label === "sideTip");
 };
 
-export const getPageSideTipEmbeddables = (page: Page) => {
-  return page.embeddables.filter((e: any) => isEmbeddableSideTip(e));
+export const getPageSideTipEmbeddables = (activity: Activity, currentPage: Page) => {
+  if (activity.layout === ActivityLayouts.SinglePage) {
+    const sidetips: EmbeddableWrapper[] = [];
+    for (let page = 0; page < activity.pages.length - 1; page++) {
+      for (let embeddableNum = 0; embeddableNum < activity.pages[page].embeddables.length; embeddableNum++) {
+        const embeddableWrapper = activity.pages[page].embeddables[embeddableNum];
+        if (isEmbeddableSideTip(embeddableWrapper)) {
+          sidetips.push(embeddableWrapper);
+        }
+      }
+    }
+    return sidetips;
+  } else {
+    return currentPage.embeddables.filter((e: any) => isEmbeddableSideTip(e));
+  }
 };
 
 export const getPageSideBars = (activity: Activity, currentPage: Page) => {
