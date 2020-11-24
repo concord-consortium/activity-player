@@ -1,5 +1,6 @@
 import React from "react";
 import IconCheck from "../../assets/svg-icons/icon-check.svg";
+import { showReport } from "../../utilities/report-utils";
 
 import "./completion-page-content.scss";
 
@@ -7,18 +8,17 @@ interface IProps {
   activityName: string;
   isActivityComplete: boolean;
   onPageChange: (page: number) => void;
-  onShowAllAnswers?: () => void;
   showStudentReport: boolean;
   thumbnailURL: string | null;
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
-  const { activityName, isActivityComplete, onPageChange, onShowAllAnswers, showStudentReport, thumbnailURL } = props;
+  const { activityName, isActivityComplete, onPageChange, showStudentReport, thumbnailURL } = props;
   const handleExit = () => {
     onPageChange(0);
   };
   const handleShowAnswers = () => {
-    onShowAllAnswers?.(); // TODO: show report
+    showReport();
   };
   const quotedActivityName = "\"" + activityName + "\"";
   const completionText = `${quotedActivityName} activity complete!`;

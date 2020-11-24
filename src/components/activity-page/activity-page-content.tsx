@@ -10,8 +10,7 @@ import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
 import { Page, EmbeddableWrapper } from "../../types";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../../lib/logger";
-import { queryValue } from "../../utilities/url-query";
-import { DEFAULT_PORTAL_REPORT_URL } from "../app";
+import { showReport } from "../../utilities/report-utils";
 
 import "./activity-page-content.scss";
 
@@ -127,12 +126,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     this.props.onPageChange(this.props.pageNumber + 1);
   }
   private handleReport = () => {
-    const reportLink = (queryValue("portal-report") as string) || DEFAULT_PORTAL_REPORT_URL;
-    const runKey= queryValue("runKey");
-    const activity = queryValue("activity");
-    const activityUrl = activity? ((activity.split(".json"))[0]).replace("api/v1/","") : "";
-    const answerSource = window.location.hostname;
-    window.open(reportLink + "?runKey=" + runKey + "&activity=" + activityUrl + "&answerSource="+answerSource);
+    showReport();
     Logger.log({
       event: LogEventName.create_report
     });
