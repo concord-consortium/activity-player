@@ -21,7 +21,6 @@ export const SequenceIntroduction: React.FC<IProps> = (props) => {
           projectId={sequence.project_id}
           userName={username}
           contentName={sequence.display_title || sequence.title || ""}
-          singlePage={false}
           showSequence={true}
           sequenceLogo={sequence.logo}
         />

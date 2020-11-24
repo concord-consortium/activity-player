@@ -178,7 +178,6 @@ export class App extends React.PureComponent<IProps, IState> {
           projectId={activity.project_id}
           userName={username}
           contentName={activity.name}
-          singlePage={activity.layout === ActivityLayouts.SinglePage}
         />
         { authError
           ? <AuthError />
@@ -205,16 +204,18 @@ export class App extends React.PureComponent<IProps, IState> {
   private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
     return (
       <>
-        <ActivityNavHeader
-          activityPages={activity.pages}
-          currentPage={currentPage}
-          fullWidth={fullWidth}
-          onPageChange={this.handleChangePage}
-          singlePage={activity.layout === ActivityLayouts.SinglePage}
-          sequenceName={this.state.sequence?.display_title || (this.state.sequence && "Sequence")}
-          onShowSequence={this.handleShowSequence}
-          lockForwardNav={this.state.incompleteQuestions.length > 0}
-        />
+        { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
+          <ActivityNavHeader
+            activityPages={activity.pages}
+            currentPage={currentPage}
+            fullWidth={fullWidth}
+            onPageChange={this.handleChangePage}
+            singlePage={activity.layout === ActivityLayouts.SinglePage}
+            sequenceName={this.state.sequence?.display_title || (this.state.sequence && "Sequence")}
+            onShowSequence={this.handleShowSequence}
+            lockForwardNav={this.state.incompleteQuestions.length > 0}
+          />
+        }
         { activity.layout === ActivityLayouts.SinglePage
           ? this.renderSinglePageContent(activity)
           : currentPage === 0
@@ -242,18 +243,18 @@ export class App extends React.PureComponent<IProps, IState> {
   private renderSinglePageContent = (activity: Activity) => {
     return (
       <SinglePageContent
-          activity={activity}
-          teacherEditionMode={this.state.teacherEditionMode}
-        />
+        activity={activity}
+        teacherEditionMode={this.state.teacherEditionMode}
+      />
     );
   }
 
   private renderIntroductionContent = (activity: Activity) => {
     return (
       <IntroductionPageContent
-          activity={activity}
-          onPageChange={this.handleChangePage}
-        />
+        activity={activity}
+        onPageChange={this.handleChangePage}
+      />
     );
   }
 
