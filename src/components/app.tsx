@@ -148,7 +148,7 @@ export class App extends React.PureComponent<IProps, IState> {
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
-          <div className="app">
+          <div className="app" data-cy="app">
             <WarningBanner/>
             { this.state.teacherEditionMode && <TeacherEditionBanner/>}
             { this.state.showSequence
