@@ -75,6 +75,7 @@ Inside of your `package.json` file:
 * page={n}:          load page n, where 0 is the activity introduction and 1 is the first page
 * themeButtons:      whether to show theme buttons
 * mode={mode}:       sets mode. Values: "teacher-edition"
+* portal-report:     sets the url of the student report
 
 #### User data loading:
 * firebase-app={id}: needed to load data from the correct firebase app

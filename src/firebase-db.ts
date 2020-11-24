@@ -200,10 +200,10 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     return;
   }
 
-  let postAnswer: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata;
+  let answerDocData: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata;
 
   if (portalData.type === "authenticated") {
-    postAnswer = {
+    const ltiAnswer: LTIRuntimeAnswerMetadata = {
       ...answer,
       platform_id: portalData.platformId,
       platform_user_id: portalData.platformUserId.toString(),
@@ -214,18 +214,21 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
       resource_url: portalData.resourceUrl,
       run_key: "",
     };
+    answerDocData = ltiAnswer;
   } else {
-    postAnswer = {
+    const anonymousAnswer: AnonymousRuntimeAnswerMetadata = {
       ...answer,
       run_key: portalData.runKey,
       source_key: portalData.database.sourceKey,
       resource_url: portalData.resourceUrl,
       tool_id: portalData.toolId,
       tool_user_id: "anonymous",
+      platform_user_id: portalData.runKey
     };
+    answerDocData = anonymousAnswer;
   }
 
   return firebase.firestore()
       .doc(answersPath(answer.id))
-      .set(postAnswer as Partial<firebase.firestore.DocumentData>, {merge: true});
+      .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
 }

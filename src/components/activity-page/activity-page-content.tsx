@@ -10,6 +10,7 @@ import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
 import { Page, EmbeddableWrapper } from "../../types";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../../lib/logger";
+import { showReport } from "../../utilities/report-utils";
 
 import "./activity-page-content.scss";
 
@@ -125,7 +126,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     this.props.onPageChange(this.props.pageNumber + 1);
   }
   private handleReport = () => {
-    // TODO: create report when pressed
+    showReport();
     Logger.log({
       event: LogEventName.create_report
     });
