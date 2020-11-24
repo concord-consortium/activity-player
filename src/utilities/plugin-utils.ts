@@ -49,8 +49,7 @@ export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, hand
     const script = document.createElement("script");
     script.type = "text/javascript";
     script.src = plugin.url;
-    //document.body.appendChild(script);
-    setTimeout(() => { document.body.appendChild(script); }, 4000);
+    document.body.appendChild(script);
     script.onload = function() {
       plugin.loaded = true;
       if (usedPlugins.filter((p) => !p.loaded).length === 0) {
