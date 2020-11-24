@@ -1,4 +1,8 @@
 import React from "react";
+import $ from "jquery";
+(window as any).jQuery = $;
+(window as any).$ = $;
+import "jquery-ui";
 import { App } from "./app";
 import { shallow } from "enzyme";
 import { Activity } from "../types";
