@@ -7,6 +7,7 @@ import sampleActivityHas from "../data/sample-activity-HAS.json";
 import sampleActivityHiddenContent from "../data/sample-activity-hidden-content.json";
 import sampleActivityMultipleLayoutTypes from "../data/sample-activity-multiple-layout-types.json";
 import sampleActivityPlugins from "../data/sample-activity-plugins.json";
+import sampleActivityPluginsSinglePage from "../data/sample-activity-plugins-single-page.json";
 import sampleActivityResponsive from "../data/sample-activity-responsive-layout.json";
 import sampleActivitySinglePageLayout from "../data/sample-activity-single-page-layout.json";
 import sampleActivityFullWidthOff from "../data/LARA-page-elements-full-width-off.json";
@@ -24,6 +25,7 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-hidden-content": sampleActivityHiddenContent as Activity,
   "sample-activity-multiple-layout-types": sampleActivityMultipleLayoutTypes as Activity,
   "sample-activity-plugins": sampleActivityPlugins as Activity,
+  "sample-activity-plugins-single-page": sampleActivityPluginsSinglePage as Activity,
   "sample-activity-responsive-layout": sampleActivityResponsive as Activity,
   "sample-activity-single-page-layout": sampleActivitySinglePageLayout as Activity,
   "LARA-page-elements-full-width-off": sampleActivityFullWidthOff as Activity,
