@@ -6,7 +6,7 @@
   "notes": "",
   "project_id": null,
   "related": "",
-  "show_submit_button": true,
+  "show_submit_button": false,
   "student_report_enabled": true,
   "thumbnail_url": "",
   "time_to_complete": null,
@@ -24,7 +24,7 @@
       "show_header": true,
       "show_info_assessment": true,
       "show_interactive": false,
-      "show_sidebar": false,
+      "show_sidebar": true,
       "sidebar": "<p>This is a test page.</p>",
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": false,
@@ -45,7 +45,7 @@
           "embeddable": {
             "name": "test open response",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>this is a test</p>\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>this is a test</p>\",\"hint\":\"<p>This is a hint that includes the words test and page.</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -103,46 +103,16 @@
       "name": null,
       "position": 2,
       "show_header": true,
-      "show_info_assessment": false,
-      "show_interactive": false,
-      "show_sidebar": false,
-      "sidebar": null,
-      "sidebar_title": "Did you know?",
-      "toggle_info_assessment": false,
-      "embeddables": [
-        {
-          "embeddable": {
-            "content": "<p>This is another test page.&nbsp; Test the test page.</p>",
-            "is_callout": true,
-            "is_full_width": true,
-            "is_hidden": false,
-            "name": "",
-            "type": "Embeddable::Xhtml",
-            "ref_id": "272336-Embeddable::Xhtml"
-          },
-          "section": "header_block"
-        }
-      ]
-    },
-    {
-      "additional_sections": {},
-      "embeddable_display_mode": "stacked",
-      "is_completion": false,
-      "is_hidden": false,
-      "layout": "l-6040",
-      "name": null,
-      "position": 3,
-      "show_header": true,
       "show_info_assessment": true,
       "show_interactive": false,
-      "show_sidebar": false,
-      "sidebar": null,
+      "show_sidebar": true,
+      "sidebar": "<p>test page</p>",
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": false,
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>This ia a test page that contains a header and some content.</p>",
+            "content": "<p>This ia a test page that contains a header and some content including a TE window shade.</p>",
             "is_callout": true,
             "is_full_width": true,
             "is_hidden": false,
@@ -176,7 +146,7 @@
       "is_hidden": false,
       "layout": "l-6040",
       "name": null,
-      "position": 4,
+      "position": 3,
       "show_header": false,
       "show_info_assessment": false,
       "show_interactive": false,

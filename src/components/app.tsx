@@ -173,6 +173,7 @@ export class App extends React.PureComponent<IProps, IState> {
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
+    const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
     return (
       <React.Fragment>
         <Header
@@ -191,16 +192,17 @@ export class App extends React.PureComponent<IProps, IState> {
             projectId={activity.project_id}
           />
         }
-        { (activity.layout === ActivityLayouts.SinglePage || (currentPage !== 0 && !activity.pages[currentPage - 1].is_completion)) &&
+        { (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
           <ExpandableContainer
             activity={activity}
             pageNumber={currentPage}
             page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
             teacherEditionMode={teacherEditionMode}
             pluginsLoaded={pluginsLoaded}
+            glossaryPlugin={glossaryEmbeddable !== undefined}
           />
         }
-        { glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || (currentPage !== 0 && !activity.pages[currentPage - 1].is_completion)) &&
+        { glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
           <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} />
         }
       </React.Fragment>

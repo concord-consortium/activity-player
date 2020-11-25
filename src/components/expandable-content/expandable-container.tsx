@@ -16,13 +16,14 @@ interface IProps {
   pageNumber: number;
   teacherEditionMode?: boolean;
   pluginsLoaded?: boolean;
+  glossaryPlugin?: boolean;
 }
 
 export const ExpandableContainer: React.FC<IProps> = (props) => {
-  const { activity, page, pageNumber, teacherEditionMode, pluginsLoaded } = props;
-  const sideTips = pluginsLoaded ? getPageSideTipEmbeddables(activity, page) : [];
-  const verticalOffset = kExpandableContentTop + sideTips.length * (kExpandableItemHeight + kExpandableContentMargin);
-  const sidebars = getPageSideBars(activity, page);
+  const { activity, page, pageNumber, teacherEditionMode, pluginsLoaded, glossaryPlugin } = props;
+  const sideTips = pluginsLoaded && page ? getPageSideTipEmbeddables(activity, page) : [];
+  const verticalOffset = kExpandableContentTop + (sideTips.length + (glossaryPlugin ? 1 : 0)) * (kExpandableItemHeight + kExpandableContentMargin);
+  const sidebars = page && getPageSideBars(activity, page);
   return (
     <div className="expandable-container" id="expandable-container" key={pageNumber} data-cy="expandable-container">
       { teacherEditionMode && sideTips.map((sideTip: any) =>
@@ -31,7 +32,7 @@ export const ExpandableContainer: React.FC<IProps> = (props) => {
             embeddable={sideTip.embeddable}
           />)
       }
-      { sidebars.length > 0 &&
+      { sidebars && sidebars.length > 0 &&
         <SidebarWrapper sidebars={sidebars} verticalOffset={verticalOffset} />
       }
     </div>
