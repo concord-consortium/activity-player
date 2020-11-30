@@ -1,7 +1,10 @@
+// LARA_CODE: import * as $ from "jquery";
 // ACTIVITY_PLAYER_CODE:
 import $ from "jquery";
-// LARA_CODE: import * as $ from "jquery";
-// LARA_CODE: import "jquery-ui/ui/widgets/button";
+(window as any).jQuery = $;
+(window as any).$ = $;
+
+import "jquery-ui/ui/widgets/button";
 
 // Distance between sidebar handles (in pixels).
 const SIDEBAR_SPACER = 35;
@@ -112,7 +115,7 @@ export const addSidebar = (_options: ISidebarOptions): ISidebarController => {
   const $closeBtn = $('<button class="sidebar-bd-close">');
   // Note that ButtonOptions interface is out of date, `icon` is a valid option in jQuery UI 1.12.
   // @ts-ignore
-  // LARA_CODE: $closeBtn.button({ icon: "ui-icon-closethick" });
+  $closeBtn.button({ icon: "ui-icon-closethick" });
   $body.append($closeBtn);
   const $contentContainer = $('<div class="sidebar-content">');
   $body.append($contentContainer);

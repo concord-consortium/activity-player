@@ -209,7 +209,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
         }
         { hint &&
           <div className={`hint-container ${showHint ? "" : "collapsed"}`}>
-            <div className="hint" data-cy="hint">{renderHTML(hint)}</div>
+            <div className="hint question-txt" data-cy="hint">{renderHTML(hint)}</div>
             <div className="close-container">
               <IconArrowUp className={"close"} width={26} height={26}
                           onClick={handleHintClose}

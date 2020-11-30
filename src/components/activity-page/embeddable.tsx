@@ -48,7 +48,8 @@ export const Embeddable: React.FC<IProps> = (props) => {
       embeddableContainer: embeddableWrapperDivTarget.current || undefined,
       wrappedEmbeddable: embeddable,
       wrappedEmbeddableContainer: embeddableDivTarget.current || undefined,
-      sendCustomMessage: sendCustomMessage.current
+      sendCustomMessage: sendCustomMessage.current,
+      pluginType: "TeacherEdition"
     };
     const validPluginContext = validateEmbeddablePluginContextForWrappedEmbeddable(pluginContext);
     if (validPluginContext && teacherEditionMode && pluginsLoaded) {

@@ -89,6 +89,10 @@ const initAuthoringPlugin = (label: string, options: IPluginAuthoringContextOpti
  @returns `true` if plugin was registered correctly.
  ***************************************************************************/
 export const registerPlugin = (options: IRegisterPluginOptions): boolean => {
+  // ACTIVITY_PLAYER_CODE:
+  const currentScriptId = document.currentScript?.getAttribute("data-id");
+  nextPluginLabel = currentScriptId || nextPluginLabel;
+
   if (nextPluginLabel === "") {
     // tslint:disable-next-line:no-console
     console.error("nextPluginLabel not set via #setNextPluginLabel before plugin loaded!");

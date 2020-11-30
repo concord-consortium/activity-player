@@ -18,7 +18,8 @@ export const EmbeddablePluginSideTip: React.FC<IProps> = (props) => {
       initializePlugin({
         LARA,
         embeddable,
-        embeddableContainer: embeddableDivTarget.current
+        embeddableContainer: embeddableDivTarget.current,
+        pluginType: "TeacherEdition"
       });
     }
   }, [LARA, embeddable]);

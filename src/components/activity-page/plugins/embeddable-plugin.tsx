@@ -19,7 +19,8 @@ export const EmbeddablePlugin: React.FC<IProps> = (props) => {
       const pluginContext: IPartialEmbeddablePluginContext = {
         LARA,
         embeddable,
-        embeddableContainer: divTarget.current || undefined
+        embeddableContainer: divTarget.current || undefined,
+        pluginType: "TeacherEdition"
       };
       const validPluginContext = validateEmbeddablePluginContextForPlugin(pluginContext);
       if (validPluginContext && pluginsLoaded) {

@@ -20,12 +20,12 @@ export class SidebarPanel extends React.PureComponent<IProps>{
       <div className={`sidebar-panel ${this.props.show ? "visible " : "hidden"}`}>
         <div className="sidebar-header">
           <div className="sidebar-title" data-cy="sidebar-title">{this.props.title}</div>
-          <div className="icon" onClick={this.handleCloseButton} onKeyDown={this.handleCloseButton} 
+          <div className="icon" onClick={this.handleCloseButton} onKeyDown={this.handleCloseButton}
                data-cy="sidebar-close-button" tabIndex={0}>
             <IconClose />
           </div>
         </div>
-        <div className="sidebar-content" data-cy="sidebar-content">{renderHTML(innerContent)}
+        <div className="sidebar-content help-content" data-cy="sidebar-content">{renderHTML(innerContent)}
         </div>
       </div>
     );
