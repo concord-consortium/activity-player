@@ -199,7 +199,7 @@ export class App extends React.PureComponent<IProps, IState> {
             page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
             teacherEditionMode={teacherEditionMode}
             pluginsLoaded={pluginsLoaded}
-            glossaryPlugin={glossaryEmbeddable !== undefined}
+            glossaryPlugin={glossaryEmbeddable !== null}
           />
         }
         { glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
