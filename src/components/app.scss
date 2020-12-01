@@ -20,7 +20,7 @@
   align-items: center;
   width: 100%;
   height: fit-content;
-  padding: 0 20px;
+  padding: 0 20px 20px 20px;
   line-height: 1.35;
   color: #444;
 
@@ -48,6 +48,6 @@
     &:focus {
       outline: 3px solid var(--theme-primary-hover-color);
     }
-  } 
+  }
 
 }

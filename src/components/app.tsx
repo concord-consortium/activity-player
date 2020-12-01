@@ -213,16 +213,7 @@ export class App extends React.PureComponent<IProps, IState> {
     return (
       <>
         { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
-          <ActivityNavHeader
-            activityPages={activity.pages}
-            currentPage={currentPage}
-            fullWidth={fullWidth}
-            onPageChange={this.handleChangePage}
-            singlePage={activity.layout === ActivityLayouts.SinglePage}
-            sequenceName={this.state.sequence?.display_title || (this.state.sequence && "Sequence")}
-            onShowSequence={this.handleShowSequence}
-            lockForwardNav={this.state.incompleteQuestions.length > 0}
-          />
+          this.renderNavHeader(activity, currentPage, fullWidth)
         }
         { activity.layout === ActivityLayouts.SinglePage
           ? this.renderSinglePageContent(activity)
@@ -232,20 +223,34 @@ export class App extends React.PureComponent<IProps, IState> {
               ? this.renderCompletionContent(activity)
               : <ActivityPageContent
                   enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
-                  isFirstActivityPage={currentPage === 1}
-                  isLastActivityPage={currentPage === activity.pages.filter((page) => !page.is_hidden).length}
                   pageNumber={currentPage}
-                  onPageChange={this.handleChangePage}
                   page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
                   totalPreviousQuestions={totalPreviousQuestions}
                   teacherEditionMode={this.state.teacherEditionMode}
                   setNavigation={this.handleSetNavigation}
                   key={`page-${currentPage}`}
-                  lockForwardNav={this.state.incompleteQuestions.length > 0}
                   pluginsLoaded={this.state.pluginsLoaded}
                 />
         }
+        { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
+          this.renderNavHeader(activity, currentPage, fullWidth)
+        }
       </>
+    );
+  }
+
+  private renderNavHeader = (activity: Activity, currentPage: number, fullWidth: boolean) => {
+    return (
+      <ActivityNavHeader
+        activityPages={activity.pages}
+        currentPage={currentPage}
+        fullWidth={fullWidth}
+        onPageChange={this.handleChangePage}
+        singlePage={activity.layout === ActivityLayouts.SinglePage}
+        sequenceName={this.state.sequence?.display_title || (this.state.sequence && "Sequence")}
+        onShowSequence={this.handleShowSequence}
+        lockForwardNav={this.state.incompleteQuestions.length > 0}
+      />
     );
   }
 
