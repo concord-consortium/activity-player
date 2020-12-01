@@ -4,7 +4,6 @@ import { showReport } from "../../utilities/report-utils";
 import { Sequence } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 
-
 import "./completion-page-content.scss";
 
 interface IProps {
