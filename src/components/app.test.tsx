@@ -20,7 +20,7 @@ describe("App component", () => {
     const wrapper = shallow(<App />);
     expect(wrapper.find('[data-cy="app"]').length).toBe(1);
     wrapper.setState({ activity });
-    expect(wrapper.find(ActivityNavHeader).length).toBe(1);
+    expect(wrapper.find(ActivityNavHeader).length).toBe(2);
     expect(wrapper.find(Header).length).toBe(1);
     expect(wrapper.find(Footer).length).toBe(1);
   });

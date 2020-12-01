@@ -19,8 +19,6 @@ describe("Activity Page Content component", () => {
       pluginsLoaded={true}
     />);
     expect(getByTestId("page-content")).toBeDefined();
-    expect(getByTestId("bottom-button-back")).toBeEnabled();
-    expect(getByTestId("bottom-button-next")).toBeEnabled();
     expect(getByText("Hide")).toBeEnabled();
     fireEvent.click(getByText("Hide"));
     expect(getByText("Show")).toBeEnabled();
