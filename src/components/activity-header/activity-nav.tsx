@@ -3,7 +3,7 @@ import { Page } from "../../types";
 import { NavPages } from "./nav-pages";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
 
-import "./activity-nav-header.scss";
+import "./activity-nav.scss";
 
 interface IProps {
   activityPages: Page[];
@@ -16,13 +16,13 @@ interface IProps {
   lockForwardNav?: boolean;
 }
 
-export class ActivityNavHeader extends React.PureComponent <IProps> {
+export class ActivityNav extends React.PureComponent <IProps> {
   render() {
     const { activityPages, currentPage, fullWidth, lockForwardNav, onPageChange, singlePage, sequenceName, onShowSequence} = this.props;
     return (
-      <div className={`activity-nav-header ${fullWidth ? "full" : ""}`} data-cy="activity-nav-header">
+      <div className={`activity-nav ${fullWidth ? "full" : ""}`} data-cy="activity-nav-header">
         { sequenceName &&
-          <div className="sequence-name" data-cy="activity-nav-header-sequence-name" onClick={onShowSequence}>
+          <div className="sequence-name" data-cy="activity-nav-sequence-name" onClick={onShowSequence}>
             <IconChevronLeft
               width={32}
               height={32}

@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityNavHeader } from "./activity-nav-header";
+import { ActivityNav } from "./activity-nav";
 import { shallow } from "enzyme";
 import { DefaultTestPage } from "../../test-utils/model-for-tests";
 import { NavPages } from "./nav-pages";
@@ -16,7 +16,7 @@ const activityPages = [
 
 describe("Activity Nav Header component", () => {
   it("renders nav header content for activity", () => {
-    const wrapper = shallow(<ActivityNavHeader activityPages={activityPages} currentPage={0} onPageChange={stubFunction} singlePage={false} />);
+    const wrapper = shallow(<ActivityNav activityPages={activityPages} currentPage={0} onPageChange={stubFunction} singlePage={false} />);
     expect(wrapper.containsMatchingElement(<NavPages
       pages={activityPages}
       onPageChange={stubFunction}
@@ -24,7 +24,7 @@ describe("Activity Nav Header component", () => {
     />)).toEqual(true);
   });
   it("renders nav header content for sequence", () => {
-    const wrapper = shallow(<ActivityNavHeader
+    const wrapper = shallow(<ActivityNav
                               activityPages={activityPages}
                               currentPage={0}
                               onPageChange={stubFunction}
@@ -32,7 +32,7 @@ describe("Activity Nav Header component", () => {
                               sequenceName={"test sequence"}
                               onShowSequence={stubFunction}
                               />);
-    expect(wrapper.find('[data-cy="activity-nav-header-sequence-name"]').text()).toContain("test sequence");
+    expect(wrapper.find('[data-cy="activity-nav-sequence-name"]').text()).toContain("test sequence");
     expect(wrapper.containsMatchingElement(<IconChevronLeft width={32} height={32}/>)).toEqual(true);
   });
 });

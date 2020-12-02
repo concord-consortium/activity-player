@@ -1,7 +1,7 @@
 import React from "react";
 import { PortalDataContext } from "./portal-data-context";
 import { Header } from "./activity-header/header";
-import { ActivityNavHeader } from "./activity-header/activity-nav-header";
+import { ActivityNav } from "./activity-header/activity-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
@@ -213,7 +213,7 @@ export class App extends React.PureComponent<IProps, IState> {
     return (
       <>
         { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
-          this.renderNavHeader(activity, currentPage, fullWidth)
+          this.renderNav(activity, currentPage, fullWidth)
         }
         { activity.layout === ActivityLayouts.SinglePage
           ? this.renderSinglePageContent(activity)
@@ -233,15 +233,15 @@ export class App extends React.PureComponent<IProps, IState> {
                 />
         }
         { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
-          this.renderNavHeader(activity, currentPage, fullWidth)
+          this.renderNav(activity, currentPage, fullWidth)
         }
       </>
     );
   }
 
-  private renderNavHeader = (activity: Activity, currentPage: number, fullWidth: boolean) => {
+  private renderNav = (activity: Activity, currentPage: number, fullWidth: boolean) => {
     return (
-      <ActivityNavHeader
+      <ActivityNav
         activityPages={activity.pages}
         currentPage={currentPage}
         fullWidth={fullWidth}
