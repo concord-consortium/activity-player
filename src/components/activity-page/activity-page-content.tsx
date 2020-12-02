@@ -18,15 +18,11 @@ const kPinMargin = 20;
 
 interface IProps {
   enableReportButton: boolean;
-  isFirstActivityPage: boolean;
-  isLastActivityPage: boolean;
-  onPageChange: (page: number) => void;
   page: Page;
   pageNumber: number;
   teacherEditionMode?: boolean;
   totalPreviousQuestions: number;
   setNavigation: (refId: string, options: INavigationOptions) => void;
-  lockForwardNav?: boolean;
   pluginsLoaded: boolean;
 }
 
@@ -47,7 +43,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   render() {
-    const { enableReportButton, isFirstActivityPage, isLastActivityPage, page, pageNumber, totalPreviousQuestions, lockForwardNav } = this.props;
+    const { enableReportButton, page, pageNumber, totalPreviousQuestions } = this.props;
     const { scrollOffset } = this.state;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
     const pageSectionQuestionCount = getPageSectionQuestionCount(page);
@@ -81,12 +77,11 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
           { first }
           { second }
         </div>
-        <BottomButtons
-          onBack={!isFirstActivityPage ? this.handleBack : undefined}
-          onNext={!isLastActivityPage ? this.handleNext : undefined}
-          lockForwardNav={lockForwardNav}
-          onGenerateReport={enableReportButton ? this.handleReport : undefined}
-        />
+        { enableReportButton &&
+          <BottomButtons
+            onGenerateReport={this.handleReport}
+          />
+        }
       </div>
     );
   }
@@ -120,12 +115,6 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     }
   }
 
-  private handleBack = () => {
-    this.props.onPageChange(this.props.pageNumber - 1);
-  }
-  private handleNext = () => {
-    this.props.onPageChange(this.props.pageNumber + 1);
-  }
   private handleReport = () => {
     showReport();
     Logger.log({
