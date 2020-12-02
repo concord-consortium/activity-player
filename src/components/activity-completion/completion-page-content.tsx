@@ -21,20 +21,19 @@ interface IProps {
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
-  const { activityName, isActivityComplete, onPageChange, showStudentReport, thumbnailURL } = props;
-  const handleExit = () => {
-    onPageChange(0);
-  };
-  const handleShowAnswers = () => {
-    showReport();
-  const { activityName, isActivityComplete, onPageChange, showStudentReport, thumbnailURL, onOpenReport,
+  const { activityName, isActivityComplete, onPageChange, showStudentReport, thumbnailURL,
           sequence, activityIndex, onActivityChange, onShowSequence } = props;
+
   const handleExit = () => {
-    onShowSequence();
+    if (sequence) { onShowSequence();}
+    else { onPageChange(0); }
   };
   const handleNextActivity = () => {
     onActivityChange(activityNum+1);
     onPageChange(0); //TODO: This should go to the student's saved state page for the next activity
+  };
+  const handleShowAnswers = () => {
+    showReport();
   };
 
   const completionText = `"${activityName}" activity complete!`;
@@ -75,7 +74,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           { isActivityComplete &&  <IconCheck width={32} height={32} className="check" /> }
           {progressText}
         </div>
-        { showStudentReport && <button className="button" onClick={onOpenReport}>Show All Answers</button> }
+        { showStudentReport && <button className="button" onClick={handleShowAnswers}>Show All Answers</button> }
       </div>
       <div className="exit-container" data-cy="exit-container">
         <div className="box">
@@ -84,7 +83,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
         </div>
         <div className="next-step" data-cy="next-step">
           <div>{nextStepText}</div>
-          { !isLastActivityInSequence && <div className="next">Next Up ...</div>}
+          { (sequence && !isLastActivityInSequence) && <div className="next">Next Up ...</div>}
           {sequence && <div className="completion-text">{nextActivityTitle}</div>}
           {sequence && <div>{nextActivityDescription}</div>}
           { (!isLastActivityInSequence && sequence) &&
