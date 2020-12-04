@@ -118,7 +118,7 @@ export class App extends React.PureComponent<IProps, IState> {
           await initializeDB({ name: portalData.database.appName, preview: false });
           await signInWithToken(portalData.database.rawFirebaseJWT);
           this.setState({ portalData });
-
+          
           setPortalData(portalData);
         } catch (err) {
           this.setState({ authError: err });
@@ -273,6 +273,7 @@ export class App extends React.PureComponent<IProps, IState> {
   private renderCompletionContent = (activity: Activity) => {
     return (
       <CompletionPageContent
+        activity={activity}
         activityName={activity.name}
         isActivityComplete={true} // TODO: should be based on student progress
         allActivititiesComplete={true} //TODO: should be based on student progress
