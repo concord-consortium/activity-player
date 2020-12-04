@@ -6,6 +6,7 @@ import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
 import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
+import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
 
 import "./completion-page-content.scss";
 
@@ -47,16 +48,15 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     let i = 0;
     for (i = 0; i < activity.pages.length; i++) {
       activity.pages[i].embeddables.map((embeddableWrapper) => {
-        const embeddableState = embeddableWrapper.embeddable.authored_state && JSON.parse(embeddableWrapper.embeddable.authored_state);
+        // const embeddableState = embeddableWrapper.embeddable.authored_state && JSON.parse(embeddableWrapper.embeddable.authored_state);
         if (isQuestion(embeddableWrapper)) {
           questionNum++;
           questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
           answers?.map((answer: any) => {
             if (answer.meta.question_id === questionId) {
-              // eslint-disable-next-line no-prototype-builtins
-              if (!(embeddableState?.hasOwnProperty("required")) || answer.meta.submitted === true) {
-                answerNum++;
-              }
+              answerNum++;
+            } else {
+              console.log("answer: ", answer);
             }
           });
         }
@@ -85,20 +85,21 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
 
   const progress = activityProgress();
   const isActivityComplete = progress.numAnswers === progress.numQuestions;
-  const completionText = `"${activityName}" activity complete!`;
+  const activityTitle = (activityName !== "") || (activityName == null) ? activityName : "the activity";
+  const completionText = activityName ? `${activityName} activity complete!` : "Activity complete!";
   const activityNum = activityIndex ? activityIndex : 0;
   const completedActivityProgressText =
-    `Congratulations! You have reached the end of "${activityName}" and your work has been saved.`;
+    `Congratulations! You have reached the end of ${activityTitle} and your work has been saved.`;
   const incompleteActivityProgressText =
-    `It looks like you haven't quite finished "${activityName}" yet. The answers you've given have been saved.`;
+    `It looks like you haven't quite finished ${activityTitle} yet. The answers you've given have been saved.`;
   const allActivititiesComplete = true; //TODO this should be based on student progress
   const isLastActivityInSequence = activityIndex ? sequence?.activities.length === activityIndex + 1 : false;
   const nextActivityTitle = !isLastActivityInSequence && sequence?.activities[activityNum + 1].name;
   const nextActivityDescription = !isLastActivityInSequence && renderHTML(sequence?.activities[activityNum + 1].description || "");
-  const nextStepMainContentTitle = sequence ? sequence.display_title : activityName;
-  const completedMainContentNextStepText = `You have completed "${nextStepMainContentTitle}" and you may exit now.`;
+  const nextStepMainContentTitle = sequence ? (sequence.display_title !== "" ? sequence.display_title : "the sequence") : activityTitle;
+  const completedMainContentNextStepText = `You have completed ${nextStepMainContentTitle} and you may exit now.`;
   const incompletedMainContentNextStepText =
-    `You haven't completed "${nextStepMainContentTitle}" yet. You can go back to complete it, or you can exit.`;
+    `You haven't completed ${nextStepMainContentTitle} yet. You can go back to complete it, or you can exit.`;
   let progressText = "";
   let nextStepText = "";
 
@@ -129,7 +130,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
       </div>
       <div className="exit-container" data-cy="exit-container">
         <div className="box">
-          {thumbnailURL && <img src={thumbnailURL} />}
+          <img src={thumbnailURL ? thumbnailURL : ccPlaceholderLogo} />
           {isActivityComplete && <div className="ribbon"><span>Completed</span></div>}
         </div>
         <div className="next-step" data-cy="next-step">
