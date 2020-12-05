@@ -30,6 +30,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     sequence, activityIndex, onActivityChange, onShowSequence } = props;
   
   const [answers, setAnswers] = useState<any>();
+  const activityCompletion: boolean[] = [];
   
   const handleExit = () => {
     if (sequence) { onShowSequence(); }
@@ -43,6 +44,14 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     showReport();
   };
 
+  const sequenceProgress = () => {
+    if (activityCompletion.length === sequence?.activities.length && !activityCompletion.includes(false)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   const activityProgress = () => {
     let answerNum = 0, questionNum = 0, questionId: string;
     let i = 0;
@@ -53,11 +62,11 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           questionNum++;
           questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
           answers?.map((answer: any) => {
-            if (answer.meta.question_id === questionId) {
+            //This does not take into account if user erase their open text response or answerTest is empty string 
+            // after response has been saved
+            if (answer.meta.question_id === questionId) { 
               answerNum++;
-            } else {
-              console.log("answer: ", answer);
-            }
+            } 
           });
         }
       });
@@ -92,7 +101,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     `Congratulations! You have reached the end of ${activityTitle} and your work has been saved.`;
   const incompleteActivityProgressText =
     `It looks like you haven't quite finished ${activityTitle} yet. The answers you've given have been saved.`;
-  const allActivititiesComplete = true; //TODO this should be based on student progress
+  const sequenceComplete = sequenceProgress();
   const isLastActivityInSequence = activityIndex ? sequence?.activities.length === activityIndex + 1 : false;
   const nextActivityTitle = !isLastActivityInSequence && sequence?.activities[activityNum + 1].name;
   const nextActivityDescription = !isLastActivityInSequence && renderHTML(sequence?.activities[activityNum + 1].description || "");
@@ -102,12 +111,14 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     `You haven't completed ${nextStepMainContentTitle} yet. You can go back to complete it, or you can exit.`;
   let progressText = "";
   let nextStepText = "";
-
+  if (sequence) {
+    activityCompletion.push(isActivityComplete);
+  }
   if (sequence) {
     if (isLastActivityInSequence) {
       progressText = isActivityComplete
         ? completedActivityProgressText + `You have completed all your work for this module!` : incompleteActivityProgressText;
-      nextStepText = allActivititiesComplete ? completedMainContentNextStepText : incompletedMainContentNextStepText;
+      nextStepText = sequenceComplete ? completedMainContentNextStepText : incompletedMainContentNextStepText;
     } else { //if !isLastActivity
       progressText = isActivityComplete ? completedActivityProgressText : incompleteActivityProgressText;
 
@@ -139,7 +150,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           {(sequence && !isLastActivityInSequence) && <div className="next">Next Up ...</div>}
           {sequence && <div className="completion-text">{nextActivityTitle}</div>}
           {sequence && <div>{nextActivityDescription}</div>}
-          {(!isLastActivityInSequence && sequence) &&
+          { (!isLastActivityInSequence && sequence) &&
             <span>
               <button className="button" onClick={handleNextActivity}>Start Next Activity</button>
               <span> or </span>
