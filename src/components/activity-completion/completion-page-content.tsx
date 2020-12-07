@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import IconCheck from "../../assets/svg-icons/icon-check.svg";
 import { showReport } from "../../utilities/report-utils";
-import { Sequence, Activity } from "../../types";
+import { Sequence, Activity, EmbeddableWrapper } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
@@ -13,7 +13,6 @@ import "./completion-page-content.scss";
 interface IProps {
   activity: Activity;
   activityName: string;
-  isActivityComplete: boolean;
   onPageChange: (page: number) => void;
   showStudentReport: boolean;
   thumbnailURL: string | null;
@@ -22,7 +21,6 @@ interface IProps {
   activityIndex?: number;
   onActivityChange: (activityNum: number) => void;
   onShowSequence: () => void;
-  allActivititiesComplete?: boolean;
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
@@ -30,7 +28,8 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     sequence, activityIndex, onActivityChange, onShowSequence } = props;
   
   const [answers, setAnswers] = useState<any>();
-  const activityCompletion: boolean[] = [];
+  let activityCompletionArray: boolean[]=[];
+
   
   const handleExit = () => {
     if (sequence) { onShowSequence(); }
@@ -45,18 +44,31 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   };
 
   const sequenceProgress = () => {
-    if (activityCompletion.length === sequence?.activities.length && !activityCompletion.includes(false)) {
+    let activityStatus;
+    sequence?.activities.map((sequenceActivity)=>{
+      activityStatus = activityProgress(sequenceActivity);    
+      const sequenceActivityComplete = activityStatus.numAnswers === activityStatus.numQuestions;
+      const activityCompletionArrayCopy = [...activityCompletionArray];
+      console.log("activityStatus: ", activityStatus);
+      activityCompletionArrayCopy?.push(sequenceActivityComplete);
+      console.log("after activityCompletionArrayCopy.push: ", activityCompletionArrayCopy);
+      // setActivityCompletionArray(activityCompletionArrayCopy);
+      activityCompletionArray = [...activityCompletionArrayCopy];
+      console.log("after activityCompletion.push: ", activityCompletionArray);
+
+    });             
+    if (activityCompletionArray?.length === sequence?.activities.length && !activityCompletionArray?.includes(false)) {
       return true;
     } else {
       return false;
     }
   };
 
-  const activityProgress = () => {
+  const activityProgress = (kActivity: Activity) => {
     let answerNum = 0, questionNum = 0, questionId: string;
     let i = 0;
-    for (i = 0; i < activity.pages.length; i++) {
-      activity.pages[i].embeddables.map((embeddableWrapper) => {
+    for (i = 0; i < kActivity.pages.length; i++) {
+      kActivity.pages[i].embeddables.map((embeddableWrapper: EmbeddableWrapper) => {
         // const embeddableState = embeddableWrapper.embeddable.authored_state && JSON.parse(embeddableWrapper.embeddable.authored_state);
         if (isQuestion(embeddableWrapper)) {
           questionNum++;
@@ -64,9 +76,12 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           answers?.map((answer: any) => {
             //This does not take into account if user erase their open text response or answerTest is empty string 
             // after response has been saved
-            if (answer.meta.question_id === questionId) { 
+            if (!answer.meta.question_id) {
+              console.log("questionId: ",questionId);
+            }
+            else if (answer.meta.question_id === questionId) { 
               answerNum++;
-            } 
+            }
           });
         }
       });
@@ -92,7 +107,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     );
   }
 
-  const progress = activityProgress();
+  const progress = activityProgress(activity);
   const isActivityComplete = progress.numAnswers === progress.numQuestions;
   const activityTitle = (activityName !== "") || (activityName == null) ? activityName : "the activity";
   const completionText = activityName ? `${activityName} activity complete!` : "Activity complete!";
@@ -101,7 +116,6 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     `Congratulations! You have reached the end of ${activityTitle} and your work has been saved.`;
   const incompleteActivityProgressText =
     `It looks like you haven't quite finished ${activityTitle} yet. The answers you've given have been saved.`;
-  const sequenceComplete = sequenceProgress();
   const isLastActivityInSequence = activityIndex ? sequence?.activities.length === activityIndex + 1 : false;
   const nextActivityTitle = !isLastActivityInSequence && sequence?.activities[activityNum + 1].name;
   const nextActivityDescription = !isLastActivityInSequence && renderHTML(sequence?.activities[activityNum + 1].description || "");
@@ -111,10 +125,10 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     `You haven't completed ${nextStepMainContentTitle} yet. You can go back to complete it, or you can exit.`;
   let progressText = "";
   let nextStepText = "";
+
   if (sequence) {
-    activityCompletion.push(isActivityComplete);
-  }
-  if (sequence) {
+    const sequenceComplete = sequenceProgress();
+    
     if (isLastActivityInSequence) {
       progressText = isActivityComplete
         ? completedActivityProgressText + `You have completed all your work for this module!` : incompleteActivityProgressText;

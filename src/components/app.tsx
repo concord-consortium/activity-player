@@ -275,8 +275,6 @@ export class App extends React.PureComponent<IProps, IState> {
       <CompletionPageContent
         activity={activity}
         activityName={activity.name}
-        isActivityComplete={true} // TODO: should be based on student progress
-        allActivititiesComplete={true} //TODO: should be based on student progress
         onPageChange={this.handleChangePage}
         showStudentReport={activity.student_report_enabled}
         thumbnailURL={activity.thumbnail_url}
@@ -350,5 +348,5 @@ export class App extends React.PureComponent<IProps, IState> {
   private handleLoadPlugins = () => {
     this.setState({ pluginsLoaded: true });
   }
-
+  
 }
