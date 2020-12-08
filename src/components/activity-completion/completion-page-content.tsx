@@ -48,13 +48,8 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
       activityStatus = activityProgress(sequenceActivity);    
       const sequenceActivityComplete = activityStatus.numAnswers === activityStatus.numQuestions;
       const activityCompletionArrayCopy = [...activityCompletionArray];
-      console.log("activityStatus: ", activityStatus);
       activityCompletionArrayCopy?.push(sequenceActivityComplete);
-      console.log("after activityCompletionArrayCopy.push: ", activityCompletionArrayCopy);
-      // setActivityCompletionArray(activityCompletionArrayCopy);
       activityCompletionArray = [...activityCompletionArrayCopy];
-      console.log("after activityCompletion.push: ", activityCompletionArray);
-
     });             
     if (activityCompletionArray?.length === sequence?.activities.length && !activityCompletionArray?.includes(false)) {
       return true;
@@ -74,10 +69,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           answers?.map((answer: any) => {
             //This does not take into account if user erase their open text response or answerTest is empty string 
             // after response has been saved
-            if (!answer.meta.question_id) {
-              console.log("questionId: ",questionId);
-            }
-            else if (answer.meta.question_id === questionId) { 
+            if (answer.meta.question_id === questionId) { 
               answerNum++;
             }
           });
