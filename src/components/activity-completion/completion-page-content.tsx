@@ -19,8 +19,8 @@ interface IProps {
   onOpenReport?: () => void;
   sequence?: Sequence;
   activityIndex?: number;
-  onActivityChange: (activityNum: number) => void;
-  onShowSequence: () => void;
+  onActivityChange?: (activityNum: number) => void;
+  onShowSequence?: () => void;
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
@@ -30,13 +30,12 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const [answers, setAnswers] = useState<any>();
   let activityCompletionArray: boolean[]=[];
 
-  
   const handleExit = () => {
-    if (sequence) { onShowSequence(); }
+    if (sequence) { onShowSequence?.(); }
     else { onPageChange(0); }
   };
   const handleNextActivity = () => {
-    onActivityChange(activityNum + 1);
+    onActivityChange?.(activityNum + 1);
     onPageChange(0); //TODO: This should go to the student's saved state page for the next activity
   };
   const handleShowAnswers = () => {
@@ -69,7 +68,6 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     let i = 0;
     for (i = 0; i < kActivity.pages.length; i++) {
       kActivity.pages[i].embeddables.map((embeddableWrapper: EmbeddableWrapper) => {
-        // const embeddableState = embeddableWrapper.embeddable.authored_state && JSON.parse(embeddableWrapper.embeddable.authored_state);
         if (isQuestion(embeddableWrapper)) {
           questionNum++;
           questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
@@ -159,7 +157,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           {isActivityComplete && <div className="ribbon"><span>Completed</span></div>}
         </div>
         <div className="next-step" data-cy="next-step">
-          <div>{nextStepText}</div>
+          <div data-cy="next-step-text">{nextStepText}</div>
           <div className="progress-text">{`${progress.numAnswers} out of ${progress.numQuestions} questions are answered.`}</div>
           {(sequence && !isLastActivityInSequence) && <div className="next">Next Up ...</div>}
           {sequence && <div className="completion-text">{nextActivityTitle}</div>}
