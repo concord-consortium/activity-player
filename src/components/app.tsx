@@ -49,7 +49,6 @@ interface IState {
   sequence?: Sequence;
   showSequence?: boolean;
   activityIndex?: number;
-  allActivitiesComplete?: boolean;
   showModal: boolean;
   modalLabel: string
   incompleteQuestions: IncompleteQuestion[];
@@ -118,7 +117,7 @@ export class App extends React.PureComponent<IProps, IState> {
           await initializeDB({ name: portalData.database.appName, preview: false });
           await signInWithToken(portalData.database.rawFirebaseJWT);
           this.setState({ portalData });
-          
+
           setPortalData(portalData);
         } catch (err) {
           this.setState({ authError: err });
@@ -310,8 +309,8 @@ export class App extends React.PureComponent<IProps, IState> {
     });
     this.setState((prevState) =>
       ({ activity: prevState.sequence?.activities[activityNum],
-        showSequence: false,
-        activityIndex: activityNum
+         showSequence: false,
+         activityIndex: activityNum
       })
     );
   }

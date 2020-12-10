@@ -15,7 +15,7 @@
 
   .progress-container {
     display: flex;
-    padding: 0.5em;
+    padding: 8px;
     background-color: $cc-teal-light6;
     color: $cc-teal-dark1;
     margin: 10px 0 10px 0;
@@ -31,13 +31,13 @@
     }
 
     .progress-text {
-      padding: 0.5em;
+      padding: 8px;
     }
   }
 
   .exit-container {
     display: flex;
-    padding: 0.5em;
+    padding: 8px;
     background-color: $cc-charcoal-light3;
     color: $cc-charcoal;
     margin: 20px 0 10px 0;
@@ -48,7 +48,7 @@
     }
 
     .next-step {
-      padding: 0.5em;
+      padding: 8px;
     }
   }
 

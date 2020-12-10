@@ -1,7 +1,7 @@
 import React from "react";
 import { CompletionPageContent } from "./completion-page-content";
 import { shallow } from "enzyme";
-import {  Activity } from "../../types";
+import { Activity } from "../../types";
 import _activityPlugins from "../../data/sample-activity-multiple-layout-types.json";
 
 const activityPlugins = _activityPlugins as Activity;
