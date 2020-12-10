@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import IconCheck from "../../assets/svg-icons/icon-check.svg";
 import { showReport } from "../../utilities/report-utils";
-import { Sequence, Activity, EmbeddableWrapper } from "../../types";
+import { Sequence, Activity, EmbeddableWrapper, Page } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
@@ -28,11 +28,13 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     sequence, activityIndex, onActivityChange, onShowSequence } = props;
   
   const [answers, setAnswers] = useState<any>();
-  let activityCompletionArray: boolean[]=[];
 
   const handleExit = () => {
-    if (sequence) { onShowSequence?.(); }
-    else { onPageChange(0); }
+    if (sequence) { 
+      onShowSequence?.(); 
+    } else { 
+      onPageChange(0);
+    }
   };
   const handleNextActivity = () => {
     onActivityChange?.(activityNum + 1);
@@ -42,41 +44,29 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     showReport();
   };
 
-  const sequenceProgress = () => {
-    let activityStatus;
-    sequence?.activities.map((sequenceActivity)=>{
-      activityStatus = activityProgress(sequenceActivity);    
-      const sequenceActivityComplete = activityStatus.numAnswers === activityStatus.numQuestions;
-      const activityCompletionArrayCopy = [...activityCompletionArray];
-      activityCompletionArrayCopy?.push(sequenceActivityComplete);
-      activityCompletionArray = [...activityCompletionArrayCopy];
+  const sequenceProgress = (currentSequence: Sequence) => {
+    const activityCompletionArray = currentSequence?.activities.map((sequenceActivity)=>{
+      const activityStatus = activityProgress(sequenceActivity);    
+      return activityStatus.numAnswers === activityStatus.numQuestions;
     });             
-    if (activityCompletionArray?.length === sequence?.activities.length && !activityCompletionArray?.includes(false)) {
-      return true;
-    } else {
-      return false;
-    }
+    return !activityCompletionArray.includes(false);
   };
 
-  const activityProgress = (kActivity: Activity) => {
-    let answerNum = 0, questionNum = 0, questionId: string;
-    let i = 0;
-    for (i = 0; i < kActivity.pages.length; i++) {
-      kActivity.pages[i].embeddables.map((embeddableWrapper: EmbeddableWrapper) => {
+  const activityProgress = (currentActivity: Activity) => {
+    let numAnswers = 0;
+    let numQuestions = 0;
+    currentActivity.pages.forEach((page: Page) => {
+      page.embeddables.forEach((embeddableWrapper: EmbeddableWrapper) => {
         if (isQuestion(embeddableWrapper)) {
-          questionNum++;
-          questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
-          answers?.map((answer: any) => {
-            //This does not take into account if user erase their open text response or answerTest is empty string 
-            // after response has been saved
-            if (answer.meta.question_id === questionId) { 
-              answerNum++;
-            }
-          });
+          numQuestions++;
+          const questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
+          if (answers.find((answer: any) => answer.meta.question_id === questionId)) { 
+            numAnswers++; //Does't take into account if user erases response after saving
+          }
         }
       });
-    }
-    return ({ numAnswers: answerNum, numQuestions: questionNum });
+    });
+    return ({ numAnswers, numQuestions });
   };
 
   useEffect(() => {
@@ -87,13 +77,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
 
   if(!answers) {
     return (
-      <div className="completion-page-content" data-cy="completion-page-content">
-        <div className="progress-container" data-cy="progress-container">
-          <div className="progress-text">
-            Fetching your data ...
-          </div>
-        </div>
-      </div>  
+ 
     );
   }
 
@@ -133,36 +117,45 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     nextStepText = isActivityComplete ? completedMainContentNextStepText : incompletedMainContentNextStepText;
 
   }
+
   return (
-    <div className="completion-page-content" data-cy="completion-page-content">
-      { isActivityComplete && <div className="completion-text" data-cy="completion-text">{completionText}</div>}
-      <div className="progress-container" data-cy="progress-container">
-        <div className="progress-text">
-          {isActivityComplete && <IconCheck width={32} height={32} className="check" />}
-          {progressText}
+    !answers
+    ? <div className="completion-page-content" data-cy="completion-page-content">
+        <div className="progress-container" data-cy="progress-container">
+          <div className="progress-text">
+            Fetching your data ...
+          </div>
         </div>
-        {showStudentReport && <button className="button" onClick={handleShowAnswers}>Show All Answers</button>}
+      </div> 
+    : <div className="completion-page-content" data-cy="completion-page-content">
+        { isActivityComplete && <div className="completion-text" data-cy="completion-text">{completionText}</div>}
+        <div className="progress-container" data-cy="progress-container">
+          <div className="progress-text">
+            {isActivityComplete && <IconCheck width={32} height={32} className="check" />}
+            {progressText}
+          </div>
+          {showStudentReport && <button className="button" onClick={handleShowAnswers}>Show All Answers</button>}
+        </div>
+        <div className="exit-container" data-cy="exit-container">
+          <div className="box">
+            <img src={thumbnailURL ? thumbnailURL : ccPlaceholderLogo} />
+            {isActivityComplete && <div className="ribbon"><span>Completed</span></div>}
+          </div>
+          <div className="next-step" data-cy="next-step">
+            <div data-cy="next-step-text">{nextStepText}</div>
+            <div className="progress-text">{`${progress.numAnswers} out of ${progress.numQuestions} questions are answered.`}</div>
+            {(sequence && !isLastActivityInSequence) && <div className="next">Next Up ...</div>}
+            {sequence && <div className="completion-text">{nextActivityTitle}</div>}
+            {sequence && <div>{nextActivityDescription}</div>}
+            { (!isLastActivityInSequence && sequence) &&
+              <span>
+                <button className="button" onClick={handleNextActivity}>Start Next Activity</button>
+                <span> or </span>
+              </span>
+            }
+            <button className="button" onClick={handleExit}>Exit</button>
+          </div>
+        </div>
       </div>
-      <div className="exit-container" data-cy="exit-container">
-        <div className="box">
-          <img src={thumbnailURL ? thumbnailURL : ccPlaceholderLogo} />
-          {isActivityComplete && <div className="ribbon"><span>Completed</span></div>}
-        </div>
-        <div className="next-step" data-cy="next-step">
-          <div data-cy="next-step-text">{nextStepText}</div>
-          <div className="progress-text">{`${progress.numAnswers} out of ${progress.numQuestions} questions are answered.`}</div>
-          {(sequence && !isLastActivityInSequence) && <div className="next">Next Up ...</div>}
-          {sequence && <div className="completion-text">{nextActivityTitle}</div>}
-          {sequence && <div>{nextActivityDescription}</div>}
-          { (!isLastActivityInSequence && sequence) &&
-            <span>
-              <button className="button" onClick={handleNextActivity}>Start Next Activity</button>
-              <span> or </span>
-            </span>
-          }
-          <button className="button" onClick={handleExit}>Exit</button>
-        </div>
-      </div>
-    </div>
   );
 };
