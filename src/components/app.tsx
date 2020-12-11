@@ -48,6 +48,7 @@ interface IState {
   portalData?: IPortalData;
   sequence?: Sequence;
   showSequence?: boolean;
+  activityIndex?: number;
   showModal: boolean;
   modalLabel: string
   incompleteQuestions: IncompleteQuestion[];
@@ -276,11 +277,15 @@ export class App extends React.PureComponent<IProps, IState> {
   private renderCompletionContent = (activity: Activity) => {
     return (
       <CompletionPageContent
+        activity={activity}
         activityName={activity.name}
-        isActivityComplete={true} // TODO: should be based on student progress
         onPageChange={this.handleChangePage}
         showStudentReport={activity.student_report_enabled}
         thumbnailURL={activity.thumbnail_url}
+        sequence={this.state.sequence}
+        activityIndex={this.state.activityIndex}
+        onActivityChange={this.handleSelectActivity}
+        onShowSequence={this.handleShowSequence}
       />
     );
   }
@@ -308,7 +313,10 @@ export class App extends React.PureComponent<IProps, IState> {
       parameters: { new_activity_index: activityNum + 1, new_activity_name: this.state.sequence?.activities[activityNum].name }
     });
     this.setState((prevState) =>
-      ({ activity: prevState.sequence?.activities[activityNum], showSequence: false })
+      ({ activity: prevState.sequence?.activities[activityNum],
+         showSequence: false,
+         activityIndex: activityNum
+      })
     );
   }
 
@@ -344,5 +352,5 @@ export class App extends React.PureComponent<IProps, IState> {
   private handleLoadPlugins = () => {
     this.setState({ pluginsLoaded: true });
   }
-
+  
 }
