@@ -38,7 +38,7 @@ interface IProps {
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
   setNavigation?: (options: INavigationOptions) => void;
   ref?: React.Ref<IframeRuntimeImperativeAPI>;
-  textDecorationInfo: ITextDecorationInfo;
+  textDecorationInfo?: ITextDecorationInfo;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
@@ -56,8 +56,6 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   useEffect(() => {
     if (phoneRef.current && iframeRef) {
-      console.log("AP: post decorateContent");
-      console.log(textDecorationInfo);
       phoneRef.current.post("decorateContent", textDecorationInfo);
     }
   }, [textDecorationInfo, iframeRef]);
