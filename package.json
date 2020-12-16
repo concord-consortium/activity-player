@@ -148,6 +148,8 @@
     "jquery": "^3.5.1",
     "jquery-ui": "^1.12.1",
     "jsonwebtoken": "^8.5.1",
+    "mobx": "^6.0.4",
+    "mobx-react": "^7.0.5",
     "query-string": "^6.13.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
