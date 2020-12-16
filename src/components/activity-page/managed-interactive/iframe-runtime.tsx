@@ -11,6 +11,8 @@ import {
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
+import { ITextDecorationInfo } from "../../../lara-plugin/plugin-api/decorate-content";
+import { addPopup } from "../../../lara-plugin/plugin-api/popup";
 
 const kDefaultHeight = 300;
 
@@ -36,12 +38,13 @@ interface IProps {
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
   setNavigation?: (options: INavigationOptions) => void;
   ref?: React.Ref<IframeRuntimeImperativeAPI>;
+  textDecorationInfo: ITextDecorationInfo;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, showModal, closeModal, setSupportedFeatures,
-    setSendCustomMessage, setNavigation } = props;
+    setSendCustomMessage, setNavigation, textDecorationInfo } = props;
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
@@ -50,6 +53,14 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
   const linkedInteractivesRef = useRef(linkedInteractives?.length ? { linkedInteractives } : { linkedInteractives: [] });
+
+  useEffect(() => {
+    if (phoneRef.current && iframeRef) {
+      console.log("AP: post decorateContent");
+      console.log(textDecorationInfo);
+      phoneRef.current.post("decorateContent", textDecorationInfo);
+    }
+  }, [textDecorationInfo, iframeRef]);
 
   useEffect(() => {
     const initInteractive = () => {
@@ -138,6 +149,23 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       });
       addListener("hint", (newHint: any) => {
         setNewHint(newHint.text || "");
+      });
+      addListener("selectDecoratedContent", (text: string) => {
+        // TODO: need to take this text string and send if to the glossary plugin
+        // script so it can call addPopup. Basically we need access to the wordClicked function here:
+        // https://github.com/concord-consortium/glossary-plugin/blob/016b27b4822f9ae5e681f7293b8bc7669104a846/src/components/plugin/plugin-app.tsx#L294
+        // For testing we call addPopup here with the text that arrived
+        // from the interactive
+        const content = $(`<div id='test-dialog'>${text}</div>`)[0];
+        addPopup({
+          content,
+          title: text
+        });
+        // OBSOLETE: below is attempt to access the listener function in the glossary plugin script
+        // const div = document.createElement("div");
+        // div.innerText = popupContent;
+        // const evt = { srcElement: div };
+        // textDecorationInfo.listeners[0].listener(evt);
       });
       addListener("showModal", (options: IShowModal) => {
         showModal(options);

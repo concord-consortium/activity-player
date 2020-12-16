@@ -18,6 +18,9 @@ import { renderHTML } from "../../../utilities/render-html";
 import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 import { Lightbox } from "./lightbox";
 import { Logger, LogEventName } from "../../../lib/logger";
+import { textDecorationInfo, ITextDecorationInfo } from "../../../lara-plugin/plugin-api/decorate-content";
+import { observer } from "mobx-react";
+
 import "./managed-interactive.scss";
 
 interface IProps {
@@ -26,6 +29,7 @@ interface IProps {
   setSupportedFeatures: (container: HTMLElement, features: ISupportedFeatures) => void;
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
   setNavigation?: (options: INavigationOptions) => void;
+  textDecorationInfo?: ITextDecorationInfo;
 }
 
 const kDefaultAspectRatio = 4 / 3;
@@ -34,7 +38,7 @@ const getModalContainer = (): HTMLElement => {
   return document.getElementById("app") || document.body;
 };
 
-export const ManagedInteractive: React.FC<IProps> = (props) => {
+export const ManagedInteractive: React.FC<IProps> = observer(({ ...props }) => {
   const iframeRuntimeRef = useRef<IframeRuntimeImperativeAPI>(null);
   const onSetInteractiveStateCallback = useRef<() => void>();
   const interactiveState = useRef<any>();
@@ -189,6 +193,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
         closeModal={closeModal}
         setSendCustomMessage={setSendCustomMessage}
         setNavigation={setNavigation}
+        textDecorationInfo={textDecorationInfo}
       />;
 
     return (
@@ -231,5 +236,5 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       }
       </div>
     );
-  };
+  });
 ManagedInteractive.displayName = "ManagedInteractive";
