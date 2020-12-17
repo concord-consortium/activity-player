@@ -1,8 +1,8 @@
 {
-  "description": "<p>A simple test activity that contains a glossary and a page.</p>",
+  "description": "<p>This activity can be used to test glossary plugin text decoration with the example-interactive running either locally or on production.</p>",
   "editor_mode": 0,
   "layout": 0,
-  "name": "example",
+  "name": "Glossary Plugin and Example Interactive",
   "notes": "",
   "project_id": null,
   "related": "",
@@ -32,52 +32,13 @@
       "embeddables": [
         {
           "embeddable": {
-            "name": "",
-            "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
-            "is_hidden": false,
+            "content": "<p>The interactive below points to a local version of the example-interactive running at http://localhost:8888/</p>\r\n<p>More information on the example-interactive can be found at:&nbsp;<a href=\"The%20interactive below points to a local version of the example-interactive running at http:/localhost:8888/  More information on the example-interactive can be found at:&nbsp;https:/github.com/concord-consortium/lara/blob/master/docs/example-interactive.md\">https://github.com/concord-consortium/lara/blob/master/docs/example-interactive.md</a></p>",
+            "is_callout": true,
             "is_full_width": true,
-            "show_in_featured_question_report": true,
-            "inherit_aspect_ratio_method": true,
-            "custom_aspect_ratio_method": "DEFAULT",
-            "inherit_native_width": true,
-            "custom_native_width": 576,
-            "inherit_native_height": true,
-            "custom_native_height": 435,
-            "inherit_click_to_play": true,
-            "custom_click_to_play": false,
-            "inherit_full_window": true,
-            "custom_full_window": false,
-            "inherit_click_to_play_prompt": true,
-            "custom_click_to_play_prompt": null,
-            "inherit_image_url": true,
-            "custom_image_url": null,
-            "library_interactive": {
-              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
-              "data": {
-                "aspect_ratio_method": "DEFAULT",
-                "authoring_guidance": "",
-                "base_url": "http://localhost:8888/",
-                "click_to_play": false,
-                "click_to_play_prompt": null,
-                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
-                "enable_learner_state": true,
-                "full_window": false,
-                "has_report_url": false,
-                "image_url": null,
-                "name": "Multiple Choice (master)",
-                "native_height": 435,
-                "native_width": 576,
-                "no_snapshots": false,
-                "show_delete_data_button": false,
-                "thumbnail_url": "",
-                "customizable": true,
-                "authorable": true
-              }
-            },
-            "type": "ManagedInteractive",
-            "ref_id": "1069-ManagedInteractive",
-            "linked_interactives": []
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272424-Embeddable::Xhtml"
           },
           "section": "header_block"
         },
@@ -127,7 +88,88 @@
               }
             },
             "type": "ManagedInteractive",
-            "ref_id": "1070-ManagedInteractive",
+            "ref_id": "1078-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": "header_block"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 2,
+      "show_header": true,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p>The interactive below points to a production version of the example-interactive running at&nbsp;https://authoring.concord.org/example-interactive/index.html.</p>\r\n<p>More information on the example-interactive can be found at:&nbsp;https://github.com/concord-consortium/lara/blob/master/docs/example-interactive.md</p>",
+            "is_callout": true,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272425-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://authoring.concord.org/example-interactive/index.html",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This shouldn't be used by any real activities it is still under development.",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "1079-ManagedInteractive",
             "linked_interactives": []
           },
           "section": "header_block"
