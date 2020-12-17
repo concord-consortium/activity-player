@@ -32,7 +32,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>The interactive below points to a local version of the example-interactive running at http://localhost:8888/</p>\r\n<p>More information on the example-interactive can be found at:&nbsp;<a href=\"The%20interactive below points to a local version of the example-interactive running at http:/localhost:8888/  More information on the example-interactive can be found at:&nbsp;https:/github.com/concord-consortium/lara/blob/master/docs/example-interactive.md\">https://github.com/concord-consortium/lara/blob/master/docs/example-interactive.md</a></p>",
+            "content": "<p>The interactive below points to a local version of the example-interactive running at http://localhost:8888/</p>\r\n<p>More information on the example-interactive can be found at&nbsp;<a href=\"https://github.com/concord-consortium/lara/blob/master/docs/example-interactive.md\">https://github.com/concord-consortium/lara/blob/master/docs/example-interactive.md</a></p>",
             "is_callout": true,
             "is_full_width": true,
             "is_hidden": false,
@@ -113,7 +113,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>The interactive below points to a production version of the example-interactive running at&nbsp;https://authoring.concord.org/example-interactive/index.html.</p>\r\n<p>More information on the example-interactive can be found at:&nbsp;https://github.com/concord-consortium/lara/blob/master/docs/example-interactive.md</p>",
+            "content": "<p>The interactive below points to a production version of the example-interactive running at&nbsp;https://authoring.concord.org/example-interactive/index.html.</p>\r\n<p>More information on the example-interactive can be found at&nbsp;<a href=\"https://github.com/concord-consortium/lara/blob/master/docs/example-interactive.md\">https://github.com/concord-consortium/lara/blob/master/docs/example-interactive.md</a></p>",
             "is_callout": true,
             "is_full_width": true,
             "is_hidden": false,
