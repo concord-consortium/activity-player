@@ -6,13 +6,12 @@ import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
   ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, ILinkedInteractiveStateResponse,
-  IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest
+  IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentMessage
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
-import { ITextDecorationInfo } from "../../../lara-plugin/plugin-api/decorate-content";
-import { addPopup } from "../../../lara-plugin/plugin-api/popup";
+import { ITextDecorationInfo, IEventListener } from "../../../lara-plugin/plugin-api/decorate-content";
 
 const kDefaultHeight = 300;
 
@@ -56,7 +55,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   useEffect(() => {
     if (phoneRef.current && iframeRef) {
-      phoneRef.current.post("decorateContent", textDecorationInfo);
+      const textDecorationMessage = JSON.parse(JSON.stringify(textDecorationInfo));
+      phoneRef.current.post("decorateContent", textDecorationMessage);
     }
   }, [textDecorationInfo, iframeRef]);
 
@@ -148,22 +148,19 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       addListener("hint", (newHint: any) => {
         setNewHint(newHint.text || "");
       });
-      addListener("selectDecoratedContent", (text: string) => {
-        // TODO: need to take this text string and send if to the glossary plugin
-        // script so it can call addPopup. Basically we need access to the wordClicked function here:
-        // https://github.com/concord-consortium/glossary-plugin/blob/016b27b4822f9ae5e681f7293b8bc7669104a846/src/components/plugin/plugin-app.tsx#L294
-        // For testing we call addPopup here with the text that arrived
-        // from the interactive
-        const content = $(`<div id='test-dialog'>${text}</div>`)[0];
-        addPopup({
-          content,
-          title: text
-        });
-        // OBSOLETE: below is attempt to access the listener function in the glossary plugin script
-        // const div = document.createElement("div");
-        // div.innerText = popupContent;
-        // const evt = { srcElement: div };
-        // textDecorationInfo.listeners[0].listener(evt);
+      addListener("selectDecoratedContent", (msg: IDecoratedContentMessage) => {
+        if (textDecorationInfo && msg.type === "clicked") {
+          if ("type" in textDecorationInfo.eventListeners && textDecorationInfo.eventListeners.type === "click") {
+            textDecorationInfo.eventListeners.listener({ type: "click", text: msg.text });
+          }
+          if (Array.isArray(textDecorationInfo.eventListeners)) {
+            textDecorationInfo.eventListeners.forEach((eventListener: IEventListener) => {
+              if (eventListener.type === "click") {
+                eventListener.listener({ type: "click", text: msg.text });
+              }
+            });
+          }
+        }
       });
       addListener("showModal", (options: IShowModal) => {
         showModal(options);

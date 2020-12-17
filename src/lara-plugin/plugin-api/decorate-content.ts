@@ -5,17 +5,24 @@ export interface ITextDecorationInfo {
   words: string[];
   replace: string;
   wordClass: string;
+  eventListeners: IEventListeners;
+}
+
+export interface IPluginEvent {
+  type: string,
+  text: string,
 }
 
 export let textDecorationInfo: ITextDecorationInfo = observable({
   words: [],
   replace: "",
   wordClass: "",
+  eventListeners: [],
 });
 
 export interface IEventListener {
   type: string;
-  listener: (evt: Event) => void;
+  listener: (evt: Event | IPluginEvent) => void;
 }
 
 export type IEventListeners = IEventListener | IEventListener[];
@@ -36,6 +43,7 @@ export const decorateContent = (words: string[], replace: string, wordClass: str
     words,
     replace,
     wordClass,
+    eventListeners: listeners,
   };
   const options = {
     words,
