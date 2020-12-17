@@ -149,7 +149,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         setNewHint(newHint.text || "");
       });
       addListener("selectDecoratedContent", (msg: IDecoratedContentMessage) => {
-        if (textDecorationInfo && msg.type === "clicked") {
+        if (textDecorationInfo && msg.type === "click") {
           if ("type" in textDecorationInfo.eventListeners && textDecorationInfo.eventListeners.type === "click") {
             textDecorationInfo.eventListeners.listener({ type: "click", text: msg.text });
           }
