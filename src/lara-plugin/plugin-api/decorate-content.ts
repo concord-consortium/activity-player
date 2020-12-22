@@ -7,11 +7,11 @@ export interface IPluginEvent {
   text: string,
 }
 
-export const textDecorationHandlerInfo: {content: ITextDecorationHandlerInfo} = observable(
-{ content: { words: [],
-             replace: "",
-             wordClass: "",
-             eventListeners: [] }
+export const pluginInfo: {textDecorationHandlerInfo: ITextDecorationHandlerInfo} = observable(
+{ textDecorationHandlerInfo: { words: [],
+                               replace: "",
+                               wordClass: "",
+                               eventListeners: [] }
 });
 
 export interface IEventListener {
@@ -34,7 +34,7 @@ export const decorateContent = (words: string[], replace: string, wordClass: str
   const domClasses = ["question-txt", "help-content", "intro-txt"];
   // store glossary text decoration information for use by interactives
   runInAction(() => {
-    textDecorationHandlerInfo.content = {
+    pluginInfo.textDecorationHandlerInfo = {
       words,
       replace,
       wordClass,

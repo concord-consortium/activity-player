@@ -12,20 +12,20 @@ import {
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
-import { IEventListener, textDecorationHandlerInfo } from "../../../lara-plugin/plugin-api/decorate-content";
+import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
 import { autorun } from "mobx";
 
 const kDefaultHeight = 300;
 
 const createTextDecorationInfo = () => {
-  const { content } = textDecorationHandlerInfo;
-  const listenerTypes = content.eventListeners.map((listener: IEventListener) => {
+  const { textDecorationHandlerInfo } = pluginInfo;
+  const listenerTypes = textDecorationHandlerInfo.eventListeners.map((listener: IEventListener) => {
     return {type: listener.type};
   });
   const textDecorationInfo: ITextDecorationInfo = {
-    words: content.words.slice(),
-    replace: content.replace,
-    wordClass: content.wordClass,
+    words: textDecorationHandlerInfo.words.slice(),
+    replace: textDecorationHandlerInfo.replace,
+    wordClass: textDecorationHandlerInfo.wordClass,
     listenerTypes
   };
   return textDecorationInfo;
@@ -92,7 +92,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         if (iframeRef.current) {
           setSupportedFeatures(iframeRef.current, features);
         }
-        if (phoneRef.current && iframeRef && textDecorationHandlerInfo.content) {
+        if (phoneRef.current && iframeRef && pluginInfo.textDecorationHandlerInfo) {
           const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo();
           phoneRef.current.post("decorateContent", textDecorationInfo);
         }
@@ -161,13 +161,13 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         setNewHint(newHint.text || "");
       });
       addListener("decoratedContentEvent", (msg: IDecoratedContentEvent) => {
-        const { content } = textDecorationHandlerInfo;
+        const { textDecorationHandlerInfo } = pluginInfo;
         if (textDecorationHandlerInfo && msg.type === "click") {
-          if ("type" in content.eventListeners && content.eventListeners.type === "click") {
-            content.eventListeners.listener({ type: "click", text: msg.text });
+          if ("type" in textDecorationHandlerInfo.eventListeners && textDecorationHandlerInfo.eventListeners.type === "click") {
+            textDecorationHandlerInfo.eventListeners.listener({ type: "click", text: msg.text });
           }
-          if (Array.isArray(content.eventListeners)) {
-            content.eventListeners.forEach((eventListener: IEventListener) => {
+          if (Array.isArray(textDecorationHandlerInfo.eventListeners)) {
+            textDecorationHandlerInfo.eventListeners.forEach((eventListener: IEventListener) => {
               if (eventListener.type === "click") {
                 eventListener.listener({ type: "click", text: msg.text });
               }
@@ -262,7 +262,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   useEffect(() => {
     return autorun(() => {
-      if (phoneRef.current && iframeRef && textDecorationHandlerInfo.content) {
+      if (phoneRef.current && iframeRef && pluginInfo.textDecorationHandlerInfo) {
         const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo();
         phoneRef.current.post("decorateContent", textDecorationInfo);
       }
