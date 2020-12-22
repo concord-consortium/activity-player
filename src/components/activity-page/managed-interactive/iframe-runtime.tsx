@@ -6,7 +6,7 @@ import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
   ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, ILinkedInteractiveStateResponse,
-  IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEventMessage
+  IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
@@ -148,7 +148,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       addListener("hint", (newHint: any) => {
         setNewHint(newHint.text || "");
       });
-      addListener("decoratedContentEvent", (msg: IDecoratedContentEventMessage) => {
+      addListener("decoratedContentEvent", (msg: IDecoratedContentEvent) => {
         if (textDecorationInfo && msg.type === "click") {
           if ("type" in textDecorationInfo.eventListeners && textDecorationInfo.eventListeners.type === "click") {
             textDecorationInfo.eventListeners.listener({ type: "click", text: msg.text });
