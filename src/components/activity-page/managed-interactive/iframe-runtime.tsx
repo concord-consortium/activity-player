@@ -16,6 +16,19 @@ import { IEventListener } from "../../../lara-plugin/plugin-api/decorate-content
 
 const kDefaultHeight = 300;
 
+const createTextDecorationInfo = (textDecorationHandlerInfo: ITextDecorationHandlerInfo) => {
+  const listenerTypes = textDecorationHandlerInfo.eventListeners.map((listener: IEventListener) => {
+    return {type: listener.type};
+  });
+  const textDecorationInfo: ITextDecorationInfo = {
+    words: textDecorationHandlerInfo.words,
+    replace: textDecorationHandlerInfo.replace,
+    wordClass: textDecorationHandlerInfo.wordClass,
+    listenerTypes
+  };
+  return textDecorationInfo;
+};
+
 export interface IframeRuntimeImperativeAPI {
   requestInteractiveState: () => void;
 }
@@ -56,15 +69,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   useEffect(() => {
     if (phoneRef.current && iframeRef && textDecorationHandlerInfo) {
-      const listenerTypes = textDecorationHandlerInfo.eventListeners.map((listener: IEventListener) => {
-        return {type: listener.type};
-      });
-      const textDecorationInfo: ITextDecorationInfo = {
-        words: textDecorationHandlerInfo.words,
-        replace: textDecorationHandlerInfo.replace,
-        wordClass: textDecorationHandlerInfo.wordClass,
-        listenerTypes
-      };
+      const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo(textDecorationHandlerInfo);
       phoneRef.current.post("decorateContent", textDecorationInfo);
     }
   }, [textDecorationHandlerInfo, iframeRef]);
@@ -92,6 +97,10 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         }
         if (iframeRef.current) {
           setSupportedFeatures(iframeRef.current, features);
+        }
+        if (phoneRef.current && iframeRef && textDecorationHandlerInfo) {
+          const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo(textDecorationHandlerInfo);
+          phoneRef.current.post("decorateContent", textDecorationInfo);
         }
       });
       addListener("navigation", (options: INavigationOptions) => {
