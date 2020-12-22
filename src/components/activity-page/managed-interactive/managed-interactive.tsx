@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
 import {
-  ICloseModal, INavigationOptions, ITextDecorationHandlerInfo,
+  ICloseModal, INavigationOptions,
   ICustomMessage, IRuntimeMetadata, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures
 } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
@@ -18,7 +18,6 @@ import { renderHTML } from "../../../utilities/render-html";
 import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 import { Lightbox } from "./lightbox";
 import { Logger, LogEventName } from "../../../lib/logger";
-import { textDecorationHandlerInfo } from "../../../lara-plugin/plugin-api/decorate-content";
 import { observer } from "mobx-react";
 
 import "./managed-interactive.scss";
@@ -29,7 +28,6 @@ interface IProps {
   setSupportedFeatures: (container: HTMLElement, features: ISupportedFeatures) => void;
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
   setNavigation?: (options: INavigationOptions) => void;
-  textDecorationHandlerInfo?: ITextDecorationHandlerInfo;
 }
 
 const kDefaultAspectRatio = 4 / 3;
@@ -193,7 +191,6 @@ export const ManagedInteractive: React.FC<IProps> = observer(({ ...props }) => {
         closeModal={closeModal}
         setSendCustomMessage={setSendCustomMessage}
         setNavigation={setNavigation}
-        textDecorationHandlerInfo={textDecorationHandlerInfo}
       />;
 
     return (

@@ -7,23 +7,25 @@ import {
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
   ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, ILinkedInteractiveStateResponse,
   IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent,
-  ITextDecorationHandlerInfo, ITextDecorationInfo
+  ITextDecorationInfo
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
-import { IEventListener } from "../../../lara-plugin/plugin-api/decorate-content";
+import { IEventListener, textDecorationHandlerInfo } from "../../../lara-plugin/plugin-api/decorate-content";
+import { autorun } from "mobx";
 
 const kDefaultHeight = 300;
 
-const createTextDecorationInfo = (textDecorationHandlerInfo: ITextDecorationHandlerInfo) => {
-  const listenerTypes = textDecorationHandlerInfo.eventListeners.map((listener: IEventListener) => {
+const createTextDecorationInfo = () => {
+  const { content } = textDecorationHandlerInfo;
+  const listenerTypes = content.eventListeners.map((listener: IEventListener) => {
     return {type: listener.type};
   });
   const textDecorationInfo: ITextDecorationInfo = {
-    words: textDecorationHandlerInfo.words,
-    replace: textDecorationHandlerInfo.replace,
-    wordClass: textDecorationHandlerInfo.wordClass,
+    words: content.words.slice(),
+    replace: content.replace,
+    wordClass: content.wordClass,
     listenerTypes
   };
   return textDecorationInfo;
@@ -51,13 +53,12 @@ interface IProps {
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
   setNavigation?: (options: INavigationOptions) => void;
   ref?: React.Ref<IframeRuntimeImperativeAPI>;
-  textDecorationHandlerInfo?: ITextDecorationHandlerInfo;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, showModal, closeModal, setSupportedFeatures,
-    setSendCustomMessage, setNavigation, textDecorationHandlerInfo } = props;
+    setSendCustomMessage, setNavigation } = props;
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
@@ -66,13 +67,6 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
   const linkedInteractivesRef = useRef(linkedInteractives?.length ? { linkedInteractives } : { linkedInteractives: [] });
-
-  useEffect(() => {
-    if (phoneRef.current && iframeRef && textDecorationHandlerInfo) {
-      const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo(textDecorationHandlerInfo);
-      phoneRef.current.post("decorateContent", textDecorationInfo);
-    }
-  }, [textDecorationHandlerInfo, iframeRef]);
 
   useEffect(() => {
     const initInteractive = () => {
@@ -98,8 +92,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         if (iframeRef.current) {
           setSupportedFeatures(iframeRef.current, features);
         }
-        if (phoneRef.current && iframeRef && textDecorationHandlerInfo) {
-          const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo(textDecorationHandlerInfo);
+        if (phoneRef.current && iframeRef && textDecorationHandlerInfo.content) {
+          const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo();
           phoneRef.current.post("decorateContent", textDecorationInfo);
         }
       });
@@ -167,12 +161,13 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         setNewHint(newHint.text || "");
       });
       addListener("decoratedContentEvent", (msg: IDecoratedContentEvent) => {
+        const { content } = textDecorationHandlerInfo;
         if (textDecorationHandlerInfo && msg.type === "click") {
-          if ("type" in textDecorationHandlerInfo.eventListeners && textDecorationHandlerInfo.eventListeners.type === "click") {
-            textDecorationHandlerInfo.eventListeners.listener({ type: "click", text: msg.text });
+          if ("type" in content.eventListeners && content.eventListeners.type === "click") {
+            content.eventListeners.listener({ type: "click", text: msg.text });
           }
-          if (Array.isArray(textDecorationHandlerInfo.eventListeners)) {
-            textDecorationHandlerInfo.eventListeners.forEach((eventListener: IEventListener) => {
+          if (Array.isArray(content.eventListeners)) {
+            content.eventListeners.forEach((eventListener: IEventListener) => {
               if (eventListener.type === "click") {
                 eventListener.listener({ type: "click", text: msg.text });
               }
@@ -264,6 +259,15 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     // Re-running the effect reloads the iframe.
     // The _only_ time that's ever appropriate is when the url has changed.
   }, [url]);  // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    return autorun(() => {
+      if (phoneRef.current && iframeRef && textDecorationHandlerInfo.content) {
+        const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo();
+        phoneRef.current.post("decorateContent", textDecorationInfo);
+      }
+    });
+  }, [iframeRef]);
 
   useImperativeHandle(ref, () => ({
     requestInteractiveState: () => phoneRef.current?.post("getInteractiveState")
