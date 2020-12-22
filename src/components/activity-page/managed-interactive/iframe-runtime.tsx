@@ -6,12 +6,13 @@ import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
   ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, ILinkedInteractiveStateResponse,
-  IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent
+  IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent,
+  ITextDecorationHandlerInfo, ITextDecorationInfo
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
-import { ITextDecorationInfo, IEventListener } from "../../../lara-plugin/plugin-api/decorate-content";
+import { IEventListener } from "../../../lara-plugin/plugin-api/decorate-content";
 
 const kDefaultHeight = 300;
 
@@ -37,13 +38,13 @@ interface IProps {
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
   setNavigation?: (options: INavigationOptions) => void;
   ref?: React.Ref<IframeRuntimeImperativeAPI>;
-  textDecorationInfo?: ITextDecorationInfo;
+  textDecorationHandlerInfo?: ITextDecorationHandlerInfo;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, showModal, closeModal, setSupportedFeatures,
-    setSendCustomMessage, setNavigation, textDecorationInfo } = props;
+    setSendCustomMessage, setNavigation, textDecorationHandlerInfo } = props;
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
@@ -54,11 +55,19 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const linkedInteractivesRef = useRef(linkedInteractives?.length ? { linkedInteractives } : { linkedInteractives: [] });
 
   useEffect(() => {
-    if (phoneRef.current && iframeRef) {
-      const textDecorationMessage = JSON.parse(JSON.stringify(textDecorationInfo));
-      phoneRef.current.post("decorateContent", textDecorationMessage);
+    if (phoneRef.current && iframeRef && textDecorationHandlerInfo) {
+      const listenerTypes = textDecorationHandlerInfo.eventListeners.map((listener: IEventListener) => {
+        return {type: listener.type};
+      });
+      const textDecorationInfo: ITextDecorationInfo = {
+        words: textDecorationHandlerInfo.words,
+        replace: textDecorationHandlerInfo.replace,
+        wordClass: textDecorationHandlerInfo.wordClass,
+        listenerTypes
+      };
+      phoneRef.current.post("decorateContent", textDecorationInfo);
     }
-  }, [textDecorationInfo, iframeRef]);
+  }, [textDecorationHandlerInfo, iframeRef]);
 
   useEffect(() => {
     const initInteractive = () => {
@@ -149,12 +158,12 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         setNewHint(newHint.text || "");
       });
       addListener("decoratedContentEvent", (msg: IDecoratedContentEvent) => {
-        if (textDecorationInfo && msg.type === "click") {
-          if ("type" in textDecorationInfo.eventListeners && textDecorationInfo.eventListeners.type === "click") {
-            textDecorationInfo.eventListeners.listener({ type: "click", text: msg.text });
+        if (textDecorationHandlerInfo && msg.type === "click") {
+          if ("type" in textDecorationHandlerInfo.eventListeners && textDecorationHandlerInfo.eventListeners.type === "click") {
+            textDecorationHandlerInfo.eventListeners.listener({ type: "click", text: msg.text });
           }
-          if (Array.isArray(textDecorationInfo.eventListeners)) {
-            textDecorationInfo.eventListeners.forEach((eventListener: IEventListener) => {
+          if (Array.isArray(textDecorationHandlerInfo.eventListeners)) {
+            textDecorationHandlerInfo.eventListeners.forEach((eventListener: IEventListener) => {
               if (eventListener.type === "click") {
                 eventListener.listener({ type: "click", text: msg.text });
               }

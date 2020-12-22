@@ -1,19 +1,13 @@
 import * as TextDecorator from "@concord-consortium/text-decorator";
 import { observable } from "mobx";
-
-export interface ITextDecorationInfo {
-  words: string[];
-  replace: string;
-  wordClass: string;
-  eventListeners: IEventListeners;
-}
+import { ITextDecorationHandlerInfo } from "@concord-consortium/lara-interactive-api";
 
 export interface IPluginEvent {
   type: string,
   text: string,
 }
 
-export let textDecorationInfo: ITextDecorationInfo = observable({
+export let textDecorationHandlerInfo: ITextDecorationHandlerInfo = observable({
   words: [],
   replace: "",
   wordClass: "",
@@ -39,7 +33,7 @@ export type IEventListeners = IEventListener | IEventListener[];
 export const decorateContent = (words: string[], replace: string, wordClass: string, listeners: IEventListeners) => {
   const domClasses = ["question-txt", "help-content", "intro-txt"];
   // store glossary text decoration information for use by interactives
-  textDecorationInfo = {
+  textDecorationHandlerInfo = {
     words,
     replace,
     wordClass,
