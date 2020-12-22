@@ -137,7 +137,7 @@ export interface Activity {
   time_to_complete: number | null;
   version: number;
   theme_name?: string | null;
-  plugins: null[];      // update when we add plugin support
+  plugins: Plugin[];
   type: "LightweightActivity";
   export_site?: string | null;
   pages: Page[];

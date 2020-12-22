@@ -18,7 +18,7 @@ describe("Embeddable component", () => {
       "section": "header_block"
     };
 
-    const wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
+    const wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment} pluginsLoaded={true} />);
     expect(wrapper.find(".textbox").hasClass("callout")).toBe(false);
     expect(wrapper.text()).toContain("This is a page");
   });
@@ -33,7 +33,7 @@ describe("Embeddable component", () => {
       "section": "header_block"
     };
 
-    const wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
+    const wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment} pluginsLoaded={true} />);
     expect(wrapper.find(".textbox").hasClass("callout")).toBe(true);
     expect(wrapper.text()).toContain("This is a callout text box");
   });
@@ -47,7 +47,7 @@ describe("Embeddable component", () => {
       "section": "interactive_box"
     };
 
-    const wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
+    const wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment} pluginsLoaded={true} />);
     expect(wrapper.text()).toContain("Content type not supported");
   });
 
@@ -67,7 +67,7 @@ describe("Embeddable component", () => {
     // Disable interactive state observing for this test.
     (embeddableWrapper.embeddable as IManagedInteractive).library_interactive!.data!.enable_learner_state = false;
 
-    const wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment}/>);
+    const wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} questionNumber={1} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.InfoAssessment} pluginsLoaded={true} />);
     expect(wrapper.find("ManagedInteractive").length).toBe(1);
     expect(wrapper.find("iframe").length).toBe(1);
     expect(wrapper.find('[data-cy="iframe-runtime"]').length).toBe(1);

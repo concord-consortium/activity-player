@@ -2,45 +2,19 @@ import React from "react";
 
 import "./bottom-buttons.scss";
 
-interface BottomButtonProps {
-  onBack?: () => void;
-  onNext?: () => void;
-  onGenerateReport?: () => void;
-  lockForwardNav?: boolean;
+interface IProps {
+  onGenerateReport: () => void;
 }
 
-export const BottomButtons: React.FC<BottomButtonProps> = (props) => {
+export const BottomButtons: React.FC<IProps> = (props) => {
   return (
     <div className="bottom-buttons">
-      <div>
-        { <button className="button"
-                  disabled={!props.onBack}
-                  onClick={props.onBack}
-                  data-cy="bottom-button-back"
-                  tabIndex={1}>
-            {"< Back"}
-          </button> }
-      </div>
-      <div>
-        { props.onGenerateReport &&
-          <button className="button"
-                  onClick={props.onGenerateReport}
-                  data-cy="bottom-button-report"
-                  tabIndex={1}>
-            {"Generate Report"}
-          </button>
-        }
-      </div>
-      <div>
-        { <button className={`button ${props.lockForwardNav ? "disabled" : ""}`}
-                  disabled={!props.onNext && !props.lockForwardNav}
-                  onClick={props.onNext}
-                  data-cy="bottom-button-next"
-                  tabIndex={1}>
-            {"Next >"}
-          </button>
-        }
-      </div>
+      <button className="button"
+              onClick={props.onGenerateReport}
+              data-cy="bottom-button-report"
+              tabIndex={1}>
+        {"Generate Report"}
+      </button>
     </div>
   );
 };

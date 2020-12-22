@@ -17,7 +17,7 @@ context("Test the overall app", () => {
   describe("ActivityNavHeader",()=>{
     it("verify ActivityNavHeader loads",()=>{
         cy.get("[data-cy=activity-nav-header]").should("be.visible");
-        cy.get(".page-button").should("have.length", 11);
+        cy.get(".page-button").should("have.length", 22); // top and bottom nav headers exist
     });
   });
   describe("ProfileNavHeader",()=>{

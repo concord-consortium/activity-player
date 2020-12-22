@@ -7,6 +7,8 @@ import sampleActivityHas from "../data/sample-activity-HAS.json";
 import sampleActivityHiddenContent from "../data/sample-activity-hidden-content.json";
 import sampleActivityMultipleLayoutTypes from "../data/sample-activity-multiple-layout-types.json";
 import sampleActivityPlugins from "../data/sample-activity-plugins.json";
+import sampleActivityPluginsSinglePage from "../data/sample-activity-plugins-single-page.json";
+import sampleActivityGlossaryPlugin from "../data/sample-activity-glossary-plugin.json";
 import sampleActivityResponsive from "../data/sample-activity-responsive-layout.json";
 import sampleActivitySinglePageLayout from "../data/sample-activity-single-page-layout.json";
 import sampleActivityFullWidthOff from "../data/LARA-page-elements-full-width-off.json";
@@ -24,6 +26,8 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-hidden-content": sampleActivityHiddenContent as Activity,
   "sample-activity-multiple-layout-types": sampleActivityMultipleLayoutTypes as Activity,
   "sample-activity-plugins": sampleActivityPlugins as Activity,
+  "sample-activity-plugins-single-page": sampleActivityPluginsSinglePage as Activity,
+  "sample-activity-glossary-plugin": sampleActivityGlossaryPlugin as Activity,
   "sample-activity-responsive-layout": sampleActivityResponsive as Activity,
   "sample-activity-single-page-layout": sampleActivitySinglePageLayout as Activity,
   "LARA-page-elements-full-width-off": sampleActivityFullWidthOff as Activity,
@@ -36,10 +40,12 @@ const sampleActivities: {[name: string]: Activity} = {
 
 import sampleSequence from "../data/sample-sequence.json";
 import sampleSequenceEmptyFields from "../data/sample-sequence-empty-fields.json";
+import sampleSequenceWithQuestions from "../data/sample-sequence-with-questions.json";
 
 const sampleSequences: {[name: string]: Sequence} = {
   "sample-sequence": sampleSequence as Sequence,
   "sample-sequence-empty-fields": sampleSequenceEmptyFields as Sequence,
+  "sample-sequence-with-questions": sampleSequenceWithQuestions as Sequence,
 };
 
 export  { sampleActivities, sampleSequences };

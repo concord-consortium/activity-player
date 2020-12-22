@@ -10,6 +10,7 @@ import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
 import { Page, EmbeddableWrapper } from "../../types";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../../lib/logger";
+import { showReport } from "../../utilities/report-utils";
 import { queryValue } from "../../utilities/url-query";
 import { fetchPortalData } from "../../portal-api";
 import { DEFAULT_PORTAL_REPORT_URL, DEFAULT_PORTAL_REPORT_FIREBASE_APP } from "../app";
@@ -20,15 +21,12 @@ const kPinMargin = 20;
 
 interface IProps {
   enableReportButton: boolean;
-  isFirstActivityPage: boolean;
-  isLastActivityPage: boolean;
-  onPageChange: (page: number) => void;
   page: Page;
   pageNumber: number;
   teacherEditionMode?: boolean;
   totalPreviousQuestions: number;
   setNavigation: (refId: string, options: INavigationOptions) => void;
-  lockForwardNav?: boolean;
+  pluginsLoaded: boolean;
 }
 
 interface IState {
@@ -48,7 +46,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   render() {
-    const { enableReportButton, isFirstActivityPage, isLastActivityPage, page, pageNumber, totalPreviousQuestions, lockForwardNav } = this.props;
+    const { enableReportButton, page, pageNumber, totalPreviousQuestions } = this.props;
     const { scrollOffset } = this.state;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
     const pageSectionQuestionCount = getPageSectionQuestionCount(page);
@@ -82,12 +80,11 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
           { first }
           { second }
         </div>
-        <BottomButtons
-          onBack={!isFirstActivityPage ? this.handleBack : undefined}
-          onNext={!isLastActivityPage ? this.handleNext : undefined}
-          lockForwardNav={lockForwardNav}
-          onGenerateReport={enableReportButton ? this.handleReport : undefined}
-        />
+        { enableReportButton &&
+          <BottomButtons
+            onGenerateReport={this.handleReport}
+          />
+        }
       </div>
     );
   }
@@ -121,48 +118,8 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     }
   }
 
-  private handleBack = () => {
-    this.props.onPageChange(this.props.pageNumber - 1);
-  }
-  private handleNext = () => {
-    this.props.onPageChange(this.props.pageNumber + 1);
-  }
-
-  private handleReport = async () => {
-    // const reportLink = "https://localhost:8081";
-    const reportLink = (queryValue("portal-report") as string) || DEFAULT_PORTAL_REPORT_URL;
-    const reportFirebaseApp = (queryValue("tool-id") as string) || DEFAULT_PORTAL_REPORT_FIREBASE_APP;
-    const activity = queryValue("activity");
-    const activityUrl = activity? ((activity.split(".json"))[0]).replace("api/v1/","") : "";
-    const runKey= queryValue("runKey");
-    if (runKey) {
-      const answerSource = window.location.hostname;
-      window.open(reportLink + "?runKey=" + runKey + "&activity=" + activityUrl + "&answerSource="+answerSource);
-    }
-    else {
-      const portalData = await fetchPortalData();
-      const classInfoUrl = portalData?.portalJWT?.class_info_url;
-      const classId = classInfoUrl?.split("classes/")[1];
-      const activityHostUrl = activityUrl? ((activityUrl.split("/activities"))[0]) : "";
-      const authDomainUrl = classInfoUrl?.split("/api")[0];
-      const offeringBaseUrl = classInfoUrl?.split("/classes")[0]+"/offerings/";
-      const classOfferings = encodeURIComponent(offeringBaseUrl+"?class_id=" + classId);
-      const offeringId = portalData?.offering.id;
-      const offeringUrl = encodeURIComponent(offeringBaseUrl + offeringId);
-      const studentId = portalData?.platformUserId;
-      const reportURL = reportLink
-                        + "?"
-                        + "class=" + encodeURIComponent(classInfoUrl || "")
-                        + "&classOfferings=" + classOfferings
-                        + "&firebase-app="+reportFirebaseApp
-                        + "&offering=" + offeringUrl
-                        + "&activityUrl=" + activityUrl
-                        + "&reportType=offering&studentId="+studentId
-                        + "&tool-id="+activityHostUrl
-                        + "&auth-domain="+authDomainUrl;
-      window.open(reportURL);
-    }
-
+  private handleReport = () => {
+    showReport();
     Logger.log({
       event: LogEventName.create_report
     });
@@ -187,6 +144,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                 linkedPluginEmbeddable={linkedPluginEmbeddable}
                 teacherEditionMode={this.props.teacherEditionMode}
                 setNavigation={this.props.setNavigation}
+                pluginsLoaded={this.props.pluginsLoaded}
               />
             );
           })

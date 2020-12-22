@@ -21,12 +21,13 @@ interface IProps {
   questionNumber?: number;
   teacherEditionMode?: boolean;
   setNavigation?: (id: string, options: INavigationOptions) => void;
+  pluginsLoaded: boolean;
 }
 
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.FC<IProps> = (props) => {
-  const { activityLayout, embeddableWrapper, linkedPluginEmbeddable, pageLayout, pageSection, questionNumber, setNavigation, teacherEditionMode } = props;
+  const { activityLayout, embeddableWrapper, linkedPluginEmbeddable, pageLayout, pageSection, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded } = props;
   const embeddable = embeddableWrapper.embeddable;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
@@ -47,13 +48,14 @@ export const Embeddable: React.FC<IProps> = (props) => {
       embeddableContainer: embeddableWrapperDivTarget.current || undefined,
       wrappedEmbeddable: embeddable,
       wrappedEmbeddableContainer: embeddableDivTarget.current || undefined,
-      sendCustomMessage: sendCustomMessage.current
+      sendCustomMessage: sendCustomMessage.current,
+      pluginType: "TeacherEdition"
     };
     const validPluginContext = validateEmbeddablePluginContextForWrappedEmbeddable(pluginContext);
-    if (validPluginContext && teacherEditionMode) {
+    if (validPluginContext && teacherEditionMode && pluginsLoaded) {
       initializePlugin(validPluginContext);
     }
-  }, [LARA, linkedPluginEmbeddable, embeddable, teacherEditionMode]);
+  }, [LARA, linkedPluginEmbeddable, embeddable, teacherEditionMode, pluginsLoaded]);
 
   const handleSetSupportedFeatures = useCallback((container: HTMLElement, features: ISupportedFeatures) => {
     const event: IInteractiveSupportedFeaturesEvent = {
@@ -72,7 +74,7 @@ export const Embeddable: React.FC<IProps> = (props) => {
                     setSendCustomMessage={setSendCustomMessage}
                     setNavigation={handleSetNavigation} />;
   } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {
-    qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} /> : undefined;
+    qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} pluginsLoaded={pluginsLoaded} /> : undefined;
   } else if (embeddable.type === "Embeddable::Xhtml") {
     qComponent = <TextBox embeddable={embeddable} />;
   } else {

@@ -1,0 +1,170 @@
+{
+  "description": "<p>A simple test activity that contains a glossary and several pages.</p>",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "glossary test",
+  "notes": "",
+  "project_id": null,
+  "related": "",
+  "show_submit_button": false,
+  "student_report_enabled": true,
+  "thumbnail_url": "",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "HAS National Geographic: Water",
+  "pages": [
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "",
+      "position": 1,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": true,
+      "sidebar": "<p>This is a test page.</p>",
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p>This is a test page.&nbsp; It contains text including the word TEST.</p>",
+            "is_callout": true,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272335-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": "test open response",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>this is a test</p>\",\"hint\":\"<p>This is a hint that includes the words test and page.</p>\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This shouldn't be used by any real activities it is still under development.",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "735-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 2,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": true,
+      "sidebar": "<p>test page</p>",
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p>This ia a test page that contains a header and some content including a TE window shade.</p>",
+            "is_callout": true,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272339-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"This is test content\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"none\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade"
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "3279-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": true,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 3,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": []
+    }
+  ],
+  "plugins": [
+    {
+      "description": null,
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"ISnn8j8r2veEFjPCx3XH\",\"s3Url\":\"https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/glossary.json\"}",
+      "approved_script_label": "glossary",
+      "component_label": "glossary"
+    }
+  ],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

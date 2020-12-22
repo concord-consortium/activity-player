@@ -1,7 +1,7 @@
 import React from "react";
 import { PortalDataContext } from "./portal-data-context";
 import { Header } from "./activity-header/header";
-import { ActivityNavHeader } from "./activity-header/activity-nav-header";
+import { ActivityNav } from "./activity-header/activity-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
@@ -14,10 +14,10 @@ import { CompletionPageContent } from "./activity-completion/completion-page-con
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { fetchPortalData, IPortalData } from "../portal-api";
 import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB } from "../firebase-db";
-import { Activity, Sequence } from "../types";
+import { Activity, IEmbeddablePlugin, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
-import { loadPluginScripts } from "../utilities/plugin-utils";
+import { loadPluginScripts, getGlossaryEmbeddable } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
 import { AuthError }  from "./auth-error/auth-error";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
@@ -26,6 +26,7 @@ import { ModalDialog } from "./modal-dialog";
 import Modal from "react-modal";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
+import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
 
 import "./app.scss";
 
@@ -50,9 +51,11 @@ interface IState {
   portalData?: IPortalData;
   sequence?: Sequence;
   showSequence?: boolean;
+  activityIndex?: number;
   showModal: boolean;
   modalLabel: string
   incompleteQuestions: IncompleteQuestion[];
+  pluginsLoaded: boolean;
 }
 interface IProps {}
 
@@ -71,6 +74,7 @@ export class App extends React.PureComponent<IProps, IState> {
       showModal: false,
       modalLabel: "",
       incompleteQuestions: [],
+      pluginsLoaded: false,
     };
   }
 
@@ -134,9 +138,7 @@ export class App extends React.PureComponent<IProps, IState> {
       this.setState(newState as IState);
 
       this.LARA = initializeLara();
-      if (teacherEditionMode) {
-        loadPluginScripts(this.LARA, activity);
-      }
+      loadPluginScripts(this.LARA, activity, this.handleLoadPlugins, teacherEditionMode);
 
       Modal.setAppElement("#app");
 
@@ -151,7 +153,7 @@ export class App extends React.PureComponent<IProps, IState> {
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
-          <div className="app">
+          <div className="app" data-cy="app">
             <WarningBanner/>
             { this.state.teacherEditionMode && <TeacherEditionBanner/>}
             { this.state.showSequence
@@ -170,10 +172,12 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, authError, currentPage, username } = this.state;
+    const { activity, authError, currentPage, username, pluginsLoaded, teacherEditionMode } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
+    const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
+    const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
     return (
       <React.Fragment>
         <Header
@@ -181,7 +185,6 @@ export class App extends React.PureComponent<IProps, IState> {
           projectId={activity.project_id}
           userName={username}
           contentName={activity.name}
-          singlePage={activity.layout === ActivityLayouts.SinglePage}
         />
         { authError
           ? <AuthError />
@@ -193,13 +196,18 @@ export class App extends React.PureComponent<IProps, IState> {
             projectId={activity.project_id}
           />
         }
-        { (activity.layout !== ActivityLayouts.SinglePage && currentPage !== 0 && !activity.pages[currentPage - 1].is_completion) &&
+        { (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
           <ExpandableContainer
             activity={activity}
             pageNumber={currentPage}
             page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
-            teacherEditionMode={this.state.teacherEditionMode}
+            teacherEditionMode={teacherEditionMode}
+            pluginsLoaded={pluginsLoaded}
+            glossaryPlugin={glossaryEmbeddable !== null}
           />
+        }
+        { glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
+          <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} />
         }
       </React.Fragment>
     );
@@ -208,16 +216,9 @@ export class App extends React.PureComponent<IProps, IState> {
   private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
     return (
       <>
-        <ActivityNavHeader
-          activityPages={activity.pages}
-          currentPage={currentPage}
-          fullWidth={fullWidth}
-          onPageChange={this.handleChangePage}
-          singlePage={activity.layout === ActivityLayouts.SinglePage}
-          sequenceName={this.state.sequence?.display_title || (this.state.sequence && "Sequence")}
-          onShowSequence={this.handleShowSequence}
-          lockForwardNav={this.state.incompleteQuestions.length > 0}
-        />
+        { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
+          this.renderNav(activity, currentPage, fullWidth)
+        }
         { activity.layout === ActivityLayouts.SinglePage
           ? this.renderSinglePageContent(activity)
           : currentPage === 0
@@ -226,48 +227,68 @@ export class App extends React.PureComponent<IProps, IState> {
               ? this.renderCompletionContent(activity)
               : <ActivityPageContent
                   enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
-                  isFirstActivityPage={currentPage === 1}
-                  isLastActivityPage={currentPage === activity.pages.filter((page) => !page.is_hidden).length}
                   pageNumber={currentPage}
-                  onPageChange={this.handleChangePage}
                   page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
                   totalPreviousQuestions={totalPreviousQuestions}
                   teacherEditionMode={this.state.teacherEditionMode}
                   setNavigation={this.handleSetNavigation}
                   key={`page-${currentPage}`}
-                  lockForwardNav={this.state.incompleteQuestions.length > 0}
+                  pluginsLoaded={this.state.pluginsLoaded}
                 />
         }
+        { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
+          this.renderNav(activity, currentPage, fullWidth)
+        }
       </>
+    );
+  }
+
+  private renderNav = (activity: Activity, currentPage: number, fullWidth: boolean) => {
+    return (
+      <ActivityNav
+        activityPages={activity.pages}
+        currentPage={currentPage}
+        fullWidth={fullWidth}
+        onPageChange={this.handleChangePage}
+        singlePage={activity.layout === ActivityLayouts.SinglePage}
+        sequenceName={this.state.sequence?.display_title || (this.state.sequence && "Sequence")}
+        onShowSequence={this.handleShowSequence}
+        lockForwardNav={this.state.incompleteQuestions.length > 0}
+      />
     );
   }
 
   private renderSinglePageContent = (activity: Activity) => {
     return (
       <SinglePageContent
-          activity={activity}
-          teacherEditionMode={this.state.teacherEditionMode}
-        />
+        activity={activity}
+        teacherEditionMode={this.state.teacherEditionMode}
+        pluginsLoaded={this.state.pluginsLoaded}
+      />
     );
   }
 
   private renderIntroductionContent = (activity: Activity) => {
     return (
       <IntroductionPageContent
-          activity={activity}
-          onPageChange={this.handleChangePage}
-        />
+        activity={activity}
+        onPageChange={this.handleChangePage}
+      />
     );
   }
 
   private renderCompletionContent = (activity: Activity) => {
     return (
       <CompletionPageContent
+        activity={activity}
         activityName={activity.name}
-        isActivityComplete={true} // TODO: should be based on student progress
         onPageChange={this.handleChangePage}
         showStudentReport={activity.student_report_enabled}
         thumbnailURL={activity.thumbnail_url}
+        sequence={this.state.sequence}
+        activityIndex={this.state.activityIndex}
+        onActivityChange={this.handleSelectActivity}
+        onShowSequence={this.handleShowSequence}
       />
     );
   }
@@ -295,7 +316,10 @@ export class App extends React.PureComponent<IProps, IState> {
       parameters: { new_activity_index: activityNum + 1, new_activity_name: this.state.sequence?.activities[activityNum].name }
     });
     this.setState((prevState) =>
-      ({ activity: prevState.sequence?.activities[activityNum], showSequence: false })
+      ({ activity: prevState.sequence?.activities[activityNum],
+         showSequence: false,
+         activityIndex: activityNum
+      })
     );
   }
 
@@ -328,4 +352,8 @@ export class App extends React.PureComponent<IProps, IState> {
     }
   }
 
+  private handleLoadPlugins = () => {
+    this.setState({ pluginsLoaded: true });
+  }
+  
 }

@@ -182,6 +182,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                       lightbox: true,
                       dialog: true,
                       alert: false
+                    },
+                    getFirebaseJwt: {
+                      version: "1.0.0"
                     }
                   },
                   globalInteractiveState: null,
@@ -233,7 +236,10 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   return (
     <div data-cy="iframe-runtime">
-      <iframe ref={iframeRef} src={url} id={id} width="100%" height={height} frameBorder={0} />
+      <iframe ref={iframeRef} src={url} id={id} width="100%" height={height} frameBorder={0}
+              allowFullScreen={true}
+              allow="geolocation *; microphone *; camera *"
+      />
     </div>
   );
 });
