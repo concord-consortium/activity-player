@@ -9,15 +9,16 @@ export const showReport = async () => {
   const activity = queryValue("activity");
   const activityUrl = activity? ((activity.split(".json"))[0]).replace("api/v1/","") : "";
   const runKey= queryValue("runKey");
+  const answerSource = window.location.hostname;
+
   if (runKey) {
-    const answerSource = window.location.hostname;
     window.open(reportLink + "?runKey=" + runKey + "&activity=" + activityUrl + "&answerSource="+answerSource);
   }
   else {
     const portalData = await fetchPortalData();
     const classInfoUrl = portalData?.portalJWT?.class_info_url;
     const classId = classInfoUrl?.split("classes/")[1];
-    const activityHostUrl = activityUrl? ((activityUrl.split("/activities"))[0]) : "";
+    // const activityHostUrl = activityUrl? ((activityUrl.split("/activities"))[0]) : "";
     const authDomainUrl = classInfoUrl?.split("/api")[0];
     const offeringBaseUrl = classInfoUrl?.split("/classes")[0]+"/offerings/";
     const classOfferings = encodeURIComponent(offeringBaseUrl+"?class_id=" + classId);
@@ -32,7 +33,8 @@ export const showReport = async () => {
                       + "&offering=" + offeringUrl
                       + "&activityUrl=" + activityUrl
                       + "&reportType=offering&studentId="+studentId
-                      + "&tool-id="+activityHostUrl
+                      + "&resourceSource=authoring.staging.concord.org"
+                      + "&answerSource="+answerSource
                       + "&auth-domain="+authDomainUrl;
     window.open(reportURL);
   }
