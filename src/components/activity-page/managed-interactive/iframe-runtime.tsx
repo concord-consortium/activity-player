@@ -162,14 +162,14 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       });
       addListener("decoratedContentEvent", (msg: IDecoratedContentEvent) => {
         const { textDecorationHandlerInfo } = pluginInfo;
-        if (textDecorationHandlerInfo && msg.type === "click") {
-          if ("type" in textDecorationHandlerInfo.eventListeners && textDecorationHandlerInfo.eventListeners.type === "click") {
-            textDecorationHandlerInfo.eventListeners.listener({ type: "click", text: msg.text });
+        if (textDecorationHandlerInfo) {
+          if ("type" in textDecorationHandlerInfo.eventListeners && textDecorationHandlerInfo.eventListeners.type === msg.type) {
+            textDecorationHandlerInfo.eventListeners.listener({ type: msg.type, text: msg.text });
           }
           if (Array.isArray(textDecorationHandlerInfo.eventListeners)) {
             textDecorationHandlerInfo.eventListeners.forEach((eventListener: IEventListener) => {
-              if (eventListener.type === "click") {
-                eventListener.listener({ type: "click", text: msg.text });
+              if (eventListener.type === msg.type) {
+                eventListener.listener({ type: msg.type, text: msg.text });
               }
             });
           }
