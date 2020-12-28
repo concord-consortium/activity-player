@@ -85,6 +85,8 @@ describe("Activity utility functions", () => {
     expect(getPagePositionFromQueryValue(activity, undefined)).toBe(0);
     expect(getPagePositionFromQueryValue(activity, "0")).toBe(0);
     expect(getPagePositionFromQueryValue(activity, "1")).toBe(1);
+    expect(getPagePositionFromQueryValue(activity, "-1")).toBe(0);
+    expect(getPagePositionFromQueryValue(activity, "1000")).toBe(activity.pages.length);
     expect(getPagePositionFromQueryValue(activity, "foo")).toBe(0);
     expect(getPagePositionFromQueryValue(activity, "page_foo")).toBe(0);
     expect(getPagePositionFromQueryValue(activity, "page_1000")).toBe(1);

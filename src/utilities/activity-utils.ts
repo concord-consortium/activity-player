@@ -147,6 +147,7 @@ export const setDocumentTitle = (activity: Activity | undefined, pageNumber: num
 
 export const getPagePositionFromQueryValue = (activity: Activity, pageQueryValue = "0"): number => {
   const pageId = pageQueryValue.startsWith("page_") ? parseInt(pageQueryValue.split("_")[1], 10) : NaN;
+  const page = parseInt(pageQueryValue, 10) || 0;
 
   if (!isNaN(pageId)) {
     for (const page of activity.pages) {
@@ -159,5 +160,7 @@ export const getPagePositionFromQueryValue = (activity: Activity, pageQueryValue
     return 0;
   }
 
-  return parseInt(pageQueryValue, 10) || 0;
+  // page should be in the range [0, <number of pages>].
+  // note that page is 1 based for the actual pages in the activity.
+  return Math.max(0, Math.min(page, activity.pages.length));
 };
