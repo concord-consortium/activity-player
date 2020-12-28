@@ -27,6 +27,7 @@ export const DefaultTestPage: Page = {
   toggle_info_assessment: true,
   additional_sections: {},
   embeddables: [],
+  id: 1000
 };
 
 export const DefaultTestActivity: Activity = {

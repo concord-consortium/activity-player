@@ -51,7 +51,8 @@
               },
               "section": "header_block"
             }
-          ]
+          ],
+          "id": 1000
         }
       ],
       "plugins": [],
@@ -102,7 +103,8 @@
               },
               "section": "header_block"
             }
-          ]
+          ],
+          "id": 1000
         }
       ],
       "plugins": [],
@@ -153,7 +155,8 @@
               },
               "section": "header_block"
             }
-          ]
+          ],
+          "id": 1000
         }
       ],
       "plugins": [],
@@ -204,7 +207,8 @@
               },
               "section": "header_block"
             }
-          ]
+          ],
+          "id": 1000
         }
       ],
       "plugins": [],
@@ -255,7 +259,8 @@
               },
               "section": "header_block"
             }
-          ]
+          ],
+          "id": 1000
         }
       ],
       "plugins": [],

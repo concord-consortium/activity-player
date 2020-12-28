@@ -97,7 +97,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 1000
     }
   ],
   "plugins": [],

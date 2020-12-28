@@ -140,7 +140,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 1000
     },
     {
       "additional_sections": {},
@@ -269,7 +270,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 2000
     },
     {
       "additional_sections": {},
@@ -498,7 +500,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 3000
     }
   ],
   "plugins": [],

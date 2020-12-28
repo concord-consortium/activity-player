@@ -91,5 +91,5 @@ describe("Activity utility functions", () => {
     expect(getPagePositionFromQueryValue(activity, "page_1001")).toBe(0);
     expect(getPagePositionFromQueryValue(activity, "page_2000")).toBe(2);
     expect(getPagePositionFromQueryValue(activity, "page_3000")).toBe(3);
-  })
+  });
 });
