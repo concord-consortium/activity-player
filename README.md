@@ -90,12 +90,12 @@ Inside of your `package.json` file:
 ## Url Parameters
 ### Note: these are subject to change
 
-* activity={id|url}: load sample-activity {id} or load json from specified url
-* sequence={id|url}: load sample-sequence {id} or load json from specified url
-* page={n}:          load page n, where 0 is the activity introduction and 1 is the first page
-* themeButtons:      whether to show theme buttons
-* mode={mode}:       sets mode. Values: "teacher-edition"
-* portal-report:     sets the url of the student report
+* activity={id|url}:    load sample-activity {id} or load json from specified url
+* sequence={id|url}:    load sample-sequence {id} or load json from specified url
+* page={n|"page_[id]"}: load page n, where 0 is the activity introduction and 1 is the first page and "page_[id]" refers to an internal page id exported from LARA.
+* themeButtons:         whether to show theme buttons
+* mode={mode}:          sets mode. Values: "teacher-edition"
+* portal-report:        sets the url of the student report
 
 #### User data loading:
 * firebase-app={id}: needed to load data from the correct firebase app
