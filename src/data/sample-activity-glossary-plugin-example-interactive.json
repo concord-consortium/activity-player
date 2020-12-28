@@ -194,6 +194,18 @@
       "embeddables": [
         {
           "embeddable": {
+            "content": "<p>The interactives below contain glossary text which should appear decorated.&nbsp; These interactives are all pointing to the master version of question interactives.</p>",
+            "is_callout": true,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272554-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
             "name": "",
             "url_fragment": null,
             "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"<p>This is a prompt on a page that includes test text.</p>\"}",
@@ -219,7 +231,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "http://localhost:8081/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -270,7 +282,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "http://localhost:8081/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This shouldn't be used by any real activities it is still under development.",
@@ -321,7 +333,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "http://localhost:8081/video-player/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/video-player/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "New video player ",
@@ -372,7 +384,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "http://localhost:8081/image/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -423,7 +435,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "http://localhost:8081/scaffolded-question/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/scaffolded-question/",
                 "click_to_play": false,
                 "click_to_play_prompt": "Click here please ..",
                 "description": "Master branch Scaffolded question",
@@ -474,7 +486,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "http://localhost:8081/drawing-tool/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/drawing-tool/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
