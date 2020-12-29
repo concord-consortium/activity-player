@@ -92,7 +92,7 @@ Inside of your `package.json` file:
 
 * activity={id|url}:    load sample-activity {id} or load json from specified url
 * sequence={id|url}:    load sample-sequence {id} or load json from specified url
-* page={n|"page_[id]"}: load page n, where 0 is the activity introduction and 1 is the first page and "page_[id]" refers to an internal page id exported from LARA.
+* page={n|"page_[id]"}: load page n, where 0 is the activity introduction, 1 is the first page and [id] in "page_[id]" refers to an internal integer id of the page model exported from LARA.
 * themeButtons:         whether to show theme buttons
 * mode={mode}:          sets mode. Values: "teacher-edition"
 * portal-report:        sets the url of the student report
