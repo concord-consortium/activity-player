@@ -265,7 +265,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         phoneRef.current.post("decorateContent", textDecorationInfo);
       }
     });
-  });
+  }, []);
 
   useImperativeHandle(ref, () => ({
     requestInteractiveState: () => phoneRef.current?.post("getInteractiveState")
