@@ -18,7 +18,6 @@ import { renderHTML } from "../../../utilities/render-html";
 import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 import { Lightbox } from "./lightbox";
 import { Logger, LogEventName } from "../../../lib/logger";
-import { observer } from "mobx-react";
 
 import "./managed-interactive.scss";
 
@@ -36,7 +35,7 @@ const getModalContainer = (): HTMLElement => {
   return document.getElementById("app") || document.body;
 };
 
-export const ManagedInteractive: React.FC<IProps> = observer(({ ...props }) => {
+export const ManagedInteractive: React.FC<IProps> = (props) => {
   const iframeRuntimeRef = useRef<IframeRuntimeImperativeAPI>(null);
   const onSetInteractiveStateCallback = useRef<() => void>();
   const interactiveState = useRef<any>();
@@ -233,5 +232,5 @@ export const ManagedInteractive: React.FC<IProps> = observer(({ ...props }) => {
       }
       </div>
     );
-  });
+  };
 ManagedInteractive.displayName = "ManagedInteractive";
