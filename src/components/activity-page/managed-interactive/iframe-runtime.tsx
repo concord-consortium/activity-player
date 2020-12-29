@@ -168,7 +168,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
             : [textDecorationHandlerInfo.eventListeners];
           listeners.forEach((eventListener: IEventListener) => {
             if (eventListener.type === msg.type) {
-              eventListener.listener({ type: msg.type, text: msg.text });
+              eventListener.listener(msg);
             }
           });
         }
