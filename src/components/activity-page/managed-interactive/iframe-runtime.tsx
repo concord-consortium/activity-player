@@ -163,16 +163,14 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       addListener("decoratedContentEvent", (msg: IDecoratedContentEvent) => {
         const { textDecorationHandlerInfo } = pluginInfo;
         if (textDecorationHandlerInfo) {
-          if ("type" in textDecorationHandlerInfo.eventListeners && textDecorationHandlerInfo.eventListeners.type === msg.type) {
-            textDecorationHandlerInfo.eventListeners.listener({ type: msg.type, text: msg.text });
-          }
-          if (Array.isArray(textDecorationHandlerInfo.eventListeners)) {
-            textDecorationHandlerInfo.eventListeners.forEach((eventListener: IEventListener) => {
-              if (eventListener.type === msg.type) {
-                eventListener.listener({ type: msg.type, text: msg.text });
-              }
-            });
-          }
+          const listeners = Array.isArray(textDecorationHandlerInfo.eventListeners)
+            ? textDecorationHandlerInfo.eventListeners
+            : [textDecorationHandlerInfo.eventListeners];
+          listeners.forEach((eventListener: IEventListener) => {
+            if (eventListener.type === msg.type) {
+              eventListener.listener({ type: msg.type, text: msg.text });
+            }
+          });
         }
       });
       addListener("showModal", (options: IShowModal) => {
@@ -262,12 +260,12 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   useEffect(() => {
     return autorun(() => {
-      if (phoneRef.current && iframeRef && pluginInfo.textDecorationHandlerInfo) {
+      if (phoneRef.current && pluginInfo.textDecorationHandlerInfo) {
         const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo();
         phoneRef.current.post("decorateContent", textDecorationInfo);
       }
     });
-  }, [iframeRef]);
+  });
 
   useImperativeHandle(ref, () => ({
     requestInteractiveState: () => phoneRef.current?.post("getInteractiveState")
