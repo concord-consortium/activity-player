@@ -92,7 +92,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         if (iframeRef.current) {
           setSupportedFeatures(iframeRef.current, features);
         }
-        if (phoneRef.current && iframeRef && pluginInfo.textDecorationHandlerInfo) {
+        if (phoneRef.current && pluginInfo.textDecorationHandlerInfo) {
           const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo();
           phoneRef.current.post("decorateContent", textDecorationInfo);
         }
