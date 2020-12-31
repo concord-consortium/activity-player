@@ -11,9 +11,6 @@ import { Page, EmbeddableWrapper } from "../../types";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../../lib/logger";
 import { showReport } from "../../utilities/report-utils";
-import { queryValue } from "../../utilities/url-query";
-import { fetchPortalData } from "../../portal-api";
-import { DEFAULT_PORTAL_REPORT_URL, DEFAULT_PORTAL_REPORT_FIREBASE_APP } from "../app";
 
 import "./activity-page-content.scss";
 

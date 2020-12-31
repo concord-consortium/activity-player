@@ -2,6 +2,18 @@ import { queryValue } from "../utilities/url-query";
 import { DEFAULT_PORTAL_REPORT_URL, DEFAULT_PORTAL_REPORT_FIREBASE_APP } from "../components/app";
 import { fetchPortalData } from "../portal-api";
 
+const parseUrl = (url: string) => {
+  const a = document.createElement("a");
+  a.href = url;
+  return a;
+};
+
+// TODO: this should look at the 'report-source' parameter
+// extract the hostname from the url
+const makeSourceKey = (url: string | null) => {
+  return url ? parseUrl(url.toLowerCase()).hostname : "";
+};
+
 export const showReport = async () => {
   // TODO: switch default to production report version before production deploy
   const reportLink = (queryValue("portal-report") as string) || DEFAULT_PORTAL_REPORT_URL;
@@ -17,24 +29,23 @@ export const showReport = async () => {
   else {
     const portalData = await fetchPortalData();
     const classInfoUrl = portalData?.portalJWT?.class_info_url;
-    const classId = classInfoUrl?.split("classes/")[1];
-    // const activityHostUrl = activityUrl? ((activityUrl.split("/activities"))[0]) : "";
+    const sourceKey = activityUrl ? makeSourceKey(activityUrl) : window.location.hostname;
     const authDomainUrl = classInfoUrl?.split("/api")[0];
     const offeringBaseUrl = classInfoUrl?.split("/classes")[0]+"/offerings/";
-    const classOfferings = encodeURIComponent(offeringBaseUrl+"?class_id=" + classId);
     const offeringId = portalData?.offering.id;
     const offeringUrl = encodeURIComponent(offeringBaseUrl + offeringId);
     const studentId = portalData?.platformUserId;
     const reportURL = reportLink
                       + "?"
+                      // In the future we should be able to drop this because the portal
+                      // report should be able to get all the info it needs from the
+                      // offering url
                       + "class=" + encodeURIComponent(classInfoUrl || "")
-                      + "&classOfferings=" + classOfferings
                       + "&firebase-app="+reportFirebaseApp
                       + "&offering=" + offeringUrl
-                      + "&activityUrl=" + activityUrl
                       + "&reportType=offering&studentId="+studentId
-                      + "&resourceSource=authoring.staging.concord.org"
-                      + "&answerSource="+answerSource
+                      + "&sourceKey="+sourceKey
+                      + "&answersSourceKey="+answerSource
                       + "&auth-domain="+authDomainUrl;
     window.open(reportURL);
   }
