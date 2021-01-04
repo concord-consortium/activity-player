@@ -16,11 +16,9 @@ describe("Header component", () => {
     const wrapperNoIcon = shallow(<Header projectId={9} userName={"test student"} contentName={"test activity"} />);
     expect(wrapperNoIcon.containsMatchingElement(headerLogo9)).toEqual(true);
   });
-  it("renders activity title dropdown when appropriate", () => {
-    const activityDropdown = <div className="activity-title" data-cy ="activity-title">Activity:</div>;
-
+  it("renders activity title", () => {
     const wrapperDropdown = shallow(<Header projectId={1} userName={"test student"} contentName={"test activity"} />);
-    expect(wrapperDropdown.containsMatchingElement(activityDropdown)).toEqual(true);
+    expect(wrapperDropdown.text()).toContain("test activity");
   });
   it("renders user name", () => {
       const user = "Student User";
