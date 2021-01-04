@@ -4,12 +4,11 @@ import { AccountOwner } from "./account-owner";
 import { shallow } from "enzyme";
 import { Logo } from "./logo";
 import mwLogo from "../../assets/project-images/mw-logo.png";
-import ccLogo from "../../assets/cc-logo.png";
 
 describe("Header component", () => {
   it("renders header project icon", () => {
     const headerLogo1 = <Logo logo={mwLogo} url={"http://mw.concord.org/nextgen/"}/>;
-    const headerLogo9 = <Logo logo={ccLogo} url={"https://concord.org/"}/>;
+    const headerLogo9 = <Logo logo={undefined} url={"https://concord.org/"}/>;
 
     const wrapperIcon = shallow(<Header projectId={1} userName={"test student"} contentName={"test activity"} />);
     expect(wrapperIcon.containsMatchingElement(headerLogo1)).toEqual(true);

@@ -13,8 +13,8 @@
     width: $content-width;
     box-sizing: border-box;
     margin: auto;
-    background-color: $activity-header-gray;
-    color: white;
+    background-color: $cc-teal-light4;
+    color: $cc-charcoal;
 
     &.full {
       width: 100%;
@@ -22,26 +22,39 @@
 
     .header-left {
       display: flex;
-      flex: 1;
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
       height: 100%;
+
+      .seperator {
+        width: 1px;
+        height: 30px;
+        margin: 2px;
+        background-color: $cc-teal;
+      }
     }
 
     .header-center {
       display: flex;
       flex-direction: row;
-      flex: 1;
       justify-content: center;
-      margin: 15px 0px 15px 0px;
       align-items: center;
-      width: 400px;
+      flex: 1;
+      margin: 15px 0px 15px 0px;
       height: 100%;
       font-size: 18px;
+      font-weight: bold;
 
       .activity-title {
-        margin-right: 10px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+
+        .activity-icon {
+          margin: 5px;
+        }
       }
 
       img {
@@ -55,7 +68,6 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      flex: 1;
       justify-content: flex-end;
     }
   }
