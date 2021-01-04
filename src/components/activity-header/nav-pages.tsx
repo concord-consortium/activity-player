@@ -1,6 +1,8 @@
 import React from "react";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
 import { Page } from "../../types";
+import ArrowPrevious from "../../assets/svg-icons/arrow-previous-icon.svg";
+import ArrowNext from "../../assets/svg-icons/arrow-next-icon.svg";
 
 import "./nav-pages.scss";
 
@@ -17,8 +19,8 @@ export class NavPages extends React.PureComponent <IProps> {
   render() {
     return (
       <div className="nav-pages" data-cy="nav-pages">
-        {this.renderHomePageButton()}
         {this.renderPreviousButton()}
+        {this.renderHomePageButton()}
         {this.renderButtons()}
         {this.renderNextButton()}
       </div>
@@ -32,7 +34,7 @@ export class NavPages extends React.PureComponent <IProps> {
         className={`page-button ${currentPage === 0 ? "disabled" : ""}`}
         onClick={this.handleChangePage(currentPage - 1)}
       >
-        {"<"}
+        <ArrowPrevious className="icon"/>
       </button>
     );
   }
@@ -44,7 +46,7 @@ export class NavPages extends React.PureComponent <IProps> {
         className={`page-button ${currentPage === totalPages || lockForwardNav ? "disabled" : ""}`}
         onClick={this.handleChangePage(currentPage + 1)}
       >
-        {">"}
+        <ArrowNext className="icon"/>
       </button>
     );
   }
@@ -88,9 +90,9 @@ export class NavPages extends React.PureComponent <IProps> {
     return (
       <button className={`page-button ${currentClass}`} onClick={this.handleChangePage(0)}>
         <IconHome
+          className={`icon home ${this.props.currentPage === 0 ? "current" : ""}`}
           width={28}
           height={28}
-          fill={this.props.currentPage === 0 ? "white" : "#979797"}
         />
       </button>
     );
