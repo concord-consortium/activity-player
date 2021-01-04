@@ -35,7 +35,7 @@ const kDefaultIncompleteMessage = "Please submit an answer first.";
 // TODO: switch default to production report version before production deploy
 // export const DEFAULT_PORTAL_REPORT_URL = "https://portal-report.concord.org/branch/master/index.html";
 export const DEFAULT_PORTAL_REPORT_URL = "https://localhost:8081/";
-
+// TODO: switch default to "report-service-pro" before production deploy
 export const DEFAULT_PORTAL_REPORT_FIREBASE_APP = "report-service-dev";
 
 interface IncompleteQuestion {

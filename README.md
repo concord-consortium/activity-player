@@ -81,7 +81,7 @@ Inside of your `package.json` file:
 * firebase-app={id}: needed to load data from the correct firebase app
 * token={n}:         set by the portal when launching external activity, to authenticate with portal API
 * domain={n}:        set by the portal when launching external activity
-* report-source={id}: which source collection to sava data to in firestore (defaults to own hostname)
+* report-source={id}: which source collection to save data to in firestore (defaults to own hostname)
 * runkey={uuid}:     set by the app if we are running in anonymous datasaving mode
 * preview:           prevent running in anonymous datasaving mode
 * enableFirestorePersistence: uses local offline firestore cache only

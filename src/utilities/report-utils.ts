@@ -8,8 +8,6 @@ const parseUrl = (url: string) => {
   return a;
 };
 
-// TODO: this should look at the 'report-source' parameter
-// extract the hostname from the url
 const makeSourceKey = (url: string | null) => {
   return url ? parseUrl(url.toLowerCase()).hostname : "";
 };
@@ -21,7 +19,8 @@ export const showReport = async () => {
   const activity = queryValue("activity");
   const activityUrl = activity? ((activity.split(".json"))[0]).replace("api/v1/","") : "";
   const runKey= queryValue("runKey");
-  const answerSource = window.location.hostname;
+  // Sometimes the location of the answers is overridden with a report-source param
+  const answerSource = queryValue("report-source") || window.location.hostname;
 
   if (runKey) {
     window.open(reportLink + "?runKey=" + runKey + "&activity=" + activityUrl + "&answerSource="+answerSource);
