@@ -1,6 +1,11 @@
 import { queryValue } from "../utilities/url-query";
-import { DEFAULT_PORTAL_REPORT_URL, DEFAULT_PORTAL_REPORT_FIREBASE_APP } from "../components/app";
 import { fetchPortalData } from "../portal-api";
+
+// TODO: switch default to production report version before production deploy
+export const DEFAULT_PORTAL_REPORT_URL = "https://portal-report.concord.org/branch/master/index.html";
+// export const DEFAULT_PORTAL_REPORT_URL = "https://localhost:8081/";
+// TODO: switch default to "report-service-pro" before production deploy
+export const DEFAULT_PORTAL_REPORT_FIREBASE_APP = "report-service-dev";
 
 const parseUrl = (url: string) => {
   const a = document.createElement("a");
