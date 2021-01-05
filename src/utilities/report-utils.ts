@@ -1,5 +1,6 @@
 import { queryValue } from "../utilities/url-query";
-import { fetchPortalData } from "../portal-api";
+import { getPortalData } from "../firebase-db";
+import { IPortalData } from "../portal-api";
 
 // TODO: switch default to production report version before production deploy
 export const DEFAULT_PORTAL_REPORT_URL = "https://portal-report.concord.org/branch/master/index.html";
@@ -17,7 +18,7 @@ const makeSourceKey = (url: string | null) => {
   return url ? parseUrl(url.toLowerCase()).hostname : "";
 };
 
-export const showReport = async () => {
+export const getReportUrl = () => {
   // TODO: switch default to production report version before production deploy
   const reportLink = (queryValue("portal-report") as string) || DEFAULT_PORTAL_REPORT_URL;
   const reportFirebaseApp = (queryValue("tool-id") as string) || DEFAULT_PORTAL_REPORT_FIREBASE_APP;
@@ -28,10 +29,11 @@ export const showReport = async () => {
   const answerSource = queryValue("report-source") || window.location.hostname;
 
   if (runKey) {
-    window.open(reportLink + "?runKey=" + runKey + "&activity=" + activityUrl + "&answersSourceKey="+answerSource);
+    return reportLink + "?runKey=" + runKey + "&activity=" + activityUrl + "&answersSourceKey="+answerSource;
   }
   else {
-    const portalData = await fetchPortalData();
+    // We know this is a IPortalData because there is no runKey
+    const portalData = getPortalData() as IPortalData;
     const classInfoUrl = portalData?.portalJWT?.class_info_url;
     const sourceKey = activityUrl ? makeSourceKey(activityUrl) : window.location.hostname;
     const authDomainUrl = classInfoUrl?.split("/api")[0];
@@ -39,20 +41,22 @@ export const showReport = async () => {
     const offeringId = portalData?.offering.id;
     const offeringUrl = encodeURIComponent(offeringBaseUrl + offeringId);
     const studentId = portalData?.platformUserId;
-    const reportURL = reportLink
-                      + "?"
-                      // In the future we should be able to drop this because the portal
-                      // report should be able to get all the info it needs from the
-                      // offering url
-                      + "class=" + encodeURIComponent(classInfoUrl || "")
-                      + "&firebase-app="+reportFirebaseApp
-                      + "&offering=" + offeringUrl
-                      + "&reportType=offering&studentId="+studentId
-                      + "&sourceKey="+sourceKey
-                      + "&answersSourceKey="+answerSource
-                      + "&auth-domain="+authDomainUrl;
-    window.open(reportURL);
+
+    return reportLink
+            + "?"
+            // In the future we should be able to drop this because the portal
+            // report should be able to get all the info it needs from the
+            // offering url
+            + "class=" + encodeURIComponent(classInfoUrl || "")
+            + "&firebase-app="+reportFirebaseApp
+            + "&offering=" + offeringUrl
+            + "&reportType=offering&studentId="+studentId
+            + "&sourceKey="+sourceKey
+            + "&answersSourceKey="+answerSource
+            + "&auth-domain="+authDomainUrl;
   }
+};
 
-
+export const showReport = () => {
+  window.open(getReportUrl());
 };

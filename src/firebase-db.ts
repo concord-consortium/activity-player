@@ -112,6 +112,12 @@ export const setPortalData = (_portalData: IPortalData) => {
   portalData = _portalData;
 };
 
+// This will not fetch the portal data, if this is called before the
+// portalData has been fetched it will return null
+export const getPortalData = (): IPortalData | IAnonymousPortalData | null => {
+  return portalData;
+};
+
 export const setAnonymousPortalData = (_portalData: IAnonymousPortalData) => {
   portalData = _portalData;
 };
