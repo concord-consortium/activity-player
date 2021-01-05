@@ -33,6 +33,7 @@ export class NavPages extends React.PureComponent <IProps> {
       <button
         className={`page-button ${currentPage === 0 ? "disabled" : ""}`}
         onClick={this.handleChangePage(currentPage - 1)}
+        aria-label="Previous Page"
       >
         <ArrowPrevious className="icon"/>
       </button>
@@ -45,6 +46,7 @@ export class NavPages extends React.PureComponent <IProps> {
       <button
         className={`page-button ${currentPage === totalPages || lockForwardNav ? "disabled" : ""}`}
         onClick={this.handleChangePage(currentPage + 1)}
+        aria-label="Next Page"
       >
         <ArrowNext className="icon"/>
       </button>
@@ -78,6 +80,7 @@ export class NavPages extends React.PureComponent <IProps> {
           onClick={this.handleChangePage(page)}
           key={`page ${page}`}
           data-cy="nav-pages-button"
+          aria-label={`Page ${page}`}
         >
           {page}
         </button>
@@ -88,7 +91,7 @@ export class NavPages extends React.PureComponent <IProps> {
   private renderHomePageButton = () => {
     const currentClass = this.props.currentPage === 0 ? "current" : "";
     return (
-      <button className={`page-button ${currentClass}`} onClick={this.handleChangePage(0)}>
+      <button className={`page-button ${currentClass}`} onClick={this.handleChangePage(0)} aria-label="Home">
         <IconHome
           className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
           width={28}

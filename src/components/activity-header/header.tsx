@@ -29,7 +29,7 @@ export class Header extends React.PureComponent<IProps> {
             <div className="separator" />
           </div>
           <div className="header-center">
-            {sequenceLogo && <img className="sequence-logo" src={sequenceLogo} />}
+            {sequenceLogo && <img className="sequence-logo" src={sequenceLogo} alt="Sequence Logo" />}
             {this.renderContentTitle()}
           </div>
           <div className="header-right">
