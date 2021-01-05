@@ -5,8 +5,14 @@
     flex-direction: row;
     align-items: center;
     margin: 0 12px 0 12px;
+
+    .icon {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+    }
   }
-  
+
   .account-owner-name {
     font-weight: bold;
     color: white;
@@ -19,8 +25,3 @@
     }
   }
 
-  .icon {
-    width: 32px;
-    height: 32px;
-    object-fit: contain;
-  }
