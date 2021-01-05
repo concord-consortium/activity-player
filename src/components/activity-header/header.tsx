@@ -27,7 +27,7 @@ export class Header extends React.PureComponent<IProps> {
         <div className={`inner ${fullWidth ? "full" : ""}`}>
           <div className="header-left">
             <Logo logo={logo} url={projectURL} />
-            <div className="seperator" />
+            <div className="separator" />
           </div>
           <div className="header-center">
             {sequenceLogo && <img src={sequenceLogo} />}
