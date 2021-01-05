@@ -28,8 +28,6 @@ export class Header extends React.PureComponent<IProps> {
           <div className="header-left">
             <Logo logo={logo} url={projectURL} />
             <div className="separator" />
-          </div>
-          <div className="header-center">
             {sequenceLogo && <img src={sequenceLogo} />}
             {this.renderActivityMenu()}
           </div>
