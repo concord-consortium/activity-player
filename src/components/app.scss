@@ -8,7 +8,6 @@
   bottom: 0;
   display: flex;
   justify-content: center;
-  color: #242424;
   background-color: var(--theme-primary-color);
   overflow-y: auto;
 }
@@ -21,7 +20,8 @@
   height: fit-content;
   padding: 0 20px 20px 20px;
   line-height: 1.35;
-  color: #444;
+  color: $cc-charcoal;
+  font-size: 18px;
 
   .button {
     height: 44px;
