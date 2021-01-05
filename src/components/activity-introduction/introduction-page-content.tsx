@@ -19,6 +19,7 @@ export const IntroductionPageContent: React.FC<IProps> = (props) => {
           activityName={activity.name}
           introText={activity.description}
           time={activity.time_to_complete}
+          imageUrl={activity.thumbnail_url}
         />
         <ActivityPageLinks
           activityPages={activity.pages}
