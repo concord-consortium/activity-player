@@ -4,6 +4,8 @@
   height: 60px;
   width: 100%;
   margin-bottom: 3px;
+  font-size: 18px;
+  font-weight: bold;
 
   .inner {
     display: flex;
@@ -25,10 +27,7 @@
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
-      flex: 1;
       height: 100%;
-      font-size: 18px;
-      font-weight: bold;
 
       .separator {
         width: 1px;
@@ -36,17 +35,22 @@
         margin: 2px 12px 2px 2px;
         background-color: $cc-teal;
       }
+    }
+
+    .header-center {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      flex: 1;
+      min-width: 0;
 
       .activity-title {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-
-        .activity-icon {
-          margin: 5px;
-        }
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
+
       .sequence-logo {
         height: 50px;
         margin-right: 5px;
