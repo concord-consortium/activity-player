@@ -2,8 +2,8 @@ import { getReportUrl } from "./report-utils";
 
 jest.mock("../firebase-db", () => (
   {
-    getPortalData: () => {
-      return {
+    getPortalData: () => (
+      {
         offering: {
           id: "offering-123"
         },
@@ -12,7 +12,7 @@ jest.mock("../firebase-db", () => (
         },
         platformUserId: "abc345"
       }
-    }
+    )
   }
 ));
 

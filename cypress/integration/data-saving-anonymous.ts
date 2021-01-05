@@ -48,7 +48,6 @@ context("Saving and loading data as an anonymous user", () => {
 
     it("we can remove a runKey and we will no longer see our data", () => {
       const activityUrlWithRunKey = activityUrl + "&runKey=" + runKey;
-      const activityUrlWithoutRunKey = activityUrl;
 
       // Answer the question
       cy.visit(activityUrlWithRunKey + "&clearFirestorePersistence");
@@ -69,9 +68,8 @@ context("Saving and loading data as an anonymous user", () => {
       cy.wait(1000);
       getIframeBody("body").find("[data-cy=choices-container] input").eq(1).should("be.checked");
 
-      const activityUrlNoRunkey = activityUrl;
-
-      cy.visit(activityUrlNoRunkey);
+      // Look at the page without a runKey
+      cy.visit(activityUrl);
       activityPage.getNavPage(2).click();
       cy.wait(1000);
       getIframeBody("body").find("[data-cy=choices-container] input").eq(1).should("not.be.checked");
