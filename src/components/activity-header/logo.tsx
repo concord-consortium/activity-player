@@ -16,11 +16,12 @@ export class Logo extends React.PureComponent<IProps> {
     const tIndex = url ? 0 : -1;
 
     return (
-      <div className={`project-logo ${linkClass}`}
-           data-cy="project-logo"
-           onClick={this.handleProjectLogoLink(url)}
-           onKeyDown={this.handleProjectLogoLink(url)}
-           tabIndex={tIndex}
+      <div
+        className={`project-logo ${linkClass}`}
+        data-cy="project-logo"
+        onClick={this.handleProjectLogoLink(url)}
+        onKeyDown={this.handleProjectLogoLink(url)}
+        tabIndex={tIndex}
       >
         { logo
           ? <img data-cy="logo-img" className="logo-img" src={logo} alt="Project website"/>
