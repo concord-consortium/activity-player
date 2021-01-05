@@ -23,7 +23,7 @@ export const Plugins: PluginInfo[] = [
     loaded: false
   },
   {
-    url: "https://glossary-plugin.concord.org/version/v3.10.0/plugin.js",
+    url: "https://glossary-plugin.concord.org/plugin.js",
     type: "Glossary",
     name: "Glossary",
     id: 1,

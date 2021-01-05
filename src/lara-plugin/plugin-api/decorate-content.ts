@@ -1,8 +1,22 @@
 import * as TextDecorator from "@concord-consortium/text-decorator";
+import { observable, runInAction } from "mobx";
+import { ITextDecorationHandlerInfo } from "@concord-consortium/lara-interactive-api";
+
+export interface IPluginEvent {
+  type: string,
+  text: string,
+}
+
+export const pluginInfo: {textDecorationHandlerInfo: ITextDecorationHandlerInfo} = observable(
+{ textDecorationHandlerInfo: { words: [],
+                               replace: "",
+                               wordClass: "",
+                               eventListeners: [] }
+});
 
 export interface IEventListener {
   type: string;
-  listener: (evt: Event) => void;
+  listener: (evt: Event | IPluginEvent) => void;
 }
 
 export type IEventListeners = IEventListener | IEventListener[];
@@ -18,6 +32,16 @@ export type IEventListeners = IEventListener | IEventListener[];
  ****************************************************************************/
 export const decorateContent = (words: string[], replace: string, wordClass: string, listeners: IEventListeners) => {
   const domClasses = ["question-txt", "help-content", "intro-txt"];
+  // store glossary text decoration information for use by interactives
+  runInAction(() => {
+    pluginInfo.textDecorationHandlerInfo = {
+      words,
+      replace,
+      wordClass,
+      eventListeners: listeners,
+    };
+  });
+
   const options = {
     words,
     replace
