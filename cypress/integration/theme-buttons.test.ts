@@ -24,6 +24,7 @@ context("Test theme buttons", () => {
 
   describe("Theme buttons",()=>{
     it("render when appropriate",()=>{
+      cy.get("[data-cy=theme-buttons]").scrollIntoView();
       themeIds.forEach(id => {
         cy.get(`[data-cy=theme-button-${id}]`).should("be.visible");
       });
