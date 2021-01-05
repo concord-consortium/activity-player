@@ -2,36 +2,50 @@
 
 .activity-page-links {
   height: fit-content;
-  padding: 20px;
+  padding: 10px;
   border-radius: 10px;
   border: 1px solid $cc-charcoal-light2;
+  color: $cc-charcoal;
 
   .pages {
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
-    margin: 5px 0 15px 0;
+    margin: 4px 10px;
+  }
+
+  .separator {
+    width: 260px;
+    height: 1px;
+    background-color: $cc-charcoal-light2;
+    margin: 10px;
   }
 
   .page-item {
-    margin: 8px 0 8px 0;
-  }
-
-  .page-link {
-    color: var(--theme-primary-color);
+    display: flex;
+    align-items: center;
+    width: 260px;
+    height: 40px;
+    padding: 0 10px;
     cursor: pointer;
-
     &:hover {
-      color: var(--theme-primary-hover-color);
-      text-decoration: underline;
+      background-color: $cc-teal-light4;
+      .page-link {
+        text-decoration: underline;
+      }
     }
     &:active {
-      color: var(--theme-primary-active-color);
-      text-decoration: underline;
+      background-color: $cc-teal;
+      color: white;
+    }
+
+    .page-link {
+      margin-left: 3px;
     }
   }
 
   .begin {
-    width: 275px;
+    width: 260px;
+    margin: 20px 0 0 10px;
   }
 
 }
