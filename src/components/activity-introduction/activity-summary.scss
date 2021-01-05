@@ -1,11 +1,12 @@
 @import "../vars.scss";
 
 .activity-summary {
-  width: 600px;
+  width: 570px;
 
   h2 {
-    font-size: 45px;
-    margin: 15px 0 15px 0;
+    font-size: 32px;
+    font-weight: 900;
+    margin: 0;
     color: var(--theme-secondary-color);
   }
 }
