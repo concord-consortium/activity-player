@@ -28,8 +28,8 @@ export class Header extends React.PureComponent<IProps> {
           <div className="header-left">
             <Logo logo={logo} url={projectURL} />
             <div className="separator" />
-            {sequenceLogo && <img src={sequenceLogo} />}
-            {this.renderActivityMenu()}
+            {sequenceLogo && <img className="sequence-logo" src={sequenceLogo} />}
+            {this.renderContentTitle()}
           </div>
           <div className="header-right">
             <AccountOwner userName={userName} />
@@ -39,12 +39,12 @@ export class Header extends React.PureComponent<IProps> {
     );
   }
 
-  private renderActivityMenu = () => {
+  private renderContentTitle = () => {
     const { contentName, showSequence } = this.props;
     return (
       <div className="activity-title" data-cy ="activity-title">
         {showSequence ? "Sequence:" : "Activity:"}
-        <ActivityIcon className="activity-icon" />
+        {!showSequence && <ActivityIcon className="activity-icon" />}
         {contentName}
       </div>
     );
