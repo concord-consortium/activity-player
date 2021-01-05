@@ -90,7 +90,7 @@ export class NavPages extends React.PureComponent <IProps> {
     return (
       <button className={`page-button ${currentClass}`} onClick={this.handleChangePage(0)}>
         <IconHome
-          className={`icon home ${this.props.currentPage === 0 ? "current" : ""}`}
+          className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
           width={28}
           height={28}
         />

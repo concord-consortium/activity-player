@@ -24,19 +24,17 @@
     cursor: pointer;
 
     .icon {
-      &.home {
-        fill: $cc-teal;
-      }
+      fill: var(--theme-primary-color);
       &.current {
         fill: white;
       }
     }
 
     &:hover:not(.disabled) {
-      background-color: $cc-teal-light4;
+      background-color: var(--theme-primary-hover-color);
     }
     &:active:not(.disabled) {
-      background-color: $cc-teal;
+      background-color: var(--theme-primary-color);
       color: white;
       .icon {
         fill: white;
