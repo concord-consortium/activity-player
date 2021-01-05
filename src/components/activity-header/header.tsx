@@ -1,7 +1,6 @@
 import React from "react";
 import { ProjectTypes } from "../../utilities/project-utils";
 import { AccountOwner } from "./account-owner";
-import ActivityIcon from "../../assets/svg-icons/activity-icon.svg";
 import { Logo } from "./logo";
 
 import "./header.scss";
@@ -43,9 +42,7 @@ export class Header extends React.PureComponent<IProps> {
     const { contentName, showSequence } = this.props;
     return (
       <div className="activity-title" data-cy ="activity-title">
-        {showSequence ? "Sequence:" : "Activity:"}
-        {!showSequence && <ActivityIcon className="activity-icon" />}
-        {contentName}
+        {`${showSequence ? "Sequence: " : "Activity:"} ${contentName}`}
       </div>
     );
   }
