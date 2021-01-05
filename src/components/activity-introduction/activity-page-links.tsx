@@ -22,8 +22,8 @@ export class ActivityPageLinks extends React.PureComponent <IProps> {
             onKeyDown={this.handlePageChange(index + 1)}
             tabIndex={0}
           >
-            <span>{`${index + 1}: `}</span>
-            <span>{`Page ${index + 1}`}</span>
+            <span>{`${index + 1}:`}</span>
+            <span className="page-link">{`Page ${index + 1}`}</span>
           </div>
           ))
         }
