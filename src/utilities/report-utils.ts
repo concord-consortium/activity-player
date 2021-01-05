@@ -28,7 +28,7 @@ export const showReport = async () => {
   const answerSource = queryValue("report-source") || window.location.hostname;
 
   if (runKey) {
-    window.open(reportLink + "?runKey=" + runKey + "&activity=" + activityUrl + "&answerSource="+answerSource);
+    window.open(reportLink + "?runKey=" + runKey + "&activity=" + activityUrl + "&answersSourceKey="+answerSource);
   }
   else {
     const portalData = await fetchPortalData();
