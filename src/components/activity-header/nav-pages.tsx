@@ -33,7 +33,7 @@ export class NavPages extends React.PureComponent <IProps> {
       <button
         className={`page-button ${currentPage === 0 ? "disabled" : ""}`}
         onClick={this.handleChangePage(currentPage - 1)}
-        aria-label="Previous Page"
+        aria-label="Previous page"
       >
         <ArrowPrevious className="icon"/>
       </button>
@@ -46,7 +46,7 @@ export class NavPages extends React.PureComponent <IProps> {
       <button
         className={`page-button ${currentPage === totalPages || lockForwardNav ? "disabled" : ""}`}
         onClick={this.handleChangePage(currentPage + 1)}
-        aria-label="Next Page"
+        aria-label="Next page"
       >
         <ArrowNext className="icon"/>
       </button>
