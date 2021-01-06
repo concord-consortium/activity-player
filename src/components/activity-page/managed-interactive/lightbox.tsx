@@ -86,7 +86,7 @@ export const Lightbox: React.FC<IProps> = (props) => {
       {
         isImage ?
         <img ref={imgRef} src={url} onLoad={imgLoaded} style={{ width: imgWidth, height: imgHeight, visibility: imgWidth === undefined ? "hidden" : "visible" }} /> :
-        <iframe src={url} width={iframeSizeOpts.width} height={iframeSizeOpts.height} />
+        <iframe src={url} width={iframeSizeOpts.width} height={iframeSizeOpts.height} title="Image lightbox" />
       }
       </div>
     </ReactModal>

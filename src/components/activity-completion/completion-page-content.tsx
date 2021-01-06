@@ -131,7 +131,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           </div>
           <div className="exit-container" data-cy="exit-container">
             <div className="box">
-              <img src={thumbnailURL ? thumbnailURL : ccPlaceholderLogo} />
+              <img src={thumbnailURL ? thumbnailURL : ccPlaceholderLogo} alt="Completion logo" />
               {isActivityComplete && <div className="ribbon"><span>Completed</span></div>}
             </div>
             <div className="next-step" data-cy="next-step">

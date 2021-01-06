@@ -53,12 +53,13 @@ interface IProps {
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
   setNavigation?: (options: INavigationOptions) => void;
   ref?: React.Ref<IframeRuntimeImperativeAPI>;
+  iframeTitle: string;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, showModal, closeModal, setSupportedFeatures,
-    setSendCustomMessage, setNavigation } = props;
+    setSendCustomMessage, setNavigation, iframeTitle } = props;
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
@@ -282,6 +283,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       <iframe ref={iframeRef} src={url} id={id} width="100%" height={height} frameBorder={0}
               allowFullScreen={true}
               allow="geolocation *; microphone *; camera *"
+              title={iframeTitle}
       />
     </div>
   );

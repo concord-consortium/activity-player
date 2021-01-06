@@ -2,12 +2,15 @@
 
 .footer {
   width: $content-width;
-  font-size: 13px;
-  color: var(--theme-primary-text-color);
-  margin: 10px 0 10px 0;
+  box-sizing: border-box;
+  font-size: 18px;
+  color: white;
+  background-color: $cc-teal-dark1;
+  padding: 20px 20px 40px;
+  margin: 40px 0 0 0;
 
   a:link, a:visited, a:hover, a:active {
-    color: var(--theme-primary-text-color);
+    color: white;
   }
 
   .footer-logo-container {

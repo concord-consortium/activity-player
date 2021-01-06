@@ -19,7 +19,7 @@ export class Footer extends React.PureComponent<IProps> {
     return (
       <div className="footer" data-cy="footer">
         <div className={`inner ${fullWidth ? "full" : ""}`}>
-          <div className={`footerText`}>
+          <div className="footer-text">
             { renderHTML(footer) }
           </div>
           <div className="footer-logo-container" data-cy="footer-logo-container">
