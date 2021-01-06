@@ -190,6 +190,9 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
         closeModal={closeModal}
         setSendCustomMessage={setSendCustomMessage}
         setNavigation={setNavigation}
+        iframeTitle={questionNumber
+                     ? `Question ${questionNumber} ${questionName} content`
+                     : embeddable.name || "Interactive content"}
       />;
 
     return (
