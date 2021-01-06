@@ -7,13 +7,14 @@ import "./custom-select.scss";
 
 interface IProps {
   items: string[];
+  value?: string;
   onSelectItem?: (value: string) => void;
   HeaderIcon?: SvgIcon;
   isDisabled?: boolean;
 }
 
 interface IState {
-  current: string;
+  value: string;
   showList: boolean;
 }
 
@@ -22,18 +23,9 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      current: props.items[0],
+      value: props.value || props.items[0],
       showList: false
     };
-  }
-
-  public componentDidUpdate(prevProps: IProps) {
-    if (prevProps.items !== this.props.items) {
-      this.setState({
-        current: this.props.items[0],
-        showList: false
-      });
-    }
   }
 
   public componentDidMount() {
@@ -54,8 +46,9 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
   }
 
   private renderHeader = () => {
-    const { items, HeaderIcon, isDisabled } = this.props;
-    const currentItem = items.find(i => i === this.state.current);
+    const { items, HeaderIcon, isDisabled, value } = this.props;
+    const currentValue = value || this.state.value;
+    const currentItem = items.find(i => i === currentValue);
     const showListClass = this.state.showList ? "show-list" : "";
     const disabled = isDisabled ? "disabled" : "";
     return (
@@ -69,16 +62,17 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
   }
 
   private renderList = () => {
-    const { items } = this.props;
+    const { items, value } = this.props;
+    const currentValue = value || this.state.value;
     return (
       <div className={`list ${(this.state.showList ?"show" : "")}`} data-cy="custom-select-list">
         { items?.map((item: string, i: number) => {
-          const currentClass = this.state.current === item ? "selected" : "";
+          const currentClass = currentValue === item ? "selected" : "";
           return (
             <div
               key={`item ${i}`}
               className={`list-item ${currentClass}`}
-              onClick={this.handleListClick(item)}
+              onClick={this.handleChange(item)}
               data-cy={`list-item-${item.toLowerCase().replace(" ", "-")}`}
             >
               { <CheckIcon className={`check ${currentClass}`} /> }
@@ -102,10 +96,10 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
     this.setState(state => ({ showList: !state.showList }));
   }
 
-  private handleListClick = (current: string) => () => {
-    this.props.onSelectItem?.(current);
+  private handleChange = (value: string) => () => {
+    this.props.onSelectItem?.(value);
     this.setState({
-      current,
+      value,
       showList: false
     });
   }

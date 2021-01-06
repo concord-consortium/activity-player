@@ -7,6 +7,10 @@
   font-size: 18px;
   font-weight: bold;
 
+  &.no-margin {
+    margin-bottom: 0;
+  }
+
   .inner {
     display: flex;
     flex-direction: row;
@@ -45,14 +49,18 @@
       flex: 1;
       min-width: 0;
 
+      &.link {
+        cursor: pointer;
+      }
+
       .activity-title {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
 
-      .sequence-logo {
-        height: 50px;
+      .sequence-icon {
+        fill: $cc-teal;
         margin-right: 5px;
       }
     }
