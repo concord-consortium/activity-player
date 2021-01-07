@@ -23,7 +23,7 @@ export class Header extends React.PureComponent<IProps> {
     const logo = projectType?.headerLogo;
     const projectURL = projectType?.url || ccLogoLink;
     return (
-      <div className={`activity-header ${showSequence ? "no-margin" : ""}`} data-cy="activity-header">
+      <div className={`activity-header ${showSequence ? "in-sequence" : ""}`} data-cy="activity-header">
         <div className={`inner ${fullWidth ? "full" : ""}`}>
           <div className="header-left">
             <Logo logo={logo} url={projectURL} />
