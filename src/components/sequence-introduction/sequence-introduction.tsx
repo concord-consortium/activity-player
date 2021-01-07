@@ -22,7 +22,6 @@ export const SequenceIntroduction: React.FC<IProps> = (props) => {
           userName={username}
           contentName={sequence.display_title || sequence.title || ""}
           showSequence={true}
-          sequenceLogo={sequence.logo}
         />
         <SequencePageContent
           sequence={sequence}

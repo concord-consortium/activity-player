@@ -16,7 +16,7 @@ context("Test sequences", () => {
     it("should navigate to activity when activity thumbnail is selected", () => {
       activityPage.getHeader().should("contain", "Sequence");
       sequencePage.getThumbnails().eq(0).click();
-      activityPage.getHeader().should("contain", "Activity");
+      activityPage.getHeader().should("contain", "Sequence");
     });
   });
 });

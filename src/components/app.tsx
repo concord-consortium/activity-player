@@ -2,6 +2,7 @@ import React from "react";
 import { PortalDataContext } from "./portal-data-context";
 import { Header } from "./activity-header/header";
 import { ActivityNav } from "./activity-header/activity-nav";
+import { SequenceNav } from "./activity-header/sequence-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
@@ -47,7 +48,7 @@ interface IState {
   authError: string;
   portalData?: IPortalData;
   sequence?: Sequence;
-  showSequence?: boolean;
+  showSequenceIntro?: boolean;
   activityIndex?: number;
   showModal: boolean;
   modalLabel: string
@@ -82,7 +83,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
       const sequencePath = queryValue("sequence");
       const sequence: Sequence | undefined = sequencePath ? await getSequenceDefinition(sequencePath) : undefined;
-      const showSequence = sequence != null;
+      const showSequenceIntro = sequence != null;
 
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity
       const currentPage = Number(queryValue("page")) || 0;
@@ -92,7 +93,7 @@ export class App extends React.PureComponent<IProps, IState> {
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
 
-      const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showSequence, sequence, teacherEditionMode};
+      const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showSequenceIntro, sequence, teacherEditionMode};
       setDocumentTitle(activity, currentPage);
 
       let classHash = "";
@@ -153,7 +154,7 @@ export class App extends React.PureComponent<IProps, IState> {
           <div className="app" data-cy="app">
             <WarningBanner/>
             { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-            { this.state.showSequence
+            { this.state.showSequenceIntro
               ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
               : this.renderActivity() }
             { this.state.showThemeButtons && <ThemeButtons/>}
@@ -169,7 +170,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, authError, currentPage, username, pluginsLoaded, teacherEditionMode } = this.state;
+    const { activity, authError, currentPage, username, pluginsLoaded, teacherEditionMode, sequence } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
@@ -181,7 +182,9 @@ export class App extends React.PureComponent<IProps, IState> {
           fullWidth={fullWidth}
           projectId={activity.project_id}
           userName={username}
-          contentName={activity.name}
+          contentName={sequence ? sequence.display_title || sequence.title || "" : activity.name}
+          showSequence={sequence !== undefined}
+          onShowSequence={this.handleShowSequenceIntro}
         />
         { authError
           ? <AuthError />
@@ -213,6 +216,7 @@ export class App extends React.PureComponent<IProps, IState> {
   private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
     return (
       <>
+        { this.state.sequence && this.renderSequenceNav(fullWidth) }
         { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
           this.renderNav(activity, currentPage, fullWidth)
         }
@@ -248,9 +252,18 @@ export class App extends React.PureComponent<IProps, IState> {
         fullWidth={fullWidth}
         onPageChange={this.handleChangePage}
         singlePage={activity.layout === ActivityLayouts.SinglePage}
-        sequenceName={this.state.sequence?.display_title || (this.state.sequence && "Sequence")}
-        onShowSequence={this.handleShowSequence}
         lockForwardNav={this.state.incompleteQuestions.length > 0}
+      />
+    );
+  }
+
+  private renderSequenceNav = (fullWidth: boolean) => {
+    return (
+      <SequenceNav
+        activities={this.state.sequence?.activities.map((a: Activity) => a.name)}
+        currentActivity={this.state.activity?.name}
+        fullWidth={fullWidth}
+        onActivityChange={this.handleSelectActivity}
       />
     );
   }
@@ -285,7 +298,7 @@ export class App extends React.PureComponent<IProps, IState> {
         sequence={this.state.sequence}
         activityIndex={this.state.activityIndex}
         onActivityChange={this.handleSelectActivity}
-        onShowSequence={this.handleShowSequence}
+        onShowSequence={this.handleShowSequenceIntro}
       />
     );
   }
@@ -314,14 +327,14 @@ export class App extends React.PureComponent<IProps, IState> {
     });
     this.setState((prevState) =>
       ({ activity: prevState.sequence?.activities[activityNum],
-         showSequence: false,
+         showSequenceIntro: false,
          activityIndex: activityNum
       })
     );
   }
 
-  private handleShowSequence = () => {
-    this.setState({showSequence: true});
+  private handleShowSequenceIntro = () => {
+    this.setState({showSequenceIntro: true});
     Logger.log({
       event: LogEventName.show_sequence_intro_page
     });
@@ -352,5 +365,5 @@ export class App extends React.PureComponent<IProps, IState> {
   private handleLoadPlugins = () => {
     this.setState({ pluginsLoaded: true });
   }
-  
+
 }
