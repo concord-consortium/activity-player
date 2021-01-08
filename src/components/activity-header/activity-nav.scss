@@ -6,11 +6,9 @@
   justify-content: space-between;
   height: 64px;
   width: $content-width;
-  border-radius: 2px;
-  background-color: $activity-header-gray;
-  color: white;
+  background-color: white;
+  color: $cc-charcoal;
   font-size: 18px;
-  margin: 5px 20px;
 
   &.full {
     width: 100%;

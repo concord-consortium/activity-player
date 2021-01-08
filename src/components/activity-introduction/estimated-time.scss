@@ -4,9 +4,10 @@
   display: flex;
   align-items: center;
   padding: 10px;
-  border-radius: 10px;
-  border: 1px solid $cc-charcoal-light2;
-  font-size: 16px;
+  width: 550px;
+  font-size: 18px;
+  color: $cc-charcoal;
+  background-color: $cc-teal-light6;
 
   .label {
     display: flex;
@@ -17,12 +18,8 @@
     }
 
     .time {
-      color: $cc-teal-dark1;
-      font-size: 24px;
+      font-weight: bold;
       margin: 0 5px 0 0;
-    }
-    .minutes {
-      color: $cc-teal-dark1;
     }
 
   }

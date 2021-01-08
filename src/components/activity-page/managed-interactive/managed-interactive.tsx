@@ -18,6 +18,7 @@ import { renderHTML } from "../../../utilities/render-html";
 import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 import { Lightbox } from "./lightbox";
 import { Logger, LogEventName } from "../../../lib/logger";
+
 import "./managed-interactive.scss";
 
 interface IProps {
@@ -189,6 +190,9 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
         closeModal={closeModal}
         setSendCustomMessage={setSendCustomMessage}
         setNavigation={setNavigation}
+        iframeTitle={questionNumber
+                     ? `Question ${questionNumber} ${questionName} content`
+                     : embeddable.name || "Interactive content"}
       />;
 
     return (

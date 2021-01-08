@@ -6,13 +6,30 @@ import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
   ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, ILinkedInteractiveStateResponse,
-  IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest
+  IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent,
+  ITextDecorationInfo
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
+import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
+import { autorun } from "mobx";
 
 const kDefaultHeight = 300;
+
+const createTextDecorationInfo = () => {
+  const { textDecorationHandlerInfo } = pluginInfo;
+  const listenerTypes = textDecorationHandlerInfo.eventListeners.map((listener: IEventListener) => {
+    return {type: listener.type};
+  });
+  const textDecorationInfo: ITextDecorationInfo = {
+    words: textDecorationHandlerInfo.words.slice(),
+    replace: textDecorationHandlerInfo.replace,
+    wordClass: textDecorationHandlerInfo.wordClass,
+    listenerTypes
+  };
+  return textDecorationInfo;
+};
 
 export interface IframeRuntimeImperativeAPI {
   requestInteractiveState: () => void;
@@ -36,12 +53,13 @@ interface IProps {
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
   setNavigation?: (options: INavigationOptions) => void;
   ref?: React.Ref<IframeRuntimeImperativeAPI>;
+  iframeTitle: string;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, showModal, closeModal, setSupportedFeatures,
-    setSendCustomMessage, setNavigation } = props;
+    setSendCustomMessage, setNavigation, iframeTitle } = props;
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
@@ -74,6 +92,10 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         }
         if (iframeRef.current) {
           setSupportedFeatures(iframeRef.current, features);
+        }
+        if (phoneRef.current && pluginInfo.textDecorationHandlerInfo) {
+          const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo();
+          phoneRef.current.post("decorateContent", textDecorationInfo);
         }
       });
       addListener("navigation", (options: INavigationOptions) => {
@@ -138,6 +160,19 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       });
       addListener("hint", (newHint: any) => {
         setNewHint(newHint.text || "");
+      });
+      addListener("decoratedContentEvent", (msg: IDecoratedContentEvent) => {
+        const { textDecorationHandlerInfo } = pluginInfo;
+        if (textDecorationHandlerInfo) {
+          const listeners = Array.isArray(textDecorationHandlerInfo.eventListeners)
+            ? textDecorationHandlerInfo.eventListeners
+            : [textDecorationHandlerInfo.eventListeners];
+          listeners.forEach((eventListener: IEventListener) => {
+            if (eventListener.type === msg.type) {
+              eventListener.listener(msg);
+            }
+          });
+        }
       });
       addListener("showModal", (options: IShowModal) => {
         showModal(options);
@@ -224,6 +259,15 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     // The _only_ time that's ever appropriate is when the url has changed.
   }, [url]);  // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    return autorun(() => {
+      if (phoneRef.current && pluginInfo.textDecorationHandlerInfo) {
+        const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo();
+        phoneRef.current.post("decorateContent", textDecorationInfo);
+      }
+    });
+  }, []);
+
   useImperativeHandle(ref, () => ({
     requestInteractiveState: () => phoneRef.current?.post("getInteractiveState")
   }));
@@ -239,6 +283,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       <iframe ref={iframeRef} src={url} id={id} width="100%" height={height} frameBorder={0}
               allowFullScreen={true}
               allow="geolocation *; microphone *; camera *"
+              title={iframeTitle}
       />
     </div>
   );

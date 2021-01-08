@@ -14,42 +14,43 @@
     width: 44px;
     height: 44px;
     margin: 0 5px 0 5px;
-    border-radius: 50%;
-    border: solid $cc-charcoal-light1 2px;
-    color: $cc-charcoal-light1;
-    font-size: 20px;
+    border-radius: 4px;
+    border: none;
+    color: $cc-charcoal;
+    font-size: 18px;
+    font-weight: bold;
     box-sizing: border-box;
     background-color: white;
     cursor: pointer;
 
-    &:hover {
-      background-color: $cc-teal-light6;
+    .icon {
+      fill: var(--theme-primary-color);
+      &.current {
+        fill: white;
+      }
     }
-    &:active {
-      background-color: $cc-teal-light4;
+
+    &:hover:not(.disabled) {
+      background-color: var(--theme-primary-hover-color);
+    }
+    &:active:not(.disabled) {
+      background-color: var(--theme-primary-color);
+      color: white;
+      .icon {
+        fill: white;
+      }
     }
 
     &.current {
       background-color: var(--theme-primary-color);
       color: white;
-    }
-    &.current:hover {
-      background-color: var(--theme-primary-hover-color);
-    }
-    &.current:active {
-      background-color: var(--theme-primary-active-color);
+      pointer-events: none;
     }
 
     &.disabled {
       outline: none;
       cursor: auto;
-      color: $cc-charcoal-light2;
-    }
-    &.disabled:hover {
-      background-color: white;
-    }
-    &.disabled:active {
-      background-color: white;
+      opacity: .35;
     }
   }
 }

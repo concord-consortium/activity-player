@@ -1,0 +1,24 @@
+@import "../vars.scss";
+
+.sequence-nav {
+  display: flex;
+  align-items: center;
+  height: 60px;
+  width: $content-width;
+  background-color: $cc-teal-light5;
+  color: $cc-charcoal;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 3px;
+  padding: 0 20px;
+  box-sizing: border-box;
+
+  &.full {
+    width: 100%;
+  }
+
+  .select-label {
+    margin-right: 5px;
+  }
+
+}

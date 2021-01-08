@@ -1,11 +1,23 @@
 @import "../vars.scss";
 
 .activity-summary {
-  width: 600px;
+  width: 570px;
 
-  h2 {
-    font-size: 45px;
-    margin: 15px 0 15px 0;
-    color: var(--theme-secondary-color);
+  .activity-title {
+    display: flex;
+
+    img {
+      height: 80px;
+      border-radius: 8px;
+      border: solid 1px $cc-teal;
+      margin-right: 20px;
+    }
+
+    h2 {
+      font-size: 32px;
+      font-weight: 900;
+      margin: 0;
+      color: var(--theme-secondary-color);
+    }
   }
 }

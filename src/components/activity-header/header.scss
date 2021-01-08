@@ -3,6 +3,13 @@
 .activity-header {
   height: 60px;
   width: 100%;
+  margin-bottom: 3px;
+  font-size: 18px;
+  font-weight: bold;
+
+  &.in-sequence {
+    margin-bottom: 0;
+  }
 
   .inner {
     display: flex;
@@ -12,8 +19,8 @@
     width: $content-width;
     box-sizing: border-box;
     margin: auto;
-    background-color: $activity-header-gray;
-    color: white;
+    background-color: $cc-teal-light4;
+    color: $cc-charcoal;
 
     &.full {
       width: 100%;
@@ -21,31 +28,39 @@
 
     .header-left {
       display: flex;
-      flex: 1;
       flex-direction: row;
       align-items: center;
       justify-content: flex-start;
       height: 100%;
+
+      .separator {
+        width: 1px;
+        height: 30px;
+        margin: 2px 12px 2px 2px;
+        background-color: $cc-teal;
+      }
     }
 
     .header-center {
       display: flex;
       flex-direction: row;
-      flex: 1;
-      justify-content: center;
-      margin: 15px 0px 15px 0px;
       align-items: center;
-      width: 400px;
-      height: 100%;
-      font-size: 18px;
+      justify-content: flex-start;
+      flex: 1;
+      min-width: 0;
 
-      .activity-title {
-        margin-right: 10px;
+      &.link {
+        cursor: pointer;
       }
 
-      img {
-        height: 50px;
-        border: solid 1.5px $cc-charcoal-light1;
+      .activity-title {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .sequence-icon {
+        fill: $cc-teal;
         margin-right: 5px;
       }
     }
@@ -54,7 +69,6 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      flex: 1;
       justify-content: flex-end;
     }
   }

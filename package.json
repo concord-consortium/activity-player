@@ -139,7 +139,7 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "@concord-consortium/lara-interactive-api": "^0.7.0",
+    "@concord-consortium/lara-interactive-api": "^1.0.0",
     "@concord-consortium/text-decorator": "^1.0.2",
     "@react-hook/resize-observer": "^1.1.0",
     "dompurify": "^2.0.15",
@@ -149,6 +149,7 @@
     "jquery": "^3.5.1",
     "jquery-ui": "^1.12.1",
     "jsonwebtoken": "^8.5.1",
+    "mobx": "^6.0.4",
     "query-string": "^6.13.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
