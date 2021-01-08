@@ -41,6 +41,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --inline --hot --content-base dist/",
+    "start:secure": "webpack-dev-server --https --inline --hot --content-base dist/ --cert ~/.localhost-ssl/localhost.pem --key ~/.localhost-ssl/localhost.key",
     "build": "npm-run-all lint:build clean build:webpack",
     "build:webpack": "webpack --mode production --devtool false",
     "clean": "rimraf dist",
@@ -97,7 +98,7 @@
     "babel-jest": "^26.3.0",
     "copy-webpack-plugin": "^6.1.0",
     "css-loader": "^4.3.0",
-    "cypress": "^5.6.0",
+    "cypress": "^6.0.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.4",
     "eslint": "^7.9.0",

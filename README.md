@@ -23,6 +23,26 @@ You *do not* need to build to deploy the code, that is automatic.  See more info
 2. When coding, use 2 spaces for indentation.
 3. SVG icons are imported directly into the project in src/assets/. SVGR is used to convert SVGs to React components which can be directly imported into other React components (attributes such as fill can be styled using CSS classes).
 
+### Locally Testing Reports
+
+The activity player uses the portal-report code base to display a report of the students work.
+Testing this is complicated. Here is one approach:
+- create an activity player activity in authoring.staging.concord.org
+- publish it to learn.staging.concord.org
+  - this is necessary to send the activity structure to the report-service
+  - it will create a new resource in learn staging, but you aren't going to use or modify that one
+  - this new resource can't be modified because then changes to the activity in LARA authoring won't be published correctly because LARA will be looking for a matching resource in learn.staging.concord.org
+- find the new created resourced in learn staging using advanced search and copy the URL it should be something like:
+  `https://activity-player.concord.org/branch/master/index.html?activity=https://authoring.staging.concord.org/api/v1/123.json`
+- create a new resource in learn staging using: https://learn.staging.concord.org/eresource/new
+- set the URL of this resource:
+  - replace the `activity-player.concord.org` with `localhost:8080` (or whatever your local server for the activity player is)
+  - add a new parameter `portal-report=https://localhost:8081` (or whatever your local server for the portal-report is)
+  - the new url will be something like:
+  `https://localhost:8080?activity=https://authoring.staging.concord.org/api/v1/123.json&portal-report=https://localhost:8081`
+- assign this resource to a class
+- run the resource as a student in this class
+
 ## Deployment
 
 Production releases to S3 are based on the contents of the /dist folder and are built automatically by GitHub Actions for each branch pushed to GitHub and each merge into production.
@@ -81,7 +101,7 @@ Inside of your `package.json` file:
 * firebase-app={id}: needed to load data from the correct firebase app
 * token={n}:         set by the portal when launching external activity, to authenticate with portal API
 * domain={n}:        set by the portal when launching external activity
-* report-source={id}: which source collection to sava data to in firestore (defaults to own hostname)
+* report-source={id}: which source collection to save data to in firestore (defaults to own hostname)
 * runkey={uuid}:     set by the app if we are running in anonymous datasaving mode
 * preview:           prevent running in anonymous datasaving mode
 * enableFirestorePersistence: uses local offline firestore cache only
