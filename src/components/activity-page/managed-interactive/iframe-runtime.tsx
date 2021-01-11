@@ -70,8 +70,6 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
   const linkedInteractivesRef = useRef(linkedInteractives?.length ? { linkedInteractives } : { linkedInteractives: [] });
-  // const interactiveStateRequestPromise = useRef<Promise<void>>();
-  // const interactiveStateRequestPromiseResolve = useRef<() => void>();
   const interactiveStateRequest = {
     promise: useRef<Promise<void>>(),
     resolveAndCleanup: useRef<() => void>(),
