@@ -15,7 +15,25 @@ interface IProps {
   lockForwardNav?: boolean;
 }
 
-export class NavPages extends React.PureComponent <IProps> {
+interface IState {
+  pageChangeInProgress: boolean;
+}
+
+export class NavPages extends React.Component <IProps, IState> {
+  constructor(props: IProps) {
+    super(props);
+    this.state = {
+      pageChangeInProgress: false
+    };
+  }
+
+  componentDidUpdate(prevProps: IProps) {
+    if (prevProps.currentPage !== this.props.currentPage) {
+      // Unlock buttons after page has been changed.
+      this.setState({ pageChangeInProgress: false });
+    }
+  }
+
   render() {
     return (
       <div className="nav-pages" data-cy="nav-pages">
@@ -29,9 +47,10 @@ export class NavPages extends React.PureComponent <IProps> {
 
   private renderPreviousButton = () => {
     const { currentPage } = this.props;
+    const { pageChangeInProgress } = this.state;
     return (
       <button
-        className={`page-button ${currentPage === 0 ? "disabled" : ""}`}
+        className={`page-button ${pageChangeInProgress || currentPage === 0 ? "disabled" : ""}`}
         onClick={this.handleChangePage(currentPage - 1)}
         aria-label="Previous page"
       >
@@ -41,10 +60,11 @@ export class NavPages extends React.PureComponent <IProps> {
   }
   private renderNextButton = () => {
     const { currentPage, pages, lockForwardNav } = this.props;
+    const { pageChangeInProgress } = this.state;
     const totalPages = pages.length;
     return (
       <button
-        className={`page-button ${currentPage === totalPages || lockForwardNav ? "disabled" : ""}`}
+        className={`page-button ${pageChangeInProgress || currentPage === totalPages || lockForwardNav ? "disabled" : ""}`}
         onClick={this.handleChangePage(currentPage + 1)}
         aria-label="Next page"
       >
@@ -55,6 +75,7 @@ export class NavPages extends React.PureComponent <IProps> {
 
   private renderButtons = () => {
     const { currentPage, pages, lockForwardNav } = this.props;
+    const { pageChangeInProgress } = this.state;
     const totalPages = pages.length;
     const maxPagesLeftOfCurrent = currentPage - 1;
     const maxPagesRightOfCurrent = totalPages - currentPage;
@@ -76,7 +97,7 @@ export class NavPages extends React.PureComponent <IProps> {
     return (
       pageNums.map((page: number) =>
         <button
-          className={`page-button ${currentPage === page ? "current" : ""} ${(lockForwardNav && currentPage < page) ? "disabled" : ""}`}
+          className={`page-button ${currentPage === page ? "current" : ""} ${(pageChangeInProgress || lockForwardNav && currentPage < page) ? "disabled" : ""}`}
           onClick={this.handleChangePage(page)}
           key={`page ${page}`}
           data-cy="nav-pages-button"
@@ -90,8 +111,9 @@ export class NavPages extends React.PureComponent <IProps> {
 
   private renderHomePageButton = () => {
     const currentClass = this.props.currentPage === 0 ? "current" : "";
+    const { pageChangeInProgress } = this.state;
     return (
-      <button className={`page-button ${currentClass}`} onClick={this.handleChangePage(0)} aria-label="Home">
+      <button className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`} onClick={this.handleChangePage(0)} aria-label="Home">
         <IconHome
           className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
           width={28}
@@ -102,6 +124,9 @@ export class NavPages extends React.PureComponent <IProps> {
   }
 
   private handleChangePage = (page: number) => () => {
-    this.props.onPageChange(page);
+    if (!this.state.pageChangeInProgress) {
+      this.props.onPageChange(page);
+      this.setState({ pageChangeInProgress: true });
+    }
   }
 }

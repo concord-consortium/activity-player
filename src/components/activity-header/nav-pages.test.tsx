@@ -68,4 +68,25 @@ describe("Nav Pages component", () => {
     expect(wrapper.find('[data-cy="nav-pages-button"]').at(9).text()).toContain("14"); // second to last page
     expect(wrapper.find('[data-cy="nav-pages-button"]').at(10).text()).toContain("15"); // last page
   });
+  it("blocks navigation after page change is requested", () => {
+    const onPageChange = jest.fn();
+    const wrapper = shallow(<NavPages
+      pages={activityPages}
+      currentPage={13}
+      onPageChange={onPageChange}
+    />);
+
+    // Lock nav buttons after one of them has been clicked.
+    expect(wrapper.find('[data-cy="nav-pages-button"]').at(0).hasClass("disabled")).toEqual(false);
+    wrapper.find('[data-cy="nav-pages-button"]').at(0).simulate("click");
+    wrapper.update();
+    expect(onPageChange).toHaveBeenCalled();
+    expect(wrapper.find('[data-cy="nav-pages-button"]').at(0).hasClass("disabled")).toEqual(true);
+
+    // Unlock when new page is set.
+    wrapper.setProps({
+      currentPage: 1
+    });
+    expect(wrapper.find('[data-cy="nav-pages-button"]').at(0).hasClass("disabled")).toEqual(false);
+  });
 });

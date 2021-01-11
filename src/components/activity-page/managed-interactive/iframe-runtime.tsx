@@ -17,6 +17,8 @@ import { autorun } from "mobx";
 
 const kDefaultHeight = 300;
 
+const kInteractiveStateRequestTimeout = 2000; // ms
+
 const createTextDecorationInfo = () => {
   const { textDecorationHandlerInfo } = pluginInfo;
   const listenerTypes = textDecorationHandlerInfo.eventListeners.map((listener: IEventListener) => {
@@ -32,7 +34,7 @@ const createTextDecorationInfo = () => {
 };
 
 export interface IframeRuntimeImperativeAPI {
-  requestInteractiveState: () => void;
+  requestInteractiveState: () => Promise<void>;
 }
 
 interface IProps {
@@ -68,6 +70,12 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
   const linkedInteractivesRef = useRef(linkedInteractives?.length ? { linkedInteractives } : { linkedInteractives: [] });
+  // const interactiveStateRequestPromise = useRef<Promise<void>>();
+  // const interactiveStateRequestPromiseResolve = useRef<() => void>();
+  const interactiveStateRequest = {
+    promise: useRef<Promise<void>>(),
+    resolveAndCleanup: useRef<() => void>(),
+  };
 
   useEffect(() => {
     const initInteractive = () => {
@@ -80,7 +88,14 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       const addListener = (type: ClientMessage, handler: any) => phone.addListener(type, handler);
 
       addListener("interactiveState", (newInteractiveState: any) => {
-        setInteractiveStateRef.current(newInteractiveState);
+        // "no-change" is a special message supported by LARA. We don't want to save it.
+        // newInteractiveState might be undefined if interactive state is requested before any state update.
+        if (newInteractiveState !== undefined && newInteractiveState !== "no-change") {
+          setInteractiveStateRef.current(newInteractiveState);
+        }
+        if (interactiveStateRequest.promise.current) {
+          interactiveStateRequest.resolveAndCleanup.current?.();
+        }
       });
       addListener("height", (newHeight: number) => {
         setHeightFromInteractive(newHeight);
@@ -269,7 +284,30 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   }, []);
 
   useImperativeHandle(ref, () => ({
-    requestInteractiveState: () => phoneRef.current?.post("getInteractiveState")
+    requestInteractiveState: () => {
+      if (!interactiveStateRequest.promise.current) {
+        phoneRef.current?.post("getInteractiveState");
+        interactiveStateRequest.promise.current = new Promise<void>((resolve, reject) => {
+          const cleanup = () => {
+            interactiveStateRequest.promise.current = undefined;
+            interactiveStateRequest.resolveAndCleanup.current = undefined;
+          };
+          interactiveStateRequest.resolveAndCleanup.current = () => {
+            resolve();
+            cleanup();
+          };
+          setTimeout(() => {
+            if (interactiveStateRequest.promise.current) {
+              const msg = `Sorry. Some items on this page did not save (${iframeTitle}).`;
+              console.error(msg);
+              reject(msg);
+              cleanup();
+            }
+          }, kInteractiveStateRequestTimeout);
+        });
+      }
+      return interactiveStateRequest.promise.current;
+    }
   }));
 
   const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;

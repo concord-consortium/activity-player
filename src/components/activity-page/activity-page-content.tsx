@@ -1,5 +1,5 @@
 import React from "react";
-import { Embeddable } from "./embeddable";
+import { Embeddable, EmbeddableImperativeAPI } from "./embeddable";
 import { BottomButtons } from "./bottom-buttons";
 import { PageLayouts, EmbeddableSections, isQuestion, getPageSectionQuestionCount,
          VisibleEmbeddables, getVisibleEmbeddablesOnPage, getLinkedPluginEmbeddable } from "../../utilities/activity-utils";
@@ -34,6 +34,8 @@ interface IState {
 export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   private primaryDivRef: HTMLDivElement | null;
   private secondaryDivRef: HTMLDivElement | null;
+  private embeddableRefs: Record<string, React.RefObject<EmbeddableImperativeAPI>> = {};
+
   public constructor(props: IProps) {
     super(props);
     this.state = {
@@ -101,6 +103,13 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     }
   }
 
+  public requestInteractiveStates() {
+    const promises = this.props.page.embeddables.map(embeddableWrapper => 
+      this.embeddableRefs[embeddableWrapper.embeddable.ref_id]?.current?.requestInteractiveState() || Promise.resolve()
+    );
+    return promises;
+  }
+
   private handleScroll = (e: MouseEvent) => {
     if (this.secondaryDivRef) {
       const secondaryHeight = this.secondaryDivRef.getBoundingClientRect().height;
@@ -131,8 +140,12 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
               questionNumber++;
             }
             const linkedPluginEmbeddable = getLinkedPluginEmbeddable(this.props.page, embeddableWrapper.embeddable.ref_id);
+            if (!this.embeddableRefs[embeddableWrapper.embeddable.ref_id]) {
+              this.embeddableRefs[embeddableWrapper.embeddable.ref_id] = React.createRef<EmbeddableImperativeAPI>();
+            }
             return (
               <Embeddable
+                ref={this.embeddableRefs[embeddableWrapper.embeddable.ref_id]}
                 key={`embeddable-${embeddableWrapper.embeddable.ref_id}`}
                 embeddableWrapper={embeddableWrapper}
                 pageLayout={this.props.page.layout}
