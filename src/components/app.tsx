@@ -30,6 +30,7 @@ import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
 
 import "./app.scss";
+import { ProjectTypes } from "../utilities/project-utils";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "Please submit an answer first.";
@@ -148,11 +149,14 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   render() {
+    const projectType = ProjectTypes.find(pt => pt.id === this.state.activity?.project_id);
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
           <div className="app" data-cy="app">
             <WarningBanner/>
+            current project: {projectType?.name}
+            <button onClick={this.changeLogo}>change project</button>
             { this.state.teacherEditionMode && <TeacherEditionBanner/>}
             { this.state.showSequenceIntro
               ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
@@ -167,6 +171,20 @@ export class App extends React.PureComponent<IProps, IState> {
         </PortalDataContext.Provider>
       </LaraGlobalContext.Provider>
     );
+  }
+
+  private changeLogo = () => {
+    const activity = this.state.activity;
+    if (activity) {
+      const max = ProjectTypes.length;
+      const newActivity: Activity = { ...activity };
+      const projId = newActivity?.project_id;
+      const newProjId = projId !== undefined && projId !== null ? (projId >= max ? 0 : projId + 1) : 0;
+      if (newActivity.project_id !== undefined) {
+        newActivity.project_id = newProjId;
+      }
+      this.setState({activity: newActivity});
+    }
   }
 
   private renderActivity = () => {
