@@ -44,6 +44,7 @@ interface IState {
   currentPage: number;
   teacherEditionMode?: boolean;
   showThemeButtons?: boolean;
+  hideWarning: boolean;
   username: string;
   authError: string;
   portalData?: IPortalData;
@@ -67,6 +68,7 @@ export class App extends React.PureComponent<IProps, IState> {
       currentPage: 0,
       teacherEditionMode: false,
       showThemeButtons: false,
+      hideWarning: false,
       username: "Anonymous",
       authError: "",
       showModal: false,
@@ -89,11 +91,12 @@ export class App extends React.PureComponent<IProps, IState> {
       const currentPage = Number(queryValue("page")) || 0;
 
       const showThemeButtons = queryValueBoolean("themeButtons");
+      const hideWarning = queryValueBoolean("hideWarning");
       const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
 
-      const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showSequenceIntro, sequence, teacherEditionMode};
+      const newState: Partial<IState> = {activity, currentPage, showThemeButtons, hideWarning, showSequenceIntro, sequence, teacherEditionMode};
       setDocumentTitle(activity, currentPage);
 
       let classHash = "";
@@ -152,7 +155,7 @@ export class App extends React.PureComponent<IProps, IState> {
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
           <div className="app" data-cy="app">
-            <WarningBanner/>
+            { !this.state.hideWarning && <WarningBanner/> }
             { this.state.teacherEditionMode && <TeacherEditionBanner/>}
             { this.state.showSequenceIntro
               ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
