@@ -36,7 +36,7 @@
       .separator {
         width: 1px;
         height: 30px;
-        margin: 2px 12px 2px 2px;
+        margin: 2px;
         background-color: $cc-teal;
       }
     }
@@ -49,19 +49,36 @@
       flex: 1;
       min-width: 0;
 
-      &.link {
-        cursor: pointer;
-      }
+      .title-container {
+        display: flex;
+        align-items: center;
+        height: 20px;
+        padding: 8px 10px;
+        border-radius: 4px;
+        &.link {
+          cursor: pointer;
+        }
+        &.link:hover {
+          background-color: $cc-teal-light2;
+        }
+        &.link:active {
+          background-color: $cc-teal;
+          color: white;
+          .sequence-icon {
+            fill: white;
+          }
+        }
 
-      .activity-title {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+        .activity-title {
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
 
-      .sequence-icon {
-        fill: $cc-teal;
-        margin-right: 5px;
+        .sequence-icon {
+          fill: $cc-charcoal;
+          margin-right: 5px;
+        }
       }
     }
 

@@ -184,7 +184,7 @@ export class App extends React.PureComponent<IProps, IState> {
           userName={username}
           contentName={sequence ? sequence.display_title || sequence.title || "" : activity.name}
           showSequence={sequence !== undefined}
-          onShowSequence={this.handleShowSequenceIntro}
+          onShowSequence={sequence !== undefined ? this.handleShowSequenceIntro : undefined}
         />
         { authError
           ? <AuthError />

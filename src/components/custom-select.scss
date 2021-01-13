@@ -2,23 +2,23 @@
 
 .custom-select {
   user-select: none;
+  flex: 1;
 
   .header {
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 300px;
     height: 30px;
     box-sizing: border-box;
     border-radius: 4px;
     border: solid 1.5px $cc-charcoal-light1;
     background-color: $cc-teal-light5;
-    font-size: 16px;
+    font-size: 18px;
     font-weight: bold;
     cursor: pointer;
 
     &:hover {
-      background-color: $cc-teal-light4;
+      background-color: $cc-teal-light3;
     }
 
     &.disabled {
@@ -51,7 +51,6 @@
 
     .current {
       flex-grow: 1;
-      max-width: 236px;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -75,10 +74,16 @@
     }
   }
 
+  .list-container {
+    height: 0;
+    width: 100%;
+    position: relative;
+  }
+
   .list {
     position: absolute;
     margin-top: 1px;
-    width: 350px;
+    width: 100%;
     border-radius: 0 0 4px 4px;
     box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
     opacity: 0;
@@ -102,18 +107,20 @@
       height: 40px;
       padding: 0 5px 0 5px;
       background-color: white;
-      font-size: 16px;
+      font-size: 18px;
+      font-weight: normal;
 
       &.selected {
         font-weight: bold;
       }
 
       &:hover {
-        background-color: $cc-teal-light5;
+        background-color: $cc-teal-light6;
       }
 
       &:active {
         background-color: $cc-teal-light4;
+        font-weight: bold;
       }
       &:active .check {
         fill: var(--theme-primary-color);
@@ -121,13 +128,19 @@
 
       .check {
         height: 24px;
-        width: 24px;
+        min-width: 24px;
         margin: 0 3px;
         fill: white;
 
         &.selected {
           fill: var(--theme-primary-color);
         }
+      }
+
+      .label {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
     .list-item:last-child {

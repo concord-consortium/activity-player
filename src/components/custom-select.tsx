@@ -65,21 +65,23 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
     const { items, value } = this.props;
     const currentValue = value || this.state.value;
     return (
-      <div className={`list ${(this.state.showList ?"show" : "")}`} data-cy="custom-select-list">
-        { items?.map((item: string, i: number) => {
-          const currentClass = currentValue === item ? "selected" : "";
-          return (
-            <div
-              key={`item ${i}`}
-              className={`list-item ${currentClass}`}
-              onClick={this.handleChange(item)}
-              data-cy={`list-item-${item.toLowerCase().replace(" ", "-")}`}
-            >
-              { <CheckIcon className={`check ${currentClass}`} /> }
-              <div>{item}</div>
-            </div>
-          );
-        }) }
+      <div className="list-container">
+        <div className={`list ${(this.state.showList ?"show" : "")}`} data-cy="custom-select-list">
+          { items?.map((item: string, i: number) => {
+            const currentClass = currentValue === item ? "selected" : "";
+            return (
+              <div
+                key={`item ${i}`}
+                className={`list-item ${currentClass}`}
+                onClick={this.handleChange(item)}
+                data-cy={`list-item-${item.toLowerCase().replace(" ", "-")}`}
+              >
+                { <CheckIcon className={`check ${currentClass}`} /> }
+                <div className="label">{item}</div>
+              </div>
+            );})
+          }
+        </div>
       </div>
     );
   }
