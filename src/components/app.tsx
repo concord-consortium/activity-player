@@ -152,7 +152,6 @@ export class App extends React.PureComponent<IProps, IState> {
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
           <div className="app" data-cy="app">
-            <WarningBanner/>
             { this.state.teacherEditionMode && <TeacherEditionBanner/>}
             { this.state.showSequenceIntro
               ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
