@@ -2,7 +2,7 @@ import React from "react";
 import { ProjectTypes } from "../../utilities/project-utils";
 import { AccountOwner } from "./account-owner";
 import { Logo } from "./logo";
-import SequenceIcon from "../../assets/svg-icons/assignment-icon.svg";
+import SequenceBackIcon from "../../assets/svg-icons/arrow-back-icon.svg";
 
 import "./header.scss";
 
@@ -29,9 +29,11 @@ export class Header extends React.PureComponent<IProps> {
             <Logo logo={logo} url={projectURL} />
             <div className="separator" />
           </div>
-          <div className={`header-center ${onShowSequence ? "link" : ""}`} onClick={onShowSequence}>
-            {showSequence && <SequenceIcon className="sequence-icon" />}
-            {this.renderContentTitle()}
+          <div className="header-center">
+            <div className={`title-container ${showSequence && onShowSequence ? "link" : ""}`} onClick={onShowSequence}>
+              {showSequence && onShowSequence && <SequenceBackIcon className="sequence-icon" />}
+              {this.renderContentTitle()}
+            </div>
           </div>
           <div className="header-right">
             <AccountOwner userName={userName} />
@@ -45,7 +47,7 @@ export class Header extends React.PureComponent<IProps> {
     const { contentName, showSequence } = this.props;
     return (
       <div className="activity-title" data-cy ="activity-title">
-        {`${showSequence ? "" : "Activity:"} ${contentName}`}
+        {`${showSequence ? "Sequence:" : "Activity:"} ${contentName}`}
       </div>
     );
   }

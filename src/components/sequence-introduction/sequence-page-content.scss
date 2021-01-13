@@ -4,7 +4,7 @@
   width: $content-width;
   box-sizing: border-box;
   background-color: white;
-  padding: 12px;
+  padding: 30px 30px 36px;
   margin-top: 5px;
 
   .introduction {
@@ -12,36 +12,98 @@
     flex-direction: column;
     justify-content: space-between;
 
+    .sequence-title {
+      display: flex;
+
+      h2 {
+        font-size: 32px;
+        font-weight: 900;
+        margin: 0;
+        color: var(--theme-secondary-color);
+      }
+    }
+
     .thumb-holder {
-      margin: 10px 0;
       display: flex;
       flex-wrap: wrap;
 
       .thumb {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
         flex-grow: 0;
         flex-shrink: 0;
-        width: 300px;
-        height: 315px;
-        border: 1px solid $cc-charcoal-light2;
-        margin: 5px;
+        width: 280px;
+        height: 316px;
+        margin: 15px 30px 15px 0;
+        padding: 8px 10px 10px;
+        border-radius: 8px;
+        border: solid 1.5px $cc-charcoal-light1;
         overflow: hidden;
+        color: $cc-teal-dark1;
         cursor: pointer;
 
         &:hover {
-          background-color: $cc-charcoal-light2;
+          background-color: $cc-teal-light4;
+        }
+
+        &:active {
+          background-color: $cc-teal;
+          color: white;
         }
 
         img {
-          width: 300px;
+          width: 256px;
           height: auto;
+          border: solid 1px $cc-charcoal-light1;
+        }
+
+        .image-stub {
+          width: 256px;
+          height: 217px;
+          border: solid 1px $cc-charcoal-light1;
+          background-color: $activity-blue;
+          flex: 1;
+
+          &.color-1 {
+            background-color: $activity-blue;
+          }
+          &.color-2 {
+            background-color: $activity-yellow;
+          }
+          &.color-3 {
+            background-color: $activity-red;
+          }
+          &.color-4 {
+            background-color: $activity-green;
+          }
+          &.color-5 {
+            background-color: $activity-purple;
+          }
         }
 
         .name {
           margin: 5px;
+          font-size: 19px;
           font-weight: bold;
-          color: var(--theme-primary-color);
+          display: flex;
+          flex-direction: row;
+
+          .num {
+            margin-right: 5px;
+          }
         }
       }
+
+      .thumb:nth-child(3n) {
+        margin-right: 0;
+      }
+
+    }
+
+    .estimated-time {
+      width: auto;
+      margin-bottom: 15px;
     }
   }
 }
