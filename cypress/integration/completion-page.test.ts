@@ -16,7 +16,7 @@ context("Test the overall app", () => {
     it("test incomplete activity text", () => {
       cy.get(".progress-text").should("contain", `It looks like you haven't quite finished ${activity1Title} yet. The answers you've given have been saved.`);
       cy.get(".progress-container .button").should("contain", "Show All Answers");
-      cy.get(".progress-text").should("contain", "0 out of 7 questions are answered.");
+      cy.get(".num-complete-text").should("contain", "0 out of 7 questions are answered.");
       cy.get(".completion-text").should("contain", activity2Title);
       cy.get(".next-step .button").should("have.length", 2);
     });
