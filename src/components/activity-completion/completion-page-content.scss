@@ -3,7 +3,7 @@
 .completion-page-content {
   width: $content-width;
   box-sizing: border-box;
-  background-color: rgba(255,255,255,0.95);
+  background-color: white;
   padding: 20px;
   margin-bottom: 10px;
 
@@ -22,6 +22,8 @@
     font-size: 20px;
     font-style: italic;
     font-weight: bold;
+    align-items: center;
+    border-radius: 8px;
 
     .check {
       position: relative;
@@ -31,16 +33,19 @@
     }
 
     .progress-text {
-      padding: 8px;
+      padding: 10px;
     }
   }
 
   .exit-container {
     display: flex;
     padding: 8px;
-    background-color: $cc-charcoal-light3;
+    background-color: white;
     color: $cc-charcoal;
     margin: 20px 0 10px 0;
+    border: 1px solid $cc-charcoal-light1;
+    border-radius: 8px;
+    align-items: center;
 
     .next {
       color: $cc-charcoal-light1;
@@ -48,7 +53,11 @@
     }
 
     .next-step {
-      padding: 8px;
+      padding: 10px;
+    }
+
+    .num-complete-text {
+      margin: 15px 0;
     }
   }
 

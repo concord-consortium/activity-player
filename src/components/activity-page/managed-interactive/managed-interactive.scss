@@ -1,5 +1,9 @@
 @import "../../vars.scss";
 
+.managed-interactive {
+  border: 1px solid $cc-charcoal-light1;
+}
+
 .question-container {
   display: flex;
   justify-content: center;

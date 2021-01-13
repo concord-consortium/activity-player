@@ -136,7 +136,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
             </div>
             <div className="next-step" data-cy="next-step">
               <div data-cy="next-step-text">{nextStepText}</div>
-              <div className="progress-text">{`${progress.numAnswers} out of ${progress.numQuestions} questions are answered.`}</div>
+              <div className="num-complete-text">{`${progress.numAnswers} out of ${progress.numQuestions} questions are answered.`}</div>
               {(sequence && !isLastActivityInSequence) && <div className="next">Next Up ...</div>}
               {sequence && <div className="completion-text">{nextActivityTitle}</div>}
               {sequence && <div>{nextActivityDescription}</div>}
