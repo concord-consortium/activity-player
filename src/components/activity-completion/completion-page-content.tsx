@@ -127,7 +127,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               {isActivityComplete && <IconCheck width={32} height={32} className="check" />}
               {progressText}
             </div>
-            {showStudentReport && <button className="button" onClick={handleShowAnswers}>Show All Answers</button>}
+            {showStudentReport && <button className="button" onClick={handleShowAnswers}>Show My Work</button>}
           </div>
           <div className="exit-container" data-cy="exit-container">
             <div className="box">
@@ -136,7 +136,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
             </div>
             <div className="next-step" data-cy="next-step">
               <div data-cy="next-step-text">{nextStepText}</div>
-              <div className="progress-text">{`${progress.numAnswers} out of ${progress.numQuestions} questions are answered.`}</div>
+              <div className="num-complete-text">{`${progress.numAnswers} out of ${progress.numQuestions} questions are answered.`}</div>
               {(sequence && !isLastActivityInSequence) && <div className="next">Next Up ...</div>}
               {sequence && <div className="completion-text">{nextActivityTitle}</div>}
               {sequence && <div>{nextActivityDescription}</div>}

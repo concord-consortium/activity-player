@@ -196,7 +196,7 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       />;
 
     return (
-      <div ref={divTarget} data-cy="managed-interactive">
+      <div ref={divTarget} className="managed-interactive" data-cy="managed-interactive">
         { questionNumber &&
           <div className="header">
             Question #{questionNumber}{questionName}

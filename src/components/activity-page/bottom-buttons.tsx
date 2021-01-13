@@ -13,7 +13,7 @@ export const BottomButtons: React.FC<IProps> = (props) => {
               onClick={props.onGenerateReport}
               data-cy="bottom-button-report"
               tabIndex={1}>
-        {"Generate Report"}
+        Show My Work
       </button>
     </div>
   );
