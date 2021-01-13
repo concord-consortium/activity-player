@@ -127,7 +127,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               {isActivityComplete && <IconCheck width={32} height={32} className="check" />}
               {progressText}
             </div>
-            {showStudentReport && <button className="button" onClick={handleShowAnswers}>Show All Answers</button>}
+            {showStudentReport && <button className="button" onClick={handleShowAnswers}>Show My Work</button>}
           </div>
           <div className="exit-container" data-cy="exit-container">
             <div className="box">
