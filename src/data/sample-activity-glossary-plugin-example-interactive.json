@@ -509,6 +509,108 @@
             "linked_interactives": []
           },
           "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"blanks\":[{\"id\":\"[blank-1]\",\"size\":20,\"matchTerm\":\"thing\"}],\"prompt\":\"<p>This is a prompt on a page that includes test text.  Test [blank-1] fill in the blank.</p>\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "8309245b2663965db19b691ffc734135fdac34ea",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/fill-in-the-blank/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Fill In The Blank (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "1329-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"image_question\",\"prompt\":\"<p>This is a test on a page.</p>\",\"stampCollections\":[]}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "217c48c2252f0bc168fe35f2297f54777aea07ce",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image-question/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Image Question (master)",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "1330-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": "header_block"
         }
       ]
     }
