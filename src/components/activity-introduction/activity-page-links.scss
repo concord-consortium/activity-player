@@ -40,6 +40,9 @@
 
     .page-link {
       margin-left: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 

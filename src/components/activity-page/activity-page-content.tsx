@@ -68,7 +68,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
     return (
       <div className={`page-content ${page.layout === PageLayouts.Responsive ? "full" : ""}`} data-cy="page-content">
-        <div className="name">{`Page ` + pageNumber + `: ` + pageTitle}</div>
+        <div className="name">{`Page ${pageNumber} ${pageTitle ? ":" : ""} ${pageTitle}`}</div>
         <div className="introduction">
           { page.text && renderHTML(page.text) }
           { visibleEmbeddables.headerBlock.length > 0 && this.renderIntroEmbeddables(visibleEmbeddables.headerBlock, totalPreviousQuestions) }

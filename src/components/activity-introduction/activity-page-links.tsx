@@ -23,7 +23,7 @@ export class ActivityPageLinks extends React.PureComponent <IProps> {
             tabIndex={0}
           >
             <span>{`${index + 1}:`}</span>
-            <span className="page-link">{`Page ${index + 1}`}</span>
+            <span className="page-link">{`${page.name ? page.name : "Page " + (index + 1)}`}</span>
           </div>
           ))
         }
