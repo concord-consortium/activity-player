@@ -9,9 +9,9 @@ describe("Activity Page Links component", () => {
       // do nothing.
     };
     const activityPages = [
-      {...DefaultTestPage, name: "1"},
-      {...DefaultTestPage, name: "2"},
-      {...DefaultTestPage, name: "3"},
+      {...DefaultTestPage, name: "Page 1"},
+      {...DefaultTestPage, name: "Page 2"},
+      {...DefaultTestPage, name: "Page 3"},
     ];
 
     const wrapper = shallow(<ActivityPageLinks activityPages={activityPages} onPageChange={stubFunction} />);
