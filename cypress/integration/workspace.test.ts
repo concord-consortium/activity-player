@@ -35,7 +35,12 @@ context("Test the overall app", () => {
           cy.get("[data-cy=footer]").scrollIntoView().should("be.visible");
       });
   });
-  describe("accessibility",()=>{
+  describe("version info",()=>{
+    it("verify version info loads",()=>{
+        cy.get("[data-cy=version-info]").scrollIntoView().should("be.visible");
+    });
+  });
+describe("accessibility",()=>{
     it("go to correct page when tabbed and keydown enter from page navigation header",()=>{
       activityPage.getNavPage(2).type("{enter}");
       activityPage.getSidebarTab().should("be.visible");
