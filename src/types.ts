@@ -253,3 +253,13 @@ export type IExportableAnswerMetadata =
 export interface LTIRuntimeAnswerMetadata extends ILTIPartial, IExportableAnswerMetadataBase { }
 
 export interface AnonymousRuntimeAnswerMetadata extends IAnonymousMetadataPartial, IExportableAnswerMetadataBase { }
+
+export interface IAuthenticatedLearnerPluginState extends ILTIPartial {
+  pluginId: number;
+  state: string;
+}
+
+export interface IAnonymousLearnerPluginState extends IAnonymousMetadataPartial {
+  pluginId: number;
+  state: string;
+}

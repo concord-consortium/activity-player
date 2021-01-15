@@ -12,7 +12,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal-api";
 import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
-import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata } from "./types";
+import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
 
@@ -22,6 +22,9 @@ let portalData: IPortalData | IAnonymousPortalData;
 
 const answersPath = (answerId?: string) =>
   `sources/${portalData?.database.sourceKey}/answers${answerId ? "/" + answerId : ""}`;
+
+const learnerPluginStatePath = (docId: string) =>
+  `sources/${portalData?.database.sourceKey}/plugin_states/${docId}`;
 
 export interface WrappedDBAnswer {
   meta: IExportableAnswerMetadata;
@@ -258,3 +261,101 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
 
   return firestoreSetPromise;
 }
+
+export const getLearnerPluginStateDocId = (pluginId: number) => {
+  if (!portalData) {
+    return undefined;
+  }
+
+  let docId: string;
+  if (portalData.type === "authenticated") {
+    const {platformId, platformUserId, contextId, resourceLinkId} = portalData;
+    docId = [platformId, platformUserId.toString(), contextId, resourceLinkId, pluginId].join("-");
+  } else {
+    docId = [portalData.runKey, pluginId].join("-");
+  }
+
+  return docId.replace(/[.$[\]#/]/g, "_");
+};
+
+// A write-though cache of the learner plugin states is kept as the plugin's learner state is only loaded
+// once at app startup but it is supplied on the plugin init which happens on any page change.
+
+// TODO: change to watch the learner state so that it works across sessions and not just on the same page
+
+const cachedLearnerPluginState: Record<number, string|null> = {};
+export const getCachedLearnerPluginState = (pluginId: number) => cachedLearnerPluginState[pluginId] || null;
+
+export const getLearnerPluginState = async (pluginId: number) => {
+  const docId = getLearnerPluginStateDocId(pluginId);
+  if (docId === undefined) {
+    return null;
+  }
+
+  if (cachedLearnerPluginState[pluginId]) {
+    return cachedLearnerPluginState[pluginId];
+  }
+
+  let state: string|null = null;
+  try {
+    const doc = await firebase.firestore()
+      .doc(learnerPluginStatePath(docId))
+      .get();
+
+    const data = doc.data() as IAuthenticatedLearnerPluginState | IAnonymousLearnerPluginState | undefined;
+
+    state = data?.state || null;
+  } catch (e) {} // eslint-disable-line no-empty
+
+  cachedLearnerPluginState[pluginId] = state;
+
+  return state;
+};
+
+export const setLearnerPluginState = async (pluginId: number, state: string): Promise<string> => {
+  if (!portalData) {
+    throw new Error("Not logged in");
+  }
+
+  let learnerPluginState: IAuthenticatedLearnerPluginState | IAnonymousLearnerPluginState;
+  if (portalData.type === "authenticated") {
+    const authenticatedState: IAuthenticatedLearnerPluginState = {
+      platform_id: portalData.platformId,
+      platform_user_id: portalData.platformUserId.toString(),
+      context_id: portalData.contextId,
+      resource_link_id: portalData.resourceLinkId,
+      source_key: portalData.database.sourceKey,
+      tool_id: portalData.toolId,
+      resource_url: portalData.resourceUrl,
+      run_key: "",
+      pluginId,
+      state
+      };
+    learnerPluginState = authenticatedState;
+  } else {
+    const anonymousState: IAnonymousLearnerPluginState = {
+      run_key: portalData.runKey,
+      source_key: portalData.database.sourceKey,
+      resource_url: portalData.resourceUrl,
+      tool_id: portalData.toolId,
+      tool_user_id: "anonymous",
+      platform_user_id: portalData.runKey,
+      pluginId,
+      state
+      };
+    learnerPluginState = anonymousState;
+  }
+
+  const docId = getLearnerPluginStateDocId(pluginId);
+  if (docId === undefined) {
+    throw new Error("Cannot compute learner plugin state doc id");
+  }
+
+  await firebase.firestore()
+    .doc(learnerPluginStatePath(docId))
+    .set(learnerPluginState);
+
+  cachedLearnerPluginState[pluginId] = state;
+
+  return state;
+};

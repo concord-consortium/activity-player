@@ -1,8 +1,10 @@
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { Optional } from "utility-types";
+import { getCachedLearnerPluginState, getLearnerPluginState } from "../firebase-db";
 import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
 import { Activity, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
+import { queryValue } from "./url-query";
 
 export interface UsedPluginInfo {
   id: number;
@@ -22,7 +24,12 @@ const addUsedPlugin = (plugin: Plugin) => {
   }
 };
 
+<<<<<<< HEAD
 export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, handleLoadPlugins: () => void, teacherEditionMode: boolean) => {
+=======
+export const findUsedPlugins = (activity: Activity, teacherEditionMode: boolean) => {
+  const usedPlugins: PluginInfo[] = [];
+>>>>>>> Add plugin data saving [#174286329]
   // search each page for teacher edition plugin use
   for (let page = 0; page < activity.pages.length - 1; page++) {
     if (!activity.pages[page].is_hidden) {
@@ -42,7 +49,16 @@ export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, hand
     }
   });
 
+<<<<<<< HEAD
   usedPlugins.forEach((usedPlugin) => {
+=======
+  return usedPlugins;
+};
+
+export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, handleLoadPlugins: () => void, teacherEditionMode: boolean) => {
+  const usedPlugins = findUsedPlugins(activity, teacherEditionMode);
+  usedPlugins.forEach((plugin) => {
+>>>>>>> Add plugin data saving [#174286329]
     // set plugin label
     const pluginLabel = "plugin" + usedPlugin.id;
     LARA.Plugins.setNextPluginLabel(pluginLabel);
@@ -88,6 +104,12 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
   return validated && wrappedEmbeddable && wrappedEmbeddableContainer ? validated : undefined;
 };
 
+// loads the learner plugin state into the firebase write-through cache
+export const loadLearnerPluginState = async (activity: Activity, teacherEditionMode: boolean) => {
+  const usedPlugins = findUsedPlugins(activity, teacherEditionMode);
+  await Promise.all(usedPlugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
+};
+
 export const initializePlugin = (context: IEmbeddablePluginContext) => {
   const { LARA, embeddable, embeddableContainer,
           wrappedEmbeddable, wrappedEmbeddableContainer, sendCustomMessage, approvedScriptLabel } = context;
@@ -105,6 +127,7 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
   const embeddableContextAny = embeddableContext as any;
 
   const pluginId = usedPlugin.id;
+  const activity = queryValue("activity");
   const pluginLabel = `plugin${pluginId}`;
   const pluginContext: IPluginRuntimeContextOptions = {
     type: "runtime",
@@ -113,7 +136,7 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
     pluginId,
     embeddablePluginId: null,
     authoredState: embeddable.plugin?.author_data || null,
-    learnerState: null,
+    learnerState: getCachedLearnerPluginState(pluginId),
     learnerStateSaveUrl: "",
     container: embeddableContainer,
     componentLabel: pluginLabel,
@@ -123,7 +146,7 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
     classInfoUrl: null,
     firebaseJwtUrl: "",
     wrappedEmbeddable: wrappedEmbeddable ? embeddableContextAny : null,
-    resourceUrl: ""
+    resourceUrl: activity? ((activity.split(".json"))[0]).replace("api/v1/","") : ""
   };
   LARA.Plugins.initPlugin(pluginLabel, pluginContext);
 };
