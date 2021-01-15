@@ -161,6 +161,7 @@ export class App extends React.PureComponent<IProps, IState> {
               ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
               : this.renderActivity() }
             { this.state.showThemeButtons && <ThemeButtons/>}
+            <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
             <ModalDialog
               label={this.state.modalLabel}
               onClose={() => {this.setShowModal(false);}}

@@ -3,6 +3,12 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin');
+const GitRevPlugin = require('git-rev-webpack-plugin');
+
+const version = require("./package.json").version;
+const gitRevPlugin = new GitRevPlugin();
+const appVersionInfo = `Version ${version} (${gitRevPlugin.hash()})`;
 
 module.exports = (env, argv) => {
   const devMode = argv.mode !== "production";
@@ -103,6 +109,12 @@ module.exports = (env, argv) => {
         filename: "index.html",
         template: "src/index.html"
       }),
+      new HtmlReplaceWebpackPlugin([
+        {
+          pattern: '__APP_VERSION_INFO__',
+          replacement: appVersionInfo
+        }
+      ]),
       new CopyWebpackPlugin({
         patterns: [
           {from: "src/public"}
