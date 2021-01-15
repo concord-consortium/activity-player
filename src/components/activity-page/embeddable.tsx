@@ -35,20 +35,20 @@ export const Embeddable: React.FC<IProps> = (props) => {
 
   const embeddableWrapperDivTarget = useRef<HTMLInputElement>(null);
   const embeddableDivTarget = useRef<HTMLInputElement>(null);
-  const sendCustomMessage = useRef<ISendCustomMessage | undefined>(undefined);
+  const sendCustomMessageRef = useRef<ISendCustomMessage | undefined>(undefined);
   const setSendCustomMessage = useCallback((sender: ISendCustomMessage) => {
-    sendCustomMessage.current = sender;
+    sendCustomMessageRef.current = sender;
   }, []);
-
   const LARA = useContext(LaraGlobalContext);
   useEffect(() => {
+    const sendCustomMessage = (message: ICustomMessage) => sendCustomMessageRef.current?.(message);
     const pluginContext: IPartialEmbeddablePluginContext = {
       LARA,
       embeddable: linkedPluginEmbeddable,
       embeddableContainer: embeddableWrapperDivTarget.current || undefined,
       wrappedEmbeddable: embeddable,
       wrappedEmbeddableContainer: embeddableDivTarget.current || undefined,
-      sendCustomMessage: sendCustomMessage.current,
+      sendCustomMessage,
       pluginType: "TeacherEdition"
     };
     const validPluginContext = validateEmbeddablePluginContextForWrappedEmbeddable(pluginContext);

@@ -246,7 +246,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       // Re-init interactive, this time using a new mode (report or runtime).
       phoneRef.current = new iframePhone.ParentEndpoint(iframeRef.current, initInteractive);
       setSendCustomMessage((message: ICustomMessage) => {
-        phoneRef.current?.post(message.type, message.content);
+        phoneRef.current?.post("customMessage", message);
       });
     }
     // Cleanup.
