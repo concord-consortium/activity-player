@@ -4,73 +4,57 @@ import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
 import { Activity, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
 
-type PluginType = "TeacherEdition" | "Glossary";
-export interface PluginInfo {
-  url: string;
-  type: PluginType,
-  name: string;
+export interface UsedPluginInfo {
   id: number;
   loaded: boolean;
+  plugin: Plugin;
 }
 
-// TODO: this information should come from the activity JSON
-export const Plugins: PluginInfo[] = [
-  {
-    url: "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
-    type: "TeacherEdition",
-    name: "Teacher Edition",
-    id: 0,
-    loaded: false
-  },
-  {
-    url: "https://glossary-plugin.concord.org/plugin.js",
-    type: "Glossary",
-    name: "Glossary",
-    id: 1,
-    loaded: false
-  },
-];
+const usedPlugins: UsedPluginInfo[] = [];
+
+const addUsedPlugin = (plugin: Plugin) => {
+  if (!usedPlugins.find(p => p.plugin.approved_script_label === plugin.approved_script_label)) {
+    usedPlugins.push({
+      id: usedPlugins.length,
+      loaded: false,
+      plugin
+    });
+  }
+};
 
 export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, handleLoadPlugins: () => void, teacherEditionMode: boolean) => {
-  // load any plugin scripts, each should call registerPlugin if correctly loaded
-  const usedPlugins: PluginInfo[] = [];
   // search each page for teacher edition plugin use
   for (let page = 0; page < activity.pages.length - 1; page++) {
     if (!activity.pages[page].is_hidden) {
       for (let embeddableNum = 0; embeddableNum < activity.pages[page].embeddables.length; embeddableNum++) {
         const embeddable = activity.pages[page].embeddables[embeddableNum].embeddable;
         if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.approved_script_label === "teacherEditionTips" && teacherEditionMode) {
-          const plugin = Plugins.find(p => p.type === "TeacherEdition");
-          if (plugin && !usedPlugins.some(p => p.type === "TeacherEdition")) {
-            usedPlugins.push(plugin);
-          }
+          addUsedPlugin(embeddable.plugin);
         }
       }
     }
   }
+
   // search plugin array for glossary plugin use
   activity.plugins.forEach((activityPlugin: Plugin) => {
     if (activityPlugin.approved_script_label === "glossary") {
-      const plugin = Plugins.find(p => p.type === "Glossary");
-      if (plugin && !usedPlugins.some(p => p.type === "Glossary")) {
-        usedPlugins.push(plugin);
-      }
+      addUsedPlugin(activityPlugin);
     }
   });
 
-  usedPlugins.forEach((plugin) => {
+  usedPlugins.forEach((usedPlugin) => {
     // set plugin label
-    const pluginLabel = "plugin" + plugin.id;
+    const pluginLabel = "plugin" + usedPlugin.id;
     LARA.Plugins.setNextPluginLabel(pluginLabel);
     // load the script
     const script = document.createElement("script");
     script.type = "text/javascript";
-    script.src = plugin.url;
+    script.src = usedPlugin.plugin.approved_script.url;
     script.setAttribute("data-id", pluginLabel);
     document.body.appendChild(script);
     script.onload = function() {
-      console.log(`plugin${plugin.id} script loaded`);
-      plugin.loaded = true;
+      console.log(`plugin${usedPlugin.id} script loaded`);
+      usedPlugin.loaded = true;
       if (usedPlugins.filter((p) => !p.loaded).length === 0) {
         handleLoadPlugins();
       }
@@ -85,7 +69,7 @@ export interface IEmbeddablePluginContext {
   wrappedEmbeddable?: Embeddable;
   wrappedEmbeddableContainer?: HTMLElement;
   sendCustomMessage?: (message: ICustomMessage) => void;
-  pluginType?: string;
+  approvedScriptLabel?: string;
 }
 export type IPartialEmbeddablePluginContext = Partial<IEmbeddablePluginContext>;
 
@@ -106,9 +90,9 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 
 export const initializePlugin = (context: IEmbeddablePluginContext) => {
   const { LARA, embeddable, embeddableContainer,
-          wrappedEmbeddable, wrappedEmbeddableContainer, sendCustomMessage, pluginType } = context;
-  const plugin = Plugins.find(p => p.type === pluginType);
-  if (!plugin) return;
+          wrappedEmbeddable, wrappedEmbeddableContainer, sendCustomMessage, approvedScriptLabel } = context;
+  const usedPlugin = usedPlugins.find(p => p.plugin.approved_script_label === approvedScriptLabel);
+  if (!usedPlugin) return;
 
   const embeddableContext: Optional<IEmbeddableContextOptions, "container"> = {
     container: wrappedEmbeddableContainer,
@@ -120,12 +104,12 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
   // cast to any for usage below
   const embeddableContextAny = embeddableContext as any;
 
-  const pluginId = plugin.id;
+  const pluginId = usedPlugin.id;
   const pluginLabel = `plugin${pluginId}`;
   const pluginContext: IPluginRuntimeContextOptions = {
     type: "runtime",
-    name: plugin?.name || "",
-    url: plugin?.url || "",
+    name: usedPlugin?.plugin.approved_script.name || "",
+    url: usedPlugin?.plugin.approved_script.url || "",
     pluginId,
     embeddablePluginId: null,
     authoredState: embeddable.plugin?.author_data || null,

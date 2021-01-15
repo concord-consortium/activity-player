@@ -20,7 +20,7 @@ export const EmbeddablePlugin: React.FC<IProps> = (props) => {
         LARA,
         embeddable,
         embeddableContainer: divTarget.current || undefined,
-        pluginType: "TeacherEdition"
+        approvedScriptLabel: "teacherEditionTips"
       };
       const validPluginContext = validateEmbeddablePluginContextForPlugin(pluginContext);
       if (validPluginContext && pluginsLoaded) {
