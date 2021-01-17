@@ -1,7 +1,7 @@
-import React, { useCallback, useContext, useEffect, useRef }  from "react";
+import React, { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef }  from "react";
 import { TextBox } from "./text-box/text-box";
 import { LaraGlobalContext } from "../lara-global-context";
-import { ManagedInteractive } from "./managed-interactive/managed-interactive";
+import { ManagedInteractive, ManagedInteractiveImperativeAPI } from "./managed-interactive/managed-interactive";
 import { ActivityLayouts, PageLayouts, EmbeddableSections } from "../../utilities/activity-utils";
 import { EmbeddablePlugin } from "./plugins/embeddable-plugin";
 import { initializePlugin, IPartialEmbeddablePluginContext, validateEmbeddablePluginContextForWrappedEmbeddable
@@ -22,17 +22,22 @@ interface IProps {
   teacherEditionMode?: boolean;
   setNavigation?: (id: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
+  ref?: React.Ref<EmbeddableImperativeAPI>;
+}
+
+export interface EmbeddableImperativeAPI {
+  requestInteractiveState: () => Promise<void>;
 }
 
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
-export const Embeddable: React.FC<IProps> = (props) => {
+export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { activityLayout, embeddableWrapper, linkedPluginEmbeddable, pageLayout, pageSection, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded } = props;
   const embeddable = embeddableWrapper.embeddable;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
   }, [setNavigation, embeddable.ref_id]);
-
+  const managedInteractiveRef = useRef<ManagedInteractiveImperativeAPI>(null);
   const embeddableWrapperDivTarget = useRef<HTMLInputElement>(null);
   const embeddableDivTarget = useRef<HTMLInputElement>(null);
   const sendCustomMessageRef = useRef<ISendCustomMessage | undefined>(undefined);
@@ -57,6 +62,12 @@ export const Embeddable: React.FC<IProps> = (props) => {
     }
   }, [LARA, linkedPluginEmbeddable, embeddable, teacherEditionMode, pluginsLoaded]);
 
+  useImperativeHandle(ref, () => ({
+    requestInteractiveState: () => {
+      return managedInteractiveRef.current?.requestInteractiveState() || Promise.resolve();
+    }
+  }));
+
   const handleSetSupportedFeatures = useCallback((container: HTMLElement, features: ISupportedFeatures) => {
     const event: IInteractiveSupportedFeaturesEvent = {
       container,
@@ -68,6 +79,7 @@ export const Embeddable: React.FC<IProps> = (props) => {
   let qComponent;
   if (embeddable.type === "MwInteractive" || (embeddable.type === "ManagedInteractive" && embeddable.library_interactive)) {
     qComponent = <ManagedInteractive
+                    ref={managedInteractiveRef}
                     embeddable={embeddable}
                     questionNumber={questionNumber}
                     setSupportedFeatures={handleSetSupportedFeatures}
@@ -99,5 +111,5 @@ export const Embeddable: React.FC<IProps> = (props) => {
       </div>
     </div>
   );
-};
+});
 Embeddable.displayName = "Embeddable";

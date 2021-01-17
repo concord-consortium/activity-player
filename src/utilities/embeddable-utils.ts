@@ -16,6 +16,7 @@ export const getAnswerWithMetadata = (
     oldAnswerMeta?: IExportableAnswerMetadata): (IExportableAnswerMetadata | void) => {
 
   if (!embeddable.authored_state) return;
+  if (!interactiveState) return;
 
   const authoredState = JSON.parse(embeddable.authored_state) as IAuthoringMetadata;
   const reportState: IReportState = {

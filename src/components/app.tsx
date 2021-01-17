@@ -61,6 +61,7 @@ interface IProps {}
 export class App extends React.PureComponent<IProps, IState> {
 
   private LARA: LaraGlobalType;
+  private activityPageContentRef = React.createRef<ActivityPageContent>();
 
   public constructor(props: IProps) {
     super(props);
@@ -231,6 +232,7 @@ export class App extends React.PureComponent<IProps, IState> {
             : activity.pages[currentPage - 1].is_completion
               ? this.renderCompletionContent(activity)
               : <ActivityPageContent
+                  ref={this.activityPageContentRef}
                   enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
                   pageNumber={currentPage}
                   page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
@@ -313,13 +315,24 @@ export class App extends React.PureComponent<IProps, IState> {
       const label = incompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage;
       this.setShowModal(true, label);
     } else if (page >= 0 && (activity && page <= activity.pages.length)) {
-      this.setState({currentPage: page, incompleteQuestions: []});
-      setDocumentTitle(activity, page);
-      Logger.updateActivityPage(page);
-      Logger.log({
-        event: LogEventName.change_activity_page,
-        parameters: { new_page: page }
-      });
+      const navigateAway = () => {
+        this.setState({ currentPage: page, incompleteQuestions: [] });
+        setDocumentTitle(activity, page);
+        Logger.updateActivityPage(page);
+        Logger.log({
+          event: LogEventName.change_activity_page,
+          parameters: { new_page: page }
+        });
+      };
+      // Make sure that interactive state is saved before user can navigate away.
+      const promises = this.activityPageContentRef.current?.requestInteractiveStates() || [Promise.resolve()];
+      Promise.all(promises)
+        .then(navigateAway)
+        .catch(error => {
+          // Notify user about error, but change page anyway.
+          window.alert(error);
+          navigateAway();
+        });
     }
   }
 
@@ -369,5 +382,4 @@ export class App extends React.PureComponent<IProps, IState> {
   private handleLoadPlugins = () => {
     this.setState({ pluginsLoaded: true });
   }
-
 }

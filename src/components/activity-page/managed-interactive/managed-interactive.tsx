@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useContext, useMemo, useRef, useEffect } from "react";
+import React, { useState, useCallback, useContext, useMemo, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 import Modal from "react-modal";
 import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
@@ -27,6 +27,11 @@ interface IProps {
   setSupportedFeatures: (container: HTMLElement, features: ISupportedFeatures) => void;
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
   setNavigation?: (options: INavigationOptions) => void;
+  ref?: React.Ref<ManagedInteractiveImperativeAPI>;
+}
+
+export interface ManagedInteractiveImperativeAPI {
+  requestInteractiveState: () => Promise<void>;
 }
 
 const kDefaultAspectRatio = 4 / 3;
@@ -35,7 +40,7 @@ const getModalContainer = (): HTMLElement => {
   return document.getElementById("app") || document.body;
 };
 
-export const ManagedInteractive: React.FC<IProps> = (props) => {
+export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const iframeRuntimeRef = useRef<IframeRuntimeImperativeAPI>(null);
   const onSetInteractiveStateCallback = useRef<() => void>();
   const interactiveState = useRef<any>();
@@ -170,6 +175,17 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
     setActiveLightbox(null);
   };
 
+  useImperativeHandle(ref, () => ({
+    requestInteractiveState: () => {
+      if (shouldWatchAnswer && iframeRuntimeRef.current) {
+        return iframeRuntimeRef.current.requestInteractiveState();
+      } else {
+        // Interactive doesn't save state, so return resolved promise immediately.
+        return Promise.resolve();
+      }
+    }
+  }));
+
   const interactiveIframeRuntime =
     loading ?
       "Loading..." :
@@ -235,5 +251,5 @@ export const ManagedInteractive: React.FC<IProps> = (props) => {
       }
       </div>
     );
-  };
+  });
 ManagedInteractive.displayName = "ManagedInteractive";
