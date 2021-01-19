@@ -139,7 +139,7 @@ export const saveAuthoredPluginState = (authoringSaveStateUrl: string, authorDat
 const getFirebaseJwtFromPortal = (appName: string): Promise<IJwtResponse> => {
   return new Promise<IJwtResponse>((resolve, reject) => {
     const portalData = getPortalData();
-    if ((portalData.type === "authenticated") && portalData.basePortalUrl && portalData.rawPortalJWT) {
+    if (portalData && (portalData.type === "authenticated") && portalData.basePortalUrl && portalData.rawPortalJWT) {
       return getFirebaseJWT(portalData.basePortalUrl, portalData.rawPortalJWT, {firebase_app: appName})
         .then(([token, firebaseJWT]) => {
           resolve({token, claims: firebaseJWT as unknown as IJwtClaims});
