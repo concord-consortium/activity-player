@@ -93,7 +93,8 @@
           },
           "section": "header_block"
         }
-      ]
+      ],
+      "id": 1000
     },
     {
       "additional_sections": {},
@@ -174,7 +175,8 @@
           },
           "section": "header_block"
         }
-      ]
+      ],
+      "id": 2000
     },
     {
       "additional_sections": {},
@@ -612,7 +614,8 @@
           },
           "section": "header_block"
         }
-      ]
+      ],
+      "id": 3000
     }
   ],
   "plugins": [
