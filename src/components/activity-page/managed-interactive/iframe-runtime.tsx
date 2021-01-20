@@ -7,7 +7,7 @@ import {
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
   ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, ILinkedInteractiveStateResponse,
   IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent,
-  ITextDecorationInfo
+  ITextDecorationInfo, ITextDecorationHandlerInfo
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
@@ -19,11 +19,17 @@ const kDefaultHeight = 300;
 
 const kInteractiveStateRequestTimeout = 2000; // ms
 
+const getListenerTypes = (textDecorationHandlerInfo: ITextDecorationHandlerInfo): Array<{type: string}> => {
+  const { eventListeners } = textDecorationHandlerInfo;
+  if (eventListeners instanceof Array) {
+    return eventListeners.map(listener => ({type: listener.type}));
+  }
+  return [{type: eventListeners.type}];
+};
+
 const createTextDecorationInfo = () => {
   const { textDecorationHandlerInfo } = pluginInfo;
-  const listenerTypes = textDecorationHandlerInfo.eventListeners.map((listener: IEventListener) => {
-    return {type: listener.type};
-  });
+  const listenerTypes = getListenerTypes(textDecorationHandlerInfo);
   const textDecorationInfo: ITextDecorationInfo = {
     words: textDecorationHandlerInfo.words.slice(),
     replace: textDecorationHandlerInfo.replace,

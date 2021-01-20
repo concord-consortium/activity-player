@@ -45,7 +45,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   render() {
-    const { enableReportButton, page, pageNumber, totalPreviousQuestions } = this.props;
+    const { enableReportButton, page, totalPreviousQuestions } = this.props;
     const { scrollOffset } = this.state;
     const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
     const pageSectionQuestionCount = getPageSectionQuestionCount(page);
@@ -104,7 +104,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   public requestInteractiveStates() {
-    const promises = this.props.page.embeddables.map(embeddableWrapper => 
+    const promises = this.props.page.embeddables.map(embeddableWrapper =>
       this.embeddableRefs[embeddableWrapper.embeddable.ref_id]?.current?.requestInteractiveState() || Promise.resolve()
     );
     return promises;
