@@ -175,4 +175,32 @@ describe("Embeddable utility functions", () => {
 
     expect(exportableAnswer.id).toBe("open_response_answer_123");
   });
+
+  it("can create an exportable answer when authored state is empty", () => {
+    const embeddable: IManagedInteractive = {
+      ...DefaultManagedInteractive,
+      authored_state: "",
+      ref_id: "123-ManagedInteractive"
+    };
+
+    const interactiveState: IRuntimeMetadata = {
+      answerType: "open_response_answer",
+      answerText: "test"
+    };
+
+    const originalAnswer: IExportableAnswerMetadata = {
+      type: "open_response_answer",
+      remote_endpoint: "",
+      question_id: "managed_interactive_123",
+      question_type: "open_response",
+      id: "open_response_answer_123",
+      submitted: null,
+      report_state: "",
+      answer: ""
+    };
+
+    const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable, originalAnswer) as IExportableOpenResponseAnswerMetadata;
+
+    expect(exportableAnswer.id).toBe("open_response_answer_123");
+  });
 });

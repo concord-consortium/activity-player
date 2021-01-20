@@ -15,25 +15,22 @@ export const getAnswerWithMetadata = (
     embeddable: IManagedInteractive,
     oldAnswerMeta?: IExportableAnswerMetadata): (IExportableAnswerMetadata | void) => {
 
-  if (!embeddable.authored_state) return;
   if (!interactiveState) return;
 
-  const authoredState = JSON.parse(embeddable.authored_state) as IAuthoringMetadata;
+  const authoredState = embeddable.authored_state && JSON.parse(embeddable.authored_state) as IAuthoringMetadata;
   const reportState: IReportState = {
     mode: "report",
-    authoredState: embeddable.authored_state,
-    interactiveState: JSON.stringify(interactiveState)
+    authoredState: embeddable.authored_state || "",
+    interactiveState: JSON.stringify(interactiveState),
+    version: 1
   };
-  if ((authoredState as any).version) {
-    reportState.version = (authoredState as any).version;
-  }
 
   const reportStateJSON = JSON.stringify(reportState);
 
   const exportableAnswerBase = {
     remote_endpoint: "",
     question_id: refIdToAnswersQuestionId(embeddable.ref_id),
-    question_type: authoredState.questionType,
+    question_type: authoredState ? authoredState.questionType : undefined,
     id: oldAnswerMeta ? oldAnswerMeta.id : uuidv4(),
     type: interactiveState.answerType,
     answer_text: interactiveState.answerText,
