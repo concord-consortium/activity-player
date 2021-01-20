@@ -48,6 +48,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const shouldWatchAnswer = isQuestion(props.embeddable);
   const [loading, setLoading] = useState(shouldWatchAnswer);
 
+  console.log(props.embeddable);
+
   const embeddableRefId = props.embeddable.ref_id;
   useEffect(() => {
     if (shouldWatchAnswer) {
@@ -186,12 +188,18 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     }
   }));
 
+  // embeddable.url_fragment is an optional string (path, query params, hash) that can be defined by author.
+  // Some interactives are authored that way. Note that url_fragment is not merged with the dialog URL. 
+  // Each interactive will be first loaded inline with the url_fragment appended. So it can merge its custom dialog URL 
+  // with this fragment if necessary. ActivityPlayer doesn't have knowledge about URL format and provided url_fragment 
+  // to perform this merge automatically.
+  const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
   const interactiveIframeRuntime =
     loading ?
       "Loading..." :
       <IframeRuntime
         ref={iframeRuntimeRef}
-        url={activeDialog?.url || url}
+        url={iframeUrl}
         id={interactiveId}
         authoredState={authoredState}
         initialInteractiveState={interactiveState.current}
