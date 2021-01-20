@@ -32,6 +32,7 @@ const getSizeOptions = ({ size, allowUpscale }: { size?: { width: number, height
   const sizeOpts: { width: number, height: number } = { width: 0, height: 0 };
   if (size) {
     const aspectRatio = size.width / size.height;
+    const availableAspectRatio = availableWidth / availableHeight;
 
     if (allowUpscale) {
       // If upscaling is enabled, simply try to use all available width first. It's either fine or height is too big.
@@ -40,18 +41,18 @@ const getSizeOptions = ({ size, allowUpscale }: { size?: { width: number, height
       size.height = availableWidth / aspectRatio;
     }
 
-    if (size.height > availableHeight) {
+    if (aspectRatio >= availableAspectRatio && size.width > availableWidth) {
+      // width is constraining dimension
+      sizeOpts.width = availableWidth;
+      sizeOpts.height = availableWidth / aspectRatio;
+    } else if (aspectRatio < availableAspectRatio && size.height > availableHeight) {
       // height is constraining dimension
       sizeOpts.width = availableHeight * aspectRatio;
       sizeOpts.height = availableHeight;
     } else {
+      // image fits in the available space, no adjustments necessary
       sizeOpts.width = size.width;
       sizeOpts.height = size.height;
-    }
-    if (size.width > availableWidth) {
-      // width is constraining dimension
-      sizeOpts.width = availableWidth;
-      sizeOpts.height = availableWidth / aspectRatio;
     }
     return sizeOpts;
   }
