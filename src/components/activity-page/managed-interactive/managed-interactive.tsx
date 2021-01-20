@@ -48,8 +48,6 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const shouldWatchAnswer = isQuestion(props.embeddable);
   const [loading, setLoading] = useState(shouldWatchAnswer);
 
-  console.log(props.embeddable);
-
   const embeddableRefId = props.embeddable.ref_id;
   useEffect(() => {
     if (shouldWatchAnswer) {
