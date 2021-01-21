@@ -1,6 +1,6 @@
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { Optional } from "utility-types";
-import { getCachedLearnerPluginState, getLearnerPluginState } from "../firebase-db";
+import { getCachedLearnerPluginState, getLearnerPluginState, getPortalData } from "../firebase-db";
 import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
 import { Activity, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
@@ -127,6 +127,7 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
   const embeddableContextAny = embeddableContext as any;
 
   const pluginId = usedPlugin.id;
+  const portalData = getPortalData();
   const activity = queryValue("activity");
   const pluginLabel = `plugin${pluginId}`;
   const pluginContext: IPluginRuntimeContextOptions = {
@@ -141,7 +142,7 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
     container: embeddableContainer,
     componentLabel: pluginLabel,
     runId: 0,
-    remoteEndpoint: null,
+    remoteEndpoint: (portalData?.type === "authenticated" && portalData.runRemoteEndpoint) || null,
     userEmail: null,
     classInfoUrl: null,
     firebaseJwtUrl: "",

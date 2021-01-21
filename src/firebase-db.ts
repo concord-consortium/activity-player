@@ -77,16 +77,17 @@ export const onFirestoreSaveTimeout = (handler: () => void) => {
 export const onFirestoreSaveAfterTimeout = (handler: () => void) => {
   requestTracker.successAfterTimeoutHandler = handler;
 };
+let app: firebase.app.App;
 
 // preview mode will run Firestore in offline mode and clear it (as otherwise the local data is persisted).
 export async function initializeDB({ name, preview }: { name: FirebaseAppName, preview: boolean }) {
   const config = configurations[name];
-  firebase.initializeApp(config);
+  app = firebase.initializeApp(config, "activity-player");
 
   // Save action seems to be failing when you try to save a document with a property explicitly set to undefined value.
   // `null` or empty string are fine. ActivityPlayer was not saving some interactive states because of that.
   // See: https://github.com/googleapis/nodejs-firestore/issues/1031#issuecomment-636308604
-  firebase.firestore().settings({
+  app.firestore().settings({
     ignoreUndefinedProperties: true,
   });
 
@@ -103,17 +104,17 @@ export async function initializeDB({ name, preview }: { name: FirebaseAppName, p
   if (queryValueBoolean("clearFirestorePersistence") || preview) {
     // we cannot enable the persistence until the
     // clearing is complete, so this await is necessary
-    await firebase.firestore().clearPersistence();
+    await app.firestore().clearPersistence();
   }
 
   if (queryValueBoolean("enableFirestorePersistence") || preview) {
-    await firebase.firestore().enablePersistence({ synchronizeTabs: true });
-    await firebase.firestore().disableNetwork();
+    await app.firestore().enablePersistence({ synchronizeTabs: true });
+    await app.firestore().disableNetwork();
     // When network is disabled, Firestore promises will never resolve. So tracking requests make no sense.
     requestTracker.disabled = true;
   }
 
-  return firebase.firestore();
+  return app.firestore();
 }
 
 export async function initializeAnonymousDB(preview: boolean) {
@@ -123,8 +124,8 @@ export async function initializeAnonymousDB(preview: boolean) {
 
 export const signInWithToken = async (rawFirestoreJWT: string) => {
   // It's actually useful to sign out first, as firebase seems to stay signed in between page reloads otherwise.
-  await firebase.auth().signOut();
-  return firebase.auth().signInWithCustomToken(rawFirestoreJWT);
+  await app.auth().signOut();
+  return app.auth().signInWithCustomToken(rawFirestoreJWT);
 };
 
 export const setPortalData = (_portalData: IPortalData) => {
@@ -147,7 +148,7 @@ const watchAnswerDocs = (listener: DocumentsListener, questionId?: string) => {
   if (!portalData) {
     throw new Error("Must set portal data first");
   }
-  let query: firebase.firestore.Query = firebase.firestore().collection(answersPath());
+  let query: firebase.firestore.Query = app.firestore().collection(answersPath());
 
   if (portalData.type === "authenticated") {     // logged in user
     query = query
@@ -253,7 +254,7 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     answerDocData = anonymousAnswer;
   }
 
-  const firestoreSetPromise = firebase.firestore()
+  const firestoreSetPromise = app.firestore()
     .doc(answersPath(answer.id))
     .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
 
@@ -298,7 +299,7 @@ export const getLearnerPluginState = async (pluginId: number) => {
 
   let state: string|null = null;
   try {
-    const doc = await firebase.firestore()
+    const doc = await app.firestore()
       .doc(learnerPluginStatePath(docId))
       .get();
 
@@ -351,7 +352,7 @@ export const setLearnerPluginState = async (pluginId: number, state: string): Pr
     throw new Error("Cannot compute learner plugin state doc id");
   }
 
-  await firebase.firestore()
+  await app.firestore()
     .doc(learnerPluginStatePath(docId))
     .set(learnerPluginState);
 
