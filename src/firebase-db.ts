@@ -14,6 +14,7 @@ import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal
 import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
+import { RequestTracker } from "./utilities/request-tracker";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
@@ -59,6 +60,19 @@ const configurations: IConfigs = {
     messagingSenderId: "22386066971",
     appId: "1:22386066971:web:e0cdec7cb0f0893a8a5abe"
   }
+};
+
+const MAX_FIRESTORE_SAVE_TIME = 1000;
+const requestTracker = new RequestTracker(MAX_FIRESTORE_SAVE_TIME);
+// The provided handler will be invoked when some answer doesn't get saved in Firestore within MAX_FIRESTORE_SAVE_TIME.
+// This lets the app to notify users that there are some network issues.
+export const onFirestoreSaveTimeout = (handler: () => void) => {
+  requestTracker.timeoutHandler = handler;
+};
+// The provided handler will be invoked when all the requests that took longer than MAX_FIRESTORE_SAVE_TIME
+// finally succeed. This lets the app to notify users that network issues have been resolved.
+export const onFirestoreSaveAfterTimeout = (handler: () => void) => {
+  requestTracker.successAfterTimeoutHandler = handler;
 };
 
 // preview mode will run Firestore in offline mode and clear it (as otherwise the local data is persisted).
@@ -234,7 +248,11 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     answerDocData = anonymousAnswer;
   }
 
-  return firebase.firestore()
-      .doc(answersPath(answer.id))
-      .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
+  const firestoreSetPromise = firebase.firestore()
+    .doc(answersPath(answer.id))
+    .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
+
+  requestTracker.registerRequest(firestoreSetPromise);
+
+  return firestoreSetPromise;
 }
