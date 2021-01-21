@@ -7,8 +7,6 @@ import { IClassInfo } from "../plugin-api";
 // ACTIVITY_PLAYER_CODE:
 import fetch from "jest-fetch-mock";
 import $ from "jquery";
-import { initializeDB, setPortalData } from "../../firebase-db";
-import { getFirebaseJWT } from "../../portal-api";
 // LARA_CODE import * as fetch from "jest-fetch-mock";
 // LARA_CODE import * as $ from "jquery";
 (window as any).fetch = fetch;
@@ -16,7 +14,7 @@ import { getFirebaseJWT } from "../../portal-api";
 describe("Plugin runtime context helper", () => {
   beforeEach(() => {
     fetch.resetMocks();
-  })
+  });
 
   const pluginContext: IPluginRuntimeContextOptions = {
     type: "runtime",

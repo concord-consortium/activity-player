@@ -47,7 +47,7 @@ describe("Firestore", () => {
     await signInWithToken("test");
     expect(signOutMock).toHaveBeenCalled();
     expect(signInWithCustomTokenMock).toHaveBeenCalledWith("test");
-  })
+  });
 
   it("does nothing in the absence of metadata", () => {
     const embeddable = {
