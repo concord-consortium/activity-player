@@ -1,7 +1,8 @@
-export const DEF_TIMEOUT = 10000; // ms
+export const DEF_TIMEOUT = 20000; // ms
 
 export class RequestTracker {
   public timeout: number;
+  public disabled = false;
   public timeoutCount = 0;
   // Should be set by the client.
   public timeoutHandler: (() => void) | undefined;
@@ -29,6 +30,10 @@ export class RequestTracker {
   }
 
   public registerRequest(requestPromise: Promise<any>) {
+    if (this.disabled) {
+      return;
+    }
+    
     let timeoutHappened = false;
 
     const timeoutId = window.setTimeout(() => {

@@ -62,7 +62,7 @@ const configurations: IConfigs = {
   }
 };
 
-const MAX_FIRESTORE_SAVE_TIME = 1000;
+const MAX_FIRESTORE_SAVE_TIME = 20000;
 const requestTracker = new RequestTracker(MAX_FIRESTORE_SAVE_TIME);
 // The provided handler will be invoked when some answer doesn't get saved in Firestore within MAX_FIRESTORE_SAVE_TIME.
 // This lets the app to notify users that there are some network issues.
@@ -106,6 +106,8 @@ export async function initializeDB({ name, preview }: { name: FirebaseAppName, p
   if (queryValueBoolean("enableFirestorePersistence") || preview) {
     await firebase.firestore().enablePersistence({ synchronizeTabs: true });
     await firebase.firestore().disableNetwork();
+    // When network is disabled, Firestore promises will never resolve. So tracking requests make no sense.
+    requestTracker.disabled = true;
   }
 
   return firebase.firestore();
