@@ -14,13 +14,13 @@ import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { fetchPortalData, IPortalData } from "../portal-api";
-import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB } from "../firebase-db";
+import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB, onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout } from "../firebase-db";
 import { Activity, IEmbeddablePlugin, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getGlossaryEmbeddable } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
-import { AuthError }  from "./auth-error/auth-error";
+import { Error }  from "./error/error";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
 import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
 import { ModalDialog } from "./modal-dialog";
@@ -34,6 +34,8 @@ import "./app.scss";
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "Please submit an answer first.";
 
+export type ErrorType = "auth" | "network" | "timeout";
+
 interface IncompleteQuestion {
   refId: string;
   navOptions: INavigationOptions;
@@ -46,7 +48,6 @@ interface IState {
   showThemeButtons?: boolean;
   hideWarning: boolean;
   username: string;
-  authError: string;
   portalData?: IPortalData;
   sequence?: Sequence;
   showSequenceIntro?: boolean;
@@ -55,6 +56,7 @@ interface IState {
   modalLabel: string
   incompleteQuestions: IncompleteQuestion[];
   pluginsLoaded: boolean;
+  errorType: null | ErrorType;
 }
 interface IProps {}
 
@@ -71,12 +73,19 @@ export class App extends React.PureComponent<IProps, IState> {
       showThemeButtons: false,
       hideWarning: false,
       username: "Anonymous",
-      authError: "",
       showModal: false,
       modalLabel: "",
       incompleteQuestions: [],
       pluginsLoaded: false,
+      errorType: null
     };
+  }
+
+  public setError(errorType: ErrorType | null, error?: any) {
+    this.setState({ errorType });
+    if (errorType) {
+      console.error(errorType + " error:", error);
+    }
   }
 
   async componentDidMount() {
@@ -126,16 +135,22 @@ export class App extends React.PureComponent<IProps, IState> {
 
           setPortalData(portalData);
         } catch (err) {
-          this.setState({ authError: err });
-          console.error("Authentication Error: " + err);
+          this.setError("auth", err);
         }
       } else {
         try {
           await initializeAnonymousDB(preview);
         } catch (err) {
-          this.setState({ authError: err });
-          console.error("Authentication Error: " + err);
+          this.setError("auth", err);
         }
+      }
+
+      if (!preview) {
+        // Notify user about network issues. Note that in preview mode Firestore network is disabled, so it doesn't
+        // make sense to track requests.
+        onFirestoreSaveTimeout(() => this.state.errorType === null && this.setError("network"));
+        // Notify user when network issues are resolved.
+        onFirestoreSaveAfterTimeout(() => this.state.errorType === "network" && this.setError(null));
       }
 
       this.setState(newState as IState);
@@ -176,7 +191,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, authError, currentPage, username, pluginsLoaded, teacherEditionMode, sequence } = this.state;
+    const { activity, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
@@ -192,8 +207,8 @@ export class App extends React.PureComponent<IProps, IState> {
           showSequence={sequence !== undefined}
           onShowSequence={sequence !== undefined ? this.handleShowSequenceIntro : undefined}
         />
-        { authError
-          ? <AuthError />
+        { errorType !== null
+          ? <Error type={errorType} />
           : this.renderActivityContent(activity, currentPage, totalPreviousQuestions, fullWidth)
         }
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&

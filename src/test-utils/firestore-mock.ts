@@ -4,7 +4,7 @@ const docResult = {
   data: () => docData
 };
 const get = jest.fn(() => Promise.resolve(docResult));
-const set = jest.fn();
+const set = jest.fn(() => Promise.resolve());
 const doc = jest.fn(() => {
   return {
     set,

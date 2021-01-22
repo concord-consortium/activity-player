@@ -14,6 +14,7 @@ import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal
 import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
+import { RequestTracker } from "./utilities/request-tracker";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
@@ -61,6 +62,19 @@ const configurations: IConfigs = {
   }
 };
 
+const MAX_FIRESTORE_SAVE_TIME = 20000;
+const requestTracker = new RequestTracker(MAX_FIRESTORE_SAVE_TIME);
+// The provided handler will be invoked when some answer doesn't get saved in Firestore within MAX_FIRESTORE_SAVE_TIME.
+// This lets the app notify users that there are some network issues.
+export const onFirestoreSaveTimeout = (handler: () => void) => {
+  requestTracker.timeoutHandler = handler;
+};
+// The provided handler will be invoked when all the requests that took longer than MAX_FIRESTORE_SAVE_TIME
+// finally succeed. This lets the app notify users that network issues have been resolved.
+export const onFirestoreSaveAfterTimeout = (handler: () => void) => {
+  requestTracker.successAfterTimeoutHandler = handler;
+};
+
 // preview mode will run Firestore in offline mode and clear it (as otherwise the local data is persisted).
 export async function initializeDB({ name, preview }: { name: FirebaseAppName, preview: boolean }) {
   const config = configurations[name];
@@ -92,6 +106,8 @@ export async function initializeDB({ name, preview }: { name: FirebaseAppName, p
   if (queryValueBoolean("enableFirestorePersistence") || preview) {
     await firebase.firestore().enablePersistence({ synchronizeTabs: true });
     await firebase.firestore().disableNetwork();
+    // When network is disabled, Firestore promises will never resolve. So tracking requests make no sense.
+    requestTracker.disabled = true;
   }
 
   return firebase.firestore();
@@ -234,7 +250,11 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     answerDocData = anonymousAnswer;
   }
 
-  return firebase.firestore()
-      .doc(answersPath(answer.id))
-      .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
+  const firestoreSetPromise = firebase.firestore()
+    .doc(answersPath(answer.id))
+    .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
+
+  requestTracker.registerRequest(firestoreSetPromise);
+
+  return firestoreSetPromise;
 }
