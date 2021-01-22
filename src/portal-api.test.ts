@@ -41,7 +41,7 @@ describe("firebaseAppName", () => {
       expect(firebaseAppName()).toBe("report-service-dev");
     });
 
-    it("can be overriden to report-service-pro with a branch url", () => {
+    it("can be overridden to report-service-pro with a branch url", () => {
       url.href = "https://activity-player.concord.org/branch/foo?firebaseApp=report-service-pro";
       expect(firebaseAppName()).toBe("report-service-pro");
     });

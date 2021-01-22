@@ -210,7 +210,7 @@ const getPortalJWTWithBearerToken = (basePortalUrl: string, rawToken: string) =>
 // only https://activity-player.concord.org defaults to report-service-pro
 // everything else defaults to report-service-dev
 //
-// The default can be overriden with a firebaseApp URL param
+// The default can be overridden with a firebaseApp URL param
 //
 // A memoized function is used here so we don't compute the app name until it is
 // actually needed. This will be useful if we start supporting OAuth where the
