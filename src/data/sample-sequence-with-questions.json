@@ -41,7 +41,7 @@
           "embeddables": [
             {
               "embeddable": {
-                "content": "\u003Cp\u003EHere is a text box with header. Callout is enabled. Full Width enabled.\u003C/p\u003E",
+                "content": "<p>Here is a text box with header. Callout is enabled. Full Width enabled.</p>",
                 "is_callout": true,
                 "is_full_width": true,
                 "is_hidden": false,
@@ -55,7 +55,7 @@
               "embeddable": {
                 "name": "",
                 "url_fragment": null,
-                "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EOpen response required. Should be question number 1 even though not inside of info/assessment block.\u003C/p\u003E\",\"required\":false,\"predictionFeedback\":\"\u003Cp\u003EYou answered the first question of the activity\u003C/p\u003E\",\"hint\":\"\u003Cp\u003EThere is a custom default answer and submission response\u003C/p\u003E\",\"defaultAnswer\":\"Custom default answer is here\"}",
+                "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Open response required. Should be question number 1 even though not inside of info/assessment block.</p>\",\"required\":false,\"predictionFeedback\":\"<p>You answered the first question of the activity</p>\",\"hint\":\"<p>There is a custom default answer and submission response</p>\",\"defaultAnswer\":\"Custom default answer is here\"}",
                 "is_hidden": false,
                 "is_full_width": true,
                 "show_in_featured_question_report": true,
@@ -106,7 +106,7 @@
               "embeddable": {
                 "name": "",
                 "url_fragment": null,
-                "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"horizontal\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":true},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EMC required, no post submission, allow check answers, no hint, horizontal\u003C/p\u003E\",\"required\":false}",
+                "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"horizontal\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":true},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"<p>MC required, no post submission, allow check answers, no hint, horizontal</p>\",\"required\":false}",
                 "is_hidden": false,
                 "is_full_width": true,
                 "show_in_featured_question_report": true,
@@ -157,7 +157,7 @@
               "embeddable": {
                 "name": "",
                 "url_fragment": null,
-                "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"blanks\":[{\"id\":\"[blank-1]\",\"size\":20,\"matchTerm\":\"blank\"}],\"prompt\":\"\u003Cp\u003EHere is a [blank-1] word\u003C/p\u003E\",\"hint\":\"\"}",
+                "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"blanks\":[{\"id\":\"[blank-1]\",\"size\":20,\"matchTerm\":\"blank\"}],\"prompt\":\"<p>Here is a [blank-1] word</p>\",\"hint\":\"\"}",
                 "is_hidden": false,
                 "is_full_width": true,
                 "show_in_featured_question_report": true,
@@ -208,7 +208,7 @@
               "embeddable": {
                 "name": "",
                 "url_fragment": null,
-                "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"prompt\":\"\u003Cp\u003E3 Levels Required Scaffold Question. Global hint.\u003C/p\u003E\",\"hint\":\"\u003Cp\u003EHere is a global hint\u003C/p\u003E\",\"subinteractives\":[{\"url\":\"https://models-resources.concord.org/question-interactives/branch/master/multiple-choice\",\"authoredState\":{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":true},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EMC sub 1\u003C/p\u003E\"},\"id\":\"66c63627-9269-441e-9ac2-0e5f028c4e54\"},{\"url\":\"https://models-resources.concord.org/question-interactives/branch/master/open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EOpen response sub 2\u003C/p\u003E\"},\"id\":\"8c1d9b40-48fe-4826-803f-79ac3e5ba934\"},{\"url\":\"https://models-resources.concord.org/question-interactives/branch/master/open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EOpen response sub 3\u003C/p\u003E\"},\"id\":\"9d1c3361-0b9f-4be0-9b91-0278f3e8f60c\"}]}",
+                "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"prompt\":\"<p>3 Levels Required Scaffold Question. Global hint.</p>\",\"hint\":\"<p>Here is a global hint</p>\",\"subinteractives\":[{\"url\":\"https://models-resources.concord.org/question-interactives/branch/master/multiple-choice\",\"authoredState\":{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":true},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"<p>MC sub 1</p>\"},\"id\":\"66c63627-9269-441e-9ac2-0e5f028c4e54\"},{\"url\":\"https://models-resources.concord.org/question-interactives/branch/master/open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Open response sub 2</p>\"},\"id\":\"8c1d9b40-48fe-4826-803f-79ac3e5ba934\"},{\"url\":\"https://models-resources.concord.org/question-interactives/branch/master/open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Open response sub 3</p>\"},\"id\":\"9d1c3361-0b9f-4be0-9b91-0278f3e8f60c\"}]}",
                 "is_hidden": false,
                 "is_full_width": true,
                 "show_in_featured_question_report": true,
@@ -257,7 +257,7 @@
             },
             {
               "embeddable": {
-                "content": "\u003Cp\u003ECallout option enabled. All options below are image questions\u003C/p\u003E",
+                "content": "<p>Callout option enabled. All options below are image questions</p>",
                 "is_callout": true,
                 "is_full_width": false,
                 "is_hidden": false,
@@ -271,7 +271,7 @@
               "embeddable": {
                 "name": "",
                 "url_fragment": null,
-                "authored_state": "{\"version\":1,\"questionType\":\"image_question\",\"imageFit\":\"shrinkBackgroundToCanvas\",\"imagePosition\":\"center\",\"prompt\":\"\u003Cp\u003EImage question URL reference. Image is added via URL in authoring. Set canvas to image size. Center.\u003C/p\u003E\\n\u003Cp\u003E(https://models-resources.s3.amazonaws.com/precip-models/ak-base-map-with-rose.png)\u003C/p\u003E\\n\u003Cp\u003E(Gives Error in authoring: backgroundImageUrl: Please use only images hosted at *.concord.org. )\u003C/p\u003E\",\"backgroundSource\":\"url\",\"required\":false,\"backgroundImageUrl\":\"https://models-resources.s3.amazonaws.com/precip-models/ak-base-map-with-rose.png\",\"stampCollections\":[{\"collection\":\"molecules\",\"name\":\"NGSA\"}],\"answerPrompt\":\"\u003Cp\u003EWhat do you think about this image?\u003C/p\u003E\"}",
+                "authored_state": "{\"version\":1,\"questionType\":\"image_question\",\"imageFit\":\"shrinkBackgroundToCanvas\",\"imagePosition\":\"center\",\"prompt\":\"<p>Image question URL reference. Image is added via URL in authoring. Set canvas to image size. Center.</p>\\n<p>(https://models-resources.s3.amazonaws.com/precip-models/ak-base-map-with-rose.png)</p>\\n<p>(Gives Error in authoring: backgroundImageUrl: Please use only images hosted at *.concord.org. )</p>\",\"backgroundSource\":\"url\",\"required\":false,\"backgroundImageUrl\":\"https://models-resources.s3.amazonaws.com/precip-models/ak-base-map-with-rose.png\",\"stampCollections\":[{\"collection\":\"molecules\",\"name\":\"NGSA\"}],\"answerPrompt\":\"<p>What do you think about this image?</p>\"}",
                 "is_hidden": false,
                 "is_full_width": true,
                 "show_in_featured_question_report": true,
@@ -322,7 +322,7 @@
               "embeddable": {
                 "name": "",
                 "url_fragment": null,
-                "authored_state": "{\"version\":1,\"questionType\":\"image_question\",\"imageFit\":\"shrinkBackgroundToCanvas\",\"imagePosition\":\"center\",\"prompt\":\"\u003Cp\u003EImage question image upload. User will upload local image to image question. Set image to canvas size. Top left.\u003C/p\u003E\",\"backgroundSource\":\"upload\"}",
+                "authored_state": "{\"version\":1,\"questionType\":\"image_question\",\"imageFit\":\"shrinkBackgroundToCanvas\",\"imagePosition\":\"center\",\"prompt\":\"<p>Image question image upload. User will upload local image to image question. Set image to canvas size. Top left.</p>\",\"backgroundSource\":\"upload\"}",
                 "is_hidden": false,
                 "is_full_width": true,
                 "show_in_featured_question_report": true,
@@ -373,7 +373,7 @@
               "embeddable": {
                 "name": "",
                 "url_fragment": null,
-                "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"imageFit\":\"shrinkBackgroundToCanvas\",\"imagePosition\":\"center\",\"prompt\":\"\u003Cp\u003EHello here is a prompt\u003C/p\u003E\",\"backgroundSource\":\"snapshot\",\"snapshotTarget\":\"interactive_1424083\"}",
+                "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"imageFit\":\"shrinkBackgroundToCanvas\",\"imagePosition\":\"center\",\"prompt\":\"<p>Hello here is a prompt</p>\",\"backgroundSource\":\"snapshot\",\"snapshotTarget\":\"interactive_1424083\"}",
                 "is_hidden": false,
                 "is_full_width": true,
                 "show_in_featured_question_report": true,
@@ -476,7 +476,8 @@
               },
               "section": "interactive_box"
             }
-          ]
+          ],
+          "id": 1000
         },
         {
           "additional_sections": {},
@@ -493,7 +494,8 @@
           "sidebar": null,
           "sidebar_title": "Did you know?",
           "toggle_info_assessment": false,
-          "embeddables": []
+          "embeddables": [],
+          "id": 3000
         }
       ],
       "plugins": [],
@@ -534,7 +536,7 @@
           "embeddables": [
             {
               "embeddable": {
-                "content": "\u003Cp\u003ENative LARA Questions\u003C/p\u003E",
+                "content": "<p>Native LARA Questions</p>",
                 "is_callout": true,
                 "is_full_width": true,
                 "is_hidden": false,
@@ -548,7 +550,7 @@
               "embeddable": {
                 "name": "",
                 "url_fragment": null,
-                "authored_state": "{\"version\":1,\"prompt\":\"\u003Cp\u003ELARA Native Open Response\u003C/p\u003E\",\"defaultAnswer\":\"Testing custom default text\",\"required\":false,\"questionType\":\"open_response\",\"hint\":\"\u003Cp\u003ELARA Native hint\u003C/p\u003E\"}",
+                "authored_state": "{\"version\":1,\"prompt\":\"<p>LARA Native Open Response</p>\",\"defaultAnswer\":\"Testing custom default text\",\"required\":false,\"questionType\":\"open_response\",\"hint\":\"<p>LARA Native hint</p>\"}",
                 "is_hidden": false,
                 "is_full_width": false,
                 "show_in_featured_question_report": true,
@@ -599,7 +601,7 @@
               "embeddable": {
                 "name": "Multiple Choice Question element",
                 "url_fragment": null,
-                "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"choices\":[{\"id\":\"1\",\"content\":\"a\",\"correct\":true,\"choiceFeedback\":\"\"},{\"id\":\"2\",\"content\":\"b\",\"correct\":false,\"choiceFeedback\":\"\"},{\"id\":\"3\",\"content\":\"c\",\"correct\":false,\"choiceFeedback\":\"\"},{\"id\":\"4\",\"content\":\"d\",\"correct\":false,\"choiceFeedback\":\"\"},{\"id\":\"5\",\"content\":\"e\",\"correct\":false,\"choiceFeedback\":\"\"}],\"layout\":\"vertical\",\"prompt\":\"\u003Cp\u003Ewhy does ...\u003C/p\u003E\",\"enableCheckAnswer\":true}",
+                "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"choices\":[{\"id\":\"1\",\"content\":\"a\",\"correct\":true,\"choiceFeedback\":\"\"},{\"id\":\"2\",\"content\":\"b\",\"correct\":false,\"choiceFeedback\":\"\"},{\"id\":\"3\",\"content\":\"c\",\"correct\":false,\"choiceFeedback\":\"\"},{\"id\":\"4\",\"content\":\"d\",\"correct\":false,\"choiceFeedback\":\"\"},{\"id\":\"5\",\"content\":\"e\",\"correct\":false,\"choiceFeedback\":\"\"}],\"layout\":\"vertical\",\"prompt\":\"<p>why does ...</p>\",\"enableCheckAnswer\":true}",
                 "is_hidden": false,
                 "is_full_width": false,
                 "show_in_featured_question_report": true,
@@ -697,7 +699,8 @@
               },
               "section": "interactive_box"
             }
-          ]
+          ],
+          "id": 1000
         },
         {
           "additional_sections": null,
@@ -717,7 +720,7 @@
           "embeddables": [
             {
               "embeddable": {
-                "content": "\u003Cp\u003EQuestion-Interactives. Does not include Image Question, Draw Tool, Carousel or Graph interactives.\u003C/p\u003E",
+                "content": "<p>Question-Interactives. Does not include Image Question, Draw Tool, Carousel or Graph interactives.</p>",
                 "is_callout": true,
                 "is_full_width": true,
                 "is_hidden": false,
@@ -731,7 +734,7 @@
               "embeddable": {
                 "name": "",
                 "url_fragment": null,
-                "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":true},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EQI Multiple Choice\u003C/p\u003E\",\"required\":false,\"predictionFeedback\":\"\u003Cp\u003EQI post submission feedback\u003C/p\u003E\",\"hint\":\"\"}",
+                "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":true},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"<p>QI Multiple Choice</p>\",\"required\":false,\"predictionFeedback\":\"<p>QI post submission feedback</p>\",\"hint\":\"\"}",
                 "is_hidden": false,
                 "is_full_width": true,
                 "show_in_featured_question_report": true,
@@ -782,7 +785,7 @@
               "embeddable": {
                 "name": "",
                 "url_fragment": null,
-                "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EQI Open Response\u003C/p\u003E\",\"required\":false,\"predictionFeedback\":\"\u003Cp\u003EQI Post Submission feedback\u003C/p\u003E\",\"hint\":\"\u003Cp\u003EQI hint\u003C/p\u003E\",\"defaultAnswer\":\"QI Custom default text\"}",
+                "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>QI Open Response</p>\",\"required\":false,\"predictionFeedback\":\"<p>QI Post Submission feedback</p>\",\"hint\":\"<p>QI hint</p>\",\"defaultAnswer\":\"QI Custom default text\"}",
                 "is_hidden": false,
                 "is_full_width": true,
                 "show_in_featured_question_report": true,
@@ -833,7 +836,7 @@
               "embeddable": {
                 "name": "",
                 "url_fragment": null,
-                "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"blanks\":[{\"id\":\"[blank-1]\",\"size\":20,\"matchTerm\":\"Yes\"}],\"prompt\":\"\u003Cp\u003E\u003Cstrong\u003EBold words\u003C/strong\u003E are working right? Your Response: [blank-1]\u003C/p\u003E\",\"required\":false}",
+                "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"blanks\":[{\"id\":\"[blank-1]\",\"size\":20,\"matchTerm\":\"Yes\"}],\"prompt\":\"<p><strong>Bold words</strong> are working right? Your Response: [blank-1]</p>\",\"required\":false}",
                 "is_hidden": false,
                 "is_full_width": true,
                 "show_in_featured_question_report": true,
@@ -884,7 +887,7 @@
               "embeddable": {
                 "name": "",
                 "url_fragment": null,
-                "authored_state": "{\"version\":2,\"questionType\":\"iframe_interactive\",\"subinteractives\":[{\"libraryInteractiveId\":\"open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EOpen response sub question 1\u003C/p\u003E\"},\"id\":\"cc54c458-d200-47a4-908a-c467f25f255e\"},{\"libraryInteractiveId\":\"fill-in-the-blank\",\"authoredState\":{\"version\":1,\"questionType\":\"iframe_interactive\",\"blanks\":[{\"id\":\"[blank-2]\",\"size\":20,\"matchTerm\":\"something\"}],\"prompt\":\"\u003Cp\u003EFill in the blank subquestion 2 [blank-2]\u003C/p\u003E\"},\"id\":\"cc0bf45c-f7c4-4bd5-a24f-d3bd37e24e24\"},{\"libraryInteractiveId\":\"multiple-choice\",\"authoredState\":{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":true,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":true},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EMultiple choice sub question 3\u003C/p\u003E\",\"enableCheckAnswer\":false,\"hint\":\"\u003Cp\u003EAllow multiple answers\u003C/p\u003E\"},\"id\":\"20d50c33-c369-403a-8677-3290323f4709\"}],\"prompt\":\"\u003Cp\u003EHere is the global prompt\u003C/p\u003E\",\"hint\":\"\u003Cp\u003ETesting global hint\u003C/p\u003E\",\"required\":false}",
+                "authored_state": "{\"version\":2,\"questionType\":\"iframe_interactive\",\"subinteractives\":[{\"libraryInteractiveId\":\"open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Open response sub question 1</p>\"},\"id\":\"cc54c458-d200-47a4-908a-c467f25f255e\"},{\"libraryInteractiveId\":\"fill-in-the-blank\",\"authoredState\":{\"version\":1,\"questionType\":\"iframe_interactive\",\"blanks\":[{\"id\":\"[blank-2]\",\"size\":20,\"matchTerm\":\"something\"}],\"prompt\":\"<p>Fill in the blank subquestion 2 [blank-2]</p>\"},\"id\":\"cc0bf45c-f7c4-4bd5-a24f-d3bd37e24e24\"},{\"libraryInteractiveId\":\"multiple-choice\",\"authoredState\":{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":true,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":true},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"<p>Multiple choice sub question 3</p>\",\"enableCheckAnswer\":false,\"hint\":\"<p>Allow multiple answers</p>\"},\"id\":\"20d50c33-c369-403a-8677-3290323f4709\"}],\"prompt\":\"<p>Here is the global prompt</p>\",\"hint\":\"<p>Testing global hint</p>\",\"required\":false}",
                 "is_hidden": false,
                 "is_full_width": true,
                 "show_in_featured_question_report": true,
@@ -982,7 +985,8 @@
               },
               "section": "interactive_box"
             }
-          ]
+          ],
+          "id": 2000
         },
         {
           "additional_sections": {},
@@ -999,7 +1003,8 @@
           "sidebar": null,
           "sidebar_title": "Did you know?",
           "toggle_info_assessment": false,
-          "embeddables": []
+          "embeddables": [],
+          "id": 3000
         }
       ],
       "plugins": [],

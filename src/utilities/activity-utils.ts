@@ -144,3 +144,22 @@ export const setDocumentTitle = (activity: Activity | undefined, pageNumber: num
       : `Page ${pageNumber} ${activity.pages[pageNumber - 1].name || activity.name}`;
   }
 };
+
+export const getPagePositionFromQueryValue = (activity: Activity, pageQueryValue = "0"): number => {
+  const pageId = pageQueryValue.startsWith("page_") ? parseInt(pageQueryValue.split("_")[1], 10) : NaN;
+
+  if (!isNaN(pageId)) {
+    for (const page of activity.pages) {
+      if (page.id === pageId) {
+        return page.position;
+      }
+    }
+
+    // default to index page when id not found
+    return 0;
+  }
+
+  // page should be in the range [0, <number of pages>].
+  // note that page is 1 based for the actual pages in the activity.
+  return Math.max(0, Math.min((parseInt(pageQueryValue, 10) || 0), activity.pages.length));
+};

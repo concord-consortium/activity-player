@@ -1,5 +1,5 @@
 {
-  "description": "\u003Cp\u003EElement full width option is ON for all elements. 70-30 page split if not full width page.\u003C/p\u003E",
+  "description": "<p>Element full width option is ON for all elements. 70-30 page split if not full width page.</p>",
   "editor_mode": 0,
   "layout": 0,
   "name": "LARA Page elements Diff page configs Full Width Opt ON",
@@ -25,7 +25,7 @@
       "show_info_assessment": true,
       "show_interactive": true,
       "show_sidebar": true,
-      "sidebar": "\u003Cp\u003EThe\u0026nbsp;horns\u0026nbsp;are\u0026nbsp;made of\u0026nbsp;keratin, the same type of protein that makes up hair and fingernails. Both African species and the Sumatran\u0026nbsp;rhinoceros\u0026nbsp;have two\u0026nbsp;horns, while the Indian and Javan\u0026nbsp;rhinoceros\u0026nbsp;have a single\u0026nbsp;horn.\u003Cimg class=\"\" src=\"https://media.npr.org/assets/img/2018/11/26/gettyimages-1037119694-b96478b91b6b2bf29205ab0961b141d5a2ffc770-s800-c85.jpg\" alt=\"Rhino\" width=\"400\" height=\"299\" /\u003E\u003C/p\u003E",
+      "sidebar": "<p>The&nbsp;horns&nbsp;are&nbsp;made of&nbsp;keratin, the same type of protein that makes up hair and fingernails. Both African species and the Sumatran&nbsp;rhinoceros&nbsp;have two&nbsp;horns, while the Indian and Javan&nbsp;rhinoceros&nbsp;have a single&nbsp;horn.<img class=\"\" src=\"https://media.npr.org/assets/img/2018/11/26/gettyimages-1037119694-b96478b91b6b2bf29205ab0961b141d5a2ffc770-s800-c85.jpg\" alt=\"Rhino\" width=\"400\" height=\"299\" /></p>",
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": false,
       "embeddables": [
@@ -41,7 +41,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "prompt": "<p>why does ...</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::ImageQuestion",
             "ref_id": "211796-Embeddable::ImageQuestion",
@@ -51,7 +51,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EWe want to see some text here\u003C/p\u003E",
+            "content": "<p>We want to see some text here</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -73,7 +73,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "prompt": "<p>why does ...</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -108,7 +108,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "prompt": "<p>why does ...</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446700-Embeddable::OpenResponse"
@@ -191,7 +191,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EExternal Script is not included. Feedback elements not included. Tracked Question not included\u003C/p\u003E",
+            "content": "<p>External Script is not included. Feedback elements not included. Tracked Question not included</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -225,7 +225,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 1000
     },
     {
       "additional_sections": {},
@@ -247,7 +248,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Scooby\",\"correct\":false},{\"id\":\"2\",\"content\":\"Bugs\",\"correct\":false},{\"id\":\"3\",\"content\":\"Fred\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice vertical layout, single answer, not required, no hint. And no correct answer specified\u003C/p\u003E\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Scooby\",\"correct\":false},{\"id\":\"2\",\"content\":\"Bugs\",\"correct\":false},{\"id\":\"3\",\"content\":\"Fred\",\"correct\":false}],\"prompt\":\"<p>Managed Interactive Multiple choice vertical layout, single answer, not required, no hint. And no correct answer specified</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -297,7 +298,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"horizontal\",\"choices\":[{\"id\":\"1\",\"content\":\"Wile E.\",\"correct\":true},{\"id\":\"2\",\"content\":\"Bluestone\",\"correct\":false},{\"id\":\"3\",\"content\":\"Mr. Slate\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice horizontal layout, single answer, not required, no hint. Correct answer specified but no custom feedback\u003C/p\u003E\",\"enableCheckAnswer\":true}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"horizontal\",\"choices\":[{\"id\":\"1\",\"content\":\"Wile E.\",\"correct\":true},{\"id\":\"2\",\"content\":\"Bluestone\",\"correct\":false},{\"id\":\"3\",\"content\":\"Mr. Slate\",\"correct\":false}],\"prompt\":\"<p>Managed Interactive Multiple choice horizontal layout, single answer, not required, no hint. Correct answer specified but no custom feedback</p>\",\"enableCheckAnswer\":true}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -347,7 +348,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":true,\"layout\":\"likert\",\"choices\":[{\"id\":\"1\",\"content\":\"Kirk\",\"correct\":false,\"choiceFeedback\":\"too much trouble with tribbles\"},{\"id\":\"2\",\"content\":\"Picard\",\"correct\":true,\"choiceFeedback\":\"FLUTE!\"},{\"id\":\"3\",\"content\":\"Janeway\",\"correct\":true,\"choiceFeedback\":\"Red!\"}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice likert layout, multiple answers, not required, no hint. And correct answer specified with custom feedback\u003C/p\u003E\",\"enableCheckAnswer\":true,\"customFeedback\":true}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":true,\"layout\":\"likert\",\"choices\":[{\"id\":\"1\",\"content\":\"Kirk\",\"correct\":false,\"choiceFeedback\":\"too much trouble with tribbles\"},{\"id\":\"2\",\"content\":\"Picard\",\"correct\":true,\"choiceFeedback\":\"FLUTE!\"},{\"id\":\"3\",\"content\":\"Janeway\",\"correct\":true,\"choiceFeedback\":\"Red!\"}],\"prompt\":\"<p>Managed Interactive Multiple choice likert layout, multiple answers, not required, no hint. And correct answer specified with custom feedback</p>\",\"enableCheckAnswer\":true,\"customFeedback\":true}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -405,8 +406,8 @@
             "layout": "vertical",
             "multi_answer": false,
             "name": "Multiple Choice Question element",
-            "prediction_feedback": "\u003Cp\u003EPick the animal with four legs\u003C/p\u003E",
-            "prompt": "\u003Cp\u003Evertical layout with custom feedback and correct answer\u003C/p\u003E",
+            "prediction_feedback": "<p>Pick the animal with four legs</p>",
+            "prompt": "<p>vertical layout with custom feedback and correct answer</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -443,8 +444,8 @@
             "layout": "vertical",
             "multi_answer": true,
             "name": "Multiple Choice Question element",
-            "prediction_feedback": "\u003Cp\u003Ebaby shark doot doot do do do do dodoot\u003C/p\u003E",
-            "prompt": "\u003Cp\u003Ehorizontal layout allows multiple answers\u0026nbsp; provide prediction feedback\u003C/p\u003E",
+            "prediction_feedback": "<p>baby shark doot doot do do do do dodoot</p>",
+            "prompt": "<p>horizontal layout allows multiple answers&nbsp; provide prediction feedback</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -487,7 +488,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003ELikert layout no other options\u003C/p\u003E",
+            "prompt": "<p>Likert layout no other options</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -525,7 +526,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Evertical layout\u003C/p\u003E\r\n\u003Cp\u003Eshow as dropdown menu\u003C/p\u003E\r\n\u003Cp\u003Echeck answer\u003C/p\u003E\r\n\u003Cp\u003Eanswer required\u003C/p\u003E",
+            "prompt": "<p>vertical layout</p>\r\n<p>show as dropdown menu</p>\r\n<p>check answer</p>\r\n<p>answer required</p>",
             "show_as_menu": true,
             "show_in_featured_question_report": true,
             "choices": [
@@ -552,7 +553,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EVariety of multiple choice questions\u003C/p\u003E",
+            "content": "<p>Variety of multiple choice questions</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -561,7 +562,8 @@
           },
           "section": "header_block"
         }
-      ]
+      ],
+      "id": 2000
     },
     {
       "additional_sections": {},
@@ -583,7 +585,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EWhat do you think of the managed interactive version of open response without hint of default answer and not required?\u003C/p\u003E\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>What do you think of the managed interactive version of open response without hint of default answer and not required?</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -633,7 +635,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003Ethis is a managed interactive open response (master) prompt. This is required, has a hint and a default answer.\u003C/p\u003E\",\"hint\":\"\u003Cp\u003EPrime\u003C/p\u003E\",\"defaultAnswer\":\"Optimus\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>this is a managed interactive open response (master) prompt. This is required, has a hint and a default answer.</p>\",\"hint\":\"<p>Prime</p>\",\"defaultAnswer\":\"Optimus\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -689,7 +691,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EOpen text plain\u003C/p\u003E",
+            "prompt": "<p>Open text plain</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446701-Embeddable::OpenResponse"
@@ -705,8 +707,8 @@
             "is_hidden": false,
             "is_prediction": false,
             "name": "",
-            "prediction_feedback": "\u003Cp\u003EThe squirrel\u003C/p\u003E",
-            "prompt": "\u003Cp\u003EOpen Response with default Text and prediction feedback\u003C/p\u003E",
+            "prediction_feedback": "<p>The squirrel</p>",
+            "prompt": "<p>Open Response with default Text and prediction feedback</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446702-Embeddable::OpenResponse"
@@ -717,20 +719,21 @@
           "embeddable": {
             "default_text": "",
             "give_prediction_feedback": false,
-            "hint": "\u003Cp\u003EThe rain in Spain stays mainly on the plane\u003C/p\u003E",
+            "hint": "<p>The rain in Spain stays mainly on the plane</p>",
             "is_full_width": true,
             "is_hidden": false,
             "is_prediction": true,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EWith a hint and answer is required\u003C/p\u003E",
+            "prompt": "<p>With a hint and answer is required</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446703-Embeddable::OpenResponse"
           },
           "section": null
         }
-      ]
+      ],
+      "id": 3000
     },
     {
       "additional_sections": {},
@@ -760,7 +763,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "prompt": "<p>why does ...</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::ImageQuestion",
             "ref_id": "211797-Embeddable::ImageQuestion",
@@ -781,7 +784,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ehorizontal choices\u003C/p\u003E",
+            "prompt": "<p>horizontal choices</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -816,7 +819,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy do hyenas laugh?\u003C/p\u003E",
+            "prompt": "<p>why do hyenas laugh?</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446704-Embeddable::OpenResponse"
@@ -825,7 +828,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003E\u003Cstrong\u003E1. \"Do or do not. There is no try.\"\u003C/strong\u003E\u003Cbr /\u003EThis quote is a simple lesson in\u0026nbsp;commitment\u0026nbsp;and the power in giving something our all\u0026mdash;not just giving it a try.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E2. \"You must unlearn what you have learned.\"\u003C/strong\u003E\u003Cbr /\u003EAs creatures of habit, we tend to love our routines and our go-to methods. But sometimes, we have to\u0026nbsp;shake up our process\u0026mdash;and even unlearn our process\u0026mdash;to succeed.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E3. \"Named must be your fear before banish it you can.\"\u003C/strong\u003E\u003Cbr /\u003EWhen we\u0026nbsp;call out our fears directly, they become less of an ominous force and a challenge we can tackle head-on.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E4. \"Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. Hate leads to suffering.\"\u003C/strong\u003E\u003Cbr /\u003EIndulging our fears\u0026nbsp;(whether with our thoughts or actions) gives them power to hold us back. And Yoda points out how our fears can impact those around us, too.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E6. \"That is why you fail.\"\u003C/strong\u003E\u003Cbr /\u003EWhen Luke says he doesn't believe in the power of the force, Yoda serves up this piece of wisdom. We have to\u0026nbsp;believe in ourselves\u0026mdash;and our abilities\u0026mdash;in order to persevere and succeed. Without faith, we can only go so far.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E7. \"The greatest teacher, failure is.\"\u003C/strong\u003E\u003Cbr /\u003EWe\u0026nbsp;learn from our mistakes\u0026mdash;plain and simple.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E8. \"Pass on what you have learned.\"\u003C/strong\u003E\u003Cbr /\u003EThe wisdom we gain in life is a gift to pass along\u0026mdash;not to keep to ourselves. Make like Yoda and share your insights with others.\u003C/p\u003E",
+            "content": "<p><strong>1. \"Do or do not. There is no try.\"</strong><br />This quote is a simple lesson in&nbsp;commitment&nbsp;and the power in giving something our all&mdash;not just giving it a try.</p>\r\n<p><strong>2. \"You must unlearn what you have learned.\"</strong><br />As creatures of habit, we tend to love our routines and our go-to methods. But sometimes, we have to&nbsp;shake up our process&mdash;and even unlearn our process&mdash;to succeed.</p>\r\n<p><strong>3. \"Named must be your fear before banish it you can.\"</strong><br />When we&nbsp;call out our fears directly, they become less of an ominous force and a challenge we can tackle head-on.</p>\r\n<p><strong>4. \"Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. Hate leads to suffering.\"</strong><br />Indulging our fears&nbsp;(whether with our thoughts or actions) gives them power to hold us back. And Yoda points out how our fears can impact those around us, too.</p>\r\n<p><strong>6. \"That is why you fail.\"</strong><br />When Luke says he doesn't believe in the power of the force, Yoda serves up this piece of wisdom. We have to&nbsp;believe in ourselves&mdash;and our abilities&mdash;in order to persevere and succeed. Without faith, we can only go so far.</p>\r\n<p><strong>7. \"The greatest teacher, failure is.\"</strong><br />We&nbsp;learn from our mistakes&mdash;plain and simple.</p>\r\n<p><strong>8. \"Pass on what you have learned.\"</strong><br />The wisdom we gain in life is a gift to pass along&mdash;not to keep to ourselves. Make like Yoda and share your insights with others.</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "Yodaisms",
@@ -909,7 +912,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 4000
     },
     {
       "additional_sections": {},
@@ -923,7 +927,7 @@
       "show_info_assessment": true,
       "show_interactive": true,
       "show_sidebar": true,
-      "sidebar": "\u003Cp\u003EThe\u0026nbsp;blue whale\u0026nbsp;(Balaenoptera musculus) is a marine mammal belonging to the baleen whale suborder Mysticeti. Reaching a maximum confirmed length of 29.9 meters (98 feet) and weight of 173 tonnes (190 tons), it is the largest animal known to have ever existed.\u003C/p\u003E\n\u003Cp\u003E\u003Cimg class=\"\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg/1600px-Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg\" alt=\"Blue Whale\" width=\"400\" height=\"277\" /\u003E\u003C/p\u003E",
+      "sidebar": "<p>The&nbsp;blue whale&nbsp;(Balaenoptera musculus) is a marine mammal belonging to the baleen whale suborder Mysticeti. Reaching a maximum confirmed length of 29.9 meters (98 feet) and weight of 173 tonnes (190 tons), it is the largest animal known to have ever existed.</p>\n<p><img class=\"\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg/1600px-Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg\" alt=\"Blue Whale\" width=\"400\" height=\"277\" /></p>",
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": false,
       "embeddables": [
@@ -931,15 +935,15 @@
           "embeddable": {
             "bg_source": "Drawing",
             "bg_url": "",
-            "drawing_prompt": "\u003Cp\u003EWhat do you want to draw\u003C/p\u003E",
+            "drawing_prompt": "<p>What do you want to draw</p>",
             "give_prediction_feedback": false,
-            "hint": "\u003Cp\u003Ehint\u003C/p\u003E",
+            "hint": "<p>hint</p>",
             "is_full_width": false,
             "is_hidden": false,
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003E\u003Cimg class=\"\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2016/07/15155435/Pug-puppies.464864288-1.jpg\" alt=\"sleepy pugs\" width=\"467\" height=\"311\" /\u003E\u003C/p\u003E",
+            "prompt": "<p><img class=\"\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2016/07/15155435/Pug-puppies.464864288-1.jpg\" alt=\"sleepy pugs\" width=\"467\" height=\"311\" /></p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::ImageQuestion",
             "ref_id": "211798-Embeddable::ImageQuestion"
@@ -959,7 +963,7 @@
             "multi_answer": true,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EHow many devs does it take to change a lightbulb?\u003C/p\u003E",
+            "prompt": "<p>How many devs does it take to change a lightbulb?</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -994,7 +998,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EA puppy is a juvenile dog. Some puppies can weigh 1\u0026ndash;1.5 kg, while larger ones can weigh up to 7\u0026ndash;11 kg. All healthy puppies grow quickly after birth. A puppy's coat color may change as the puppy grows older, as is commonly seen in breeds such as the Yorkshire Terrier\u003C/p\u003E",
+            "prompt": "<p>A puppy is a juvenile dog. Some puppies can weigh 1&ndash;1.5 kg, while larger ones can weigh up to 7&ndash;11 kg. All healthy puppies grow quickly after birth. A puppy's coat color may change as the puppy grows older, as is commonly seen in breeds such as the Yorkshire Terrier</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446705-Embeddable::OpenResponse"
@@ -1003,7 +1007,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EThe beagle is a breed of small hound that is similar in appearance to the much larger foxhound. The beagle is a scent hound, developed primarily for hunting hare.\u003C/p\u003E",
+            "content": "<p>The beagle is a breed of small hound that is similar in appearance to the much larger foxhound. The beagle is a scent hound, developed primarily for hunting hare.</p>",
             "is_full_width": false,
             "is_hidden": false,
             "name": "",
@@ -1127,7 +1131,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EAll elements in a responsive layout. Intro has an image floated right.\u003C/p\u003E\n\u003Cp\u003EThe\u0026nbsp;German Shepherd\u0026nbsp;(German:\u0026nbsp;Deutscher Sch\u0026auml;ferhund,\u0026nbsp;German pronunciation:\u0026nbsp;[\u02c8d\u0254\u028ft\u0283\u0250 \u02c8\u0283\u025b\u02d0f\u0250\u02cch\u028ant]) is a breed of medium to large-sized\u0026nbsp;working dog\u0026nbsp;that originated in Germany. In the English language, the breed's officially recognized name is\u0026nbsp;German Shepherd Dog\u0026nbsp;(GSD). The breed was officially known as the\u0026nbsp;Alsatian\u0026nbsp;in the UK from after the\u0026nbsp;First World War\u0026nbsp;until 1977 when its name was changed back to German Shepherd.[1]\u0026nbsp;Despite its primitive,\u0026nbsp;wolf-like appearance the German Shepherd is a relatively modern breed of dog, with their origin dating to 1899.\u003C/p\u003E\n\u003Cp\u003EAs a\u0026nbsp;herding dog, German Shepherds are working dogs developed originally for herding\u0026nbsp;sheep. Since that time, however, because of their strength, intelligence, trainability, and obedience, German Shepherds around the world are often the preferred breed for many types of work, including\u0026nbsp;disability assistance,\u0026nbsp;search-and-rescue,\u0026nbsp;police\u0026nbsp;and\u0026nbsp;military\u0026nbsp;roles and acting.[2]\u0026nbsp;The German Shepherd is the second-most registered breed by the\u0026nbsp;American Kennel Club[3]\u0026nbsp;and seventh-most registered breed by\u0026nbsp;The Kennel Club\u0026nbsp;in the United Kingdom\u003C/p\u003E\n\u003Cp\u003E\u003Cbr /\u003E\u003Cimg class=\"tinymce-img-float-right\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12193133/German-Shepherd-Puppy-Fetch-500x500.jpg\" alt=\"german shephard puppy\" width=\"250\" height=\"250\" /\u003E\u003C/p\u003E",
+            "content": "<p>All elements in a responsive layout. Intro has an image floated right.</p>\n<p>The&nbsp;German Shepherd&nbsp;(German:&nbsp;Deutscher Sch&auml;ferhund,&nbsp;German pronunciation:&nbsp;[ˈdɔʏtʃɐ ˈʃɛːfɐˌhʊnt]) is a breed of medium to large-sized&nbsp;working dog&nbsp;that originated in Germany. In the English language, the breed's officially recognized name is&nbsp;German Shepherd Dog&nbsp;(GSD). The breed was officially known as the&nbsp;Alsatian&nbsp;in the UK from after the&nbsp;First World War&nbsp;until 1977 when its name was changed back to German Shepherd.[1]&nbsp;Despite its primitive,&nbsp;wolf-like appearance the German Shepherd is a relatively modern breed of dog, with their origin dating to 1899.</p>\n<p>As a&nbsp;herding dog, German Shepherds are working dogs developed originally for herding&nbsp;sheep. Since that time, however, because of their strength, intelligence, trainability, and obedience, German Shepherds around the world are often the preferred breed for many types of work, including&nbsp;disability assistance,&nbsp;search-and-rescue,&nbsp;police&nbsp;and&nbsp;military&nbsp;roles and acting.[2]&nbsp;The German Shepherd is the second-most registered breed by the&nbsp;American Kennel Club[3]&nbsp;and seventh-most registered breed by&nbsp;The Kennel Club&nbsp;in the United Kingdom</p>\n<p><br /><img class=\"tinymce-img-float-right\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12193133/German-Shepherd-Puppy-Fetch-500x500.jpg\" alt=\"german shephard puppy\" width=\"250\" height=\"250\" /></p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -1186,7 +1190,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 5000
     },
     {
       "additional_sections": {},
@@ -1217,7 +1222,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EMany many moons ago ....\u003C/p\u003E",
+            "prompt": "<p>Many many moons ago ....</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -1352,7 +1357,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 6000
     },
     {
       "additional_sections": {},
@@ -1380,7 +1386,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EDo dinosaurs sing?\u003C/p\u003E",
+            "prompt": "<p>Do dinosaurs sing?</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446707-Embeddable::OpenResponse"
@@ -1439,7 +1445,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EDinosaurs\u0026nbsp;are a diverse group of\u0026nbsp;reptiles[note 1]\u0026nbsp;of the\u0026nbsp;clade\u0026nbsp;Dinosauria. They first appeared during the\u0026nbsp;Triassic\u0026nbsp;period, between 243 and 233.23\u0026nbsp;million years ago, although the exact origin and timing of the\u0026nbsp;evolution of dinosaurs\u0026nbsp;is the subject of active research. They became the dominant terrestrial\u0026nbsp;vertebrates\u0026nbsp;after the\u0026nbsp;Triassic\u0026ndash;Jurassic extinction event\u0026nbsp;201.3\u0026nbsp;million years ago; their dominance continued through the\u0026nbsp;Jurassic\u0026nbsp;and\u0026nbsp;Cretaceous\u0026nbsp;periods. The\u0026nbsp;fossil\u0026nbsp;record demonstrates that\u0026nbsp;birds\u0026nbsp;are modern\u0026nbsp;feathered dinosaurs, having\u0026nbsp;evolved\u0026nbsp;from earlier\u0026nbsp;theropods\u0026nbsp;during the\u0026nbsp;Late Jurassic\u0026nbsp;epoch. As such, birds were the only dinosaur lineage to survive the\u0026nbsp;Cretaceous\u0026ndash;Paleogene extinction event\u0026nbsp;approximately 66\u0026nbsp;million years ago. Dinosaurs can therefore be divided into\u0026nbsp;avian dinosaurs, or birds; and\u0026nbsp;non-avian dinosaurs, which are all dinosaurs other than birds.\u003C/p\u003E",
+            "content": "<p>Dinosaurs&nbsp;are a diverse group of&nbsp;reptiles[note 1]&nbsp;of the&nbsp;clade&nbsp;Dinosauria. They first appeared during the&nbsp;Triassic&nbsp;period, between 243 and 233.23&nbsp;million years ago, although the exact origin and timing of the&nbsp;evolution of dinosaurs&nbsp;is the subject of active research. They became the dominant terrestrial&nbsp;vertebrates&nbsp;after the&nbsp;Triassic&ndash;Jurassic extinction event&nbsp;201.3&nbsp;million years ago; their dominance continued through the&nbsp;Jurassic&nbsp;and&nbsp;Cretaceous&nbsp;periods. The&nbsp;fossil&nbsp;record demonstrates that&nbsp;birds&nbsp;are modern&nbsp;feathered dinosaurs, having&nbsp;evolved&nbsp;from earlier&nbsp;theropods&nbsp;during the&nbsp;Late Jurassic&nbsp;epoch. As such, birds were the only dinosaur lineage to survive the&nbsp;Cretaceous&ndash;Paleogene extinction event&nbsp;approximately 66&nbsp;million years ago. Dinosaurs can therefore be divided into&nbsp;avian dinosaurs, or birds; and&nbsp;non-avian dinosaurs, which are all dinosaurs other than birds.</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -1473,7 +1479,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 7000
     },
     {
       "additional_sections": {},
@@ -1504,7 +1511,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EWhy do ridgebacks swim\u003C/p\u003E",
+            "prompt": "<p>Why do ridgebacks swim</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -1581,7 +1588,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003E\u003Cimg class=\"tinymce-img-float-left\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/13135443/Rhodesian-Ridgeback-puppy.jpg\" alt=\"RR puppy\" width=\"329\" height=\"219\" /\u003EImage is floated left\u003C/p\u003E",
+            "content": "<p><img class=\"tinymce-img-float-left\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/13135443/Rhodesian-Ridgeback-puppy.jpg\" alt=\"RR puppy\" width=\"329\" height=\"219\" />Image is floated left</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -1640,7 +1647,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 8000
     },
     {
       "additional_sections": {},
@@ -1654,7 +1662,7 @@
       "show_info_assessment": true,
       "show_interactive": true,
       "show_sidebar": true,
-      "sidebar": "\u003Cp\u003EThe\u0026nbsp;horns\u0026nbsp;are\u0026nbsp;made of\u0026nbsp;keratin, the same type of protein that makes up hair and fingernails. Both African species and the Sumatran\u0026nbsp;rhinoceros\u0026nbsp;have two\u0026nbsp;horns, while the Indian and Javan\u0026nbsp;rhinoceros\u0026nbsp;have a single\u0026nbsp;horn.\u003Cimg class=\"\" src=\"https://media.npr.org/assets/img/2018/11/26/gettyimages-1037119694-b96478b91b6b2bf29205ab0961b141d5a2ffc770-s800-c85.jpg\" alt=\"Rhino\" width=\"400\" height=\"299\" /\u003E\u003C/p\u003E",
+      "sidebar": "<p>The&nbsp;horns&nbsp;are&nbsp;made of&nbsp;keratin, the same type of protein that makes up hair and fingernails. Both African species and the Sumatran&nbsp;rhinoceros&nbsp;have two&nbsp;horns, while the Indian and Javan&nbsp;rhinoceros&nbsp;have a single&nbsp;horn.<img class=\"\" src=\"https://media.npr.org/assets/img/2018/11/26/gettyimages-1037119694-b96478b91b6b2bf29205ab0961b141d5a2ffc770-s800-c85.jpg\" alt=\"Rhino\" width=\"400\" height=\"299\" /></p>",
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": false,
       "embeddables": [
@@ -1670,7 +1678,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "prompt": "<p>why does ...</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::ImageQuestion",
             "ref_id": "211796-Embeddable::ImageQuestion",
@@ -1680,7 +1688,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EWe want to see some text here\u003C/p\u003E",
+            "content": "<p>We want to see some text here</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -1702,7 +1710,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "prompt": "<p>why does ...</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -1737,7 +1745,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "prompt": "<p>why does ...</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446700-Embeddable::OpenResponse"
@@ -1820,7 +1828,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EExternal Script is not included. Feedback elements not included. Tracked Question not included\u003C/p\u003E",
+            "content": "<p>External Script is not included. Feedback elements not included. Tracked Question not included</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -1854,7 +1862,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 1000
     },
     {
       "additional_sections": {},
@@ -1876,7 +1885,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Scooby\",\"correct\":false},{\"id\":\"2\",\"content\":\"Bugs\",\"correct\":false},{\"id\":\"3\",\"content\":\"Fred\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice vertical layout, single answer, not required, no hint. And no correct answer specified\u003C/p\u003E\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Scooby\",\"correct\":false},{\"id\":\"2\",\"content\":\"Bugs\",\"correct\":false},{\"id\":\"3\",\"content\":\"Fred\",\"correct\":false}],\"prompt\":\"<p>Managed Interactive Multiple choice vertical layout, single answer, not required, no hint. And no correct answer specified</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -1926,7 +1935,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"horizontal\",\"choices\":[{\"id\":\"1\",\"content\":\"Wile E.\",\"correct\":true},{\"id\":\"2\",\"content\":\"Bluestone\",\"correct\":false},{\"id\":\"3\",\"content\":\"Mr. Slate\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice horizontal layout, single answer, not required, no hint. Correct answer specified but no custom feedback\u003C/p\u003E\",\"enableCheckAnswer\":true}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"horizontal\",\"choices\":[{\"id\":\"1\",\"content\":\"Wile E.\",\"correct\":true},{\"id\":\"2\",\"content\":\"Bluestone\",\"correct\":false},{\"id\":\"3\",\"content\":\"Mr. Slate\",\"correct\":false}],\"prompt\":\"<p>Managed Interactive Multiple choice horizontal layout, single answer, not required, no hint. Correct answer specified but no custom feedback</p>\",\"enableCheckAnswer\":true}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -1976,7 +1985,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":true,\"layout\":\"likert\",\"choices\":[{\"id\":\"1\",\"content\":\"Kirk\",\"correct\":false,\"choiceFeedback\":\"too much trouble with tribbles\"},{\"id\":\"2\",\"content\":\"Picard\",\"correct\":true,\"choiceFeedback\":\"FLUTE!\"},{\"id\":\"3\",\"content\":\"Janeway\",\"correct\":true,\"choiceFeedback\":\"Red!\"}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice likert layout, multiple answers, not required, no hint. And correct answer specified with custom feedback\u003C/p\u003E\",\"enableCheckAnswer\":true,\"customFeedback\":true}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":true,\"layout\":\"likert\",\"choices\":[{\"id\":\"1\",\"content\":\"Kirk\",\"correct\":false,\"choiceFeedback\":\"too much trouble with tribbles\"},{\"id\":\"2\",\"content\":\"Picard\",\"correct\":true,\"choiceFeedback\":\"FLUTE!\"},{\"id\":\"3\",\"content\":\"Janeway\",\"correct\":true,\"choiceFeedback\":\"Red!\"}],\"prompt\":\"<p>Managed Interactive Multiple choice likert layout, multiple answers, not required, no hint. And correct answer specified with custom feedback</p>\",\"enableCheckAnswer\":true,\"customFeedback\":true}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -2034,8 +2043,8 @@
             "layout": "vertical",
             "multi_answer": false,
             "name": "Multiple Choice Question element",
-            "prediction_feedback": "\u003Cp\u003EPick the animal with four legs\u003C/p\u003E",
-            "prompt": "\u003Cp\u003Evertical layout with custom feedback and correct answer\u003C/p\u003E",
+            "prediction_feedback": "<p>Pick the animal with four legs</p>",
+            "prompt": "<p>vertical layout with custom feedback and correct answer</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -2072,8 +2081,8 @@
             "layout": "vertical",
             "multi_answer": true,
             "name": "Multiple Choice Question element",
-            "prediction_feedback": "\u003Cp\u003Ebaby shark doot doot do do do do dodoot\u003C/p\u003E",
-            "prompt": "\u003Cp\u003Ehorizontal layout allows multiple answers\u0026nbsp; provide prediction feedback\u003C/p\u003E",
+            "prediction_feedback": "<p>baby shark doot doot do do do do dodoot</p>",
+            "prompt": "<p>horizontal layout allows multiple answers&nbsp; provide prediction feedback</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -2116,7 +2125,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003ELikert layout no other options\u003C/p\u003E",
+            "prompt": "<p>Likert layout no other options</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -2154,7 +2163,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Evertical layout\u003C/p\u003E\r\n\u003Cp\u003Eshow as dropdown menu\u003C/p\u003E\r\n\u003Cp\u003Echeck answer\u003C/p\u003E\r\n\u003Cp\u003Eanswer required\u003C/p\u003E",
+            "prompt": "<p>vertical layout</p>\r\n<p>show as dropdown menu</p>\r\n<p>check answer</p>\r\n<p>answer required</p>",
             "show_as_menu": true,
             "show_in_featured_question_report": true,
             "choices": [
@@ -2181,7 +2190,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EVariety of multiple choice questions\u003C/p\u003E",
+            "content": "<p>Variety of multiple choice questions</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -2190,7 +2199,8 @@
           },
           "section": "header_block"
         }
-      ]
+      ],
+      "id": 2000
     },
     {
       "additional_sections": {},
@@ -2212,7 +2222,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EWhat do you think of the managed interactive version of open response without hint of default answer and not required?\u003C/p\u003E\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>What do you think of the managed interactive version of open response without hint of default answer and not required?</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -2262,7 +2272,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003Ethis is a managed interactive open response (master) prompt. This is required, has a hint and a default answer.\u003C/p\u003E\",\"hint\":\"\u003Cp\u003EPrime\u003C/p\u003E\",\"defaultAnswer\":\"Optimus\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>this is a managed interactive open response (master) prompt. This is required, has a hint and a default answer.</p>\",\"hint\":\"<p>Prime</p>\",\"defaultAnswer\":\"Optimus\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -2318,7 +2328,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EOpen text plain\u003C/p\u003E",
+            "prompt": "<p>Open text plain</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446701-Embeddable::OpenResponse"
@@ -2334,8 +2344,8 @@
             "is_hidden": false,
             "is_prediction": false,
             "name": "",
-            "prediction_feedback": "\u003Cp\u003EThe squirrel\u003C/p\u003E",
-            "prompt": "\u003Cp\u003EOpen Response with default Text and prediction feedback\u003C/p\u003E",
+            "prediction_feedback": "<p>The squirrel</p>",
+            "prompt": "<p>Open Response with default Text and prediction feedback</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446702-Embeddable::OpenResponse"
@@ -2346,20 +2356,21 @@
           "embeddable": {
             "default_text": "",
             "give_prediction_feedback": false,
-            "hint": "\u003Cp\u003EThe rain in Spain stays mainly on the plane\u003C/p\u003E",
+            "hint": "<p>The rain in Spain stays mainly on the plane</p>",
             "is_full_width": true,
             "is_hidden": false,
             "is_prediction": true,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EWith a hint and answer is required\u003C/p\u003E",
+            "prompt": "<p>With a hint and answer is required</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446703-Embeddable::OpenResponse"
           },
           "section": null
         }
-      ]
+      ],
+      "id": 3000
     },
     {
       "additional_sections": {},
@@ -2389,7 +2400,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "prompt": "<p>why does ...</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::ImageQuestion",
             "ref_id": "211797-Embeddable::ImageQuestion",
@@ -2410,7 +2421,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ehorizontal choices\u003C/p\u003E",
+            "prompt": "<p>horizontal choices</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -2445,7 +2456,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy do hyenas laugh?\u003C/p\u003E",
+            "prompt": "<p>why do hyenas laugh?</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446704-Embeddable::OpenResponse"
@@ -2454,7 +2465,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003E\u003Cstrong\u003E1. \"Do or do not. There is no try.\"\u003C/strong\u003E\u003Cbr /\u003EThis quote is a simple lesson in\u0026nbsp;commitment\u0026nbsp;and the power in giving something our all\u0026mdash;not just giving it a try.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E2. \"You must unlearn what you have learned.\"\u003C/strong\u003E\u003Cbr /\u003EAs creatures of habit, we tend to love our routines and our go-to methods. But sometimes, we have to\u0026nbsp;shake up our process\u0026mdash;and even unlearn our process\u0026mdash;to succeed.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E3. \"Named must be your fear before banish it you can.\"\u003C/strong\u003E\u003Cbr /\u003EWhen we\u0026nbsp;call out our fears directly, they become less of an ominous force and a challenge we can tackle head-on.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E4. \"Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. Hate leads to suffering.\"\u003C/strong\u003E\u003Cbr /\u003EIndulging our fears\u0026nbsp;(whether with our thoughts or actions) gives them power to hold us back. And Yoda points out how our fears can impact those around us, too.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E6. \"That is why you fail.\"\u003C/strong\u003E\u003Cbr /\u003EWhen Luke says he doesn't believe in the power of the force, Yoda serves up this piece of wisdom. We have to\u0026nbsp;believe in ourselves\u0026mdash;and our abilities\u0026mdash;in order to persevere and succeed. Without faith, we can only go so far.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E7. \"The greatest teacher, failure is.\"\u003C/strong\u003E\u003Cbr /\u003EWe\u0026nbsp;learn from our mistakes\u0026mdash;plain and simple.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E8. \"Pass on what you have learned.\"\u003C/strong\u003E\u003Cbr /\u003EThe wisdom we gain in life is a gift to pass along\u0026mdash;not to keep to ourselves. Make like Yoda and share your insights with others.\u003C/p\u003E",
+            "content": "<p><strong>1. \"Do or do not. There is no try.\"</strong><br />This quote is a simple lesson in&nbsp;commitment&nbsp;and the power in giving something our all&mdash;not just giving it a try.</p>\r\n<p><strong>2. \"You must unlearn what you have learned.\"</strong><br />As creatures of habit, we tend to love our routines and our go-to methods. But sometimes, we have to&nbsp;shake up our process&mdash;and even unlearn our process&mdash;to succeed.</p>\r\n<p><strong>3. \"Named must be your fear before banish it you can.\"</strong><br />When we&nbsp;call out our fears directly, they become less of an ominous force and a challenge we can tackle head-on.</p>\r\n<p><strong>4. \"Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. Hate leads to suffering.\"</strong><br />Indulging our fears&nbsp;(whether with our thoughts or actions) gives them power to hold us back. And Yoda points out how our fears can impact those around us, too.</p>\r\n<p><strong>6. \"That is why you fail.\"</strong><br />When Luke says he doesn't believe in the power of the force, Yoda serves up this piece of wisdom. We have to&nbsp;believe in ourselves&mdash;and our abilities&mdash;in order to persevere and succeed. Without faith, we can only go so far.</p>\r\n<p><strong>7. \"The greatest teacher, failure is.\"</strong><br />We&nbsp;learn from our mistakes&mdash;plain and simple.</p>\r\n<p><strong>8. \"Pass on what you have learned.\"</strong><br />The wisdom we gain in life is a gift to pass along&mdash;not to keep to ourselves. Make like Yoda and share your insights with others.</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "Yodaisms",
@@ -2538,7 +2549,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 4000
     },
     {
       "additional_sections": {},
@@ -2552,7 +2564,7 @@
       "show_info_assessment": true,
       "show_interactive": true,
       "show_sidebar": true,
-      "sidebar": "\u003Cp\u003EThe\u0026nbsp;blue whale\u0026nbsp;(Balaenoptera musculus) is a marine mammal belonging to the baleen whale suborder Mysticeti. Reaching a maximum confirmed length of 29.9 meters (98 feet) and weight of 173 tonnes (190 tons), it is the largest animal known to have ever existed.\u003C/p\u003E\n\u003Cp\u003E\u003Cimg class=\"\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg/1600px-Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg\" alt=\"Blue Whale\" width=\"400\" height=\"277\" /\u003E\u003C/p\u003E",
+      "sidebar": "<p>The&nbsp;blue whale&nbsp;(Balaenoptera musculus) is a marine mammal belonging to the baleen whale suborder Mysticeti. Reaching a maximum confirmed length of 29.9 meters (98 feet) and weight of 173 tonnes (190 tons), it is the largest animal known to have ever existed.</p>\n<p><img class=\"\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg/1600px-Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg\" alt=\"Blue Whale\" width=\"400\" height=\"277\" /></p>",
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": false,
       "embeddables": [
@@ -2560,15 +2572,15 @@
           "embeddable": {
             "bg_source": "Drawing",
             "bg_url": "",
-            "drawing_prompt": "\u003Cp\u003EWhat do you want to draw\u003C/p\u003E",
+            "drawing_prompt": "<p>What do you want to draw</p>",
             "give_prediction_feedback": false,
-            "hint": "\u003Cp\u003Ehint\u003C/p\u003E",
+            "hint": "<p>hint</p>",
             "is_full_width": false,
             "is_hidden": false,
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003E\u003Cimg class=\"\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2016/07/15155435/Pug-puppies.464864288-1.jpg\" alt=\"sleepy pugs\" width=\"467\" height=\"311\" /\u003E\u003C/p\u003E",
+            "prompt": "<p><img class=\"\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2016/07/15155435/Pug-puppies.464864288-1.jpg\" alt=\"sleepy pugs\" width=\"467\" height=\"311\" /></p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::ImageQuestion",
             "ref_id": "211798-Embeddable::ImageQuestion"
@@ -2588,7 +2600,7 @@
             "multi_answer": true,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EHow many devs does it take to change a lightbulb?\u003C/p\u003E",
+            "prompt": "<p>How many devs does it take to change a lightbulb?</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -2623,7 +2635,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EA puppy is a juvenile dog. Some puppies can weigh 1\u0026ndash;1.5 kg, while larger ones can weigh up to 7\u0026ndash;11 kg. All healthy puppies grow quickly after birth. A puppy's coat color may change as the puppy grows older, as is commonly seen in breeds such as the Yorkshire Terrier\u003C/p\u003E",
+            "prompt": "<p>A puppy is a juvenile dog. Some puppies can weigh 1&ndash;1.5 kg, while larger ones can weigh up to 7&ndash;11 kg. All healthy puppies grow quickly after birth. A puppy's coat color may change as the puppy grows older, as is commonly seen in breeds such as the Yorkshire Terrier</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446705-Embeddable::OpenResponse"
@@ -2632,7 +2644,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EThe beagle is a breed of small hound that is similar in appearance to the much larger foxhound. The beagle is a scent hound, developed primarily for hunting hare.\u003C/p\u003E",
+            "content": "<p>The beagle is a breed of small hound that is similar in appearance to the much larger foxhound. The beagle is a scent hound, developed primarily for hunting hare.</p>",
             "is_full_width": false,
             "is_hidden": false,
             "name": "",
@@ -2756,7 +2768,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EAll elements in a responsive layout. Intro has an image floated right.\u003C/p\u003E\n\u003Cp\u003EThe\u0026nbsp;German Shepherd\u0026nbsp;(German:\u0026nbsp;Deutscher Sch\u0026auml;ferhund,\u0026nbsp;German pronunciation:\u0026nbsp;[\u02c8d\u0254\u028ft\u0283\u0250 \u02c8\u0283\u025b\u02d0f\u0250\u02cch\u028ant]) is a breed of medium to large-sized\u0026nbsp;working dog\u0026nbsp;that originated in Germany. In the English language, the breed's officially recognized name is\u0026nbsp;German Shepherd Dog\u0026nbsp;(GSD). The breed was officially known as the\u0026nbsp;Alsatian\u0026nbsp;in the UK from after the\u0026nbsp;First World War\u0026nbsp;until 1977 when its name was changed back to German Shepherd.[1]\u0026nbsp;Despite its primitive,\u0026nbsp;wolf-like appearance the German Shepherd is a relatively modern breed of dog, with their origin dating to 1899.\u003C/p\u003E\n\u003Cp\u003EAs a\u0026nbsp;herding dog, German Shepherds are working dogs developed originally for herding\u0026nbsp;sheep. Since that time, however, because of their strength, intelligence, trainability, and obedience, German Shepherds around the world are often the preferred breed for many types of work, including\u0026nbsp;disability assistance,\u0026nbsp;search-and-rescue,\u0026nbsp;police\u0026nbsp;and\u0026nbsp;military\u0026nbsp;roles and acting.[2]\u0026nbsp;The German Shepherd is the second-most registered breed by the\u0026nbsp;American Kennel Club[3]\u0026nbsp;and seventh-most registered breed by\u0026nbsp;The Kennel Club\u0026nbsp;in the United Kingdom\u003C/p\u003E\n\u003Cp\u003E\u003Cbr /\u003E\u003Cimg class=\"tinymce-img-float-right\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12193133/German-Shepherd-Puppy-Fetch-500x500.jpg\" alt=\"german shephard puppy\" width=\"250\" height=\"250\" /\u003E\u003C/p\u003E",
+            "content": "<p>All elements in a responsive layout. Intro has an image floated right.</p>\n<p>The&nbsp;German Shepherd&nbsp;(German:&nbsp;Deutscher Sch&auml;ferhund,&nbsp;German pronunciation:&nbsp;[ˈdɔʏtʃɐ ˈʃɛːfɐˌhʊnt]) is a breed of medium to large-sized&nbsp;working dog&nbsp;that originated in Germany. In the English language, the breed's officially recognized name is&nbsp;German Shepherd Dog&nbsp;(GSD). The breed was officially known as the&nbsp;Alsatian&nbsp;in the UK from after the&nbsp;First World War&nbsp;until 1977 when its name was changed back to German Shepherd.[1]&nbsp;Despite its primitive,&nbsp;wolf-like appearance the German Shepherd is a relatively modern breed of dog, with their origin dating to 1899.</p>\n<p>As a&nbsp;herding dog, German Shepherds are working dogs developed originally for herding&nbsp;sheep. Since that time, however, because of their strength, intelligence, trainability, and obedience, German Shepherds around the world are often the preferred breed for many types of work, including&nbsp;disability assistance,&nbsp;search-and-rescue,&nbsp;police&nbsp;and&nbsp;military&nbsp;roles and acting.[2]&nbsp;The German Shepherd is the second-most registered breed by the&nbsp;American Kennel Club[3]&nbsp;and seventh-most registered breed by&nbsp;The Kennel Club&nbsp;in the United Kingdom</p>\n<p><br /><img class=\"tinymce-img-float-right\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12193133/German-Shepherd-Puppy-Fetch-500x500.jpg\" alt=\"german shephard puppy\" width=\"250\" height=\"250\" /></p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -2815,7 +2827,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 5000
     },
     {
       "additional_sections": {},
@@ -2846,7 +2859,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EMany many moons ago ....\u003C/p\u003E",
+            "prompt": "<p>Many many moons ago ....</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -2981,7 +2994,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 6000
     },
     {
       "additional_sections": {},
@@ -3009,7 +3023,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EDo dinosaurs sing?\u003C/p\u003E",
+            "prompt": "<p>Do dinosaurs sing?</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446707-Embeddable::OpenResponse"
@@ -3068,7 +3082,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EDinosaurs\u0026nbsp;are a diverse group of\u0026nbsp;reptiles[note 1]\u0026nbsp;of the\u0026nbsp;clade\u0026nbsp;Dinosauria. They first appeared during the\u0026nbsp;Triassic\u0026nbsp;period, between 243 and 233.23\u0026nbsp;million years ago, although the exact origin and timing of the\u0026nbsp;evolution of dinosaurs\u0026nbsp;is the subject of active research. They became the dominant terrestrial\u0026nbsp;vertebrates\u0026nbsp;after the\u0026nbsp;Triassic\u0026ndash;Jurassic extinction event\u0026nbsp;201.3\u0026nbsp;million years ago; their dominance continued through the\u0026nbsp;Jurassic\u0026nbsp;and\u0026nbsp;Cretaceous\u0026nbsp;periods. The\u0026nbsp;fossil\u0026nbsp;record demonstrates that\u0026nbsp;birds\u0026nbsp;are modern\u0026nbsp;feathered dinosaurs, having\u0026nbsp;evolved\u0026nbsp;from earlier\u0026nbsp;theropods\u0026nbsp;during the\u0026nbsp;Late Jurassic\u0026nbsp;epoch. As such, birds were the only dinosaur lineage to survive the\u0026nbsp;Cretaceous\u0026ndash;Paleogene extinction event\u0026nbsp;approximately 66\u0026nbsp;million years ago. Dinosaurs can therefore be divided into\u0026nbsp;avian dinosaurs, or birds; and\u0026nbsp;non-avian dinosaurs, which are all dinosaurs other than birds.\u003C/p\u003E",
+            "content": "<p>Dinosaurs&nbsp;are a diverse group of&nbsp;reptiles[note 1]&nbsp;of the&nbsp;clade&nbsp;Dinosauria. They first appeared during the&nbsp;Triassic&nbsp;period, between 243 and 233.23&nbsp;million years ago, although the exact origin and timing of the&nbsp;evolution of dinosaurs&nbsp;is the subject of active research. They became the dominant terrestrial&nbsp;vertebrates&nbsp;after the&nbsp;Triassic&ndash;Jurassic extinction event&nbsp;201.3&nbsp;million years ago; their dominance continued through the&nbsp;Jurassic&nbsp;and&nbsp;Cretaceous&nbsp;periods. The&nbsp;fossil&nbsp;record demonstrates that&nbsp;birds&nbsp;are modern&nbsp;feathered dinosaurs, having&nbsp;evolved&nbsp;from earlier&nbsp;theropods&nbsp;during the&nbsp;Late Jurassic&nbsp;epoch. As such, birds were the only dinosaur lineage to survive the&nbsp;Cretaceous&ndash;Paleogene extinction event&nbsp;approximately 66&nbsp;million years ago. Dinosaurs can therefore be divided into&nbsp;avian dinosaurs, or birds; and&nbsp;non-avian dinosaurs, which are all dinosaurs other than birds.</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -3102,7 +3116,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 7000
     },
     {
       "additional_sections": {},
@@ -3116,7 +3131,7 @@
       "show_info_assessment": true,
       "show_interactive": true,
       "show_sidebar": true,
-      "sidebar": "\u003Cp\u003EThe\u0026nbsp;horns\u0026nbsp;are\u0026nbsp;made of\u0026nbsp;keratin, the same type of protein that makes up hair and fingernails. Both African species and the Sumatran\u0026nbsp;rhinoceros\u0026nbsp;have two\u0026nbsp;horns, while the Indian and Javan\u0026nbsp;rhinoceros\u0026nbsp;have a single\u0026nbsp;horn.\u003Cimg class=\"\" src=\"https://media.npr.org/assets/img/2018/11/26/gettyimages-1037119694-b96478b91b6b2bf29205ab0961b141d5a2ffc770-s800-c85.jpg\" alt=\"Rhino\" width=\"400\" height=\"299\" /\u003E\u003C/p\u003E",
+      "sidebar": "<p>The&nbsp;horns&nbsp;are&nbsp;made of&nbsp;keratin, the same type of protein that makes up hair and fingernails. Both African species and the Sumatran&nbsp;rhinoceros&nbsp;have two&nbsp;horns, while the Indian and Javan&nbsp;rhinoceros&nbsp;have a single&nbsp;horn.<img class=\"\" src=\"https://media.npr.org/assets/img/2018/11/26/gettyimages-1037119694-b96478b91b6b2bf29205ab0961b141d5a2ffc770-s800-c85.jpg\" alt=\"Rhino\" width=\"400\" height=\"299\" /></p>",
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": false,
       "embeddables": [
@@ -3132,7 +3147,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "prompt": "<p>why does ...</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::ImageQuestion",
             "ref_id": "211796-Embeddable::ImageQuestion",
@@ -3142,7 +3157,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EWe want to see some text here\u003C/p\u003E",
+            "content": "<p>We want to see some text here</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -3164,7 +3179,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "prompt": "<p>why does ...</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -3199,7 +3214,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "prompt": "<p>why does ...</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446700-Embeddable::OpenResponse"
@@ -3282,7 +3297,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EExternal Script is not included. Feedback elements not included. Tracked Question not included\u003C/p\u003E",
+            "content": "<p>External Script is not included. Feedback elements not included. Tracked Question not included</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -3316,7 +3331,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 1000
     },
     {
       "additional_sections": {},
@@ -3338,7 +3354,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Scooby\",\"correct\":false},{\"id\":\"2\",\"content\":\"Bugs\",\"correct\":false},{\"id\":\"3\",\"content\":\"Fred\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice vertical layout, single answer, not required, no hint. And no correct answer specified\u003C/p\u003E\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Scooby\",\"correct\":false},{\"id\":\"2\",\"content\":\"Bugs\",\"correct\":false},{\"id\":\"3\",\"content\":\"Fred\",\"correct\":false}],\"prompt\":\"<p>Managed Interactive Multiple choice vertical layout, single answer, not required, no hint. And no correct answer specified</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -3388,7 +3404,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"horizontal\",\"choices\":[{\"id\":\"1\",\"content\":\"Wile E.\",\"correct\":true},{\"id\":\"2\",\"content\":\"Bluestone\",\"correct\":false},{\"id\":\"3\",\"content\":\"Mr. Slate\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice horizontal layout, single answer, not required, no hint. Correct answer specified but no custom feedback\u003C/p\u003E\",\"enableCheckAnswer\":true}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"horizontal\",\"choices\":[{\"id\":\"1\",\"content\":\"Wile E.\",\"correct\":true},{\"id\":\"2\",\"content\":\"Bluestone\",\"correct\":false},{\"id\":\"3\",\"content\":\"Mr. Slate\",\"correct\":false}],\"prompt\":\"<p>Managed Interactive Multiple choice horizontal layout, single answer, not required, no hint. Correct answer specified but no custom feedback</p>\",\"enableCheckAnswer\":true}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -3438,7 +3454,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":true,\"layout\":\"likert\",\"choices\":[{\"id\":\"1\",\"content\":\"Kirk\",\"correct\":false,\"choiceFeedback\":\"too much trouble with tribbles\"},{\"id\":\"2\",\"content\":\"Picard\",\"correct\":true,\"choiceFeedback\":\"FLUTE!\"},{\"id\":\"3\",\"content\":\"Janeway\",\"correct\":true,\"choiceFeedback\":\"Red!\"}],\"prompt\":\"\u003Cp\u003EManaged Interactive Multiple choice likert layout, multiple answers, not required, no hint. And correct answer specified with custom feedback\u003C/p\u003E\",\"enableCheckAnswer\":true,\"customFeedback\":true}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":true,\"layout\":\"likert\",\"choices\":[{\"id\":\"1\",\"content\":\"Kirk\",\"correct\":false,\"choiceFeedback\":\"too much trouble with tribbles\"},{\"id\":\"2\",\"content\":\"Picard\",\"correct\":true,\"choiceFeedback\":\"FLUTE!\"},{\"id\":\"3\",\"content\":\"Janeway\",\"correct\":true,\"choiceFeedback\":\"Red!\"}],\"prompt\":\"<p>Managed Interactive Multiple choice likert layout, multiple answers, not required, no hint. And correct answer specified with custom feedback</p>\",\"enableCheckAnswer\":true,\"customFeedback\":true}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -3496,8 +3512,8 @@
             "layout": "vertical",
             "multi_answer": false,
             "name": "Multiple Choice Question element",
-            "prediction_feedback": "\u003Cp\u003EPick the animal with four legs\u003C/p\u003E",
-            "prompt": "\u003Cp\u003Evertical layout with custom feedback and correct answer\u003C/p\u003E",
+            "prediction_feedback": "<p>Pick the animal with four legs</p>",
+            "prompt": "<p>vertical layout with custom feedback and correct answer</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -3534,8 +3550,8 @@
             "layout": "vertical",
             "multi_answer": true,
             "name": "Multiple Choice Question element",
-            "prediction_feedback": "\u003Cp\u003Ebaby shark doot doot do do do do dodoot\u003C/p\u003E",
-            "prompt": "\u003Cp\u003Ehorizontal layout allows multiple answers\u0026nbsp; provide prediction feedback\u003C/p\u003E",
+            "prediction_feedback": "<p>baby shark doot doot do do do do dodoot</p>",
+            "prompt": "<p>horizontal layout allows multiple answers&nbsp; provide prediction feedback</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -3578,7 +3594,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003ELikert layout no other options\u003C/p\u003E",
+            "prompt": "<p>Likert layout no other options</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -3616,7 +3632,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Evertical layout\u003C/p\u003E\r\n\u003Cp\u003Eshow as dropdown menu\u003C/p\u003E\r\n\u003Cp\u003Echeck answer\u003C/p\u003E\r\n\u003Cp\u003Eanswer required\u003C/p\u003E",
+            "prompt": "<p>vertical layout</p>\r\n<p>show as dropdown menu</p>\r\n<p>check answer</p>\r\n<p>answer required</p>",
             "show_as_menu": true,
             "show_in_featured_question_report": true,
             "choices": [
@@ -3643,7 +3659,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EVariety of multiple choice questions\u003C/p\u003E",
+            "content": "<p>Variety of multiple choice questions</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -3652,7 +3668,8 @@
           },
           "section": "header_block"
         }
-      ]
+      ],
+      "id": 2000
     },
     {
       "additional_sections": {},
@@ -3674,7 +3691,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EWhat do you think of the managed interactive version of open response without hint of default answer and not required?\u003C/p\u003E\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>What do you think of the managed interactive version of open response without hint of default answer and not required?</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -3724,7 +3741,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003Ethis is a managed interactive open response (master) prompt. This is required, has a hint and a default answer.\u003C/p\u003E\",\"hint\":\"\u003Cp\u003EPrime\u003C/p\u003E\",\"defaultAnswer\":\"Optimus\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>this is a managed interactive open response (master) prompt. This is required, has a hint and a default answer.</p>\",\"hint\":\"<p>Prime</p>\",\"defaultAnswer\":\"Optimus\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -3780,7 +3797,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EOpen text plain\u003C/p\u003E",
+            "prompt": "<p>Open text plain</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446701-Embeddable::OpenResponse"
@@ -3796,8 +3813,8 @@
             "is_hidden": false,
             "is_prediction": false,
             "name": "",
-            "prediction_feedback": "\u003Cp\u003EThe squirrel\u003C/p\u003E",
-            "prompt": "\u003Cp\u003EOpen Response with default Text and prediction feedback\u003C/p\u003E",
+            "prediction_feedback": "<p>The squirrel</p>",
+            "prompt": "<p>Open Response with default Text and prediction feedback</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446702-Embeddable::OpenResponse"
@@ -3808,20 +3825,21 @@
           "embeddable": {
             "default_text": "",
             "give_prediction_feedback": false,
-            "hint": "\u003Cp\u003EThe rain in Spain stays mainly on the plane\u003C/p\u003E",
+            "hint": "<p>The rain in Spain stays mainly on the plane</p>",
             "is_full_width": true,
             "is_hidden": false,
             "is_prediction": true,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EWith a hint and answer is required\u003C/p\u003E",
+            "prompt": "<p>With a hint and answer is required</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446703-Embeddable::OpenResponse"
           },
           "section": null
         }
-      ]
+      ],
+      "id": 3000
     },
     {
       "additional_sections": {},
@@ -3851,7 +3869,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy does ...\u003C/p\u003E",
+            "prompt": "<p>why does ...</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::ImageQuestion",
             "ref_id": "211797-Embeddable::ImageQuestion",
@@ -3872,7 +3890,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ehorizontal choices\u003C/p\u003E",
+            "prompt": "<p>horizontal choices</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -3907,7 +3925,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003Ewhy do hyenas laugh?\u003C/p\u003E",
+            "prompt": "<p>why do hyenas laugh?</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446704-Embeddable::OpenResponse"
@@ -3916,7 +3934,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003E\u003Cstrong\u003E1. \"Do or do not. There is no try.\"\u003C/strong\u003E\u003Cbr /\u003EThis quote is a simple lesson in\u0026nbsp;commitment\u0026nbsp;and the power in giving something our all\u0026mdash;not just giving it a try.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E2. \"You must unlearn what you have learned.\"\u003C/strong\u003E\u003Cbr /\u003EAs creatures of habit, we tend to love our routines and our go-to methods. But sometimes, we have to\u0026nbsp;shake up our process\u0026mdash;and even unlearn our process\u0026mdash;to succeed.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E3. \"Named must be your fear before banish it you can.\"\u003C/strong\u003E\u003Cbr /\u003EWhen we\u0026nbsp;call out our fears directly, they become less of an ominous force and a challenge we can tackle head-on.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E4. \"Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. Hate leads to suffering.\"\u003C/strong\u003E\u003Cbr /\u003EIndulging our fears\u0026nbsp;(whether with our thoughts or actions) gives them power to hold us back. And Yoda points out how our fears can impact those around us, too.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E6. \"That is why you fail.\"\u003C/strong\u003E\u003Cbr /\u003EWhen Luke says he doesn't believe in the power of the force, Yoda serves up this piece of wisdom. We have to\u0026nbsp;believe in ourselves\u0026mdash;and our abilities\u0026mdash;in order to persevere and succeed. Without faith, we can only go so far.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E7. \"The greatest teacher, failure is.\"\u003C/strong\u003E\u003Cbr /\u003EWe\u0026nbsp;learn from our mistakes\u0026mdash;plain and simple.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cstrong\u003E8. \"Pass on what you have learned.\"\u003C/strong\u003E\u003Cbr /\u003EThe wisdom we gain in life is a gift to pass along\u0026mdash;not to keep to ourselves. Make like Yoda and share your insights with others.\u003C/p\u003E",
+            "content": "<p><strong>1. \"Do or do not. There is no try.\"</strong><br />This quote is a simple lesson in&nbsp;commitment&nbsp;and the power in giving something our all&mdash;not just giving it a try.</p>\r\n<p><strong>2. \"You must unlearn what you have learned.\"</strong><br />As creatures of habit, we tend to love our routines and our go-to methods. But sometimes, we have to&nbsp;shake up our process&mdash;and even unlearn our process&mdash;to succeed.</p>\r\n<p><strong>3. \"Named must be your fear before banish it you can.\"</strong><br />When we&nbsp;call out our fears directly, they become less of an ominous force and a challenge we can tackle head-on.</p>\r\n<p><strong>4. \"Fear is the path to the dark side. Fear leads to anger. Anger leads to hate. Hate leads to suffering.\"</strong><br />Indulging our fears&nbsp;(whether with our thoughts or actions) gives them power to hold us back. And Yoda points out how our fears can impact those around us, too.</p>\r\n<p><strong>6. \"That is why you fail.\"</strong><br />When Luke says he doesn't believe in the power of the force, Yoda serves up this piece of wisdom. We have to&nbsp;believe in ourselves&mdash;and our abilities&mdash;in order to persevere and succeed. Without faith, we can only go so far.</p>\r\n<p><strong>7. \"The greatest teacher, failure is.\"</strong><br />We&nbsp;learn from our mistakes&mdash;plain and simple.</p>\r\n<p><strong>8. \"Pass on what you have learned.\"</strong><br />The wisdom we gain in life is a gift to pass along&mdash;not to keep to ourselves. Make like Yoda and share your insights with others.</p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "Yodaisms",
@@ -4000,7 +4018,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 4000
     },
     {
       "additional_sections": {},
@@ -4014,7 +4033,7 @@
       "show_info_assessment": true,
       "show_interactive": true,
       "show_sidebar": true,
-      "sidebar": "\u003Cp\u003EThe\u0026nbsp;blue whale\u0026nbsp;(Balaenoptera musculus) is a marine mammal belonging to the baleen whale suborder Mysticeti. Reaching a maximum confirmed length of 29.9 meters (98 feet) and weight of 173 tonnes (190 tons), it is the largest animal known to have ever existed.\u003C/p\u003E\n\u003Cp\u003E\u003Cimg class=\"\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg/1600px-Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg\" alt=\"Blue Whale\" width=\"400\" height=\"277\" /\u003E\u003C/p\u003E",
+      "sidebar": "<p>The&nbsp;blue whale&nbsp;(Balaenoptera musculus) is a marine mammal belonging to the baleen whale suborder Mysticeti. Reaching a maximum confirmed length of 29.9 meters (98 feet) and weight of 173 tonnes (190 tons), it is the largest animal known to have ever existed.</p>\n<p><img class=\"\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/1/1c/Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg/1600px-Anim1754_-_Flickr_-_NOAA_Photo_Library.jpg\" alt=\"Blue Whale\" width=\"400\" height=\"277\" /></p>",
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": false,
       "embeddables": [
@@ -4022,15 +4041,15 @@
           "embeddable": {
             "bg_source": "Drawing",
             "bg_url": "",
-            "drawing_prompt": "\u003Cp\u003EWhat do you want to draw\u003C/p\u003E",
+            "drawing_prompt": "<p>What do you want to draw</p>",
             "give_prediction_feedback": false,
-            "hint": "\u003Cp\u003Ehint\u003C/p\u003E",
+            "hint": "<p>hint</p>",
             "is_full_width": false,
             "is_hidden": false,
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003E\u003Cimg class=\"\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2016/07/15155435/Pug-puppies.464864288-1.jpg\" alt=\"sleepy pugs\" width=\"467\" height=\"311\" /\u003E\u003C/p\u003E",
+            "prompt": "<p><img class=\"\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2016/07/15155435/Pug-puppies.464864288-1.jpg\" alt=\"sleepy pugs\" width=\"467\" height=\"311\" /></p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::ImageQuestion",
             "ref_id": "211798-Embeddable::ImageQuestion"
@@ -4050,7 +4069,7 @@
             "multi_answer": true,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EHow many devs does it take to change a lightbulb?\u003C/p\u003E",
+            "prompt": "<p>How many devs does it take to change a lightbulb?</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -4085,7 +4104,7 @@
             "is_prediction": false,
             "name": "",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EA puppy is a juvenile dog. Some puppies can weigh 1\u0026ndash;1.5 kg, while larger ones can weigh up to 7\u0026ndash;11 kg. All healthy puppies grow quickly after birth. A puppy's coat color may change as the puppy grows older, as is commonly seen in breeds such as the Yorkshire Terrier\u003C/p\u003E",
+            "prompt": "<p>A puppy is a juvenile dog. Some puppies can weigh 1&ndash;1.5 kg, while larger ones can weigh up to 7&ndash;11 kg. All healthy puppies grow quickly after birth. A puppy's coat color may change as the puppy grows older, as is commonly seen in breeds such as the Yorkshire Terrier</p>",
             "show_in_featured_question_report": true,
             "type": "Embeddable::OpenResponse",
             "ref_id": "446705-Embeddable::OpenResponse"
@@ -4094,7 +4113,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EThe beagle is a breed of small hound that is similar in appearance to the much larger foxhound. The beagle is a scent hound, developed primarily for hunting hare.\u003C/p\u003E",
+            "content": "<p>The beagle is a breed of small hound that is similar in appearance to the much larger foxhound. The beagle is a scent hound, developed primarily for hunting hare.</p>",
             "is_full_width": false,
             "is_hidden": false,
             "name": "",
@@ -4218,7 +4237,7 @@
         },
         {
           "embeddable": {
-            "content": "\u003Cp\u003EAll elements in a responsive layout. Intro has an image floated right.\u003C/p\u003E\n\u003Cp\u003EThe\u0026nbsp;German Shepherd\u0026nbsp;(German:\u0026nbsp;Deutscher Sch\u0026auml;ferhund,\u0026nbsp;German pronunciation:\u0026nbsp;[\u02c8d\u0254\u028ft\u0283\u0250 \u02c8\u0283\u025b\u02d0f\u0250\u02cch\u028ant]) is a breed of medium to large-sized\u0026nbsp;working dog\u0026nbsp;that originated in Germany. In the English language, the breed's officially recognized name is\u0026nbsp;German Shepherd Dog\u0026nbsp;(GSD). The breed was officially known as the\u0026nbsp;Alsatian\u0026nbsp;in the UK from after the\u0026nbsp;First World War\u0026nbsp;until 1977 when its name was changed back to German Shepherd.[1]\u0026nbsp;Despite its primitive,\u0026nbsp;wolf-like appearance the German Shepherd is a relatively modern breed of dog, with their origin dating to 1899.\u003C/p\u003E\n\u003Cp\u003EAs a\u0026nbsp;herding dog, German Shepherds are working dogs developed originally for herding\u0026nbsp;sheep. Since that time, however, because of their strength, intelligence, trainability, and obedience, German Shepherds around the world are often the preferred breed for many types of work, including\u0026nbsp;disability assistance,\u0026nbsp;search-and-rescue,\u0026nbsp;police\u0026nbsp;and\u0026nbsp;military\u0026nbsp;roles and acting.[2]\u0026nbsp;The German Shepherd is the second-most registered breed by the\u0026nbsp;American Kennel Club[3]\u0026nbsp;and seventh-most registered breed by\u0026nbsp;The Kennel Club\u0026nbsp;in the United Kingdom\u003C/p\u003E\n\u003Cp\u003E\u003Cbr /\u003E\u003Cimg class=\"tinymce-img-float-right\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12193133/German-Shepherd-Puppy-Fetch-500x500.jpg\" alt=\"german shephard puppy\" width=\"250\" height=\"250\" /\u003E\u003C/p\u003E",
+            "content": "<p>All elements in a responsive layout. Intro has an image floated right.</p>\n<p>The&nbsp;German Shepherd&nbsp;(German:&nbsp;Deutscher Sch&auml;ferhund,&nbsp;German pronunciation:&nbsp;[ˈdɔʏtʃɐ ˈʃɛːfɐˌhʊnt]) is a breed of medium to large-sized&nbsp;working dog&nbsp;that originated in Germany. In the English language, the breed's officially recognized name is&nbsp;German Shepherd Dog&nbsp;(GSD). The breed was officially known as the&nbsp;Alsatian&nbsp;in the UK from after the&nbsp;First World War&nbsp;until 1977 when its name was changed back to German Shepherd.[1]&nbsp;Despite its primitive,&nbsp;wolf-like appearance the German Shepherd is a relatively modern breed of dog, with their origin dating to 1899.</p>\n<p>As a&nbsp;herding dog, German Shepherds are working dogs developed originally for herding&nbsp;sheep. Since that time, however, because of their strength, intelligence, trainability, and obedience, German Shepherds around the world are often the preferred breed for many types of work, including&nbsp;disability assistance,&nbsp;search-and-rescue,&nbsp;police&nbsp;and&nbsp;military&nbsp;roles and acting.[2]&nbsp;The German Shepherd is the second-most registered breed by the&nbsp;American Kennel Club[3]&nbsp;and seventh-most registered breed by&nbsp;The Kennel Club&nbsp;in the United Kingdom</p>\n<p><br /><img class=\"tinymce-img-float-right\" src=\"https://s3.amazonaws.com/cdn-origin-etr.akc.org/wp-content/uploads/2017/11/12193133/German-Shepherd-Puppy-Fetch-500x500.jpg\" alt=\"german shephard puppy\" width=\"250\" height=\"250\" /></p>",
             "is_full_width": true,
             "is_hidden": false,
             "name": "",
@@ -4277,7 +4296,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 5000
     },
     {
       "additional_sections": {},
@@ -4308,7 +4328,7 @@
             "multi_answer": false,
             "name": "Multiple Choice Question element",
             "prediction_feedback": "",
-            "prompt": "\u003Cp\u003EMany many moons ago ....\u003C/p\u003E",
+            "prompt": "<p>Many many moons ago ....</p>",
             "show_as_menu": false,
             "show_in_featured_question_report": true,
             "choices": [
@@ -4443,7 +4463,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 6000
     }
   ],
   "plugins": [],

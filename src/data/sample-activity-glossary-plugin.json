@@ -92,7 +92,8 @@
           },
           "section": null
         }
-      ]
+      ],
+      "id": 1000
     },
     {
       "additional_sections": {},
@@ -137,7 +138,8 @@
           },
           "section": null
         }
-      ]
+      ],
+      "id": 2000
     },
     {
       "additional_sections": {},
@@ -154,7 +156,8 @@
       "sidebar": null,
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": false,
-      "embeddables": []
+      "embeddables": [],
+      "id": 3000
     }
   ],
   "plugins": [

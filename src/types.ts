@@ -110,6 +110,7 @@ export interface Page {
   is_completion: boolean;
   is_hidden: boolean;
   layout: string;
+  id: number;
   name?: string | null;
   position: number,
   show_header?: boolean;

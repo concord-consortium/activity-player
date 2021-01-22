@@ -105,7 +105,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 1000
     },
     {
       "additional_sections": {},
@@ -249,7 +250,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 2000
     },
     {
       "additional_sections": {},
@@ -493,7 +495,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 3000
     },
     {
       "additional_sections": {},
@@ -537,7 +540,8 @@
           },
           "section": "interactive_box"
         }
-      ]
+      ],
+      "id": 4000
     },
     {
       "additional_sections": {},
@@ -606,7 +610,8 @@
           },
           "section": null
         }
-      ]
+      ],
+      "id": 5000
     },
     {
       "additional_sections": {},
@@ -624,7 +629,8 @@
       "sidebar_title": "Did you know?",
       "text": null,
       "toggle_info_assessment": false,
-      "embeddables": []
+      "embeddables": [],
+      "id": 6000
     }
   ],
   "plugins": [],

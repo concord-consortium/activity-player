@@ -6,7 +6,7 @@ import { SequenceNav } from "./activity-header/sequence-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle } from "../utilities/activity-utils";
+import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue } from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
@@ -88,8 +88,9 @@ export class App extends React.PureComponent<IProps, IState> {
       const sequence: Sequence | undefined = sequencePath ? await getSequenceDefinition(sequencePath) : undefined;
       const showSequenceIntro = sequence != null;
 
-      // page 0 is introduction, inner pages start from 1 and match page.position in exported activity
-      const currentPage = Number(queryValue("page")) || 0;
+      // page 0 is introduction, inner pages start from 1 and match page.position in exported activity if numeric
+      // or the page.position of the matching page id if prefixed with "page_<id>"
+      const currentPage = getPagePositionFromQueryValue(activity, queryValue("page"));
 
       const showThemeButtons = queryValueBoolean("themeButtons");
       const hideWarning = queryValueBoolean("hideWarning");
@@ -382,4 +383,5 @@ export class App extends React.PureComponent<IProps, IState> {
   private handleLoadPlugins = () => {
     this.setState({ pluginsLoaded: true });
   }
+
 }

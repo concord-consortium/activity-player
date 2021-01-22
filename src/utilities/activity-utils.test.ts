@@ -1,12 +1,12 @@
 import { Activity } from "../types";
 import { isQuestion, isEmbeddableSectionHidden, getVisibleEmbeddablesOnPage, VisibleEmbeddables,
-  EmbeddableSections, getPageSectionQuestionCount, numQuestionsOnPreviousPages, enableReportButton } from "./activity-utils";
+  EmbeddableSections, getPageSectionQuestionCount, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue } from "./activity-utils";
 import _activityHidden from "../data/sample-activity-hidden-content.json";
 import _activity from "../data/sample-activity-multiple-layout-types.json";
 import { DefaultTestActivity } from "../test-utils/model-for-tests";
 
-const activityHidden = _activityHidden as Activity;
-const activity = _activity as Activity;
+const activityHidden = _activityHidden as unknown as Activity;
+const activity = _activity as unknown as Activity;
 
 describe("Activity utility functions", () => {
   it("determines if embeddable is a question", () => {
@@ -79,5 +79,19 @@ describe("Activity utility functions", () => {
     DefaultTestActivity.student_report_enabled = true;
     const modifiedDefaultActivityReportEnabled = enableReportButton(DefaultTestActivity);
     expect(modifiedDefaultActivityReportEnabled).toBe(true);
+  });
+  it("gets the page position from the query value", () => {
+    expect(getPagePositionFromQueryValue(activity)).toBe(0);
+    expect(getPagePositionFromQueryValue(activity, undefined)).toBe(0);
+    expect(getPagePositionFromQueryValue(activity, "0")).toBe(0);
+    expect(getPagePositionFromQueryValue(activity, "1")).toBe(1);
+    expect(getPagePositionFromQueryValue(activity, "-1")).toBe(0);
+    expect(getPagePositionFromQueryValue(activity, "1000")).toBe(activity.pages.length);
+    expect(getPagePositionFromQueryValue(activity, "foo")).toBe(0);
+    expect(getPagePositionFromQueryValue(activity, "page_foo")).toBe(0);
+    expect(getPagePositionFromQueryValue(activity, "page_1000")).toBe(1);
+    expect(getPagePositionFromQueryValue(activity, "page_1001")).toBe(0);
+    expect(getPagePositionFromQueryValue(activity, "page_2000")).toBe(2);
+    expect(getPagePositionFromQueryValue(activity, "page_3000")).toBe(3);
   });
 });
