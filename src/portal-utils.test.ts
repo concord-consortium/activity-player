@@ -1,7 +1,6 @@
 import { handleGetFirebaseJWT } from "./portal-utils";
 
-const firebaseApp = "firebase-app";
-const params = { firebase_app: firebaseApp };
+const params = { firebase_app: "firebase-app" };
 const rawFirebaseJWT = "rawFirebaseJWT";
 const rejectMessage = "Bad PortalJWT!";
 
