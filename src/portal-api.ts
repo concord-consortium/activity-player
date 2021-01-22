@@ -211,18 +211,23 @@ const getPortalJWTWithBearerToken = (basePortalUrl: string, rawToken: string) =>
 // everything else defaults to report-service-dev
 //
 // The default can be overriden with a firebaseApp URL param
-// Use a function here so we don't compute the app name until it is actually
-// needed. This will be useful if we start supporting OAuth where the initially
-// loaded parameters might change after the initial load
-const _firebaseAppName = null;
+//
+// A memoized function is used here so we don't compute the app name until it is
+// actually needed. This will be useful if we start supporting OAuth where the
+// initially loaded parameters would change before firestore is initialized.
+// A full dynamic function is a little risky since some data might go to two
+// different databases which would be difficult to debug.
+let _firebaseAppName: FirebaseAppName | null = null;
 export const firebaseAppName = ():FirebaseAppName => {
   if (_firebaseAppName) {
     return _firebaseAppName;
   }
 
   const firebaseAppParam = queryValue("firebaseApp");
-  if (firebaseAppParam) {
-    return firebaseAppParam as FirebaseAppName;
+  if (firebaseAppParam === "report-service-pro" ||
+      firebaseAppParam === "report-service-dev") {
+    _firebaseAppName = firebaseAppParam as FirebaseAppName;
+    return _firebaseAppName;
   }
 
   const { origin, pathname } = window.location;
@@ -231,10 +236,12 @@ export const firebaseAppName = ():FirebaseAppName => {
   // falsey pathname
   if(origin === "https://activity-player.concord.org" &&
      (!pathname || pathname === "/")) {
-    return "report-service-pro";
+    _firebaseAppName = "report-service-pro";
   } else {
-    return "report-service-dev";
+    _firebaseAppName = "report-service-dev";
   }
+
+  return _firebaseAppName;
 };
 
 const getActivityPlayerFirebaseJWT = (basePortalUrl: string, rawPortalJWT: string, classHash?: string) => {
