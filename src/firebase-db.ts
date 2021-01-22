@@ -70,7 +70,7 @@ export const onFirestoreSaveTimeout = (handler: () => void) => {
   requestTracker.timeoutHandler = handler;
 };
 // The provided handler will be invoked when all the requests that took longer than MAX_FIRESTORE_SAVE_TIME
-// finally succeed. This lets the app to notify users that network issues have been resolved.
+// finally succeed. This lets the app notify users that network issues have been resolved.
 export const onFirestoreSaveAfterTimeout = (handler: () => void) => {
   requestTracker.successAfterTimeoutHandler = handler;
 };
