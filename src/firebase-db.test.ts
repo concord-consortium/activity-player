@@ -14,7 +14,7 @@ describe("Firestore", () => {
 
   beforeEach(async () => {
     const docResult = {
-      set: jest.fn(),
+      set: jest.fn(() => new Promise((resolve) => resolve())),
       onSnapshot: jest.fn()
     };
     const docMock: any = jest.fn(() => docResult);
