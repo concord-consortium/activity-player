@@ -235,7 +235,7 @@ export const firebaseAppName = ():FirebaseAppName => {
   } else {
     return "report-service-dev";
   }
-}
+};
 
 const getActivityPlayerFirebaseJWT = (basePortalUrl: string, rawPortalJWT: string, classHash?: string) => {
   const _classHash = classHash ? { class_hash: classHash } : undefined;
