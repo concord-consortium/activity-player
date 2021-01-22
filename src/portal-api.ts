@@ -247,7 +247,7 @@ export const firebaseAppName = ():FirebaseAppName => {
 // this is used for testing purposes
 export const clearFirebaseAppName = () => {
   _firebaseAppName = null;
-}
+};
 
 const getActivityPlayerFirebaseJWT = (basePortalUrl: string, rawPortalJWT: string, classHash?: string) => {
   const _classHash = classHash ? { class_hash: classHash } : undefined;

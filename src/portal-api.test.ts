@@ -8,22 +8,22 @@ describe("firebaseAppName", () => {
 
   describe("with different urls", () => {
     const oldWindowLocation = window.location;
-    const url = document.createElement('a');
+    const url = document.createElement("a");
 
     beforeEach(() => {
       // Need to mock window location
       // The properties of `a` elements match the origin, hostname, pathname props of window.location
       // so that is a hacky way to mock the window location
 
-      // @ts-expect-error
+      // @ts-expect-error: mocking window location
       delete window.location;
-      // @ts-expect-error
+      // @ts-expect-error: mocking window location
       window.location = url;
     });
 
     afterEach(() => {
       // restore `window.location` to the `jsdom` `Location` object
-      window.location = oldWindowLocation
+      window.location = oldWindowLocation;
     });
 
     it("returns report-service-pro when the url is https://activity-player.concord.org", () => {
@@ -44,7 +44,7 @@ describe("firebaseAppName", () => {
     it("can be overriden to report-service-pro with a branch url", () => {
       url.href = "https://activity-player.concord.org/branch/foo?firebaseApp=report-service-pro";
       expect(firebaseAppName()).toBe("report-service-pro");
-    })
+    });
 
   });
 

@@ -20,7 +20,7 @@ jest.mock("../firebase-db", () => (
 describe("getReportUrl", () => {
   beforeEach(() => {
     clearFirebaseAppName();
-  })
+  });
 
   it("returns a valid reportURL with basic AP params", () => {
     window.history.replaceState({}, "Test", "/?activity=https://lara.example.com/api/v1/activities/345.json");
