@@ -10,7 +10,16 @@ describe("Embeddable Sidetip component", () => {
         "description": null,
         "author_data": "{\"tipType\":\"sideTip\",\"sideTip\":{\"content\":\"this is a sidetip\",\"mediaType\":\"none\",\"mediaURL\":\"\"}}",
         "approved_script_label": "teacherEditionTips",
-        "component_label": "sideTip"
+        "component_label": "sideTip",
+        "approved_script": {
+          "name": "Teacher Edition",
+          "url": "https://example.com/plugin.js",
+          "label": "teacherEditionTips",
+          "description": "Teacher Edition Plugin",
+          "version": "1.0.0",
+          "json_url": "https://example.com/manifest.json",
+          "authoring_metadata": "{}"
+        }
       },
       "is_hidden": false,
       "is_full_width": false,

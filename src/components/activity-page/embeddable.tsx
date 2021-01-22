@@ -54,7 +54,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
       wrappedEmbeddable: embeddable,
       wrappedEmbeddableContainer: embeddableDivTarget.current || undefined,
       sendCustomMessage,
-      pluginType: "TeacherEdition"
+      approvedScriptLabel: "teacherEditionTips"
     };
     const validPluginContext = validateEmbeddablePluginContextForWrappedEmbeddable(pluginContext);
     if (validPluginContext && teacherEditionMode && pluginsLoaded) {

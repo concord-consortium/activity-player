@@ -34,11 +34,22 @@ export interface LibraryInteractive {
   data: LibraryInteractiveData;
 }
 
+export interface ApprovedScript {
+  name: string;
+  url: string;
+  label: string;
+  description: string;
+  version: string;
+  json_url: string;
+  authoring_metadata: string;
+}
+
 export interface Plugin {
   description: string | null;
   author_data: string;
   approved_script_label: string;
   component_label: string;
+  approved_script: ApprovedScript;
 }
 
 export interface EmbeddableBase {

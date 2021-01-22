@@ -311,7 +311,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"Some long teacher tip. \\n\\nAbove the interactive. I think this will cause the interactive to shrink if the window height is small enough. But this has to be a lot of text so it takes up a lot of \\n\\ns \\n\\np \\n\\na \\n\\nc\\n\\ne\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "questionWrapper"
+              "component_label": "questionWrapper",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": false,
@@ -1128,7 +1137,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"This teacher tip content shows below the interactive. \\nThe interactive sizing does not include this teacher content above or below the interactive when computing the size of the interactive. \\n\\nSince there is a lot of text here, you can resize your window in a way that you will only be able to see the interactive and the tabs above as well as the content below is not visible without scrolling.\\n\\nThere are more details about this in the introduction box of this page.\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "questionWrapper"
+              "component_label": "questionWrapper",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": false,

@@ -47,7 +47,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"this is an exemplar\",\"teacherTip\":\"this is a teacher tip with top location\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "questionWrapper"
+              "component_label": "questionWrapper",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": false,
@@ -63,7 +72,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"this is an exemplar\",\"teacherTip\":\"this is a teacher tip with sticky location\",\"teacherTipImageOverlay\":\"\",\"location\":\"stickyNote\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "questionWrapper"
+              "component_label": "questionWrapper",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": false,
@@ -79,7 +97,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"this is an exemplar\",\"teacherTip\":\"this is a teacher tip with bottom location\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "questionWrapper"
+              "component_label": "questionWrapper",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": false,
@@ -299,7 +326,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"this is a windowshade\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade"
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": false,
@@ -314,7 +350,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"sideTip\",\"sideTip\":{\"content\":\"this is a sidetip\",\"mediaType\":\"none\",\"mediaURL\":\"\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "sideTip"
+              "component_label": "sideTip",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": false,
@@ -360,7 +405,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"This is a teacher tip window shade\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade"
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": true,
@@ -375,7 +429,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"This is a theory and background window shade\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade"
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": true,
@@ -390,7 +453,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"This is a discussion points window shade\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade"
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": false,
@@ -405,7 +477,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"diggingDeeper\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"This is a digging deeper window shade\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade"
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": false,
@@ -502,7 +583,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"sideTip\",\"sideTip\":{\"content\":\"This is a teacher edition side tip.\",\"mediaType\":\"none\",\"mediaURL\":\"\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "sideTip"
+              "component_label": "sideTip",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": false,
@@ -517,7 +607,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"sideTip\",\"sideTip\":{\"content\":\"This is a teacher edition side tip with markdown.\\n\\n# Capillos iugo Palaemona sacros moenia desunt ducit\\n\\n## Sanguine decidit Iovemque natalibus venturi haberet nos\\n\\nLorem markdownum acernae pendere tegitur trepidantem facias dixit. Ignava est\\ncarbasa, et pugnae ibimus nostri si astra statuit dapes. Nec aevo forti arces\\nnon barbaque postera.\\n\\n> Veri movere. Quae Coei quo oculis illa et iram ante inpositus litora agmina\\n> ignaram Lyncides praeside est acta medullas tosti utque dicta. Caecisque ad\\n> deum frondes, est *ferrum frustra multaque* in venerit cupidine, et non piasti\\n> quoque! Tenent urget, tangunt animos nil papavera terra attonitas odorato dat\\n> [unde coagula](http://et.com/erebi-cum.php).\\n\\nSaxo vestigia esset, ad sinuataque unica, de iugulatus mille per tuum **vero**!\\nQuem decurrere viroque furit? Rapidas amens, per isque lignum volucris ut talia\\nadmoverat; aquarum Acheronte in. Fuit noctis in laudisque guttis lemnius ille\\ntetigit populi tenuissima fecere ripis stratum undas. Quoquam visa solidissima\\ntibi quaerunt: renascitur curru recens, versant ut pro.\",\"mediaType\":\"none\",\"mediaURL\":\"\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "sideTip"
+              "component_label": "sideTip",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": false,
@@ -588,7 +687,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"this is an exemplar\",\"teacherTip\":\"this is a tip\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "questionWrapper"
+              "component_label": "questionWrapper",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": false,
@@ -604,7 +712,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"this is an exemplar\",\"teacherTip\":\"\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "questionWrapper"
+              "component_label": "questionWrapper",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": false,
@@ -753,7 +870,16 @@
               "description": null,
               "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"Answer B is correct\",\"distractorsExplanation\":\"Answers A and C are incorrect\",\"exemplar\":\"exemplar goes here\",\"teacherTip\":\"tip goes here\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
               "approved_script_label": "teacherEditionTips",
-              "component_label": "questionWrapper"
+              "component_label": "questionWrapper",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "Teacher Edition Plugin",
+                "version": "1.0.0",
+                "json_url": "https://example.com/manifest.json",
+                "authoring_metadata": "{}"
+              }
             },
             "is_hidden": false,
             "is_full_width": false,
