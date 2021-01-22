@@ -8,7 +8,7 @@ context("Saving and loading data as an anonymous user", () => {
 
   describe("Setting the run key", () => {
     it("will set the run key if we are not in preview mode", () => {
-      cy.visit("?activity=sample-activity-1&firebase-app=report-service-dev");
+      cy.visit("?activity=sample-activity-1");
       activityPage.getNavPage(2).click();
       cy.url().should("include", "runKey");
     });
@@ -21,7 +21,7 @@ context("Saving and loading data as an anonymous user", () => {
 
   describe("Saving and loading data", () => {
     const runKey = uuidv4();
-    const activityUrl = "?activity=sample-activity-1&firebase-app=report-service-dev&enableFirestorePersistence";
+    const activityUrl = "?activity=sample-activity-1&enableFirestorePersistence";
 
     it("we can use a runKey to retrieve data previously persisted", () => {
       const activityUrlWithRunKey = activityUrl + "&runKey=" + runKey;
