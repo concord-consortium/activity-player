@@ -244,6 +244,11 @@ export const firebaseAppName = ():FirebaseAppName => {
   return _firebaseAppName;
 };
 
+// this is used for testing purposes
+export const clearFirebaseAppName = () => {
+  _firebaseAppName = null;
+}
+
 const getActivityPlayerFirebaseJWT = (basePortalUrl: string, rawPortalJWT: string, classHash?: string) => {
   const _classHash = classHash ? { class_hash: classHash } : undefined;
   const queryParams = { firebase_app: firebaseAppName(), ..._classHash };
