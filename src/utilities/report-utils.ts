@@ -1,12 +1,9 @@
 import { queryValue } from "../utilities/url-query";
 import { getPortalData } from "../firebase-db";
-import { IPortalData } from "../portal-api";
+import { IPortalData, firebaseAppName } from "../portal-api";
 
 // TODO: switch default to production report version before production deploy
 export const DEFAULT_PORTAL_REPORT_URL = "https://portal-report.concord.org/branch/master/index.html";
-// export const DEFAULT_PORTAL_REPORT_URL = "https://localhost:8081/";
-// TODO: switch default to "report-service-pro" before production deploy
-export const DEFAULT_PORTAL_REPORT_FIREBASE_APP = "report-service-dev";
 
 const parseUrl = (url: string) => {
   const a = document.createElement("a");
@@ -21,7 +18,7 @@ const makeSourceKey = (url: string | null) => {
 export const getReportUrl = () => {
   // TODO: switch default to production report version before production deploy
   const reportLink = (queryValue("portal-report") as string) || DEFAULT_PORTAL_REPORT_URL;
-  const reportFirebaseApp = (queryValue("tool-id") as string) || DEFAULT_PORTAL_REPORT_FIREBASE_APP;
+  const reportFirebaseApp = firebaseAppName();
   const activity = queryValue("activity");
   const activityUrl = activity? ((activity.split(".json"))[0]).replace("api/v1/","") : "";
   const runKey= queryValue("runKey");

@@ -4,9 +4,6 @@ import { v4 as uuidv4 } from "uuid";
 import { queryValue, setQueryValue } from "./utilities/url-query";
 import { FirebaseAppName } from "./firebase-db";
 
-// TODO: switch default to "report-service-pro" before production deploy
-export const DEFAULT_FIREBASE_APP: FirebaseAppName = "report-service-dev";
-
 interface PortalClassOffering {
   className: string;
   problemOrdinal: string;
@@ -164,8 +161,6 @@ const PORTAL_JWT_URL_SUFFIX = "api/v1/jwt/portal";
 const FIREBASE_JWT_URL_SUFFIX = "api/v1/jwt/firebase";
 const OFFERING_URL_SUFFIX = "api/v1/offerings";
 
-const firebaseAppName = (queryValue("firebase-app") as FirebaseAppName) || DEFAULT_FIREBASE_APP;
-
 const getErrorMessage = (err: any, res: superagent.Response) => {
   // The response should always be non-null, per the typedef and documentation:
   // cf. https://visionmedia.github.io/superagent/#error-handling
@@ -211,9 +206,52 @@ const getPortalJWTWithBearerToken = (basePortalUrl: string, rawToken: string) =>
   });
 };
 
+// The default firebase app name is based on the URL:
+// only https://activity-player.concord.org defaults to report-service-pro
+// everything else defaults to report-service-dev
+//
+// The default can be overridden with a firebaseApp URL param
+//
+// A memoized function is used here so we don't compute the app name until it is
+// actually needed. This will be useful if we start supporting OAuth where the
+// initially loaded parameters would change before firestore is initialized.
+// A full dynamic function is a little risky since some data might go to two
+// different databases which would be difficult to debug.
+let _firebaseAppName: FirebaseAppName | null = null;
+export const firebaseAppName = ():FirebaseAppName => {
+  if (_firebaseAppName) {
+    return _firebaseAppName;
+  }
+
+  const firebaseAppParam = queryValue("firebaseApp");
+  if (firebaseAppParam === "report-service-pro" ||
+      firebaseAppParam === "report-service-dev") {
+    _firebaseAppName = firebaseAppParam as FirebaseAppName;
+    return _firebaseAppName;
+  }
+
+  const { origin, pathname } = window.location;
+  // According to the spec an empty path like https://activity-player.concord.org
+  // will still have a pathname of "/", but just to be safe this checks for the
+  // falsey pathname
+  if(origin === "https://activity-player.concord.org" &&
+     (!pathname || pathname === "/")) {
+    _firebaseAppName = "report-service-pro";
+  } else {
+    _firebaseAppName = "report-service-dev";
+  }
+
+  return _firebaseAppName;
+};
+
+// this is used for testing purposes
+export const clearFirebaseAppName = () => {
+  _firebaseAppName = null;
+};
+
 const getActivityPlayerFirebaseJWT = (basePortalUrl: string, rawPortalJWT: string, classHash?: string) => {
   const _classHash = classHash ? { class_hash: classHash } : undefined;
-  const queryParams = { firebase_app: firebaseAppName, ..._classHash };
+  const queryParams = { firebase_app: firebaseAppName(), ..._classHash };
   return getFirebaseJWT(basePortalUrl, rawPortalJWT, queryParams);
 };
 
@@ -402,7 +440,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     rawPortalJWT,
     portalJWT,
     database: {
-      appName: firebaseAppName,
+      appName: firebaseAppName(),
       sourceKey,
       rawFirebaseJWT,
     },
@@ -438,7 +476,7 @@ export const anonymousPortalData = (preview: boolean) => {
     toolId,
     toolUserId: "anonymous",
     database: {
-      appName: firebaseAppName,
+      appName: firebaseAppName(),
       sourceKey: hostname
     }
   };

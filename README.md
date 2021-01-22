@@ -98,7 +98,7 @@ Inside of your `package.json` file:
 * portal-report:        sets the url of the student report
 
 #### User data loading:
-* firebase-app={id}: needed to load data from the correct firebase app
+* firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ without a path, defaults to `report-service-pro` every other url `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
 * token={n}:         set by the portal when launching external activity, to authenticate with portal API
 * domain={n}:        set by the portal when launching external activity
 * report-source={id}: which source collection to save data to in firestore (defaults to own hostname)
