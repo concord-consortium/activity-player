@@ -65,7 +65,7 @@ const configurations: IConfigs = {
 const MAX_FIRESTORE_SAVE_TIME = 20000;
 const requestTracker = new RequestTracker(MAX_FIRESTORE_SAVE_TIME);
 // The provided handler will be invoked when some answer doesn't get saved in Firestore within MAX_FIRESTORE_SAVE_TIME.
-// This lets the app to notify users that there are some network issues.
+// This lets the app notify users that there are some network issues.
 export const onFirestoreSaveTimeout = (handler: () => void) => {
   requestTracker.timeoutHandler = handler;
 };
