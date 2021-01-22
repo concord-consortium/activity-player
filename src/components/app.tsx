@@ -13,7 +13,7 @@ import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
-import { fetchPortalData, IPortalData } from "../portal-api";
+import { fetchPortalData, IPortalData, firebaseAppName } from "../portal-api";
 import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB, onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout } from "../firebase-db";
 import { Activity, IEmbeddablePlugin, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
@@ -46,7 +46,7 @@ interface IState {
   currentPage: number;
   teacherEditionMode?: boolean;
   showThemeButtons?: boolean;
-  hideWarning: boolean;
+  showWarning: boolean;
   username: string;
   portalData?: IPortalData;
   sequence?: Sequence;
@@ -71,7 +71,7 @@ export class App extends React.PureComponent<IProps, IState> {
       currentPage: 0,
       teacherEditionMode: false,
       showThemeButtons: false,
-      hideWarning: false,
+      showWarning: false,
       username: "Anonymous",
       showModal: false,
       modalLabel: "",
@@ -102,12 +102,13 @@ export class App extends React.PureComponent<IProps, IState> {
       const currentPage = getPagePositionFromQueryValue(activity, queryValue("page"));
 
       const showThemeButtons = queryValueBoolean("themeButtons");
-      const hideWarning = queryValueBoolean("hideWarning");
+      // Show the warning if we are not running on production
+      const showWarning = firebaseAppName() !== "report-service-pro";
       const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
 
-      const newState: Partial<IState> = {activity, currentPage, showThemeButtons, hideWarning, showSequenceIntro, sequence, teacherEditionMode};
+      const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode};
       setDocumentTitle(activity, currentPage);
 
       let classHash = "";
@@ -172,7 +173,7 @@ export class App extends React.PureComponent<IProps, IState> {
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
           <div className="app" data-cy="app">
-            { !this.state.hideWarning && <WarningBanner/> }
+            { this.state.showWarning && <WarningBanner/> }
             { this.state.teacherEditionMode && <TeacherEditionBanner/>}
             { this.state.showSequenceIntro
               ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
