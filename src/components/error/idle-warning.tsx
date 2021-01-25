@@ -9,6 +9,8 @@ interface IProps {
   timeout: number;
 }
 
+const kMaxTimeInterval = 500; // ms
+
 export const IdleWarning: React.FC<IProps> = ({ username, timeout, onTimeout, onContinue, onExit }) => {
   const [ time, setTime ] = useState(0);
 
@@ -21,7 +23,7 @@ export const IdleWarning: React.FC<IProps> = ({ username, timeout, onTimeout, on
       if (timeDiff >= timeout) {
         window.clearInterval(intervalId);
       }
-    }, Math.min(timeout / 2, 500));
+    }, Math.min(timeout / 2, kMaxTimeInterval));
     return () => window.clearInterval(intervalId);
   }, [timeout]);
 
