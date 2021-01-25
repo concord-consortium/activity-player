@@ -21,6 +21,7 @@ import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getGlossaryEmbeddable } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
 import { Error }  from "./error/error";
+import { IdleWarning } from "./error/idle-warning";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
 import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
 import { ModalDialog } from "./modal-dialog";
@@ -28,11 +29,19 @@ import Modal from "react-modal";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
+import { IdleDetector } from "../utilities/idle-detector";
 
 import "./app.scss";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "Please submit an answer first.";
+
+// User will see the idle warning after kMaxIdleTime
+const kMaxIdleTime = 20 * 60 * 1000; // 20 minutes
+// User session will timeout after kMaxIdleTime + kTimeout
+const kTimeout = 5 * 60 * 1000; // 5 minutes
+
+const kLearnPortalUrl = "https://learn.concord.org";
 
 export type ErrorType = "auth" | "network" | "timeout";
 
@@ -57,6 +66,7 @@ interface IState {
   incompleteQuestions: IncompleteQuestion[];
   pluginsLoaded: boolean;
   errorType: null | ErrorType;
+  idle: boolean;
 }
 interface IProps {}
 
@@ -77,7 +87,8 @@ export class App extends React.PureComponent<IProps, IState> {
       modalLabel: "",
       incompleteQuestions: [],
       pluginsLoaded: false,
-      errorType: null
+      errorType: null,
+      idle: false
     };
   }
 
@@ -163,6 +174,8 @@ export class App extends React.PureComponent<IProps, IState> {
 
       Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint);
 
+      const idleDetector = new IdleDetector({ idle: kMaxIdleTime, onIdle: () => this.setState({ idle: true }) });
+      idleDetector.start();
     } catch (e) {
       console.warn(e);
     }
@@ -192,12 +205,16 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence } = this.state;
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
+    const portalUrl = portalData?.platformId || kLearnPortalUrl;
+    const goToPortal = () => {
+      window.location.href = portalUrl;
+    };
     return (
       <React.Fragment>
         <Header
@@ -208,9 +225,17 @@ export class App extends React.PureComponent<IProps, IState> {
           showSequence={sequence !== undefined}
           onShowSequence={sequence !== undefined ? this.handleShowSequenceIntro : undefined}
         />
-        { errorType !== null
-          ? <Error type={errorType} />
-          : this.renderActivityContent(activity, currentPage, totalPreviousQuestions, fullWidth)
+        {
+          idle && !errorType && 
+          <IdleWarning 
+            timeout={kTimeout} username={username}
+            onTimeout={this.handleTimeout} onContinue={this.handleContinueSession} onExit={goToPortal}
+          />
+        }
+        { errorType &&  <Error type={errorType} portalUrl={portalUrl} /> }
+        {
+          !idle && !errorType && 
+          this.renderActivityContent(activity, currentPage, totalPreviousQuestions, fullWidth)
         }
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
           <Footer
@@ -326,6 +351,16 @@ export class App extends React.PureComponent<IProps, IState> {
     );
   }
 
+  private handleTimeout = () => {
+    this.setState({ errorType: "timeout" });
+  }
+
+  private handleContinueSession = () => {
+    // Note that we don't have to restart IdleDetector. Any action that user has taken to continue session will
+    // be detected and IdleDetector will start counting time again.
+    this.setState({ idle: false });
+  }
+ 
   private handleChangePage = (page: number) => {
     const { currentPage, incompleteQuestions, activity } = this.state;
     if (page > currentPage && incompleteQuestions.length > 0) {
