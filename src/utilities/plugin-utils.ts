@@ -24,12 +24,7 @@ const addUsedPlugin = (plugin: Plugin) => {
   }
 };
 
-<<<<<<< HEAD
-export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, handleLoadPlugins: () => void, teacherEditionMode: boolean) => {
-=======
 export const findUsedPlugins = (activity: Activity, teacherEditionMode: boolean) => {
-  const usedPlugins: PluginInfo[] = [];
->>>>>>> Add plugin data saving [#174286329]
   // search each page for teacher edition plugin use
   for (let page = 0; page < activity.pages.length - 1; page++) {
     if (!activity.pages[page].is_hidden) {
@@ -49,16 +44,12 @@ export const findUsedPlugins = (activity: Activity, teacherEditionMode: boolean)
     }
   });
 
-<<<<<<< HEAD
-  usedPlugins.forEach((usedPlugin) => {
-=======
   return usedPlugins;
 };
 
 export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, handleLoadPlugins: () => void, teacherEditionMode: boolean) => {
-  const usedPlugins = findUsedPlugins(activity, teacherEditionMode);
-  usedPlugins.forEach((plugin) => {
->>>>>>> Add plugin data saving [#174286329]
+  const plugins = findUsedPlugins(activity, teacherEditionMode);
+  plugins.forEach((usedPlugin) => {
     // set plugin label
     const pluginLabel = "plugin" + usedPlugin.id;
     LARA.Plugins.setNextPluginLabel(pluginLabel);
@@ -71,7 +62,7 @@ export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, hand
     script.onload = function() {
       console.log(`plugin${usedPlugin.id} script loaded`);
       usedPlugin.loaded = true;
-      if (usedPlugins.filter((p) => !p.loaded).length === 0) {
+      if (plugins.filter((p) => !p.loaded).length === 0) {
         handleLoadPlugins();
       }
     };
@@ -106,8 +97,8 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 
 // loads the learner plugin state into the firebase write-through cache
 export const loadLearnerPluginState = async (activity: Activity, teacherEditionMode: boolean) => {
-  const usedPlugins = findUsedPlugins(activity, teacherEditionMode);
-  await Promise.all(usedPlugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
+  const plugins = findUsedPlugins(activity, teacherEditionMode);
+  await Promise.all(plugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
 };
 
 export const initializePlugin = (context: IEmbeddablePluginContext) => {
