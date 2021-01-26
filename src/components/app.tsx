@@ -18,7 +18,7 @@ import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB, on
 import { Activity, IEmbeddablePlugin, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
-import { loadPluginScripts, getGlossaryEmbeddable } from "../utilities/plugin-utils";
+import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
 import { Error }  from "./error/error";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
@@ -157,7 +157,9 @@ export class App extends React.PureComponent<IProps, IState> {
       this.setState(newState as IState);
 
       this.LARA = initializeLara();
-      loadPluginScripts(this.LARA, activity, this.handleLoadPlugins, teacherEditionMode);
+      loadLearnerPluginState(activity, teacherEditionMode).then(() => {
+        loadPluginScripts(this.LARA, activity, this.handleLoadPlugins, teacherEditionMode);
+      });
 
       Modal.setAppElement("#app");
 

@@ -12,16 +12,19 @@ import "firebase/auth";
 import "firebase/firestore";
 import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal-api";
 import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
-import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata } from "./types";
+import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
-let portalData: IPortalData | IAnonymousPortalData;
+let portalData: IPortalData | IAnonymousPortalData | null;
 
 const answersPath = (answerId?: string) =>
   `sources/${portalData?.database.sourceKey}/answers${answerId ? "/" + answerId : ""}`;
+
+const learnerPluginStatePath = (docId: string) =>
+  `sources/${portalData?.database.sourceKey}/plugin_states/${docId}`;
 
 export interface WrappedDBAnswer {
   meta: IExportableAnswerMetadata;
@@ -74,16 +77,17 @@ export const onFirestoreSaveTimeout = (handler: () => void) => {
 export const onFirestoreSaveAfterTimeout = (handler: () => void) => {
   requestTracker.successAfterTimeoutHandler = handler;
 };
+let app: firebase.app.App;
 
 // preview mode will run Firestore in offline mode and clear it (as otherwise the local data is persisted).
 export async function initializeDB({ name, preview }: { name: FirebaseAppName, preview: boolean }) {
   const config = configurations[name];
-  firebase.initializeApp(config);
+  app = firebase.initializeApp(config, "activity-player");
 
   // Save action seems to be failing when you try to save a document with a property explicitly set to undefined value.
   // `null` or empty string are fine. ActivityPlayer was not saving some interactive states because of that.
   // See: https://github.com/googleapis/nodejs-firestore/issues/1031#issuecomment-636308604
-  firebase.firestore().settings({
+  app.firestore().settings({
     ignoreUndefinedProperties: true,
   });
 
@@ -100,17 +104,17 @@ export async function initializeDB({ name, preview }: { name: FirebaseAppName, p
   if (queryValueBoolean("clearFirestorePersistence") || preview) {
     // we cannot enable the persistence until the
     // clearing is complete, so this await is necessary
-    await firebase.firestore().clearPersistence();
+    await app.firestore().clearPersistence();
   }
 
   if (queryValueBoolean("enableFirestorePersistence") || preview) {
-    await firebase.firestore().enablePersistence({ synchronizeTabs: true });
-    await firebase.firestore().disableNetwork();
+    await app.firestore().enablePersistence({ synchronizeTabs: true });
+    await app.firestore().disableNetwork();
     // When network is disabled, Firestore promises will never resolve. So tracking requests make no sense.
     requestTracker.disabled = true;
   }
 
-  return firebase.firestore();
+  return app.firestore();
 }
 
 export async function initializeAnonymousDB(preview: boolean) {
@@ -120,11 +124,11 @@ export async function initializeAnonymousDB(preview: boolean) {
 
 export const signInWithToken = async (rawFirestoreJWT: string) => {
   // It's actually useful to sign out first, as firebase seems to stay signed in between page reloads otherwise.
-  await firebase.auth().signOut();
-  return firebase.auth().signInWithCustomToken(rawFirestoreJWT);
+  await app.auth().signOut();
+  return app.auth().signInWithCustomToken(rawFirestoreJWT);
 };
 
-export const setPortalData = (_portalData: IPortalData) => {
+export const setPortalData = (_portalData: IPortalData | null) => {
   portalData = _portalData;
 };
 
@@ -144,7 +148,7 @@ const watchAnswerDocs = (listener: DocumentsListener, questionId?: string) => {
   if (!portalData) {
     throw new Error("Must set portal data first");
   }
-  let query: firebase.firestore.Query = firebase.firestore().collection(answersPath());
+  let query: firebase.firestore.Query = app.firestore().collection(answersPath());
 
   if (portalData.type === "authenticated") {     // logged in user
     query = query
@@ -250,7 +254,7 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     answerDocData = anonymousAnswer;
   }
 
-  const firestoreSetPromise = firebase.firestore()
+  const firestoreSetPromise = app.firestore()
     .doc(answersPath(answer.id))
     .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
 
@@ -258,3 +262,101 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
 
   return firestoreSetPromise;
 }
+
+export const getLearnerPluginStateDocId = (pluginId: number) => {
+  if (!portalData) {
+    return undefined;
+  }
+
+  let docId: string;
+  if (portalData.type === "authenticated") {
+    const {platformId, platformUserId, contextId, resourceLinkId} = portalData;
+    docId = [platformId, platformUserId.toString(), contextId, resourceLinkId, pluginId].join("-");
+  } else {
+    docId = [portalData.runKey, pluginId].join("-");
+  }
+
+  return docId.replace(/[.$[\]#/]/g, "_");
+};
+
+// A write-though cache of the learner plugin states is kept as the plugin's learner state is only loaded
+// once at app startup but it is supplied on the plugin init which happens on any page change.
+
+// TODO: change to watch the learner state so that it works across sessions and not just on the same page
+
+const cachedLearnerPluginState: Record<number, string|null> = {};
+export const getCachedLearnerPluginState = (pluginId: number) => cachedLearnerPluginState[pluginId] || null;
+
+export const getLearnerPluginState = async (pluginId: number) => {
+  const docId = getLearnerPluginStateDocId(pluginId);
+  if (docId === undefined) {
+    return null;
+  }
+
+  if (cachedLearnerPluginState[pluginId]) {
+    return cachedLearnerPluginState[pluginId];
+  }
+
+  let state: string|null = null;
+  try {
+    const doc = await app.firestore()
+      .doc(learnerPluginStatePath(docId))
+      .get();
+
+    const data = doc.data() as IAuthenticatedLearnerPluginState | IAnonymousLearnerPluginState | undefined;
+
+    state = data?.state || null;
+  } catch (e) {} // eslint-disable-line no-empty
+
+  cachedLearnerPluginState[pluginId] = state;
+
+  return state;
+};
+
+export const setLearnerPluginState = async (pluginId: number, state: string): Promise<string> => {
+  if (!portalData) {
+    throw new Error("Not logged in");
+  }
+
+  let learnerPluginState: IAuthenticatedLearnerPluginState | IAnonymousLearnerPluginState;
+  if (portalData.type === "authenticated") {
+    const authenticatedState: IAuthenticatedLearnerPluginState = {
+      platform_id: portalData.platformId,
+      platform_user_id: portalData.platformUserId.toString(),
+      context_id: portalData.contextId,
+      resource_link_id: portalData.resourceLinkId,
+      source_key: portalData.database.sourceKey,
+      tool_id: portalData.toolId,
+      resource_url: portalData.resourceUrl,
+      run_key: "",
+      pluginId,
+      state
+      };
+    learnerPluginState = authenticatedState;
+  } else {
+    const anonymousState: IAnonymousLearnerPluginState = {
+      run_key: portalData.runKey,
+      source_key: portalData.database.sourceKey,
+      resource_url: portalData.resourceUrl,
+      tool_id: portalData.toolId,
+      tool_user_id: "anonymous",
+      platform_user_id: portalData.runKey,
+      pluginId,
+      state
+      };
+    learnerPluginState = anonymousState;
+  }
+
+  const docId = getLearnerPluginStateDocId(pluginId);
+  if (docId === undefined) {
+    throw new Error("Cannot compute learner plugin state doc id");
+  }
+
+  await app.firestore()
+    .doc(learnerPluginStatePath(docId))
+    .set(learnerPluginState);
+
+  cachedLearnerPluginState[pluginId] = state;
+
+  return state;
+};

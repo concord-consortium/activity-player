@@ -42,6 +42,7 @@
   "scripts": {
     "start": "webpack-dev-server --inline --hot --content-base dist/",
     "start:secure": "webpack-dev-server --https --inline --hot --content-base dist/ --cert ~/.localhost-ssl/localhost.pem --key ~/.localhost-ssl/localhost.key",
+    "start:secure:no-certs": "webpack-dev-server --https --inline --hot --content-base dist/",
     "build": "npm-run-all lint:build clean build:webpack",
     "build:webpack": "webpack --mode production --devtool false",
     "clean": "rimraf dist",
