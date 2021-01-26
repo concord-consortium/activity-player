@@ -1,5 +1,5 @@
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
-import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState } from "./firebase-db";
+import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState } from "./firebase-db";
 import { DefaultManagedInteractive } from "./test-utils/model-for-tests";
 import { getAnswerWithMetadata } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata } from "./types";
@@ -179,49 +179,110 @@ describe("Firestore", () => {
 
   describe("#setLearnerPluginState", () => {
     const state = '{"new": "state"}';
-    beforeEach(() => {
-      setPortalData({
-        platformId: "testPlatformId",
-        platformUserId: "testPlatformUserId",
-        contextId: "testContextId",
-        resourceLinkId: "testResourceLinkId",
-        type: "authenticated",
-        offering: {
-          id: 1,
-          activityUrl: "http://example.com/1",
-          rubricUrl: "http://example.com/2"
-        },
-        userType: "learner",
-        database: {
-          appName: "report-service-dev",
-          sourceKey: "1",
-          rawFirebaseJWT: "foo",
-        },
-        toolId: "2",
-        resourceUrl: "http://example.com/3",
-        fullName: "Test Testerson",
-        learnerKey: "bar",
-        basePortalUrl: "http://example.com/",
-        rawPortalJWT: "",
-        portalJWT: {
-          alg: "1",
-          iat: 2,
-          exp: 3,
-          uid: 4,
-          domain: "5",
-          user_type: "learner",
-          user_id: "6",
-          learner_id: 7,
-          class_info_url: "http://example.com/4",
-          offering_id: 8
-        },
-        runRemoteEndpoint: "http://example.com/5"
+
+    describe("with no portal data", () => {
+      beforeEach(() => setPortalData(null));
+
+      it("should throw an error", async () => {
+        expect.assertions(1);
+        await expect(setLearnerPluginState(1, state)).rejects.toEqual(new Error("Not logged in"));
       });
     });
 
-    it("should save data", () => {
-      return setLearnerPluginState(1, state)
-        .then((d) => expect(d).toEqual(state));
+
+    describe("with anonymous portal data", () => {
+      beforeEach(() => {
+        setAnonymousPortalData({
+          type: "anonymous",
+          database: {
+            appName: "report-service-dev",
+            sourceKey: "localhost"
+          },
+          resourceUrl: "http://example/resource",
+          toolId: "activity-player.concord.org",
+          toolUserId: "anonymous",
+          userType: "learner",
+          runKey: ""
+        });
+      });
+
+      it("should save data", () => {
+        return setLearnerPluginState(1, state)
+          .then((d) => expect(d).toEqual(state));
+      });
+    });
+
+    describe("with authenticated portal data", () => {
+      beforeEach(() => {
+        setPortalData({
+          platformId: "testPlatformId",
+          platformUserId: "testPlatformUserId",
+          contextId: "testContextId",
+          resourceLinkId: "testResourceLinkId",
+          type: "authenticated",
+          offering: {
+            id: 1,
+            activityUrl: "http://example.com/1",
+            rubricUrl: "http://example.com/2"
+          },
+          userType: "learner",
+          database: {
+            appName: "report-service-dev",
+            sourceKey: "1",
+            rawFirebaseJWT: "foo",
+          },
+          toolId: "2",
+          resourceUrl: "http://example.com/3",
+          fullName: "Test Testerson",
+          learnerKey: "bar",
+          basePortalUrl: "http://example.com/",
+          rawPortalJWT: "",
+          portalJWT: {
+            alg: "1",
+            iat: 2,
+            exp: 3,
+            uid: 4,
+            domain: "5",
+            user_type: "learner",
+            user_id: "6",
+            learner_id: 7,
+            class_info_url: "http://example.com/4",
+            offering_id: 8
+          },
+          runRemoteEndpoint: "http://example.com/5"
+        });
+      });
+
+      it("should save data", () => {
+        return setLearnerPluginState(1, state)
+          .then((d) => expect(d).toEqual(state));
+      });
+    });
+  });
+
+  describe("#getLearnerPluginStateDocId", () => {
+
+    describe("with no portal data", () => {
+      beforeEach(() => setPortalData(null));
+
+      it("should return undefined", () => {
+        expect(getLearnerPluginStateDocId(1)).toEqual(undefined);
+      });
+
+      // the rest of the code is handled with other tests
+    });
+  });
+
+  describe("#getLearnerPluginState", () => {
+
+    describe("with no portal data", () => {
+      beforeEach(() => setPortalData(null));
+
+      it("should return null", async () => {
+        await expect(getLearnerPluginState(1)).resolves.toEqual(null);
+      });
+
+      // the rest of the code is handled with other tests
     });
   });
 

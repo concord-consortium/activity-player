@@ -18,7 +18,7 @@ import { RequestTracker } from "./utilities/request-tracker";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
-let portalData: IPortalData | IAnonymousPortalData;
+let portalData: IPortalData | IAnonymousPortalData | null;
 
 const answersPath = (answerId?: string) =>
   `sources/${portalData?.database.sourceKey}/answers${answerId ? "/" + answerId : ""}`;
@@ -128,7 +128,7 @@ export const signInWithToken = async (rawFirestoreJWT: string) => {
   return app.auth().signInWithCustomToken(rawFirestoreJWT);
 };
 
-export const setPortalData = (_portalData: IPortalData) => {
+export const setPortalData = (_portalData: IPortalData | null) => {
   portalData = _portalData;
 };
 
