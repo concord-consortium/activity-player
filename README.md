@@ -36,10 +36,10 @@ Testing this is complicated. Here is one approach:
   `https://activity-player.concord.org/branch/master/index.html?activity=https://authoring.staging.concord.org/api/v1/123.json`
 - create a new resource in learn staging using: https://learn.staging.concord.org/eresource/new
 - set the URL of this resource:
-  - replace the `activity-player.concord.org` with `localhost:8080` (or whatever your local server for the activity player is)
+  - replace the `activity-player.concord.org` with `localhost:11000`
   - add a new parameter `portal-report=https://localhost:8081` (or whatever your local server for the portal-report is)
   - the new url will be something like:
-  `https://localhost:8080?activity=https://authoring.staging.concord.org/api/v1/123.json&portal-report=https://localhost:8081`
+  `https://localhost:11000?activity=https://authoring.staging.concord.org/api/v1/123.json&portal-report=https://localhost:8081`
 - assign this resource to a class
 - run the resource as a student in this class
 
