@@ -92,6 +92,10 @@ export class App extends React.PureComponent<IProps, IState> {
     };
   }
 
+  public get portalUrl() {
+    return this.state.portalData?.platformId || kLearnPortalUrl;
+  }
+
   public setError(errorType: ErrorType | null, error?: any) {
     this.setState({ errorType });
     if (errorType) {
@@ -174,7 +178,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
       Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint);
 
-      const idleDetector = new IdleDetector({ idle: kMaxIdleTime, onIdle: () => this.setState({ idle: true }) });
+      const idleDetector = new IdleDetector({ idle: kMaxIdleTime, onIdle: this.handleIdleness });
       idleDetector.start();
     } catch (e) {
       console.warn(e);
@@ -205,16 +209,12 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
-    const portalUrl = portalData?.platformId || kLearnPortalUrl;
-    const goToPortal = () => {
-      window.location.href = portalUrl;
-    };
     return (
       <React.Fragment>
         <Header
@@ -229,10 +229,10 @@ export class App extends React.PureComponent<IProps, IState> {
           idle && !errorType && 
           <IdleWarning 
             timeout={kTimeout} username={username}
-            onTimeout={this.handleTimeout} onContinue={this.handleContinueSession} onExit={goToPortal}
+            onTimeout={this.handleTimeout} onContinue={this.handleContinueSession} onExit={this.goToPortal}
           />
         }
-        { errorType &&  <Error type={errorType} portalUrl={portalUrl} /> }
+        { errorType && <Error type={errorType} onExit={this.goToPortal} /> }
         {
           !idle && !errorType && 
           this.renderActivityContent(activity, currentPage, totalPreviousQuestions, fullWidth)
@@ -351,14 +351,30 @@ export class App extends React.PureComponent<IProps, IState> {
     );
   }
 
+  private handleIdleness = () => {
+    if (!this.state.idle) {
+      // Check current idle value to avoid logging unnecessary "show_idle_warning" events.
+      // Idle detector will keep working even after session timeout.
+      Logger.log({ event: LogEventName.show_idle_warning });
+      this.setState({ idle: true });
+    }
+  }
+
   private handleTimeout = () => {
+    Logger.log({ event: LogEventName.session_timeout });
     this.setState({ errorType: "timeout" });
   }
 
   private handleContinueSession = () => {
+    Logger.log({ event: LogEventName.continue_session });
     // Note that we don't have to restart IdleDetector. Any action that user has taken to continue session will
     // be detected and IdleDetector will start counting time again.
     this.setState({ idle: false });
+  }
+
+  private goToPortal = () => {
+    Logger.log({ event: LogEventName.go_back_to_portal });
+    window.location.href = this.portalUrl;
   }
  
   private handleChangePage = (page: number) => {

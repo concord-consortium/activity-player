@@ -19,6 +19,10 @@
 
   .login-again {
     margin-top: 35px;
+    .link {
+      text-decoration: underline;
+      cursor: pointer;
+    }
   }
 
   button {
