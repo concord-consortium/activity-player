@@ -178,7 +178,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
       Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint);
 
-      const idleDetector = new IdleDetector({ idle: kMaxIdleTime, onIdle: this.handleIdleness });
+      const idleDetector = new IdleDetector({ idle: Number(kMaxIdleTime), onIdle: this.handleIdleness });
       idleDetector.start();
     } catch (e) {
       console.warn(e);
@@ -209,7 +209,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence } = this.state;
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
@@ -228,7 +228,10 @@ export class App extends React.PureComponent<IProps, IState> {
         {
           idle && !errorType && 
           <IdleWarning 
-            timeout={kTimeout} username={username}
+            // __cypressLoggedIn is used to trigger logged in code path for Cypress tests.
+            // Eventually it should be replaced with better patterns for testing logged in users (probably via using 
+            // `token` param and stubbing network requests).
+            timeout={kTimeout} username={username} anonymous={!portalData && queryValue("__cypressLoggedIn") !== "true"}
             onTimeout={this.handleTimeout} onContinue={this.handleContinueSession} onExit={this.goToPortal}
           />
         }
