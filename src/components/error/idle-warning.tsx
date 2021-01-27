@@ -40,7 +40,6 @@ export const IdleWarning: React.FC<IProps> = ({ username, timeout, onTimeout, on
   return (
     <div className="error" data-cy="idle-warning">
       <h1>{username }, your session is about to expire.</h1>
-      <p>Session has been idle over its time limit.</p>
       <p>You will be logged out automatically in 
         <b>{min > 1 && ` ${min} minutes and`}{min === 1 && ` ${min} minute and`}{` ${sec} seconds` }</b>.
       </p>
