@@ -1,6 +1,6 @@
 import { IdleDetector } from "./idle-detector";
 
-const idleTime = 3;
+const idleTime = 20;
 
 describe("IdleDetector", () => {
   it("detects idle user and calls onIdle", (done) => {
@@ -12,7 +12,7 @@ describe("IdleDetector", () => {
     setTimeout(() => {
       expect(onIdle).toHaveBeenCalled();
       done();
-    }, idleTime + 1);
+    }, idleTime + 5);
   });
 
   it("detects user actions user and doesn't call onIdle", (done) => {
@@ -23,12 +23,12 @@ describe("IdleDetector", () => {
 
     setTimeout(() => {
       window.dispatchEvent(new Event("mousemove"));
-    }, idleTime - 1);
+    }, idleTime - 5);
 
     setTimeout(() => {
       expect(onIdle).not.toHaveBeenCalled();
       done();
-    }, idleTime + 1);
+    }, idleTime + 5);
   });
 
   it("calls onActive after user has been idle and active again", (done) => {
@@ -42,11 +42,11 @@ describe("IdleDetector", () => {
       expect(onActive).not.toHaveBeenCalled();
       
       window.dispatchEvent(new Event("mousemove"));
-    }, idleTime + 1);
+    }, idleTime + 5);
 
     setTimeout(() => {
       expect(onActive).toHaveBeenCalled();
       done();
-    }, idleTime + 2);
+    }, idleTime + 10);
   });
 });
