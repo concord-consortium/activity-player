@@ -42,6 +42,10 @@ export enum LogEventName {
   toggle_collapsible_column,
   create_report,
   toggle_hint,
+  show_idle_warning,
+  go_back_to_portal,
+  continue_session,
+  session_timeout
 }
 
 export class Logger {

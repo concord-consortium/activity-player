@@ -21,6 +21,7 @@ import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
 import { Error }  from "./error/error";
+import { IdleWarning } from "./error/idle-warning";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
 import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
 import { ModalDialog } from "./modal-dialog";
@@ -28,11 +29,19 @@ import Modal from "react-modal";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
+import { IdleDetector } from "../utilities/idle-detector";
 
 import "./app.scss";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "Please submit an answer first.";
+
+// User will see the idle warning after kMaxIdleTime
+const kMaxIdleTime = 20 * 60 * 1000; // 20 minutes
+// User session will timeout after kMaxIdleTime + kTimeout
+const kTimeout = 5 * 60 * 1000; // 5 minutes
+
+const kLearnPortalUrl = "https://learn.concord.org";
 
 export type ErrorType = "auth" | "network" | "timeout";
 
@@ -57,6 +66,7 @@ interface IState {
   incompleteQuestions: IncompleteQuestion[];
   pluginsLoaded: boolean;
   errorType: null | ErrorType;
+  idle: boolean;
 }
 interface IProps {}
 
@@ -77,8 +87,13 @@ export class App extends React.PureComponent<IProps, IState> {
       modalLabel: "",
       incompleteQuestions: [],
       pluginsLoaded: false,
-      errorType: null
+      errorType: null,
+      idle: false
     };
+  }
+
+  public get portalUrl() {
+    return this.state.portalData?.platformId || kLearnPortalUrl;
   }
 
   public setError(errorType: ErrorType | null, error?: any) {
@@ -165,6 +180,8 @@ export class App extends React.PureComponent<IProps, IState> {
 
       Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint);
 
+      const idleDetector = new IdleDetector({ idle: Number(kMaxIdleTime), onIdle: this.handleIdleness });
+      idleDetector.start();
     } catch (e) {
       console.warn(e);
     }
@@ -194,7 +211,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence } = this.state;
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
@@ -210,9 +227,20 @@ export class App extends React.PureComponent<IProps, IState> {
           showSequence={sequence !== undefined}
           onShowSequence={sequence !== undefined ? this.handleShowSequenceIntro : undefined}
         />
-        { errorType !== null
-          ? <Error type={errorType} />
-          : this.renderActivityContent(activity, currentPage, totalPreviousQuestions, fullWidth)
+        {
+          idle && !errorType && 
+          <IdleWarning 
+            // __cypressLoggedIn is used to trigger logged in code path for Cypress tests.
+            // Eventually it should be replaced with better patterns for testing logged in users (probably via using 
+            // `token` param and stubbing network requests).
+            timeout={kTimeout} username={username} anonymous={!portalData && queryValue("__cypressLoggedIn") !== "true"}
+            onTimeout={this.handleTimeout} onContinue={this.handleContinueSession} onExit={this.goToPortal}
+          />
+        }
+        { errorType && <Error type={errorType} onExit={this.goToPortal} /> }
+        {
+          !idle && !errorType && 
+          this.renderActivityContent(activity, currentPage, totalPreviousQuestions, fullWidth)
         }
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
           <Footer
@@ -328,6 +356,32 @@ export class App extends React.PureComponent<IProps, IState> {
     );
   }
 
+  private handleIdleness = () => {
+    if (!this.state.idle) {
+      // Check current idle value to avoid logging unnecessary "show_idle_warning" events.
+      // Idle detector will keep working even after session timeout.
+      Logger.log({ event: LogEventName.show_idle_warning });
+      this.setState({ idle: true });
+    }
+  }
+
+  private handleTimeout = () => {
+    Logger.log({ event: LogEventName.session_timeout });
+    this.setState({ errorType: "timeout" });
+  }
+
+  private handleContinueSession = () => {
+    Logger.log({ event: LogEventName.continue_session });
+    // Note that we don't have to restart IdleDetector. Any action that user has taken to continue session will
+    // be detected and IdleDetector will start counting time again.
+    this.setState({ idle: false });
+  }
+
+  private goToPortal = () => {
+    Logger.log({ event: LogEventName.go_back_to_portal });
+    window.location.href = this.portalUrl;
+  }
+ 
   private handleChangePage = (page: number) => {
     const { currentPage, incompleteQuestions, activity } = this.state;
     if (page > currentPage && incompleteQuestions.length > 0) {
