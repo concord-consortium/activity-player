@@ -42,19 +42,22 @@
     }
 
     .header-center {
-      display: flex;
-      flex-direction: row;
       align-items: center;
-      justify-content: flex-start;
+      display: flex;
       flex: 1;
+      flex-direction: row;
+      justify-content: flex-start;
       min-width: 0;
+      overflow: hidden;
 
       .title-container {
-        display: flex;
         align-items: center;
+        border-radius: 4px;
+        display: flex;
         height: 20px;
         padding: 8px 10px;
-        border-radius: 4px;
+        width: calc(100% - 20px);
+
         &.link {
           cursor: pointer;
         }
@@ -70,9 +73,9 @@
         }
 
         .activity-title {
-          white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          white-space: nowrap;
         }
 
         .sequence-icon {
