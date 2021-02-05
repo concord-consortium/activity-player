@@ -105,11 +105,9 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   async UNSAFE_componentWillMount() {
-    /*
+    const skipServiceWorker = !!(window as any).Cypress;
 
-    DISABLE to see if tests pass on GitHub
-
-    if ("serviceWorker" in navigator) {
+    if (!skipServiceWorker && ("serviceWorker" in navigator)) {
       const wb = new Workbox("service-worker.js");
       let registration: ServiceWorkerRegistration | undefined;
 
@@ -155,7 +153,6 @@ export class App extends React.PureComponent<IProps, IState> {
         registration = _registration;
       });
     }
-    */
   }
 
   async componentDidMount() {
