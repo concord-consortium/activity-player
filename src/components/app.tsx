@@ -105,6 +105,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   async UNSAFE_componentWillMount() {
+    // disable the service worker during Cypress tests - otherwise timeout errors occur in several tests
     const skipServiceWorker = !!(window as any).Cypress;
 
     if (!skipServiceWorker && ("serviceWorker" in navigator)) {
