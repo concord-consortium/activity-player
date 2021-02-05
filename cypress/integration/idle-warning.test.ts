@@ -7,11 +7,7 @@ context("Idle warning", () => {
 
   context("when user is anonymous", () => {
     it("shows after 20 minutes of inactivity and lets user continue his work", () => {
-      cy.visit("?activity=sample-activity-1", {
-        onBeforeLoad (win) {
-          delete (win.navigator as any).__proto__.serviceWorker
-        }
-      });
+      cy.visit("?activity=sample-activity-1");
       cy.tick(1000); // necessary to "download" sample activity. AP uses setTimeout(, 250) for fake network request.
       cy.get("[data-cy=activity-summary]").should("contain", "Single Page Test Activity");
       cy.tick(21 * 60 * 1000); // 21 minutes
@@ -29,11 +25,7 @@ context("Idle warning", () => {
     // `token` param and stubbing network requests).
 
     it("shows after 20 minutes of inactivity and lets user continue his work", () => {
-      cy.visit("?activity=sample-activity-1&__cypressLoggedIn=true", {
-        onBeforeLoad (win) {
-          delete (win.navigator as any).__proto__.serviceWorker
-        }
-      });
+      cy.visit("?activity=sample-activity-1&__cypressLoggedIn=true");
       cy.tick(1000); // necessary to "download" sample activity. AP uses setTimeout(, 250) for fake network request.
       cy.get("[data-cy=activity-summary]").should("contain", "Single Page Test Activity");
       cy.tick(21 * 60 * 1000); // 21 minutes
@@ -45,11 +37,7 @@ context("Idle warning", () => {
     });
 
     it("shows after 20 minutes of inactivity and lets user go back to Portal", () => {
-      cy.visit("?activity=sample-activity-1&__cypressLoggedIn=true", {
-        onBeforeLoad (win) {
-          delete (win.navigator as any).__proto__.serviceWorker
-        }
-      });
+      cy.visit("?activity=sample-activity-1&__cypressLoggedIn=true");
       cy.tick(1000); // necessary to "download" sample activity. AP uses setTimeout(, 250) for fake network request.
       cy.get("[data-cy=activity-summary]").should("contain", "Single Page Test Activity");
       cy.tick(21 * 60 * 1000); // 21 minutes

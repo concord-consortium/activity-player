@@ -105,6 +105,10 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   async UNSAFE_componentWillMount() {
+    /*
+
+    DISABLE to see if tests pass on GitHub
+
     if ("serviceWorker" in navigator) {
       const wb = new Workbox("service-worker.js");
       let registration: ServiceWorkerRegistration | undefined;
@@ -151,6 +155,7 @@ export class App extends React.PureComponent<IProps, IState> {
         registration = _registration;
       });
     }
+    */
   }
 
   async componentDidMount() {
