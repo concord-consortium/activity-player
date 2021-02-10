@@ -14,6 +14,20 @@ const appVersionInfo = `Version ${version} (${gitRevPlugin.hash()})`;
 module.exports = (env, argv) => {
   const devMode = argv.mode !== "production";
 
+  // This proxies the rewritten models-resources urls
+  // NOTE: the devServer config has to show up in the first entry returned for it to work
+  const devServer = {
+    proxy: {
+      "**/models-resources/**": {
+        target: "http://models-resources.concord.org",
+        secure: false,
+        changeOrigin: true,
+        pathRewrite: {"^.*/models-resources": ""},
+        logLevel: "debug"
+      }
+    }
+  };
+
   return [
     // service-worker (not auto-bundled but registered in app)
     {
@@ -51,7 +65,8 @@ module.exports = (env, argv) => {
       },
       resolve: {
         extensions: [ ".ts", ".js" ]
-      }
+      },
+      devServer
     },
 
     // index (auto-bundled into index.html)

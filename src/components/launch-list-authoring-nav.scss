@@ -1,0 +1,36 @@
+@import "./vars.scss";
+
+.launch-list-authoring-nav {
+  height: 60px;
+  width: 100%;
+  margin-bottom: 3px;
+  font-size: 18px;
+  font-weight: bold;
+
+  .inner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    width: $content-width;
+    box-sizing: border-box;
+    margin: auto;
+    background-color: $cc-orange;
+    color: $cc-charcoal;
+
+    &.full {
+      width: 100%;
+    }
+
+    .nav-center {
+      flex: 1;
+      min-width: 0;
+      height: 20px;
+      padding: 8px 10px;
+    }
+
+    .nav-right {
+      margin-right: 10px;
+    }
+  }
+}

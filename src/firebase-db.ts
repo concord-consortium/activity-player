@@ -10,6 +10,7 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+// import "firebase/database"; // TODO: add if we want to use for testing if connected
 import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal-api";
 import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "./types";
@@ -359,4 +360,27 @@ export const setLearnerPluginState = async (pluginId: number, state: string): Pr
   cachedLearnerPluginState[pluginId] = state;
 
   return state;
+};
+
+export const checkIfOnline = () => {
+  return new Promise<boolean>((resolve) => {
+    /*
+
+    DISABLED FOR NOW: need to decide if we also want to add both the size of the database import
+    and enable the database in the Firebase console.  Use a POST request instead.
+
+    const connectedRef = app.database().ref(".info/connected");
+    return connectedRef.once("value")
+      .then(snap => resolve(snap.val() === true))
+      .catch(() => resolve(false));
+    */
+
+    // if online this will result in a 400 error due to the portal token not being included
+    // we don't care about the status code, just that we get a response to check if we are online
+    // NOTE: if this is the final method we need our own POST endpoint that returns 200 instead
+    // of using this (free) external service which may go down
+    return fetch("https://ipapi.co/json/", {method: "POST"})
+      .then(() => resolve(true))
+      .catch(() => resolve(false));
+  });
 };

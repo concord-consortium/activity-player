@@ -107,6 +107,63 @@ Inside of your `package.json` file:
 * enableFirestorePersistence: uses local offline firestore cache only
 * clearFirestorePersistence: clears local offline firestore cache
 
+## Usage Notes
+
+### Launch Lists
+
+A launch list is a JSON file containing both a list of activities and a list of GET urls to cache offline.  It is used to enable offline use of the Activity Player.
+
+### Using a Launch List
+
+Launch lists are specified using a `launchList=` query parameter that points to the filename (without the `.json` extension) in the `src/public/launch-lists` folder which is published with each deploy of the Activity Player.
+
+When running locally (after running `npm start`) load the following url:
+
+http://localhost:11000/?launchList=smoke-test
+
+#### Creating a Launch List
+
+Launch lists can either be authored by hand or more easily by enabling "authoring more" and having the Activity Player itself record the activities loaded and the urls to cache.
+
+To enable authoring mode launch the Activity Player with the `setLaunchListAuthoringId=` query parameter set to the launch list name.  As an example when running locally using `npm start` you would use the following url:
+
+http://localhost:11000/?setLaunchListAuthoringId=example
+
+to turn on authoring mode and to set the launch list name to `example`.  This setting is stored in localstorage so it persists across page loads so you **do not** need to keep the parameter in the query string to keep authoring mode enabled.
+
+Once authoring mode is enabled a nav bar is added to the top of the site showing the number of activities and urls cached.  To add an activity use the `activity=` url parameter.  The activity will load and you should see the activity count in the authoring nav bar increase by 1 along with the cache list for any urls found as values in the downloaded activity json file.  You will then need to navigate through all the pages so ensure all the urls are cached as interactive in each page loads.  Note: you may need to use the interactive if it does not immediately load all of its assets - this needs to be determined in a case by case basis.
+
+Once you have loaded all the activities you want to add to the launch list and navigated through their pages you can click the "Download JSON" link to download the launch list in your browser.  It will be named the same as the launch list id you set.  You can then save that json file in the `src/public/launch-list` folder and edit it to reorder the activity list if desired.
+
+#### Editing a Launch List
+
+If you have a launch list saved in the launch-lists folder named `example` you would load the following URL(after running `npm start`):
+
+http://localhost:11000/?setLaunchListAuthoringId=example&launchList=example
+
+At this point you can either add new activities by manually adding an `activity=` url parameter or update the current cache list by launching an existing activity in the launcher.  Once you have completed the edits you can download the json and replace the file in the `src/public/launch-lists` folder.
+
+#### Exiting Launch List Authoring Mode
+
+Once you have completed authoring you can click on the "Exit Authoring" button in the authoring nav.  This simply deletes the localstorage key set when the `setLaunchListAuthoringId=` query parameter was used.  It **does not** delete the data stored during authoring mode.  To delete that data (for the current launch list only) click the "Clear Authoring Data" button in the authoring nav.
+
+## Models-Resources Proxying
+
+In order for the interactive iframe contents to be cached by the Activity Player service worker the iframes must load content under the same Activity Player domain.  To do this in production a CloudFront origin and behavior were added to proxy any url containing `models-resources` to the models-resources S3 bucket.  This is also done locally with a proxy setup in the webpack-dev-server configuration.
+
+NOTE: this proxying works by renaming all characters in the url up to and including the `models-resources` string.  This is done to allow for branches to not break when using absolute path references.  So the following urls all will resolve to the same resource:
+
+* https://activity-player.concord.org/models-resources/glossary-plugin/plugin.js
+* https://activity-player.concord.org/branch/master/models-resources/glossary-plugin/plugin.js
+* https://activity-player.concord.org/version/1.0.0/models-resources/glossary-plugin/plugin.js
+
+The Activity Player json loader code rewrites any urls it finds that fit the following regexs (note the lack of leading slash):
+
+* https?:\/\/models-resources\.concord\.org/ => "models-resources"
+* https?:\/\/models-resources\.s3\.amazonaws\.com/ => "models-resources"
+* https?:\/\/((.+)-plugin)\.concord\.org/ => "models-resources/$1"
+
+
 ## License
 
 Activity Player is Copyright 2020 (c) by the Concord Consortium and is distributed under the [MIT license](http://www.opensource.org/licenses/MIT).

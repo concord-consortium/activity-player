@@ -8,12 +8,57 @@ export const getActivityDefinition = (activity: string): Promise<Activity> => {
       getActivityDefinitionFromLara(activity).then(resolve);
     } else {
       if (sampleActivities[activity]) {
-        setTimeout(() => resolve(sampleActivities[activity]), 250);
+        setTimeout(() => resolve(rewriteModelsResourcesUrls(sampleActivities[activity])), 250);
       } else {
         reject(`No sample activity matches ${activity}`);
       }
     }
   });
+};
+
+const walkActivity = (activityNode: any, stringCallback: (s: string) => string) => {
+  if (!activityNode) {
+    return;
+  }
+  if (activityNode instanceof Array) {
+    for (const i in activityNode) {
+      walkActivity(activityNode[i], stringCallback);
+    }
+  } else if (typeof activityNode === "object" ) {
+    Object.keys(activityNode).forEach(key => {
+      switch (typeof activityNode[key]) {
+        case "string":
+          activityNode[key] = stringCallback(activityNode[key]);
+          break;
+        case "object":
+          walkActivity(activityNode[key], stringCallback);
+          break;
+      }
+    });
+  } else if (typeof activityNode === "string") {
+    activityNode = stringCallback(activityNode);
+  }
+};
+
+const rewriteModelsResourcesUrls = (activity: Activity) => {
+  walkActivity(activity, (s) => {
+    return s
+      .replace(/https?:\/\/models-resources\.concord\.org/, "models-resources")
+      .replace(/https?:\/\/models-resources\.s3\.amazonaws\.com/, "models-resources")
+      .replace(/https?:\/\/((.+)-plugin)\.concord\.org/, "models-resources/$1");
+
+  });
+  return activity;
+};
+
+export const getAllUrlsInActivity = (activity: Activity, urls: string[] = []) => {
+  walkActivity(activity, (s) => {
+    if (/^(\s*https?:\/\/|models-resources)/.test(s)) {
+      urls.push(s);
+    }
+    return s;
+  });
+  return urls;
 };
 
 const getActivityDefinitionFromLara = (activityUrl: string): Promise<Activity> => {
@@ -26,7 +71,7 @@ const getActivityDefinitionFromLara = (activityUrl: string): Promise<Activity> =
       }
 
       response.json().then(function(data) {
-        resolve(data);
+        resolve(rewriteModelsResourcesUrls(data));
       });
     })
     .catch(function(err) {

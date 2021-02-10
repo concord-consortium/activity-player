@@ -263,3 +263,13 @@ export interface IAnonymousLearnerPluginState extends IAnonymousMetadataPartial 
   pluginId: number;
   state: string;
 }
+
+export interface LaunchListActivity {
+  name: string;
+  url: string;
+}
+export interface LaunchList {
+  name: string
+  activities: LaunchListActivity[];
+  cacheList: string[]
+}
