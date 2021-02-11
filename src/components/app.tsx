@@ -30,6 +30,7 @@ import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
 import { IdleDetector } from "../utilities/idle-detector";
+import { messageSW, Workbox } from "workbox-window";
 
 import "./app.scss";
 
@@ -100,6 +101,58 @@ export class App extends React.PureComponent<IProps, IState> {
     this.setState({ errorType });
     if (errorType) {
       console.error(errorType + " error:", error);
+    }
+  }
+
+  async UNSAFE_componentWillMount() {
+    // disable the service worker during Cypress tests - otherwise timeout errors occur in several tests
+    const skipServiceWorker = !!(window as any).Cypress;
+
+    if (!skipServiceWorker && ("serviceWorker" in navigator)) {
+      const wb = new Workbox("service-worker.js");
+      let registration: ServiceWorkerRegistration | undefined;
+
+      // TODO: in future work this should pop a dialog using this recipe:
+      // https://developers.google.com/web/tools/workbox/guides/advanced-recipes#offer_a_page_reload_for_users
+      // for now just send a message to always skip waiting so we don't have to do it manually in the devtools
+      const alwaysSkipWaitingForNow = () => {
+        if (registration?.waiting) {
+          console.log("Sending SKIP_WAITING to service worker...");
+          messageSW(registration.waiting, {type: "SKIP_WAITING"});
+        }
+      };
+
+      // these are all events defined for workbox-window (https://developers.google.com/web/tools/workbox/modules/workbox-window)
+      wb.addEventListener("installed", (event) => {
+        console.log("A new service worker has installed.");
+      });
+      wb.addEventListener("waiting", (event) => {
+        alwaysSkipWaitingForNow();
+      });
+      wb.addEventListener("externalwaiting" as any, (event) => {
+        alwaysSkipWaitingForNow();
+      });
+      wb.addEventListener("controlling", (event) => {
+        console.log("A new service worker has installed and is controlling.");
+      });
+      wb.addEventListener("activating", (event) => {
+        console.log("A new service worker is activating.");
+      });
+      wb.addEventListener("activated", (event) => {
+        if (!event.isUpdate) {
+          console.log("Service worker activated for the first time!");
+        }
+      });
+      wb.addEventListener("message", (event) => {
+        if (event.data.type === "CACHE_UPDATED") {
+          const {updatedURL} = event.data.payload;
+          console.log(`A newer version of ${updatedURL} is available!`);
+        }
+      });
+
+      wb.register().then((_registration) => {
+        registration = _registration;
+      });
     }
   }
 
@@ -228,10 +281,10 @@ export class App extends React.PureComponent<IProps, IState> {
           onShowSequence={sequence !== undefined ? this.handleShowSequenceIntro : undefined}
         />
         {
-          idle && !errorType && 
-          <IdleWarning 
+          idle && !errorType &&
+          <IdleWarning
             // __cypressLoggedIn is used to trigger logged in code path for Cypress tests.
-            // Eventually it should be replaced with better patterns for testing logged in users (probably via using 
+            // Eventually it should be replaced with better patterns for testing logged in users (probably via using
             // `token` param and stubbing network requests).
             timeout={kTimeout} username={username} anonymous={!portalData && queryValue("__cypressLoggedIn") !== "true"}
             onTimeout={this.handleTimeout} onContinue={this.handleContinueSession} onExit={this.goToPortal}
@@ -239,7 +292,7 @@ export class App extends React.PureComponent<IProps, IState> {
         }
         { errorType && <Error type={errorType} onExit={this.goToPortal} /> }
         {
-          !idle && !errorType && 
+          !idle && !errorType &&
           this.renderActivityContent(activity, currentPage, totalPreviousQuestions, fullWidth)
         }
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
@@ -381,7 +434,7 @@ export class App extends React.PureComponent<IProps, IState> {
     Logger.log({ event: LogEventName.go_back_to_portal });
     window.location.href = this.portalUrl;
   }
- 
+
   private handleChangePage = (page: number) => {
     const { currentPage, incompleteQuestions, activity } = this.state;
     if (page > currentPage && incompleteQuestions.length > 0) {

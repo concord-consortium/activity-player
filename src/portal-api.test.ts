@@ -37,7 +37,7 @@ describe("firebaseAppName", () => {
     });
 
     it("returns report-service-dev on localhost url", () => {
-      url.href = "http://localhost:8080";
+      url.href = "http://localhost:11000";
       expect(firebaseAppName()).toBe("report-service-dev");
     });
 

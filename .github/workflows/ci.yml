@@ -36,7 +36,7 @@ jobs:
       - uses: cypress-io/github-action@v2
         with:
           start: npm start
-          wait-on: 'http://localhost:8080'
+          wait-on: 'http://localhost:11000'
           # only record the results to dashboard.cypress.io if CYPRESS_RECORD_KEY is set
           record: ${{ !!secrets.CYPRESS_RECORD_KEY }}
           # only do parallel if we have a record key
