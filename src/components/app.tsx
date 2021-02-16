@@ -34,10 +34,11 @@ import { messageSW, Workbox } from "workbox-window";
 import { getLaunchList, getLaunchListAuthoringData, getLaunchListAuthoringId, LaunchListAuthoringData, mergeLaunchListWithAuthoringData, setLaunchListAuthoringData, setLaunchListAuthoringId } from "../launch-list-api";
 import { LaunchListLoadingDialog } from "./launch-list-loading-dialog";
 import { LaunchListLauncherDialog } from "./launch-list-launcher";
-
-import "./app.scss";
 import { OfflineNav } from "./activity-header/offline-nav";
 import { LaunchListAuthoringNav } from "./launch-list-authoring-nav";
+import { runningInCypress } from "../utilities/cypress";
+
+import "./app.scss";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "Please submit an answer first.";
@@ -123,7 +124,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async UNSAFE_componentWillMount() {
     // disable the service worker during Cypress tests - otherwise timeout errors occur in several tests
-    const skipServiceWorker = !!(window as any).Cypress;
+    const skipServiceWorker = runningInCypress;
 
     if (!skipServiceWorker && ("serviceWorker" in navigator)) {
       const wb = new Workbox("service-worker.js");

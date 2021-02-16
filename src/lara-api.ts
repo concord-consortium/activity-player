@@ -1,5 +1,6 @@
 import { sampleActivities, sampleSequences } from "./data";
 import { Activity, Sequence } from "./types";
+import { runningInCypress } from "./utilities/cypress";
 
 export const getActivityDefinition = (activity: string): Promise<Activity> => {
   return new Promise((resolve, reject) => {
@@ -41,6 +42,11 @@ const walkActivity = (activityNode: any, stringCallback: (s: string) => string) 
 };
 
 const rewriteModelsResourcesUrls = (activity: Activity) => {
+  // do not rewrite urls when running in Cypress, otherwise the sample activity iframes do not load causing timeouts
+  if (runningInCypress) {
+    return activity;
+  }
+
   walkActivity(activity, (s) => {
     return s
       .replace(/https?:\/\/models-resources\.concord\.org/, "models-resources")
