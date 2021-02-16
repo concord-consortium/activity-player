@@ -58,11 +58,13 @@ export const LaunchListAuthoringIdKey = "launchListAuthoringId";
 export const LaunchListAuthoringDataKeyPrefix = "launchListAuthoringData:";
 
 export const setLaunchListAuthoringId = (value: string | undefined) => {
-  if (value === "clear") {
-    window.localStorage.removeItem(LaunchListAuthoringIdKey);
-  } else if (value !== undefined) {
+  if (value !== undefined) {
     window.localStorage.setItem(LaunchListAuthoringIdKey, value);
   }
+};
+
+export const clearLaunchListAuthoringId = () => {
+  window.localStorage.removeItem(LaunchListAuthoringIdKey);
 };
 
 export const getLaunchListAuthoringId = (): string|undefined => {

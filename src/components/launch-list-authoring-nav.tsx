@@ -1,6 +1,7 @@
 import React from "react";
-import { clearLaunchListAuthoringData, getLaunchListAuthoringDownloadJSON, setLaunchListAuthoringId } from "../launch-list-api";
+import { clearLaunchListAuthoringData, clearLaunchListAuthoringId, getLaunchListAuthoringDownloadJSON } from "../launch-list-api";
 import { LaunchList, LaunchListActivity } from "../types";
+import queryString from "query-string";
 
 import "./launch-list-authoring-nav.scss";
 
@@ -26,8 +27,10 @@ export class LaunchListAuthoringNav extends React.PureComponent<IProps> {
 
     const handleClearAuthoringId = () => {
       if (confirm("Exit authoring (clears the launch list authoring id in localstorage)?")) {
-        setLaunchListAuthoringId("clear");
-        window.location.reload();
+        clearLaunchListAuthoringId();
+        const query = queryString.parse(window.location.search);
+        delete query.setLaunchListAuthoringId;
+        window.location.replace(`?${queryString.stringify(query)}`);
       }
     };
 
@@ -39,7 +42,7 @@ export class LaunchListAuthoringNav extends React.PureComponent<IProps> {
     };
 
     return (
-      <div className="launch-list-authoring-nav" data-cy="offline-nav">
+      <div className="launch-list-authoring-nav" data-cy="launch-list-authoring-nav">
         <div className="inner">
           <div className="nav-center">
             Authoring: &quot;{launchListAuthoringId}&quot; ({launchListAuthoringActivities.length} activities / {launchListAuthoringCacheList.length} cached items)
@@ -47,7 +50,7 @@ export class LaunchListAuthoringNav extends React.PureComponent<IProps> {
           <div className="nav-right">
             <a href="" download={`${launchListAuthoringId}.json`} onClick={handleDownloadClicked}>Download JSON</a>
             <button onClick={handleClearAuthoringData}>Clear Authoring Data</button>
-            <button onClick={handleClearAuthoringId}>Exit Authoring</button>
+            <button onClick={handleClearAuthoringId} data-cy="launch-list-exit-authoring-button">Exit Authoring</button>
           </div>
         </div>
       </div>

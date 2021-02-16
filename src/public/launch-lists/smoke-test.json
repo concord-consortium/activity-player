@@ -2,13 +2,11 @@
   "name": "AP Smoke Test",
   "activities": [
     {
-      "name": "AP Smoke Test",
+      "name": "Activity 1",
       "url": "https://authoring.staging.concord.org/api/v1/activities/20874.json"
     }
   ],
   "cacheList": [
-    "https://concord.org",
-    "https://concord.org/",
     "https://fonts.googleapis.com/css?family=Lato",
     "https://fonts.googleapis.com/css?family=Roboto&display=swap",
     "https://fonts.gstatic.com/s/roboto/v20/KFOmCnqEu92Fr1Mu4mxK.woff2",
@@ -47,11 +45,9 @@
     "models-resources/question-interactives/branch/master/image/",
     "models-resources/question-interactives/branch/master/image/assets/index.0b3b86dfd64d9a389752.css",
     "models-resources/question-interactives/branch/master/image/assets/index.0b3b86dfd64d9a389752.js",
-    "models-resources/question-interactives/branch/master/multiple-choice",
     "models-resources/question-interactives/branch/master/multiple-choice/",
     "models-resources/question-interactives/branch/master/multiple-choice/assets/index.0b3b86dfd64d9a389752.css",
     "models-resources/question-interactives/branch/master/multiple-choice/assets/index.0b3b86dfd64d9a389752.js",
-    "models-resources/question-interactives/branch/master/open-response",
     "models-resources/question-interactives/branch/master/open-response/",
     "models-resources/question-interactives/branch/master/open-response/assets/index.0b3b86dfd64d9a389752.css",
     "models-resources/question-interactives/branch/master/open-response/assets/index.0b3b86dfd64d9a389752.js",

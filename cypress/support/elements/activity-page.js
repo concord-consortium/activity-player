@@ -28,5 +28,21 @@ class ActivityPage {
   getModalDialogClose() {
     return cy.get("[data-cy=modal-dialog-close");
   }
+  getLaunchListAuthoringNav(options) {
+    return cy.get("[data-cy=launch-list-authoring-nav", options);
+  }
+  getLaunchListExitAuthoringButton() {
+    return cy.get("[data-cy=launch-list-exit-authoring-button");
+  }
+  getLaunchListLoadingDialog(options) {
+    return cy.get("[data-cy=launch-list-loading-dialog", options);
+  }
+  getLaunchListLauncher(options) {
+    return cy.get("[data-cy=launch-list-launcher", options);
+  }
+  getActivityTitle(options) {
+    return cy.get("[data-cy=activity-title", options);
+  }
+
 }
 export default ActivityPage;

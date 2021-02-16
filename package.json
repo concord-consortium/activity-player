@@ -102,6 +102,7 @@
     "copy-webpack-plugin": "^6.1.0",
     "css-loader": "^4.3.0",
     "cypress": "^6.3.0",
+    "cypress-localstorage-commands": "^1.4.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.4",
     "eslint": "^7.9.0",
