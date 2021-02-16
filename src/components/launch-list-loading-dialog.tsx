@@ -1,14 +1,13 @@
 import React from "react";
 import { cacheLaunchList } from "../launch-list-api";
 import { LaunchList } from "../types";
-import { OnlineStatus } from "./app";
 
 import "./launch-list-loading-dialog.scss";
 
 interface IProps {
   launchList: LaunchList;
-  online: OnlineStatus;
   onClose: () => void;
+  showLaunchListInstallConfimation: boolean;
 }
 
 interface IState {
@@ -60,20 +59,12 @@ export class LaunchListLoadingDialog extends React.Component<IProps, IState> {
   }
 
   checkForAutoClose(props: IProps) {
-    if (!this.state.caching && (this.state.urlsFailedToCache.length === 0) && (props.online === "yes")) {
+    const {caching, urlsFailedToCache} = this.state;
+    const {showLaunchListInstallConfimation} = this.props;
+    if (!caching && (urlsFailedToCache.length === 0) && !showLaunchListInstallConfimation) {
       // allow the final render
       setTimeout(() => props.onClose(), 0);
     }
-  }
-
-  renderOnlineStatus() {
-    const {online} = this.props;
-
-    return (
-      <div>
-        Online: {online === "checking" ? "Checking ..." : (online === "yes" ? "Yes" : "No")}
-      </div>
-    );
   }
 
   renderCaching() {
@@ -88,17 +79,13 @@ export class LaunchListLoadingDialog extends React.Component<IProps, IState> {
         <div>
           {urlsCached.length + urlsFailedToCache.length} of {urlsToCache.length}
         </div>
-        {urlsFailedToCache.length > 0
-          ? <div>{urlsFailedToCache.length} failed to load!</div>
-          : undefined
-        }
+        {urlsFailedToCache.length > 0 && <div>{urlsFailedToCache.length} failed to load!</div>}
       </>
     );
   }
 
   renderDoneCaching() {
-    const { onClose, launchList, online } = this.props;
-    const handleClose = () => onClose();
+    const { launchList } = this.props;
     const numFailedUrls = this.state.urlsFailedToCache.length;
     const message = numFailedUrls === 0 ? "loading" : "attempting to load";
 
@@ -108,16 +95,12 @@ export class LaunchListLoadingDialog extends React.Component<IProps, IState> {
           Finished {message} <strong>{launchList.name}</strong> assets
         </div>
         {numFailedUrls > 0
-          ? (
-              <>
-                <div>Sorry, you cannot continue.</div>
-                <div>{numFailedUrls} assets failed to load</div>
-              </>
-            )
-          : (online === "no"
-              ? <div><button onClick={handleClose} data-cy="modal-dialog-close">Continue working offline</button></div>
-              : undefined
-            )
+          ?
+            <>
+              <div>Sorry, you cannot continue.</div>
+              <div>{numFailedUrls} assets failed to load</div>
+            </>
+          : <div>Everything is installed!</div>
         }
       </>
     );
@@ -129,7 +112,6 @@ export class LaunchListLoadingDialog extends React.Component<IProps, IState> {
       <div className="launch-list-loading-dialog" data-cy="launch-list-loading-dialog">
         <div className="background" />
         <div className="dialog">
-          {this.renderOnlineStatus()}
           {caching ? this.renderCaching() : this.renderDoneCaching()}
         </div>
       </div>

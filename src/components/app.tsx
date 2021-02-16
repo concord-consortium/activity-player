@@ -14,7 +14,7 @@ import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { fetchPortalData, IPortalData, firebaseAppName } from "../portal-api";
-import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB, onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, checkIfOnline } from "../firebase-db";
+import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB, onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout } from "../firebase-db";
 import { Activity, IEmbeddablePlugin, LaunchList, LaunchListActivity, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
@@ -31,12 +31,11 @@ import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
 import { IdleDetector } from "../utilities/idle-detector";
 import { messageSW, Workbox } from "workbox-window";
-import { getLaunchList, getLaunchListAuthoringData, getLaunchListAuthoringId, LaunchListAuthoringData, mergeLaunchListWithAuthoringData, setLaunchListAuthoringData, setLaunchListAuthoringId } from "../launch-list-api";
+import { getLaunchList, getLaunchListAuthoringData, getLaunchListAuthoringId, getLaunchListId, LaunchListAuthoringData, mergeLaunchListWithAuthoringData, setLaunchListAuthoringData, setLaunchListAuthoringId, setLaunchListId } from "../launch-list-api";
 import { LaunchListLoadingDialog } from "./launch-list-loading-dialog";
 import { LaunchListLauncherDialog } from "./launch-list-launcher";
 import { OfflineNav } from "./activity-header/offline-nav";
 import { LaunchListAuthoringNav } from "./launch-list-authoring-nav";
-import { runningInCypress } from "../utilities/cypress";
 
 import "./app.scss";
 
@@ -51,8 +50,6 @@ const kTimeout = 5 * 60 * 1000; // 5 minutes
 const kLearnPortalUrl = "https://learn.concord.org";
 
 export type ErrorType = "auth" | "network" | "timeout";
-
-export type OnlineStatus = "checking" | "yes" | "no";
 
 interface IncompleteQuestion {
   refId: string;
@@ -78,10 +75,11 @@ interface IState {
   pluginsLoaded: boolean;
   errorType: null | ErrorType;
   idle: boolean;
-  online: OnlineStatus;
+  offlineMode: boolean;
   launchListAuthoringId?: string;
   launchListAuthoringActivities: LaunchListActivity[];
   launchListAuthoringCacheList: string[];
+  showLaunchListInstallConfimation: boolean;
 }
 interface IProps {}
 
@@ -105,9 +103,10 @@ export class App extends React.PureComponent<IProps, IState> {
       errorType: null,
       idle: false,
       loadingLaunchList: false,
-      online: "checking",
+      offlineMode: queryValue("offline") === "true",
       launchListAuthoringActivities: [],
       launchListAuthoringCacheList: [],
+      showLaunchListInstallConfimation: queryValue("confirmLaunchListInstall") === "true"
     };
   }
 
@@ -123,8 +122,8 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   async UNSAFE_componentWillMount() {
-    // disable the service worker during Cypress tests - otherwise timeout errors occur in several tests
-    const skipServiceWorker = runningInCypress;
+    // only enable the service worker in offline mode
+    const skipServiceWorker = !this.state.offlineMode;
 
     if (!skipServiceWorker && ("serviceWorker" in navigator)) {
       const wb = new Workbox("service-worker.js");
@@ -206,10 +205,15 @@ export class App extends React.PureComponent<IProps, IState> {
       }
 
       let launchList: LaunchList | undefined = undefined;
-      const launchListId = queryValue("launchList");
+      const launchListId = queryValue("launchList") || getLaunchListId();
       const loadingLaunchList = !!launchListId;
       if (launchListId) {
         launchList = await getLaunchList(launchListId);
+
+        // save the launch list in offline mode so the PWA
+        if (this.state.offlineMode) {
+          setLaunchListId(launchListId);
+        }
 
         // merge the launch list data into the saved data
         if (launchList && launchListAuthoringId && launchListAuthoringData) {
@@ -279,6 +283,7 @@ export class App extends React.PureComponent<IProps, IState> {
         } catch (err) {
           this.setError("auth", err);
         }
+      // TDB: add else case to handle offline authentication when this.state.offlineMode is true
       } else {
         try {
           await initializeAnonymousDB(preview);
@@ -286,11 +291,6 @@ export class App extends React.PureComponent<IProps, IState> {
           this.setError("auth", err);
         }
       }
-
-      // TODO: if using Firebase (which it is not right now) this needs to run after Firebase is initialized
-      // if the POST request method is use this can be moved higher in the function
-      const online = await checkIfOnline();
-      this.setState({online: online ? "yes" : "no"});
 
       if (!preview) {
         // Notify user about network issues. Note that in preview mode Firestore network is disabled, so it doesn't
@@ -350,10 +350,10 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderContent = () => {
-    const {launchList, loadingLaunchList, online, activity, showSequenceIntro, sequence, username} = this.state;
+    const {launchList, loadingLaunchList, activity, showSequenceIntro, sequence, username, offlineMode, showLaunchListInstallConfimation} = this.state;
     if (launchList) {
       if (loadingLaunchList) {
-        return <LaunchListLoadingDialog launchList={launchList} online={online} onClose={this.handleCloseLoadingLaunchList} />;
+        return <LaunchListLoadingDialog launchList={launchList} onClose={this.handleCloseLoadingLaunchList} showLaunchListInstallConfimation={showLaunchListInstallConfimation} />;
       } else if (activity) {
         return this.renderActivity();
       } else {
@@ -365,6 +365,11 @@ export class App extends React.PureComponent<IProps, IState> {
         };
         return <LaunchListLauncherDialog launchList={launchList} onSelectActivity={handleSelectActivity} />;
       }
+    } else if (offlineMode) {
+      if (loadingLaunchList) {
+        return <div>Loading launch list...</div>;
+      }
+      return <div>TODO: handle case were PWA does not have a launch list saved</div>;
     } else if (showSequenceIntro) {
       return <SequenceIntroduction sequence={sequence} username={username} onSelectActivity={this.handleSelectActivity} />;
     } else {
@@ -373,7 +378,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData, online, launchList } = this.state;
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData, offlineMode } = this.state;
     if (!activity) return (<div>Loading activity ...</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
@@ -383,7 +388,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
     return (
       <React.Fragment>
-        {(online === "no") && launchList ? <OfflineNav fullWidth={fullWidth} onShowLaunchList={handleShowLaunchList} /> : undefined}
+        {offlineMode && <OfflineNav fullWidth={fullWidth} onShowLaunchList={handleShowLaunchList} /> }
         <Header
           fullWidth={fullWidth}
           projectId={activity.project_id}

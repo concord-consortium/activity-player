@@ -54,8 +54,16 @@ export const cacheLaunchList = (options: cacheLaunchListOptions) => {
     .catch(err => onAllUrlsCacheFailed(err));
 };
 
+export const LaunchListCurrentIdKey = "launchListCurrentId";
 export const LaunchListAuthoringIdKey = "launchListAuthoringId";
 export const LaunchListAuthoringDataKeyPrefix = "launchListAuthoringData:";
+
+export const setLaunchListId = (value: string) => {
+  window.localStorage.setItem(LaunchListCurrentIdKey, value);
+};
+export const getLaunchListId = () => {
+  return window.localStorage.getItem(LaunchListCurrentIdKey) || undefined;
+};
 
 export const setLaunchListAuthoringId = (value: string | undefined) => {
   if (value !== undefined) {
