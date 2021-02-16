@@ -163,6 +163,11 @@ The Activity Player json loader code rewrites any urls it finds that fit the fol
 * https?:\/\/models-resources\.s3\.amazonaws\.com/ => "models-resources"
 * https?:\/\/((.+)-plugin)\.concord\.org/ => "models-resources/$1"
 
+### Offline Mode
+
+The application can be placed in "offline" mode by specifying a `offline=true` query parameter.  This currently causes a header nav to display and saves any launchList query parameter passed.  In the future this flag will also control how student data is saved and sent to the portal.
+
+The installed PWA will use `/?offline=true` as its start_url in the `manifest.json` file.  This will cause all desktop launches to run in offline mode.  In order to use the PWA version a launch list must first be installed using the following combinations of query parameters: `?offline=true&launchList=<id>`.  An optional parameter of `confirmLaunchListInstall=true` can also be used to not auto close the loading dialog and instead show a message that everything is installed once all the assets are downloaded into the cache.  The next launch of the PWA will use the last launchList value saved in localstorage if it is not found in the query string (which it won't be as it is always just `?offline-true`).
 
 ## License
 
