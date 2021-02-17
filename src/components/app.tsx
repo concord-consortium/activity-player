@@ -6,8 +6,8 @@ import { SequenceNav } from "./activity-header/sequence-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue } from "../utilities/activity-utils";
-import { getActivityDefinition, getAllUrlsInActivity, getSequenceDefinition } from "../lara-api";
+import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue, getAllUrlsInActivity } from "../utilities/activity-utils";
+import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
@@ -210,7 +210,7 @@ export class App extends React.PureComponent<IProps, IState> {
       if (launchListId) {
         launchList = await getLaunchList(launchListId);
 
-        // save the launch list in offline mode so the PWA
+        // save the launch list in offline mode so the PWA knows which launch list to show
         if (this.state.offlineMode) {
           setLaunchListId(launchListId);
         }
@@ -248,7 +248,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
       const showThemeButtons = queryValueBoolean("themeButtons");
       // Show the warning if we are not running on production (disable for now)
-      const showWarning = false && (firebaseAppName() !== "report-service-pro");
+      const showWarning = firebaseAppName() !== "report-service-pro";
       const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
@@ -304,9 +304,10 @@ export class App extends React.PureComponent<IProps, IState> {
 
       this.LARA = initializeLara();
       if (activity) {
-        const _activity = activity; // to keep eslint happy with activity parameter of loadPluginScripts
-        loadLearnerPluginState(_activity, teacherEditionMode).then(() => {
-          loadPluginScripts(this.LARA, _activity, this.handleLoadPlugins, teacherEditionMode);
+        loadLearnerPluginState(activity, teacherEditionMode).then(() => {
+          if (activity) {
+            loadPluginScripts(this.LARA, activity, this.handleLoadPlugins, teacherEditionMode);
+          }
         });
       }
 
