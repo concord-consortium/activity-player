@@ -6,7 +6,7 @@ import { SequenceNav } from "./activity-header/sequence-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue } from "../utilities/activity-utils";
+import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue, getAllUrlsInActivity } from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
@@ -15,7 +15,7 @@ import { CompletionPageContent } from "./activity-completion/completion-page-con
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { fetchPortalData, IPortalData, firebaseAppName } from "../portal-api";
 import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB, onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout } from "../firebase-db";
-import { Activity, IEmbeddablePlugin, Sequence } from "../types";
+import { Activity, IEmbeddablePlugin, LaunchList, LaunchListActivity, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -31,6 +31,11 @@ import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
 import { IdleDetector } from "../utilities/idle-detector";
 import { messageSW, Workbox } from "workbox-window";
+import { getLaunchList, getLaunchListAuthoringData, getLaunchListAuthoringId, getLaunchListId, LaunchListAuthoringData, mergeLaunchListWithAuthoringData, setLaunchListAuthoringData, setLaunchListAuthoringId, setLaunchListId } from "../launch-list-api";
+import { LaunchListLoadingDialog } from "./launch-list-loading-dialog";
+import { LaunchListLauncherDialog } from "./launch-list-launcher";
+import { OfflineNav } from "./activity-header/offline-nav";
+import { LaunchListAuthoringNav } from "./launch-list-authoring-nav";
 
 import "./app.scss";
 
@@ -53,6 +58,8 @@ interface IncompleteQuestion {
 
 interface IState {
   activity?: Activity;
+  launchList?: LaunchList;
+  loadingLaunchList: boolean;
   currentPage: number;
   teacherEditionMode?: boolean;
   showThemeButtons?: boolean;
@@ -68,6 +75,11 @@ interface IState {
   pluginsLoaded: boolean;
   errorType: null | ErrorType;
   idle: boolean;
+  offlineMode: boolean;
+  launchListAuthoringId?: string;
+  launchListAuthoringActivities: LaunchListActivity[];
+  launchListAuthoringCacheList: string[];
+  showLaunchListInstallConfimation: boolean;
 }
 interface IProps {}
 
@@ -89,7 +101,12 @@ export class App extends React.PureComponent<IProps, IState> {
       incompleteQuestions: [],
       pluginsLoaded: false,
       errorType: null,
-      idle: false
+      idle: false,
+      loadingLaunchList: false,
+      offlineMode: queryValue("offline") === "true",
+      launchListAuthoringActivities: [],
+      launchListAuthoringCacheList: [],
+      showLaunchListInstallConfimation: queryValue("confirmLaunchListInstall") === "true"
     };
   }
 
@@ -105,8 +122,8 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   async UNSAFE_componentWillMount() {
-    // disable the service worker during Cypress tests - otherwise timeout errors occur in several tests
-    const skipServiceWorker = !!(window as any).Cypress;
+    // only enable the service worker in offline mode
+    const skipServiceWorker = !this.state.offlineMode;
 
     if (!skipServiceWorker && ("serviceWorker" in navigator)) {
       const wb = new Workbox("service-worker.js");
@@ -144,9 +161,30 @@ export class App extends React.PureComponent<IProps, IState> {
         }
       });
       wb.addEventListener("message", (event) => {
-        if (event.data.type === "CACHE_UPDATED") {
-          const {updatedURL} = event.data.payload;
-          console.log(`A newer version of ${updatedURL} is available!`);
+        const {launchListAuthoringId} = this.state;
+        switch (event.data.type) {
+          case "CACHE_UPDATED":
+            console.log(`A newer version of ${event.data.payload.updatedURL} is available!`);
+            break;
+
+          case "GET_REQUEST":
+            if (launchListAuthoringId) {
+              this.setState((prevState) => {
+                // make sure all models-resources requests use the base folder
+                const url = event.data.url.replace(/.*models-resources\//, "models-resources/");
+                let {launchListAuthoringCacheList} = prevState;
+                const {launchListAuthoringActivities} = prevState;
+                if (!/api\/v1\/activities/.test(url) && (launchListAuthoringCacheList.indexOf(url) === -1)) {
+                  launchListAuthoringCacheList = launchListAuthoringCacheList.concat(url);
+                }
+                setLaunchListAuthoringData(launchListAuthoringId, {
+                  activities: launchListAuthoringActivities,
+                  cacheList: launchListAuthoringCacheList
+                });
+                return {...prevState, launchListAuthoringCacheList};
+              });
+            }
+            break;
         }
       });
 
@@ -158,8 +196,47 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const activityPath = queryValue("activity") || kDefaultActivity;
-      const activity: Activity = await getActivityDefinition(activityPath);
+      // set the launch list authoring localstorage item if it exists in the params and then read from localstorage
+      setLaunchListAuthoringId(queryValue("setLaunchListAuthoringId"));
+      const launchListAuthoringId = getLaunchListAuthoringId();
+      let launchListAuthoringData: LaunchListAuthoringData | undefined;
+      if (launchListAuthoringId) {
+        launchListAuthoringData = getLaunchListAuthoringData(launchListAuthoringId);
+      }
+
+      let launchList: LaunchList | undefined = undefined;
+      const launchListId = queryValue("launchList") || getLaunchListId();
+      const loadingLaunchList = !!launchListId;
+      if (launchListId) {
+        launchList = await getLaunchList(launchListId);
+
+        // save the launch list in offline mode so the PWA knows which launch list to show
+        if (this.state.offlineMode) {
+          setLaunchListId(launchListId);
+        }
+
+        // merge the launch list data into the saved data
+        if (launchList && launchListAuthoringId && launchListAuthoringData) {
+          launchListAuthoringData = mergeLaunchListWithAuthoringData(launchList, launchListAuthoringData);
+          setLaunchListAuthoringData(launchListAuthoringId, launchListAuthoringData);
+        }
+      }
+
+      if (launchListAuthoringData) {
+        this.setState({
+          launchListAuthoringActivities: launchListAuthoringData.activities,
+          launchListAuthoringCacheList: launchListAuthoringData.cacheList
+        });
+      }
+
+      let activity: Activity | undefined = undefined;
+      const activityPath = queryValue("activity") || (launchList ? undefined : kDefaultActivity);
+      if (activityPath) {
+        activity = await getActivityDefinition(activityPath);
+        if (launchListAuthoringId) {
+          this.addActivityToLaunchList(launchListAuthoringId, activity, activityPath);
+        }
+      }
 
       const sequencePath = queryValue("sequence");
       const sequence: Sequence | undefined = sequencePath ? await getSequenceDefinition(sequencePath) : undefined;
@@ -167,16 +244,16 @@ export class App extends React.PureComponent<IProps, IState> {
 
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity if numeric
       // or the page.position of the matching page id if prefixed with "page_<id>"
-      const currentPage = getPagePositionFromQueryValue(activity, queryValue("page"));
+      const currentPage = activity ? getPagePositionFromQueryValue(activity, queryValue("page")) : 0;
 
       const showThemeButtons = queryValueBoolean("themeButtons");
-      // Show the warning if we are not running on production
+      // Show the warning if we are not running on production (disable for now)
       const showWarning = firebaseAppName() !== "report-service-pro";
       const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
 
-      const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode};
+      const newState: Partial<IState> = {activity, launchList, loadingLaunchList, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode, launchListAuthoringId};
       setDocumentTitle(activity, currentPage);
 
       let classHash = "";
@@ -206,6 +283,7 @@ export class App extends React.PureComponent<IProps, IState> {
         } catch (err) {
           this.setError("auth", err);
         }
+      // TDB: add else case to handle offline authentication when this.state.offlineMode is true
       } else {
         try {
           await initializeAnonymousDB(preview);
@@ -225,9 +303,13 @@ export class App extends React.PureComponent<IProps, IState> {
       this.setState(newState as IState);
 
       this.LARA = initializeLara();
-      loadLearnerPluginState(activity, teacherEditionMode).then(() => {
-        loadPluginScripts(this.LARA, activity, this.handleLoadPlugins, teacherEditionMode);
-      });
+      if (activity) {
+        loadLearnerPluginState(activity, teacherEditionMode).then(() => {
+          if (activity) {
+            loadPluginScripts(this.LARA, activity, this.handleLoadPlugins, teacherEditionMode);
+          }
+        });
+      }
 
       Modal.setAppElement("#app");
 
@@ -247,9 +329,14 @@ export class App extends React.PureComponent<IProps, IState> {
           <div className="app" data-cy="app">
             { this.state.showWarning && <WarningBanner/> }
             { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-            { this.state.showSequenceIntro
-              ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
-              : this.renderActivity() }
+            { this.state.launchListAuthoringId && <LaunchListAuthoringNav
+                launchList={this.state.launchList}
+                launchListAuthoringId={this.state.launchListAuthoringId}
+                launchListAuthoringActivities={this.state.launchListAuthoringActivities}
+                launchListAuthoringCacheList={this.state.launchListAuthoringCacheList}
+              />
+            }
+            { this.renderContent() }
             { this.state.showThemeButtons && <ThemeButtons/>}
             <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
             <ModalDialog
@@ -263,15 +350,46 @@ export class App extends React.PureComponent<IProps, IState> {
     );
   }
 
+  private renderContent = () => {
+    const {launchList, loadingLaunchList, activity, showSequenceIntro, sequence, username, offlineMode, showLaunchListInstallConfimation} = this.state;
+    if (launchList) {
+      if (loadingLaunchList) {
+        return <LaunchListLoadingDialog launchList={launchList} onClose={this.handleCloseLoadingLaunchList} showLaunchListInstallConfimation={showLaunchListInstallConfimation} />;
+      } else if (activity) {
+        return this.renderActivity();
+      } else {
+        const handleSelectActivity = (selectedActivity: Activity, url: string) => {
+          this.setState({ activity: selectedActivity });
+          if (this.state.launchListAuthoringId) {
+            this.addActivityToLaunchList(this.state.launchListAuthoringId, selectedActivity, url);
+          }
+        };
+        return <LaunchListLauncherDialog launchList={launchList} onSelectActivity={handleSelectActivity} />;
+      }
+    } else if (offlineMode) {
+      if (loadingLaunchList) {
+        return <div>Loading launch list...</div>;
+      }
+      return <div>TODO: handle case were PWA does not have a launch list saved</div>;
+    } else if (showSequenceIntro) {
+      return <SequenceIntroduction sequence={sequence} username={username} onSelectActivity={this.handleSelectActivity} />;
+    } else {
+      return this.renderActivity();
+    }
+  }
+
   private renderActivity = () => {
-    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
-    if (!activity) return (<div>Loading</div>);
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData, offlineMode } = this.state;
+    if (!activity) return (<div>Loading activity ...</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
+    const handleShowLaunchList = () => this.setState({ activity: undefined });
+
     return (
       <React.Fragment>
+        {offlineMode && <OfflineNav fullWidth={fullWidth} onShowLaunchList={handleShowLaunchList} /> }
         <Header
           fullWidth={fullWidth}
           projectId={activity.project_id}
@@ -509,4 +627,33 @@ export class App extends React.PureComponent<IProps, IState> {
     this.setState({ pluginsLoaded: true });
   }
 
+  private handleCloseLoadingLaunchList = () => {
+    this.setState({loadingLaunchList: false});
+  }
+
+  private addActivityToLaunchList = (launchListAuthoringId: string, activity: Activity, url: string) => {
+    const isExternalUrl = /https?:\/\//.test(url);  // test for internal demo files
+    if (launchListAuthoringId && isExternalUrl) {
+      this.setState(prevState => {
+        let {launchListAuthoringActivities} = prevState;
+        const {launchListAuthoringCacheList} = prevState;
+
+        getAllUrlsInActivity(activity).forEach(urlInActivity => {
+          if (launchListAuthoringCacheList.indexOf(urlInActivity) === -1) {
+            launchListAuthoringCacheList.push(urlInActivity);
+          }
+        });
+
+        if (!prevState.launchListAuthoringActivities.find(a => a.url === url)) {
+          launchListAuthoringActivities = launchListAuthoringActivities.concat({ name: activity.name, url });
+          setLaunchListAuthoringData(launchListAuthoringId, {
+            activities: launchListAuthoringActivities,
+            cacheList: launchListAuthoringCacheList
+          });
+        }
+
+        return {launchListAuthoringActivities, launchListAuthoringCacheList};
+      });
+    }
+  }
 }

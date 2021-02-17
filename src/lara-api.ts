@@ -1,5 +1,6 @@
 import { sampleActivities, sampleSequences } from "./data";
 import { Activity, Sequence } from "./types";
+import { rewriteModelsResourcesUrls } from "./utilities/activity-utils";
 
 export const getActivityDefinition = (activity: string): Promise<Activity> => {
   return new Promise((resolve, reject) => {
@@ -8,7 +9,7 @@ export const getActivityDefinition = (activity: string): Promise<Activity> => {
       getActivityDefinitionFromLara(activity).then(resolve);
     } else {
       if (sampleActivities[activity]) {
-        setTimeout(() => resolve(sampleActivities[activity]), 250);
+        setTimeout(() => resolve(rewriteModelsResourcesUrls(sampleActivities[activity])), 250);
       } else {
         reject(`No sample activity matches ${activity}`);
       }
@@ -26,7 +27,7 @@ const getActivityDefinitionFromLara = (activityUrl: string): Promise<Activity> =
       }
 
       response.json().then(function(data) {
-        resolve(data);
+        resolve(rewriteModelsResourcesUrls(data));
       });
     })
     .catch(function(err) {

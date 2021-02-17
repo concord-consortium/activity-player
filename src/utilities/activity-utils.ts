@@ -1,6 +1,7 @@
 import { Page, Activity, EmbeddableWrapper } from "../types";
 import { SidebarConfiguration } from "../components/page-sidebar/sidebar-wrapper";
 import { isQuestion as isEmbeddableQuestion } from "./embeddable-utils";
+import { runningInCypress } from "./cypress";
 
 export enum ActivityLayouts {
   MultiplePages = 0,
@@ -162,4 +163,54 @@ export const getPagePositionFromQueryValue = (activity: Activity, pageQueryValue
   // page should be in the range [0, <number of pages>].
   // note that page is 1 based for the actual pages in the activity.
   return Math.max(0, Math.min((parseInt(pageQueryValue, 10) || 0), activity.pages.length));
+};
+
+export const walkActivity = (activityNode: any, stringCallback: (s: string) => string) => {
+  if (!activityNode) {
+    return;
+  }
+  if (activityNode instanceof Array) {
+    for (const i in activityNode) {
+      walkActivity(activityNode[i], stringCallback);
+    }
+  } else if (typeof activityNode === "object" ) {
+    Object.keys(activityNode).forEach(key => {
+      switch (typeof activityNode[key]) {
+        case "string":
+          activityNode[key] = stringCallback(activityNode[key]);
+          break;
+        case "object":
+          walkActivity(activityNode[key], stringCallback);
+          break;
+      }
+    });
+  } else if (typeof activityNode === "string") {
+    activityNode = stringCallback(activityNode);
+  }
+};
+
+export const rewriteModelsResourcesUrls = (activity: Activity) => {
+  // do not rewrite urls when running in Cypress, otherwise the sample activity iframes do not load causing timeouts
+  if (runningInCypress) {
+    return activity;
+  }
+
+  walkActivity(activity, (s) => {
+    return s
+      .replace(/https?:\/\/models-resources\.concord\.org/, "models-resources")
+      .replace(/https?:\/\/models-resources\.s3\.amazonaws\.com/, "models-resources")
+      .replace(/https?:\/\/((.+)-plugin)\.concord\.org/, "models-resources/$1");
+
+  });
+  return activity;
+};
+
+export const getAllUrlsInActivity = (activity: Activity, urls: string[] = []) => {
+  walkActivity(activity, (s) => {
+    if (/^(\s*https?:\/\/|models-resources)/.test(s)) {
+      urls.push(s);
+    }
+    return s;
+  });
+  return urls;
 };
