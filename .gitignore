@@ -15,3 +15,4 @@ LocalhostCertificates
 # Editors
 .idea
 .vscode
+.localhost-ssl
