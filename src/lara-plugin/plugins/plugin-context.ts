@@ -7,7 +7,7 @@ import $ from "jquery";
 // LARA_CODE import * as $ from "jquery";
 // ACTIVITY_PLAYER_CODE:
 import { Logger } from "../../lib/logger";
-import { getPortalData, setLearnerPluginState } from "../../firebase-db";
+import { Storage } from "../../storage-facade";
 import { getFirebaseJWT } from "../../portal-api";
 
 export type IPluginContextOptions = IPluginRuntimeContextOptions | IPluginAuthoringContextOptions;
@@ -138,7 +138,7 @@ export const saveAuthoredPluginState = (authoringSaveStateUrl: string, authorDat
 
 const getFirebaseJwtFromPortal = (appName: string): Promise<IJwtResponse> => {
   return new Promise<IJwtResponse>((resolve, reject) => {
-    const portalData = getPortalData();
+    const portalData = Storage.getPortalData();
     if (portalData && (portalData.type === "authenticated") && portalData.basePortalUrl && portalData.rawPortalJWT) {
       return getFirebaseJWT(portalData.basePortalUrl, portalData.rawPortalJWT, {firebase_app: appName})
         .then(([token, firebaseJWT]) => {
@@ -205,7 +205,7 @@ export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptio
     remoteEndpoint: options.remoteEndpoint,
     userEmail: options.userEmail,
     resourceUrl: options.resourceUrl,
-    saveLearnerPluginState: (state: string) => setLearnerPluginState(options.pluginId, state),
+    saveLearnerPluginState: (state: string) => Storage.setLearnerPluginState(options.pluginId, state),
     getClassInfo: () => getClassInfo(options.classInfoUrl),
     getFirebaseJwt: (appName: string) => getFirebaseJwtFromPortal(appName),
     wrappedEmbeddable: options.wrappedEmbeddable ? generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,

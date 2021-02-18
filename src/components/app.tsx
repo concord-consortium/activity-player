@@ -14,7 +14,7 @@ import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { fetchPortalData, IPortalData, firebaseAppName } from "../portal-api";
-import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB, onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout } from "../firebase-db";
+import { Storage } from "../storage-facade";
 import { Activity, IEmbeddablePlugin, LaunchList, LaunchListActivity, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
@@ -280,18 +280,18 @@ export class App extends React.PureComponent<IProps, IState> {
           if (portalData.runRemoteEndpoint) {
             runRemoteEndpoint = portalData.runRemoteEndpoint;
           }
-          await initializeDB({ name: portalData.database.appName, preview: false });
-          await signInWithToken(portalData.database.rawFirebaseJWT);
+          await Storage.initializeDB({ name: portalData.database.appName, preview: false });
+          await Storage.signInWithToken(portalData.database.rawFirebaseJWT);
           this.setState({ portalData });
 
-          setPortalData(portalData);
+          Storage.setPortalData(portalData);
         } catch (err) {
           this.setError("auth", err);
         }
       // TDB: add else case to handle offline authentication when this.state.offlineMode is true
       } else {
         try {
-          await initializeAnonymousDB(preview);
+          await Storage.initializeAnonymousDB(preview);
         } catch (err) {
           this.setError("auth", err);
         }
@@ -300,9 +300,9 @@ export class App extends React.PureComponent<IProps, IState> {
       if (!preview) {
         // Notify user about network issues. Note that in preview mode Firestore network is disabled, so it doesn't
         // make sense to track requests.
-        onFirestoreSaveTimeout(() => this.state.errorType === null && this.setError("network"));
+        Storage.onFirestoreSaveTimeout(() => this.state.errorType === null && this.setError("network"));
         // Notify user when network issues are resolved.
-        onFirestoreSaveAfterTimeout(() => this.state.errorType === "network" && this.setError(null));
+        Storage.onFirestoreSaveAfterTimeout(() => this.state.errorType === "network" && this.setError(null));
       }
 
       this.setState(newState as IState);

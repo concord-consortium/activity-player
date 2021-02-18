@@ -1,5 +1,5 @@
 import { queryValue } from "../utilities/url-query";
-import { getPortalData } from "../firebase-db";
+import { Storage } from "../storage-facade";
 import { IPortalData, firebaseAppName } from "../portal-api";
 
 // TODO: switch default to production report version before production deploy
@@ -30,7 +30,7 @@ export const getReportUrl = () => {
   }
   else {
     // We know this is a IPortalData because there is no runKey
-    const portalData = getPortalData() as IPortalData;
+    const portalData = Storage.getPortalData() as IPortalData;
     const classInfoUrl = portalData?.portalJWT?.class_info_url;
     const sourceKey = activityUrl ? makeSourceKey(activityUrl) : window.location.hostname;
     const authDomainUrl = classInfoUrl?.split("/api")[0];

@@ -11,7 +11,7 @@ import {
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
-import { watchAnswer } from "../../../firebase-db";
+import { Storage } from "../../../storage-facade";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
 import { autorun } from "mobx";
 
@@ -159,7 +159,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       const unsubscribeLinkedInteractiveStateListener = new Map();
       addListener("addLinkedInteractiveStateListener", (request: IAddLinkedInteractiveStateListenerRequest) => {
         const { interactiveItemId, listenerId } = request;
-        const unsubscribe = watchAnswer(interactiveItemId, (wrappedAnswer) => {
+        const unsubscribe = Storage.watchAnswer(interactiveItemId, (wrappedAnswer) => {
           const interactiveState = wrappedAnswer?.interactiveState;
           const response: ILinkedInteractiveStateResponse<any> = {
             listenerId,
