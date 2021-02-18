@@ -90,6 +90,12 @@ export class App extends React.PureComponent<IProps, IState> {
 
   public constructor(props: IProps) {
     super(props);
+
+    // set the launch list authoring localstorage item if it exists in the params and then read from localstorage
+    // this is done in the constructor as the state value is needed in the UNSAFE_componentWillMount method
+    setLaunchListAuthoringId(queryValue("setLaunchListAuthoringId"));
+    const launchListAuthoringId = getLaunchListAuthoringId();
+
     this.state = {
       currentPage: 0,
       teacherEditionMode: false,
@@ -103,10 +109,11 @@ export class App extends React.PureComponent<IProps, IState> {
       errorType: null,
       idle: false,
       loadingLaunchList: false,
-      offlineMode: queryValue("offline") === "true",
+      offlineMode: (queryValue("offline") === "true") || !!launchListAuthoringId,
       launchListAuthoringActivities: [],
       launchListAuthoringCacheList: [],
-      showLaunchListInstallConfimation: queryValue("confirmLaunchListInstall") === "true"
+      showLaunchListInstallConfimation: queryValue("confirmLaunchListInstall") === "true",
+      launchListAuthoringId
     };
   }
 
@@ -122,10 +129,10 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   async UNSAFE_componentWillMount() {
-    // only enable the service worker in offline mode
-    const skipServiceWorker = !this.state.offlineMode;
+    // only enable the service worker in offline mode (or in authoring mode which automatically turns on offline mode)
+    const enableServiceWorker = this.state.offlineMode;
 
-    if (!skipServiceWorker && ("serviceWorker" in navigator)) {
+    if (enableServiceWorker && ("serviceWorker" in navigator)) {
       const wb = new Workbox("service-worker.js");
       let registration: ServiceWorkerRegistration | undefined;
 
@@ -196,16 +203,14 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      // set the launch list authoring localstorage item if it exists in the params and then read from localstorage
-      setLaunchListAuthoringId(queryValue("setLaunchListAuthoringId"));
-      const launchListAuthoringId = getLaunchListAuthoringId();
+      const launchListAuthoringId = this.state.launchListAuthoringId;
       let launchListAuthoringData: LaunchListAuthoringData | undefined;
       if (launchListAuthoringId) {
         launchListAuthoringData = getLaunchListAuthoringData(launchListAuthoringId);
       }
 
       let launchList: LaunchList | undefined = undefined;
-      const launchListId = queryValue("launchList") || getLaunchListId();
+      const launchListId = queryValue("launchList") || (this.state.offlineMode ? getLaunchListId() : undefined);
       const loadingLaunchList = !!launchListId;
       if (launchListId) {
         launchList = await getLaunchList(launchListId);
@@ -351,7 +356,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderContent = () => {
-    const {launchList, loadingLaunchList, activity, showSequenceIntro, sequence, username, offlineMode, showLaunchListInstallConfimation} = this.state;
+    const {launchList, loadingLaunchList, activity, showSequenceIntro, sequence, username, offlineMode, showLaunchListInstallConfimation, launchListAuthoringId} = this.state;
     if (launchList) {
       if (loadingLaunchList) {
         return <LaunchListLoadingDialog launchList={launchList} onClose={this.handleCloseLoadingLaunchList} showLaunchListInstallConfimation={showLaunchListInstallConfimation} />;
@@ -366,7 +371,7 @@ export class App extends React.PureComponent<IProps, IState> {
         };
         return <LaunchListLauncherDialog launchList={launchList} onSelectActivity={handleSelectActivity} />;
       }
-    } else if (offlineMode) {
+    } else if (offlineMode && !launchListAuthoringId) {
       if (loadingLaunchList) {
         return <div>Loading launch list...</div>;
       }

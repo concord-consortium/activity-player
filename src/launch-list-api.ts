@@ -44,7 +44,7 @@ export const cacheLaunchList = (options: cacheLaunchListOptions) => {
   const {launchList, onCachingStarted, onUrlCached, onUrlCacheFailed, onAllUrlsCached, onAllUrlsCacheFailed} = options;
   const urls = launchList.activities.map(a => a.url).concat(launchList.cacheList);
   const loadingPromises = urls.map(url => {
-    return fetch(url)
+    return fetch(url, {mode: "no-cors"})
       .then(() => onUrlCached(url))
       .catch(err => onUrlCacheFailed(url, err));
   });
