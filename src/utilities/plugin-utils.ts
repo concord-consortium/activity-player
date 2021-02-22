@@ -26,7 +26,7 @@ const addUsedPlugin = (plugin: Plugin) => {
 
 export const findUsedPlugins = (activity: Activity, teacherEditionMode: boolean) => {
   // search each page for teacher edition plugin use
-  for (let page = 0; page < activity.pages.length - 1; page++) {
+  for (let page = 0; page < activity.pages.length; page++) {
     if (!activity.pages[page].is_hidden) {
       for (let embeddableNum = 0; embeddableNum < activity.pages[page].embeddables.length; embeddableNum++) {
         const embeddable = activity.pages[page].embeddables[embeddableNum].embeddable;
