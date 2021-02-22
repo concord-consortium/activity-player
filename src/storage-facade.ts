@@ -16,10 +16,9 @@ export const docToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
   const getInteractiveState = () => {
     const reportState = JSON.parse(doc.report_state);
     const returnObject = JSON.parse(reportState.interactiveState);
-    console.log(`C&N: ----- firestore:`);
-    console.dir(returnObject);
     return returnObject;
   };
+
   const interactiveState = getInteractiveState();
   const wrappedAnswer: WrappedDBAnswer = {
     meta: doc as IExportableAnswerMetadata,
@@ -27,6 +26,7 @@ export const docToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
   };
   return wrappedAnswer;
 };
+
 export interface StorageInterface {
   // These seem to be FireStore specific:
   onFirestoreSaveTimeout: (handler: () => void) => void,
