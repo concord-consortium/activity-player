@@ -3,10 +3,30 @@ import * as FirebaseImp from "./firebase-db";
 import { IAnonymousPortalData, IPortalData } from "./portal-api";
 import { IExportableAnswerMetadata } from "./types";
 import {DexieStorage} from "./dexie-storage";
-
+import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 
 export interface IStorageInitializer { name: FirebaseImp.FirebaseAppName, preview: boolean }
 
+export interface WrappedDBAnswer {
+  meta: IExportableAnswerMetadata;
+  interactiveState: any;
+}
+
+export const docToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
+  const getInteractiveState = () => {
+    const reportState = JSON.parse(doc.report_state);
+    const returnObject = JSON.parse(reportState.interactiveState);
+    console.log(`C&N: ----- firestore:`);
+    console.dir(returnObject);
+    return returnObject;
+  };
+  const interactiveState = getInteractiveState();
+  const wrappedAnswer: WrappedDBAnswer = {
+    meta: doc as IExportableAnswerMetadata,
+    interactiveState
+  };
+  return wrappedAnswer;
+};
 export interface StorageInterface {
   // These seem to be FireStore specific:
   onFirestoreSaveTimeout: (handler: () => void) => void,
@@ -21,8 +41,8 @@ export interface StorageInterface {
   setAnonymousPortalData: (_portalData: IAnonymousPortalData) => void,
 
   // These are directly related to storing student answers and fetching them back
-  watchAnswer(embeddableRefId: string, callback: (wrappedAnswer: FirebaseImp.WrappedDBAnswer | null) => void): () => void
-  watchAllAnswers: (callback: (wrappedAnswer: FirebaseImp.WrappedDBAnswer[]) => void) => void,
+  watchAnswer(embeddableRefId: string, callback: (wrappedAnswer: WrappedDBAnswer | null) => void): () => void
+  watchAllAnswers: (callback: (wrappedAnswer: WrappedDBAnswer[]) => void) => void,
   createOrUpdateAnswer: (answer: IExportableAnswerMetadata) => void,
   getLearnerPluginStateDocId: (pluginId: number) => string|undefined,
   getCachedLearnerPluginState: (pluginId: number) => string|null,
@@ -45,8 +65,10 @@ const FireStoreStorageProvider: StorageInterface = {
   setAnonymousPortalData: (_portalData: IAnonymousPortalData) => FirebaseImp.setAnonymousPortalData(_portalData),
 
   // Saving and Loading student work
-  watchAnswer:  (embeddableRefId: string, callback: (wrappedAnswer: FirebaseImp.WrappedDBAnswer | null) => void) => FirebaseImp.watchAnswer(embeddableRefId, callback),
-  watchAllAnswers: (callback: (wrappedAnswer: FirebaseImp.WrappedDBAnswer[]) => void) => FirebaseImp.watchAllAnswers(callback),
+  watchAnswer:  (embeddableRefId: string, callback: (wrappedAnswer: WrappedDBAnswer | null) => void) => FirebaseImp.watchAnswer(embeddableRefId, callback),
+  watchAllAnswers: (callback: (wrappedAnswer: WrappedDBAnswer[]) => void) => FirebaseImp.watchAllAnswers(callback),
+
+  // Save an answer to Firebase
   createOrUpdateAnswer: (answer: IExportableAnswerMetadata) => FirebaseImp.createOrUpdateAnswer(answer),
   getLearnerPluginStateDocId: (pluginId: number) => FirebaseImp.getLearnerPluginStateDocId(pluginId),
   getCachedLearnerPluginState: (pluginId: number) => FirebaseImp.getCachedLearnerPluginState(pluginId),
@@ -59,11 +81,29 @@ const FireStoreStorageProvider: StorageInterface = {
 const indexDBConnection = new DexieStorage();
 
 const DexieStorageProvider = {...FireStoreStorageProvider,
+
   createOrUpdateAnswer: (answer: IExportableAnswerMetadata) => {
     console.dir(answer);
     indexDBConnection.answers.put(answer);
-    // TODO: Return the correct type. For now we call through to Firebase
-    return FirebaseImp.createOrUpdateAnswer(answer);
+  },
+
+  watchAnswer: (embeddableRefId: string, callback: (wrappedAnswer: WrappedDBAnswer | null) => void) => {
+    const questionId = refIdToAnswersQuestionId(embeddableRefId);
+    const getAnswerFromIndexDB = (qID: string) => {
+      const foundAnswers = indexDBConnection
+        .answers
+        .where("question_id")
+        .equals(qID).toArray();
+      return foundAnswers.then( (answers) => {
+        return answers[0];
+      });
+    };
+
+    getAnswerFromIndexDB(questionId).then( (answer: IExportableAnswerMetadata|null) => {
+      if(answer){
+        callback(docToWrappedAnswer(answer));
+      }
+    });
   }
 };
 
