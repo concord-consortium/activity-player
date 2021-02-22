@@ -16,7 +16,7 @@ import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
-import { docToWrappedAnswer, WrappedDBAnswer } from "./storage-facade";
+import { docToWrappedAnswer, IWrappedDBAnswer } from "./storage-facade";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
@@ -29,7 +29,7 @@ const learnerPluginStatePath = (docId: string) =>
   `sources/${portalData?.database.sourceKey}/plugin_states/${docId}`;
 
 
-export type DBChangeListener = (wrappedDBAnswer: WrappedDBAnswer | null) => void;
+export type DBChangeListener = (wrappedDBAnswer: IWrappedDBAnswer | null) => void;
 
 interface IConfig {
   apiKey: string;
@@ -183,7 +183,7 @@ const watchAnswerDocs = (listener: DocumentsListener, questionId?: string) => {
 
 
 // Watches ONE question answer defined by embeddableRefId.
-export const watchAnswer = (embeddableRefId: string, callback: (wrappedAnswer: WrappedDBAnswer | null) => void) => {
+export const watchAnswer = (embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void) => {
   const questionId = refIdToAnswersQuestionId(embeddableRefId);
   // Note that watchAnswerDocs returns unsubscribe method.
   return watchAnswerDocs((answers: firebase.firestore.DocumentData[]) => {
@@ -202,7 +202,7 @@ export const watchAnswer = (embeddableRefId: string, callback: (wrappedAnswer: W
 };
 
 // Watches ALL the answers for the given activity.
-export const watchAllAnswers = (callback: (wrappedAnswer: WrappedDBAnswer[]) => void) => {
+export const watchAllAnswers = (callback: (wrappedAnswer: IWrappedDBAnswer[]) => void) => {
   // Note that watchAnswerDocs returns unsubscribe method.
   return watchAnswerDocs((answers: firebase.firestore.DocumentData[]) => {
     callback(answers.map(doc => docToWrappedAnswer(doc)));

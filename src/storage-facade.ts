@@ -7,10 +7,17 @@ import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 
 export interface IStorageInitializer { name: FirebaseImp.FirebaseAppName, preview: boolean }
 
-export interface WrappedDBAnswer {
+export interface IWrappedDBAnswer {
   meta: IExportableAnswerMetadata;
   interactiveState: any;
 }
+
+export type IIndexedDBAnswer = IExportableAnswerMetadata & { activity: string };
+
+export const SetCurrentActivityId = (newId: string) => {
+  _currentActivityId = newId;
+};
+let _currentActivityId = "test-activity-unique-identifier";
 
 export const docToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
   const getInteractiveState = () => {
@@ -20,7 +27,7 @@ export const docToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
   };
 
   const interactiveState = getInteractiveState();
-  const wrappedAnswer: WrappedDBAnswer = {
+  const wrappedAnswer: IWrappedDBAnswer = {
     meta: doc as IExportableAnswerMetadata,
     interactiveState
   };
@@ -41,8 +48,8 @@ export interface StorageInterface {
   setAnonymousPortalData: (_portalData: IAnonymousPortalData) => void,
 
   // These are directly related to storing student answers and fetching them back
-  watchAnswer(embeddableRefId: string, callback: (wrappedAnswer: WrappedDBAnswer | null) => void): () => void
-  watchAllAnswers: (callback: (wrappedAnswer: WrappedDBAnswer[]) => void) => void,
+  watchAnswer(embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void): () => void
+  watchAllAnswers: (callback: (wrappedAnswer: IWrappedDBAnswer[]) => void) => void,
   createOrUpdateAnswer: (answer: IExportableAnswerMetadata) => void,
   getLearnerPluginStateDocId: (pluginId: number) => string|undefined,
   getCachedLearnerPluginState: (pluginId: number) => string|null,
@@ -65,8 +72,8 @@ const FireStoreStorageProvider: StorageInterface = {
   setAnonymousPortalData: (_portalData: IAnonymousPortalData) => FirebaseImp.setAnonymousPortalData(_portalData),
 
   // Saving and Loading student work
-  watchAnswer:  (embeddableRefId: string, callback: (wrappedAnswer: WrappedDBAnswer | null) => void) => FirebaseImp.watchAnswer(embeddableRefId, callback),
-  watchAllAnswers: (callback: (wrappedAnswer: WrappedDBAnswer[]) => void) => FirebaseImp.watchAllAnswers(callback),
+  watchAnswer:  (embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void) => FirebaseImp.watchAnswer(embeddableRefId, callback),
+  watchAllAnswers: (callback: (wrappedAnswer: IWrappedDBAnswer[]) => void) => FirebaseImp.watchAllAnswers(callback),
 
   // Save an answer to Firebase
   createOrUpdateAnswer: (answer: IExportableAnswerMetadata) => FirebaseImp.createOrUpdateAnswer(answer),
@@ -77,31 +84,34 @@ const FireStoreStorageProvider: StorageInterface = {
   checkIfOnline: () => FirebaseImp.checkIfOnline()
 };
 
-
 const indexDBConnection = new DexieStorage();
 
 const DexieStorageProvider = {...FireStoreStorageProvider,
 
   createOrUpdateAnswer: (answer: IExportableAnswerMetadata) => {
     console.dir(answer);
-    indexDBConnection.answers.put(answer);
+    const idxDBAnswer = answer as IIndexedDBAnswer;
+    idxDBAnswer.activity = _currentActivityId;
+    indexDBConnection.answers.put(idxDBAnswer);
   },
 
-  watchAnswer: (embeddableRefId: string, callback: (wrappedAnswer: WrappedDBAnswer | null) => void) => {
+  watchAnswer: (embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void) => {
     const questionId = refIdToAnswersQuestionId(embeddableRefId);
     const getAnswerFromIndexDB = (qID: string) => {
       const foundAnswers = indexDBConnection
         .answers
         .where("question_id")
         .equals(qID).toArray();
-      return foundAnswers.then( (answers) => {
+      return foundAnswers.then((answers) => {
         return answers[0];
       });
     };
 
-    getAnswerFromIndexDB(questionId).then( (answer: IExportableAnswerMetadata|null) => {
-      if(answer){
+    getAnswerFromIndexDB(questionId).then( (answer: IIndexedDBAnswer|null) => {
+      if (answer) {
         callback(docToWrappedAnswer(answer));
+      } else {
+        callback(null);
       }
     });
   }
