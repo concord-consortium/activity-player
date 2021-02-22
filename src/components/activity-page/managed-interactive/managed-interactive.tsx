@@ -8,7 +8,7 @@ import {
 } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
-import { createOrUpdateAnswer, watchAnswer } from "../../../firebase-db";
+import { Storage } from "../../../storage-facade";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata, isQuestion } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
@@ -51,7 +51,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const embeddableRefId = props.embeddable.ref_id;
   useEffect(() => {
     if (shouldWatchAnswer) {
-      return watchAnswer(embeddableRefId, (wrappedAnswer) => {
+      return Storage.watchAnswer(embeddableRefId, (wrappedAnswer) => {
         answerMeta.current = wrappedAnswer?.meta;
         interactiveState.current = wrappedAnswer?.interactiveState;
         setLoading(false);
@@ -65,7 +65,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
 
       const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, answerMeta.current);
       if (exportableAnswer) {
-        createOrUpdateAnswer(exportableAnswer);
+        Storage.createOrUpdateAnswer(exportableAnswer);
       }
       // Custom callback set internally. Used by the modal dialog to close itself after the most recent
       // interactive state is received.
