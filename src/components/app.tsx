@@ -652,8 +652,8 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleSelectOfflineActivity = (selectedActivity: Activity, url: string) => {
     this.setState({ activity: selectedActivity });
+    TrackOfflineActivityId(url);
     if (this.state.offlineManifestAuthoringId) {
-      TrackOfflineActivityId(url);
       this.addActivityToOfflineManifest(this.state.offlineManifestAuthoringId, selectedActivity, url);
     }
   }
