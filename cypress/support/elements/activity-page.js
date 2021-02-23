@@ -28,14 +28,14 @@ class ActivityPage {
   getModalDialogClose() {
     return cy.get("[data-cy=modal-dialog-close");
   }
-  getLaunchListAuthoringNav(options) {
-    return cy.get("[data-cy=launch-list-authoring-nav", options);
+  getOfflineManifestAuthoringNav(options) {
+    return cy.get("[data-cy=offline-manifest-authoring-nav", options);
   }
-  getLaunchListExitAuthoringButton() {
-    return cy.get("[data-cy=launch-list-exit-authoring-button");
+  getOfflineManifestExitAuthoringButton() {
+    return cy.get("[data-cy=offline-manifest-exit-authoring-button");
   }
-  getLaunchListLoadingDialog(options) {
-    return cy.get("[data-cy=launch-list-loading-dialog", options);
+  getOfflineManifestLoadingDialog(options) {
+    return cy.get("[data-cy=offline-manifest-loading-modal", options);
   }
   getOfflineActivities(options) {
     return cy.get("[data-cy=offline-activities", options);

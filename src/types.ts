@@ -264,16 +264,16 @@ export interface IAnonymousLearnerPluginState extends IAnonymousMetadataPartial 
   state: string;
 }
 
-export interface LaunchListActivity {
+export interface OfflineManifestActivity {
   name: string;
   url: string;
 }
-export interface LaunchList {
+export interface OfflineManifest {
   name: string
-  activities: LaunchListActivity[];
+  activities: OfflineManifestActivity[];
   cacheList: string[]
 }
 
-export interface OfflineActivity extends LaunchListActivity {
+export interface OfflineActivity extends OfflineManifestActivity {
   // TBD: add class info once that is figured out
 }
