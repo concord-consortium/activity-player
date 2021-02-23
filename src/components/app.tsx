@@ -31,10 +31,10 @@ import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
 import { IdleDetector } from "../utilities/idle-detector";
 import { messageSW, Workbox } from "workbox-window";
-import { getLaunchList, getLaunchListAuthoringData, getLaunchListAuthoringId, getLaunchListId, LaunchListAuthoringData, mergeLaunchListWithAuthoringData, setLaunchListAuthoringData, setLaunchListAuthoringId, setLaunchListId } from "../launch-list-api";
+import { getLaunchList, getLaunchListAuthoringData, getLaunchListAuthoringId, LaunchListAuthoringData, mergeLaunchListWithAuthoringData, saveLaunchListToOfflineActivities, setLaunchListAuthoringData, setLaunchListAuthoringId } from "../launch-list-api";
 import { LaunchListLoadingDialog } from "./launch-list-loading-dialog";
-import { LaunchListLauncherDialog } from "./launch-list-launcher";
-import { OfflineNav } from "./activity-header/offline-nav";
+import { OfflineActivities } from "./offline-activities";
+import { OfflineNav } from "./offline-nav";
 import { LaunchListAuthoringNav } from "./launch-list-authoring-nav";
 
 import "./app.scss";
@@ -43,9 +43,9 @@ const kDefaultActivity = "sample-activity-multiple-layout-types";   // may event
 const kDefaultIncompleteMessage = "Please submit an answer first.";
 
 // User will see the idle warning after kMaxIdleTime
-const kMaxIdleTime = 20 * 60 * 1000; // 20 minutes
+const kMaxIdleTime = parseInt(queryValue("__maxIdleTime") || `${20 * 60 * 1000}`, 10); // 20 minutes
 // User session will timeout after kMaxIdleTime + kTimeout
-const kTimeout = 5 * 60 * 1000; // 5 minutes
+const kTimeout = parseInt(queryValue("__timeout") || `${5 * 60 * 1000}`, 10); // 5 minutes
 
 const kLearnPortalUrl = "https://learn.concord.org";
 
@@ -76,6 +76,7 @@ interface IState {
   errorType: null | ErrorType;
   idle: boolean;
   offlineMode: boolean;
+  launchListId?: string;
   launchListAuthoringId?: string;
   launchListAuthoringActivities: LaunchListActivity[];
   launchListAuthoringCacheList: string[];
@@ -96,6 +97,8 @@ export class App extends React.PureComponent<IProps, IState> {
     setLaunchListAuthoringId(queryValue("setLaunchListAuthoringId"));
     const launchListAuthoringId = getLaunchListAuthoringId();
 
+    const launchListId = queryValue("launchList");
+
     this.state = {
       currentPage: 0,
       teacherEditionMode: false,
@@ -109,11 +112,12 @@ export class App extends React.PureComponent<IProps, IState> {
       errorType: null,
       idle: false,
       loadingLaunchList: false,
-      offlineMode: (queryValue("offline") === "true") || !!launchListAuthoringId,
+      offlineMode: (queryValue("offline") === "true") || !!launchListAuthoringId || !!launchListId,
       launchListAuthoringActivities: [],
       launchListAuthoringCacheList: [],
       showLaunchListInstallConfimation: queryValue("confirmLaunchListInstall") === "true",
-      launchListAuthoringId
+      launchListAuthoringId,
+      launchListId
     };
   }
 
@@ -203,27 +207,26 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const launchListAuthoringId = this.state.launchListAuthoringId;
+      const {launchListId, launchListAuthoringId} = this.state;
+
       let launchListAuthoringData: LaunchListAuthoringData | undefined;
       if (launchListAuthoringId) {
         launchListAuthoringData = getLaunchListAuthoringData(launchListAuthoringId);
       }
 
       let launchList: LaunchList | undefined = undefined;
-      const launchListId = queryValue("launchList") || (this.state.offlineMode ? getLaunchListId() : undefined);
       const loadingLaunchList = !!launchListId;
       if (launchListId) {
         launchList = await getLaunchList(launchListId);
 
-        // save the launch list in offline mode so the PWA knows which launch list to show
-        if (this.state.offlineMode) {
-          setLaunchListId(launchListId);
-        }
-
         // merge the launch list data into the saved data
-        if (launchList && launchListAuthoringId && launchListAuthoringData) {
-          launchListAuthoringData = mergeLaunchListWithAuthoringData(launchList, launchListAuthoringData);
-          setLaunchListAuthoringData(launchListAuthoringId, launchListAuthoringData);
+        if (launchList) {
+          if (launchListAuthoringId && launchListAuthoringData) {
+            launchListAuthoringData = mergeLaunchListWithAuthoringData(launchList, launchListAuthoringData);
+            setLaunchListAuthoringData(launchListAuthoringId, launchListAuthoringData);
+          }
+
+          await saveLaunchListToOfflineActivities(launchList);
         }
       }
 
@@ -235,7 +238,7 @@ export class App extends React.PureComponent<IProps, IState> {
       }
 
       let activity: Activity | undefined = undefined;
-      const activityPath = queryValue("activity") || (launchList ? undefined : kDefaultActivity);
+      const activityPath = queryValue("activity") || (this.state.offlineMode ? undefined : kDefaultActivity);
       if (activityPath) {
         activity = await getActivityDefinition(activityPath);
         if (launchListAuthoringId) {
@@ -328,6 +331,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   render() {
+    const showOfflineNav = this.state.offlineMode && !!this.state.activity;
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
@@ -341,6 +345,7 @@ export class App extends React.PureComponent<IProps, IState> {
                 launchListAuthoringCacheList={this.state.launchListAuthoringCacheList}
               />
             }
+            { showOfflineNav && <OfflineNav onOfflineActivities={this.handleShowOfflineActivities} /> }
             { this.renderContent() }
             { this.state.showThemeButtons && <ThemeButtons/>}
             <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
@@ -356,26 +361,11 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderContent = () => {
-    const {launchList, loadingLaunchList, activity, showSequenceIntro, sequence, username, offlineMode, showLaunchListInstallConfimation, launchListAuthoringId} = this.state;
-    if (launchList) {
-      if (loadingLaunchList) {
-        return <LaunchListLoadingDialog launchList={launchList} onClose={this.handleCloseLoadingLaunchList} showLaunchListInstallConfimation={showLaunchListInstallConfimation} />;
-      } else if (activity) {
-        return this.renderActivity();
-      } else {
-        const handleSelectActivity = (selectedActivity: Activity, url: string) => {
-          this.setState({ activity: selectedActivity });
-          if (this.state.launchListAuthoringId) {
-            this.addActivityToLaunchList(this.state.launchListAuthoringId, selectedActivity, url);
-          }
-        };
-        return <LaunchListLauncherDialog launchList={launchList} onSelectActivity={handleSelectActivity} />;
-      }
-    } else if (offlineMode && !launchListAuthoringId) {
-      if (loadingLaunchList) {
-        return <div>Loading launch list...</div>;
-      }
-      return <div>TODO: handle case were PWA does not have a launch list saved</div>;
+    const {launchList, loadingLaunchList, showSequenceIntro, sequence, username, offlineMode, showLaunchListInstallConfimation, activity} = this.state;
+    if (launchList && loadingLaunchList) {
+      return <LaunchListLoadingDialog launchList={launchList} onClose={this.handleCloseLoadingLaunchList} showLaunchListInstallConfimation={showLaunchListInstallConfimation} />;
+    } else if (offlineMode) {
+      return activity ? this.renderActivity() : <OfflineActivities onSelectActivity={this.handleSelectOfflineActivity} username={username} />;
     } else if (showSequenceIntro) {
       return <SequenceIntroduction sequence={sequence} username={username} onSelectActivity={this.handleSelectActivity} />;
     } else {
@@ -384,17 +374,15 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData, offlineMode } = this.state;
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
     if (!activity) return (<div>Loading activity ...</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
-    const handleShowLaunchList = () => this.setState({ activity: undefined });
 
     return (
       <React.Fragment>
-        {offlineMode && <OfflineNav fullWidth={fullWidth} onShowLaunchList={handleShowLaunchList} /> }
         <Header
           fullWidth={fullWidth}
           projectId={activity.project_id}
@@ -661,4 +649,14 @@ export class App extends React.PureComponent<IProps, IState> {
       });
     }
   }
+
+  private handleSelectOfflineActivity = (selectedActivity: Activity, url: string) => {
+    this.setState({ activity: selectedActivity });
+    if (this.state.launchListAuthoringId) {
+      this.addActivityToLaunchList(this.state.launchListAuthoringId, selectedActivity, url);
+    }
+  }
+
+  private handleShowOfflineActivities = () => this.setState({ activity: undefined });
+
 }

@@ -13,6 +13,7 @@ interface IProps {
   contentName: string;
   showSequence?: boolean;
   onShowSequence?: () => void;
+  skipTitlePrefix?: boolean;
 }
 
 export class Header extends React.PureComponent<IProps> {
@@ -44,10 +45,11 @@ export class Header extends React.PureComponent<IProps> {
   }
 
   private renderContentTitle = () => {
-    const { contentName, showSequence } = this.props;
+    const { contentName, showSequence, skipTitlePrefix } = this.props;
+    const titlePrefix = skipTitlePrefix ? "" : (showSequence ? "Sequence: " : "Activity: ");
     return (
       <div className="activity-title" data-cy ="activity-title">
-        {`${showSequence ? "Sequence:" : "Activity:"} ${contentName}`}
+        {`${titlePrefix}${contentName}`}
       </div>
     );
   }

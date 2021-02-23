@@ -1,5 +1,7 @@
+import { DexieStorage } from "./dexie-storage";
 import { LaunchList, LaunchListActivity } from "./types";
 
+const dexie = new DexieStorage();
 export interface LaunchListAuthoringData {
   activities: LaunchListActivity[];
   cacheList: string[]
@@ -54,16 +56,8 @@ export const cacheLaunchList = (options: cacheLaunchListOptions) => {
     .catch(err => onAllUrlsCacheFailed(err));
 };
 
-export const LaunchListCurrentIdKey = "launchListCurrentId";
 export const LaunchListAuthoringIdKey = "launchListAuthoringId";
 export const LaunchListAuthoringDataKeyPrefix = "launchListAuthoringData:";
-
-export const setLaunchListId = (value: string) => {
-  window.localStorage.setItem(LaunchListCurrentIdKey, value);
-};
-export const getLaunchListId = () => {
-  return window.localStorage.getItem(LaunchListCurrentIdKey) || undefined;
-};
 
 export const setLaunchListAuthoringId = (value: string | undefined) => {
   if (value !== undefined) {
@@ -120,3 +114,18 @@ export const mergeLaunchListWithAuthoringData = (launchList: LaunchList, authori
   });
   return {activities, cacheList};
 };
+
+export const saveLaunchListToOfflineActivities = async (launchList: LaunchList) => {
+  const promises = launchList.activities.map(async (launchListActivity) => {
+    const {name, url} = launchListActivity;
+    const offlineActivity = await dexie.offlineActivities.get({url});
+    if (offlineActivity) {
+      await dexie.offlineActivities.update(url, {name, url});
+    } else {
+      await dexie.offlineActivities.put({name, url});
+    }
+  });
+  await Promise.all(promises);
+};
+
+export const getOfflineActivities = async () => await dexie.offlineActivities.toArray();

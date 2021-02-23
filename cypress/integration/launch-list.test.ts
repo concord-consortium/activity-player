@@ -41,16 +41,16 @@ context("Test using launch lists", () => {
       // verify loading dialog shows and then auto closes
       activityPage.getLaunchListLoadingDialog().should("be.visible").and("contain", "AP Smoke Test");
 
-      // verify launch list shows
-      activityPage.getLaunchListLauncher().should("be.visible").and("contain", "AP Smoke Test");
+      // verify offline activities list shows
+      activityPage.getOfflineActivities().should("be.visible").and("contain", "AP Smoke Test");
     });
 
-    it("verify launch list launcher shows and clicking an item loads it",() => {
+    it("verify offline activities show and clicking an item loads it",() => {
       cy.visit("?launchList=smoke-test");
 
       // verify clicking on activity loads it and closes the launcher
-      activityPage.getActivityTitle({timeout: 0}).should("not.exist");
-      activityPage.getLaunchListLauncher().contains("Activity 1").click();
+      activityPage.getLaunchListLoadingDialog({timeout: 0}).should("not.exist");
+      activityPage.getOfflineActivityList().contains("AP Smoke Test").click();
       activityPage.getActivityTitle().should("be.visible").and("contain", "AP Smoke Test");
     });
   });

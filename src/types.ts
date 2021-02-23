@@ -273,3 +273,7 @@ export interface LaunchList {
   activities: LaunchListActivity[];
   cacheList: string[]
 }
+
+export interface OfflineActivity extends LaunchListActivity {
+  // TBD: add class info once that is figured out
+}
