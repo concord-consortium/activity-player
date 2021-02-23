@@ -55,7 +55,10 @@ export interface StorageInterface {
   getCachedLearnerPluginState: (pluginId: number) => string|null,
   getLearnerPluginState: (pluginId: number) => Promise<string|null>,
   setLearnerPluginState: (pluginId: number, state: string) => Promise<string>,
-  checkIfOnline: () => Promise<boolean>
+  checkIfOnline: () => Promise<boolean>,
+
+  // for saving a whole activity to JSON
+  exportActivityToJSON: (activityId?: string) => Promise<string> | string
 }
 
 const FireStoreStorageProvider: StorageInterface = {
@@ -81,7 +84,10 @@ const FireStoreStorageProvider: StorageInterface = {
   getCachedLearnerPluginState: (pluginId: number) => FirebaseImp.getCachedLearnerPluginState(pluginId),
   getLearnerPluginState: (pluginId: number) => FirebaseImp.getLearnerPluginState(pluginId),
   setLearnerPluginState: (pluginId: number, state: string) => FirebaseImp.setLearnerPluginState(pluginId,state),
-  checkIfOnline: () => FirebaseImp.checkIfOnline()
+  checkIfOnline: () => FirebaseImp.checkIfOnline(),
+
+  // TODO: Save activity to local JSON file
+  exportActivityToJSON: (activityId?: string) => "" // console.log("Not yet implemented for Firebase Storage")
 };
 
 const indexDBConnection = new DexieStorage();
@@ -89,7 +95,6 @@ const indexDBConnection = new DexieStorage();
 const DexieStorageProvider = {...FireStoreStorageProvider,
 
   createOrUpdateAnswer: (answer: IExportableAnswerMetadata) => {
-    console.dir(answer);
     const idxDBAnswer = answer as IIndexedDBAnswer;
     idxDBAnswer.activity = _currentOfflineActivityId;
     indexDBConnection.answers.put(idxDBAnswer);
@@ -112,6 +117,27 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
         callback(docToWrappedAnswer(answer));
       } else {
         callback(null);
+      }
+    });
+  },
+
+  exportActivityToJSON: (activityId?: string) => {
+    const currentActivityId = activityId ? activityId : _currentOfflineActivityId;
+    const getAllAnswersFromIndexDB = () => {
+      const foundAnswers = indexDBConnection
+        .answers
+        .where("activity")
+        .equals(currentActivityId).toArray();
+      return foundAnswers.then((answers) => {
+        return answers;
+      });
+    };
+
+    return getAllAnswersFromIndexDB().then( (answers: IIndexedDBAnswer[]|null) => {
+      if (answers) {
+        return JSON.stringify({ answers });
+      } else {
+        return JSON.stringify({ answers: []});
       }
     });
   }
