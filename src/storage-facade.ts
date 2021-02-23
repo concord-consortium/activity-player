@@ -14,10 +14,10 @@ export interface IWrappedDBAnswer {
 
 export type IIndexedDBAnswer = IExportableAnswerMetadata & { activity: string };
 
-export const SetCurrentActivityId = (newId: string) => {
-  _currentActivityId = newId;
+export const TrackOfflineActivityId = (newId: string) => {
+  _currentOfflineActivityId = newId;
 };
-let _currentActivityId = "test-activity-unique-identifier";
+let _currentOfflineActivityId = "offline-activity-default-identifier";
 
 export const docToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
   const getInteractiveState = () => {
@@ -91,7 +91,7 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
   createOrUpdateAnswer: (answer: IExportableAnswerMetadata) => {
     console.dir(answer);
     const idxDBAnswer = answer as IIndexedDBAnswer;
-    idxDBAnswer.activity = _currentActivityId;
+    idxDBAnswer.activity = _currentOfflineActivityId;
     indexDBConnection.answers.put(idxDBAnswer);
   },
 
