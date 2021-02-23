@@ -1,13 +1,13 @@
 import React from "react";
-import { cacheLaunchList } from "../launch-list-api";
-import { LaunchList } from "../types";
+import { cacheOfflineManifest } from "../offline-manifest-api";
+import { OfflineManifest } from "../types";
 
-import "./launch-list-loading-dialog.scss";
+import "./offline-manifest-loading-modal.scss";
 
 interface IProps {
-  launchList: LaunchList;
+  offlineManifest: OfflineManifest;
   onClose: () => void;
-  showLaunchListInstallConfimation: boolean;
+  showOfflineManifestInstallConfirmation: boolean;
 }
 
 interface IState {
@@ -17,7 +17,7 @@ interface IState {
   caching: boolean;
 }
 
-export class LaunchListLoadingDialog extends React.Component<IProps, IState> {
+export class OfflineManifestLoadingModal extends React.Component<IProps, IState> {
   constructor(props: IProps) {
     super(props);
 
@@ -30,10 +30,10 @@ export class LaunchListLoadingDialog extends React.Component<IProps, IState> {
   }
 
   componentDidMount() {
-    const { launchList } = this.props;
+    const { offlineManifest } = this.props;
 
-    cacheLaunchList({
-      launchList,
+    cacheOfflineManifest({
+      offlineManifest,
       onCachingStarted: (urls) => {
         this.setState({urlsToCache: urls});
       },
@@ -60,21 +60,21 @@ export class LaunchListLoadingDialog extends React.Component<IProps, IState> {
 
   checkForAutoClose(props: IProps) {
     const {caching, urlsFailedToCache} = this.state;
-    const {showLaunchListInstallConfimation} = this.props;
-    if (!caching && (urlsFailedToCache.length === 0) && !showLaunchListInstallConfimation) {
+    const {showOfflineManifestInstallConfirmation} = this.props;
+    if (!caching && (urlsFailedToCache.length === 0) && !showOfflineManifestInstallConfirmation) {
       // allow the final render
       setTimeout(() => props.onClose(), 0);
     }
   }
 
   renderCaching() {
-    const { launchList } = this.props;
+    const { offlineManifest } = this.props;
     const { urlsToCache, urlsCached, urlsFailedToCache} = this.state;
 
     return (
       <>
         <div>
-          Loading <strong>{launchList.name}</strong> assets...
+          Loading <strong>{offlineManifest.name}</strong> assets...
         </div>
         <div>
           {urlsCached.length + urlsFailedToCache.length} of {urlsToCache.length}
@@ -85,14 +85,14 @@ export class LaunchListLoadingDialog extends React.Component<IProps, IState> {
   }
 
   renderDoneCaching() {
-    const { launchList } = this.props;
+    const { offlineManifest } = this.props;
     const numFailedUrls = this.state.urlsFailedToCache.length;
     const message = numFailedUrls === 0 ? "loading" : "attempting to load";
 
     return (
       <>
         <div>
-          Finished {message} <strong>{launchList.name}</strong> assets
+          Finished {message} <strong>{offlineManifest.name}</strong> assets
         </div>
         {numFailedUrls > 0
           ?
@@ -109,7 +109,7 @@ export class LaunchListLoadingDialog extends React.Component<IProps, IState> {
   render() {
     const { caching } = this.state;
     return (
-      <div className="launch-list-loading-dialog" data-cy="launch-list-loading-dialog">
+      <div className="offline-manifest-loading-modal" data-cy="offline-manifest-loading-modal">
         <div className="background" />
         <div className="dialog">
           {caching ? this.renderCaching() : this.renderDoneCaching()}

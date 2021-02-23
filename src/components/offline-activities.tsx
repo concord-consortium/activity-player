@@ -1,6 +1,6 @@
 import React from "react";
 import { getActivityDefinition } from "../lara-api";
-import { getOfflineActivities } from "../launch-list-api";
+import { getOfflineActivities } from "../offline-manifest-api";
 import { Activity, OfflineActivity } from "../types";
 import { Header } from "./activity-header/header";
 

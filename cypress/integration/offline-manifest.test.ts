@@ -2,13 +2,13 @@ import ActivityPage from "../support/elements/activity-page";
 
 const activityPage = new ActivityPage;
 
-context("Test setting launch list authoring id in local storage", () => {
+context("Test setting offline manifest authoring id in local storage", () => {
 
-  describe("setLaunchListAuthoringId",() => {
+  describe("setOfflineManifestAuthoringId",() => {
     it("verify id is set when query parameter is given",() => {
-      cy.visit("?setLaunchListAuthoringId=test-authoring-id");
+      cy.visit("?setOfflineManifestAuthoringId=test-authoring-id");
       cy.saveLocalStorage();
-      activityPage.getLaunchListAuthoringNav().should("be.visible")
+      activityPage.getOfflineManifestAuthoringNav().should("be.visible")
         .and("contain", "test-authoring-id")
         .and("contain", "Download JSON")
         .and("contain", "Clear Authoring Data")
@@ -18,38 +18,38 @@ context("Test setting launch list authoring id in local storage", () => {
     it("verify id is set on subsequent loads",() => {
       cy.restoreLocalStorage();
       cy.visit("");
-      activityPage.getLaunchListAuthoringNav().should("be.visible").and("contain", "test-authoring-id");
+      activityPage.getOfflineManifestAuthoringNav().should("be.visible").and("contain", "test-authoring-id");
     });
 
     it("verify id is cleared when exit authoring is clicked",() => {
       cy.restoreLocalStorage();
       cy.visit("");
-      activityPage.getLaunchListAuthoringNav().should("be.visible").and("contain", "test-authoring-id");
-      activityPage.getLaunchListExitAuthoringButton().should("be.visible");
-      activityPage.getLaunchListExitAuthoringButton().click();
-      activityPage.getLaunchListAuthoringNav({timeout: 0}).should("not.exist");
+      activityPage.getOfflineManifestAuthoringNav().should("be.visible").and("contain", "test-authoring-id");
+      activityPage.getOfflineManifestExitAuthoringButton().should("be.visible");
+      activityPage.getOfflineManifestExitAuthoringButton().click();
+      activityPage.getOfflineManifestAuthoringNav({timeout: 0}).should("not.exist");
     });
   });
 });
 
-context("Test using launch lists", () => {
+context("Test using offline manifests", () => {
 
-  describe("launchList",() => {
-    it("verify launch list if loaded when query parameter is given",() => {
-      cy.visit("?launchList=smoke-test");
+  describe("offlineManifest",() => {
+    it("verify offline manifest is loaded when query parameter is given",() => {
+      cy.visit("?offlineManifest=smoke-test");
 
       // verify loading dialog shows and then auto closes
-      activityPage.getLaunchListLoadingDialog().should("be.visible").and("contain", "AP Smoke Test");
+      activityPage.getOfflineManifestLoadingDialog().should("be.visible").and("contain", "AP Smoke Test");
 
       // verify offline activities list shows
       activityPage.getOfflineActivities().should("be.visible").and("contain", "AP Smoke Test");
     });
 
     it("verify offline activities show and clicking an item loads it",() => {
-      cy.visit("?launchList=smoke-test");
+      cy.visit("?offlineManifest=smoke-test");
 
       // verify clicking on activity loads it and closes the launcher
-      activityPage.getLaunchListLoadingDialog({timeout: 0}).should("not.exist");
+      activityPage.getOfflineManifestLoadingDialog({timeout: 0}).should("not.exist");
       activityPage.getOfflineActivityList().contains("AP Smoke Test").click();
       activityPage.getActivityTitle().should("be.visible").and("contain", "AP Smoke Test");
     });

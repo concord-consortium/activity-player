@@ -15,7 +15,7 @@ import { CompletionPageContent } from "./activity-completion/completion-page-con
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { fetchPortalData, IPortalData, firebaseAppName } from "../portal-api";
 import { Storage } from "../storage-facade";
-import { Activity, IEmbeddablePlugin, LaunchList, LaunchListActivity, Sequence } from "../types";
+import { Activity, IEmbeddablePlugin, OfflineManifest, OfflineManifestActivity, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -31,11 +31,11 @@ import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
 import { IdleDetector } from "../utilities/idle-detector";
 import { messageSW, Workbox } from "workbox-window";
-import { getLaunchList, getLaunchListAuthoringData, getLaunchListAuthoringId, LaunchListAuthoringData, mergeLaunchListWithAuthoringData, saveLaunchListToOfflineActivities, setLaunchListAuthoringData, setLaunchListAuthoringId } from "../launch-list-api";
-import { LaunchListLoadingDialog } from "./launch-list-loading-dialog";
+import { getOfflineManifest, getOfflineManifestAuthoringData, getOfflineManifestAuthoringId, OfflineManifestAuthoringData, mergeOfflineManifestWithAuthoringData, saveOfflineManifestToOfflineActivities, setOfflineManifestAuthoringData, setOfflineManifestAuthoringId } from "../offline-manifest-api";
+import { OfflineManifestLoadingModal } from "./offline-manifest-loading-modal";
 import { OfflineActivities } from "./offline-activities";
 import { OfflineNav } from "./offline-nav";
-import { LaunchListAuthoringNav } from "./launch-list-authoring-nav";
+import { OfflineManifestAuthoringNav } from "./offline-manifest-authoring-nav";
 
 import "./app.scss";
 
@@ -58,8 +58,8 @@ interface IncompleteQuestion {
 
 interface IState {
   activity?: Activity;
-  launchList?: LaunchList;
-  loadingLaunchList: boolean;
+  offlineManifest?: OfflineManifest;
+  loadingOfflineManifest: boolean;
   currentPage: number;
   teacherEditionMode?: boolean;
   showThemeButtons?: boolean;
@@ -76,11 +76,11 @@ interface IState {
   errorType: null | ErrorType;
   idle: boolean;
   offlineMode: boolean;
-  launchListId?: string;
-  launchListAuthoringId?: string;
-  launchListAuthoringActivities: LaunchListActivity[];
-  launchListAuthoringCacheList: string[];
-  showLaunchListInstallConfimation: boolean;
+  offlineManifestId?: string;
+  offlineManifestAuthoringId?: string;
+  offlineManifestAuthoringActivities: OfflineManifestActivity[];
+  offlineManifestAuthoringCacheList: string[];
+  showOfflineManifestInstallConfirmation: boolean;
 }
 interface IProps {}
 
@@ -92,12 +92,12 @@ export class App extends React.PureComponent<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
 
-    // set the launch list authoring localstorage item if it exists in the params and then read from localstorage
+    // set the offline manifest authoring localstorage item if it exists in the params and then read from localstorage
     // this is done in the constructor as the state value is needed in the UNSAFE_componentWillMount method
-    setLaunchListAuthoringId(queryValue("setLaunchListAuthoringId"));
-    const launchListAuthoringId = getLaunchListAuthoringId();
+    setOfflineManifestAuthoringId(queryValue("setOfflineManifestAuthoringId"));
+    const offlineManifestAuthoringId = getOfflineManifestAuthoringId();
 
-    const launchListId = queryValue("launchList");
+    const offlineManifestId = queryValue("offlineManifest");
 
     this.state = {
       currentPage: 0,
@@ -111,13 +111,13 @@ export class App extends React.PureComponent<IProps, IState> {
       pluginsLoaded: false,
       errorType: null,
       idle: false,
-      loadingLaunchList: false,
-      offlineMode: (queryValue("offline") === "true") || !!launchListAuthoringId || !!launchListId,
-      launchListAuthoringActivities: [],
-      launchListAuthoringCacheList: [],
-      showLaunchListInstallConfimation: queryValue("confirmLaunchListInstall") === "true",
-      launchListAuthoringId,
-      launchListId
+      loadingOfflineManifest: false,
+      offlineMode: (queryValue("offline") === "true") || !!offlineManifestAuthoringId || !!offlineManifestId,
+      offlineManifestAuthoringActivities: [],
+      offlineManifestAuthoringCacheList: [],
+      showOfflineManifestInstallConfirmation: queryValue("confirmOfflineManifestInstall") === "true",
+      offlineManifestAuthoringId,
+      offlineManifestId
     };
   }
 
@@ -172,27 +172,27 @@ export class App extends React.PureComponent<IProps, IState> {
         }
       });
       wb.addEventListener("message", (event) => {
-        const {launchListAuthoringId} = this.state;
+        const {offlineManifestAuthoringId} = this.state;
         switch (event.data.type) {
           case "CACHE_UPDATED":
             console.log(`A newer version of ${event.data.payload.updatedURL} is available!`);
             break;
 
           case "GET_REQUEST":
-            if (launchListAuthoringId) {
+            if (offlineManifestAuthoringId) {
               this.setState((prevState) => {
                 // make sure all models-resources requests use the base folder
                 const url = event.data.url.replace(/.*models-resources\//, "models-resources/");
-                let {launchListAuthoringCacheList} = prevState;
-                const {launchListAuthoringActivities} = prevState;
-                if (!/api\/v1\/activities/.test(url) && (launchListAuthoringCacheList.indexOf(url) === -1)) {
-                  launchListAuthoringCacheList = launchListAuthoringCacheList.concat(url);
+                let {offlineManifestAuthoringCacheList} = prevState;
+                const {offlineManifestAuthoringActivities} = prevState;
+                if (!/api\/v1\/activities/.test(url) && (offlineManifestAuthoringCacheList.indexOf(url) === -1)) {
+                  offlineManifestAuthoringCacheList = offlineManifestAuthoringCacheList.concat(url);
                 }
-                setLaunchListAuthoringData(launchListAuthoringId, {
-                  activities: launchListAuthoringActivities,
-                  cacheList: launchListAuthoringCacheList
+                setOfflineManifestAuthoringData(offlineManifestAuthoringId, {
+                  activities: offlineManifestAuthoringActivities,
+                  cacheList: offlineManifestAuthoringCacheList
                 });
-                return {...prevState, launchListAuthoringCacheList};
+                return {...prevState, offlineManifestAuthoringCacheList};
               });
             }
             break;
@@ -207,33 +207,32 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const {launchListId, launchListAuthoringId} = this.state;
+      const {offlineManifestId, offlineManifestAuthoringId} = this.state;
 
-      let launchListAuthoringData: LaunchListAuthoringData | undefined;
-      if (launchListAuthoringId) {
-        launchListAuthoringData = getLaunchListAuthoringData(launchListAuthoringId);
+      let offlineManifestAuthoringData: OfflineManifestAuthoringData | undefined;
+      if (offlineManifestAuthoringId) {
+        offlineManifestAuthoringData = getOfflineManifestAuthoringData(offlineManifestAuthoringId);
       }
 
-      let launchList: LaunchList | undefined = undefined;
-      const loadingLaunchList = !!launchListId;
-      if (launchListId) {
-        launchList = await getLaunchList(launchListId);
+      let offlineManifest: OfflineManifest | undefined = undefined;
+      const loadingOfflineManifest = !!offlineManifestId;
+      if (offlineManifestId) {
+        offlineManifest = await getOfflineManifest(offlineManifestId);
 
-        // merge the launch list data into the saved data
-        if (launchList) {
-          if (launchListAuthoringId && launchListAuthoringData) {
-            launchListAuthoringData = mergeLaunchListWithAuthoringData(launchList, launchListAuthoringData);
-            setLaunchListAuthoringData(launchListAuthoringId, launchListAuthoringData);
+        if (offlineManifest) {
+          if (offlineManifestAuthoringId && offlineManifestAuthoringData) {
+            offlineManifestAuthoringData = mergeOfflineManifestWithAuthoringData(offlineManifest, offlineManifestAuthoringData);
+            setOfflineManifestAuthoringData(offlineManifestAuthoringId, offlineManifestAuthoringData);
           }
 
-          await saveLaunchListToOfflineActivities(launchList);
+          await saveOfflineManifestToOfflineActivities(offlineManifest);
         }
       }
 
-      if (launchListAuthoringData) {
+      if (offlineManifestAuthoringData) {
         this.setState({
-          launchListAuthoringActivities: launchListAuthoringData.activities,
-          launchListAuthoringCacheList: launchListAuthoringData.cacheList
+          offlineManifestAuthoringActivities: offlineManifestAuthoringData.activities,
+          offlineManifestAuthoringCacheList: offlineManifestAuthoringData.cacheList
         });
       }
 
@@ -241,8 +240,8 @@ export class App extends React.PureComponent<IProps, IState> {
       const activityPath = queryValue("activity") || (this.state.offlineMode ? undefined : kDefaultActivity);
       if (activityPath) {
         activity = await getActivityDefinition(activityPath);
-        if (launchListAuthoringId) {
-          this.addActivityToLaunchList(launchListAuthoringId, activity, activityPath);
+        if (offlineManifestAuthoringId) {
+          this.addActivityToOfflineManifest(offlineManifestAuthoringId, activity, activityPath);
         }
       }
 
@@ -261,7 +260,7 @@ export class App extends React.PureComponent<IProps, IState> {
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
 
-      const newState: Partial<IState> = {activity, launchList, loadingLaunchList, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode, launchListAuthoringId};
+      const newState: Partial<IState> = {activity, offlineManifest, loadingOfflineManifest, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode, offlineManifestAuthoringId};
       setDocumentTitle(activity, currentPage);
 
       let classHash = "";
@@ -338,11 +337,11 @@ export class App extends React.PureComponent<IProps, IState> {
           <div className="app" data-cy="app">
             { this.state.showWarning && <WarningBanner/> }
             { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-            { this.state.launchListAuthoringId && <LaunchListAuthoringNav
-                launchList={this.state.launchList}
-                launchListAuthoringId={this.state.launchListAuthoringId}
-                launchListAuthoringActivities={this.state.launchListAuthoringActivities}
-                launchListAuthoringCacheList={this.state.launchListAuthoringCacheList}
+            { this.state.offlineManifestAuthoringId && <OfflineManifestAuthoringNav
+                offlineManifest={this.state.offlineManifest}
+                offlineManifestAuthoringId={this.state.offlineManifestAuthoringId}
+                offlineManifestAuthoringActivities={this.state.offlineManifestAuthoringActivities}
+                offlineManifestAuthoringCacheList={this.state.offlineManifestAuthoringCacheList}
               />
             }
             { showOfflineNav && <OfflineNav onOfflineActivities={this.handleShowOfflineActivities} /> }
@@ -361,9 +360,9 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderContent = () => {
-    const {launchList, loadingLaunchList, showSequenceIntro, sequence, username, offlineMode, showLaunchListInstallConfimation, activity} = this.state;
-    if (launchList && loadingLaunchList) {
-      return <LaunchListLoadingDialog launchList={launchList} onClose={this.handleCloseLoadingLaunchList} showLaunchListInstallConfimation={showLaunchListInstallConfimation} />;
+    const {offlineManifest, loadingOfflineManifest, showSequenceIntro, sequence, username, offlineMode, showOfflineManifestInstallConfirmation, activity} = this.state;
+    if (offlineManifest && loadingOfflineManifest) {
+      return <OfflineManifestLoadingModal offlineManifest={offlineManifest} onClose={this.handleCloseLoadingOfflineManifest} showOfflineManifestInstallConfirmation={showOfflineManifestInstallConfirmation} />;
     } else if (offlineMode) {
       return activity ? this.renderActivity() : <OfflineActivities onSelectActivity={this.handleSelectOfflineActivity} username={username} />;
     } else if (showSequenceIntro) {
@@ -620,40 +619,40 @@ export class App extends React.PureComponent<IProps, IState> {
     this.setState({ pluginsLoaded: true });
   }
 
-  private handleCloseLoadingLaunchList = () => {
-    this.setState({loadingLaunchList: false});
+  private handleCloseLoadingOfflineManifest = () => {
+    this.setState({loadingOfflineManifest: false});
   }
 
-  private addActivityToLaunchList = (launchListAuthoringId: string, activity: Activity, url: string) => {
+  private addActivityToOfflineManifest = (offlineManifestAuthoringId: string, activity: Activity, url: string) => {
     const isExternalUrl = /https?:\/\//.test(url);  // test for internal demo files
-    if (launchListAuthoringId && isExternalUrl) {
+    if (offlineManifestAuthoringId && isExternalUrl) {
       this.setState(prevState => {
-        let {launchListAuthoringActivities} = prevState;
-        const {launchListAuthoringCacheList} = prevState;
+        let {offlineManifestAuthoringActivities} = prevState;
+        const {offlineManifestAuthoringCacheList} = prevState;
 
         getAllUrlsInActivity(activity).forEach(urlInActivity => {
-          if (launchListAuthoringCacheList.indexOf(urlInActivity) === -1) {
-            launchListAuthoringCacheList.push(urlInActivity);
+          if (offlineManifestAuthoringCacheList.indexOf(urlInActivity) === -1) {
+            offlineManifestAuthoringCacheList.push(urlInActivity);
           }
         });
 
-        if (!prevState.launchListAuthoringActivities.find(a => a.url === url)) {
-          launchListAuthoringActivities = launchListAuthoringActivities.concat({ name: activity.name, url });
-          setLaunchListAuthoringData(launchListAuthoringId, {
-            activities: launchListAuthoringActivities,
-            cacheList: launchListAuthoringCacheList
+        if (!prevState.offlineManifestAuthoringActivities.find(a => a.url === url)) {
+          offlineManifestAuthoringActivities = offlineManifestAuthoringActivities.concat({ name: activity.name, url });
+          setOfflineManifestAuthoringData(offlineManifestAuthoringId, {
+            activities: offlineManifestAuthoringActivities,
+            cacheList: offlineManifestAuthoringCacheList
           });
         }
 
-        return {launchListAuthoringActivities, launchListAuthoringCacheList};
+        return {offlineManifestAuthoringActivities, offlineManifestAuthoringCacheList};
       });
     }
   }
 
   private handleSelectOfflineActivity = (selectedActivity: Activity, url: string) => {
     this.setState({ activity: selectedActivity });
-    if (this.state.launchListAuthoringId) {
-      this.addActivityToLaunchList(this.state.launchListAuthoringId, selectedActivity, url);
+    if (this.state.offlineManifestAuthoringId) {
+      this.addActivityToOfflineManifest(this.state.offlineManifestAuthoringId, selectedActivity, url);
     }
   }
 
