@@ -43,9 +43,9 @@ const kDefaultActivity = "sample-activity-multiple-layout-types";   // may event
 const kDefaultIncompleteMessage = "Please submit an answer first.";
 
 // User will see the idle warning after kMaxIdleTime
-const kMaxIdleTime = 20 * 60 * 1000; // 20 minutes
+const kMaxIdleTime = parseInt(queryValue("__maxIdleTime") || `${20 * 60 * 1000}`, 10); // 20 minutes
 // User session will timeout after kMaxIdleTime + kTimeout
-const kTimeout = 5 * 60 * 1000; // 5 minutes
+const kTimeout = parseInt(queryValue("__timeout") || `${5 * 60 * 1000}`, 10); // 5 minutes
 
 const kLearnPortalUrl = "https://learn.concord.org";
 
