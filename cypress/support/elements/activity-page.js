@@ -37,8 +37,11 @@ class ActivityPage {
   getLaunchListLoadingDialog(options) {
     return cy.get("[data-cy=launch-list-loading-dialog", options);
   }
-  getLaunchListLauncher(options) {
-    return cy.get("[data-cy=launch-list-launcher", options);
+  getOfflineActivities(options) {
+    return cy.get("[data-cy=offline-activities", options);
+  }
+  getOfflineActivityList(options) {
+    return cy.get("[data-cy=offline-activities] td.activity", options);
   }
   getActivityTitle(options) {
     return cy.get("[data-cy=activity-title", options);
