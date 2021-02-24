@@ -82,6 +82,7 @@ export interface StorageInterface {
 
   // for saving a whole activity to JSON
   exportActivityToJSON: (activityId?: string) => Promise<ExportableActivity>
+  importStudentAnswersFromJSONFile: (studentAnswers: string, filename: string) => boolean
 }
 
 const FireStoreStorageProvider: StorageInterface = {
@@ -109,8 +110,9 @@ const FireStoreStorageProvider: StorageInterface = {
   setLearnerPluginState: (pluginId: number, state: string) => FirebaseImp.setLearnerPluginState(pluginId,state),
   checkIfOnline: () => FirebaseImp.checkIfOnline(),
 
-  // TODO: Save activity to local JSON file
-  exportActivityToJSON: (activityId?: string) => Promise.reject("Not yet implemented for Firebase Storage")
+  // TODO: Save activity to local JSON file and allow reloading from file
+  exportActivityToJSON: (activityId?: string) => Promise.reject("Not yet implemented for Firebase Storage"),
+  importStudentAnswersFromJSONFile: (studentAnswers: string, filename: string) => true
 };
 
 const indexDBConnection = new DexieStorage();
@@ -178,6 +180,27 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
         return { activity: currentActivityId, filename, version: kOfflineAnswerSchemaVersion, answers: []};
       }
     });
+  },
+
+  importStudentAnswersFromJSONFile: (studentAnswers: string, filename: string) => {
+    console.log(`The file size is ${studentAnswers.length}`);
+    console.log(`The file name is ${filename}`);
+    const parsedAnswers = JSON.parse(studentAnswers);
+    console.log(parsedAnswers);
+
+    // TODO:
+    // Check the file is the correct type(is json)
+    // Check the file version is compatible
+    // Check the file name is in the answer file (unsure if this helps?)
+    // Check if the student that saved the file is the same as the logged in user
+    // Warn that uploading answers will overwrite current answers (do we want this, or do we want to only update empty answers?)
+    // can we reliably detect if this is cheating (answers saved by someone else and sent to friend)
+    const fileNameFromAnswers = parsedAnswers.filename;
+    if (fileNameFromAnswers) {
+      return fileNameFromAnswers.indexOf(filename) > -1;
+    } else {
+      return false;
+    }
   }
 };
 

@@ -4,6 +4,7 @@ import { ActivityPageLinks } from "../activity-introduction/activity-page-links"
 
 import "./introduction-page-content.scss";
 import { Activity } from "../../types";
+import { ImportAnswers } from "./introduction-import-answers";
 
 interface IProps {
   activity: Activity;
@@ -14,6 +15,7 @@ export const IntroductionPageContent: React.FC<IProps> = (props) => {
   const { activity, onPageChange } = props;
   return (
     <div className="intro-content" data-cy="intro-page-content">
+      <ImportAnswers />
       <div className="introduction">
         <ActivitySummary
           activityName={activity.name}
