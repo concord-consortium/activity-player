@@ -183,11 +183,11 @@ export interface IReportState {
  */
 export interface ILTIPartial {
   platform_id: string;      // portal
-  platform_user_id: string;
+  platform_user_id: string; // Portal user_id
   context_id: string;       // class hash
-  resource_link_id: string;  // offering ID
-  resource_url: string;
-  run_key: string;
+  resource_link_id: string; // offering ID
+  resource_url: string;     // Activity or sequence ID
+  run_key: string;          // Unique run identifier
   source_key: string;
   tool_id: string;
 }

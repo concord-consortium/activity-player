@@ -13,9 +13,9 @@ import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
-import { fetchPortalData, IPortalData, firebaseAppName } from "../portal-api";
+import { IPortalData, firebaseAppName } from "../portal-api";
 import { Activity, IEmbeddablePlugin, OfflineManifest, OfflineManifestActivity, Sequence } from "../types";
-import { Storage, TrackOfflineActivityId } from "../storage-facade";
+import { TrackOfflineActivityId } from "../storage-facade";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -36,6 +36,7 @@ import { OfflineManifestLoadingModal } from "./offline-manifest-loading-modal";
 import { OfflineActivities } from "./offline-activities";
 import { OfflineNav } from "./offline-nav";
 import { OfflineManifestAuthoringNav } from "./offline-manifest-authoring-nav";
+import { StudentInfo } from "../student-info";
 
 import "./app.scss";
 
@@ -264,50 +265,12 @@ export class App extends React.PureComponent<IProps, IState> {
       const newState: Partial<IState> = {activity, offlineManifest, loadingOfflineManifest, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode, offlineManifestAuthoringId};
       setDocumentTitle(activity, currentPage);
 
-      let classHash = "";
-      let role = "unknown";
-      let runRemoteEndpoint = "";
-
-      if (queryValue("token")) {
-        try {
-          const portalData = await fetchPortalData();
-          if (portalData.fullName) {
-            newState.username = portalData.fullName;
-          }
-          if (portalData.userType) {
-            role = portalData.userType;
-          }
-          if (portalData.contextId) {
-            classHash = portalData.contextId;
-          }
-          if (portalData.runRemoteEndpoint) {
-            runRemoteEndpoint = portalData.runRemoteEndpoint;
-          }
-          await Storage.initializeDB({ name: portalData.database.appName, preview: false });
-          await Storage.signInWithToken(portalData.database.rawFirebaseJWT);
-          this.setState({ portalData });
-
-          Storage.setPortalData(portalData);
-        } catch (err) {
-          this.setError("auth", err);
-        }
-      // TDB: add else case to handle offline authentication when this.state.offlineMode is true
-      } else {
-        try {
-          await Storage.initializeAnonymousDB(preview);
-        } catch (err) {
-          this.setError("auth", err);
-        }
-      }
-
-      if (!preview) {
-        // Notify user about network issues. Note that in preview mode Firestore network is disabled, so it doesn't
-        // make sense to track requests.
-        Storage.onFirestoreSaveTimeout(() => this.state.errorType === null && this.setError("network"));
-        // Notify user when network issues are resolved.
-        Storage.onFirestoreSaveAfterTimeout(() => this.state.errorType === "network" && this.setError(null));
-      }
-
+      const studentInfo = new StudentInfo();
+      await studentInfo.init();
+      const role = studentInfo.roll;
+      const classHash = studentInfo.getClassHash();
+      const runRemoteEndpoint = studentInfo.getRunRemoteEndpoint();
+      newState.username = studentInfo.name;
       this.setState(newState as IState);
 
       this.LARA = initializeLara();
