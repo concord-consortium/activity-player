@@ -1,6 +1,6 @@
 import Dexie from "dexie";
 import { OfflineActivity } from "./types";
-import { IIndexedDBAnswer } from "./storage-facade";
+import { IIndexedDBAnswer, kOfflineAnswerSchemaVersion } from "./storage-facade";
 
 // Copy and pasted from the example: https://dexie.org/docs/Typescript
 export class DexieStorage extends Dexie {
@@ -12,7 +12,7 @@ export class DexieStorage extends Dexie {
 
   constructor () {
       super("ActivityPlayer");
-      this.version(4).stores({
+      this.version(kOfflineAnswerSchemaVersion).stores({
           answers: "id, question_id, activity",
           //...other tables goes here...
       });

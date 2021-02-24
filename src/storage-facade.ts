@@ -17,7 +17,7 @@ export type IIndexedDBAnswer = IExportableAnswerMetadata & { activity: string };
 export const TrackOfflineActivityId = (newId: string) => {
   _currentOfflineActivityId = newId;
 };
-let _currentOfflineActivityId = "offline-activity-default-identifier";
+let _currentOfflineActivityId = "/testactivity.json";
 
 export const docToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
   const getInteractiveState = () => {
@@ -32,6 +32,27 @@ export const docToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
     interactiveState
   };
   return wrappedAnswer;
+};
+
+// We need to ensure a version match between data stored and exported
+export const kOfflineAnswerSchemaVersion = 4;
+
+const activityExportFileName = (activity: string) => {
+  const d = new Date();
+  const year = (d.getFullYear()).toString();
+  let month = (d.getMonth() + 1).toString();
+  let day = (d.getDate()).toString();
+
+  if (month.length < 2) {
+    month = "0" + month;
+  }
+  if (day.length < 2) {
+    day = "0" + day;
+  }
+
+  // get the activity name - or improvise
+
+  return ["Activity_", activity, "_", year, month, day].join("");
 };
 
 export interface StorageInterface {
@@ -58,7 +79,7 @@ export interface StorageInterface {
   checkIfOnline: () => Promise<boolean>,
 
   // for saving a whole activity to JSON
-  exportActivityToJSON: (activityId?: string) => Promise<string> | string
+  exportActivityToJSON: (activityId?: string) => Promise<any> | any
 }
 
 const FireStoreStorageProvider: StorageInterface = {
@@ -121,8 +142,11 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
     });
   },
 
+
   exportActivityToJSON: (activityId?: string) => {
     const currentActivityId = activityId ? activityId : _currentOfflineActivityId;
+    const activityShortId = currentActivityId.indexOf("/") > -1 ? currentActivityId.substr(currentActivityId.lastIndexOf("/")+1).replace(".json", "") : currentActivityId;
+    const filename = activityExportFileName(activityShortId);
     const getAllAnswersFromIndexDB = () => {
       const foundAnswers = indexDBConnection
         .answers
@@ -135,9 +159,9 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
 
     return getAllAnswersFromIndexDB().then( (answers: IIndexedDBAnswer[]|null) => {
       if (answers) {
-        return JSON.stringify({ answers });
+        return { activity: currentActivityId, filename, version: kOfflineAnswerSchemaVersion, answers };
       } else {
-        return JSON.stringify({ answers: []});
+        return { activity: currentActivityId, filename, version: kOfflineAnswerSchemaVersion, answers: []};
       }
     });
   }

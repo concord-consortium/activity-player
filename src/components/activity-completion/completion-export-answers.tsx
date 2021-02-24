@@ -5,28 +5,30 @@ import "./completion-export-answers.scss";
 
 interface IProps { }
 interface IState {
-  activityJSON: string
+  activityJSON: string,
+  filename: string
 }
 
 export class CompletionExportAnswers extends React.PureComponent<IProps, IState> {
 
   public constructor(props: IProps) {
     super(props);
-    this.state = {activityJSON: ""};
+    this.state = {activityJSON: "", filename: "activity"};
   }
   async componentDidMount() {
-    const activityJSON = await Storage.exportActivityToJSON();
-    this.setState({ activityJSON });
+    const activityJSONComplete = await Storage.exportActivityToJSON();
+    const filename = activityJSONComplete.filename;
+    this.setState({ activityJSON: JSON.stringify(activityJSONComplete), filename });
   }
 
   render() {
-    const { activityJSON } = this.state;
+    const { activityJSON, filename } = this.state;
     const bb = new Blob([activityJSON], { type: "text/plain" });
     const activityLink = window.URL.createObjectURL(bb);
 
     return (
       <div className={"activity-export-download"}>
-        <a href={activityLink} download={"allmyanswers.json"}>
+        <a href={activityLink} download={`${filename}.json`}>
           <div className={"button"}>Save My Work</div>
         </a>
       </div>
