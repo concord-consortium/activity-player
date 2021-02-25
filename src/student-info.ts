@@ -30,7 +30,7 @@ type Run = IAnonymousRun | IPortalRun;
 
 interface IStudentRecord {
   name: string,
-  roll: "student"
+  role: "student"
   teacherName: string,
   platformUserId: string,
   runs: Array<Run>,
@@ -42,7 +42,7 @@ export class StudentInfo implements IStudentRecord {
   name: string;
   teacherName: string;
   platformUserId: string;
-  roll: "student";
+  role: "student";
   runs: Run[];
   rawPortalData: IPortalData;
   dataReady: boolean;
@@ -96,7 +96,7 @@ export class StudentInfo implements IStudentRecord {
   private serializeData() {
     const data: IStudentRecord =  {
       name: this.name,
-      roll: this.roll,
+      role: this.role,
       teacherName: this.teacherName,
       platformUserId: this.platformUserId,
       runs: this.runs,
@@ -116,7 +116,7 @@ export class StudentInfo implements IStudentRecord {
     this.teacherName = data.name ?? DEFAULT_TEACHER_NAME;
     this.platformUserId = data.platformUserId;
     this.runs = data.runs;
-    this.roll = data.roll;
+    this.role = data.role;
     if (data.rawPortalData) {
       this.rawPortalData = data.rawPortalData;
     }

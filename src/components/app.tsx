@@ -267,7 +267,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
       const studentInfo = new StudentInfo();
       await studentInfo.init();
-      const role = studentInfo.roll;
+      const role = studentInfo.role;
       const classHash = studentInfo.getClassHash();
       const runRemoteEndpoint = studentInfo.getRunRemoteEndpoint();
       newState.username = studentInfo.name;
