@@ -14,6 +14,8 @@ export interface IWrappedDBAnswer {
 
 export type IIndexedDBAnswer = IExportableAnswerMetadata & { activity: string };
 
+export type ExportableActivity = IIndexedDBAnswer & { activity: string, filename: string, version: number };
+
 export const TrackOfflineActivityId = (newId: string) => {
   _currentOfflineActivityId = newId;
 };
@@ -79,7 +81,7 @@ export interface StorageInterface {
   checkIfOnline: () => Promise<boolean>,
 
   // for saving a whole activity to JSON
-  exportActivityToJSON: (activityId?: string) => Promise<any> | any
+  exportActivityToJSON: (activityId?: string) => Promise<ExportableActivity>
 }
 
 const FireStoreStorageProvider: StorageInterface = {
@@ -108,7 +110,7 @@ const FireStoreStorageProvider: StorageInterface = {
   checkIfOnline: () => FirebaseImp.checkIfOnline(),
 
   // TODO: Save activity to local JSON file
-  exportActivityToJSON: (activityId?: string) => "" // console.log("Not yet implemented for Firebase Storage")
+  exportActivityToJSON: (activityId?: string) => Promise.reject("Not yet implemented for Firebase Storage")
 };
 
 const indexDBConnection = new DexieStorage();
@@ -157,7 +159,7 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
       });
     };
 
-    return getAllAnswersFromIndexDB().then( (answers: IIndexedDBAnswer[]|null) => {
+    return getAllAnswersFromIndexDB().then((answers: IIndexedDBAnswer[] | null) => {
       if (answers) {
         return { activity: currentActivityId, filename, version: kOfflineAnswerSchemaVersion, answers };
       } else {
