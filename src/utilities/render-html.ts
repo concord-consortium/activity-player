@@ -15,5 +15,5 @@ interface DomElement {
 export type ParseHTMLReplacer = (domNode: DomElement) => JSX.Element | void | undefined | null | false;
 
 export function renderHTML(html: string, replace?: ParseHTMLReplacer) {
-  return parse(DOMPurify.sanitize(html || ""), { replace });
+  return parse(DOMPurify.sanitize(html || "", {ADD_ATTR: ["target"]}), { replace });
 }
