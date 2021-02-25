@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Component } from "react";
 import Modal from "react-modal";
 
 import "./modal-dialog.scss";
@@ -10,7 +10,7 @@ interface IProps {
   showModal: boolean;
 }
 
-export class ModalDialog extends React.PureComponent <IProps> {
+export class ModalDialog extends Component <IProps> {
   render() {
     const { title, label, showModal, onClose } = this.props;
     const handleClose = () => {
@@ -24,6 +24,7 @@ export class ModalDialog extends React.PureComponent <IProps> {
       >
         <div className="header" data-cy="modal-dialog-header">{title || "Alert"}</div>
         <div data-cy="modal-dialog-label">{label}</div>
+        {this.props.children}
         <div className="footer">
           <button onClick={handleClose} data-cy="modal-dialog-close">Close</button>
         </div>

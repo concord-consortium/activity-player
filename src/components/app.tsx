@@ -37,6 +37,7 @@ import { OfflineActivities } from "./offline-activities";
 import { OfflineNav } from "./offline-nav";
 import { OfflineManifestAuthoringNav } from "./offline-manifest-authoring-nav";
 import { StudentInfo } from "../student-info";
+import { StudentInfoModal } from "./student-info-modal";
 
 import "./app.scss";
 
@@ -82,6 +83,7 @@ interface IState {
   offlineManifestAuthoringActivities: OfflineManifestActivity[];
   offlineManifestAuthoringCacheList: string[];
   showOfflineManifestInstallConfirmation: boolean;
+  showEditUserName: boolean;
 }
 interface IProps {}
 
@@ -89,10 +91,11 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private LARA: LaraGlobalType;
   private activityPageContentRef = React.createRef<ActivityPageContent>();
+  private studentInfo: StudentInfo;
 
   public constructor(props: IProps) {
     super(props);
-
+    this.studentInfo = new StudentInfo();
     // set the offline manifest authoring localstorage item if it exists in the params and then read from localstorage
     // this is done in the constructor as the state value is needed in the UNSAFE_componentWillMount method
     setOfflineManifestAuthoringId(queryValue("setOfflineManifestAuthoringId"));
@@ -118,7 +121,8 @@ export class App extends React.PureComponent<IProps, IState> {
       offlineManifestAuthoringCacheList: [],
       showOfflineManifestInstallConfirmation: queryValue("confirmOfflineManifestInstall") === "true",
       offlineManifestAuthoringId,
-      offlineManifestId
+      offlineManifestId,
+      showEditUserName: false
     };
   }
 
@@ -265,7 +269,8 @@ export class App extends React.PureComponent<IProps, IState> {
       const newState: Partial<IState> = {activity, offlineManifest, loadingOfflineManifest, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode, offlineManifestAuthoringId};
       setDocumentTitle(activity, currentPage);
 
-      const studentInfo = new StudentInfo();
+      // Get data from the portal or localstorage
+      const studentInfo = this.studentInfo;
       await studentInfo.init();
       const role = studentInfo.role;
       const classHash = studentInfo.getClassHash();
@@ -336,16 +341,40 @@ export class App extends React.PureComponent<IProps, IState> {
     }
   }
 
+
+
   private renderActivity = () => {
-    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData, showEditUserName } = this.state;
     if (!activity) return (<div>Loading activity ...</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
 
+    const updateStudentName = (newUsername:string) => {
+      this.setState({
+        username: newUsername,
+        showEditUserName: false});
+    };
+
+    const closeStudentModal = () => {
+      this.setState({showEditUserName: false});
+    };
+
+    const openStudentInfoModal = () => {
+      if(this.studentInfo.canChangeName()) {
+        this.setState({showEditUserName: true});
+      }
+    };
+
     return (
       <React.Fragment>
+        <StudentInfoModal
+          onNameChange={updateStudentName}
+          showModal={showEditUserName}
+          onClose={closeStudentModal}
+          studentInfo={this.studentInfo}
+        />
         <Header
           fullWidth={fullWidth}
           projectId={activity.project_id}
@@ -353,6 +382,7 @@ export class App extends React.PureComponent<IProps, IState> {
           contentName={sequence ? sequence.display_title || sequence.title || "" : activity.name}
           showSequence={sequence !== undefined}
           onShowSequence={sequence !== undefined ? this.handleShowSequenceIntro : undefined}
+          onClickUsername={openStudentInfoModal}
         />
         {
           idle && !errorType &&

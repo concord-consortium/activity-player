@@ -1,15 +1,16 @@
 import { fetchPortalData, IPortalData } from "./portal-api";
 import { Storage } from "./storage-facade";
 
-const DEFAULT_STUDENT_NAME = "A student";
+const DEFAULT_STUDENT_NAME = "Anonymous";
 const DEFAULT_TEACHER_NAME = "A teacher";
 const STUDENT_LOCAL_STORAGE_KEY = "ActivityPlayerStudent";
+const DEFAULT_CLASS_HASH = ""; // From `app.tsx` 2021-02-25
+const DEFAULT_RUN_REMOTE_ENDPOINT= ""; // From `app.tsx` 2021-02-25
+const DEFAULT_ROLE = "uknown";  // From `app.tsx` 2021-02-25
 
 /*
-
 The purpose of this class is to allow us to reconcile users and their data
 at a later time.
-
 */
 
 interface IAnonymousRun {
@@ -27,10 +28,11 @@ interface IPortalRun extends IAnonymousRun {
 }
 
 type Run = IAnonymousRun | IPortalRun;
+type Role = "student" | "teacher" | "unknown";
 
 interface IStudentRecord {
   name: string,
-  role: "student"
+  role: Role,
   teacherName: string,
   platformUserId: string,
   runs: Array<Run>,
@@ -42,14 +44,24 @@ export class StudentInfo implements IStudentRecord {
   name: string;
   teacherName: string;
   platformUserId: string;
-  role: "student";
+  role: Role;
   runs: Run[];
   rawPortalData: IPortalData;
   dataReady: boolean;
   private _validTokens: boolean;
 
-  
+
   constructor() {
+    // Start with defaults.
+    // Calling async operation init() will load real values.
+    this.loadDefaults();
+  }
+
+
+  private loadDefaults() {
+    this.role = "student";
+    this.name = DEFAULT_STUDENT_NAME;
+    this.teacherName = DEFAULT_TEACHER_NAME;
     this._validTokens = false;
   }
 
@@ -68,6 +80,10 @@ export class StudentInfo implements IStudentRecord {
     return this.isAuthenticated();
   }
 
+  public canChangeName() : boolean {
+    return (! (this.platformUserId && this.platformUserId.length >= 1));
+  }
+
   public hasValidTeacherName() : boolean{
     return this.teacherName !== DEFAULT_TEACHER_NAME;
   }
@@ -77,20 +93,54 @@ export class StudentInfo implements IStudentRecord {
   }
 
   public getClassHash() {
-    return this.rawPortalData?.contextId;
+    return this.rawPortalData?.contextId ?? DEFAULT_CLASS_HASH;
   }
 
   public getRunRemoteEndpoint() {
-    return this.rawPortalData.runRemoteEndpoint;
+    return this.rawPortalData?.runRemoteEndpoint ?? DEFAULT_RUN_REMOTE_ENDPOINT;
+  }
+
+  public setName(newName: string) {
+    if(this.platformUserId && this.platformUserId.length >= 1) {
+      // Cant change an authenticated students name
+      return false;
+    }
+    else {
+      this.name=newName;
+      window.localStorage.setItem(STUDENT_LOCAL_STORAGE_KEY, this.serializeData());
+      return true;
+    }
+  }
+
+  private validateSerializedData(data: IStudentRecord) {
+    // TODO: More careful inspection
+    return (
+      (data.name?.length >= 1) &&
+      (data.teacherName?.length >= 1)
+    );
   }
 
   private updateFromIndexDB() {
     // We have to load any data we can from the DB, but tokens will be stale.
-    // removethem
+    // TODO: remove stale tokens if the exist
     console.log("LOADING FROM LOCAL STORAGE");
-    const local = localStorage.getItem(STUDENT_LOCAL_STORAGE_KEY) ?? "{}";
-    this.loadSerializedData(local);
+    const localStorageStudentInfo = localStorage.getItem(STUDENT_LOCAL_STORAGE_KEY) ?? "";
+    this.loadSerializedData(localStorageStudentInfo);
     this._validTokens=false;
+  }
+
+  private loadSerializedData(json: string) : boolean{
+    try {
+      const data: IStudentRecord = JSON.parse(json) as IStudentRecord;
+      if(this.validateSerializedData(data)) {
+        this.loadData(data);
+        return true;
+      }
+    } catch (e) {
+      console.error("Failed to load serialized student data");
+      console.error(e);
+    }
+    return false;
   }
 
   private serializeData() {
@@ -103,12 +153,6 @@ export class StudentInfo implements IStudentRecord {
       rawPortalData: this.rawPortalData
     };
     return JSON.stringify(data);
-  }
-
-  private loadSerializedData(json: string) {
-    console.log(json);
-    const data: IStudentRecord = JSON.parse(json) as IStudentRecord;
-    this.loadData(data);
   }
 
   private loadData(data: IStudentRecord ) {
@@ -127,9 +171,14 @@ export class StudentInfo implements IStudentRecord {
     this.rawPortalData = portalData;
     this.name = portalData.fullName ?? DEFAULT_STUDENT_NAME;
     this.teacherName = portalData?.classInfo?.teachers[0]?.fullName ?? DEFAULT_TEACHER_NAME;
+    this.platformUserId = portalData.platformUserId;
     this._validTokens = true;
-    window.localStorage.setItem(STUDENT_LOCAL_STORAGE_KEY, this.serializeData());
+    this.saveSerializedLocalData();
     this.finish();
+  }
+
+  private saveSerializedLocalData() {
+    window.localStorage.setItem(STUDENT_LOCAL_STORAGE_KEY, this.serializeData());
   }
 
   private finish() {
