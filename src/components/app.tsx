@@ -14,8 +14,8 @@ import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { fetchPortalData, IPortalData, firebaseAppName } from "../portal-api";
-import { Storage } from "../storage-facade";
 import { Activity, IEmbeddablePlugin, OfflineManifest, OfflineManifestActivity, Sequence } from "../types";
+import { Storage, TrackOfflineActivityId } from "../storage-facade";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -239,6 +239,7 @@ export class App extends React.PureComponent<IProps, IState> {
       let activity: Activity | undefined = undefined;
       const activityPath = queryValue("activity") || (this.state.offlineMode ? undefined : kDefaultActivity);
       if (activityPath) {
+        TrackOfflineActivityId(activityPath);
         activity = await getActivityDefinition(activityPath);
         if (offlineManifestAuthoringId) {
           this.addActivityToOfflineManifest(offlineManifestAuthoringId, activity, activityPath);
@@ -651,6 +652,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleSelectOfflineActivity = (selectedActivity: Activity, url: string) => {
     this.setState({ activity: selectedActivity });
+    TrackOfflineActivityId(url);
     if (this.state.offlineManifestAuthoringId) {
       this.addActivityToOfflineManifest(this.state.offlineManifestAuthoringId, selectedActivity, url);
     }

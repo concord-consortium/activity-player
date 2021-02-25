@@ -6,6 +6,7 @@ import { renderHTML } from "../../utilities/render-html";
 import { Storage } from "../../storage-facade";
 import { isQuestion } from "../../utilities/activity-utils";
 import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
+import { CompletionExportAnswers } from "./completion-export-answers";
 import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
 
 import "./completion-page-content.scss";
@@ -127,7 +128,9 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               {isActivityComplete && <IconCheck width={32} height={32} className="check" />}
               {progressText}
             </div>
+            <CompletionExportAnswers />
             {showStudentReport && <button className="button" onClick={handleShowAnswers}>Show My Work</button>}
+
           </div>
           <div className="exit-container" data-cy="exit-container">
             <div className="box">
