@@ -183,24 +183,45 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
   },
 
   importStudentAnswersFromJSONFile: (studentAnswers: string, filename: string) => {
-    console.log(`The file size is ${studentAnswers.length}`);
-    console.log(`The file name is ${filename}`);
-    const parsedAnswers = JSON.parse(studentAnswers);
-    console.log(parsedAnswers);
 
-    // TODO:
-    // Check the file is the correct type(is json)
-    // Check the file version is compatible
-    // Check the file name is in the answer file (unsure if this helps?)
-    // Check if the student that saved the file is the same as the logged in user
-    // Warn that uploading answers will overwrite current answers (do we want this, or do we want to only update empty answers?)
-    // can we reliably detect if this is cheating (answers saved by someone else and sent to friend)
-    const fileNameFromAnswers = parsedAnswers.filename;
-    if (fileNameFromAnswers) {
-      return fileNameFromAnswers.indexOf(filename) > -1;
-    } else {
+    const verifyActivityImport = (answers: ExportableActivity): boolean => {
+      // TODO:
+      // Could check the file name is in the answer file (unsure if this helps?)
+      // Check if the student that saved the file is the same as the logged in user?
+      // Warn that uploading answers will overwrite current answers (do we want this, or do we want to only update empty answers?)
+
+      if (!answers) {
+        return false;
+      }
+      if (!("activity" in answers)) {
+        return false;
+      }
+      if (!("version" in answers)){
+        return false;
+      }
+      if (!answers.version || answers.version <= 0 || answers.version > kOfflineAnswerSchemaVersion) {
+        return false;
+      }
+
+      console.log(`The file ${filename} appears valid`);
+      return true;
+    };
+
+    try {
+      const parsedAnswers = JSON.parse(studentAnswers) as ExportableActivity;
+      if (verifyActivityImport(parsedAnswers)) {
+        console.log(parsedAnswers);
+        // TODO: import answers
+        return true;
+      } else {
+        return false;
+      }
+
+    } catch (ex) {
+      console.log(ex);
       return false;
     }
+
   }
 };
 
