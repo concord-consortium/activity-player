@@ -14,7 +14,7 @@ export interface IWrappedDBAnswer {
 
 export type IIndexedDBAnswer = IExportableAnswerMetadata & { activity: string };
 
-export type ExportableActivity = IIndexedDBAnswer & { activity: string, filename: string, version: number };
+export type ExportableActivity = { activity: string, filename: string, version: number, answers: IIndexedDBAnswer[] };
 
 export const TrackOfflineActivityId = (newId: string) => {
   _currentOfflineActivityId = newId;
@@ -174,10 +174,13 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
     };
 
     return getAllAnswersFromIndexDB().then((answers: IIndexedDBAnswer[] | null) => {
+      // Adding an explicit variable for the exportable activity for Typescript reasons
+      const exportableActivity: ExportableActivity = { activity: currentActivityId, filename, version: kOfflineAnswerSchemaVersion, answers: [] };
       if (answers) {
-        return { activity: currentActivityId, filename, version: kOfflineAnswerSchemaVersion, answers };
+        exportableActivity.answers = answers;
+        return exportableActivity;
       } else {
-        return { activity: currentActivityId, filename, version: kOfflineAnswerSchemaVersion, answers: []};
+        return exportableActivity;
       }
     });
   },
@@ -211,7 +214,12 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
       const parsedAnswers = JSON.parse(studentAnswers) as ExportableActivity;
       if (verifyActivityImport(parsedAnswers)) {
         console.log(parsedAnswers);
-        // TODO: import answers
+        // Import answers to indexedDB
+        parsedAnswers.answers.forEach((answer: IIndexedDBAnswer) => {
+            const idxDBAnswer = answer as IIndexedDBAnswer;
+            idxDBAnswer.activity = answer.activity;
+            indexDBConnection.answers.put(idxDBAnswer);
+        });
         return true;
       } else {
         return false;
