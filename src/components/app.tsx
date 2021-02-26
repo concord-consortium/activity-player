@@ -341,8 +341,6 @@ export class App extends React.PureComponent<IProps, IState> {
     }
   }
 
-
-
   private renderActivity = () => {
     const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData, showEditUserName } = this.state;
     if (!activity) return (<div>Loading activity ...</div>);
@@ -351,14 +349,17 @@ export class App extends React.PureComponent<IProps, IState> {
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
 
-    const updateStudentName = (newUsername:string) => {
-      this.setState({
-        username: newUsername,
-        showEditUserName: false});
-    };
-
-    const closeStudentModal = () => {
-      this.setState({showEditUserName: false});
+    const closeStudentModal = (newUsername?: string) => {
+      if (newUsername) {
+        this.setState({
+          username: newUsername,
+          showEditUserName: false
+        });
+      } else {
+        this.setState({
+          showEditUserName: false
+        });
+      }
     };
 
     const openStudentInfoModal = () => {
@@ -370,7 +371,6 @@ export class App extends React.PureComponent<IProps, IState> {
     return (
       <React.Fragment>
         <StudentInfoModal
-          onNameChange={updateStudentName}
           showModal={showEditUserName}
           onClose={closeStudentModal}
           studentInfo={this.studentInfo}

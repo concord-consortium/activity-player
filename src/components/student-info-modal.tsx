@@ -7,9 +7,8 @@ import "./student-info-modal.scss";
 
 interface IProps {
   studentInfo: StudentInfo;
-  onNameChange: (name: string) => void;
   showModal: boolean;
-  onClose: () => void;
+  onClose: (newName?: string) => void;
 }
 
 interface IState {
@@ -26,7 +25,7 @@ export class StudentInfoModal extends Component <IProps, IState> {
 
 
   render() {
-    const { studentInfo, showModal, onClose, onNameChange} = this.props;
+    const { studentInfo, showModal, onClose } = this.props;
     const changeName = (event: ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;
       if (studentInfo.setName(value)) {
@@ -34,10 +33,11 @@ export class StudentInfoModal extends Component <IProps, IState> {
       }
     };
 
+    const _onSave = () => {
+      onClose(this.state.studentName);
+    };
+
     const _onClose = () => {
-      if(onNameChange) {
-        onNameChange(this.state.studentName);
-      }
       onClose();
     };
 
@@ -45,10 +45,14 @@ export class StudentInfoModal extends Component <IProps, IState> {
       <ModalDialog
         label="Name:"
         showModal={showModal}
-        onClose={_onClose}>
+        onAccept={_onSave}
+        onClose={_onClose}
+        acceptButtonText="Save"
+        closeButtonText="Cancel"
+      >
         <input
           type="text"
-          readOnly={! studentInfo.canChangeName()}
+          readOnly={!studentInfo.canChangeName()}
           value={this.state.studentName}
           onChange={changeName}/>
       </ModalDialog>
