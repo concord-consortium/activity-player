@@ -192,6 +192,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   // with this fragment if necessary. ActivityPlayer doesn't have knowledge about URL format and provided url_fragment 
   // to perform this merge automatically.
   const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
+  const miContainerClass = questionNumber ? "managed-interactive has-question-number" : "managed-interactive";
   const interactiveIframeRuntime =
     loading ?
       "Loading..." :
@@ -218,7 +219,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       />;
 
     return (
-      <div ref={divTarget} className="managed-interactive" data-cy="managed-interactive">
+      <div ref={divTarget} className={miContainerClass} data-cy="managed-interactive">
         { questionNumber &&
           <div className="header">
             Question #{questionNumber}{questionName}
