@@ -213,7 +213,6 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
     try {
       const parsedAnswers = JSON.parse(studentAnswers) as ExportableActivity;
       if (verifyActivityImport(parsedAnswers)) {
-        console.log(parsedAnswers);
         // Import answers to indexedDB
         parsedAnswers.answers.forEach((answer: IIndexedDBAnswer) => {
           const idxDBAnswer = answer as IIndexedDBAnswer;
