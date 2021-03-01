@@ -14,12 +14,13 @@ interface IProps {
   showSequence?: boolean;
   onShowSequence?: () => void;
   skipTitlePrefix?: boolean;
+  onClickUsername?: () => void;
 }
 
 export class Header extends React.PureComponent<IProps> {
   render() {
     const ccLogoLink = "https://concord.org/";
-    const { fullWidth, projectId, userName, showSequence, onShowSequence } = this.props;
+    const { fullWidth, projectId, userName, showSequence, onShowSequence, onClickUsername } = this.props;
     const projectType = ProjectTypes.find(pt => pt.id === projectId);
     const logo = projectType?.headerLogo;
     const projectURL = projectType?.url || ccLogoLink;
@@ -37,7 +38,7 @@ export class Header extends React.PureComponent<IProps> {
             </div>
           </div>
           <div className="header-right">
-            <AccountOwner userName={userName} />
+            <AccountOwner userName={userName} onClick={onClickUsername}/>
           </div>
         </div>
       </div>

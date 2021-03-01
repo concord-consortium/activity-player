@@ -67,7 +67,7 @@ export interface ILTIPartial {
   resourceLinkId: string;  // offering ID
 }
 
-interface OfferingData {
+export interface OfferingData {
   id: number;
   activityUrl: string;
   rubricUrl: string;
@@ -92,6 +92,7 @@ export interface IPortalData extends ILTIPartial {
   rawPortalJWT?: string;
   portalJWT?: PortalJWT;
   runRemoteEndpoint: string;
+  classInfo?: ClassInfo;
 }
 
 export interface IAnonymousPortalData {
@@ -381,7 +382,13 @@ export const getOfferingData = (params: GetOfferingParams) => {
   });
 };
 
-export const fetchPortalData = async (): Promise<IPortalData> => {
+interface IFetchPortalDataOpts {
+  includeClassData: boolean
+}
+const fetchPortalDataDefaults: IFetchPortalDataOpts = {
+  includeClassData: false
+};
+export const fetchPortalData = async (opts: IFetchPortalDataOpts = fetchPortalDataDefaults): Promise<IPortalData> => {
 
   const bearerToken = queryValue("token");
   const basePortalUrl = queryValue("domain");
@@ -446,6 +453,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     },
     runRemoteEndpoint: firebaseJWT.returnUrl
   };
+  if(opts.includeClassData) { rawPortalData.classInfo = classInfo; }
   return rawPortalData;
 };
 

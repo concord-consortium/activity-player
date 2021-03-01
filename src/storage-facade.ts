@@ -123,6 +123,18 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
     indexDBConnection.answers.put(idxDBAnswer);
   },
 
+  watchAllAnswers: (callback: (wrappedAnswer: IWrappedDBAnswer[]) => void) => {
+    const foundAnswers = indexDBConnection
+      .answers
+      .where("activity")
+      .equals(_currentOfflineActivityId)
+      .toArray();
+    return foundAnswers.then((answers) => {
+      const response = answers.map( (a) => docToWrappedAnswer(a));
+      callback(response);
+    });
+  },
+
   watchAnswer: (embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void) => {
     const questionId = refIdToAnswersQuestionId(embeddableRefId);
     const getAnswerFromIndexDB = (qID: string) => {

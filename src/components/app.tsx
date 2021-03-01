@@ -13,9 +13,9 @@ import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
-import { fetchPortalData, IPortalData, firebaseAppName } from "../portal-api";
+import { IPortalData, firebaseAppName } from "../portal-api";
 import { Activity, IEmbeddablePlugin, OfflineManifest, OfflineManifestActivity, Sequence } from "../types";
-import { Storage, TrackOfflineActivityId } from "../storage-facade";
+import { TrackOfflineActivityId } from "../storage-facade";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -36,6 +36,8 @@ import { OfflineManifestLoadingModal } from "./offline-manifest-loading-modal";
 import { OfflineActivities } from "./offline-activities";
 import { OfflineNav } from "./offline-nav";
 import { OfflineManifestAuthoringNav } from "./offline-manifest-authoring-nav";
+import { StudentInfo } from "../student-info";
+import { StudentInfoModal } from "./student-info-modal";
 
 import "./app.scss";
 
@@ -81,6 +83,7 @@ interface IState {
   offlineManifestAuthoringActivities: OfflineManifestActivity[];
   offlineManifestAuthoringCacheList: string[];
   showOfflineManifestInstallConfirmation: boolean;
+  showEditUserName: boolean;
 }
 interface IProps {}
 
@@ -88,10 +91,11 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private LARA: LaraGlobalType;
   private activityPageContentRef = React.createRef<ActivityPageContent>();
+  private studentInfo: StudentInfo;
 
   public constructor(props: IProps) {
     super(props);
-
+    this.studentInfo = new StudentInfo();
     // set the offline manifest authoring localstorage item if it exists in the params and then read from localstorage
     // this is done in the constructor as the state value is needed in the UNSAFE_componentWillMount method
     setOfflineManifestAuthoringId(queryValue("setOfflineManifestAuthoringId"));
@@ -117,7 +121,8 @@ export class App extends React.PureComponent<IProps, IState> {
       offlineManifestAuthoringCacheList: [],
       showOfflineManifestInstallConfirmation: queryValue("confirmOfflineManifestInstall") === "true",
       offlineManifestAuthoringId,
-      offlineManifestId
+      offlineManifestId,
+      showEditUserName: false
     };
   }
 
@@ -264,50 +269,13 @@ export class App extends React.PureComponent<IProps, IState> {
       const newState: Partial<IState> = {activity, offlineManifest, loadingOfflineManifest, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode, offlineManifestAuthoringId};
       setDocumentTitle(activity, currentPage);
 
-      let classHash = "";
-      let role = "unknown";
-      let runRemoteEndpoint = "";
-
-      if (queryValue("token")) {
-        try {
-          const portalData = await fetchPortalData();
-          if (portalData.fullName) {
-            newState.username = portalData.fullName;
-          }
-          if (portalData.userType) {
-            role = portalData.userType;
-          }
-          if (portalData.contextId) {
-            classHash = portalData.contextId;
-          }
-          if (portalData.runRemoteEndpoint) {
-            runRemoteEndpoint = portalData.runRemoteEndpoint;
-          }
-          await Storage.initializeDB({ name: portalData.database.appName, preview: false });
-          await Storage.signInWithToken(portalData.database.rawFirebaseJWT);
-          this.setState({ portalData });
-
-          Storage.setPortalData(portalData);
-        } catch (err) {
-          this.setError("auth", err);
-        }
-      // TDB: add else case to handle offline authentication when this.state.offlineMode is true
-      } else {
-        try {
-          await Storage.initializeAnonymousDB(preview);
-        } catch (err) {
-          this.setError("auth", err);
-        }
-      }
-
-      if (!preview) {
-        // Notify user about network issues. Note that in preview mode Firestore network is disabled, so it doesn't
-        // make sense to track requests.
-        Storage.onFirestoreSaveTimeout(() => this.state.errorType === null && this.setError("network"));
-        // Notify user when network issues are resolved.
-        Storage.onFirestoreSaveAfterTimeout(() => this.state.errorType === "network" && this.setError(null));
-      }
-
+      // Get data from the portal or localstorage
+      const studentInfo = this.studentInfo;
+      await studentInfo.init();
+      const role = studentInfo.role;
+      const classHash = studentInfo.getClassHash();
+      const runRemoteEndpoint = studentInfo.getRunRemoteEndpoint();
+      newState.username = studentInfo.name;
       this.setState(newState as IState);
 
       this.LARA = initializeLara();
@@ -374,15 +342,39 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData, showEditUserName } = this.state;
     if (!activity) return (<div>Loading activity ...</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
 
+    const closeStudentModal = (newUsername?: string) => {
+      if (newUsername) {
+        this.setState({
+          username: newUsername,
+          showEditUserName: false
+        });
+      } else {
+        this.setState({
+          showEditUserName: false
+        });
+      }
+    };
+
+    const openStudentInfoModal = () => {
+      if(this.studentInfo.canChangeName()) {
+        this.setState({showEditUserName: true});
+      }
+    };
+
     return (
       <React.Fragment>
+        <StudentInfoModal
+          showModal={showEditUserName}
+          onClose={closeStudentModal}
+          studentInfo={this.studentInfo}
+        />
         <Header
           fullWidth={fullWidth}
           projectId={activity.project_id}
@@ -390,6 +382,7 @@ export class App extends React.PureComponent<IProps, IState> {
           contentName={sequence ? sequence.display_title || sequence.title || "" : activity.name}
           showSequence={sequence !== undefined}
           onShowSequence={sequence !== undefined ? this.handleShowSequenceIntro : undefined}
+          onClickUsername={openStudentInfoModal}
         />
         {
           idle && !errorType &&
