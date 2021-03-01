@@ -3,18 +3,7 @@ import { Storage } from "../../storage-facade";
 
 import "./introduction-import-answers.scss";
 
-interface IProps { }
-interface IState {
-  // activityJSON: string,
-  // filename: string
-}
-
-export class ImportAnswers extends React.PureComponent<IProps, IState> {
-
-  public constructor(props: IProps) {
-    super(props);
-    // this.state = {activityJSON: "", filename: "activity"};
-  }
+export class ImportAnswers extends React.PureComponent {
 
   private handleImportFile(event: ChangeEvent<HTMLInputElement>) {
     event.persist();
