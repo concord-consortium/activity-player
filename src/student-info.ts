@@ -215,7 +215,7 @@ export class StudentInfo implements IStudentRecord {
 
 
 // What data gets set in the Activity Player URL when launched from portal
-// http://localhost:11000/activity=https%3A%2F%2Fauthoring.staging.concord.org%2Fapi%2Fv1%2Factivities%2F20926.json?token=4288827c6ce60dcba2186de82a50aa00&domain=https://learn.staging.concord.org/&domain_uid=383
+// http://localhost:11000/activity=https%3A%2F%2Fauthoring.staging.concord.org%2Fapi%2Fv1%2Factivities%2F20926.json?token=123&domain=https://learn.staging.concord.org/&domain_uid=383
 
 // if there is a token, get some JWTs
 // Portal JWT
