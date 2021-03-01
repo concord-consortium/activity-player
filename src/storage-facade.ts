@@ -14,7 +14,7 @@ export interface IWrappedDBAnswer {
 
 export type IIndexedDBAnswer = IExportableAnswerMetadata & { activity: string };
 
-export type ExportableActivity = IIndexedDBAnswer & { activity: string, filename: string, version: number };
+export type ExportableActivity = { activity: string, filename: string, version: number, answers: IIndexedDBAnswer[] };
 
 export const TrackOfflineActivityId = (newId: string) => {
   _currentOfflineActivityId = newId;
@@ -82,6 +82,7 @@ export interface StorageInterface {
 
   // for saving a whole activity to JSON
   exportActivityToJSON: (activityId?: string) => Promise<ExportableActivity>
+  importStudentAnswersFromJSONFile: (studentAnswers: string, filename: string) => boolean
 }
 
 const FireStoreStorageProvider: StorageInterface = {
@@ -109,8 +110,9 @@ const FireStoreStorageProvider: StorageInterface = {
   setLearnerPluginState: (pluginId: number, state: string) => FirebaseImp.setLearnerPluginState(pluginId,state),
   checkIfOnline: () => FirebaseImp.checkIfOnline(),
 
-  // TODO: Save activity to local JSON file
-  exportActivityToJSON: (activityId?: string) => Promise.reject("Not yet implemented for Firebase Storage")
+  // TODO: Save activity to local JSON file and allow reloading from file
+  exportActivityToJSON: (activityId?: string) => Promise.reject("Not yet implemented for Firebase Storage"),
+  importStudentAnswersFromJSONFile: (studentAnswers: string, filename: string) => true
 };
 
 const indexDBConnection = new DexieStorage();
@@ -172,12 +174,62 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
     };
 
     return getAllAnswersFromIndexDB().then((answers: IIndexedDBAnswer[] | null) => {
+      // Adding an explicit variable for the exportable activity for Typescript reasons
+      const exportableActivity: ExportableActivity = { activity: currentActivityId, filename, version: kOfflineAnswerSchemaVersion, answers: [] };
       if (answers) {
-        return { activity: currentActivityId, filename, version: kOfflineAnswerSchemaVersion, answers };
+        exportableActivity.answers = answers;
+        return exportableActivity;
       } else {
-        return { activity: currentActivityId, filename, version: kOfflineAnswerSchemaVersion, answers: []};
+        return exportableActivity;
       }
     });
+  },
+
+  importStudentAnswersFromJSONFile: (studentAnswers: string, filename: string) => {
+
+    const verifyActivityImport = (answers: ExportableActivity): boolean => {
+      // TODO:
+      // Could check the file name is in the answer file (unsure if this helps?)
+      // Check if the student that saved the file is the same as the logged in user?
+      // Warn that uploading answers will overwrite current answers (do we want this, or do we want to only update empty answers?)
+
+      if (!answers) {
+        return false;
+      }
+      if (!("activity" in answers)) {
+        return false;
+      }
+      if (!("version" in answers)){
+        return false;
+      }
+      if (!answers.version || answers.version <= 0 || answers.version > kOfflineAnswerSchemaVersion) {
+        return false;
+      }
+
+      console.log(`The file ${filename} appears valid`);
+      return true;
+    };
+
+    try {
+      const parsedAnswers = JSON.parse(studentAnswers) as ExportableActivity;
+      if (verifyActivityImport(parsedAnswers)) {
+        // Import answers to indexedDB
+        parsedAnswers.answers.forEach((answer: IIndexedDBAnswer) => {
+          const idxDBAnswer = answer as IIndexedDBAnswer;
+          // TODO: what happens if the answers loaded are for a different activity?
+          idxDBAnswer.activity = answer.activity;
+          indexDBConnection.answers.put(idxDBAnswer);
+        });
+        return true;
+      } else {
+        return false;
+      }
+
+    } catch (ex) {
+      console.log(ex);
+      return false;
+    }
+
   }
 };
 
