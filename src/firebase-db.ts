@@ -127,6 +127,17 @@ export const signInWithToken = async (rawFirestoreJWT: string) => {
   return app.auth().signInWithCustomToken(rawFirestoreJWT);
 };
 
+export const signOut = async() =>{
+  try {
+    await app.auth().signOut();
+  }
+  catch(e) {
+    // maybe we weren't signed in?
+    console.error("unable to signout from FireStore:");
+    console.error(e);
+  }
+};
+
 export const setPortalData = (_portalData: IPortalData | null) => {
   portalData = _portalData;
 };

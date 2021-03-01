@@ -2,7 +2,7 @@
 import * as FirebaseImp from "./firebase-db";
 import { IAnonymousPortalData, IPortalData } from "./portal-api";
 import { IExportableAnswerMetadata } from "./types";
-import {DexieStorage} from "./dexie-storage";
+import { DexieStorage } from "./dexie-storage";
 import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 
 export interface IStorageInitializer { name: FirebaseImp.FirebaseAppName, preview: boolean }
@@ -19,6 +19,7 @@ export type ExportableActivity = { activity: string, filename: string, version: 
 export const TrackOfflineActivityId = (newId: string) => {
   _currentOfflineActivityId = newId;
 };
+
 let _currentOfflineActivityId = "/testactivity.json";
 
 export const docToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
@@ -57,18 +58,18 @@ const activityExportFileName = (activity: string) => {
   return ["Activity_", activity, "_", year, month, day].join("");
 };
 
-export interface StorageInterface {
+export interface IStorageInterface {
   // These seem to be FireStore specific:
-  onFirestoreSaveTimeout: (handler: () => void) => void,
-  onFirestoreSaveAfterTimeout:  (handler: () => void) => void,
-  initializeDB: ({name, preview}: IStorageInitializer) => Promise<firebase.firestore.Firestore>,
-  initializeAnonymousDB: (preview: boolean) => Promise<firebase.firestore.Firestore>
-  signInWithToken: (rawFirestoreJWT: string) => Promise<firebase.auth.UserCredential>,
+  // onFirestoreSaveTimeout?: (handler: () => void) => void,
+  // onFirestoreSaveAfterTimeout?:  (handler: () => void) => void,
+  // initializeDB: ({name, preview}: IStorageInitializer) => Promise<firebase.firestore.Firestore>,
+  // initializeAnonymousDB?: (preview: boolean) => Promise<firebase.firestore.Firestore>
+  // signInWithToken: (rawFirestoreJWT: string) => Promise<firebase.auth.UserCredential>,
 
   // These seem like authentication and identity concerns, and should be extracted:
   setPortalData: (_portalData: IPortalData | null) => void,
   getPortalData: () => IPortalData | IAnonymousPortalData | null,
-  setAnonymousPortalData: (_portalData: IAnonymousPortalData) => void,
+  // setAnonymousPortalData: (_portalData: IAnonymousPortalData) => void,
 
   // These are directly related to storing student answers and fetching them back
   watchAnswer(embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void): () => void
@@ -81,66 +82,153 @@ export interface StorageInterface {
   checkIfOnline: () => Promise<boolean>,
 
   // for saving a whole activity to JSON
-  exportActivityToJSON: (activityId?: string) => Promise<ExportableActivity>
-  importStudentAnswersFromJSONFile: (studentAnswers: string, filename: string) => boolean
+  exportActivityToJSON: (activityId?: string) => Promise<ExportableActivity>,
+  importStudentAnswersFromJSONFile: (studentAnswers: string, filename: string) => boolean,
+  canSyncData(): boolean,
+  syncData(): void
 }
 
-const FireStoreStorageProvider: StorageInterface = {
+class FireStoreStorageProvider implements IStorageInterface {
   // TODO: Specific to FireStore:
-  onFirestoreSaveTimeout: (handler: () => void) => FirebaseImp.onFirestoreSaveTimeout(handler),
-  onFirestoreSaveAfterTimeout: (handler: () => void) => FirebaseImp.onFirestoreSaveAfterTimeout(handler),
-  initializeDB: ({name, preview}: IStorageInitializer) => FirebaseImp.initializeDB({name, preview}),
-  initializeAnonymousDB: (preview: boolean) => FirebaseImp.initializeAnonymousDB(preview),
-  signInWithToken: (rawFirestoreJWT: string) =>FirebaseImp.signInWithToken(rawFirestoreJWT),
+  onFirestoreSaveTimeout(handler: () => void) {
+    return FirebaseImp.onFirestoreSaveTimeout(handler);
+  }
+
+  onFirestoreSaveAfterTimeout (handler: () => void) {
+    return FirebaseImp.onFirestoreSaveAfterTimeout(handler);
+  }
+
+  initializeDB ({name, preview}: IStorageInitializer) {
+    return FirebaseImp.initializeDB({name, preview});
+  }
+
+  initializeAnonymousDB(preview: boolean) {
+    return FirebaseImp.initializeAnonymousDB(preview);
+  }
+
+  signInWithToken(rawFirestoreJWT: string){
+    return FirebaseImp.signInWithToken(rawFirestoreJWT);
+  }
 
   // TODO: authentication and identity concerns, and should be extracted elsewhere:
-  setPortalData: (_portalData: IPortalData | null) => FirebaseImp.setPortalData(_portalData),
-  getPortalData: () => FirebaseImp.getPortalData(),
-  setAnonymousPortalData: (_portalData: IAnonymousPortalData) => FirebaseImp.setAnonymousPortalData(_portalData),
+  setPortalData (_portalData: IPortalData | null) {
+    return FirebaseImp.setPortalData(_portalData);
+  }
+
+  getPortalData() {
+    return FirebaseImp.getPortalData();
+  }
+
+  setAnonymousPortalData(_portalData: IAnonymousPortalData){
+    return FirebaseImp.setAnonymousPortalData(_portalData);
+  }
 
   // Saving and Loading student work
-  watchAnswer:  (embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void) => FirebaseImp.watchAnswer(embeddableRefId, callback),
-  watchAllAnswers: (callback: (wrappedAnswer: IWrappedDBAnswer[]) => void) => FirebaseImp.watchAllAnswers(callback),
+  watchAnswer(embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void){
+    return FirebaseImp.watchAnswer(embeddableRefId, callback);
+  }
+
+  watchAllAnswers(callback: (wrappedAnswer: IWrappedDBAnswer[]) => void){
+    return FirebaseImp.watchAllAnswers(callback);
+  }
 
   // Save an answer to Firebase
-  createOrUpdateAnswer: (answer: IExportableAnswerMetadata) => FirebaseImp.createOrUpdateAnswer(answer),
-  getLearnerPluginStateDocId: (pluginId: number) => FirebaseImp.getLearnerPluginStateDocId(pluginId),
-  getCachedLearnerPluginState: (pluginId: number) => FirebaseImp.getCachedLearnerPluginState(pluginId),
-  getLearnerPluginState: (pluginId: number) => FirebaseImp.getLearnerPluginState(pluginId),
-  setLearnerPluginState: (pluginId: number, state: string) => FirebaseImp.setLearnerPluginState(pluginId,state),
-  checkIfOnline: () => FirebaseImp.checkIfOnline(),
+  createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
+    return FirebaseImp.createOrUpdateAnswer(answer);
+  }
+
+  getLearnerPluginStateDocId(pluginId: number){
+    return FirebaseImp.getLearnerPluginStateDocId(pluginId);
+  }
+
+  getCachedLearnerPluginState(pluginId: number) {
+    return FirebaseImp.getCachedLearnerPluginState(pluginId);
+  }
+
+  getLearnerPluginState(pluginId: number) {
+    return FirebaseImp.getLearnerPluginState(pluginId);
+  }
+
+  setLearnerPluginState(pluginId: number, state: string){
+    return FirebaseImp.setLearnerPluginState(pluginId,state);
+  }
+
+  checkIfOnline() {
+    return FirebaseImp.checkIfOnline();
+  }
 
   // TODO: Save activity to local JSON file and allow reloading from file
-  exportActivityToJSON: (activityId?: string) => Promise.reject("Not yet implemented for Firebase Storage"),
-  importStudentAnswersFromJSONFile: (studentAnswers: string, filename: string) => true
-};
+  exportActivityToJSON(activityId?: string) {
+    return Promise.reject("Not yet implemented for Firebase Storage");
+  }
 
-const indexDBConnection = new DexieStorage();
+  importStudentAnswersFromJSONFile(studentAnswers: string, filename: string) {
+    return true;
+  }
 
-const DexieStorageProvider = {...FireStoreStorageProvider,
+  canSyncData() {
+    // We are FireStore, so our data is synced by default....
+    return false;
+  }
+  syncData(){
+    return null;
+  }
 
-  createOrUpdateAnswer: (answer: IExportableAnswerMetadata) => {
+  signOut() {
+    FirebaseImp.signOut();
+  }
+}
+
+
+
+class DexieStorageProvider implements IStorageInterface {
+  indexDBConnection: DexieStorage;
+  portalData: IPortalData|null;
+  haveFireStoreConnection: boolean;
+
+  constructor(){
+    this.indexDBConnection = new DexieStorage();
+    this.haveFireStoreConnection = false;
+  }
+
+  createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     const idxDBAnswer = answer as IIndexedDBAnswer;
     idxDBAnswer.activity = _currentOfflineActivityId;
-    indexDBConnection.answers.put(idxDBAnswer);
-  },
+    this.indexDBConnection.answers.put(idxDBAnswer);
+  }
 
-  watchAllAnswers: (callback: (wrappedAnswer: IWrappedDBAnswer[]) => void) => {
-    const foundAnswers = indexDBConnection
+
+  setPortalData(_portalData: IPortalData | null) {
+    // TODO: Implement this
+    // setPortalData: (_portalData: IPortalData | null) => FirebaseImp.setPortalData(_portalData),
+    // Record Tokens for playback to FireStore later
+    this.portalData = _portalData;
+  }
+
+  getPortalData() {
+    return this.portalData;
+  }
+
+  watchAllAnswers(callback: (wrappedAnswer: IWrappedDBAnswer[]) => void){
+    console.log("WatchAllAnsweres called");
+    console.log(`current activity: ${_currentOfflineActivityId}`);
+
+    const foundAnswers = this.indexDBConnection
       .answers
       .where("activity")
       .equals(_currentOfflineActivityId)
       .toArray();
     return foundAnswers.then((answers) => {
+      console.dir(answers);
       const response = answers.map( (a) => docToWrappedAnswer(a));
       callback(response);
     });
-  },
+  }
 
-  watchAnswer: (embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void) => {
+  watchAnswer(embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void) {
     const questionId = refIdToAnswersQuestionId(embeddableRefId);
     const getAnswerFromIndexDB = (qID: string) => {
-      const foundAnswers = indexDBConnection
+      const foundAnswers = this.indexDBConnection
         .answers
         .where("question_id")
         .equals(qID).toArray();
@@ -156,15 +244,17 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
         callback(null);
       }
     });
-  },
+    // TODO: We are supposed to return a function that will stop observing the answer ...
+    // We aren't actually watching anything...
+    return ()=>null;
+  }
 
-
-  exportActivityToJSON: (activityId?: string) => {
+  exportActivityToJSON(activityId?: string) {
     const currentActivityId = activityId ? activityId : _currentOfflineActivityId;
     const activityShortId = currentActivityId.indexOf("/") > -1 ? currentActivityId.substr(currentActivityId.lastIndexOf("/")+1).replace(".json", "") : currentActivityId;
     const filename = activityExportFileName(activityShortId);
     const getAllAnswersFromIndexDB = () => {
-      const foundAnswers = indexDBConnection
+      const foundAnswers = this.indexDBConnection
         .answers
         .where("activity")
         .equals(currentActivityId).toArray();
@@ -183,9 +273,9 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
         return exportableActivity;
       }
     });
-  },
+  }
 
-  importStudentAnswersFromJSONFile: (studentAnswers: string, filename: string) => {
+  importStudentAnswersFromJSONFile(studentAnswers: string, filename: string) {
 
     const verifyActivityImport = (answers: ExportableActivity): boolean => {
       // TODO:
@@ -218,7 +308,7 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
           const idxDBAnswer = answer as IIndexedDBAnswer;
           // TODO: what happens if the answers loaded are for a different activity?
           idxDBAnswer.activity = answer.activity;
-          indexDBConnection.answers.put(idxDBAnswer);
+          this.indexDBConnection.answers.put(idxDBAnswer);
         });
         return true;
       } else {
@@ -229,8 +319,66 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
       console.log(ex);
       return false;
     }
-
   }
-};
 
-export const Storage = DexieStorageProvider;
+  getLearnerPluginStateDocId(pluginId: number){
+    return undefined;
+  }
+  getCachedLearnerPluginState(pluginId: number){
+    return null;
+  }
+  getLearnerPluginState(pluginId: number){
+    return Promise.resolve(null);
+  }
+  setLearnerPluginState(pluginId: number, state: string){
+    return Promise.resolve("");
+  }
+  checkIfOnline() {
+    return Promise.resolve(false);
+  }
+
+  canSyncData() {
+    const portalToken = this.portalData?.portalJWT;
+    if(portalToken) {
+      const { exp } = portalToken;
+      const unixTimeStamp = Math.floor(Date.now()/1000);
+      return (unixTimeStamp < exp);
+    }
+    return false;
+  }
+
+  async syncData() {
+    const fsProvider = new FireStoreStorageProvider();
+    const portalData = this.portalData;
+    const appName = portalData?.database.appName ?? "report-service-dev";
+    if(portalData) {
+      try {
+        if(! this.haveFireStoreConnection) {
+          await fsProvider.initializeDB({ name: appName, preview: false });
+          await fsProvider.signInWithToken(portalData.database.rawFirebaseJWT);
+          this.haveFireStoreConnection = true;
+        }
+
+        fsProvider.setPortalData(this.portalData);
+        const answers = await this.indexDBConnection
+          .answers
+          .where("activity")
+          .equals(_currentOfflineActivityId).toArray();
+        console.dir(answers);
+        debugger;
+        for(const answer of answers) {
+          fsProvider.createOrUpdateAnswer(answer);
+        }
+      }
+      catch(e) {
+        console.error("Could not sync local indexDB to FireStore:");
+        console.error(e);
+        this.haveFireStoreConnection = false;
+        fsProvider.signOut();
+      }
+    }
+  }
+}
+
+
+export const Storage: IStorageInterface = new DexieStorageProvider();

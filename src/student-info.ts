@@ -50,13 +50,11 @@ export class StudentInfo implements IStudentRecord {
   dataReady: boolean;
   private _validTokens: boolean;
 
-
   constructor() {
     // Start with defaults.
     // Calling async operation init() will load real values.
     this.loadDefaults();
   }
-
 
   private loadDefaults() {
     this.role = "student";
@@ -168,6 +166,9 @@ export class StudentInfo implements IStudentRecord {
   }
 
   private updateFromPortalData(portalData: IPortalData) {
+    // Raw Portal Data JWT includes expiration time (`exp`) and Issued at (`iat`)
+    // exp: 1614635737
+    // iat: 1614632137
     this.rawPortalData = portalData;
     this.name = portalData.fullName ?? DEFAULT_STUDENT_NAME;
     this.teacherName = portalData?.classInfo?.teachers[0]?.fullName ?? DEFAULT_TEACHER_NAME;
@@ -185,7 +186,6 @@ export class StudentInfo implements IStudentRecord {
     Storage.setPortalData(this.rawPortalData);
     this.dataReady = true;
   }
-
 }
 
 

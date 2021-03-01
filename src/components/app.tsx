@@ -95,15 +95,16 @@ export class App extends React.PureComponent<IProps, IState> {
 
   public constructor(props: IProps) {
     super(props);
-    this.studentInfo = new StudentInfo();
+
     // set the offline manifest authoring localstorage item if it exists in the params and then read from localstorage
     // this is done in the constructor as the state value is needed in the UNSAFE_componentWillMount method
     setOfflineManifestAuthoringId(queryValue("setOfflineManifestAuthoringId"));
     const offlineManifestAuthoringId = getOfflineManifestAuthoringId();
-
     const offlineManifestId = queryValue("offlineManifest");
     const loadingOfflineManifest = !!offlineManifestId;
 
+    const offlineMode = (queryValue("offline") === "true") || !!offlineManifestAuthoringId || !!offlineManifestId;
+    this.studentInfo = new StudentInfo();
     this.state = {
       currentPage: 0,
       teacherEditionMode: false,
@@ -117,7 +118,7 @@ export class App extends React.PureComponent<IProps, IState> {
       errorType: null,
       idle: false,
       loadingOfflineManifest,
-      offlineMode: (queryValue("offline") === "true") || !!offlineManifestAuthoringId || !!offlineManifestId,
+      offlineMode,
       offlineManifestAuthoringActivities: [],
       offlineManifestAuthoringCacheList: [],
       showOfflineManifestInstallConfirmation: queryValue("confirmOfflineManifestInstall") === "true",

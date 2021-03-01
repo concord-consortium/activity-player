@@ -7,6 +7,7 @@ import { Storage } from "../../storage-facade";
 import { isQuestion } from "../../utilities/activity-utils";
 import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { CompletionExportAnswers } from "./completion-export-answers";
+import { CompletionReportMyWork } from "./completion-report-my-work";
 import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
 
 import "./completion-page-content.scss";
@@ -129,6 +130,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               {progressText}
             </div>
             <CompletionExportAnswers />
+            <CompletionReportMyWork />
             {showStudentReport && <button className="button" onClick={handleShowAnswers}>Show My Work</button>}
 
           </div>
