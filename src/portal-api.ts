@@ -3,7 +3,6 @@ import superagent from "superagent";
 import { v4 as uuidv4 } from "uuid";
 import { queryValue, setQueryValue } from "./utilities/url-query";
 import { FirebaseAppName } from "./firebase-db";
-import { IFrameEndpoint } from "iframe-phone";
 
 interface PortalClassOffering {
   className: string;
