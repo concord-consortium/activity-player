@@ -216,9 +216,10 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
         console.log(parsedAnswers);
         // Import answers to indexedDB
         parsedAnswers.answers.forEach((answer: IIndexedDBAnswer) => {
-            const idxDBAnswer = answer as IIndexedDBAnswer;
-            idxDBAnswer.activity = answer.activity;
-            indexDBConnection.answers.put(idxDBAnswer);
+          const idxDBAnswer = answer as IIndexedDBAnswer;
+          // TODO: what happens if the answers loaded are for a different activity?
+          idxDBAnswer.activity = answer.activity;
+          indexDBConnection.answers.put(idxDBAnswer);
         });
         return true;
       } else {
