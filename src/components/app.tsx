@@ -102,6 +102,7 @@ export class App extends React.PureComponent<IProps, IState> {
     const offlineManifestAuthoringId = getOfflineManifestAuthoringId();
 
     const offlineManifestId = queryValue("offlineManifest");
+    const loadingOfflineManifest = !!offlineManifestId;
 
     this.state = {
       currentPage: 0,
@@ -115,7 +116,7 @@ export class App extends React.PureComponent<IProps, IState> {
       pluginsLoaded: false,
       errorType: null,
       idle: false,
-      loadingOfflineManifest: false,
+      loadingOfflineManifest,
       offlineMode: (queryValue("offline") === "true") || !!offlineManifestAuthoringId || !!offlineManifestId,
       offlineManifestAuthoringActivities: [],
       offlineManifestAuthoringCacheList: [],
@@ -212,7 +213,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const {offlineManifestId, offlineManifestAuthoringId} = this.state;
+      const {offlineManifestId, offlineManifestAuthoringId, loadingOfflineManifest} = this.state;
 
       let offlineManifestAuthoringData: OfflineManifestAuthoringData | undefined;
       if (offlineManifestAuthoringId) {
@@ -220,7 +221,6 @@ export class App extends React.PureComponent<IProps, IState> {
       }
 
       let offlineManifest: OfflineManifest | undefined = undefined;
-      const loadingOfflineManifest = !!offlineManifestId;
       if (offlineManifestId) {
         offlineManifest = await getOfflineManifest(offlineManifestId);
 
