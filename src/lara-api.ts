@@ -11,8 +11,8 @@ export const getResourceUrl = () => {
     return "";
   }
 
-  return ((resourceUrl.split(".json"))[0]).replace("api/v1/","");
-}
+  return resourceUrl.split(".json")[0].replace("api/v1/","");
+};
 
 export const getActivityDefinition = (activity: string): Promise<Activity> => {
   return new Promise((resolve, reject) => {

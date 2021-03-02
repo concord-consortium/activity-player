@@ -4,7 +4,6 @@ import { getCachedLearnerPluginState, getLearnerPluginState, getPortalData } fro
 import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
 import { Activity, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
-import { queryValue } from "./url-query";
 import { getResourceUrl } from "../lara-api";
 
 export interface UsedPluginInfo {
