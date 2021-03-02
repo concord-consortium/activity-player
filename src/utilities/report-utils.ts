@@ -24,15 +24,21 @@ export const getReportUrl = () => {
   const runKey= queryValue("runKey");
   // Sometimes the location of the answers is overridden with a report-source param
   const answerSource = queryValue("report-source") || window.location.hostname;
+  const sourceKey = activityUrl ? makeSourceKey(activityUrl) : window.location.hostname;
 
   if (runKey) {
-    return reportLink + "?runKey=" + runKey + "&activity=" + activityUrl + "&answersSourceKey="+answerSource;
+    return reportLink
+            + "?"
+            + "runKey=" + runKey
+            + "&activity=" + activityUrl
+            + "&firebase-app="+reportFirebaseApp
+            + "&sourceKey="+sourceKey
+            + "&answersSourceKey="+answerSource;
   }
   else {
     // We know this is a IPortalData because there is no runKey
     const portalData = getPortalData() as IPortalData;
     const classInfoUrl = portalData?.portalJWT?.class_info_url;
-    const sourceKey = activityUrl ? makeSourceKey(activityUrl) : window.location.hostname;
     const authDomainUrl = classInfoUrl?.split("/api")[0];
     const offeringBaseUrl = classInfoUrl?.split("/classes")[0]+"/offerings/";
     const offeringId = portalData?.offering.id;
