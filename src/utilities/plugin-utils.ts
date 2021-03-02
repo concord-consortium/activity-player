@@ -5,6 +5,7 @@ import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
 import { Activity, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
 import { queryValue } from "./url-query";
+import { getResourceUrl } from "../lara-api";
 
 export interface UsedPluginInfo {
   id: number;
@@ -119,7 +120,6 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
 
   const pluginId = usedPlugin.id;
   const portalData = getPortalData();
-  const activity = queryValue("activity");
   const pluginLabel = `plugin${pluginId}`;
   const pluginContext: IPluginRuntimeContextOptions = {
     type: "runtime",
@@ -138,7 +138,7 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
     classInfoUrl: null,
     firebaseJwtUrl: "",
     wrappedEmbeddable: wrappedEmbeddable ? embeddableContextAny : null,
-    resourceUrl: activity? ((activity.split(".json"))[0]).replace("api/v1/","") : ""
+    resourceUrl: getResourceUrl()
   };
   LARA.Plugins.initPlugin(pluginLabel, pluginContext);
 };
