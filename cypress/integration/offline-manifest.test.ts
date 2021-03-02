@@ -50,7 +50,8 @@ context("Test using offline manifests", () => {
 
       // verify clicking on activity loads it and closes the launcher
       activityPage.getOfflineManifestLoadingDialog({timeout: 0}).should("not.exist");
-      activityPage.getOfflineActivityList().contains("AP Smoke Test").click();
+      activityPage.getOfflineActivityList().contains("AP Smoke Test");
+      activityPage.getOfflineActivityList().click();
       activityPage.getActivityTitle().should("be.visible").and("contain", "AP Smoke Test");
     });
   });
