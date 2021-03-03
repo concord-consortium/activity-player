@@ -46,6 +46,7 @@ context("Saving and loading data as an anonymous user", () => {
       getIframeBody("body").find("[data-cy=choices-container] input").eq(1).should("be.checked");
     });
 
+
     it("we can remove a runKey and we will no longer see our data", () => {
       const activityUrlWithRunKey = activityUrl + "&runKey=" + runKey;
 
