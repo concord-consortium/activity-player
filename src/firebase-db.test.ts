@@ -88,7 +88,7 @@ describe("Firestore", () => {
       resourceUrl: "http://example/resource",
       toolId: "activity-player.concord.org",
       userType: "learner",
-      runRemoteEndpoint: "https://portal.com/learner/1234"
+      runRemoteEndpoint: "https://example.com/learner/1234"
     });
 
     const embeddable = {
@@ -117,7 +117,7 @@ describe("Firestore", () => {
       platform_user_id: "1",
       question_id: "managed_interactive_123",
       question_type: "open_response",
-      remote_endpoint: "https://portal.com/learner/1234",
+      remote_endpoint: "https://example.com/learner/1234",
       report_state: "{\"mode\":\"report\",\"authoredState\":\"{\\\"version\\\":1,\\\"questionType\\\":\\\"open_response\\\",\\\"prompt\\\":\\\"<p>Write something:</p>\\\"}\",\"interactiveState\":\"{\\\"answerType\\\":\\\"open_response_answer\\\",\\\"answerText\\\":\\\"test\\\"}\",\"version\":1}",
       resource_link_id: "2",
       resource_url: "http://example/resource",
