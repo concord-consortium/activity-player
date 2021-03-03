@@ -1,0 +1,37 @@
+{
+  "name": "Precipitating Change Offline Manifest",
+  "activities": [
+    {
+      "name": "AP Noah: AK NetLogo PChange 2021-02-17 ",
+      "url": "https://authoring.staging.concord.org/api/v1/activities/20926.json"
+    }
+  ],
+  "cacheList": [
+    "https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL22_7am.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L4_ACT1_Alaska%20Weather%20Stations_7am%20Interpolated.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson57pmInterpolated.jpg",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson5AirMasses1and2.jpg",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson5_7pmInterpolatedRADARMAPcomparison.jpg",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/TempMoisture.jpg",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/WindCompass.jpg",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images/air-moisture-scale.png",
+    "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap",
+    "https://fonts.googleapis.com/css?family=Lato",
+    "https://fonts.gstatic.com/s/lato/v17/S6u9w4BMUTPHh50XSwiPGQ3q5d0.woff2",
+    "https://fonts.gstatic.com/s/lato/v17/S6u9w4BMUTPHh6UVSwiPGQ3q5d0.woff2",
+    "https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXiWtFCc.woff2",
+    "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson4.jpg",
+    "https://precipitatingchange-resources.concord.org/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/WindTunnels.png",
+    "models-resources/precip-models/ak-base-map-with-rose.png",
+    "models-resources/precip-models/lesson-4-ak-v3.html",
+    "models-resources/question-interactives/branch/master/multiple-choice/",
+    "models-resources/question-interactives/branch/master/multiple-choice/assets/index.ef6640fdbaa59e7d870c.css",
+    "models-resources/question-interactives/branch/master/multiple-choice/assets/index.ef6640fdbaa59e7d870c.js",
+    "models-resources/question-interactives/branch/master/open-response/",
+    "models-resources/question-interactives/branch/master/open-response/assets/index.ef6640fdbaa59e7d870c.css",
+    "models-resources/question-interactives/branch/master/open-response/assets/index.ef6640fdbaa59e7d870c.js",
+    "models-resources/teacher-edition-tips-plugin/version/v3.6.0/manifest.json",
+    "models-resources/teacher-edition-tips-plugin/version/v3.6.0/plugin.js"
+  ]
+}
