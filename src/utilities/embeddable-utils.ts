@@ -21,7 +21,7 @@ export const questionType = (rawAuthoredState: string | null | undefined): strin
   }
 
   // There is a IAuthoringMetadata type, but because we don't know if this has
-  // valid authored state or not, that type isn't not used here.
+  // valid authored state or not, that type isn't used here.
   let authoredState: any = {};
   try {
     authoredState = JSON.parse(rawAuthoredState);
