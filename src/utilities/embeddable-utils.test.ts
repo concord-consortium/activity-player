@@ -1,4 +1,4 @@
-import { IRuntimeMetadata, IRuntimeInteractiveMetadata, IRuntimeMultipleChoiceMetadata } from "@concord-consortium/lara-interactive-api";
+import { IRuntimeMetadata, IRuntimeMultipleChoiceMetadata } from "@concord-consortium/lara-interactive-api";
 import { answersQuestionIdToRefId, refIdToAnswersQuestionId, getAnswerWithMetadata } from "./embeddable-utils";
 import { DefaultManagedInteractive } from "../test-utils/model-for-tests";
 import {
@@ -95,7 +95,7 @@ describe("Embeddable utility functions", () => {
         interactiveState: `{"answerType":"image_question_answer","answerText":"test","answerImageUrl":"http://test.snapshot.com"}`,
         version: 1
       })
-    })
+    });
   });
 
   it("can create an exportable answer for a submittable multiple choice embeddable", () => {
@@ -195,9 +195,6 @@ describe("Embeddable utility functions", () => {
       ref_id: "123-ManagedInteractive"
     };
 
-    interface IInteractiveState extends IRuntimeInteractiveMetadata {
-      myState: string;
-    }
     const interactiveState = {
       answerType: "my_question_type_answer",
       myState: "<state />"

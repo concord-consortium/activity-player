@@ -4,7 +4,7 @@ import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
 import {
   ICloseModal, INavigationOptions,
-  ICustomMessage, IRuntimeMetadata, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures
+  ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures
 } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
