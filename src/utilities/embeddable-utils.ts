@@ -36,20 +36,6 @@ export const questionType = (rawAuthoredState: string | null | undefined): strin
   return authoredState.questionType as string;
 };
 
-export const remoteEndpoint = (): string => {
-  const portalData = getPortalData();
-  if (!portalData) {
-    return "";
-  }
-
-  // This is a way to verify the portalData is of type IPortalData
-  if (portalData.type === "authenticated") {
-    return portalData.runRemoteEndpoint;
-  }
-
-  return "";
-};
-
 export const getAnswerWithMetadata = (
     interactiveState: unknown,
     embeddable: IManagedInteractive,

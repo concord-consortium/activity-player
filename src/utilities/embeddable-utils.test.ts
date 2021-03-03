@@ -196,6 +196,43 @@ describe("Embeddable utility functions", () => {
     testGenericInteractive(null);
   });
 
+  it("can create an exportable answer for a generic interactive embeddable with authored state", () => {
+    const embeddable: IManagedInteractive = {
+      ...DefaultManagedInteractive,
+      authored_state: `{"myConfiguration": "something"}`,
+      ref_id: "123-ManagedInteractive"
+    };
+
+    const interactiveState = {
+      myState: "<state />"
+    };
+
+    const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableInteractiveAnswerMetadata;
+
+    expect(exportableAnswer.id).toBeDefined();          // random uuid
+    // overwrite this id so we can do a full equals test below without a random value
+    exportableAnswer.id = "overwritten-answer-id";
+
+    const expectedReport = JSON.stringify({
+      mode: "report",
+      authoredState: `{"myConfiguration": "something"}`,
+      interactiveState: `{"myState":"<state />"}`,
+      version: 1
+    });
+
+    expect(exportableAnswer).toEqual({
+      version: 1,
+      id: "overwritten-answer-id",
+      type: "interactive_state",
+      question_id: "managed_interactive_123",
+      question_type: "iframe_interactive",
+      answer_text: undefined,
+      report_state: expectedReport,
+      answer: expectedReport,
+      submitted: null
+    });
+  });
+
   it("can create an exportable answer for a generic interactive embeddable with a custom question type", () => {
     const embeddable: IManagedInteractive = {
       ...DefaultManagedInteractive,
