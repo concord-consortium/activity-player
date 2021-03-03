@@ -184,6 +184,14 @@ describe("Embeddable utility functions", () => {
     testGenericInteractive(false);
   });
 
+  it("can create an exportable answer for a generic interactive that saves 0 for its state", () => {
+    testGenericInteractive(0);
+  });
+
+  it("can create an exportable answer for a generic interactive that saves a number for its state", () => {
+    testGenericInteractive(1.876);
+  });
+
   it("can create an exportable answer for a generic interactive that saves null for its state", () => {
     testGenericInteractive(null);
   });
