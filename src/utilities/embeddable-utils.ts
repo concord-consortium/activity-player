@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
 import {
   IExportableAnswerMetadata, IManagedInteractive, IReportState, IExportableMultipleChoiceAnswerMetadata,
   IExportableOpenResponseAnswerMetadata, IExportableInteractiveAnswerMetadata, IExportableImageQuestionAnswerMetadata,
@@ -50,7 +51,7 @@ export const remoteEndpoint = (): string => {
 };
 
 export const getAnswerWithMetadata = (
-    interactiveState: any,
+    interactiveState: unknown,
     embeddable: IManagedInteractive,
     oldAnswerMeta?: IExportableAnswerMetadata): (IExportableAnswerMetadata | void) => {
 
@@ -72,13 +73,24 @@ export const getAnswerWithMetadata = (
 
   const reportStateJSON = JSON.stringify(reportState);
 
-  if (interactiveState === null) {
-    // All of the code below reads properties from the interactiveState if it
-    // a string or a boolean, those properties just return undefined
-    // It is null, reading those properies throws and exception.
-    // This conversion to {} happens after the reportState, that way the null
-    // value will still be saved into the report-service
-    interactiveState = {};
+  let interactiveStateMetadata: IRuntimeMetadata;
+  // Since an interactive can send us anything, we only expect it to have
+  // its own metadata if it is an object like {}
+  if (interactiveState === null
+      || typeof interactiveState !== "object"
+      || Array.isArray(interactiveState)) {
+    // If we know the interactiveState won't have any metadata then we just
+    // create a seperate simple metadata object
+    interactiveStateMetadata = {answerType: "interactive_state"};
+  } else {
+    // It is common that an interactive will send an interactiveState that is an object
+    // but it doesn't have an answerType. It is possible the interactive provides other
+    // metadata like answerText, or submitted.
+
+    // We cast it here to IRuntimeMetadata, but the code below checks the answerType
+    // with: interactiveStateMetadata.answerType || "interactive_state"
+    // This is hacky but it is the best approach I could come up with for now
+    interactiveStateMetadata = interactiveState as IRuntimeMetadata;
   }
 
   // This follows the way LARA generates answers for the report-service
@@ -89,37 +101,37 @@ export const getAnswerWithMetadata = (
     // In LARA there is also the ability to have "external_link" type
     // if the interactive has a report_url. The AP doesn't support report_url
     // interactives.
-    type: interactiveState.answerType || "interactive_state",
+    type: interactiveStateMetadata.answerType || "interactive_state",
     question_id: refIdToAnswersQuestionId(embeddable.ref_id),
     question_type: questionType(embeddable.authored_state),
     // In LARA this value will be set to null if it isn't in the interactiveState
     // Here it will be set to undefined, which means it won't be sent up to
     // firestore
-    answer_text: interactiveState.answerText,
-    submitted: typeof interactiveState.submitted === "boolean" ? interactiveState.submitted : null,
+    answer_text: interactiveStateMetadata.answerText,
+    submitted: typeof interactiveStateMetadata.submitted === "boolean" ? interactiveStateMetadata.submitted : null,
     report_state: reportStateJSON
   };
 
   // from https://github.com/concord-consortium/lara/blob/c40304a14ef495acdf4f9fd09ea892c7cc98247b/app/models/interactive_run_state.rb#L139
   let exportableAnswer;
-  if (interactiveState.answerType === "multiple_choice_answer") {
+  if (interactiveStateMetadata.answerType === "multiple_choice_answer") {
     exportableAnswer = {
       ...exportableAnswerBase,
       answer: {
-        choice_ids: interactiveState.selectedChoiceIds
+        choice_ids: interactiveStateMetadata.selectedChoiceIds
       }
     } as IExportableMultipleChoiceAnswerMetadata;
-  } else if (interactiveState.answerType === "open_response_answer") {
+  } else if (interactiveStateMetadata.answerType === "open_response_answer") {
     exportableAnswer = {
       ...exportableAnswerBase,
-      answer: interactiveState.answerText
+      answer: interactiveStateMetadata.answerText
     } as IExportableOpenResponseAnswerMetadata;
-  } else if (interactiveState.answerType === "image_question_answer") {
+  } else if (interactiveStateMetadata.answerType === "image_question_answer") {
     exportableAnswer = {
       ...exportableAnswerBase,
       answer: {
-        text: interactiveState.answerText,
-        image_url: interactiveState.answerImageUrl
+        text: interactiveStateMetadata.answerText,
+        image_url: interactiveStateMetadata.answerImageUrl
       }
     } as IExportableImageQuestionAnswerMetadata;
   } else {
