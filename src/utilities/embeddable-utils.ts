@@ -5,7 +5,6 @@ import {
   IExportableOpenResponseAnswerMetadata, IExportableInteractiveAnswerMetadata, IExportableImageQuestionAnswerMetadata,
   Embeddable
 } from "../types";
-import { getPortalData } from "../firebase-db";
 
 export const isQuestion = (embeddable: Embeddable) =>
   (embeddable.type === "ManagedInteractive" && embeddable.library_interactive?.data?.enable_learner_state) ||

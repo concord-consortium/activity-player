@@ -228,16 +228,12 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
 
   let answerDocData: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata;
 
-  const commonFields = {
-    source_key: portalData.database.sourceKey,
-    resource_url: portalData.resourceUrl,
-    tool_id: portalData.toolId
-  };
-
   if (portalData.type === "authenticated") {
     const ltiAnswer: LTIRuntimeAnswerMetadata = {
       ...answer,
-      ...commonFields,
+      source_key: portalData.database.sourceKey,
+      resource_url: portalData.resourceUrl,
+      tool_id: portalData.toolId,
       platform_id: portalData.platformId,
       platform_user_id: portalData.platformUserId.toString(),
       context_id: portalData.contextId,
@@ -249,7 +245,9 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   } else {
     const anonymousAnswer: AnonymousRuntimeAnswerMetadata = {
       ...answer,
-      ...commonFields,
+      source_key: portalData.database.sourceKey,
+      resource_url: portalData.resourceUrl,
+      tool_id: portalData.toolId,
       run_key: portalData.runKey,
       tool_user_id: "anonymous",
       platform_user_id: portalData.runKey
