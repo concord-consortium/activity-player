@@ -59,7 +59,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     }
   }, [embeddableRefId, shouldWatchAnswer]);
 
-    const handleNewInteractiveState = (state: IRuntimeMetadata) => {
+    const handleNewInteractiveState = (state: any) => {
       // Keep interactive state in sync if iFrame is opened in modal popup
       interactiveState.current = state;
 
@@ -187,9 +187,9 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   }));
 
   // embeddable.url_fragment is an optional string (path, query params, hash) that can be defined by author.
-  // Some interactives are authored that way. Note that url_fragment is not merged with the dialog URL. 
-  // Each interactive will be first loaded inline with the url_fragment appended. So it can merge its custom dialog URL 
-  // with this fragment if necessary. ActivityPlayer doesn't have knowledge about URL format and provided url_fragment 
+  // Some interactives are authored that way. Note that url_fragment is not merged with the dialog URL.
+  // Each interactive will be first loaded inline with the url_fragment appended. So it can merge its custom dialog URL
+  // with this fragment if necessary. ActivityPlayer doesn't have knowledge about URL format and provided url_fragment
   // to perform this merge automatically.
   const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
   const miContainerClass = questionNumber ? "managed-interactive has-question-number" : "managed-interactive";

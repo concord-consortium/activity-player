@@ -1,38 +1,101 @@
 import { v4 as uuidv4 } from "uuid";
-import { IAuthoringMetadata, IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
+import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
 import {
   IExportableAnswerMetadata, IManagedInteractive, IReportState, IExportableMultipleChoiceAnswerMetadata,
   IExportableOpenResponseAnswerMetadata, IExportableInteractiveAnswerMetadata, IExportableImageQuestionAnswerMetadata,
   Embeddable
 } from "../types";
+import { getPortalData } from "../firebase-db";
 
 export const isQuestion = (embeddable: Embeddable) =>
   (embeddable.type === "ManagedInteractive" && embeddable.library_interactive?.data?.enable_learner_state) ||
   (embeddable.type === "MwInteractive" && embeddable.enable_learner_state);
 
+// LARA uses a map from the answer type to a question type.
+// Instead of using this map, we look directly at the authoredState this ought to give us more
+// flexibility to support more special types in the report without needing to update
+// the activity player
+export const questionType = (rawAuthoredState: string | null | undefined): string => {
+  if (!rawAuthoredState) {
+    return "iframe_interactive";
+  }
+
+  // There is a IAuthoringMetadata type, but because we don't know if this has
+  // valid authored state or not, that type isn't not used here.
+  let authoredState: any = {};
+  try {
+    authoredState = JSON.parse(rawAuthoredState);
+  } catch (e) {
+    // this isn't valid JSON, so we use the default value of {} for the authored state
+  }
+
+  if (!authoredState.questionType) {
+    return "iframe_interactive";
+  }
+
+  return authoredState.questionType as string;
+};
+
+export const remoteEndpoint = (): string => {
+  const portalData = getPortalData();
+  if (!portalData) {
+    return "";
+  }
+
+  // This is a way to verify the portalData is of type IPortalData
+  if (portalData.type === "authenticated") {
+    return portalData.runRemoteEndpoint;
+  }
+
+  return "";
+};
+
 export const getAnswerWithMetadata = (
-    interactiveState: IRuntimeMetadata,
+    interactiveState: any,
     embeddable: IManagedInteractive,
     oldAnswerMeta?: IExportableAnswerMetadata): (IExportableAnswerMetadata | void) => {
 
-  if (!interactiveState) return;
-
-  const authoredState = embeddable.authored_state && JSON.parse(embeddable.authored_state) as IAuthoringMetadata;
   const reportState: IReportState = {
     mode: "report",
+    // LARA just stores the raw authored_state, if it is null that is passed right
+    // through,  Here authoredState will be converted into ""
+    // There might be some issues with this if an interactive wants to have null
+    // or false for its authored_state. But I don't know of any yet.
     authoredState: embeddable.authored_state || "",
+    // If the interactive state is a string instead of an object
+    // JSON.stringify will quote it a second time, so JSON.parse will return the string again.
+    // This seems to work fine for how the AP loads it back into the interactive
+    // LARA also seems to be storing the interactiveState as a JSON string and that
+    // JSON string is what is used in the reportState
     interactiveState: JSON.stringify(interactiveState),
     version: 1
   };
 
   const reportStateJSON = JSON.stringify(reportState);
 
+  if (interactiveState === null) {
+    // All of the code below reads properties from the interactiveState if it
+    // a string or a boolean, those properties just return undefined
+    // It is null, reading those properies throws and exception.
+    // This conversion to {} happens after the reportState, that way the null
+    // value will still be saved into the report-service
+    interactiveState = {};
+  }
+
+  // This follows the way LARA generates answers for the report-service
+  // https://github.com/concord-consortium/lara/blob/0cf1de2d45dc35c2f6138a917fb480a0fffe050e/app/models/interactive_run_state.rb#L122
   const exportableAnswerBase = {
-    remote_endpoint: "",
-    question_id: refIdToAnswersQuestionId(embeddable.ref_id),
-    question_type: authoredState ? authoredState.questionType : undefined,
+    version: 1,
     id: oldAnswerMeta ? oldAnswerMeta.id : uuidv4(),
-    type: interactiveState.answerType,
+    // In LARA there is also the ability to have "external_link" type
+    // if the interactive has a report_url. The AP doesn't support report_url
+    // interactives.
+    type: interactiveState.answerType || "interactive_state",
+    question_id: refIdToAnswersQuestionId(embeddable.ref_id),
+    question_type: questionType(embeddable.authored_state),
+    // In LARA this value will be set to null if it isn't in the interactiveState
+    // Here it will be set to undefined, which means it won't be sent up to
+    // firestore
     answer_text: interactiveState.answerText,
     submitted: typeof interactiveState.submitted === "boolean" ? interactiveState.submitted : null,
     report_state: reportStateJSON
