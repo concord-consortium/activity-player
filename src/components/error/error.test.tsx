@@ -8,13 +8,18 @@ describe("Error component", () => {
     expect(wrapper.find('[data-cy="error"]').length).toBe(1);
     expect(wrapper.text()).toContain(errorMsg.auth);
   });
-  
-  it("renders network error message", () => {
+
+  it("renders network error message when not in offline mode", () => {
     const wrapper = shallow(<Error type="network" onExit={jest.fn()}/>);
     expect(wrapper.find('[data-cy="error"]').length).toBe(1);
     expect(wrapper.text()).toContain(errorMsg.network);
   });
-  
+
+  it("does not render network error message when in offline mode", () => {
+    const wrapper = shallow(<Error type="network" onExit={jest.fn()} offlineMode={true}/>);
+    expect(wrapper.find('[data-cy="error"]').length).toBe(0);
+  });
+
   it("renders session timeout error message", () => {
     const wrapper = shallow(<Error type="timeout" onExit={jest.fn()}/>);
     expect(wrapper.find('[data-cy="error"]').length).toBe(1);
