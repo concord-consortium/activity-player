@@ -1,4 +1,5 @@
-import { getReportUrl } from "./report-utils";
+import { getReportUrl, portalReportBaseUrl,
+         kProductionPortalReportUrl, kDevPortalReportUrl} from "./report-utils";
 import { clearFirebaseAppName } from "../portal-api";
 
 jest.mock("../firebase-db", () => (
@@ -32,8 +33,8 @@ describe("getReportUrl", () => {
       const reportURL = getReportUrl();
 
       expect(reportURL).toEqual(
-        "https://portal-report.concord.org/branch/master/index.html?"
-        + "runKey=" + runKey
+        kDevPortalReportUrl
+        + "?runKey=" + runKey
         + "&activity=https://lara.example.com/activities/345"
         + "&firebase-app=report-service-dev"
         + "&sourceKey=lara.example.com"
@@ -47,8 +48,8 @@ describe("getReportUrl", () => {
       const reportURL = getReportUrl();
 
       expect(reportURL).toEqual(
-        "https://portal-report.concord.org/branch/master/index.html?"
-        + "runKey=" + runKey
+        kDevPortalReportUrl
+        + "?runKey=" + runKey
         + "&activity=https://lara.example.com/activities/345"
         + "&firebase-app=report-service-dev"
         + "&sourceKey=lara.example.com"
@@ -62,8 +63,8 @@ describe("getReportUrl", () => {
       const reportURL = getReportUrl();
 
       expect(reportURL).toEqual(
-        "https://portal-report.concord.org/branch/master/index.html?"
-        + "runKey=" + runKey
+        kDevPortalReportUrl
+        + "?runKey=" + runKey
         + "&activity=https://lara.example.com/activities/345"
         + "&firebase-app=report-service-pro"
         + "&sourceKey=lara.example.com"
@@ -80,8 +81,8 @@ describe("getReportUrl", () => {
       const reportURL = getReportUrl();
 
       expect(reportURL).toEqual(
-        "https://portal-report.concord.org/branch/master/index.html?"
-        + "class=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fclasses%2F123"
+        kDevPortalReportUrl
+        + "?class=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fclasses%2F123"
         + "&firebase-app=report-service-dev"
         + "&offering=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fofferings%2Foffering-123"
         + "&reportType=offering"
@@ -96,8 +97,8 @@ describe("getReportUrl", () => {
       const reportURL = getReportUrl();
 
       expect(reportURL).toEqual(
-        "https://portal-report.concord.org/branch/master/index.html?"
-        + "class=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fclasses%2F123"
+        kDevPortalReportUrl
+        + "?class=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fclasses%2F123"
         + "&firebase-app=report-service-pro"
         + "&offering=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fofferings%2Foffering-123"
         + "&reportType=offering"
@@ -107,4 +108,52 @@ describe("getReportUrl", () => {
         + "&auth-domain=https://example.com");
     });
   });
+});
+
+describe("portalReportBaseUrl", () => {
+
+  const oldWindowLocation = window.location;
+  const url = document.createElement("a");
+
+  beforeEach(() => {
+    // Need to mock window location
+    // The properties of `a` elements match the origin, hostname, pathname props of window.location
+    // so that is a hacky way to mock the window location
+
+    // @ts-expect-error: mocking window location
+    delete window.location;
+    // @ts-expect-error: mocking window location
+    window.location = url;
+  });
+
+  afterEach(() => {
+    // restore `window.location` to the `jsdom` `Location` object
+    window.location = oldWindowLocation;
+  });
+
+  it("returns production url when the page url is https://activity-player.concord.org", () => {
+    url.href = "https://activity-player.concord.org";
+    expect(portalReportBaseUrl()).toBe(kProductionPortalReportUrl);
+  });
+
+  it("returns production url when the page is on a version url", () => {
+    url.href = "https://activity-player.concord.org/version/v1.2.3";
+    expect(portalReportBaseUrl()).toBe(kProductionPortalReportUrl);
+  });
+
+  it("returns dev url when page is on a branch url", () => {
+    url.href = "https://activity-player.concord.org/branch/foo";
+    expect(portalReportBaseUrl()).toBe(kDevPortalReportUrl);
+  });
+
+  it("returns dev url when page is on localhost url", () => {
+    url.href = "http://localhost:8080";
+    expect(portalReportBaseUrl()).toBe(kDevPortalReportUrl);
+  });
+
+  it("can be overridden to with a url parameter", () => {
+    url.href = "https://activity-player.concord.org?portalReport=https://example.com";
+    expect(portalReportBaseUrl()).toBe("https://example.com");
+  });
+
 });

@@ -2,8 +2,33 @@ import { queryValue } from "../utilities/url-query";
 import { getPortalData } from "../firebase-db";
 import { IPortalData, firebaseAppName } from "../portal-api";
 
-// TODO: switch default to production report version before production deploy
-export const DEFAULT_PORTAL_REPORT_URL = "https://portal-report.concord.org/branch/master/index.html";
+export const kProductionPortalReportUrl = "https://portal-report.concord.org/version/v4.1.0/index.html";
+export const kDevPortalReportUrl = "https://portal-report.concord.org/branch/master/index.html";
+
+// The default portal report URL is based on the URL:
+// - https://activity-player.concord.org and https://activity-player.concord.org/version/*
+//   defaults to the kProductionPortalReportUrl above
+// - everything else defaults to kDevPortalReportUrl which is should be master
+//
+// The default can be overridden with a portalReport URL param
+export const portalReportBaseUrl= ():string => {
+  const portalReportUrlParam = queryValue("portalReport");
+  if (portalReportUrlParam) {
+    return portalReportUrlParam;
+  }
+
+  const { origin, pathname } = window.location;
+  // According to the spec an empty path like https://activity-player.concord.org
+  // will still have a pathname of "/", but just to be safe this checks for the
+  // falsey pathname
+  if(origin === "https://activity-player.concord.org" &&
+     (!pathname || pathname === "/"
+      || pathname.indexOf("/version/") === 0)) {
+    return kProductionPortalReportUrl;
+  } else {
+    return kDevPortalReportUrl;
+  }
+};
 
 const parseUrl = (url: string) => {
   const a = document.createElement("a");
@@ -16,8 +41,7 @@ const makeSourceKey = (url: string | null) => {
 };
 
 export const getReportUrl = () => {
-  // TODO: switch default to production report version before production deploy
-  const reportLink = (queryValue("portal-report") as string) || DEFAULT_PORTAL_REPORT_URL;
+  const reportLink = portalReportBaseUrl();
   const reportFirebaseApp = firebaseAppName();
   const activity = queryValue("activity");
   const activityUrl = activity? ((activity.split(".json"))[0]).replace("api/v1/","") : "";
