@@ -231,29 +231,33 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   if (portalData.type === "authenticated") {
     const ltiAnswer: LTIRuntimeAnswerMetadata = {
       ...answer,
+      source_key: portalData.database.sourceKey,
+      resource_url: portalData.resourceUrl,
+      tool_id: portalData.toolId,
       platform_id: portalData.platformId,
       platform_user_id: portalData.platformUserId.toString(),
       context_id: portalData.contextId,
       resource_link_id: portalData.resourceLinkId,
-      source_key: portalData.database.sourceKey,
-      tool_id: portalData.toolId,
-      resource_url: portalData.resourceUrl,
       run_key: "",
+      remote_endpoint: portalData.runRemoteEndpoint
     };
     answerDocData = ltiAnswer;
   } else {
     const anonymousAnswer: AnonymousRuntimeAnswerMetadata = {
       ...answer,
-      run_key: portalData.runKey,
       source_key: portalData.database.sourceKey,
       resource_url: portalData.resourceUrl,
       tool_id: portalData.toolId,
+      run_key: portalData.runKey,
       tool_user_id: "anonymous",
       platform_user_id: portalData.runKey
     };
     answerDocData = anonymousAnswer;
   }
 
+  // TODO: LARA stores a created field with the date the answer was created
+  // I'm not sure how to do that easily in Firestore, we could at least add
+  // an updatedAt time using Firestore's features.
   const firestoreSetPromise = app.firestore()
     .doc(answersPath(answer.id))
     .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
@@ -329,6 +333,7 @@ export const setLearnerPluginState = async (pluginId: number, state: string): Pr
       tool_id: portalData.toolId,
       resource_url: portalData.resourceUrl,
       run_key: "",
+      remote_endpoint: portalData.runRemoteEndpoint,
       pluginId,
       state
       };

@@ -1,4 +1,4 @@
-import { IRuntimeMetadata, IRuntimeInteractiveMetadata, IRuntimeMultipleChoiceMetadata } from "@concord-consortium/lara-interactive-api";
+import { IRuntimeMetadata, IRuntimeMultipleChoiceMetadata } from "@concord-consortium/lara-interactive-api";
 import { answersQuestionIdToRefId, refIdToAnswersQuestionId, getAnswerWithMetadata } from "./embeddable-utils";
 import { DefaultManagedInteractive } from "../test-utils/model-for-tests";
 import {
@@ -36,23 +36,26 @@ describe("Embeddable utility functions", () => {
 
     const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableOpenResponseAnswerMetadata;
 
-    expect(exportableAnswer).toBeDefined();
-
-    expect(exportableAnswer.remote_endpoint).toBe("");
-    expect(exportableAnswer.question_id).toBe("managed_interactive_123");
-    expect(exportableAnswer.question_type).toBe("open_response");
     expect(exportableAnswer.id).toBeDefined();          // random uuid
-    expect(exportableAnswer.type).toBe("open_response_answer");
-    expect(exportableAnswer.answer_text).toBe("test");
-    expect(exportableAnswer.answer).toBe("test");
-    expect(exportableAnswer.submitted).toBeNull();
-    const expectedReport = JSON.stringify({
-      mode: "report",
-      authoredState: `{"version":1,"questionType":"open_response","prompt":"<p>Write something:</p>"}`,
-      interactiveState: `{"answerType":"open_response_answer","answerText":"test"}`,
-      version: 1
+    // overwrite this id so we can do a full equals test below without a random value
+    exportableAnswer.id = "overwritten-answer-id";
+
+    expect(exportableAnswer).toEqual({
+      version: 1,
+      id: "overwritten-answer-id",
+      type: "open_response_answer",
+      question_id: "managed_interactive_123",
+      question_type: "open_response",
+      answer_text: "test",
+      answer: "test",
+      submitted: null,
+      report_state: JSON.stringify({
+        mode: "report",
+        authoredState: `{"version":1,"questionType":"open_response","prompt":"<p>Write something:</p>"}`,
+        interactiveState: `{"answerType":"open_response_answer","answerText":"test"}`,
+        version: 1
+      })
     });
-    expect(exportableAnswer.report_state).toBe(expectedReport);
   });
 
   it("can create an exportable answer for an image question embeddable", () => {
@@ -70,62 +73,37 @@ describe("Embeddable utility functions", () => {
 
     const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableImageQuestionAnswerMetadata;
 
-    expect(exportableAnswer).toBeDefined();
-
-    expect(exportableAnswer.remote_endpoint).toBe("");
-    expect(exportableAnswer.question_id).toBe("managed_interactive_123");
-    expect(exportableAnswer.question_type).toBe("image_question");
     expect(exportableAnswer.id).toBeDefined();          // random uuid
-    expect(exportableAnswer.type).toBe("image_question_answer");
-    expect(exportableAnswer.answer_text).toBe("test");
-    expect(exportableAnswer.answer).toEqual({
-      text: "test",
-      image_url: "http://test.snapshot.com"
+    // overwrite this id so we can do a full equals test below without a random value
+    exportableAnswer.id = "overwritten-answer-id";
+
+    expect(exportableAnswer).toEqual({
+      version: 1,
+      id: "overwritten-answer-id",
+      type: "image_question_answer",
+      question_id: "managed_interactive_123",
+      question_type: "image_question",
+      answer_text: "test",
+      answer: {
+        text: "test",
+        image_url: "http://test.snapshot.com"
+      },
+      submitted: null,
+      report_state: JSON.stringify({
+        mode: "report",
+        authoredState: `{"version":1,"questionType":"image_question","prompt":"<p>Write something:</p>"}`,
+        interactiveState: `{"answerType":"image_question_answer","answerText":"test","answerImageUrl":"http://test.snapshot.com"}`,
+        version: 1
+      })
     });
-    expect(exportableAnswer.submitted).toBeNull();
-    const expectedReport = JSON.stringify({
-      mode: "report",
-      authoredState: `{"version":1,"questionType":"image_question","prompt":"<p>Write something:</p>"}`,
-      interactiveState: `{"answerType":"image_question_answer","answerText":"test","answerImageUrl":"http://test.snapshot.com"}`,
-      version: 1
-    });
-    expect(exportableAnswer.report_state).toBe(expectedReport);
-  });
-
-  it("can create an exportable answer for a generic interactive embeddable", () => {
-    const embeddable: IManagedInteractive = {
-      ...DefaultManagedInteractive,
-      authored_state: `{"version":1,"questionType":"my_question_type"}`
-    };
-
-    interface IInteractiveState extends IRuntimeInteractiveMetadata {
-      myState: string;
-    }
-    const interactiveState: IInteractiveState = {
-      answerType: "interactive_state",
-      myState: "<state />"
-    };
-
-    const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableInteractiveAnswerMetadata;
-
-    expect(exportableAnswer.question_type).toBe("my_question_type");
-    expect(exportableAnswer.type).toBe("interactive_state");
-    expect(exportableAnswer.answer_text).toBeUndefined();
-    const expectedReport = JSON.stringify({
-      mode: "report",
-      authoredState: `{"version":1,"questionType":"my_question_type"}`,
-      interactiveState: `{"answerType":"interactive_state","myState":"<state />"}`,
-      version: 1
-    });
-    expect(exportableAnswer.report_state).toBe(expectedReport);
-    expect(exportableAnswer.answer).toBe(expectedReport);
   });
 
   it("can create an exportable answer for a submittable multiple choice embeddable", () => {
     const authoredState = `{"version":1,"questionType":"multiple_choice","choices":[{"id":"1","content":"A","correct":false},{"id":"2","content":"B","correct":false}],"prompt":""}`;
     const embeddable: IManagedInteractive = {
       ...DefaultManagedInteractive,
-      authored_state: authoredState
+      authored_state: authoredState,
+      ref_id: "123-ManagedInteractive"
     };
 
     const interactiveState: IRuntimeMultipleChoiceMetadata = {
@@ -135,17 +113,162 @@ describe("Embeddable utility functions", () => {
 
     const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableInteractiveAnswerMetadata;
 
-    expect(exportableAnswer.question_type).toBe("multiple_choice");
-    expect(exportableAnswer.type).toBe("multiple_choice_answer");
-    expect(exportableAnswer.answer_text).toBeUndefined();
+    expect(exportableAnswer.id).toBeDefined();          // random uuid
+    // overwrite this id so we can do a full equals test below without a random value
+    exportableAnswer.id = "overwritten-answer-id";
+
+    expect(exportableAnswer).toEqual({
+      version: 1,
+      id: "overwritten-answer-id",
+      type: "multiple_choice_answer",
+      question_id: "managed_interactive_123",
+      question_type: "multiple_choice",
+      answer_text: undefined,
+      report_state: JSON.stringify({
+        mode: "report",
+        authoredState,
+        interactiveState: `{"answerType":"multiple_choice_answer","selectedChoiceIds":["1"]}`,
+        version: 1
+      }),
+      answer: {"choice_ids": ["1"]},
+      submitted: null
+    });
+  });
+
+  const testGenericInteractive = (interactiveState: any) => {
+    const embeddable: IManagedInteractive = {
+      ...DefaultManagedInteractive,
+      authored_state: "",
+      ref_id: "123-ManagedInteractive"
+    };
+
+    const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableInteractiveAnswerMetadata;
+
+    expect(exportableAnswer.id).toBeDefined();          // random uuid
+    // overwrite this id so we can do a full equals test below without a random value
+    exportableAnswer.id = "overwritten-answer-id";
+
     const expectedReport = JSON.stringify({
       mode: "report",
-      authoredState,
-      interactiveState: `{"answerType":"multiple_choice_answer","selectedChoiceIds":["1"]}`,
+      authoredState: "",
+      interactiveState: JSON.stringify(interactiveState),
       version: 1
     });
-    expect(exportableAnswer.report_state).toBe(expectedReport);
-    expect(exportableAnswer.answer).toStrictEqual({"choice_ids": ["1"]});
+
+    expect(exportableAnswer).toEqual({
+      version: 1,
+      id: "overwritten-answer-id",
+      type: "interactive_state",
+      question_id: "managed_interactive_123",
+      question_type: "iframe_interactive",
+      answer_text: undefined,
+      report_state: expectedReport,
+      answer: expectedReport,
+      submitted: null
+    });
+  };
+
+  it("can create an exportable answer for a generic interactive without authored state and no meta data", () => {
+    testGenericInteractive({myState: "<state />"});
+  });
+
+  it("can create an exportable answer for a generic interactive that uses a string for its state", () => {
+    testGenericInteractive("<state />");
+  });
+
+  it("can create an exportable answer for a generic interactive that saves '' for its state", () => {
+    testGenericInteractive("");
+  });
+
+  it("can create an exportable answer for a generic interactive that saves false for its state", () => {
+    testGenericInteractive(false);
+  });
+
+  it("can create an exportable answer for a generic interactive that saves 0 for its state", () => {
+    testGenericInteractive(0);
+  });
+
+  it("can create an exportable answer for a generic interactive that saves a number for its state", () => {
+    testGenericInteractive(1.876);
+  });
+
+  it("can create an exportable answer for a generic interactive that saves null for its state", () => {
+    testGenericInteractive(null);
+  });
+
+  it("can create an exportable answer for a generic interactive embeddable with authored state", () => {
+    const embeddable: IManagedInteractive = {
+      ...DefaultManagedInteractive,
+      authored_state: `{"myConfiguration": "something"}`,
+      ref_id: "123-ManagedInteractive"
+    };
+
+    const interactiveState = {
+      myState: "<state />"
+    };
+
+    const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableInteractiveAnswerMetadata;
+
+    expect(exportableAnswer.id).toBeDefined();          // random uuid
+    // overwrite this id so we can do a full equals test below without a random value
+    exportableAnswer.id = "overwritten-answer-id";
+
+    const expectedReport = JSON.stringify({
+      mode: "report",
+      authoredState: `{"myConfiguration": "something"}`,
+      interactiveState: `{"myState":"<state />"}`,
+      version: 1
+    });
+
+    expect(exportableAnswer).toEqual({
+      version: 1,
+      id: "overwritten-answer-id",
+      type: "interactive_state",
+      question_id: "managed_interactive_123",
+      question_type: "iframe_interactive",
+      answer_text: undefined,
+      report_state: expectedReport,
+      answer: expectedReport,
+      submitted: null
+    });
+  });
+
+  it("can create an exportable answer for a generic interactive embeddable with a custom question type", () => {
+    const embeddable: IManagedInteractive = {
+      ...DefaultManagedInteractive,
+      authored_state: `{"version":1,"questionType":"my_question_type"}`,
+      ref_id: "123-ManagedInteractive"
+    };
+
+    const interactiveState = {
+      answerType: "my_question_type_answer",
+      myState: "<state />"
+    };
+
+    const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableInteractiveAnswerMetadata;
+
+    expect(exportableAnswer.id).toBeDefined();          // random uuid
+    // overwrite this id so we can do a full equals test below without a random value
+    exportableAnswer.id = "overwritten-answer-id";
+
+    const expectedReport = JSON.stringify({
+      mode: "report",
+      authoredState: `{"version":1,"questionType":"my_question_type"}`,
+      interactiveState: `{"answerType":"my_question_type_answer","myState":"<state />"}`,
+      version: 1
+    });
+
+    expect(exportableAnswer).toEqual({
+      version: 1,
+      id: "overwritten-answer-id",
+      type: "my_question_type_answer",
+      question_id: "managed_interactive_123",
+      question_type: "my_question_type",
+      answer_text: undefined,
+      report_state: expectedReport,
+      answer: expectedReport,
+      submitted: null
+    });
   });
 
   it("can create an exportable answer, keeping the id of an existing answer meta", () => {
@@ -161,11 +284,10 @@ describe("Embeddable utility functions", () => {
     };
 
     const originalAnswer: IExportableAnswerMetadata = {
+      id: "open_response_answer_123",
       type: "open_response_answer",
-      remote_endpoint: "",
       question_id: "managed_interactive_123",
       question_type: "open_response",
-      id: "open_response_answer_123",
       submitted: null,
       report_state: "",
       answer: ""
@@ -189,11 +311,10 @@ describe("Embeddable utility functions", () => {
     };
 
     const originalAnswer: IExportableAnswerMetadata = {
+      id: "open_response_answer_123",
       type: "open_response_answer",
-      remote_endpoint: "",
       question_id: "managed_interactive_123",
       question_type: "open_response",
-      id: "open_response_answer_123",
       submitted: null,
       report_state: "",
       answer: ""

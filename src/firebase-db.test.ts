@@ -88,7 +88,7 @@ describe("Firestore", () => {
       resourceUrl: "http://example/resource",
       toolId: "activity-player.concord.org",
       userType: "learner",
-      runRemoteEndpoint: ""
+      runRemoteEndpoint: "https://example.com/learner/1234"
     });
 
     const embeddable = {
@@ -108,6 +108,7 @@ describe("Firestore", () => {
 
     expect(appMock.firestore().doc).toHaveBeenCalledWith(`sources/localhost/answers/${exportableAnswer.id}`);
     expect(appMock.firestore().doc().set).toHaveBeenCalledWith({
+      version:1,
       answer: "test",
       answer_text: "test",
       context_id: "context-id",
@@ -116,7 +117,7 @@ describe("Firestore", () => {
       platform_user_id: "1",
       question_id: "managed_interactive_123",
       question_type: "open_response",
-      remote_endpoint: "",
+      remote_endpoint: "https://example.com/learner/1234",
       report_state: "{\"mode\":\"report\",\"authoredState\":\"{\\\"version\\\":1,\\\"questionType\\\":\\\"open_response\\\",\\\"prompt\\\":\\\"<p>Write something:</p>\\\"}\",\"interactiveState\":\"{\\\"answerType\\\":\\\"open_response_answer\\\",\\\"answerText\\\":\\\"test\\\"}\",\"version\":1}",
       resource_link_id: "2",
       resource_url: "http://example/resource",
@@ -139,7 +140,7 @@ describe("Firestore", () => {
       toolId: "activity-player.concord.org",
       toolUserId: "anonymous",
       userType: "learner",
-      runKey: ""
+      runKey: "fake-run-key"
     });
 
     const embeddable = {
@@ -159,16 +160,16 @@ describe("Firestore", () => {
 
     expect(appMock.firestore().doc).toHaveBeenCalledWith(`sources/localhost/answers/${exportableAnswer.id}`);
     expect(appMock.firestore().doc().set).toHaveBeenCalledWith({
+      version: 1,
       answer: "anonymous test",
       answer_text: "anonymous test",
       id: exportableAnswer.id,
-      platform_user_id: "",
+      platform_user_id: "fake-run-key",
       question_id: "managed_interactive_123",
       question_type: "open_response",
-      remote_endpoint: "",
       report_state: "{\"mode\":\"report\",\"authoredState\":\"{\\\"version\\\":1,\\\"questionType\\\":\\\"open_response\\\",\\\"prompt\\\":\\\"<p>Write something:</p>\\\"}\",\"interactiveState\":\"{\\\"answerType\\\":\\\"open_response_answer\\\",\\\"answerText\\\":\\\"anonymous test\\\"}\",\"version\":1}",
       resource_url: "http://example/resource",
-      run_key: "",
+      run_key: "fake-run-key",
       source_key: "localhost",
       submitted: null,
       tool_id: "activity-player.concord.org",
