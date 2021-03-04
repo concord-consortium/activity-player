@@ -1,5 +1,5 @@
 import React from "react";
-import { Storage } from "../../storage-facade";
+import { Storage } from "../../storage/storage-facade";
 
 import "./completion-export-answers.scss";
 

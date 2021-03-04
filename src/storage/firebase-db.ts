@@ -11,11 +11,11 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 // import "firebase/database"; // TODO: add if we want to use for testing if connected
-import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal-api";
-import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
-import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "./types";
-import { queryValueBoolean } from "./utilities/url-query";
-import { RequestTracker } from "./utilities/request-tracker";
+import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "../portal-api";
+import { refIdToAnswersQuestionId } from "../utilities/embeddable-utils";
+import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "../types";
+import { queryValueBoolean } from "../utilities/url-query";
+import { RequestTracker } from "../utilities/request-tracker";
 import { docToWrappedAnswer, IWrappedDBAnswer } from "./storage-facade";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";

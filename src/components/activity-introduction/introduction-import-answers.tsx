@@ -1,5 +1,5 @@
 import React, { ChangeEvent } from "react";
-import { Storage } from "../../storage-facade";
+import { Storage } from "../../storage/storage-facade";
 
 import "./introduction-import-answers.scss";
 

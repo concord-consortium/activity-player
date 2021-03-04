@@ -1,5 +1,5 @@
 import { queryValue } from "../utilities/url-query";
-import { Storage } from "../storage-facade";
+import { Storage } from "../storage/storage-facade";
 import { IPortalData, firebaseAppName } from "../portal-api";
 
 export const kProductionPortalReportUrl = "https://portal-report.concord.org/version/v4.1.0/index.html";

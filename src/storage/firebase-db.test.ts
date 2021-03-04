@@ -1,8 +1,8 @@
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
 import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState } from "./firebase-db";
-import { DefaultManagedInteractive } from "./test-utils/model-for-tests";
-import { getAnswerWithMetadata } from "./utilities/embeddable-utils";
-import { IExportableAnswerMetadata } from "./types";
+import { DefaultManagedInteractive } from "../test-utils/model-for-tests";
+import { getAnswerWithMetadata } from "../utilities/embeddable-utils";
+import { IExportableAnswerMetadata } from "../types";
 import firebase from "firebase/app";
 import "firebase/firestore";
 

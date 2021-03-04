@@ -8,7 +8,7 @@ import {
 } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
-import { Storage } from "../../../storage-facade";
+import { Storage } from "../../../storage/storage-facade";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata, isQuestion } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";

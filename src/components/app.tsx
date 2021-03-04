@@ -15,7 +15,7 @@ import { CompletionPageContent } from "./activity-completion/completion-page-con
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { IPortalData, firebaseAppName } from "../portal-api";
 import { Activity, IEmbeddablePlugin, OfflineManifest, OfflineManifestActivity, Sequence } from "../types";
-import { TrackOfflineActivityId } from "../storage-facade";
+import { TrackOfflineActivityId } from "../storage/storage-facade";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -105,6 +105,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
     const offlineMode = (queryValue("offline") === "true") || !!offlineManifestAuthoringId || !!offlineManifestId;
     this.studentInfo = new StudentInfo();
+
     this.state = {
       currentPage: 0,
       teacherEditionMode: false,

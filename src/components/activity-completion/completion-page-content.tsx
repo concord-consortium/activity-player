@@ -3,7 +3,7 @@ import IconCheck from "../../assets/svg-icons/icon-check.svg";
 import { showReport } from "../../utilities/report-utils";
 import { Sequence, Activity, EmbeddableWrapper, Page } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
-import { Storage } from "../../storage-facade";
+import { Storage } from "../../storage/storage-facade";
 import { isQuestion } from "../../utilities/activity-utils";
 import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { CompletionExportAnswers } from "./completion-export-answers";

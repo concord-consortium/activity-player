@@ -1,4 +1,4 @@
-import { DexieStorage } from "./dexie-storage";
+import { DexieStorage } from "./storage/dexie-storage";
 import { OfflineManifest, OfflineManifestActivity } from "./types";
 
 const dexie = new DexieStorage();

@@ -2,8 +2,8 @@ import jwt from "jsonwebtoken";
 import superagent from "superagent";
 import { v4 as uuidv4 } from "uuid";
 import { queryValue, setQueryValue } from "./utilities/url-query";
-import { FirebaseAppName } from "./firebase-db";
 import { getResourceUrl } from "./lara-api";
+import { FirebaseAppName } from "./storage/firebase-db";
 
 interface PortalClassOffering {
   className: string;

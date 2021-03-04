@@ -11,7 +11,7 @@ import {
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
-import { Storage } from "../../../storage-facade";
+import { Storage } from "../../../storage/storage-facade";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
 import { autorun } from "mobx";
 

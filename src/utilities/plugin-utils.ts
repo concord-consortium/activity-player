@@ -1,6 +1,6 @@
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { Optional } from "utility-types";
-import { Storage } from "../storage-facade";
+import { Storage } from "../storage/storage-facade";
 import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
 import { Activity, Embeddable, IEmbeddablePlugin, Plugin } from "../types";

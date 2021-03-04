@@ -1,9 +1,9 @@
 // import { WrappedDBAnswer, FirebaseAppName } from "./firebase-db";
 import * as FirebaseImp from "./firebase-db";
-import { IAnonymousPortalData, IPortalData } from "./portal-api";
-import { IExportableAnswerMetadata } from "./types";
+import { IAnonymousPortalData, IPortalData } from "../portal-api";
+import { IExportableAnswerMetadata } from "../types";
 import { DexieStorage } from "./dexie-storage";
-import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
+import { refIdToAnswersQuestionId } from "../utilities/embeddable-utils";
 
 export interface IStorageInitializer { name: FirebaseImp.FirebaseAppName, preview: boolean }
 
@@ -60,16 +60,19 @@ const activityExportFileName = (activity: string) => {
 
 export interface IStorageInterface {
   // These seem to be FireStore specific:
-  // onFirestoreSaveTimeout?: (handler: () => void) => void,
-  // onFirestoreSaveAfterTimeout?:  (handler: () => void) => void,
-  // initializeDB: ({name, preview}: IStorageInitializer) => Promise<firebase.firestore.Firestore>,
-  // initializeAnonymousDB?: (preview: boolean) => Promise<firebase.firestore.Firestore>
-  // signInWithToken: (rawFirestoreJWT: string) => Promise<firebase.auth.UserCredential>,
+  onSaveTimeout?: (handler: () => void) => void,
+  onSaveAfterTimeout?:  (handler: () => void) => void,
 
-  // These seem like authentication and identity concerns, and should be extracted:
+  // TODO can't we just use setPortalData .. ?
+  setAnonymousPortalData?: (_portalData: IAnonymousPortalData) => void,
   setPortalData: (_portalData: IPortalData | null) => void,
+
+  // Maybe this can be moved to the constructor?
+  initializeDB?: ({name, preview}: IStorageInitializer) => Promise<firebase.firestore.Firestore>,
+  initializeAnonymousDB?: (preview: boolean) => Promise<firebase.firestore.Firestore>
+  signInWithToken?: (rawFirestoreJWT: string) => Promise<firebase.auth.UserCredential>,
+
   getPortalData: () => IPortalData | IAnonymousPortalData | null,
-  // setAnonymousPortalData: (_portalData: IAnonymousPortalData) => void,
 
   // These are directly related to storing student answers and fetching them back
   watchAnswer(embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void): () => void
@@ -88,13 +91,12 @@ export interface IStorageInterface {
   syncData(): void
 }
 
+
 class FireStoreStorageProvider implements IStorageInterface {
-  // TODO: Specific to FireStore:
-  onFirestoreSaveTimeout(handler: () => void) {
+  onSaveTimeout(handler: () => void) {
     return FirebaseImp.onFirestoreSaveTimeout(handler);
   }
-
-  onFirestoreSaveAfterTimeout (handler: () => void) {
+  onSaveAfterTimeout (handler: () => void) {
     return FirebaseImp.onFirestoreSaveAfterTimeout(handler);
   }
 
@@ -180,15 +182,14 @@ class FireStoreStorageProvider implements IStorageInterface {
 }
 
 
-
 class DexieStorageProvider implements IStorageInterface {
   indexDBConnection: DexieStorage;
   portalData: IPortalData|null;
   haveFireStoreConnection: boolean;
 
   constructor(){
-    this.indexDBConnection = new DexieStorage();
     this.haveFireStoreConnection = false;
+    this.indexDBConnection = new DexieStorage();
   }
 
   createOrUpdateAnswer(answer: IExportableAnswerMetadata) {

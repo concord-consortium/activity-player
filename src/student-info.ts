@@ -1,5 +1,5 @@
 import { fetchPortalData, IPortalData } from "./portal-api";
-import { Storage } from "./storage-facade";
+import { Storage } from "./storage/storage-facade";
 
 const DEFAULT_STUDENT_NAME = "Anonymous";
 const DEFAULT_TEACHER_NAME = "A teacher";

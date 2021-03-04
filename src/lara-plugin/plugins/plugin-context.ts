@@ -7,7 +7,7 @@ import $ from "jquery";
 // LARA_CODE import * as $ from "jquery";
 // ACTIVITY_PLAYER_CODE:
 import { Logger } from "../../lib/logger";
-import { Storage } from "../../storage-facade";
+import { Storage } from "../../storage/storage-facade";
 import { getFirebaseJWT } from "../../portal-api";
 
 export type IPluginContextOptions = IPluginRuntimeContextOptions | IPluginAuthoringContextOptions;
