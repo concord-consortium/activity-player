@@ -11,6 +11,7 @@ export const kDevPortalReportUrl = "https://portal-report.concord.org/branch/mas
 // - everything else defaults to kDevPortalReportUrl which is should be master
 //
 // The default can be overridden with a portalReport URL param
+const kActivityPlayerOrigin = "https://activity-player.concord.org";
 export const portalReportBaseUrl= ():string => {
   const portalReportUrlParam = queryValue("portalReport");
   if (portalReportUrlParam) {
@@ -21,7 +22,7 @@ export const portalReportBaseUrl= ():string => {
   // According to the spec an empty path like https://activity-player.concord.org
   // will still have a pathname of "/", but just to be safe this checks for the
   // falsey pathname
-  if(origin === "https://activity-player.concord.org" &&
+  if(origin === kActivityPlayerOrigin &&
      (!pathname || pathname === "/"
       || pathname.indexOf("/version/") === 0)) {
     return kProductionPortalReportUrl;
