@@ -60,7 +60,7 @@ To deploy a production release:
     1. Run `npm run build`
     2. Look at file sizes with `ls dist/assets`
     3. Add file sizes to CHANGES.md
-    4. Look at previous version file sizes from previous version in GitHub and compute the percent change `(prev - new)/prev`
+    4. Look at previous version file sizes from previous version in GitHub and compute the percent change `(new - prev) / prev * 100`
 3. Update package, commit, and tag
     - **Mac or Linux**:
         - Run `npm version -m "$(< CHANGES.md)" [new-version-string]`
