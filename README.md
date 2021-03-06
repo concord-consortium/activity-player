@@ -47,7 +47,7 @@ Testing this is complicated. Here is one approach:
 
 Production releases to S3 are based on the contents of the /dist folder and are built automatically by GitHub Actions for each branch pushed to GitHub and each merge into production.
 
-The production branch is deployed to https://activity-player.concord.org/
+The production branch is deployed to https://activity-player.concord.org/.
 
 Other branches are deployed to https://activity-player.concord.org/branch/<name>.
 
@@ -56,6 +56,7 @@ To deploy a production release:
 1. Copy CHANGES-template.md to CHANGES.md, and add a list of PT stories related to the release into temporary CHANGES.md
     - Run `git log --reverse <last release tag>...HEAD | grep '#'` to see a list of PR merges and stories that include PT ids in their message
     - In a PT workspace that includes Orange and Teal boards, search for the `label:"activity-player-<new version>" includedone:true`. You can select all, and export as CSV. Then copy the id and title columns.
+    - Review recently merged PRs in GitHub UI
 2. Compute asset sizes.
     1. Run `npm run build`
     2. Look at file sizes with `ls dist/assets`
@@ -69,10 +70,9 @@ To deploy a production release:
         - git-bash: same as above
         - PowerShell: `npm version -m "(type CHANGES.md)" [new-version-string]` might work, I haven't tried it though.
         - Do the steps manually and use a git client so you can paste in the multi line message
-            1. update package.json with the new version
-            2. run `npm install` to update package-lock.json
-            3. create a new commit with the CHANGES.md message
-            4. create a tag `v[new-version-string]` with the CHANGES.md message
+            1. `npm version --no-git-tag-version [new-version-string]` (updates package.json and package-lock.json with the new version)
+            2. create a new commit with the CHANGES.md message
+            3. create a tag `v[new-version-string]` with the CHANGES.md message
 4. Push current branch and tag to GitHub
 5. Create a GitHub Release
     1. Find the new tag at https://github.com/concord-consortium/activity-player/tags open it, and edit it
@@ -80,7 +80,7 @@ To deploy a production release:
     3. Copy the content from CHANGES.md
 6. QA the built version at `https://activity-player.concord.org/versions/v[new-version-string]``
 7. Checkout production
-8. Run `git reset --hard [version]`
+8. Run `git reset --hard v[new-version-string]`
 9. Push production to GitHub
 10. Delete CHANGES.md to clean up your working directory
 
