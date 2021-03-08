@@ -342,7 +342,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData, showEditUserName } = this.state;
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData, showEditUserName, offlineMode } = this.state;
     if (!activity) return (<div>Loading activity ...</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
@@ -394,7 +394,7 @@ export class App extends React.PureComponent<IProps, IState> {
             onTimeout={this.handleTimeout} onContinue={this.handleContinueSession} onExit={this.goToPortal}
           />
         }
-        { errorType && <Error type={errorType} onExit={this.goToPortal} /> }
+        { errorType && <Error type={errorType} onExit={this.goToPortal} offlineMode={offlineMode} /> }
         {
           !idle && !errorType &&
           this.renderActivityContent(activity, currentPage, totalPreviousQuestions, fullWidth)
