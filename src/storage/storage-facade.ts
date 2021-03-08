@@ -5,7 +5,12 @@ import { IExportableAnswerMetadata } from "../types";
 import { DexieStorage } from "./dexie-storage";
 import { refIdToAnswersQuestionId } from "../utilities/embeddable-utils";
 
-export interface IStorageInitializer { name: FirebaseImp.FirebaseAppName, preview: boolean }
+
+export interface IStorageInitializer {
+  name: FirebaseImp.FirebaseAppName,
+  preview: boolean,
+  offline: boolean
+}
 
 export interface IWrappedDBAnswer {
   meta: IExportableAnswerMetadata;
@@ -93,14 +98,19 @@ export interface IStorageInterface {
 
 
 class FireStoreStorageProvider implements IStorageInterface {
+  portalData: IPortalData|null;
+  preview: boolean;
+
   onSaveTimeout(handler: () => void) {
     return FirebaseImp.onFirestoreSaveTimeout(handler);
   }
+
   onSaveAfterTimeout (handler: () => void) {
     return FirebaseImp.onFirestoreSaveAfterTimeout(handler);
   }
 
   initializeDB ({name, preview}: IStorageInitializer) {
+    this.preview = preview;
     return FirebaseImp.initializeDB({name, preview});
   }
 
@@ -113,8 +123,19 @@ class FireStoreStorageProvider implements IStorageInterface {
   }
 
   // TODO: authentication and identity concerns, and should be extracted elsewhere:
-  setPortalData (_portalData: IPortalData | null) {
-    return FirebaseImp.setPortalData(_portalData);
+  async setPortalData (_portalData: IPortalData | null) {
+    FirebaseImp.setPortalData(this.portalData);
+    try {
+      if(this.portalData) {
+        await this.initializeDB({ name: this.portalData.database.appName, preview: false, offline: false });
+        await this.signInWithToken(this.portalData.database.rawFirebaseJWT);
+      } else {
+        await this.initializeAnonymousDB(this.preview);
+      }
+    }
+    catch (err) {
+     console.error("DB authentication error:", err);
+    }
   }
 
   getPortalData() {
@@ -355,7 +376,7 @@ class DexieStorageProvider implements IStorageInterface {
     if(portalData) {
       try {
         if(! this.haveFireStoreConnection) {
-          await fsProvider.initializeDB({ name: appName, preview: false });
+          await fsProvider.initializeDB({ name: appName, preview: false, offline: false });
           await fsProvider.signInWithToken(portalData.database.rawFirebaseJWT);
           this.haveFireStoreConnection = true;
         }
@@ -366,7 +387,6 @@ class DexieStorageProvider implements IStorageInterface {
           .where("activity")
           .equals(_currentOfflineActivityId).toArray();
         console.dir(answers);
-        debugger;
         for(const answer of answers) {
           fsProvider.createOrUpdateAnswer(answer);
         }
@@ -381,5 +401,18 @@ class DexieStorageProvider implements IStorageInterface {
   }
 }
 
+let storageInstance: IStorageInterface;
 
-export const Storage: IStorageInterface = new DexieStorageProvider();
+export const getStorage = (config?: IStorageInitializer) => {
+  if(storageInstance) {
+    if(config?.offline) {
+      storageInstance = new DexieStorageProvider();
+    }
+    else {
+      storageInstance = new FireStoreStorageProvider();
+    }
+  }
+  return storageInstance;
+};
+
+

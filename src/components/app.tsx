@@ -15,7 +15,7 @@ import { CompletionPageContent } from "./activity-completion/completion-page-con
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { IPortalData, firebaseAppName } from "../portal-api";
 import { Activity, IEmbeddablePlugin, OfflineManifest, OfflineManifestActivity, Sequence } from "../types";
-import { TrackOfflineActivityId } from "../storage/storage-facade";
+import { TrackOfflineActivityId, getStorage } from "../storage/storage-facade";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -104,7 +104,6 @@ export class App extends React.PureComponent<IProps, IState> {
     const loadingOfflineManifest = !!offlineManifestId;
 
     const offlineMode = (queryValue("offline") === "true") || !!offlineManifestAuthoringId || !!offlineManifestId;
-    this.studentInfo = new StudentInfo();
 
     this.state = {
       currentPage: 0,
@@ -271,13 +270,17 @@ export class App extends React.PureComponent<IProps, IState> {
       const newState: Partial<IState> = {activity, offlineManifest, loadingOfflineManifest, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode, offlineManifestAuthoringId};
       setDocumentTitle(activity, currentPage);
 
-      // Get data from the portal or localstorage
-      const studentInfo = this.studentInfo;
-      await studentInfo.init();
-      const role = studentInfo.role;
-      const classHash = studentInfo.getClassHash();
-      const runRemoteEndpoint = studentInfo.getRunRemoteEndpoint();
-      newState.username = studentInfo.name;
+      // Initialize Storage provider
+      const storage = getStorage({name: firebaseAppName(), preview, offline: this.state.offlineMode});
+      // TODO: Its weird that studentInfo initializes storage.
+      // We should change that so storage does that itself.... 
+      // Track student information:  (TODO: new StudentInfo(storage.getPortalData()))
+      this.studentInfo = new StudentInfo(storage);
+      await this.studentInfo.init();
+      const role = this.studentInfo.role;
+      const classHash = this.studentInfo.getClassHash();
+      const runRemoteEndpoint = this.studentInfo.getRunRemoteEndpoint();
+      newState.username = this.studentInfo.name;
       this.setState(newState as IState);
 
       this.LARA = initializeLara();

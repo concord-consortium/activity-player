@@ -1,5 +1,5 @@
 import React from "react";
-import { Storage } from "../../storage/storage-facade";
+import { getStorage } from "../../storage/storage-facade";
 
 import "./completion-report-my-work.scss";
 
@@ -23,10 +23,10 @@ export class CompletionReportMyWork extends React.PureComponent<IProps, IState> 
   }
 
   render() {
-
-    const className = Storage.canSyncData() ? "enabled" : "disabled";
-    const clickAction = Storage.canSyncData()
-      ? () => Storage.syncData()
+    const storage = getStorage();
+    const className = storage.canSyncData() ? "enabled" : "disabled";
+    const clickAction = storage.canSyncData()
+      ? () => storage.syncData()
       : () => null;
     return (
       <div className={"completion-report-my-work"}>

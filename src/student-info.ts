@@ -1,12 +1,14 @@
 import { fetchPortalData, IPortalData } from "./portal-api";
-import { Storage } from "./storage/storage-facade";
+import { IStorageInterface } from "./storage/storage-facade";
 
 const DEFAULT_STUDENT_NAME = "Anonymous";
 const DEFAULT_TEACHER_NAME = "A teacher";
 const STUDENT_LOCAL_STORAGE_KEY = "ActivityPlayerStudent";
 const DEFAULT_CLASS_HASH = ""; // From `app.tsx` 2021-02-25
 const DEFAULT_RUN_REMOTE_ENDPOINT= ""; // From `app.tsx` 2021-02-25
-const DEFAULT_ROLE = "uknown";  // From `app.tsx` 2021-02-25
+
+
+export enum Role { "student", "teacher", "unknown"}
 
 /*
 The purpose of this class is to allow us to reconcile users and their data
@@ -28,7 +30,8 @@ interface IPortalRun extends IAnonymousRun {
 }
 
 type Run = IAnonymousRun | IPortalRun;
-type Role = "student" | "teacher" | "unknown";
+
+
 
 interface IStudentRecord {
   name: string,
@@ -48,16 +51,19 @@ export class StudentInfo implements IStudentRecord {
   runs: Run[];
   rawPortalData: IPortalData;
   dataReady: boolean;
+  storage: IStorageInterface|null;
+  preview: boolean;
   private _validTokens: boolean;
 
-  constructor() {
+  constructor(storage: IStorageInterface) {
     // Start with defaults.
     // Calling async operation init() will load real values.
+    this.storage = storage;
     this.loadDefaults();
   }
 
   private loadDefaults() {
-    this.role = "student";
+    this.role = Role.student;
     this.name = DEFAULT_STUDENT_NAME;
     this.teacherName = DEFAULT_TEACHER_NAME;
     this._validTokens = false;
@@ -66,7 +72,7 @@ export class StudentInfo implements IStudentRecord {
   public init(): Promise<void> {
     return fetchPortalData({includeClassData: true})
       .then( (portalData: IPortalData) => this.updateFromPortalData(portalData))
-      .catch( () => this.updateFromIndexDB());
+      .catch( () => this.updateFromIndexedDB());
   }
 
   public isAuthenticated() : boolean{
@@ -118,11 +124,11 @@ export class StudentInfo implements IStudentRecord {
     );
   }
 
-  private updateFromIndexDB() {
+  private updateFromIndexedDB() {
     // We have to load any data we can from the DB, but tokens will be stale.
     // TODO: remove stale tokens if the exist
     console.log("LOADING FROM LOCAL STORAGE");
-    const localStorageStudentInfo = localStorage.getItem(STUDENT_LOCAL_STORAGE_KEY) ?? "";
+    const localStorageStudentInfo = localStorage.getItem(STUDENT_LOCAL_STORAGE_KEY) ?? "{}";
     this.loadSerializedData(localStorageStudentInfo);
     this._validTokens=false;
   }
@@ -165,7 +171,7 @@ export class StudentInfo implements IStudentRecord {
     this.finish();
   }
 
-  private updateFromPortalData(portalData: IPortalData) {
+  private async updateFromPortalData(portalData: IPortalData) {
     // Raw Portal Data JWT includes expiration time (`exp`) and Issued at (`iat`)
     // exp: 1614635737
     // iat: 1614632137
@@ -175,16 +181,20 @@ export class StudentInfo implements IStudentRecord {
     this.platformUserId = portalData.platformUserId;
     this._validTokens = true;
     this.saveSerializedLocalData();
-    this.finish();
+    await this.finish();
   }
 
   private saveSerializedLocalData() {
     window.localStorage.setItem(STUDENT_LOCAL_STORAGE_KEY, this.serializeData());
   }
 
-  private finish() {
-    Storage.setPortalData(this.rawPortalData);
-    this.dataReady = true;
+  private async finish() {
+    if(this.storage) {
+      await this.storage?.setPortalData(this.rawPortalData);
+      this.dataReady = true;
+    } else {
+      console.error("Could not initialize storage for user ...");
+    }
   }
 }
 

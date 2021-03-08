@@ -1,5 +1,5 @@
 import Dexie from "dexie";
-import { OfflineActivity } from "./types";
+import { OfflineActivity } from "../types";
 import { IIndexedDBAnswer, kOfflineAnswerSchemaVersion } from "./storage-facade";
 
 // Copy and pasted from the example: https://dexie.org/docs/Typescript

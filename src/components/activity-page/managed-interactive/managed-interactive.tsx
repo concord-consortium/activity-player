@@ -8,7 +8,7 @@ import {
 } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
-import { Storage } from "../../../storage/storage-facade";
+import { getStorage } from "../../../storage/storage-facade";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata, isQuestion } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
@@ -47,11 +47,11 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const answerMeta = useRef<IExportableAnswerMetadata>();
   const shouldWatchAnswer = isQuestion(props.embeddable);
   const [loading, setLoading] = useState(shouldWatchAnswer);
-
   const embeddableRefId = props.embeddable.ref_id;
   useEffect(() => {
+    const storage = getStorage();
     if (shouldWatchAnswer) {
-      return Storage.watchAnswer(embeddableRefId, (wrappedAnswer) => {
+      return storage.watchAnswer(embeddableRefId, (wrappedAnswer) => {
         answerMeta.current = wrappedAnswer?.meta;
         interactiveState.current = wrappedAnswer?.interactiveState;
         setLoading(false);
@@ -62,10 +62,10 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     const handleNewInteractiveState = (state: any) => {
       // Keep interactive state in sync if iFrame is opened in modal popup
       interactiveState.current = state;
-
+      const storage = getStorage();
       const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, answerMeta.current);
       if (exportableAnswer) {
-        Storage.createOrUpdateAnswer(exportableAnswer);
+        storage.createOrUpdateAnswer(exportableAnswer);
       }
       // Custom callback set internally. Used by the modal dialog to close itself after the most recent
       // interactive state is received.
