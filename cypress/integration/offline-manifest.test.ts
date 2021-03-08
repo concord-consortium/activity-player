@@ -39,26 +39,20 @@ context("Test using offline manifests", () => {
       cy.visit("?offlineManifest=smoke-test");
 
       // verify loading dialog shows and then auto closes
-      activityPage.getOfflineManifestLoadingDialog().should("be.visible").and("contain", "AP Smoke Test");
+      activityPage.getOfflineManifestLoadingDialog().should("be.visible").and("contain", "APO Smoke Test");
 
       // verify offline activities list shows
-      activityPage.getOfflineActivities().should("be.visible").and("contain", "AP Smoke Test");
+      activityPage.getOfflineActivities().should("be.visible").and("contain", "APO Smoke Test");
     });
 
-    /*
-
-    FIXME: COMMENTED OUT TO ENABLE BRANCH BUILD
-
     it("verify offline activities show and clicking an item loads it",() => {
-      cy.visit("?offlineManifest=smoke-test");
+      cy.visit("?offline=true");
 
       // verify clicking on activity loads it and closes the launcher
       activityPage.getOfflineManifestLoadingDialog({timeout: 0}).should("not.exist");
-      activityPage.getOfflineActivityList().contains("AP Smoke Test");
-      activityPage.getOfflineActivityList().click();
-      activityPage.getActivityTitle().should("be.visible").and("contain", "AP Smoke Test");
+      activityPage.getOfflineActivityList().contains("APO Smoke Test");
+      activityPage.getOfflineActivityList().first().click();
+      activityPage.getActivityTitle().should("be.visible").and("contain", "APO Smoke Test");
     });
-
-    */
   });
 });
