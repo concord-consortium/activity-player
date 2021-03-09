@@ -11,6 +11,7 @@ coverage-jest
 .yalc
 yalc.lock
 LocalhostCertificates
+CHANGES.md
 
 # Editors
 .idea
