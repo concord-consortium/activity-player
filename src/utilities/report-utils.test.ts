@@ -2,7 +2,7 @@ import { getReportUrl, portalReportBaseUrl,
          kProductionPortalReportUrl, kDevPortalReportUrl} from "./report-utils";
 import { clearFirebaseAppName } from "../portal-api";
 
-jest.mock("../firebase-db", () => (
+jest.mock("../storage/firebase-db", () => (
   {
     getPortalData: () => (
       {

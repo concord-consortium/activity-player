@@ -404,7 +404,7 @@ class DexieStorageProvider implements IStorageInterface {
 let storageInstance: IStorageInterface;
 
 export const getStorage = (config?: IStorageInitializer) => {
-  if(storageInstance) {
+  if(!storageInstance) {
     if(config?.offline) {
       storageInstance = new DexieStorageProvider();
     }
