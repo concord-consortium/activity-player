@@ -1,8 +1,8 @@
 {
-  "name": "AP Smoke Test",
+  "name": "APO Smoke Test",
   "activities": [
     {
-      "name": "AP Smoke Test",
+      "name": "APO Smoke Test",
       "url": "https://authoring.staging.concord.org/api/v1/activities/20936.json"
     }
   ],
