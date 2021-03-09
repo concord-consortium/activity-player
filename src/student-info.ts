@@ -168,10 +168,9 @@ export class StudentInfo implements IStudentRecord {
     if (data.rawPortalData) {
       this.rawPortalData = data.rawPortalData;
     }
-    this.finish();
   }
 
-  private async updateFromPortalData(portalData: IPortalData) {
+  private updateFromPortalData(portalData: IPortalData) {
     // Raw Portal Data JWT includes expiration time (`exp`) and Issued at (`iat`)
     // exp: 1614635737
     // iat: 1614632137
@@ -181,21 +180,12 @@ export class StudentInfo implements IStudentRecord {
     this.platformUserId = portalData.platformUserId;
     this._validTokens = true;
     this.saveSerializedLocalData();
-    await this.finish();
   }
 
   private saveSerializedLocalData() {
     window.localStorage.setItem(STUDENT_LOCAL_STORAGE_KEY, this.serializeData());
   }
 
-  private async finish() {
-    if(this.storage) {
-      await this.storage?.setPortalData(this.rawPortalData);
-      this.dataReady = true;
-    } else {
-      console.error("Could not initialize storage for user ...");
-    }
-  }
 }
 
 

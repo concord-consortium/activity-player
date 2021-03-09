@@ -1,5 +1,5 @@
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
-import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState } from "./firebase-db";
+import { setPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState } from "./firebase-db";
 import { DefaultManagedInteractive } from "../test-utils/model-for-tests";
 import { getAnswerWithMetadata } from "../utilities/embeddable-utils";
 import { IExportableAnswerMetadata } from "../types";
@@ -130,7 +130,7 @@ describe("Firestore", () => {
   });
 
   it("creates answers with the correct metadata for an anonymous user", () => {
-    setAnonymousPortalData({
+    setPortalData({
       type: "anonymous",
       database: {
         appName: "report-service-dev",
@@ -193,7 +193,7 @@ describe("Firestore", () => {
 
     describe("with anonymous portal data", () => {
       beforeEach(() => {
-        setAnonymousPortalData({
+        setPortalData({
           type: "anonymous",
           database: {
             appName: "report-service-dev",

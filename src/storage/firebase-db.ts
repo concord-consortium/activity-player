@@ -138,7 +138,7 @@ export const signOut = async() =>{
   }
 };
 
-export const setPortalData = (_portalData: IPortalData | null) => {
+export const setPortalData = (_portalData: IPortalData | IAnonymousPortalData | null) => {
   portalData = _portalData;
 };
 
@@ -148,9 +148,6 @@ export const getPortalData = (): IPortalData | IAnonymousPortalData | null => {
   return portalData;
 };
 
-export const setAnonymousPortalData = (_portalData: IAnonymousPortalData) => {
-  portalData = _portalData;
-};
 
 type DocumentsListener = (docs: firebase.firestore.DocumentData[]) => void;
 

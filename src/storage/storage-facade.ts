@@ -1,16 +1,19 @@
 // import { WrappedDBAnswer, FirebaseAppName } from "./firebase-db";
 import * as FirebaseImp from "./firebase-db";
-import { IAnonymousPortalData, IPortalData } from "../portal-api";
-import { IExportableAnswerMetadata } from "../types";
+import { fetchPortalData, IAnonymousPortalData, IPortalData } from "../portal-api";
+import { IAnonymousMetadataPartial, IExportableAnswerMetadata } from "../types";
 import { DexieStorage } from "./dexie-storage";
 import { refIdToAnswersQuestionId } from "../utilities/embeddable-utils";
 
-
-export interface IStorageInitializer {
+export interface IInitStorageParams {
   name: FirebaseImp.FirebaseAppName,
   preview: boolean,
   offline: boolean
 }
+export interface IDBInitializer extends IInitStorageParams{
+  portalData: IPortalData | IAnonymousPortalData
+}
+
 
 export interface IWrappedDBAnswer {
   meta: IExportableAnswerMetadata;
@@ -68,14 +71,10 @@ export interface IStorageInterface {
   onSaveTimeout?: (handler: () => void) => void,
   onSaveAfterTimeout?:  (handler: () => void) => void,
 
-  // TODO can't we just use setPortalData .. ?
-  setAnonymousPortalData?: (_portalData: IAnonymousPortalData) => void,
-  setPortalData: (_portalData: IPortalData | null) => void,
-
-  // Maybe this can be moved to the constructor?
-  initializeDB?: ({name, preview}: IStorageInitializer) => Promise<firebase.firestore.Firestore>,
-  initializeAnonymousDB?: (preview: boolean) => Promise<firebase.firestore.Firestore>
-  signInWithToken?: (rawFirestoreJWT: string) => Promise<firebase.auth.UserCredential>,
+  setPortalData: (_portalData: IPortalData | IAnonymousPortalData) => void,
+  initializeDB: (initializer: IDBInitializer) => Promise<void>,
+  // initializeAnonymousDB?: (preview: boolean) => Promise<firebase.firestore.Firestore>
+  // signInWithToken?: (rawFirestoreJWT: string) => Promise<firebase.auth.UserCredential>,
 
   getPortalData: () => IPortalData | IAnonymousPortalData | null,
 
@@ -87,7 +86,7 @@ export interface IStorageInterface {
   getCachedLearnerPluginState: (pluginId: number) => string|null,
   getLearnerPluginState: (pluginId: number) => Promise<string|null>,
   setLearnerPluginState: (pluginId: number, state: string) => Promise<string>,
-  checkIfOnline: () => Promise<boolean>,
+  // checkIfOnline: () => Promise<boolean>,
 
   // for saving a whole activity to JSON
   exportActivityToJSON: (activityId?: string) => Promise<ExportableActivity>,
@@ -98,9 +97,7 @@ export interface IStorageInterface {
 
 
 class FireStoreStorageProvider implements IStorageInterface {
-  portalData: IPortalData|null;
-  preview: boolean;
-
+  portalData: IPortalData|IAnonymousPortalData;
   onSaveTimeout(handler: () => void) {
     return FirebaseImp.onFirestoreSaveTimeout(handler);
   }
@@ -109,28 +106,19 @@ class FireStoreStorageProvider implements IStorageInterface {
     return FirebaseImp.onFirestoreSaveAfterTimeout(handler);
   }
 
-  initializeDB ({name, preview}: IStorageInitializer) {
-    this.preview = preview;
-    return FirebaseImp.initializeDB({name, preview});
-  }
-
-  initializeAnonymousDB(preview: boolean) {
-    return FirebaseImp.initializeAnonymousDB(preview);
-  }
-
-  signInWithToken(rawFirestoreJWT: string){
-    return FirebaseImp.signInWithToken(rawFirestoreJWT);
-  }
-
-  // TODO: authentication and identity concerns, and should be extracted elsewhere:
-  async setPortalData (_portalData: IPortalData | null) {
-    FirebaseImp.setPortalData(this.portalData);
+  async initializeDB (initializer: IDBInitializer) {
+    const {preview, portalData}  = initializer;
+    this.setPortalData(portalData);
     try {
-      if(this.portalData) {
-        await this.initializeDB({ name: this.portalData.database.appName, preview: false, offline: false });
-        await this.signInWithToken(this.portalData.database.rawFirebaseJWT);
+      if(portalData.type === "authenticated") {
+        const token = portalData.database.rawFirebaseJWT;
+        await FirebaseImp.initializeDB({
+          name: this.portalData.database.appName,
+          preview});
+        await FirebaseImp.signInWithToken(token);
       } else {
-        await this.initializeAnonymousDB(this.preview);
+        await FirebaseImp.initializeAnonymousDB(preview);
+        // No sign-in required for anonymous
       }
     }
     catch (err) {
@@ -138,12 +126,12 @@ class FireStoreStorageProvider implements IStorageInterface {
     }
   }
 
-  getPortalData() {
-    return FirebaseImp.getPortalData();
+  setPortalData(portalData: IPortalData | IAnonymousPortalData) {
+    FirebaseImp.setPortalData(portalData);
   }
 
-  setAnonymousPortalData(_portalData: IAnonymousPortalData){
-    return FirebaseImp.setAnonymousPortalData(_portalData);
+  getPortalData() {
+    return FirebaseImp.getPortalData();
   }
 
   // Saving and Loading student work
@@ -176,10 +164,6 @@ class FireStoreStorageProvider implements IStorageInterface {
     return FirebaseImp.setLearnerPluginState(pluginId,state);
   }
 
-  checkIfOnline() {
-    return FirebaseImp.checkIfOnline();
-  }
-
   // TODO: Save activity to local JSON file and allow reloading from file
   exportActivityToJSON(activityId?: string) {
     return Promise.reject("Not yet implemented for Firebase Storage");
@@ -205,7 +189,7 @@ class FireStoreStorageProvider implements IStorageInterface {
 
 class DexieStorageProvider implements IStorageInterface {
   indexDBConnection: DexieStorage;
-  portalData: IPortalData|null;
+  portalData: IPortalData|IAnonymousPortalData;
   haveFireStoreConnection: boolean;
 
   constructor(){
@@ -213,18 +197,20 @@ class DexieStorageProvider implements IStorageInterface {
     this.indexDBConnection = new DexieStorage();
   }
 
+  async initializeDB (initializer: IDBInitializer) {
+    const {portalData}  = initializer;
+    this.setPortalData(portalData);
+  }
+
+  setPortalData(_portalData: IPortalData | IAnonymousPortalData) {
+
+    this.portalData = _portalData;
+  }
+
   createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     const idxDBAnswer = answer as IIndexedDBAnswer;
     idxDBAnswer.activity = _currentOfflineActivityId;
     this.indexDBConnection.answers.put(idxDBAnswer);
-  }
-
-
-  setPortalData(_portalData: IPortalData | null) {
-    // TODO: Implement this
-    // setPortalData: (_portalData: IPortalData | null) => FirebaseImp.setPortalData(_portalData),
-    // Record Tokens for playback to FireStore later
-    this.portalData = _portalData;
   }
 
   getPortalData() {
@@ -343,24 +329,28 @@ class DexieStorageProvider implements IStorageInterface {
     }
   }
 
+  //TODO: APO Plugin State
   getLearnerPluginStateDocId(pluginId: number){
     return undefined;
   }
+
+  //TODO: APO Plugin State
   getCachedLearnerPluginState(pluginId: number){
     return null;
   }
+
+  //TODO: APO Plugin State
   getLearnerPluginState(pluginId: number){
     return Promise.resolve(null);
   }
+
+  //TODO: APO Plugin State
   setLearnerPluginState(pluginId: number, state: string){
     return Promise.resolve("");
   }
-  checkIfOnline() {
-    return Promise.resolve(false);
-  }
 
   canSyncData() {
-    const portalToken = this.portalData?.portalJWT;
+    const portalToken = (this.portalData as IPortalData)?.portalJWT;
     if(portalToken) {
       const { exp } = portalToken;
       const unixTimeStamp = Math.floor(Date.now()/1000);
@@ -376,12 +366,9 @@ class DexieStorageProvider implements IStorageInterface {
     if(portalData) {
       try {
         if(! this.haveFireStoreConnection) {
-          await fsProvider.initializeDB({ name: appName, preview: false, offline: false });
-          await fsProvider.signInWithToken(portalData.database.rawFirebaseJWT);
+          await fsProvider.initializeDB({ name: appName, preview: false, offline: false, portalData});
           this.haveFireStoreConnection = true;
         }
-
-        fsProvider.setPortalData(this.portalData);
         const answers = await this.indexDBConnection
           .answers
           .where("activity")
@@ -403,15 +390,21 @@ class DexieStorageProvider implements IStorageInterface {
 
 let storageInstance: IStorageInterface;
 
-export const getStorage = (config?: IStorageInitializer) => {
-  if(!storageInstance) {
-    if(config?.offline) {
-      storageInstance = new DexieStorageProvider();
-    }
-    else {
-      storageInstance = new FireStoreStorageProvider();
-    }
+export const initStorage = async (config: IInitStorageParams) => {
+  const portalData = await fetchPortalData();
+  const initConfig = { portalData, ...config};
+
+  if(config?.offline) {
+    storageInstance = new DexieStorageProvider();
   }
+  else {
+    storageInstance = new FireStoreStorageProvider();
+  }
+  await storageInstance.initializeDB(initConfig);
+  return storageInstance;
+};
+
+export const getStorage = () => {
   return storageInstance;
 };
 

@@ -15,7 +15,7 @@ import { CompletionPageContent } from "./activity-completion/completion-page-con
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { IPortalData, firebaseAppName } from "../portal-api";
 import { Activity, IEmbeddablePlugin, OfflineManifest, OfflineManifestActivity, Sequence } from "../types";
-import { TrackOfflineActivityId, getStorage } from "../storage/storage-facade";
+import { TrackOfflineActivityId, initStorage } from "../storage/storage-facade";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -271,10 +271,7 @@ export class App extends React.PureComponent<IProps, IState> {
       setDocumentTitle(activity, currentPage);
 
       // Initialize Storage provider
-      const storage = getStorage({name: firebaseAppName(), preview, offline: this.state.offlineMode});
-      // TODO: Its weird that studentInfo initializes storage.
-      // We should change that so storage does that itself.... 
-      // Track student information:  (TODO: new StudentInfo(storage.getPortalData()))
+      const storage = await initStorage({name: firebaseAppName(), preview, offline: this.state.offlineMode});
       this.studentInfo = new StudentInfo(storage);
       await this.studentInfo.init();
       const role = this.studentInfo.role;

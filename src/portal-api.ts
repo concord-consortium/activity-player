@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import superagent from "superagent";
 import { v4 as uuidv4 } from "uuid";
-import { queryValue, setQueryValue } from "./utilities/url-query";
+import { queryValue, queryValueBoolean, setQueryValue } from "./utilities/url-query";
 import { getResourceUrl } from "./lara-api";
 import { FirebaseAppName } from "./storage/firebase-db";
 
@@ -387,15 +387,16 @@ interface IFetchPortalDataOpts {
   includeClassData: boolean
 }
 const fetchPortalDataDefaults: IFetchPortalDataOpts = {
-  includeClassData: false
+  includeClassData: true
 };
-export const fetchPortalData = async (opts: IFetchPortalDataOpts = fetchPortalDataDefaults): Promise<IPortalData> => {
+export const fetchPortalData = async (opts: IFetchPortalDataOpts = fetchPortalDataDefaults): Promise<IPortalData|IAnonymousPortalData> => {
 
   const bearerToken = queryValue("token");
   const basePortalUrl = queryValue("domain");
+  const preview = queryValueBoolean("preview");
 
   if (!bearerToken || !basePortalUrl) {
-    throw new Error("No token provided for authentication (must launch from Portal)");
+    return Promise.resolve(anonymousPortalData(preview));
   }
 
   const [rawPortalJWT, portalJWT] = await getPortalJWTWithBearerToken(basePortalUrl, bearerToken);
