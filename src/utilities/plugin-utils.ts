@@ -121,7 +121,6 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
   const pluginId = usedPlugin.id;
   const storage = getStorage();
   const portalData = storage.getPortalData();
-  //const activity = queryValue("activity");
   const pluginLabel = `plugin${pluginId}`;
   const pluginContext: IPluginRuntimeContextOptions = {
     type: "runtime",
