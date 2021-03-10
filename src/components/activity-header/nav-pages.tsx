@@ -1,5 +1,6 @@
 import React from "react";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
+import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 import { Page } from "../../types";
 import ArrowPrevious from "../../assets/svg-icons/arrow-previous-icon.svg";
 import ArrowNext from "../../assets/svg-icons/arrow-next-icon.svg";
@@ -90,22 +91,28 @@ export class NavPages extends React.Component <IProps, IState> {
       minPage = currentPage - maxButtonsPerSide;
       maxPage = currentPage + maxButtonsPerSide;
     }
-    const pageNums: number[] = [];
-    for (let i = minPage; i <= maxPage; i++) {
-      pageNums.push(i);
-    }
+
     return (
-      pageNums.map((page: number) =>
-        <button
-          className={`page-button ${currentPage === page ? "current" : ""} ${(pageChangeInProgress || lockForwardNav && currentPage < page) ? "disabled" : ""}`}
-          onClick={this.handleChangePage(page)}
-          key={`page ${page}`}
-          data-cy="nav-pages-button"
-          aria-label={`Page ${page}`}
-        >
-          {page}
-        </button>
-      )
+      pages.map((page: any, pageIndex: number) => {
+        const pageNum = pageIndex + 1;
+        const currentClass = currentPage === pageNum ? "current" : "";
+        const completionClass = page.is_completion ? "completion-page-button" : "";
+        const disabledClass = (pageChangeInProgress || lockForwardNav && currentPage < pageNum) ? "disabled" : "";
+        const buttonContent = page.is_completion
+                              ? <IconCompletion className={`icon ${currentClass}`} width={28} height={28} />
+                              : pageNum;
+        return (
+          <button
+            className={`page-button ${currentClass} ${completionClass} ${disabledClass}`}
+            onClick={this.handleChangePage(pageNum)}
+            key={`page ${pageNum}`}
+            data-cy={`${page.is_completion ? "nav-pages-completion-page-button" : "nav-pages-button"}`}
+            aria-label={`Page ${pageNum}`}
+          >
+            {buttonContent}
+          </button>
+        );
+      })
     );
   }
 

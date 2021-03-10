@@ -17,7 +17,7 @@ export class ActivitySummary extends React.PureComponent <IProps> {
       <div className="activity-summary" data-cy="activity-summary">
         <div className="activity-title">
           { this.props.imageUrl && <img src={this.props.imageUrl} alt="Activity logo" /> }
-          <h2>{this.props.activityName}</h2>
+          <h1>{this.props.activityName}</h1>
         </div>
         <div className="activity-content intro-txt">
           { this.props.introText && renderHTML(this.props.introText) }

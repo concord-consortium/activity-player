@@ -1,11 +1,14 @@
 @import "../vars.scss";
 
 .completion-page-content {
-  width: $content-width;
-  box-sizing: border-box;
   background-color: white;
-  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
   margin-bottom: 10px;
+  padding: 20px;
+  width: $content-width;
 
   .completion-text {
     color: $cc-teal-dark1;
@@ -14,38 +17,59 @@
   }
 
   .progress-container {
-    display: flex;
-    padding: 8px;
+    align-items: center;
     background-color: $cc-teal-light6;
-    color: $cc-teal-dark1;
-    margin: 10px 0 10px 0;
-    font-size: 20px;
+    display: flex;
+    flex-basis: 100%;
+    font-size: 18px;
     font-style: italic;
     font-weight: bold;
-    align-items: center;
-    border-radius: 8px;
+    line-height: 1;
+    margin: 10px 0 24px;
+    padding: 0;
 
-    .check {
-      position: relative;
-      top: 10px;
-      fill: $cc-teal-dark1;
-      margin-right: 6px;
+    &.incomplete {
+      background-color: $cc-orange-light2;
     }
 
+    .check {
+      fill: $cc-teal-dark1;
+      margin-left: 5px;
+    }
     .progress-text {
-      padding: 10px;
+      padding: 8px 5px 10px;
     }
   }
 
   .exit-container {
+    align-items: flex-start;
     display: flex;
-    padding: 8px;
-    background-color: white;
-    color: $cc-charcoal;
-    margin: 20px 0 10px 0;
-    border: 1px solid $cc-charcoal-light1;
-    border-radius: 8px;
-    align-items: center;
+    flex-wrap: wrap;
+    height: 100%;
+    margin: 0 30px 0 0;
+    padding: 0;
+    width: 570px;
+
+    button {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      margin: 0 auto;
+      width: 260px;
+
+      svg {
+        fill: $cc-orange-dark1;
+        margin-right: 5px;
+      }
+    }
+    h1 {
+      flex-basis: 100%;
+      margin: 0 0 30px;
+
+      .activity-title {
+        font-weight: 500;
+      }
+    }
 
     .next {
       color: $cc-charcoal-light1;
@@ -53,68 +77,13 @@
     }
 
     .next-step {
+      display: none;
       padding: 10px;
     }
 
     .num-complete-text {
       margin: 15px 0;
     }
-  }
-
-  img {
-    width: 200px;
-    height: auto;
-  }
-
-  /* cf. https://www.cssportal.com/css-ribbon-generator/ */
-  .box {
-    width: 200px;
-    height: auto;
-    position: relative;
-    margin: 0 10px 0 0;
-  }
-  .ribbon {
-    position: absolute;
-    right: -5px; top: -5px;
-    z-index: 1;
-    overflow: hidden;
-    width: 75px; height: 75px;
-    text-align: right;
-  }
-  .ribbon span {
-    font-size: 10px;
-    font-weight: bold;
-    color: #FFF;
-    text-transform: uppercase;
-    text-align: center;
-    line-height: 20px;
-    transform: rotate(45deg);
-    -webkit-transform: rotate(45deg);
-    width: 100px;
-    display: block;
-    background: #79A70A;
-    background: linear-gradient(#F79E05 0%, #F79E05 100%);
-    box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
-    position: absolute;
-    top: 19px; right: -21px;
-  }
-  .ribbon span::before {
-    content: "";
-    position: absolute; left: 0px; top: 100%;
-    z-index: -1;
-    border-left: 3px solid #F79E05;
-    border-right: 3px solid transparent;
-    border-bottom: 3px solid transparent;
-    border-top: 3px solid #F79E05;
-  }
-  .ribbon span::after {
-    content: "";
-    position: absolute; right: 0px; top: 100%;
-    z-index: -1;
-    border-left: 3px solid transparent;
-    border-right: 3px solid #F79E05;
-    border-bottom: 3px solid transparent;
-    border-top: 3px solid #F79E05;
   }
 
 }

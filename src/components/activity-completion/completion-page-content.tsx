@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import IconCheck from "../../assets/svg-icons/icon-check.svg";
+import IconCheck from "../../assets/svg-icons/icon-check-circle.svg";
+import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
+import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
 import { showReport } from "../../utilities/report-utils";
 import { Sequence, Activity, EmbeddableWrapper, Page } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
 import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
-import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
+import { ReportBackupOptions } from "./report-backup-options";
 
 import "./completion-page-content.scss";
 
@@ -36,12 +38,22 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
       onPageChange(0);
     }
   };
+
   const handleNextActivity = () => {
     onActivityChange?.(activityNum + 1);
     onPageChange(0); //TODO: This should go to the student's saved state page for the next activity
   };
+
   const handleShowAnswers = () => {
     showReport();
+  };
+
+  const handleReportMyWork = () => {
+    console.log("Report my work.");
+  };
+
+  const handleBackUpMyWork = () => {
+    console.log("Back up my work.");
   };
 
   const sequenceProgress = (currentSequence: Sequence) => {
@@ -78,12 +90,11 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const progress = activityProgress(activity);
   const isActivityComplete = progress.numAnswers === progress.numQuestions;
   const activityTitle = (activityName !== "") || (activityName == null) ? activityName : "the activity";
-  const completionText = activityName ? `${activityName} activity complete!` : "Activity complete!";
   const activityNum = activityIndex ? activityIndex : 0;
   const completedActivityProgressText =
-    `Congratulations! You have reached the end of ${activityTitle}, and your work has been saved.`;
+    `Congratulations! You have reached the end of this activity.`;
   const incompleteActivityProgressText =
-    `It looks like you haven't quite finished ${activityTitle} yet. The answers you've given have been saved.`;
+    `It looks like you haven't quite finished this activity yet.`;
   const isLastActivityInSequence = activityIndex ? sequence?.activities.length === activityIndex + 1 : false;
   const nextActivityTitle = !isLastActivityInSequence && sequence?.activities[activityNum + 1].name;
   const nextActivityDescription = !isLastActivityInSequence &&
@@ -121,19 +132,18 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           </div>
         </div>
       : <div className="completion-page-content" data-cy="completion-page-content">
-          {isActivityComplete && <div className="completion-text" data-cy="completion-text">{completionText}</div>}
-          <div className="progress-container" data-cy="progress-container">
+          <div className={`progress-container ${!isActivityComplete ? "incomplete" : ""}`} data-cy="progress-container">
+            {isActivityComplete
+              ? <IconCheck width={24} height={24} className="check" />
+              : <IconUnfinishedCheck width={24} height={24} className="check" />
+            }
             <div className="progress-text">
-              {isActivityComplete && <IconCheck width={32} height={32} className="check" />}
               {progressText}
             </div>
-            {showStudentReport && <button className="button" onClick={handleShowAnswers}>Show My Work</button>}
           </div>
           <div className="exit-container" data-cy="exit-container">
-            <div className="box">
-              <img src={thumbnailURL ? thumbnailURL : ccPlaceholderLogo} alt="Completion logo" />
-              {isActivityComplete && <div className="ribbon"><span>Completed</span></div>}
-            </div>
+            <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
+            {showStudentReport && <button className="button show-my-work" onClick={handleShowAnswers}><IconCompletion width={24} height={24} />Show My Work</button>}
             <div className="next-step" data-cy="next-step">
               <div data-cy="next-step-text">{nextStepText}</div>
               <div className="num-complete-text">{`${progress.numAnswers} out of ${progress.numQuestions} questions are answered.`}</div>
@@ -149,6 +159,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               <button className="button" onClick={handleExit}>Exit</button>
             </div>
           </div>
+          <ReportBackupOptions activity={activity} activityName={activityName} />
         </div>
   );
 };

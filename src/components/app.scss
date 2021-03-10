@@ -24,6 +24,19 @@
   color: $cc-charcoal;
   font-size: 16px;
 
+  h1 {
+    color: var(--theme-secondary-color);
+    font-size: 32px;
+    font-weight: 900;
+    line-height: 1;
+  }
+  h2 {
+    color: $cc-charcoal;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
   .button {
     height: 44px;
     min-width: 100px;
