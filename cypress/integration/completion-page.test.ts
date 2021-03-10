@@ -14,14 +14,14 @@ context("Test the overall app", () => {
       activityPage.getPage(2).click();
     });
     it("test incomplete activity text", () => {
-      cy.get(".progress-text").should("contain", `It looks like you haven't quite finished ${activity1Title} yet. The answers you've given have been saved.`);
-      cy.get(".progress-container .button").should("contain", "Show My Work");
+      cy.get(".progress-text").should("contain", `It looks like you haven't quite finished this activity yet.`);
+      cy.get(".exit-container .show-my-work").should("contain", "Show My Work");
       cy.get(".num-complete-text").should("contain", "0 out of 7 questions are answered.");
       cy.get(".completion-text").should("contain", activity2Title);
       cy.get(".next-step .button").should("have.length", 2);
     });
     it("text next activity button loads next activity", () => {
-      cy.get(".next-step .button").first().should("contain", "Start Next Activity").click();
+      cy.get(".next-step .button").first().should("contain", "Start Next Activity").click({force: true});
       cy.get(".activity-title").should("contain", activity2Title);
     });
   });
@@ -33,7 +33,7 @@ context("Test the overall app", () => {
       cy.get("[data-cy=next-step-text]").should("contain", "You haven't completed the sequence yet. You can go back to complete it, or you can exit.");
     });
     it("test next activity button should not exist and Exit button should return to sequence intro page", () => {
-      cy.get(".next-step .button").should("have.length",1).and("contain", "Exit").click();
+      cy.get(".next-step .button").should("have.length",1).and("contain", "Exit").click({force: true});
       cy.get("[data-cy=sequence-page-content]").should("be.visible");
     });
   });
