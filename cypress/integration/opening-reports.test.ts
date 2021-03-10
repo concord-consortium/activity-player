@@ -36,6 +36,7 @@ context("Test Opening Portal Reports from various places", () => {
         cy.get("@windowOpen").should("be.calledWith",
           portalReportUrl + "?runKey=" + runKey +
             "&activity=" + activityStructureUrl +
+            "&firebase-app=report-service-dev&sourceKey=example.com" +
             "&answersSourceKey=authoring.staging.concord.org");
       });
     });

@@ -92,9 +92,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       const addListener = (type: ClientMessage, handler: any) => phone.addListener(type, handler);
 
       addListener("interactiveState", (newInteractiveState: any) => {
-        // "no-change" is a special message supported by LARA. We don't want to save it.
+        // "nochange" is a special message supported by LARA. We don't want to save it.
         // newInteractiveState might be undefined if interactive state is requested before any state update.
-        if (newInteractiveState !== undefined && newInteractiveState !== "no-change") {
+        if (newInteractiveState !== undefined && newInteractiveState !== "nochange") {
           setInteractiveStateRef.current(newInteractiveState);
         }
         if (interactiveStateRequest.promise.current) {
@@ -208,12 +208,23 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           interactive_url: url
         });
       });
+
+      // Legacy bug fix: In the 1.0.0 release of the AP the special 'nochange'
+      // message wasn't handled correctly and it was saved as the interactive state
+      // If we see that here in the initialInteractiveState we just use undefined
+      // instead. The problem is that sending this state to interactives that don't
+      // expect it, will have JSON parse errors trying to parse "nochange"
+      let _initialInteractiveState = initialInteractiveState;
+      if (initialInteractiveState === "nochange"){
+        _initialInteractiveState = undefined;
+      }
+
       // note: many of the values here are placeholders that require further
       // consideration to determine whether there are more appropriate values.
       const baseProps: Omit<IReportInitInteractive, "mode"> = {
         version: 1,
         authoredState,
-        interactiveState: initialInteractiveState,
+        interactiveState: _initialInteractiveState,
         themeInfo: {
           colors: {
               colorA: "",

@@ -3,6 +3,7 @@ import superagent from "superagent";
 import { v4 as uuidv4 } from "uuid";
 import { queryValue, setQueryValue } from "./utilities/url-query";
 import { FirebaseAppName } from "./firebase-db";
+import { getResourceUrl } from "./lara-api";
 
 interface PortalClassOffering {
   className: string;
@@ -438,7 +439,7 @@ export const fetchPortalData = async (opts: IFetchPortalDataOpts = fetchPortalDa
     platformUserId: firebaseJWT.claims.platform_user_id.toString(),
     contextId: classInfo.classHash,
     toolId,
-    resourceUrl: offeringData.activityUrl,
+    resourceUrl: getResourceUrl(),
     fullName,
     learnerKey: firebaseJWT.claims.user_type === "learner"
                   ? getStudentLearnerKey(portalJWT, firebaseJWT)
@@ -473,14 +474,11 @@ export const anonymousPortalData = (preview: boolean) => {
 
   const hostname = window.location.hostname;
   const toolId = hostname + window.location.pathname;
-  // just save the host and loaded activity-url as the resourceUrl, omitting any other url parameters.
-  // This is currently unused for the purpose of saving and loading data
-  const resourceUrl = hostname + "?activity=" + queryValue("activity");
   const rawPortalData: IAnonymousPortalData = {
     type: "anonymous",
     userType: "learner",
     runKey,
-    resourceUrl,
+    resourceUrl: getResourceUrl(),
     toolId,
     toolUserId: "anonymous",
     database: {

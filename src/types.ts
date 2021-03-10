@@ -190,6 +190,8 @@ export interface ILTIPartial {
   run_key: string;          // Unique run identifier
   source_key: string;
   tool_id: string;
+   // This is not an LTI property but it is required in our authenticated answers
+  remote_endpoint: string;
 }
 
 export interface IAnonymousMetadataPartial {
@@ -208,7 +210,6 @@ export interface IAnonymousMetadataPartial {
  * https://github.com/concord-consortium/lara/blob/c40304a14ef495acdf4f9fd09ea892c7cc98247b/app/models/interactive_run_state.rb#L110
  */
 export interface IExportableAnswerMetadataBase {
-  remote_endpoint: string;
   question_id: string;
   question_type: string;
   id: string;
