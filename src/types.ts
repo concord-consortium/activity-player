@@ -278,3 +278,23 @@ export interface OfflineManifest {
 export interface OfflineActivity extends OfflineManifestActivity {
   // TBD: add class info once that is figured out
 }
+
+export interface LogMessage {
+  application: string;
+  run_remote_endpoint?: string;
+  username: string;
+  role: string;
+  classHash: string;
+  session: string;
+  appMode: string;
+  sequence: string | undefined;
+  sequenceActivityIndex: number;
+  activity: string | undefined,
+  activityPage: number;
+  time: number;
+  event: string;
+  event_value: any;
+  parameters: any;
+  interactive_id: string | undefined,
+  interactive_url: string | undefined,
+}

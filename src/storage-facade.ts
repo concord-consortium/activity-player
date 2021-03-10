@@ -2,7 +2,7 @@
 import * as FirebaseImp from "./firebase-db";
 import { IAnonymousPortalData, IPortalData } from "./portal-api";
 import { IExportableAnswerMetadata } from "./types";
-import {DexieStorage} from "./dexie-storage";
+import {dexieStorage, kOfflineAnswerSchemaVersion} from "./dexie-storage";
 import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 
 export interface IStorageInitializer { name: FirebaseImp.FirebaseAppName, preview: boolean }
@@ -35,9 +35,6 @@ export const docToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
   };
   return wrappedAnswer;
 };
-
-// We need to ensure a version match between data stored and exported
-export const kOfflineAnswerSchemaVersion = 4;
 
 const activityExportFileName = (activity: string) => {
   const d = new Date();
@@ -115,18 +112,16 @@ const FireStoreStorageProvider: StorageInterface = {
   importStudentAnswersFromJSONFile: (studentAnswers: string, filename: string) => true
 };
 
-const indexDBConnection = new DexieStorage();
-
 const DexieStorageProvider = {...FireStoreStorageProvider,
 
   createOrUpdateAnswer: (answer: IExportableAnswerMetadata) => {
     const idxDBAnswer = answer as IIndexedDBAnswer;
     idxDBAnswer.activity = _currentOfflineActivityId;
-    indexDBConnection.answers.put(idxDBAnswer);
+    dexieStorage.answers.put(idxDBAnswer);
   },
 
   watchAllAnswers: (callback: (wrappedAnswer: IWrappedDBAnswer[]) => void) => {
-    const foundAnswers = indexDBConnection
+    const foundAnswers = dexieStorage
       .answers
       .where("activity")
       .equals(_currentOfflineActivityId)
@@ -140,7 +135,7 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
   watchAnswer: (embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void) => {
     const questionId = refIdToAnswersQuestionId(embeddableRefId);
     const getAnswerFromIndexDB = (qID: string) => {
-      const foundAnswers = indexDBConnection
+      const foundAnswers = dexieStorage
         .answers
         .where("question_id")
         .equals(qID).toArray();
@@ -164,7 +159,7 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
     const activityShortId = currentActivityId.indexOf("/") > -1 ? currentActivityId.substr(currentActivityId.lastIndexOf("/")+1).replace(".json", "") : currentActivityId;
     const filename = activityExportFileName(activityShortId);
     const getAllAnswersFromIndexDB = () => {
-      const foundAnswers = indexDBConnection
+      const foundAnswers = dexieStorage
         .answers
         .where("activity")
         .equals(currentActivityId).toArray();
@@ -218,7 +213,7 @@ const DexieStorageProvider = {...FireStoreStorageProvider,
           const idxDBAnswer = answer as IIndexedDBAnswer;
           // TODO: what happens if the answers loaded are for a different activity?
           idxDBAnswer.activity = answer.activity;
-          indexDBConnection.answers.put(idxDBAnswer);
+          dexieStorage.answers.put(idxDBAnswer);
         });
         return true;
       } else {
