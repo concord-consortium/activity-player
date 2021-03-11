@@ -61,7 +61,7 @@ export const docToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
 };
 
 // We need to ensure a version match between data stored and exported
-export const kOfflineAnswerSchemaVersion = 4;
+export const kOfflineAnswerSchemaVersion = 5;
 
 const activityExportFileName = (activity: string) => {
   const d = new Date();
