@@ -10,10 +10,25 @@
   padding: 20px;
   width: $content-width;
 
-  .completion-text {
-    color: $cc-teal-dark1;
-    font-size: 22px;
-    font-weight: bold;
+  .textButton {
+    background: transparent;
+    border: none;
+    color: $cc-charcoal;
+    cursor: pointer;
+    display: block;
+    font: bold 20px Lato, Arial, Helvetica, sans-serif;
+    margin: 0 auto;
+    padding: 5px;
+    text-align: center;
+    text-decoration: underline;
+    width: auto;
+
+    &:hover {
+      color: var(--theme-primary-color);
+    }
+    &:active {
+      color: var(--theme-secondary-color);
+    }
   }
 
   .progress-container {
@@ -70,20 +85,75 @@
         font-weight: 500;
       }
     }
-
-    .next {
-      color: $cc-charcoal-light1;
-      text-transform: capitalize;
+    .exit-button {
+      flex-basis: 100%;
+      text-align: center;
     }
+  }
 
-    .next-step {
-      display: none;
-      padding: 10px;
-    }
+  .next-step {
+    background-color: $cc-teal-light6;
+    display: flex;
+    flex-basis: 100%;
+    margin-bottom: 20px;
+    padding: 10px;
 
-    .num-complete-text {
-      margin: 15px 0;
+    .next-step-thumbnail {
+      background-color: var(--theme-primary-color);
+      border: solid 1px var(--theme-primary-color);
+      border-radius: 8px;
+      height: 80px;
+      margin-right: 10px;
+      max-width: 108px;
+      overflow: hidden;
+
+      img {
+        height: 100%;
+        object-fit: cover;
+        width: 100%;
+      }
     }
+    .next-step-content {
+      display: flex;
+      flex-wrap: wrap;
+      line-height: 1.2;
+
+      .next-step-buttons {
+        margin-right: 15px;
+        width: 260px;
+
+        button {
+          width: 100%;
+        }
+        span {
+          display: block;
+          margin: 10px 0;
+          text-align: center;
+        }
+      }
+      .next-step-text {
+        flex-grow: 2;
+        margin: 0 10px 0 0;
+        width: 495px;
+
+        p {
+          margin: 0;
+        }
+        .next-step-title {
+          font-size: 16px;
+          font-weight: bold;
+        }
+        .next {
+          font-style: italic;
+          font-weight: normal;
+          margin-bottom: 5px;
+        }
+      }
+    }
+  }
+
+  .num-complete-text {
+    margin: 15px 0;
   }
 
 }
