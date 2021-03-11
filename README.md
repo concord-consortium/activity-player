@@ -114,10 +114,10 @@ Inside of your `package.json` file:
 * page={n|"page_[id]"}: load page n, where 0 is the activity introduction, 1 is the first page and [id] in "page_[id]" refers to an internal integer id of the page model exported from LARA.
 * themeButtons:         whether to show theme buttons
 * mode={mode}:          sets mode. Values: "teacher-edition"
-* portalReport:         override default base URL for the student report. https://activity-player.concord.org/ and https://activity-player.concord.org/version/*, default to a versioned URL defined as a constant in the code `kProductionPortalReportUrl`. Every other url defaults to the master branch of the portal-report.
+* portalReport:         override default base URL for the student report. https://activity-player.concord.org/, https://activity-player-offline.concord.org/, https://activity-player.concord.org/version/\*, and https://activity-player-offline.concord.org/version/\*, default to a versioned URL defined as a constant in the code `kProductionPortalReportUrl`. Every other url defaults to the master branch of the portal-report.
 
 #### User data loading:
-* firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ without a path, defaults to `report-service-pro` every other url `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
+* firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ and https://activity-player-offline.concord.org/ without a path, defaults to `report-service-pro` every other url defaults to `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
 * token={n}:         set by the portal when launching external activity, to authenticate with portal API
 * domain={n}:        set by the portal when launching external activity
 * report-source={id}: which source collection to save data to in firestore (defaults to own hostname)
