@@ -1,6 +1,7 @@
 import { getReportUrl, portalReportBaseUrl,
          kProductionPortalReportUrl, kDevPortalReportUrl} from "./report-utils";
 import { clearFirebaseAppName } from "../portal-api";
+import { initStorage } from "../storage/storage-facade";
 
 jest.mock("../storage/firebase-db", () => (
   {
@@ -62,6 +63,7 @@ describe("getReportUrl", () => {
 
       const reportURL = getReportUrl();
 
+      initStorage({name:"report-service-pro", offline: false, preview:false});
       expect(reportURL).toEqual(
         kDevPortalReportUrl
         + "?runKey=" + runKey
