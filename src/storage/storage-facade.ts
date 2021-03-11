@@ -30,6 +30,21 @@ export const TrackOfflineActivityId = (newId: string) => {
 
 let _currentOfflineActivityId = "/testactivity.json";
 
+
+// A write-though cache of the learner plugin states is kept as the plugin's
+// learner state is only loaded once at app startup but it is supplied on the
+// plugin init which happens on any page change.
+
+// TODO: change to watch the learner state so that it works across sessions and
+// not just on the same page
+
+const cachedLearnerPluginState: Record<number, string|null> = {};
+export const getCachedLearnerPluginState = (pluginId: number) => cachedLearnerPluginState[pluginId] || null;
+
+export const setCachedLearnerPluginState = (pluginId: number, value: string|null) => cachedLearnerPluginState[pluginId]=value;
+
+const localStoragePluginStateKey = (id: number) => `ActivityPlayerPluginState-plugin-${id}`;
+
 export const docToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
   const getInteractiveState = () => {
     const reportState = JSON.parse(doc.report_state);
@@ -82,11 +97,8 @@ export interface IStorageInterface {
   watchAnswer(embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void): () => void
   watchAllAnswers: (callback: (wrappedAnswer: IWrappedDBAnswer[]) => void) => void,
   createOrUpdateAnswer: (answer: IExportableAnswerMetadata) => void,
-  getLearnerPluginStateDocId: (pluginId: number) => string|undefined,
-  getCachedLearnerPluginState: (pluginId: number) => string|null,
   getLearnerPluginState: (pluginId: number) => Promise<string|null>,
   setLearnerPluginState: (pluginId: number, state: string) => Promise<string>,
-  // checkIfOnline: () => Promise<boolean>,
 
   // for saving a whole activity to JSON
   exportActivityToJSON: (activityId?: string) => Promise<ExportableActivity>,
@@ -94,7 +106,6 @@ export interface IStorageInterface {
   canSyncData(): boolean,
   syncData(): void
 }
-
 
 class FireStoreStorageProvider implements IStorageInterface {
   portalData: IPortalData|IAnonymousPortalData;
@@ -149,20 +160,19 @@ class FireStoreStorageProvider implements IStorageInterface {
     return FirebaseImp.createOrUpdateAnswer(answer);
   }
 
-  getLearnerPluginStateDocId(pluginId: number){
-    return FirebaseImp.getLearnerPluginStateDocId(pluginId);
+  async getLearnerPluginState(pluginId: number) {
+    if (getCachedLearnerPluginState(pluginId)) {
+      return getCachedLearnerPluginState(pluginId);
+    }
+    const state = await FirebaseImp.getLearnerPluginState(pluginId);
+    setCachedLearnerPluginState(pluginId,state);
+    return state;
   }
 
-  getCachedLearnerPluginState(pluginId: number) {
-    return FirebaseImp.getCachedLearnerPluginState(pluginId);
-  }
-
-  getLearnerPluginState(pluginId: number) {
-    return FirebaseImp.getLearnerPluginState(pluginId);
-  }
-
-  setLearnerPluginState(pluginId: number, state: string){
-    return FirebaseImp.setLearnerPluginState(pluginId,state);
+  async setLearnerPluginState(pluginId: number, state: string){
+    FirebaseImp.setLearnerPluginState(pluginId, state);
+    setCachedLearnerPluginState(pluginId, state);
+    return state;
   }
 
   // TODO: Save activity to local JSON file and allow reloading from file
@@ -174,13 +184,9 @@ class FireStoreStorageProvider implements IStorageInterface {
     return true;
   }
 
-  canSyncData() {
-    // We are FireStore, so our data is synced by default....
-    return false;
-  }
-  syncData(){
-    return null;
-  }
+  // We are FireStore, so our data is synced by default....
+  canSyncData() { return false; }
+  syncData(){ return null; }
 
   signOut() {
     FirebaseImp.signOut();
@@ -330,24 +336,22 @@ class DexieStorageProvider implements IStorageInterface {
     }
   }
 
-  //TODO: APO Plugin State
-  getLearnerPluginStateDocId(pluginId: number){
-    return undefined;
+  async getLearnerPluginState(pluginId: number) {
+    if (getCachedLearnerPluginState(pluginId)) {
+      return getCachedLearnerPluginState(pluginId);
+    }
+    const record = await this.indexDBConnection.pluginStates.get({pluginId});
+    const state = record?.state || null;
+    setCachedLearnerPluginState(pluginId, state);
+    return state;
   }
 
-  //TODO: APO Plugin State
-  getCachedLearnerPluginState(pluginId: number){
-    return null;
-  }
-
-  //TODO: APO Plugin State
-  getLearnerPluginState(pluginId: number){
-    return Promise.resolve(null);
-  }
-
-  //TODO: APO Plugin State
-  setLearnerPluginState(pluginId: number, state: string){
-    return Promise.resolve("");
+  async setLearnerPluginState(pluginId: number, state: string){
+    const key = localStoragePluginStateKey(pluginId);
+    localStorage.setItem(key,state);
+    this.indexDBConnection.pluginStates.put({pluginId, state});
+    setCachedLearnerPluginState(pluginId, state);
+    return state;
   }
 
   canSyncData() {

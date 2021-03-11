@@ -8,13 +8,13 @@ export class DexieStorage extends Dexie {
   // (just to inform Typescript. Instantiated by Dexie in stores() method)
   offlineActivities: Dexie.Table<OfflineActivity, string>;
   answers: Dexie.Table<IIndexedDBAnswer, string>; // number = type of the primkey
-  //...other tables goes here...
+  pluginStates: Dexie.Table<{pluginId: number, state: string|null}>;
 
   constructor () {
       super("ActivityPlayer");
       this.version(kOfflineAnswerSchemaVersion).stores({
           answers: "id, question_id, activity",
-          //...other tables goes here...
+          pluginStates: "&pluginId"
       });
       this.version(3).stores({
         offlineActivities: "&url"  // unique by url
