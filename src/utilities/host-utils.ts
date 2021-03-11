@@ -5,7 +5,7 @@ export const getCanonicalHostname = () => {
     return "activity-player.concord.org";
   }
   return window.location.hostname;
-}
+};
 
 export const isProductionOrigin = (origin: string) => {
   return origin === "https://activity-player.concord.org" || origin === "https://activity-player-offline.concord.org";
