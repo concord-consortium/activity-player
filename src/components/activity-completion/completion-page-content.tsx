@@ -9,7 +9,6 @@ import { watchAllAnswers } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
 import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
-import { ReportBackupOptions } from "./report-backup-options";
 
 import "./completion-page-content.scss";
 
@@ -47,23 +46,6 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
 
   const handleShowAnswers = () => {
     showReport();
-  };
-
-  const handleReportMyWork = () => {
-    console.log("Report my work.");
-  };
-
-  const handleBackUpMyWork = () => {
-    console.log("Back up my work.");
-  };
-
-  const truncateString = (text: string, length: number, ellipsis: boolean) => {
-    if (text.length <= length) {
-      return text;
-    }
-    let subString = text.substr(0, length-1);
-    subString = subString.substr(0, subString.lastIndexOf(" "));
-    return subString + "&hellip;";
   };
 
   const sequenceProgress = (currentSequence: Sequence) => {
@@ -176,7 +158,6 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               </div>
             }
           </div>
-          <ReportBackupOptions activity={activity} activityName={activityName} />
         </div>
   );
 };
