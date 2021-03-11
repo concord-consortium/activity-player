@@ -39,6 +39,7 @@ import { OfflineManifestAuthoringNav } from "./offline-manifest-authoring-nav";
 import { StudentInfo } from "../student-info";
 import { StudentInfoModal } from "./student-info-modal";
 import { isNetworkConnected, monitorNetworkConnection } from "../utilities/network-connection";
+import { isOfflineHost } from "../utilities/host-utils";
 
 import "./app.scss";
 
@@ -99,12 +100,16 @@ export class App extends React.PureComponent<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
     this.studentInfo = new StudentInfo();
-    // set the offline manifest authoring localstorage item if it exists in the params and then read from localstorage
-    // this is done in the constructor as the state value is needed in the UNSAFE_componentWillMount method
-    setOfflineManifestAuthoringId(queryValue("setOfflineManifestAuthoringId"));
-    const offlineManifestAuthoringId = getOfflineManifestAuthoringId();
 
-    const offlineManifestId = queryValue("offlineManifest");
+    const offlineMode = isOfflineHost(window.location.host);  // NOTE: need host here so we can check the port also
+
+    if (offlineMode) {
+      // set the offline manifest authoring localstorage item if it exists in the params and then read from localstorage
+      // this is done in the constructor as the state value is needed in the UNSAFE_componentWillMount method
+      setOfflineManifestAuthoringId(queryValue("setOfflineManifestAuthoringId"));
+    }
+    const offlineManifestAuthoringId = offlineMode ? getOfflineManifestAuthoringId() : undefined;
+    const offlineManifestId = offlineMode ? queryValue("offlineManifest") : undefined;
     const loadingOfflineManifest = !!offlineManifestId;
 
     this.state = {
@@ -120,7 +125,7 @@ export class App extends React.PureComponent<IProps, IState> {
       errorType: null,
       idle: false,
       loadingOfflineManifest,
-      offlineMode: (queryValue("offline") === "true") || !!offlineManifestAuthoringId || !!offlineManifestId,
+      offlineMode,
       offlineManifestAuthoringActivities: [],
       offlineManifestAuthoringCacheList: [],
       showOfflineManifestInstallConfirmation: queryValue("confirmOfflineManifestInstall") === "true",

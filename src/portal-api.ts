@@ -428,7 +428,7 @@ export const fetchPortalData = async (opts: IFetchPortalDataOpts = fetchPortalDa
   // for the tool id we want to distinguish activity-player branches, incase this is ever helpful for
   // dealing with mis-matched data when we load data in originally saved on another branch.
   // This is currently unused for the purpose of saving and loading data
-  const toolId = window.location.hostname + window.location.pathname;
+  const toolId = getCanonicalHostname() + window.location.pathname;
   const fullName = classInfo.students.find(s => s.id.toString() === portalJWT.uid.toString())?.fullName;
 
   const rawPortalData: IPortalData = {
@@ -473,7 +473,7 @@ export const anonymousPortalData = (preview: boolean) => {
     }
   }
 
-  const hostname = window.location.hostname;
+  const hostname = getCanonicalHostname();
   const toolId = hostname + window.location.pathname;
   const rawPortalData: IAnonymousPortalData = {
     type: "anonymous",
