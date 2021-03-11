@@ -101,16 +101,19 @@ export class NavPages extends React.Component <IProps, IState> {
         const buttonContent = page.is_completion
                               ? <IconCompletion className={`icon ${currentClass}`} width={28} height={28} />
                               : pageNum;
+
         return (
-          <button
-            className={`page-button ${currentClass} ${completionClass} ${disabledClass}`}
-            onClick={this.handleChangePage(pageNum)}
-            key={`page ${pageNum}`}
-            data-cy={`${page.is_completion ? "nav-pages-completion-page-button" : "nav-pages-button"}`}
-            aria-label={`Page ${pageNum}`}
-          >
-            {buttonContent}
-          </button>
+          pageNum >= minPage && pageNum <= maxPage
+            ? <button
+                className={`page-button ${currentClass} ${completionClass} ${disabledClass}`}
+                onClick={this.handleChangePage(pageNum)}
+                key={`page ${pageNum}`}
+                data-cy={`${page.is_completion ? "nav-pages-completion-page-button" : "nav-pages-button"}`}
+                aria-label={`Page ${pageNum}`}
+              >
+                {buttonContent}
+              </button>
+            : ""
         );
       })
     );
