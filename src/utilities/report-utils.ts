@@ -1,17 +1,17 @@
 import { queryValue } from "../utilities/url-query";
 import { getPortalData } from "../firebase-db";
 import { IPortalData, firebaseAppName } from "../portal-api";
+import { getCanonicalHostname, isProductionOrigin } from "./host-utils";
 
 export const kProductionPortalReportUrl = "https://portal-report.concord.org/version/v4.1.0/index.html";
 export const kDevPortalReportUrl = "https://portal-report.concord.org/branch/master/index.html";
 
 // The default portal report URL is based on the URL:
-// - https://activity-player.concord.org and https://activity-player.concord.org/version/*
+// - [production-origin] and [production-origin]/version/*
 //   defaults to the kProductionPortalReportUrl above
 // - everything else defaults to kDevPortalReportUrl which is should be master
 //
 // The default can be overridden with a portalReport URL param
-const kActivityPlayerOrigin = "https://activity-player.concord.org";
 export const portalReportBaseUrl= ():string => {
   const portalReportUrlParam = queryValue("portalReport");
   if (portalReportUrlParam) {
@@ -22,7 +22,7 @@ export const portalReportBaseUrl= ():string => {
   // According to the spec an empty path like https://activity-player.concord.org
   // will still have a pathname of "/", but just to be safe this checks for the
   // falsey pathname
-  if(origin === kActivityPlayerOrigin &&
+  if(isProductionOrigin(origin) &&
      (!pathname || pathname === "/"
       || pathname.indexOf("/version/") === 0)) {
     return kProductionPortalReportUrl;
@@ -48,8 +48,8 @@ export const getReportUrl = () => {
   const activityUrl = activity? ((activity.split(".json"))[0]).replace("api/v1/","") : "";
   const runKey= queryValue("runKey");
   // Sometimes the location of the answers is overridden with a report-source param
-  const answerSource = queryValue("report-source") || window.location.hostname;
-  const sourceKey = activityUrl ? makeSourceKey(activityUrl) : window.location.hostname;
+  const answerSource = queryValue("report-source") || getCanonicalHostname();
+  const sourceKey = activityUrl ? makeSourceKey(activityUrl) : getCanonicalHostname();
 
   if (runKey) {
     return reportLink
