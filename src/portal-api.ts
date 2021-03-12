@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { queryValue, queryValueBoolean, setQueryValue } from "./utilities/url-query";
 import { getResourceUrl } from "./lara-api";
 import { FirebaseAppName } from "./storage/firebase-db";
+import { getCanonicalHostname, isProductionOrigin } from "./utilities/host-utils";
 
 interface PortalClassOffering {
   className: string;
@@ -209,7 +210,7 @@ const getPortalJWTWithBearerToken = (basePortalUrl: string, rawToken: string) =>
 };
 
 // The default firebase app name is based on the URL:
-// only https://activity-player.concord.org defaults to report-service-pro
+// only [production-origin] with no path defaults to report-service-pro
 // everything else defaults to report-service-dev
 //
 // The default can be overridden with a firebaseApp URL param
@@ -236,7 +237,7 @@ export const firebaseAppName = ():FirebaseAppName => {
   // According to the spec an empty path like https://activity-player.concord.org
   // will still have a pathname of "/", but just to be safe this checks for the
   // falsey pathname
-  if(origin === "https://activity-player.concord.org" &&
+  if(isProductionOrigin(origin) &&
      (!pathname || pathname === "/")) {
     _firebaseAppName = "report-service-pro";
   } else {
@@ -484,7 +485,7 @@ export const anonymousPortalData = (preview: boolean) => {
     toolUserId: "anonymous",
     database: {
       appName: firebaseAppName(),
-      sourceKey: hostname
+      sourceKey: getCanonicalHostname()
     }
   };
   return rawPortalData;
