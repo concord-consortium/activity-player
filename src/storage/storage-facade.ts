@@ -111,7 +111,6 @@ class FireStoreStorageProvider implements IStorageInterface {
     this.setPortalData(portalData);
     try {
       if(portalData.type === "authenticated") {
-        debugger;
         const token = portalData.database.rawFirebaseJWT;
         await FirebaseImp.initializeDB({
           name: portalData.database.appName,
@@ -408,5 +407,3 @@ export const initStorage = async (config: IInitStorageParams) => {
 export const getStorage = () => {
   return storageInstance;
 };
-
-
