@@ -38,6 +38,7 @@ import { OfflineNav } from "./offline-nav";
 import { OfflineManifestAuthoringNav } from "./offline-manifest-authoring-nav";
 import { StudentInfo } from "../student-info";
 import { StudentInfoModal } from "./student-info-modal";
+import { isNetworkConnected, monitorNetworkConnection } from "../utilities/network-connection";
 
 import "./app.scss";
 
@@ -84,6 +85,7 @@ interface IState {
   offlineManifestAuthoringCacheList: string[];
   showOfflineManifestInstallConfirmation: boolean;
   showEditUserName: boolean;
+  networkConnected: boolean;
 }
 interface IProps {}
 
@@ -92,6 +94,7 @@ export class App extends React.PureComponent<IProps, IState> {
   private LARA: LaraGlobalType;
   private activityPageContentRef = React.createRef<ActivityPageContent>();
   private studentInfo: StudentInfo;
+  private unmonitorNetworkConnection: () => void;
 
   public constructor(props: IProps) {
     super(props);
@@ -123,8 +126,11 @@ export class App extends React.PureComponent<IProps, IState> {
       showOfflineManifestInstallConfirmation: queryValue("confirmOfflineManifestInstall") === "true",
       offlineManifestAuthoringId,
       offlineManifestId,
-      showEditUserName: false
+      showEditUserName: false,
+      networkConnected: isNetworkConnected()
     };
+
+    this.unmonitorNetworkConnection = monitorNetworkConnection((networkConnected) => this.setState({networkConnected}));
   }
 
   public get portalUrl() {
@@ -302,6 +308,10 @@ export class App extends React.PureComponent<IProps, IState> {
     } catch (e) {
       console.warn(e);
     }
+  }
+
+  componentWillUnmount() {
+    this.unmonitorNetworkConnection();
   }
 
   render() {
