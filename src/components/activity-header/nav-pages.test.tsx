@@ -59,6 +59,17 @@ describe("Nav Pages component", () => {
     expect(wrapper.find('[data-cy="nav-pages-button"]').at(9).text()).toContain("10"); // second to last page
     expect(wrapper.find('[data-cy="nav-pages-button"]').at(10).text()).toContain("11"); // last page
   });
+  it("renders pagination in the middle", () => {
+    const wrapper = shallow(<NavPages
+      pages={activityPages}
+      currentPage={7}
+      onPageChange={stubFunction}
+    />);
+    expect(wrapper.find('[data-cy="nav-pages-button"]').at(0).text()).toContain("2"); // first page
+    expect(wrapper.find('[data-cy="nav-pages-button"]').at(1).text()).toContain("3"); // second page
+    expect(wrapper.find('[data-cy="nav-pages-button"]').at(9).text()).toContain("11"); // second to last page
+    expect(wrapper.find('[data-cy="nav-pages-button"]').at(10).text()).toContain("12"); // last page
+  });
   it("renders pagination near end page", () => {
     const wrapper = shallow(<NavPages
       pages={activityPages}
