@@ -1,4 +1,4 @@
-import { firebaseAppName, clearFirebaseAppName } from "./portal-api";
+import { firebaseAppName, clearFirebaseAppName, getToolId } from "./portal-api";
 
 describe("firebaseAppName", () => {
 
@@ -48,4 +48,24 @@ describe("firebaseAppName", () => {
 
   });
 
+});
+
+describe("getToolId", () => {
+  const { location } = window;
+  it("returns an id which is a combination of the host and path", () => {
+    delete (window as any).location;
+
+    const mockLocation = {host: "", pathname: ""};
+    (window as any).location = mockLocation;
+
+    mockLocation.host = "www.example.com";
+    mockLocation.pathname = "/foo";
+    expect(getToolId()).toBe("www.example.com/foo");
+
+    mockLocation.host = "www.example.com:8080";
+    mockLocation.pathname = "/bar";
+    expect(getToolId()).toBe("www.example.com:8080/bar");
+
+    (window as any).location = location;
+  });
 });

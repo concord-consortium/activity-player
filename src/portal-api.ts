@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { queryValue, setQueryValue } from "./utilities/url-query";
 import { FirebaseAppName } from "./firebase-db";
 import { getResourceUrl } from "./lara-api";
-import { getCanonicalHostname, isProductionOrigin } from "./utilities/host-utils";
+import { getCanonicalHostname, getHostnameWithMaybePort, isProductionOrigin } from "./utilities/host-utils";
 
 interface PortalClassOffering {
   className: string;
@@ -425,10 +425,6 @@ export const fetchPortalData = async (opts: IFetchPortalDataOpts = fetchPortalDa
   // query parameter.
   const sourceKey = queryValue("report-source") || parseUrl(offeringData.activityUrl.toLowerCase()).hostname;
 
-  // for the tool id we want to distinguish activity-player branches, incase this is ever helpful for
-  // dealing with mis-matched data when we load data in originally saved on another branch.
-  // This is currently unused for the purpose of saving and loading data
-  const toolId = getCanonicalHostname() + window.location.pathname;
   const fullName = classInfo.students.find(s => s.id.toString() === portalJWT.uid.toString())?.fullName;
 
   const rawPortalData: IPortalData = {
@@ -439,7 +435,7 @@ export const fetchPortalData = async (opts: IFetchPortalDataOpts = fetchPortalDa
     platformId: firebaseJWT.claims.platform_id,
     platformUserId: firebaseJWT.claims.platform_user_id.toString(),
     contextId: classInfo.classHash,
-    toolId,
+    toolId: getToolId(),
     resourceUrl: getResourceUrl(),
     fullName,
     learnerKey: firebaseJWT.claims.user_type === "learner"
@@ -473,14 +469,12 @@ export const anonymousPortalData = (preview: boolean) => {
     }
   }
 
-  const hostname = getCanonicalHostname();
-  const toolId = hostname + window.location.pathname;
   const rawPortalData: IAnonymousPortalData = {
     type: "anonymous",
     userType: "learner",
     runKey,
     resourceUrl: getResourceUrl(),
-    toolId,
+    toolId: getToolId(),
     toolUserId: "anonymous",
     database: {
       appName: firebaseAppName(),
@@ -489,3 +483,8 @@ export const anonymousPortalData = (preview: boolean) => {
   };
   return rawPortalData;
 };
+
+// for the tool id we want to distinguish activity-player hosts and branches, incase this is ever helpful for
+// dealing with mis-matched data when we load data in originally saved on another branch.
+// This is currently unused for the purpose of saving and loading data
+export const getToolId = () => getHostnameWithMaybePort() + window.location.pathname;

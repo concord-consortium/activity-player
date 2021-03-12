@@ -1,4 +1,4 @@
-import { getCanonicalHostname, isOfflineHost, isProductionOrigin } from "./host-utils";
+import { getCanonicalHostname, getHostnameWithMaybePort, isOfflineHost, isProductionOrigin } from "./host-utils";
 
 describe("isOfflineHost", () => {
   it("determines offline mode via the window host value", () => {
@@ -26,6 +26,23 @@ describe("getCananoicalHostname", () => {
     mockLocation.hostname = "activity-player.concord.org";
     expect(getCanonicalHostname()).toBe("activity-player.concord.org");
 
+    (window as any).location = location;
+  });
+});
+
+describe("getHostnameWithMaybePort", () => {
+  const { location } = window;
+  it("returns the hostname with port if not a standard port", () => {
+    delete (window as any).location;
+
+    const mockLocation = {host: ""};
+    (window as any).location = mockLocation;
+
+    mockLocation.host = "www.example.com";
+    expect(getHostnameWithMaybePort()).toBe("www.example.com");
+
+    mockLocation.host = "www.example.com:8080";
+    expect(getHostnameWithMaybePort()).toBe("www.example.com:8080");
 
     (window as any).location = location;
   });

@@ -39,7 +39,7 @@ import { OfflineManifestAuthoringNav } from "./offline-manifest-authoring-nav";
 import { StudentInfo } from "../student-info";
 import { StudentInfoModal } from "./student-info-modal";
 import { isNetworkConnected, monitorNetworkConnection } from "../utilities/network-connection";
-import { isOfflineHost } from "../utilities/host-utils";
+import { getHostnameWithMaybePort, isOfflineHost } from "../utilities/host-utils";
 
 import "./app.scss";
 
@@ -101,7 +101,7 @@ export class App extends React.PureComponent<IProps, IState> {
     super(props);
     this.studentInfo = new StudentInfo();
 
-    const offlineMode = isOfflineHost(window.location.host);  // NOTE: need host here so we can check the port also
+    const offlineMode = isOfflineHost(getHostnameWithMaybePort());
 
     if (offlineMode) {
       // set the offline manifest authoring localstorage item if it exists in the params and then read from localstorage
