@@ -94,7 +94,7 @@ export class App extends React.PureComponent<IProps, IState> {
   private LARA: LaraGlobalType;
   private activityPageContentRef = React.createRef<ActivityPageContent>();
   private studentInfo: StudentInfo;
-  private unmonitorNetworkConnection: () => void;
+  private unmonitorNetworkConnection?: () => void;
 
   public constructor(props: IProps) {
     super(props);
@@ -129,8 +129,6 @@ export class App extends React.PureComponent<IProps, IState> {
       showEditUserName: false,
       networkConnected: isNetworkConnected()
     };
-
-    this.unmonitorNetworkConnection = monitorNetworkConnection((networkConnected) => this.setState({networkConnected}));
   }
 
   public get portalUrl() {
@@ -145,6 +143,9 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   async UNSAFE_componentWillMount() {
+    // start monitoring the network connection
+    this.unmonitorNetworkConnection = monitorNetworkConnection((networkConnected) => this.setState({networkConnected}));
+
     // only enable the service worker in offline mode (or in authoring mode which automatically turns on offline mode)
     const enableServiceWorker = this.state.offlineMode;
 
@@ -311,7 +312,9 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   componentWillUnmount() {
-    this.unmonitorNetworkConnection();
+    if (this.unmonitorNetworkConnection) {
+      this.unmonitorNetworkConnection();
+    }
   }
 
   render() {
