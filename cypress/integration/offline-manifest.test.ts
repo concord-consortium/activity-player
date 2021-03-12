@@ -40,7 +40,7 @@ context("Test using offline manifests", () => {
 
   describe("offlineManifest",() => {
     it("verify offline manifest is loaded when query parameter is given",() => {
-      cy.visit("?offlineManifest=smoke-test");
+      cy.visit("?offlineManifest=smoke-test-v1");
 
       // verify loading dialog shows and then auto closes
       activityPage.getOfflineManifestLoadingDialog().should("be.visible").and("contain", "APO Smoke Test");

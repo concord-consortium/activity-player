@@ -1,6 +1,6 @@
 import { Activity } from "../types";
 import { isQuestion, isEmbeddableSectionHidden, getVisibleEmbeddablesOnPage, VisibleEmbeddables,
-  EmbeddableSections, getPageSectionQuestionCount, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue } from "./activity-utils";
+  EmbeddableSections, getPageSectionQuestionCount, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isNotSampleActivityUrl } from "./activity-utils";
 import _activityHidden from "../data/sample-activity-hidden-content.json";
 import _activity from "../data/sample-activity-multiple-layout-types.json";
 import { DefaultTestActivity } from "../test-utils/model-for-tests";
@@ -93,5 +93,11 @@ describe("Activity utility functions", () => {
     expect(getPagePositionFromQueryValue(activity, "page_1001")).toBe(0);
     expect(getPagePositionFromQueryValue(activity, "page_2000")).toBe(2);
     expect(getPagePositionFromQueryValue(activity, "page_3000")).toBe(3);
+  });
+
+  it("determines if an activity url is not a sample activity", () => {
+    expect(isNotSampleActivityUrl("foo")).toBe(false);
+    expect(isNotSampleActivityUrl("http://example.com/foo")).toBe(true);
+    expect(isNotSampleActivityUrl("offline-activities/foo")).toBe(true);
   });
 });
