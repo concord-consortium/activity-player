@@ -1,5 +1,5 @@
 import { queryValue } from "../utilities/url-query";
-import { Storage } from "../storage-facade";
+import { getStorage } from "../storage/storage-facade";
 import { IPortalData, firebaseAppName } from "../portal-api";
 import { getResourceUrl } from "../lara-api";
 import { getCanonicalHostname, isProductionOrigin } from "./host-utils";
@@ -63,7 +63,8 @@ export const getReportUrl = () => {
   }
   else {
     // We know this is a IPortalData because there is no runKey
-    const portalData = Storage.getPortalData() as IPortalData;
+    const storage = getStorage();
+    const portalData = storage.getPortalData() as IPortalData;
     const classInfoUrl = portalData?.portalJWT?.class_info_url;
     const authDomainUrl = classInfoUrl?.split("/api")[0];
     const offeringBaseUrl = classInfoUrl?.split("/classes")[0]+"/offerings/";

@@ -1,7 +1,8 @@
 import { v4 as uuid } from "uuid";
 import { DEBUG_LOGGER } from "../lib/debug";
 import { LaraGlobalType } from "../lara-plugin/index";
-import { dexieStorage } from "../dexie-storage";
+import { Role } from "../student-info";
+import { dexieStorage } from "../storage/dexie-storage";
 import { LogMessage } from "../types";
 
 const logManagerUrl = "//cc-log-manager.herokuapp.com/api/logs";
@@ -33,7 +34,7 @@ export enum LogEventName {
 export class Logger {
   public static initializeLogger(LARA: LaraGlobalType,
                                  username: string,
-                                 role: string,
+                                 role: Role,
                                  classHash: string,
                                  teacherEdition: boolean,
                                  sequence: string | undefined,
@@ -96,7 +97,7 @@ export class Logger {
 
   private LARA: LaraGlobalType;
   private username: string;
-  private role: string;
+  private role: Role;
   private classHash: string;
   private session: string;
   private appMode: string;
@@ -109,7 +110,7 @@ export class Logger {
 
   private constructor(LARA: LaraGlobalType,
                       username: string,
-                      role: string,
+                      role: Role,
                       classHash: string,
                       teacherEdition: boolean,
                       sequence: string | undefined,

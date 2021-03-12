@@ -1,4 +1,4 @@
-import { dexieStorage } from "./dexie-storage";
+import { dexieStorage } from "./storage/dexie-storage";
 import { OfflineManifest, OfflineManifestActivity } from "./types";
 
 export interface OfflineManifestAuthoringData {

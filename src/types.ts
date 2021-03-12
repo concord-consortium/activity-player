@@ -1,3 +1,5 @@
+import { Role } from "./student-info";
+
 export type Mode = "runtime" | "authoring" | "report";
 
 export interface IframePhone {
@@ -283,7 +285,7 @@ export interface LogMessage {
   application: string;
   run_remote_endpoint?: string;
   username: string;
-  role: string;
+  role: Role;
   classHash: string;
   session: string;
   appMode: string;
