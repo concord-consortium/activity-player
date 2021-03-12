@@ -1,5 +1,5 @@
 import Dexie from "dexie";
-import { OfflineActivity, LogMessage } from "./types";
+import { OfflineActivity, LogMessage } from "../types";
 import { IIndexedDBAnswer } from "./storage-facade";
 
 // We need to ensure a version match between data stored and exported

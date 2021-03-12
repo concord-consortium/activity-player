@@ -1,5 +1,5 @@
 import React from "react";
-import { Storage } from "../../storage-facade";
+import { getStorage } from "../../storage/storage-facade";
 
 import "./completion-export-answers.scss";
 
@@ -16,7 +16,8 @@ export class CompletionExportAnswers extends React.PureComponent<IProps, IState>
     this.state = {activityJSON: "", filename: "activity"};
   }
   async componentDidMount() {
-    const activityJSONComplete = await Storage.exportActivityToJSON();
+    const storage = await getStorage();
+    const activityJSONComplete = await storage.exportActivityToJSON();
     const filename = activityJSONComplete.filename;
     this.setState({ activityJSON: JSON.stringify(activityJSONComplete), filename });
   }

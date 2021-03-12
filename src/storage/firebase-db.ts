@@ -11,11 +11,11 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
 // import "firebase/database"; // TODO: add if we want to use for testing if connected
-import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal-api";
-import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
-import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "./types";
-import { queryValueBoolean } from "./utilities/url-query";
-import { RequestTracker } from "./utilities/request-tracker";
+import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "../portal-api";
+import { refIdToAnswersQuestionId } from "../utilities/embeddable-utils";
+import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "../types";
+import { queryValueBoolean } from "../utilities/url-query";
+import { RequestTracker } from "../utilities/request-tracker";
 import { docToWrappedAnswer, IWrappedDBAnswer } from "./storage-facade";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
@@ -127,7 +127,18 @@ export const signInWithToken = async (rawFirestoreJWT: string) => {
   return app.auth().signInWithCustomToken(rawFirestoreJWT);
 };
 
-export const setPortalData = (_portalData: IPortalData | null) => {
+export const signOut = async() =>{
+  try {
+    await app.auth().signOut();
+  }
+  catch(e) {
+    // maybe we weren't signed in?
+    console.error("unable to signout from FireStore:");
+    console.error(e);
+  }
+};
+
+export const setPortalData = (_portalData: IPortalData | IAnonymousPortalData | null) => {
   portalData = _portalData;
 };
 
@@ -137,9 +148,6 @@ export const getPortalData = (): IPortalData | IAnonymousPortalData | null => {
   return portalData;
 };
 
-export const setAnonymousPortalData = (_portalData: IAnonymousPortalData) => {
-  portalData = _portalData;
-};
 
 type DocumentsListener = (docs: firebase.firestore.DocumentData[]) => void;
 
