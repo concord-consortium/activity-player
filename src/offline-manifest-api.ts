@@ -1,7 +1,6 @@
-import { DexieStorage } from "./dexie-storage";
+import { dexieStorage } from "./dexie-storage";
 import { OfflineManifest, OfflineManifestActivity } from "./types";
 
-const dexie = new DexieStorage();
 export interface OfflineManifestAuthoringData {
   activities: OfflineManifestActivity[];
   cacheList: string[]
@@ -118,14 +117,14 @@ export const mergeOfflineManifestWithAuthoringData = (offlineManifest: OfflineMa
 export const saveOfflineManifestToOfflineActivities = async (offlineManifest: OfflineManifest) => {
   const promises = offlineManifest.activities.map(async (offlineManifestActivity) => {
     const {name, url} = offlineManifestActivity;
-    const offlineActivity = await dexie.offlineActivities.get({url});
+    const offlineActivity = await dexieStorage.offlineActivities.get({url});
     if (offlineActivity) {
-      await dexie.offlineActivities.update(url, {name, url});
+      await dexieStorage.offlineActivities.update(url, {name, url});
     } else {
-      await dexie.offlineActivities.put({name, url});
+      await dexieStorage.offlineActivities.put({name, url});
     }
   });
   await Promise.all(promises);
 };
 
-export const getOfflineActivities = async () => await dexie.offlineActivities.toArray();
+export const getOfflineActivities = async () => await dexieStorage.offlineActivities.toArray();

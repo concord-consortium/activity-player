@@ -1,6 +1,7 @@
 import { queryValue } from "../utilities/url-query";
 import { Storage } from "../storage-facade";
 import { IPortalData, firebaseAppName } from "../portal-api";
+import { getResourceUrl } from "../lara-api";
 
 export const kProductionPortalReportUrl = "https://portal-report.concord.org/version/v4.1.0/index.html";
 export const kDevPortalReportUrl = "https://portal-report.concord.org/branch/master/index.html";
@@ -45,8 +46,8 @@ export const getReportUrl = () => {
   const reportLink = portalReportBaseUrl();
   const reportFirebaseApp = firebaseAppName();
   const activity = queryValue("activity");
-  const activityUrl = activity? ((activity.split(".json"))[0]).replace("api/v1/","") : "";
-  const runKey= queryValue("runKey");
+  const activityUrl = getResourceUrl(activity);
+  const runKey = queryValue("runKey");
   // Sometimes the location of the answers is overridden with a report-source param
   const answerSource = queryValue("report-source") || window.location.hostname;
   const sourceKey = activityUrl ? makeSourceKey(activityUrl) : window.location.hostname;

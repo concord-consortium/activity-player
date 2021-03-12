@@ -3,15 +3,8 @@ import { Activity, Sequence } from "./types";
 import { rewriteModelsResourcesUrls } from "./utilities/activity-utils";
 import { queryValue } from "./utilities/url-query";
 
-export const getResourceUrl = () => {
-  const sequenceUrl = queryValue("sequence");
-  const activityUrl = queryValue("activity");
-
-  const resourceUrl = sequenceUrl ? sequenceUrl : activityUrl;
-  if (!resourceUrl) {
-    return "";
-  }
-
+export const getResourceUrl = (url?: string) => {
+  const resourceUrl = url ?? queryValue("sequence") ?? queryValue("activity") ?? "";
   return resourceUrl.split(".json")[0].replace("api/v1/","");
 };
 

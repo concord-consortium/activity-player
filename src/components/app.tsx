@@ -7,7 +7,7 @@ import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
 import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue, getAllUrlsInActivity } from "../utilities/activity-utils";
-import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
+import { getActivityDefinition, getResourceUrl, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
@@ -213,7 +213,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const {offlineManifestId, offlineManifestAuthoringId, loadingOfflineManifest} = this.state;
+      const {offlineMode, offlineManifestId, offlineManifestAuthoringId, loadingOfflineManifest} = this.state;
 
       let offlineManifestAuthoringData: OfflineManifestAuthoringData | undefined;
       if (offlineManifestAuthoringId) {
@@ -242,9 +242,10 @@ export class App extends React.PureComponent<IProps, IState> {
       }
 
       let activity: Activity | undefined = undefined;
-      const activityPath = queryValue("activity") || (this.state.offlineMode ? undefined : kDefaultActivity);
+      const activityPath = queryValue("activity") || (offlineMode ? undefined : kDefaultActivity);
       if (activityPath) {
-        TrackOfflineActivityId(activityPath);
+        // initial call to set the id in the storage facade
+        this.trackOfflineActivityId(activityPath);
         activity = await getActivityDefinition(activityPath);
         if (offlineManifestAuthoringId) {
           this.addActivityToOfflineManifest(offlineManifestAuthoringId, activity, activityPath);
@@ -289,7 +290,12 @@ export class App extends React.PureComponent<IProps, IState> {
 
       Modal.setAppElement("#app");
 
-      Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint);
+      Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint, offlineMode);
+
+      // call this again now that the logger is available
+      if (activityPath) {
+        this.trackOfflineActivityId(activityPath);
+      }
 
       const idleDetector = new IdleDetector({ idle: Number(kMaxIdleTime), onIdle: this.handleIdleness });
       idleDetector.start();
@@ -645,12 +651,19 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleSelectOfflineActivity = (selectedActivity: Activity, url: string) => {
     this.setState({ activity: selectedActivity });
-    TrackOfflineActivityId(url);
+    this.trackOfflineActivityId(url);
     if (this.state.offlineManifestAuthoringId) {
       this.addActivityToOfflineManifest(this.state.offlineManifestAuthoringId, selectedActivity, url);
     }
   }
 
   private handleShowOfflineActivities = () => this.setState({ activity: undefined });
+
+  private trackOfflineActivityId(apiUrl: string) {
+    const resourceUrl = getResourceUrl(apiUrl);
+    // TODO: use resourceUrl instead of apiUrl in storage facade
+    TrackOfflineActivityId(apiUrl);
+    Logger.setActivity(resourceUrl);
+  }
 
 }
