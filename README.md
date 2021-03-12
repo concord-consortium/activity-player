@@ -114,10 +114,10 @@ Inside of your `package.json` file:
 * page={n|"page_[id]"}: load page n, where 0 is the activity introduction, 1 is the first page and [id] in "page_[id]" refers to an internal integer id of the page model exported from LARA.
 * themeButtons:         whether to show theme buttons
 * mode={mode}:          sets mode. Values: "teacher-edition"
-* portalReport:         override default base URL for the student report. https://activity-player.concord.org/ and https://activity-player.concord.org/version/*, default to a versioned URL defined as a constant in the code `kProductionPortalReportUrl`. Every other url defaults to the master branch of the portal-report.
+* portalReport:         override default base URL for the student report. `https://activity-player.concord.org/`, `https://activity-player-offline.concord.org/`, `https://activity-player.concord.org/version/*`, and `https://activity-player-offline.concord.org/version/*`, default to a versioned URL defined as a constant in the code `kProductionPortalReportUrl`. Every other url defaults to the master branch of the portal-report.
 
 #### User data loading:
-* firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ without a path, defaults to `report-service-pro` every other url `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
+* firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ and https://activity-player-offline.concord.org/ without a path, defaults to `report-service-pro` every other url defaults to `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
 * token={n}:         set by the portal when launching external activity, to authenticate with portal API
 * domain={n}:        set by the portal when launching external activity
 * report-source={id}: which source collection to save data to in firestore (defaults to own hostname)
@@ -130,7 +130,7 @@ Inside of your `package.json` file:
 
 ### Offline Manifests
 
-An offline manifest is a JSON file containing both a list of activities and a list of GET urls to cache offline.  It is used to enable offline use of the Activity Player.
+An offline manifest is a JSON file containing both a list of activities and a list of GET urls to cache offline.  It is used to enable offline use of the Activity Player.  Offline manifests can only be used, created or edited when the activity player is run in offline mode, which is determined by the window.location.host value.  To run in offline mode in development use the `npm run start:offline` script.
 
 ### Using an Offline Manifest
 
@@ -138,7 +138,7 @@ Offline manifests are specified using a `offlineManifest=` query parameter that 
 
 When running locally (after running `npm start`) load the following url:
 
-http://localhost:11000/?offlineManifest=smoke-test
+http://localhost:11002/?offlineManifest=smoke-test
 
 #### Creating an Offline Manifest
 
@@ -146,7 +146,7 @@ Offline manifests can either be authored by hand or more easily by enabling "aut
 
 To enable authoring mode launch the Activity Player with the `setOfflineManifestAuthoringId=` query parameter set to the offline manifest name.  As an example when running locally using `npm start` you would use the following url:
 
-http://localhost:11000/?setOfflineManifestAuthoringId=example
+http://localhost:11002/?setOfflineManifestAuthoringId=example
 
 to turn on authoring mode and to set the offline manifest name to `example`.  This setting is stored in localstorage so it persists across page loads so you **do not** need to keep the parameter in the query string to keep authoring mode enabled.
 
@@ -158,7 +158,7 @@ Once you have loaded all the activities you want to add to the offline manifest 
 
 If you have a offline manifest saved in the offline-manifests folder named `example` you would load the following URL(after running `npm start`):
 
-http://localhost:11000/?setOfflineManifestAuthoringId=example&offlineManifest=example
+http://localhost:11002/?setOfflineManifestAuthoringId=example&offlineManifest=example
 
 At this point you can either add new activities by manually adding an `activity=` url parameter or update the current cache list by launching an existing activity from the offline activity list.  Once you have completed the edits you can download the json and replace the file in the `src/public/offline-manifests` folder.
 
@@ -184,7 +184,9 @@ The Activity Player json loader code rewrites any urls it finds that fit the fol
 
 ### Offline Mode
 
-The application can be placed in "offline" mode by specifying a `offline=true` query parameter.  This currently causes a header nav to display.  In the future this flag will also control how student data is saved and sent to the portal.
+The application can be placed in "offline" mode by running it from an offline host.  The production offline host is https://activity-player-offline.concord.org/ and the development host is https://localhost:11002.  To run in offline mode in development use the `npm run start:offline` script.
+
+Offline mode currently causes a header nav to display.  In the future this flag will also control how student data is saved and sent to the portal.
 
 The installed PWA will use `/?offline=true` as its start_url in the `manifest.json` file.  This will cause all desktop launches to run in offline mode.  In order to use the PWA version an offline manifest must first be installed using the following combinations of query parameters: `?offline=true&offlineManifest=<id>`.  An optional parameter of `confirmOfflineManifestInstall=true` can also be used to not auto close the loading dialog and instead show a message that everything is installed once all the assets are downloaded into the cache.
 

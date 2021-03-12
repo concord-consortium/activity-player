@@ -3,6 +3,7 @@ import superagent from "superagent";
 import { v4 as uuidv4 } from "uuid";
 import { queryValue, queryValueBoolean, setQueryValue } from "./utilities/url-query";
 import { getResourceUrl } from "./lara-api";
+import { getCanonicalHostname, getHostnameWithMaybePort, isProductionOrigin } from "./utilities/host-utils";
 import { FirebaseAppName } from "./storage/firebase-db";
 
 interface PortalClassOffering {
@@ -209,7 +210,7 @@ const getPortalJWTWithBearerToken = (basePortalUrl: string, rawToken: string) =>
 };
 
 // The default firebase app name is based on the URL:
-// only https://activity-player.concord.org defaults to report-service-pro
+// only [production-origin] with no path defaults to report-service-pro
 // everything else defaults to report-service-dev
 //
 // The default can be overridden with a firebaseApp URL param
@@ -236,7 +237,7 @@ export const firebaseAppName = ():FirebaseAppName => {
   // According to the spec an empty path like https://activity-player.concord.org
   // will still have a pathname of "/", but just to be safe this checks for the
   // falsey pathname
-  if(origin === "https://activity-player.concord.org" &&
+  if(isProductionOrigin(origin) &&
      (!pathname || pathname === "/")) {
     _firebaseAppName = "report-service-pro";
   } else {
@@ -425,10 +426,6 @@ export const fetchPortalData = async (opts: IFetchPortalDataOpts = fetchPortalDa
   // query parameter.
   const sourceKey = queryValue("report-source") || parseUrl(offeringData.activityUrl.toLowerCase()).hostname;
 
-  // for the tool id we want to distinguish activity-player branches, incase this is ever helpful for
-  // dealing with mis-matched data when we load data in originally saved on another branch.
-  // This is currently unused for the purpose of saving and loading data
-  const toolId = window.location.hostname + window.location.pathname;
   const fullName = classInfo.students.find(s => s.id.toString() === portalJWT.uid.toString())?.fullName;
 
   const rawPortalData: IPortalData = {
@@ -439,7 +436,7 @@ export const fetchPortalData = async (opts: IFetchPortalDataOpts = fetchPortalDa
     platformId: firebaseJWT.claims.platform_id,
     platformUserId: firebaseJWT.claims.platform_user_id.toString(),
     contextId: classInfo.classHash,
-    toolId,
+    toolId: getToolId(),
     resourceUrl: getResourceUrl(),
     fullName,
     learnerKey: firebaseJWT.claims.user_type === "learner"
@@ -473,19 +470,22 @@ export const anonymousPortalData = (preview: boolean) => {
     }
   }
 
-  const hostname = window.location.hostname;
-  const toolId = hostname + window.location.pathname;
   const rawPortalData: IAnonymousPortalData = {
     type: "anonymous",
     userType: "learner",
     runKey,
     resourceUrl: getResourceUrl(),
-    toolId,
+    toolId: getToolId(),
     toolUserId: "anonymous",
     database: {
       appName: firebaseAppName(),
-      sourceKey: hostname
+      sourceKey: getCanonicalHostname()
     }
   };
   return rawPortalData;
 };
+
+// for the tool id we want to distinguish activity-player hosts and branches, incase this is ever helpful for
+// dealing with mis-matched data when we load data in originally saved on another branch.
+// This is currently unused for the purpose of saving and loading data
+export const getToolId = () => getHostnameWithMaybePort() + window.location.pathname;

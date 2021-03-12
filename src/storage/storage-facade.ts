@@ -2,7 +2,7 @@
 import * as FirebaseImp from "./firebase-db";
 import { fetchPortalData, IAnonymousPortalData, IPortalData } from "../portal-api";
 import { IAnonymousMetadataPartial, IExportableAnswerMetadata } from "../types";
-import { DexieStorage } from "./dexie-storage";
+import { dexieStorage, kOfflineAnswerSchemaVersion } from "./dexie-storage";
 import { refIdToAnswersQuestionId } from "../utilities/embeddable-utils";
 
 export interface IInitStorageParams {
@@ -59,9 +59,6 @@ export const docToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
   };
   return wrappedAnswer;
 };
-
-// We need to ensure a version match between data stored and exported
-export const kOfflineAnswerSchemaVersion = 5;
 
 const activityExportFileName = (activity: string) => {
   const d = new Date();
@@ -122,7 +119,6 @@ class FireStoreStorageProvider implements IStorageInterface {
     this.setPortalData(portalData);
     try {
       if(portalData.type === "authenticated") {
-        debugger;
         const token = portalData.database.rawFirebaseJWT;
         await FirebaseImp.initializeDB({
           name: portalData.database.appName,
@@ -195,13 +191,11 @@ class FireStoreStorageProvider implements IStorageInterface {
 
 
 class DexieStorageProvider implements IStorageInterface {
-  indexDBConnection: DexieStorage;
   portalData: IPortalData|IAnonymousPortalData;
   haveFireStoreConnection: boolean;
 
   constructor(){
     this.haveFireStoreConnection = false;
-    this.indexDBConnection = new DexieStorage();
   }
 
   async initializeDB (initializer: IDBInitializer) {
@@ -217,7 +211,7 @@ class DexieStorageProvider implements IStorageInterface {
   createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     const idxDBAnswer = answer as IIndexedDBAnswer;
     idxDBAnswer.activity = _currentOfflineActivityId;
-    this.indexDBConnection.answers.put(idxDBAnswer);
+    dexieStorage.answers.put(idxDBAnswer);
   }
 
   getPortalData() {
@@ -228,7 +222,7 @@ class DexieStorageProvider implements IStorageInterface {
     console.log("WatchAllAnsweres called");
     console.log(`current activity: ${_currentOfflineActivityId}`);
 
-    const foundAnswers = this.indexDBConnection
+    const foundAnswers = dexieStorage
       .answers
       .where("activity")
       .equals(_currentOfflineActivityId)
@@ -243,7 +237,7 @@ class DexieStorageProvider implements IStorageInterface {
   watchAnswer(embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void) {
     const questionId = refIdToAnswersQuestionId(embeddableRefId);
     const getAnswerFromIndexDB = (qID: string) => {
-      const foundAnswers = this.indexDBConnection
+      const foundAnswers = dexieStorage
         .answers
         .where("question_id")
         .equals(qID).toArray();
@@ -269,7 +263,7 @@ class DexieStorageProvider implements IStorageInterface {
     const activityShortId = currentActivityId.indexOf("/") > -1 ? currentActivityId.substr(currentActivityId.lastIndexOf("/")+1).replace(".json", "") : currentActivityId;
     const filename = activityExportFileName(activityShortId);
     const getAllAnswersFromIndexDB = () => {
-      const foundAnswers = this.indexDBConnection
+      const foundAnswers = dexieStorage
         .answers
         .where("activity")
         .equals(currentActivityId).toArray();
@@ -323,7 +317,7 @@ class DexieStorageProvider implements IStorageInterface {
           const idxDBAnswer = answer as IIndexedDBAnswer;
           // TODO: what happens if the answers loaded are for a different activity?
           idxDBAnswer.activity = answer.activity;
-          this.indexDBConnection.answers.put(idxDBAnswer);
+          dexieStorage.answers.put(idxDBAnswer);
         });
         return true;
       } else {
@@ -340,7 +334,7 @@ class DexieStorageProvider implements IStorageInterface {
     if (getCachedLearnerPluginState(pluginId)) {
       return getCachedLearnerPluginState(pluginId);
     }
-    const record = await this.indexDBConnection.pluginStates.get({pluginId});
+    const record = await dexieStorage.pluginStates.get({pluginId});
     const state = record?.state || null;
     setCachedLearnerPluginState(pluginId, state);
     return state;
@@ -349,7 +343,7 @@ class DexieStorageProvider implements IStorageInterface {
   async setLearnerPluginState(pluginId: number, state: string){
     const key = localStoragePluginStateKey(pluginId);
     localStorage.setItem(key,state);
-    this.indexDBConnection.pluginStates.put({pluginId, state});
+    dexieStorage.pluginStates.put({pluginId, state});
     setCachedLearnerPluginState(pluginId, state);
     return state;
   }
@@ -374,7 +368,7 @@ class DexieStorageProvider implements IStorageInterface {
           await fsProvider.initializeDB({ name: appName, preview: false, offline: false, portalData});
           this.haveFireStoreConnection = true;
         }
-        const answers = await this.indexDBConnection
+        const answers = await dexieStorage
           .answers
           .where("activity")
           .equals(_currentOfflineActivityId).toArray();
@@ -412,5 +406,3 @@ export const initStorage = async (config: IInitStorageParams) => {
 export const getStorage = () => {
   return storageInstance;
 };
-
-

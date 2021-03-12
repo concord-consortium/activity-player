@@ -7,7 +7,7 @@ import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
 import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue, getAllUrlsInActivity } from "../utilities/activity-utils";
-import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
+import { getActivityDefinition, getResourceUrl, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
@@ -38,6 +38,8 @@ import { OfflineNav } from "./offline-nav";
 import { OfflineManifestAuthoringNav } from "./offline-manifest-authoring-nav";
 import { StudentInfo } from "../student-info";
 import { StudentInfoModal } from "./student-info-modal";
+import { isNetworkConnected, monitorNetworkConnection } from "../utilities/network-connection";
+import { getHostnameWithMaybePort, isOfflineHost } from "../utilities/host-utils";
 
 import "./app.scss";
 
@@ -84,6 +86,7 @@ interface IState {
   offlineManifestAuthoringCacheList: string[];
   showOfflineManifestInstallConfirmation: boolean;
   showEditUserName: boolean;
+  networkConnected: boolean;
 }
 interface IProps {}
 
@@ -92,18 +95,21 @@ export class App extends React.PureComponent<IProps, IState> {
   private LARA: LaraGlobalType;
   private activityPageContentRef = React.createRef<ActivityPageContent>();
   private studentInfo: StudentInfo;
+  private unmonitorNetworkConnection?: () => void;
 
   public constructor(props: IProps) {
     super(props);
 
-    // set the offline manifest authoring localstorage item if it exists in the params and then read from localstorage
-    // this is done in the constructor as the state value is needed in the UNSAFE_componentWillMount method
-    setOfflineManifestAuthoringId(queryValue("setOfflineManifestAuthoringId"));
-    const offlineManifestAuthoringId = getOfflineManifestAuthoringId();
-    const offlineManifestId = queryValue("offlineManifest");
-    const loadingOfflineManifest = !!offlineManifestId;
+    const offlineMode = isOfflineHost(getHostnameWithMaybePort());
 
-    const offlineMode = (queryValue("offline") === "true") || !!offlineManifestAuthoringId || !!offlineManifestId;
+    if (offlineMode) {
+      // set the offline manifest authoring localstorage item if it exists in the params and then read from localstorage
+      // this is done in the constructor as the state value is needed in the UNSAFE_componentWillMount method
+      setOfflineManifestAuthoringId(queryValue("setOfflineManifestAuthoringId"));
+    }
+    const offlineManifestAuthoringId = offlineMode ? getOfflineManifestAuthoringId() : undefined;
+    const offlineManifestId = offlineMode ? queryValue("offlineManifest") : undefined;
+    const loadingOfflineManifest = !!offlineManifestId;
 
     this.state = {
       currentPage: 0,
@@ -124,7 +130,8 @@ export class App extends React.PureComponent<IProps, IState> {
       showOfflineManifestInstallConfirmation: queryValue("confirmOfflineManifestInstall") === "true",
       offlineManifestAuthoringId,
       offlineManifestId,
-      showEditUserName: false
+      showEditUserName: false,
+      networkConnected: isNetworkConnected()
     };
   }
 
@@ -140,6 +147,9 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   async UNSAFE_componentWillMount() {
+    // start monitoring the network connection
+    this.unmonitorNetworkConnection = monitorNetworkConnection((networkConnected) => this.setState({networkConnected}));
+
     // only enable the service worker in offline mode (or in authoring mode which automatically turns on offline mode)
     const enableServiceWorker = this.state.offlineMode;
 
@@ -214,7 +224,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const {offlineManifestId, offlineManifestAuthoringId, loadingOfflineManifest} = this.state;
+      const {offlineMode, offlineManifestId, offlineManifestAuthoringId, loadingOfflineManifest} = this.state;
 
       let offlineManifestAuthoringData: OfflineManifestAuthoringData | undefined;
       if (offlineManifestAuthoringId) {
@@ -243,9 +253,10 @@ export class App extends React.PureComponent<IProps, IState> {
       }
 
       let activity: Activity | undefined = undefined;
-      const activityPath = queryValue("activity") || (this.state.offlineMode ? undefined : kDefaultActivity);
+      const activityPath = queryValue("activity") || (offlineMode ? undefined : kDefaultActivity);
       if (activityPath) {
-        TrackOfflineActivityId(activityPath);
+        // initial call to set the id in the storage facade
+        this.trackOfflineActivityId(activityPath);
         activity = await getActivityDefinition(activityPath);
         if (offlineManifestAuthoringId) {
           this.addActivityToOfflineManifest(offlineManifestAuthoringId, activity, activityPath);
@@ -291,12 +302,23 @@ export class App extends React.PureComponent<IProps, IState> {
 
       Modal.setAppElement("#app");
 
-      Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint);
+      Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint, offlineMode);
+
+      // call this again now that the logger is available
+      if (activityPath) {
+        this.trackOfflineActivityId(activityPath);
+      }
 
       const idleDetector = new IdleDetector({ idle: Number(kMaxIdleTime), onIdle: this.handleIdleness });
       idleDetector.start();
     } catch (e) {
       console.warn(e);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.unmonitorNetworkConnection) {
+      this.unmonitorNetworkConnection();
     }
   }
 
@@ -647,12 +669,19 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleSelectOfflineActivity = (selectedActivity: Activity, url: string) => {
     this.setState({ activity: selectedActivity });
-    TrackOfflineActivityId(url);
+    this.trackOfflineActivityId(url);
     if (this.state.offlineManifestAuthoringId) {
       this.addActivityToOfflineManifest(this.state.offlineManifestAuthoringId, selectedActivity, url);
     }
   }
 
   private handleShowOfflineActivities = () => this.setState({ activity: undefined });
+
+  private trackOfflineActivityId(apiUrl: string) {
+    const resourceUrl = getResourceUrl(apiUrl);
+    // TODO: use resourceUrl instead of apiUrl in storage facade
+    TrackOfflineActivityId(apiUrl);
+    Logger.setActivity(resourceUrl);
+  }
 
 }

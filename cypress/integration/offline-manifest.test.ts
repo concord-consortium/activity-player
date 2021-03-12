@@ -1,3 +1,7 @@
+/*
+
+DISABLED FOR NOW: NEED TO FIGURE OUT SEPARATE OFFLINE CYPRESS RUN
+
 import ActivityPage from "../support/elements/activity-page";
 
 const activityPage = new ActivityPage;
@@ -56,3 +60,5 @@ context("Test using offline manifests", () => {
     });
   });
 });
+
+*/
