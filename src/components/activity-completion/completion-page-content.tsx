@@ -17,7 +17,6 @@ interface IProps {
   activityName: string;
   onPageChange: (page: number) => void;
   showStudentReport: boolean;
-  thumbnailURL: string | null;
   onOpenReport?: () => void;
   sequence?: Sequence;
   activityIndex?: number;
@@ -26,7 +25,7 @@ interface IProps {
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
-  const { activity, activityName, onPageChange, showStudentReport, thumbnailURL,
+  const { activity, activityName, onPageChange, showStudentReport,
     sequence, activityIndex, onActivityChange, onShowSequence } = props;
 
   const [answers, setAnswers] = useState<any>();
@@ -92,15 +91,16 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const nextActivityThumbnailURL = !isLastActivityInSequence && sequence?.activities[activityNum + 1].thumbnail_url;
   const nextActivityDescription = !isLastActivityInSequence &&
                                   renderHTML(sequence?.activities[activityNum + 1].description || "");
-  const nextStepMainContentTitle = sequence ? (sequence.display_title !== "" ? sequence.display_title : "the sequence")
-                                            : activityTitle;
   let progressText = "";
 
   if (sequence) {
     const sequenceComplete = sequenceProgress(sequence);
     if (isLastActivityInSequence) {
-      progressText = isActivityComplete ? completedActivityProgressText + ` You have completed all your work for this module!`
-                                        : incompleteActivityProgressText;
+      progressText = sequenceComplete && isActivityComplete 
+                       ? completedActivityProgressText + ` You have completed all your work for this module!`
+                       : isActivityComplete
+                           ? completedActivityProgressText
+                           : incompleteActivityProgressText;
     } else {
       progressText = isActivityComplete ? completedActivityProgressText : incompleteActivityProgressText;
     }
