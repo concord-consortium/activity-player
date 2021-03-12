@@ -6,7 +6,7 @@ import { SequenceNav } from "./activity-header/sequence-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue, getAllUrlsInActivity } from "../utilities/activity-utils";
+import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue, getAllUrlsInActivity, isNotSampleActivityUrl } from "../utilities/activity-utils";
 import { getActivityDefinition, getResourceUrl, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
@@ -642,8 +642,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private addActivityToOfflineManifest = (offlineManifestAuthoringId: string, activity: Activity, url: string) => {
-    const isExternalUrl = /https?:\/\//.test(url);  // test for internal demo files
-    if (offlineManifestAuthoringId && isExternalUrl) {
+    if (offlineManifestAuthoringId && isNotSampleActivityUrl(url)) {
       this.setState(prevState => {
         let {offlineManifestAuthoringActivities} = prevState;
         const {offlineManifestAuthoringCacheList} = prevState;

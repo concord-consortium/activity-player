@@ -214,3 +214,5 @@ export const getAllUrlsInActivity = (activity: Activity, urls: string[] = []) =>
   });
   return urls;
 };
+
+export const isNotSampleActivityUrl = (url: string) => /https?:\/\//.test(url) || /^offline-activities\//.test(url);

@@ -1,6 +1,6 @@
 import { sampleActivities, sampleSequences } from "./data";
 import { Activity, Sequence } from "./types";
-import { rewriteModelsResourcesUrls } from "./utilities/activity-utils";
+import { isNotSampleActivityUrl, rewriteModelsResourcesUrls } from "./utilities/activity-utils";
 import { queryValue } from "./utilities/url-query";
 
 export const getResourceUrl = (url?: string) => {
@@ -10,35 +10,31 @@ export const getResourceUrl = (url?: string) => {
 
 export const getActivityDefinition = (activity: string): Promise<Activity> => {
   return new Promise((resolve, reject) => {
-    const urlRegex = /^(https:|http:)\/\/\S+/;
-    if (activity.match(urlRegex)) {
-      getActivityDefinitionFromLara(activity).then(resolve);
+    if (isNotSampleActivityUrl(activity)) {
+      fetchActivityDefinition(activity).then(resolve);
+    } else if (sampleActivities[activity]) {
+      setTimeout(() => resolve(rewriteModelsResourcesUrls(sampleActivities[activity])), 250);
     } else {
-      if (sampleActivities[activity]) {
-        setTimeout(() => resolve(rewriteModelsResourcesUrls(sampleActivities[activity])), 250);
-      } else {
-        reject(`No sample activity matches ${activity}`);
-      }
+      reject(`No sample activity matches ${activity}`);
     }
   });
 };
 
-const getActivityDefinitionFromLara = (activityUrl: string): Promise<Activity> => {
+const fetchActivityDefinition = (activityUrl: string): Promise<any> => {
   return new Promise((resolve, reject) => {
-    fetch(activityUrl)
-    .then(response => {
-      if (response.status !== 200) {
-        reject(`Errored fetching ${activityUrl}. Status Code: ${response.status}`);
-        return;
-      }
-
-      response.json().then(function(data) {
-        resolve(rewriteModelsResourcesUrls(data));
+    return fetch(activityUrl)
+      .then(response => {
+        if (response.status !== 200) {
+          reject(`Errored fetching ${activityUrl}. Status Code: ${response.status}`);
+          return;
+        }
+        response.json()
+          .then((data) => resolve(rewriteModelsResourcesUrls(data)))
+          .catch(reject);
+      })
+      .catch(function(err) {
+        reject(`Errored fetching ${activityUrl}. ${err}`);
       });
-    })
-    .catch(function(err) {
-      reject(`Errored fetching ${activityUrl}. ${err}`);
-    });
   });
 };
 

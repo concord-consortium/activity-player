@@ -138,7 +138,7 @@ Offline manifests are specified using a `offlineManifest=` query parameter that 
 
 When running locally (after running `npm start`) load the following url:
 
-http://localhost:11002/?offlineManifest=smoke-test
+http://localhost:11002/?offlineManifest=smoke-test-v1
 
 #### Creating an Offline Manifest
 
