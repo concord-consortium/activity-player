@@ -279,22 +279,11 @@ export const getLearnerPluginStateDocId = (pluginId: number) => {
   return docId.replace(/[.$[\]#/]/g, "_");
 };
 
-// A write-though cache of the learner plugin states is kept as the plugin's learner state is only loaded
-// once at app startup but it is supplied on the plugin init which happens on any page change.
-
-// TODO: change to watch the learner state so that it works across sessions and not just on the same page
-
-const cachedLearnerPluginState: Record<number, string|null> = {};
-export const getCachedLearnerPluginState = (pluginId: number) => cachedLearnerPluginState[pluginId] || null;
 
 export const getLearnerPluginState = async (pluginId: number) => {
   const docId = getLearnerPluginStateDocId(pluginId);
   if (docId === undefined) {
     return null;
-  }
-
-  if (cachedLearnerPluginState[pluginId]) {
-    return cachedLearnerPluginState[pluginId];
   }
 
   let state: string|null = null;
@@ -307,8 +296,6 @@ export const getLearnerPluginState = async (pluginId: number) => {
 
     state = data?.state || null;
   } catch (e) {} // eslint-disable-line no-empty
-
-  cachedLearnerPluginState[pluginId] = state;
 
   return state;
 };
@@ -357,7 +344,7 @@ export const setLearnerPluginState = async (pluginId: number, state: string): Pr
     .doc(learnerPluginStatePath(docId))
     .set(learnerPluginState);
 
-  cachedLearnerPluginState[pluginId] = state;
+
 
   return state;
 };

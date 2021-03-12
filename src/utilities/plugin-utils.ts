@@ -1,6 +1,6 @@
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { Optional } from "utility-types";
-import { getStorage } from "../storage/storage-facade";
+import { getStorage, getCachedLearnerPluginState} from "../storage/storage-facade";
 import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
 import { Activity, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
@@ -129,7 +129,7 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
     pluginId,
     embeddablePluginId: null,
     authoredState: embeddable.plugin?.author_data || null,
-    learnerState: storage.getCachedLearnerPluginState(pluginId),
+    learnerState: getCachedLearnerPluginState(pluginId),
     learnerStateSaveUrl: "",
     container: embeddableContainer,
     componentLabel: pluginLabel,

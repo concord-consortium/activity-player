@@ -12,7 +12,7 @@ export class DexieStorage extends Dexie {
   logs: Dexie.Table<LogMessage, number>;
   offlineActivities: Dexie.Table<OfflineActivity, string>;
   answers: Dexie.Table<IIndexedDBAnswer, string>; // number = type of the primkey
-  //...other tables goes here...
+  pluginStates: Dexie.Table<{pluginId: number, state: string|null}>;
 
   constructor () {
       super("ActivityPlayer");
@@ -21,7 +21,7 @@ export class DexieStorage extends Dexie {
       });
       this.version(kOfflineAnswerSchemaVersion).stores({
           answers: "id, question_id, activity",
-          //...other tables goes here...
+          pluginStates: "&pluginId"
       });
       this.version(3).stores({
         offlineActivities: "&url"  // unique by url
