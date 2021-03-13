@@ -15,7 +15,7 @@ import { CompletionPageContent } from "./activity-completion/completion-page-con
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { IPortalData, firebaseAppName } from "../portal-api";
 import { Activity, IEmbeddablePlugin, OfflineManifest, OfflineManifestActivity, Sequence } from "../types";
-import { TrackOfflineActivityId, initStorage } from "../storage/storage-facade";
+import { TrackOfflineResourceUrl, initStorage } from "../storage/storage-facade";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -253,13 +253,21 @@ export class App extends React.PureComponent<IProps, IState> {
       }
 
       let activity: Activity | undefined = undefined;
+      let resourceUrl: string | undefined = undefined;
       const activityPath = queryValue("activity") || (offlineMode ? undefined : kDefaultActivity);
       if (activityPath) {
+        resourceUrl = getResourceUrl(activityPath);
+
         // initial call to set the id in the storage facade
-        this.trackOfflineActivityId(activityPath);
-        activity = await getActivityDefinition(activityPath);
+        this.trackOfflineResourceUrl(resourceUrl);
+
+        // allow overriding the location of the activity definition this way we
+        // can lock down the activity definition, but still use the common
+        // resourceUrl that would be used if the resource was online
+        const contentUrl = queryValue("contentUrl") || activityPath;
+        activity = await getActivityDefinition(contentUrl);
         if (offlineManifestAuthoringId) {
-          this.addActivityToOfflineManifest(offlineManifestAuthoringId, activity, activityPath);
+          this.addActivityToOfflineManifest(offlineManifestAuthoringId, activity, resourceUrl, contentUrl);
         }
       }
 
@@ -305,8 +313,8 @@ export class App extends React.PureComponent<IProps, IState> {
       Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint, offlineMode);
 
       // call this again now that the logger is available
-      if (activityPath) {
-        this.trackOfflineActivityId(activityPath);
+      if (resourceUrl) {
+        this.trackOfflineResourceUrl(resourceUrl);
       }
 
       const idleDetector = new IdleDetector({ idle: Number(kMaxIdleTime), onIdle: this.handleIdleness });
@@ -641,8 +649,9 @@ export class App extends React.PureComponent<IProps, IState> {
     this.setState({loadingOfflineManifest: false});
   }
 
-  private addActivityToOfflineManifest = (offlineManifestAuthoringId: string, activity: Activity, url: string) => {
-    if (offlineManifestAuthoringId && isNotSampleActivityUrl(url)) {
+  private addActivityToOfflineManifest = (offlineManifestAuthoringId: string, activity: Activity,
+    resourceUrl: string, contentUrl: string) => {
+    if (offlineManifestAuthoringId && isNotSampleActivityUrl(contentUrl)) {
       this.setState(prevState => {
         let {offlineManifestAuthoringActivities} = prevState;
         const {offlineManifestAuthoringCacheList} = prevState;
@@ -653,8 +662,9 @@ export class App extends React.PureComponent<IProps, IState> {
           }
         });
 
-        if (!prevState.offlineManifestAuthoringActivities.find(a => a.url === url)) {
-          offlineManifestAuthoringActivities = offlineManifestAuthoringActivities.concat({ name: activity.name, url });
+        if (!prevState.offlineManifestAuthoringActivities.find(a => a.resourceUrl === resourceUrl)) {
+          offlineManifestAuthoringActivities =
+            offlineManifestAuthoringActivities.concat({ name: activity.name, resourceUrl, contentUrl });
           setOfflineManifestAuthoringData(offlineManifestAuthoringId, {
             activities: offlineManifestAuthoringActivities,
             cacheList: offlineManifestAuthoringCacheList
@@ -666,20 +676,19 @@ export class App extends React.PureComponent<IProps, IState> {
     }
   }
 
-  private handleSelectOfflineActivity = (selectedActivity: Activity, url: string) => {
+  private handleSelectOfflineActivity = (selectedActivity: Activity, resourceUrl: string, contentUrl: string) => {
     this.setState({ activity: selectedActivity });
-    this.trackOfflineActivityId(url);
+    this.trackOfflineResourceUrl(resourceUrl);
     if (this.state.offlineManifestAuthoringId) {
-      this.addActivityToOfflineManifest(this.state.offlineManifestAuthoringId, selectedActivity, url);
+      this.addActivityToOfflineManifest(this.state.offlineManifestAuthoringId, selectedActivity,
+        resourceUrl, contentUrl);
     }
   }
 
   private handleShowOfflineActivities = () => this.setState({ activity: undefined });
 
-  private trackOfflineActivityId(apiUrl: string) {
-    const resourceUrl = getResourceUrl(apiUrl);
-    // TODO: use resourceUrl instead of apiUrl in storage facade
-    TrackOfflineActivityId(apiUrl);
+  private trackOfflineResourceUrl(resourceUrl: string) {
+    TrackOfflineResourceUrl(resourceUrl);
     Logger.setActivity(resourceUrl);
   }
 

@@ -20,15 +20,15 @@ export interface IWrappedDBAnswer {
   interactiveState: any;
 }
 
-export type IIndexedDBAnswer = IExportableAnswerMetadata & { activity: string };
+export type IIndexedDBAnswer = IExportableAnswerMetadata & { resource_url: string };
 
-export type ExportableActivity = { activity: string, filename: string, version: number, answers: IIndexedDBAnswer[] };
+export type ExportableActivity = { resource_url: string, filename: string, version: number, answers: IIndexedDBAnswer[] };
 
-export const TrackOfflineActivityId = (newId: string) => {
-  _currentOfflineActivityId = newId;
+export const TrackOfflineResourceUrl = (newId: string) => {
+  _currentOfflineResourceUrl = newId;
 };
 
-let _currentOfflineActivityId = "/testactivity.json";
+let _currentOfflineResourceUrl = "/testactivity.json";
 
 
 // A write-though cache of the learner plugin states is kept as the plugin's
@@ -210,7 +210,7 @@ class DexieStorageProvider implements IStorageInterface {
 
   createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     const idxDBAnswer = answer as IIndexedDBAnswer;
-    idxDBAnswer.activity = _currentOfflineActivityId;
+    idxDBAnswer.resource_url = _currentOfflineResourceUrl;
     dexieStorage.answers.put(idxDBAnswer);
   }
 
@@ -220,12 +220,11 @@ class DexieStorageProvider implements IStorageInterface {
 
   watchAllAnswers(callback: (wrappedAnswer: IWrappedDBAnswer[]) => void){
     console.log("WatchAllAnsweres called");
-    console.log(`current activity: ${_currentOfflineActivityId}`);
+    console.log(`current resource: ${_currentOfflineResourceUrl}`);
 
     const foundAnswers = dexieStorage
       .answers
-      .where("activity")
-      .equals(_currentOfflineActivityId)
+      .where({resource_url: _currentOfflineResourceUrl})
       .toArray();
     return foundAnswers.then((answers) => {
       console.dir(answers);
@@ -239,8 +238,8 @@ class DexieStorageProvider implements IStorageInterface {
     const getAnswerFromIndexDB = (qID: string) => {
       const foundAnswers = dexieStorage
         .answers
-        .where("question_id")
-        .equals(qID).toArray();
+        .where({resource_url: _currentOfflineResourceUrl, question_id: qID})
+        .toArray();
       return foundAnswers.then((answers) => {
         return answers[0];
       });
@@ -259,14 +258,14 @@ class DexieStorageProvider implements IStorageInterface {
   }
 
   exportActivityToJSON(activityId?: string) {
-    const currentActivityId = activityId ? activityId : _currentOfflineActivityId;
+    const currentActivityId = activityId ? activityId : _currentOfflineResourceUrl;
     const activityShortId = currentActivityId.indexOf("/") > -1 ? currentActivityId.substr(currentActivityId.lastIndexOf("/")+1).replace(".json", "") : currentActivityId;
     const filename = activityExportFileName(activityShortId);
     const getAllAnswersFromIndexDB = () => {
       const foundAnswers = dexieStorage
         .answers
-        .where("activity")
-        .equals(currentActivityId).toArray();
+        .where({resource_url: currentActivityId})
+        .toArray();
       return foundAnswers.then((answers) => {
         return answers;
       });
@@ -274,7 +273,7 @@ class DexieStorageProvider implements IStorageInterface {
 
     return getAllAnswersFromIndexDB().then((answers: IIndexedDBAnswer[] | null) => {
       // Adding an explicit variable for the exportable activity for Typescript reasons
-      const exportableActivity: ExportableActivity = { activity: currentActivityId, filename, version: kOfflineAnswerSchemaVersion, answers: [] };
+      const exportableActivity: ExportableActivity = { resource_url: currentActivityId, filename, version: kOfflineAnswerSchemaVersion, answers: [] };
       if (answers) {
         exportableActivity.answers = answers;
         return exportableActivity;
@@ -295,7 +294,7 @@ class DexieStorageProvider implements IStorageInterface {
       if (!answers) {
         return false;
       }
-      if (!("activity" in answers)) {
+      if (!("resource_url" in answers)) {
         return false;
       }
       if (!("version" in answers)){
@@ -316,7 +315,7 @@ class DexieStorageProvider implements IStorageInterface {
         parsedAnswers.answers.forEach((answer: IIndexedDBAnswer) => {
           const idxDBAnswer = answer as IIndexedDBAnswer;
           // TODO: what happens if the answers loaded are for a different activity?
-          idxDBAnswer.activity = answer.activity;
+          idxDBAnswer.resource_url = answer.resource_url;
           dexieStorage.answers.put(idxDBAnswer);
         });
         return true;
@@ -368,10 +367,12 @@ class DexieStorageProvider implements IStorageInterface {
           await fsProvider.initializeDB({ name: appName, preview: false, offline: false, portalData});
           this.haveFireStoreConnection = true;
         }
+        // FIXME: this should be checking the resourceUrl of the rawPoralData
+        // we don't want to send answers for the wrong resource url to an assignment
         const answers = await dexieStorage
           .answers
-          .where("activity")
-          .equals(_currentOfflineActivityId).toArray();
+          .where({resource_url: _currentOfflineResourceUrl})
+          .toArray();
         console.dir(answers);
         for(const answer of answers) {
           fsProvider.createOrUpdateAnswer(answer);
