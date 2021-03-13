@@ -111,6 +111,7 @@ Inside of your `package.json` file:
 
 * activity={id|url}:    load sample-activity {id} or load json from specified url
 * sequence={id|url}:    load sample-sequence {id} or load json from specified url
+* contentUrl={url}:     override the activity parameter and load the activity content from this contentUrl instead. In this case the activity parameter is still used to make the resourceUrl which identifies the resource structure in the report-service. The computed resourceUrl is also used to identify the answers when running offline.
 * page={n|"page_[id]"}: load page n, where 0 is the activity introduction, 1 is the first page and [id] in "page_[id]" refers to an internal integer id of the page model exported from LARA.
 * themeButtons:         whether to show theme buttons
 * mode={mode}:          sets mode. Values: "teacher-edition"
