@@ -121,7 +121,7 @@ Inside of your `package.json` file:
 * firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ and https://activity-player-offline.concord.org/ without a path, defaults to `report-service-pro` every other url defaults to `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
 * token={n}:         set by the portal when launching external activity, to authenticate with portal API
 * domain={n}:        set by the portal when launching external activity
-* report-source={id}: which source collection to save data to in firestore (defaults to own hostname)
+* sourceKey={id}:    which source collection to save data to in firestore (defaults to canonical hostname)
 * runkey={uuid}:     set by the app if we are running in anonymous datasaving mode
 * preview:           prevent running in anonymous datasaving mode
 * enableFirestorePersistence: uses local offline firestore cache only

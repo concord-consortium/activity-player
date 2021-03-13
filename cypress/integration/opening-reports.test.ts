@@ -12,7 +12,7 @@ context("Test Opening Portal Reports from various places", () => {
     const activityStructureUrl = "https://example.com/activities/123";
     const activityPlayerUrl = "?" +
       "activity="+activityExportUrl+
-      "&report-source=authoring.staging.concord.org" +
+      "&sourceKey=authoring.staging.concord.org" +
       "&runKey="+runKey;
 
     before(() => {

@@ -48,8 +48,8 @@ export const getReportUrl = () => {
   const activity = queryValue("activity");
   const activityUrl = getResourceUrl(activity);
   const runKey = queryValue("runKey");
-  // Sometimes the location of the answers is overridden with a report-source param
-  const answerSource = queryValue("report-source") || getCanonicalHostname();
+  // Sometimes the location of the answers is overridden with a sourceKey param
+  const answerSource = queryValue("sourceKey") || getCanonicalHostname();
   const sourceKey = activityUrl ? makeSourceKey(activityUrl) : getCanonicalHostname();
 
   if (runKey) {
