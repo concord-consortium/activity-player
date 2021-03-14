@@ -193,9 +193,11 @@ class FireStoreStorageProvider implements IStorageInterface {
 class DexieStorageProvider implements IStorageInterface {
   portalData: IPortalData|IAnonymousPortalData;
   haveFireStoreConnection: boolean;
+  answerWatchers: any;
 
   constructor(){
     this.haveFireStoreConnection = false;
+    this.answerWatchers = {};
   }
 
   async initializeDB (initializer: IDBInitializer) {
@@ -212,6 +214,17 @@ class DexieStorageProvider implements IStorageInterface {
     const idxDBAnswer = answer as IIndexedDBAnswer;
     idxDBAnswer.activity = _currentOfflineActivityId;
     dexieStorage.answers.put(idxDBAnswer);
+    const activityAnswerWatchers = this.answerWatchers[_currentOfflineActivityId];
+    if (!activityAnswerWatchers || !answer.question_id) {
+      return;
+    }
+    const questionAnswerWatchers = activityAnswerWatchers[answer.question_id];
+    if (!questionAnswerWatchers) {
+      return;
+    }
+    questionAnswerWatchers.forEach((callback:any) => {
+      callback(docToWrappedAnswer(answer));
+    });
   }
 
   getPortalData() {
@@ -245,6 +258,20 @@ class DexieStorageProvider implements IStorageInterface {
         return answers[0];
       });
     };
+
+    let activityAnswerWatchers = this.answerWatchers[_currentOfflineActivityId];
+    if (!activityAnswerWatchers) {
+      activityAnswerWatchers = {};
+      this.answerWatchers[_currentOfflineActivityId] = activityAnswerWatchers;
+    }
+
+    let questionAnswerWatchers = activityAnswerWatchers[questionId];
+    if (!questionAnswerWatchers) {
+      questionAnswerWatchers = [];
+      activityAnswerWatchers[questionId] = questionAnswerWatchers;
+    }
+
+    questionAnswerWatchers.push(callback);
 
     getAnswerFromIndexDB(questionId).then( (answer: IIndexedDBAnswer|null) => {
       if (answer) {
