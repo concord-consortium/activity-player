@@ -1,0 +1,79 @@
+{
+  "name": "Precipitating Change Offline Manifest",
+  "activities": [
+    {
+      "name": "Lesson 4 Pre",
+      "url": "offline-activities/staging-precipitating-change/lesson-4-pre-v1.json",
+      "resourceUrl": "https://authoring.staging.concord.org/activities/20955"
+    },
+    {
+      "name": "Lesson 4",
+      "url": "offline-activities/staging-precipitating-change/lesson-4-v1.json",
+      "resourceUrl": "https://authoring.staging.concord.org/activities/20956"
+    },
+    {
+      "name": "Lesson 4 Post",
+      "url": "offline-activities/staging-precipitating-change/lesson-4-post-v1.json",
+      "resourceUrl": "https://authoring.staging.concord.org/activities/20957"
+    },
+    {
+      "name": "Lesson 5 Pre",
+      "url": "offline-activities/staging-precipitating-change/lesson-5-pre-v1.json",
+      "resourceUrl": "https://authoring.staging.concord.org/activities/20954"
+    },
+    {
+      "name": "Lesson 5",
+      "url": "offline-activities/staging-precipitating-change/lesson-5-v1.json",
+      "resourceUrl": "https://authoring.staging.concord.org/activities/20953"
+    },
+    {
+      "name": "Lesson 5 Post",
+      "url": "offline-activities/staging-precipitating-change/lesson-5-post-v1.json",
+      "resourceUrl": "https://authoring.staging.concord.org/activities/20952"
+    }
+  ],
+  "cacheList": [
+    "https://activity-player-offline.concord.org/icons/apple-icon-144x144.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/1milex1mile.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/200milesx200miles.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/20milesx20miles.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/3ftx3ft.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alaska200grid.jpg",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alex4.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alex5.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Delana4.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Delana5.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Kalin5.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Kalin6.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL22_7am.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L4_ACT1_Alaska%20Weather%20Stations_7am%20Interpolated.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson57pmInterpolated.jpg",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson5AirMasses1and2.jpg",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson5_7pmInterpolatedRADARMAPcomparison.jpg",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/TempMoisture.jpg",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/WindCompass.jpg",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Sage2.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Sage3.png",
+    "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images/air-moisture-scale.png",
+    "https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css",
+    "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap",
+    "https://fonts.googleapis.com/css?family=Lato",
+    "https://fonts.gstatic.com/s/lato/v17/S6u9w4BMUTPHh50XSwiPGQ3q5d0.woff2",
+    "https://fonts.gstatic.com/s/lato/v17/S6u9w4BMUTPHh6UVSwiPGQ3q5d0.woff2",
+    "https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXiWtFCc.woff2",
+    "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson1.png",
+    "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson3.png",
+    "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson4.jpg",
+    "https://precipitatingchange-resources.concord.org/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/WindTunnels.png",
+    "models-resources/precip-models/ak-base-map-with-rose.png",
+    "models-resources/precip-models/lesson-4-ak-v3.html",
+    "models-resources/question-interactives/version/v1.1.0/multiple-choice/",
+    "models-resources/question-interactives/version/v1.1.0/multiple-choice/assets/index.43fd80fcbaa142f3b07e.css",
+    "models-resources/question-interactives/version/v1.1.0/multiple-choice/assets/index.43fd80fcbaa142f3b07e.js",
+    "models-resources/question-interactives/version/v1.1.0/open-response/",
+    "models-resources/question-interactives/version/v1.1.0/open-response/assets/index.43fd80fcbaa142f3b07e.css",
+    "models-resources/question-interactives/version/v1.1.0/open-response/assets/index.43fd80fcbaa142f3b07e.js",
+    "models-resources/teacher-edition-tips-plugin/version/v3.6.0/manifest.json",
+    "models-resources/teacher-edition-tips-plugin/version/v3.6.0/plugin.js"
+  ]
+}

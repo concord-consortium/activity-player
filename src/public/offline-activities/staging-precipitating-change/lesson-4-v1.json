@@ -1,0 +1,737 @@
+{
+  "description": "\u003Cp\u003EBuilding Rules: Where does it rain?\u003C/p\u003E",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "AP - Lesson 4: Alaska Mainland 2 - Building Rules",
+  "notes": "",
+  "project_id": 25,
+  "related": "",
+  "runtime": "Activity Player",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson3.png",
+  "time_to_complete": 40,
+  "version": 1,
+  "theme_name": "Precipitating Change",
+  "pages": [{
+    "additional_sections": null,
+    "embeddable_display_mode": "stacked",
+    "id": 308632,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Opening",
+    "position": 1,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EAs weather scientists, your job is not only to collect and organize data, but also to make sense of the data you collected. One way to make sense of the data is to develop a rule, generalized statements of patterns you see again and again.\u003C/p\u003E\n\u003Cp\u003EExample: This rule has two parts that must happen to have a certain result. If it was a [ \u003Cstrong\u003Every nice summer\u003C/strong\u003E ] and if it is [ \u003Cstrong\u003EAugust\u003C/strong\u003E ], then there will be [ \u003Cstrong\u003Elots of berries to pick\u003C/strong\u003E ].\u0026nbsp;\u003C/p\u003E\n\u003Cp style=\"text-align: justify;\"\u003E\u003Cimg class=\"\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/RuleStatement.jpg\" alt=\"\" width=\"472\" height=\"221\" /\u003E\u003C/p\u003E\n\u003Cp\u003EThink about developing a similar statement that could be used to determine where it will rain.\u003C/p\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "272933-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"### LESSON 4: BUILDING RULES\\n**WHERE DOES IT RAIN?**\\n\\nIn this lesson, students develop a rule for where it will rain and test their rule using a Virtual Model. This lesson supports students to build their understanding of how observations of natural phenomena (weather) can be generalized (rule abstraction) for computational modeling (rule testing and rule refinement) and predictive purposes. This lesson introduces new technology, a Virtual Model, that allows students to test rules with the dataset they have been exploring in Lesson 3. \\n\\n**LEARNING GOALS**\\n\\nStudents will be able to:\\n\\n* Describe the relationship between moisture content and temperature by identifying key patterns in weather data\\n\\n* Develop a rule for where precipitation will occur using precise language\\n\\n\\n\\nComputational thinking (CT) Skills introduced in this lesson can be found in the table below:\\n\\n| CT Skill            | CT Skill Definition                                                                               | Use in Lesson                                                                                                                                                                                                                                                                                              |\\n|---------------------|---------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\\n| Pattern Recognition | Recognizing that data or information is repeating in a logical (expected) way.                    | Students develop a general statement to answer the question, \\\"Where does it rain?\\\"  |\\n| Rule Abstraction    | Developing a statement of how things work based on the patterns you observed.                     | Students make a generic statement to answer, \\\"Where does it rain?\\\"                                                                                                                                                                   |\\n| Rule Testing        | Investigating whether a rule will still be true in different situations.                          | Virtual Model activity|\\n| Rule Refinement     | Modifying a rule to be more precise to work in the model. Precise (exact, careful about details) | The Virtual Model allows students to be able to test their rule statements and make changes based on the model.                                                                                                                                                                                                                                                                                      |\\t\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "4242-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"### IMPLEMENTATION TIME 1 class period with Pre-Assessment (45 minutes)\\n\\n**KEY ACTIVITIES:**\\n\\n**Activity 1 - Rule Abstraction Conversation (20 mins)\\n\\n**Activity 2 - Refining and Testing Rules using a Virtual Model (25 mins)\\n\\n### MATERIALS AND SET-UP\\n\\nPer Student:\\n\\n* Science Notebooks\\n* Access to Student Online Activities\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "4243-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Watch this video with your class to give students a perspective on the importance of weather and to build weather science career awareness.\",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Purcell, Jackie. \\\"Lesson 4.\\\" 2019. Good Life Productions. Anchorage, AK. \",\"mediaURL\":\"https://precipitatingchange-resources.concord.org/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/JackieLesson4_88.mp4\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "4244-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }]
+  }, {
+    "additional_sections": null,
+    "embeddable_display_mode": "stacked",
+    "id": 308633,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Activity 1 - Rule Abstraction",
+    "position": 2,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EVIRTUAL STORM: RULE ABSTRACTION CONVERSATION\u003C/p\u003E\n\u003Cp\u003EYour task is to take a deeper look at your data and start summarizing the patterns that you see with the goal of writing a one-sentence statement that brings together the most important patterns to answer the question, \u0026ldquo;Where does it rain?\u0026rdquo;.\u003C/p\u003E\n\u003Cp\u003ELet's start by looking at the data you recorded on your Storm Tracker sheet for 3pm in your Science Notebook (page 12).\u003C/p\u003E\n\u003Cp\u003EWork within your research team and circle the areas where you think it will rain based on temperature data.\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cimg style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson4StormTracker7pm.png\" width=\"444\" height=\"444\" /\u003E\u003C/p\u003E\n\u003Cp\u003ENow let's look at the Weather Map of the Alaska area at 7pm (see below). Work with your research team to find patterns that could help you identify where it will rain.\u003C/p\u003E\n\u003Cp\u003E\u003Cimg class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/WeatherMAPB.jpg\" alt=\"\" width=\"750\" height=\"583\" /\u003E\u003C/p\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "272934-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"prompt\":\"\u003Cp\u003EDiscuss with your research team where you expect it will rain at 7 pm on the Weather Map based on the patterns that you saw for 3 pm. Describe below where you think it will rain.\u003C/p\u003E\",\"defaultAnswer\":\"\",\"required\":false,\"questionType\":\"open_response\",\"hint\":\"\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": null,
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Open Response",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1947-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"prompt\":\"\u003Cp\u003EWrite a general statement that answers the question, \u0026ldquo;Where does it rain?\u0026rdquo; Use the pattern charts and your weather map to create your statement.\u003C/p\u003E\",\"defaultAnswer\":\"\",\"required\":false,\"questionType\":\"open_response\",\"hint\":\"\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": null,
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Open Response",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1948-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Activity 1 - Rule Abstraction\\n\\nStudents create a relational statement explaining where it is raining. The specific computational thinking practices highlighted and practiced in this activity are **Rule Abstraction**, **Rule Testing**, and **Rule Refinement**. We anticipate that this conversation is going to require heavy scaffolding to get students acquainted and comfortable with writing rules. Efforts here will pay off later in Lessons 5 when students must write additional rules for other weather phenomena.\\n\\n**1. Abstracting a rule.**\\n\\n* Introduce the task of writing a one-sentence statement that brings together the most important patterns to answer the question, \u201cWhere does it rain?\u201d \\n\\n**2. Gathering more information.**\\n\\n* Have students look at their Virtual Storm Tracker in their Science Notebook on page 12 and circle where they think it will rain at \\n 7 pm, using temperature only.\\n\\n* Have students look at the Weather Map 7 pm with Precipitation \u0026 Air Moisture Content in their Science Notebook on page 17 and discuss with their research teams where you think it will rain with this new information. \\n\\n* Once they have decided on where they think it will rain, direct students to enter their answer to the question in the appropriate place on this page. \\n\\n**3. Introduce rule abstraction.** Rule Abstraction is creating a general statement derived from exploring patterns in data in order to establish rule(s), principles, or insights that may be generalized to other contexts. This is the first step in creating a rule in order to make a simulation on a computer. \\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "4245-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Drafting Rule Statements\\n\\n* In Lesson 3, students started to see relational connections between the weather variables for 3 pm and may or may not be able to fully articulate their current thinking. To help students develop a stronger voice and build a statement, they are asked to apply their understandings to another time step (7 pm). By applying their thinking at two different time steps, students validate their ideas and develop more formalized ideas on how they think the weather variables relate to each other. \\n\\n* Advise students to try to merge ideas from what they learned in Lessons 2 and 3. \\n\\n* Ask students to be selective in what patterns they think are strongest in explaining precipitation. \\n\\n* Explain to students that they just did something that weather scientists do called Rule Abstraction (creating a general statement derived from exploring patterns in data in order to establish rule(s), principles or insights that may be generalized to other contexts). This is the first step in creating a rule in order to make a simulation on a computer. \\n\\n\\n**Teacher Note**: While statements will vary in construction, level of detail, and even correctness, check in with teams to ensure that statements include some notion of both air moisture content AND temperature being important drivers of whether it will rain. If a team is stuck on one variable or the other, you might point out to them places on the Weather Map posters where their statement fails to hold true. For example, if students are ignoring air moisture, draw their attention to a place on the map where the temperature is warm but it\u2019s not raining.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "4246-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }]
+  }, {
+    "additional_sections": null,
+    "embeddable_display_mode": "stacked",
+    "id": 308634,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Activity 1 - Rule Abstraction (continued)",
+    "position": 3,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EAs weather scientists, you have been identifying patterns, specifically relationships between temperature and air moisture values, to determine where it will rain. Analyzing and collecting data by hand can be a lot of work and take a lot of time. Weather scientists use models that can collect and analyze the data for them.\u003C/p\u003E\n\u003Cp\u003ETo make computational models, we need to create rules that are very specific for a computer to run. In this activity, you are going to refine the rule statement you made by testing it within a Virtual Model.\u003C/p\u003E\n\u003Cp\u003EYou can practice making more specific rule statements by answering the questions below and testing them using the model.\u0026nbsp;\u003C/p\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "272935-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "name": "Multiple Choice Question element",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"choices\":[{\"id\":\"1\",\"content\":\"A\",\"correct\":false,\"choiceFeedback\":\"\"},{\"id\":\"2\",\"content\":\"B\",\"correct\":true,\"choiceFeedback\":\"\"},{\"id\":\"3\",\"content\":\"C\",\"correct\":false,\"choiceFeedback\":\"\"}],\"layout\":\"vertical\",\"prompt\":\"\u003Cp\u003EUsing the following rule, which pair of grid squares (A, B, or C) will produce rain?\u0026nbsp;\u003C/p\u003E\\r\\n\u003Cp\u003E\u003Cimg class=\\\"\\\" style=\\\"display: block; margin-left: auto; margin-right: auto;\\\" src=\\\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson4NWImage.png\\\" alt=\\\"\\\" width=\\\"70\\\" height=\\\"72\\\" /\u003E\u003Cbr /\u003EIF the upper square (the northwest square)\u0026nbsp;\u0026nbsp;is colder than the lower square by at least [ \u003Cstrong\u003E\u003Cspan style=\\\"text-decoration: underline;\\\"\u003E5 degrees\u003C/span\u003E\u003C/strong\u003E ] AND IF the moisture of the lower square is at least [ \u003Cstrong\u003E\u003Cspan style=\\\"text-decoration: underline;\\\"\u003E7\u003C/span\u003E\u003C/strong\u003E ] THEN it rains in the lower square.\u003C/p\u003E\\r\\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\\r\\n\u003Cp\u003E\u003Cimg src=\\\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson4RuleRefinementABCquestionRVSD\\\" width=\\\"424\\\" height=\\\"182\\\" /\u003E\u003C/p\u003E\\r\\n\u003Cp\u003EWhich square will have rain according to this rule?\u003C/p\u003E\",\"enableCheckAnswer\":true}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": null,
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Multiple Choice",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1949-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }]
+  }, {
+    "additional_sections": null,
+    "embeddable_display_mode": "stacked",
+    "id": 308635,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Activity 2 - Testing the Rules with a Virtual Model ",
+    "position": 4,
+    "show_header": false,
+    "show_info_assessment": true,
+    "show_interactive": true,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EPress \u003Cstrong\u003ESetup\u003C/strong\u003E and then \u003Cstrong\u003ERun\u003C/strong\u003E. Explore all the features of this model. Discuss with your research team what each feature shows you.\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cbr /\u003EAfter you have explored the model, refine your precipitation rule until you have found the best fit between the actual precipitation and the precipitation predicted by the rule. Test your rule with all of the data sets.\u003C/p\u003E",
+        "is_callout": true,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "TASK",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "272936-Embeddable::Xhtml"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"prompt\":\"\u003Cp\u003EWhat\u0026rsquo;s the best rule to fit the actual precipitation?\u003C/p\u003E\",\"defaultAnswer\":\"\",\"required\":false,\"questionType\":\"open_response\",\"hint\":\"\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": null,
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Open Response",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1950-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"prompt\":\"\u003Cp\u003EDid your rule fit the actual precipitation perfectly for all data sets?\u0026nbsp; Please explain why or why not.\u003C/p\u003E\",\"defaultAnswer\":\"\",\"required\":false,\"questionType\":\"open_response\",\"hint\":\"\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": null,
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Open Response",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1951-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"prompt\":\"\u003Cp\u003EFor a weather model, list as many reasons as you can think of for why a rule might not predict the actual data perfectly.\u003C/p\u003E\",\"defaultAnswer\":\"\",\"required\":false,\"questionType\":\"open_response\",\"hint\":\"\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": null,
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Open Response",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1952-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"prompt\":\"\u003Cp\u003EWhat is your final rule statement that answers the question, \\\"Where does it rain?\\\"\u003C/p\u003E\",\"defaultAnswer\":\"\",\"required\":false,\"questionType\":\"open_response\",\"hint\":\"\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": null,
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Open Response",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1953-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Activity 2 - Refining and Testing a Rule with a Virtual Model\\n\\n**Objective:** To deepen students\u2019 understanding of rule refinement with a virtual model that makes it easy to experiment with two varying quantities -- temperature difference and air moisture content. Students use this understanding to solve the challenge of finding the best rule that predicts where precipitation occurs.\\n \\n**1. Encourage students to explore the model.** Ask students to explore all the features of the model. When experimenting with setting rule values, they should try the extreme settings (maximums and minimums) as well as more moderate settings. After 5 to 10 minutes of independent work, let them **tell you** what they have discovered. They might find: \\n\\n* Weather data for five different times with each data set separated by four hours.  \\n* Grid squares showing moisture in the upper right corner and temperature in the lower left. \\n* Actual rainfall indicated with the light blue drops. \\n* When \\\"show-results-of-the-rules?\\\" is selected, check marks show which parts of the rule are true. \\n* Check marks appear for each part of the rule when true: orange check for the temperature difference rule and green checks for the moisture rule.\\n* The \\\"Show Rain with these Rules\\\" button displays dark blue drops only where both the temperature difference rule and the moisture rule are true. \\n\\nA short discussion about the following, might be valuable before students go on to the challenge.\\n* Why are there no check marks on the top and left side of the grid? (The temperature rule can\u2019t be calculated because there is no square to the northwest in those rows.)\\n* Is there a rule that makes it rain everywhere (not counting the top and left rows)? Or nowhere?\\n* How did you explore the rules? \\n* How did you test them? \\n* What did you learn? (See if students found a technique for exploring the model. Students might benefit from hearing each other\u2019s strategies.)\\n\\n**2. Challenge: Find the best rule.** Remind students that they are pursuing this question, \\\"Where does it rain?\\\" Or more specifically, \\\"What conditions of temperature and moisture result in rain?\\\" \\n\\nHave students test their rule to find the best fit between the real data (light blue) and the data produced by the rule (dark blue) for the five different times (7 am, 11 am, 3 pm, 7 pm, and 11 pm). They will record their findings in the questions that follow the model.\\n\\nNotes: Try to let students discover that there is no perfect rule. That is, even the best rule may make rain in a square or two that had none or produce rain where there was none. Students will have to work through this. If they find it frustrating, let them know the rule doesn\u2019t need to be perfect. \",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "4247-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Lead a class discussion at the end of the activity. Please see possible discussion points below:\\n\\n* Did working with the model help you understand what a rule for predicting weather is? What did you find out? (e.g., Did students notice that rain only occurs when the checkmarks for both the temperature difference and moisture appear in a square?)\\n\\n* Would the rule you developed work for all weather systems? Why or why not? (See if students realize that this rule depends on the front moving from the northwest which will not always happen.)\\n\\n* Do you think there are perfect rules for weather prediction? Why or why not? (Prediction attempts to do the best it can with the data available. There may be many factors that with the data input or with the rules that we don\u2019t know.)\\n\\n* Even if prediction rules are not perfect, why are they still important? (Predicting the weather is an evolving science, so prediction is not perfect. But prediction is essential for planning and for safety.)\\n\\nDid working with the model help you understand what a rule for predicting weather is? What did you find out? (e.g., Did students notice that rain only occurs when the checkmarks for both the temperature difference and moisture appear in a square?)\\n\\nWould the rule you developed work for all weather systems? Why or why not? (See if students realize that this rule depends on the front moving from the northwest which will not always happen.)\\n\\nDo you think there are perfect rules for weather prediction? Why or why not? (Prediction attempts to do the best it can with the data available. There may be many factors that with the data input or with the rules that we don\u2019t know.)\\n\\nEven if prediction rules are not perfect, why are they still important? (Predicting the weather is an evolving science, so prediction is not perfect. But prediction is essential for planning and for safety.)\\n\\nOptional discussion question, if you have time:\\nThe 7am, 11am, 3pm, and 7pm data matches the Virtual Storm event that you created in Lesson 2 and in Lesson 3. Is the rule that you developed in this activity different than the one in Lesson 3. How have they changed?\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "4248-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"diggingDeeper\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"As weather scientists, students are learning to build relationships based on patterns that they see in the environment. This is a skill that elders in your community do to support the livelihood of their families and their community. Watch the video as a class to learn more about the current patterns that elders are witnessing. Please note: we do not formally have permission to use this movie. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"\\\"Alaskan Native Thoughts on Climate Change\\\", The International Polar Year, Sep 2, 2008, Run Time:02:09, http://www.ipy.org/index.php?/ipy/multimedia/\u0026view=1869\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alaskan%20Native%20thoughts%20on%20climate%20change.mp4\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "4249-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"diggingDeeper\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"As weather scientists, students are learning to build relationships based on patterns that they see in the environment. This is a skill that elders in your community do to support the livelihood of their families and their community. Watch the video as a class to learn more about the current patterns that elders are witnessing. Please note: we do not formally have permission to use this movie. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"\\\"Passport To Knowledge: Polar Palooza\\\", http://passporttoknowledge.com/polar-palooza/video/native01a.mp4\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/native01a.mp4\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "4250-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"howToUse\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Watch this tutorial to learn how students will be interacting with the Virtual Model to test and refine their rule statements to answer the question, \\\"Where does it rain?\\\"\",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Precipitating Change How to Tutorials: Where Does It Rain?, 2019, The Concord Consortium\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/HowtoTutorialVirtualModel1.mp4\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "4251-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "aspect_ratio_method": "MANUAL",
+        "authored_state": null,
+        "click_to_play": false,
+        "click_to_play_prompt": null,
+        "enable_learner_state": false,
+        "full_window": false,
+        "has_report_url": false,
+        "image_url": "",
+        "is_full_width": true,
+        "is_hidden": false,
+        "model_library_url": null,
+        "name": "",
+        "native_height": 800,
+        "native_width": 800,
+        "no_snapshots": false,
+        "show_delete_data_button": false,
+        "show_in_featured_question_report": true,
+        "url": "https://models-resources.concord.org/precip-models/precip-rule-ak-v5.html",
+        "type": "MwInteractive",
+        "ref_id": "210925-MwInteractive",
+        "linked_interactives": []
+      },
+      "section": "interactive_box"
+    }]
+  }],
+  "plugins": [],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}
