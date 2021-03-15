@@ -43,7 +43,7 @@ export interface CacheOfflineManifestOptions {
 
 export const cacheOfflineManifest = (options: CacheOfflineManifestOptions) => {
   const {offlineManifest, onCachingStarted, onUrlCached, onUrlCacheFailed, onAllUrlsCached, onAllUrlsCacheFailed} = options;
-  const urls = offlineManifest.activities.map(a => a.url).concat(offlineManifest.cacheList);
+  const urls = offlineManifest.activities.map(a => a.contentUrl).concat(offlineManifest.cacheList);
   const loadingPromises = urls.map(url => {
     return fetch(url, {mode: "no-cors"})
       .then(() => onUrlCached(url))
@@ -102,7 +102,9 @@ export const getOfflineManifestAuthoringDownloadJSON = (name: string, data: Offl
 export const mergeOfflineManifestWithAuthoringData = (offlineManifest: OfflineManifest, authoringData: OfflineManifestAuthoringData) => {
   const {activities, cacheList} = authoringData;
   offlineManifest.activities.forEach(activity => {
-    if (!activities.find(a => a.url === activity.url)) {
+    // Note: if the contentUrl has changed this won't update it in the manifest
+    // but in that case it seems reasonable that the author will just manually fix it.
+    if (!activities.find(a => a.resourceUrl === activity.resourceUrl)) {
       activities.push(activity);
     }
   });
@@ -116,12 +118,12 @@ export const mergeOfflineManifestWithAuthoringData = (offlineManifest: OfflineMa
 
 export const saveOfflineManifestToOfflineActivities = async (offlineManifest: OfflineManifest) => {
   const promises = offlineManifest.activities.map(async (offlineManifestActivity) => {
-    const {name, url} = offlineManifestActivity;
-    const offlineActivity = await dexieStorage.offlineActivities.get({url});
+    const {name, resourceUrl, contentUrl} = offlineManifestActivity;
+    const offlineActivity = await dexieStorage.offlineActivities.get({resourceUrl});
     if (offlineActivity) {
-      await dexieStorage.offlineActivities.update(url, {name, url});
+      await dexieStorage.offlineActivities.update(resourceUrl, {name, resourceUrl, contentUrl});
     } else {
-      await dexieStorage.offlineActivities.put({name, url});
+      await dexieStorage.offlineActivities.put({name, resourceUrl, contentUrl});
     }
   });
   await Promise.all(promises);

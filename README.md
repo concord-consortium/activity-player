@@ -111,6 +111,7 @@ Inside of your `package.json` file:
 
 * activity={id|url}:    load sample-activity {id} or load json from specified url
 * sequence={id|url}:    load sample-sequence {id} or load json from specified url
+* contentUrl={url}:     override the activity parameter and load the activity content from this contentUrl instead. In this case the activity parameter is still used to make the resourceUrl which identifies the resource structure in the report-service. The computed resourceUrl is also used to identify the answers when running offline.
 * page={n|"page_[id]"}: load page n, where 0 is the activity introduction, 1 is the first page and [id] in "page_[id]" refers to an internal integer id of the page model exported from LARA.
 * themeButtons:         whether to show theme buttons
 * mode={mode}:          sets mode. Values: "teacher-edition"
@@ -120,7 +121,7 @@ Inside of your `package.json` file:
 * firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ and https://activity-player-offline.concord.org/ without a path, defaults to `report-service-pro` every other url defaults to `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
 * token={n}:         set by the portal when launching external activity, to authenticate with portal API
 * domain={n}:        set by the portal when launching external activity
-* report-source={id}: which source collection to save data to in firestore (defaults to own hostname)
+* sourceKey={id}:    which source collection to save data to in firestore (defaults to canonical hostname)
 * runkey={uuid}:     set by the app if we are running in anonymous datasaving mode
 * preview:           prevent running in anonymous datasaving mode
 * enableFirestorePersistence: uses local offline firestore cache only

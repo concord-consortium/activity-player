@@ -269,7 +269,8 @@ export interface IAnonymousLearnerPluginState extends IAnonymousMetadataPartial 
 
 export interface OfflineManifestActivity {
   name: string;
-  url: string;
+  resourceUrl: string;
+  contentUrl: string;
 }
 export interface OfflineManifest {
   name: string

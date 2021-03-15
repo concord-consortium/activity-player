@@ -419,12 +419,12 @@ export const fetchPortalData = async (opts: IFetchPortalDataOpts = fetchPortalDa
   const offeringData = await getOfferingData({portalJWT, rawPortalJWT, offeringId});
   const [rawFirebaseJWT, firebaseJWT] = await getActivityPlayerFirebaseJWT(basePortalUrl, rawPortalJWT, classInfo.classHash);
 
-  // student data gets saved in different buckets of the DB, the "source," depending on the domain
-  // of the activity.
+  // student data gets saved in different buckets of the DB, the "source," depending on
+  // the canonical hostname.
   // This works fine, but for testing the activity player, we may want to load data that was previously
-  // saved in a different domain (e.g. authoring.concord.org), so we first check for a "url-source"
+  // saved in a different domain (e.g. authoring.concord.org), so we first check for a "sourceKey"
   // query parameter.
-  const sourceKey = queryValue("report-source") || parseUrl(offeringData.activityUrl.toLowerCase()).hostname;
+  const sourceKey = queryValue("sourceKey") || getCanonicalHostname();
 
   const fullName = classInfo.students.find(s => s.id.toString() === portalJWT.uid.toString())?.fullName;
 
@@ -479,7 +479,7 @@ export const anonymousPortalData = (preview: boolean) => {
     toolUserId: "anonymous",
     database: {
       appName: firebaseAppName(),
-      sourceKey: getCanonicalHostname()
+      sourceKey: queryValue("sourceKey") || getCanonicalHostname()
     }
   };
   return rawPortalData;

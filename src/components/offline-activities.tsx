@@ -18,7 +18,7 @@ const OfflineActivityListRow = (props: {activity: OfflineActivity;  onSelectOffl
 
 interface IProps {
   username: string;
-  onSelectActivity: (activity: Activity, url: string) => void;
+  onSelectActivity: (activity: Activity, resourceUrl: string, contentUrl: string) => void;
 }
 
 interface IState {
@@ -44,8 +44,8 @@ export class OfflineActivities extends React.Component<IProps, IState> {
   handleSelectOfflineActivity = async (offlineActivity: OfflineActivity) => {
     const { onSelectActivity } = this.props;
     try {
-      const activity = await getActivityDefinition(offlineActivity.url);
-      onSelectActivity(activity, offlineActivity.url);
+      const activity = await getActivityDefinition(offlineActivity.contentUrl);
+      onSelectActivity(activity, offlineActivity.resourceUrl, offlineActivity.contentUrl);
     } catch (e) {
       alert("Error loading activity!");
     }
@@ -69,7 +69,7 @@ export class OfflineActivities extends React.Component<IProps, IState> {
         </thead>
         <tbody>
           {offlineActivities.map(offlineActivity =>
-            <OfflineActivityListRow key={offlineActivity.url} activity={offlineActivity} onSelectOfflineActivity={this.handleSelectOfflineActivity} />
+            <OfflineActivityListRow key={offlineActivity.resourceUrl} activity={offlineActivity} onSelectOfflineActivity={this.handleSelectOfflineActivity} />
           )}
         </tbody>
       </table>

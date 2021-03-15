@@ -3,7 +3,8 @@
   "activities": [
     {
       "name": "APO Smoke Test",
-      "url": "offline-activities/smoke-test-v1.json"
+      "resourceUrl": "https://authoring.staging.concord.org/activities/20936",
+      "contentUrl": "offline-activities/smoke-test-v1.json"
     }
   ],
   "cacheList": [
