@@ -216,7 +216,7 @@ class DexieStorageProvider implements IStorageInterface {
     const idxDBAnswer = answer as IIndexedDBAnswer;
     idxDBAnswer.resource_url = _currentOfflineResourceUrl;
     dexieStorage.answers.put(idxDBAnswer);
-    const activityAnswerWatchers = this.answerWatchers[_currentOfflineActivityId];
+    const activityAnswerWatchers = this.answerWatchers[_currentOfflineResourceUrl];
     if (!activityAnswerWatchers || !answer.question_id) {
       return;
     }
@@ -260,10 +260,10 @@ class DexieStorageProvider implements IStorageInterface {
       });
     };
 
-    let activityAnswerWatchers = this.answerWatchers[_currentOfflineActivityId];
+    let activityAnswerWatchers = this.answerWatchers[_currentOfflineResourceUrl];
     if (!activityAnswerWatchers) {
       activityAnswerWatchers = {};
-      this.answerWatchers[_currentOfflineActivityId] = activityAnswerWatchers;
+      this.answerWatchers[_currentOfflineResourceUrl] = activityAnswerWatchers;
     }
 
     let questionAnswerWatchers = activityAnswerWatchers[questionId];
