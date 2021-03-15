@@ -4,6 +4,7 @@ import { precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { StaleWhileRevalidate } from "workbox-strategies";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
+import { consoleLog } from "./utilities/console-wrappers";
 
 const ignoredGets: RegExp[] = [
   /\/sockjs-node\/info/,             // webpack-dev-server
@@ -47,11 +48,11 @@ addEventListener("message", (event) => {
   if (event.data) {
     switch (event.data.type) {
       case "SKIP_WAITING":
-        console.log("Calling skipWaiting() from service worker...");
+        consoleLog("Calling skipWaiting() from service worker...");
         self.skipWaiting();
         break;
     }
   }
 });
 
-console.log("hello from the compiled service-worker!!!!!");
+consoleLog("hello from the compiled service-worker!!!!!");

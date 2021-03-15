@@ -1,5 +1,6 @@
 import { fetchPortalData, IPortalData } from "./portal-api";
 import { IStorageInterface } from "./storage/storage-facade";
+import { consoleError, consoleLog } from "./utilities/console-wrappers";
 
 const DEFAULT_STUDENT_NAME = "Anonymous";
 const DEFAULT_TEACHER_NAME = "A teacher";
@@ -127,7 +128,7 @@ export class StudentInfo implements IStudentRecord {
   private updateFromIndexedDB() {
     // We have to load any data we can from the DB, but tokens will be stale.
     // TODO: remove stale tokens if the exist
-    console.log("LOADING FROM LOCAL STORAGE");
+    consoleLog("LOADING FROM LOCAL STORAGE");
     const localStorageStudentInfo = localStorage.getItem(STUDENT_LOCAL_STORAGE_KEY) ?? "{}";
     this.loadSerializedData(localStorageStudentInfo);
     this._validTokens=false;
@@ -141,8 +142,8 @@ export class StudentInfo implements IStudentRecord {
         return true;
       }
     } catch (e) {
-      console.error("Failed to load serialized student data");
-      console.error(e);
+      consoleError("Failed to load serialized student data");
+      consoleError(e);
     }
     return false;
   }

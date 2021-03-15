@@ -1,9 +1,10 @@
 // import { WrappedDBAnswer, FirebaseAppName } from "./firebase-db";
 import * as FirebaseImp from "./firebase-db";
 import { fetchPortalData, IAnonymousPortalData, IPortalData } from "../portal-api";
-import { IAnonymousMetadataPartial, IExportableAnswerMetadata } from "../types";
+import { IExportableAnswerMetadata } from "../types";
 import { dexieStorage, kOfflineAnswerSchemaVersion } from "./dexie-storage";
 import { refIdToAnswersQuestionId } from "../utilities/embeddable-utils";
+import { consoleDir, consoleError, consoleLog } from "../utilities/console-wrappers";
 
 export interface IInitStorageParams {
   name: FirebaseImp.FirebaseAppName,
@@ -130,7 +131,7 @@ class FireStoreStorageProvider implements IStorageInterface {
       }
     }
     catch (err) {
-     console.error("DB authentication error:", err);
+     consoleError("DB authentication error:", err);
     }
   }
 
@@ -219,15 +220,15 @@ class DexieStorageProvider implements IStorageInterface {
   }
 
   watchAllAnswers(callback: (wrappedAnswer: IWrappedDBAnswer[]) => void){
-    console.log("WatchAllAnsweres called");
-    console.log(`current resource: ${_currentOfflineResourceUrl}`);
+    consoleLog("WatchAllAnsweres called");
+    consoleLog(`current resource: ${_currentOfflineResourceUrl}`);
 
     const foundAnswers = dexieStorage
       .answers
       .where({resource_url: _currentOfflineResourceUrl})
       .toArray();
     return foundAnswers.then((answers) => {
-      console.dir(answers);
+      consoleDir(answers);
       const response = answers.map( (a) => docToWrappedAnswer(a));
       callback(response);
     });
@@ -304,7 +305,7 @@ class DexieStorageProvider implements IStorageInterface {
         return false;
       }
 
-      console.log(`The file ${filename} appears valid`);
+      consoleLog(`The file ${filename} appears valid`);
       return true;
     };
 
@@ -324,7 +325,7 @@ class DexieStorageProvider implements IStorageInterface {
       }
 
     } catch (ex) {
-      console.log(ex);
+      consoleLog(ex);
       return false;
     }
   }
@@ -373,14 +374,14 @@ class DexieStorageProvider implements IStorageInterface {
           .answers
           .where({resource_url: _currentOfflineResourceUrl})
           .toArray();
-        console.dir(answers);
+        consoleDir(answers);
         for(const answer of answers) {
           fsProvider.createOrUpdateAnswer(answer);
         }
       }
       catch(e) {
-        console.error("Could not sync local indexDB to FireStore:");
-        console.error(e);
+        consoleError("Could not sync local indexDB to FireStore:");
+        consoleError(e);
         this.haveFireStoreConnection = false;
         fsProvider.signOut();
       }

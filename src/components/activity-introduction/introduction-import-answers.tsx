@@ -1,5 +1,6 @@
 import React, { ChangeEvent } from "react";
 import { getStorage } from "../../storage/storage-facade";
+import { consoleLog } from "../../utilities/console-wrappers";
 
 import "./introduction-import-answers.scss";
 
@@ -24,7 +25,7 @@ export class ImportAnswers extends React.PureComponent {
             const storage = getStorage();
             storage.importStudentAnswersFromJSONFile(binary, file.name);
           }).catch(function (reason) {
-            console.log(`Error during upload ${reason}`);
+            consoleLog(`Error during upload ${reason}`);
             event.target.value = ""; // to allow upload of same file if error occurs
           });
       });

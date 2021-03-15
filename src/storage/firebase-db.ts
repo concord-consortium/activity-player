@@ -17,6 +17,7 @@ import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAn
 import { queryValueBoolean } from "../utilities/url-query";
 import { RequestTracker } from "../utilities/request-tracker";
 import { docToWrappedAnswer, IWrappedDBAnswer } from "./storage-facade";
+import { consoleError, consoleWarn } from "../utilities/console-wrappers";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
@@ -133,8 +134,8 @@ export const signOut = async() =>{
   }
   catch(e) {
     // maybe we weren't signed in?
-    console.error("unable to signout from FireStore:");
-    console.error(e);
+    consoleError("unable to signout from FireStore:");
+    consoleError(e);
   }
 };
 
@@ -200,7 +201,7 @@ export const watchAnswer = (embeddableRefId: string, callback: (wrappedAnswer: I
       return;
     }
     if (answers.length > 1) {
-      console.warn(
+      consoleWarn(
         "Found multiple answer objects for the same question. It might be result of early " +
         "ActivityPlayer versions. Your data might be corrupted."
       );

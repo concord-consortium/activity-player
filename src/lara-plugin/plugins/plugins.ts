@@ -1,3 +1,4 @@
+import { consoleDir, consoleError, consoleGroup, consoleGroupEnd, consoleInfo, consoleWarn } from "../../utilities/console-wrappers";
 import { IRegisterPluginOptions } from "../plugin-api";
 import {
   IPluginContextOptions, IPluginRuntimeContextOptions, IPluginAuthoringContextOptions, generateRuntimePluginContext,
@@ -5,14 +6,10 @@ import {
 } from "./plugin-context";
 
 const pluginError = (e: string, other: any) => {
-  // tslint:disable-next-line:no-console
-  console.group("LARA Plugin Error");
-  // tslint:disable-next-line:no-console
-  console.error(e);
-  // tslint:disable-next-line:no-console
-  console.dir(other);
-  // tslint:disable-next-line:no-console
-  console.groupEnd();
+  consoleGroup("LARA Plugin Error");
+  consoleError(e);
+  consoleDir(other);
+  consoleGroupEnd();
 };
 
 /** @hidden Note, we call these `classes` but any constructor function will do. */
@@ -54,11 +51,9 @@ const initRuntimePlugin = (label: string, options: IPluginRuntimeContextOptions)
     } catch (e) {
       pluginError(e, options);
     }
-    // tslint:disable-next-line:no-console
-    console.info("Plugin", label, "is now registered");
+    consoleInfo("Plugin", label, "is now registered");
   } else {
-    // tslint:disable-next-line:no-console
-    console.error("No plugin registered for label:", label);
+    consoleError("No plugin registered for label:", label);
   }
 };
 
@@ -72,11 +67,9 @@ const initAuthoringPlugin = (label: string, options: IPluginAuthoringContextOpti
     } catch (e) {
       pluginError(e, options);
     }
-    // tslint:disable-next-line:no-console
-    console.info("Plugin", label, "is now registered");
+    consoleInfo("Plugin", label, "is now registered");
   } else {
-    // tslint:disable-next-line:no-console
-    console.error("No plugin registered for label:", label);
+    consoleError("No plugin registered for label:", label);
   }
 };
 
@@ -94,24 +87,20 @@ export const registerPlugin = (options: IRegisterPluginOptions): boolean => {
   nextPluginLabel = currentScriptId || nextPluginLabel;
 
   if (nextPluginLabel === "") {
-    // tslint:disable-next-line:no-console
-    console.error("nextPluginLabel not set via #setNextPluginLabel before plugin loaded!");
+    consoleError("nextPluginLabel not set via #setNextPluginLabel before plugin loaded!");
     return false;
   }
   const {runtimeClass, authoringClass} = options;
   if (typeof runtimeClass !== "function") {
-    // tslint:disable-next-line:no-console
-    console.error("Plugin did not provide a runtime constructor", nextPluginLabel);
+    consoleError("Plugin did not provide a runtime constructor", nextPluginLabel);
     return false;
   }
   if (typeof authoringClass !== "function") {
-    // tslint:disable-next-line:no-console
-    console.warn(`Plugin did not provide an authoring constructor. This is ok if "guiAuthoring"
+    consoleWarn(`Plugin did not provide an authoring constructor. This is ok if "guiAuthoring"
                   is not set for this component.`, nextPluginLabel);
 }
   if (pluginClasses[nextPluginLabel]) {
-    // tslint:disable-next-line:no-console
-    console.error("Duplicate Plugin for label", nextPluginLabel);
+    consoleError("Duplicate Plugin for label", nextPluginLabel);
     return false;
   } else {
     pluginClasses[nextPluginLabel] = options;

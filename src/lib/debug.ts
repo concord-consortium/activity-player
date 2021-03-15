@@ -1,6 +1,8 @@
+import { consoleInfo } from "../utilities/console-wrappers";
+
 const debug = (window.localStorage ? window.localStorage.getItem("debug") : undefined) || "";
 if (debug.length > 0) {
-  console.info("DEBUG:", debug);
+  consoleInfo("DEBUG:", debug);
 }
 
 const debugContains = (key: string) => debug.indexOf(key) !== -1;

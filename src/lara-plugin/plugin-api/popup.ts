@@ -6,6 +6,7 @@ import $ from "jquery";
 
 import "jquery-ui/ui/widgets/button";
 import "jquery-ui/ui/widgets/dialog";
+import { consoleWarn } from "../../utilities/console-wrappers";
 
 export interface IPopupOptions {
   content: HTMLElement | string;
@@ -94,8 +95,7 @@ export const addPopup = (_options: IPopupOptions): IPopupController => {
     throw new Error("LARA.addPopup - content option is required");
   }
   if (options.dialogClass) {
-    // tslint:disable-next-line:no-console
-    console.warn("LARA.addPopup - dialogClass option is discouraged and should not be used by plugins");
+    consoleWarn("LARA.addPopup - dialogClass option is discouraged and should not be used by plugins");
   }
   // LARA_CODE: const $content = typeof options.content === "string" ?
   // ACTIVITY_PLAYER_CODE:

@@ -40,6 +40,7 @@ import { StudentInfo } from "../student-info";
 import { StudentInfoModal } from "./student-info-modal";
 import { isNetworkConnected, monitorNetworkConnection } from "../utilities/network-connection";
 import { getHostnameWithMaybePort, isOfflineHost } from "../utilities/host-utils";
+import { consoleError, consoleLog, consoleWarn } from "../utilities/console-wrappers";
 
 import "./app.scss";
 
@@ -142,7 +143,7 @@ export class App extends React.PureComponent<IProps, IState> {
   public setError(errorType: ErrorType | null, error?: any) {
     this.setState({ errorType });
     if (errorType) {
-      console.error(errorType + " error:", error);
+      consoleError(errorType + " error:", error);
     }
   }
 
@@ -162,14 +163,14 @@ export class App extends React.PureComponent<IProps, IState> {
       // for now just send a message to always skip waiting so we don't have to do it manually in the devtools
       const alwaysSkipWaitingForNow = () => {
         if (registration?.waiting) {
-          console.log("Sending SKIP_WAITING to service worker...");
+          consoleLog("Sending SKIP_WAITING to service worker...");
           messageSW(registration.waiting, {type: "SKIP_WAITING"});
         }
       };
 
       // these are all events defined for workbox-window (https://developers.google.com/web/tools/workbox/modules/workbox-window)
       wb.addEventListener("installed", (event) => {
-        console.log("A new service worker has installed.");
+        consoleLog("A new service worker has installed.");
       });
       wb.addEventListener("waiting", (event) => {
         alwaysSkipWaitingForNow();
@@ -178,21 +179,21 @@ export class App extends React.PureComponent<IProps, IState> {
         alwaysSkipWaitingForNow();
       });
       wb.addEventListener("controlling", (event) => {
-        console.log("A new service worker has installed and is controlling.");
+        consoleLog("A new service worker has installed and is controlling.");
       });
       wb.addEventListener("activating", (event) => {
-        console.log("A new service worker is activating.");
+        consoleLog("A new service worker is activating.");
       });
       wb.addEventListener("activated", (event) => {
         if (!event.isUpdate) {
-          console.log("Service worker activated for the first time!");
+          consoleLog("Service worker activated for the first time!");
         }
       });
       wb.addEventListener("message", (event) => {
         const {offlineManifestAuthoringId} = this.state;
         switch (event.data.type) {
           case "CACHE_UPDATED":
-            console.log(`A newer version of ${event.data.payload.updatedURL} is available!`);
+            consoleLog(`A newer version of ${event.data.payload.updatedURL} is available!`);
             break;
 
           case "GET_REQUEST":
@@ -320,7 +321,7 @@ export class App extends React.PureComponent<IProps, IState> {
       const idleDetector = new IdleDetector({ idle: Number(kMaxIdleTime), onIdle: this.handleIdleness });
       idleDetector.start();
     } catch (e) {
-      console.warn(e);
+      consoleWarn(e);
     }
   }
 

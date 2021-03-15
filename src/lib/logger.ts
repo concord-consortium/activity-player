@@ -4,6 +4,7 @@ import { LaraGlobalType } from "../lara-plugin/index";
 import { Role } from "../student-info";
 import { dexieStorage } from "../storage/dexie-storage";
 import { LogMessage } from "../types";
+import { consoleLog } from "../utilities/console-wrappers";
 
 const logManagerUrl = "//cc-log-manager.herokuapp.com/api/logs";
 
@@ -44,7 +45,7 @@ export class Logger {
                                  runRemoteEndpoint: string,
                                  offlineMode: boolean) {
     if (DEBUG_LOGGER) {
-      console.log("Logger#initializeLogger called.");
+      consoleLog("Logger#initializeLogger called.");
     }
     this._instance = new Logger(LARA, username, role, classHash, teacherEdition, sequence, sequenceActivityIndex, activity, activityPage, runRemoteEndpoint, offlineMode);
   }
@@ -166,7 +167,7 @@ export class Logger {
 
   private sendToLoggingService(data: LogMessage) {
     if (DEBUG_LOGGER) {
-      console.log("Logger#sendToLoggingService sending", JSON.stringify(data), "to", logManagerUrl);
+      consoleLog("Logger#sendToLoggingService sending", JSON.stringify(data), "to", logManagerUrl);
     }
     const request = new XMLHttpRequest();
     request.open("POST", logManagerUrl, true);

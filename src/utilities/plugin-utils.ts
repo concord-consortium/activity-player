@@ -5,6 +5,7 @@ import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
 import { Activity, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
 import { getResourceUrl } from "../lara-api";
+import { consoleLog } from "./console-wrappers";
 
 export interface UsedPluginInfo {
   id: number;
@@ -60,7 +61,7 @@ export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, hand
     script.setAttribute("data-id", pluginLabel);
     document.body.appendChild(script);
     script.onload = function() {
-      console.log(`plugin${usedPlugin.id} script loaded`);
+      consoleLog(`plugin${usedPlugin.id} script loaded`);
       usedPlugin.loaded = true;
       if (plugins.filter((p) => !p.loaded).length === 0) {
         handleLoadPlugins();

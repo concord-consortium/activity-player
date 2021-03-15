@@ -1,6 +1,7 @@
 import React from "react";
 import { cacheOfflineManifest } from "../offline-manifest-api";
 import { OfflineManifest } from "../types";
+import { consoleError } from "../utilities/console-wrappers";
 
 import "./offline-manifest-loading-modal.scss";
 
@@ -41,7 +42,7 @@ export class OfflineManifestLoadingModal extends React.Component<IProps, IState>
         this.setState((prevState) => ({urlsCached: prevState.urlsCached.concat(url)}));
       },
       onUrlCacheFailed: (url, err) => {
-        console.error("Failed to cache:", url);
+        consoleError("Failed to cache:", url);
         this.setState((prevState) => ({urlsFailedToCache: prevState.urlsFailedToCache.concat(url)}));
       },
       onAllUrlsCached: () => {

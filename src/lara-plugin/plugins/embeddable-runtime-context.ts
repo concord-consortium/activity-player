@@ -4,6 +4,7 @@ import { onInteractiveAvailable, IInteractiveAvailableEvent, IInteractiveAvailab
         } from "../events";
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { IEmbeddableContextOptions } from "./plugin-context";
+import { consoleError } from "../../utilities/console-wrappers";
 
 const getInteractiveState = (interactiveStateUrl: string | null): Promise<IInteractiveState> | null => {
   if (!interactiveStateUrl) {
@@ -31,8 +32,7 @@ const getReportingUrl = (
       return null;
     }
     catch (error) {
-      // tslint:disable-next-line:no-console
-      console.error(error);
+      consoleError(error);
       return null;
     }
   });

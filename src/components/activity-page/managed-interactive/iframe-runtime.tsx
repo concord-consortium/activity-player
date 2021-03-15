@@ -14,6 +14,7 @@ import { Logger } from "../../../lib/logger";
 import { getStorage } from "../../../storage/storage-facade";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
 import { autorun } from "mobx";
+import { consoleError } from "../../../utilities/console-wrappers";
 
 const kDefaultHeight = 300;
 
@@ -147,7 +148,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
             post("interactiveSnapshot", response);
           },
           fail: (jqXHR: any, textStatus: any, errorThrown: any) => {
-            console.error("Snapshot request failed: ", textStatus, errorThrown);
+            consoleError("Snapshot request failed: ", textStatus, errorThrown);
             const response: IGetInteractiveSnapshotResponse = {
               requestId,
               success: false
@@ -315,7 +316,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           setTimeout(() => {
             if (interactiveStateRequest.promise.current) {
               const msg = `Sorry. Some items on this page did not save (${iframeTitle}).`;
-              console.error(msg);
+              consoleError(msg);
               reject(msg);
               cleanup();
             }
