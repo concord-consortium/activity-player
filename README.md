@@ -107,26 +107,36 @@ Inside of your `package.json` file:
 3. `cypress run --spec 'cypress/integration/examples/smoke-test.js'` will point to a smoke-test file rather than running all of the test files for a project.
 
 ## Url Parameters
+The configuration of the Activity Player is managed mostly by setting and checking URL parameters.
+
 ### Note: these are subject to change
+Definitive source of valid URL parameter names can be found in: `src/utilities/url-query.ts`
 
-* activity={id|url}:    load sample-activity {id} or load json from specified url
-* sequence={id|url}:    load sample-sequence {id} or load json from specified url
-* contentUrl={url}:     override the activity parameter and load the activity content from this contentUrl instead. In this case the activity parameter is still used to make the resourceUrl which identifies the resource structure in the report-service. The computed resourceUrl is also used to identify the answers when running offline.
-* page={n|"page_[id]"}: load page n, where 0 is the activity introduction, 1 is the first page and [id] in "page_[id]" refers to an internal integer id of the page model exported from LARA.
-* themeButtons:         whether to show theme buttons
-* mode={mode}:          sets mode. Values: "teacher-edition"
-* portalReport:         override default base URL for the student report. `https://activity-player.concord.org/`, `https://activity-player-offline.concord.org/`, `https://activity-player.concord.org/version/*`, and `https://activity-player-offline.concord.org/version/*`, default to a versioned URL defined as a constant in the code `kProductionPortalReportUrl`. Every other url defaults to the master branch of the portal-report.
+#### Testing, development, and debugging:
+* `__cypressLoggedIn`: trigger logged in code path for Cypress tests.
+* `clearFirestorePersistence`: clear FireStore between Cypress tests
+* `force_offline_data=`: will force IndexedDB storage for answers, plugin data.
 
-#### User data loading:
-* firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ and https://activity-player-offline.concord.org/ without a path, defaults to `report-service-pro` every other url defaults to `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
-* token={n}:         set by the portal when launching external activity, to authenticate with portal API
-* domain={n}:        set by the portal when launching external activity
-* sourceKey={id}:    which source collection to save data to in firestore (defaults to canonical hostname)
-* runkey={uuid}:     set by the app if we are running in anonymous datasaving mode
-* preview:           prevent running in anonymous datasaving mode
-* enableFirestorePersistence: uses local offline firestore cache only
-* clearFirestorePersistence: clears local offline firestore cache
+#### Content and behavior
+* `__maxIdleTime`: user will see the idle warning after kMaxIdleTime
+* `__timeout`: user session will timeout after kMaxIdleTime + kTimeout
+* `activity={id|url}`: load sample-activity {id} or load json from specified url
+* `contentUrl={url}`: override the activity parameter and load the activity content from this contentUrl instead. In this case the activity parameter is still used to make the resourceUrl which identifies the resource structure in the report-service. The computed resourceUrl is also used to identify the answers when running offline.
+* `mode={mode}`: sets mode. Values: "teacher-edition"
+* `page={n|"page_[id]"}`: load page n, where 0 is the activity introduction, 1 is the first page and [id] in "page_[id]" refers to an internal integer id of the page model exported from LARA.
+* `portalReport`: override default base URL for the student report. `https://activity-player.concord.org/`, `https://activity-player-offline.concord.org/`, `https://activity-player.concord.org/version/*`, and `https://activity-player-offline.concord.org/version/*`, default to a versioned URL defined as a constant in the code `kProductionPortalReportUrl`. Every other url defaults to the master branch of the portal-report.
+* `sequence={id|url}`: load sample-sequence {id} or load json from specified url
+* `themeButtons`: whether to show theme buttons
 
+#### Loading user and authentication data:
+* `clearFirestorePersistence`: clears local offline firestore cache
+* `domain={n}`: set by the portal when launching external activity
+* `enableFirestorePersistence`: uses local offline firestore cache only
+* `firebaseApp={id}`: override default firebase app. https://activity-player.concord.org/ and https://activity-player-offline.concord.org/ without a path, defaults to `report-service-pro` every other url defaults to `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
+* `preview`: prevent running in anonymous datasaving mode
+* `runkey={uuid}`: set by the app if we are running in anonymous datasaving mode
+* `sourceKey={id}`: which source collection to save data to in firestore (defaults to canonical hostname)
+* `token={n}`: set by the portal when launching external activity, to authenticate with portal API
 ## Usage Notes
 
 ### Offline Manifests

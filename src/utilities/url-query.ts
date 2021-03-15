@@ -1,6 +1,6 @@
 import queryString from "query-string";
 
-// Known Query Parameters:
+// See `README.md` for complete description of parameters and there intended use.
 type IQueryKey =
   "__cypressLoggedIn" |
   "__maxIdleTime" |
