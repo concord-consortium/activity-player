@@ -114,12 +114,11 @@ Definitive source of valid URL parameter names can be found in: `src/utilities/u
 
 #### Testing, development, and debugging:
 * `__cypressLoggedIn`: trigger logged in code path for Cypress tests.
-* `clearFirestorePersistence`: clear FireStore between Cypress tests
-* `force_offline_data=`: will force IndexedDB storage for answers, plugin data.
-
-#### Content and behavior
+* `__forceOfflineData`: will force IndexedDB storage for answers, plugin data.
 * `__maxIdleTime`: user will see the idle warning after kMaxIdleTime
 * `__timeout`: user session will timeout after kMaxIdleTime + kTimeout
+* `clearFirestorePersistence`: clear FireStore between Cypress tests
+#### Content and behavior
 * `activity={id|url}`: load sample-activity {id} or load json from specified url
 * `contentUrl={url}`: override the activity parameter and load the activity content from this contentUrl instead. In this case the activity parameter is still used to make the resourceUrl which identifies the resource structure in the report-service. The computed resourceUrl is also used to identify the answers when running offline.
 * `mode={mode}`: sets mode. Values: "teacher-edition"

@@ -24,7 +24,7 @@ type IQueryKey =
 type IQueryBoolKey =
   "clearFirestorePersistence" |
   "enableFirestorePersistence" |
-  "force_offline_data" | // Will force indexDB storage for testing...
+  "__forceOfflineData" | // Will force indexDB storage for testing...
   "preview" |
   "themeButtons";
 
