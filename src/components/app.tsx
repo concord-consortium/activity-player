@@ -290,7 +290,8 @@ export class App extends React.PureComponent<IProps, IState> {
       setDocumentTitle(activity, currentPage);
 
       // Initialize Storage provider
-      const storage = await initStorage({name: firebaseAppName(), preview, offline: this.state.offlineMode});
+      const useOfflineStorage = this.state.offlineMode || queryValueBoolean("force_offline_data");
+      const storage = await initStorage({name: firebaseAppName(), preview, offline: useOfflineStorage});
       this.studentInfo = new StudentInfo(storage);
       await this.studentInfo.init();
       const role = this.studentInfo.role;
