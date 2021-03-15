@@ -4,7 +4,7 @@ import { IIndexedDBAnswer } from "./storage-facade";
 
 // We need to ensure a version match between data stored and exported
 // version 5: switched from activity to resource_url field for identifying answer's activity
-export const kOfflineAnswerSchemaVersion = 5;
+export const kOfflineAnswerSchemaVersion = 6;
 export interface IDexiePluginRecord {
   pluginId: number,
   state: string|null
