@@ -3,32 +3,32 @@
   "activities": [
     {
       "name": "Lesson 4 Pre",
-      "url": "offline-activities/staging-precipitating-change/lesson-4-pre-v1.json",
+      "contentUrl": "offline-activities/staging-precipitating-change/lesson-4-pre-v1.json",
       "resourceUrl": "https://authoring.staging.concord.org/activities/20955"
     },
     {
       "name": "Lesson 4",
-      "url": "offline-activities/staging-precipitating-change/lesson-4-v1.json",
+      "contentUrl": "offline-activities/staging-precipitating-change/lesson-4-v1.json",
       "resourceUrl": "https://authoring.staging.concord.org/activities/20956"
     },
     {
       "name": "Lesson 4 Post",
-      "url": "offline-activities/staging-precipitating-change/lesson-4-post-v1.json",
+      "contentUrl": "offline-activities/staging-precipitating-change/lesson-4-post-v1.json",
       "resourceUrl": "https://authoring.staging.concord.org/activities/20957"
     },
     {
       "name": "Lesson 5 Pre",
-      "url": "offline-activities/staging-precipitating-change/lesson-5-pre-v1.json",
+      "contentUrl": "offline-activities/staging-precipitating-change/lesson-5-pre-v1.json",
       "resourceUrl": "https://authoring.staging.concord.org/activities/20954"
     },
     {
       "name": "Lesson 5",
-      "url": "offline-activities/staging-precipitating-change/lesson-5-v1.json",
+      "contentUrl": "offline-activities/staging-precipitating-change/lesson-5-v1.json",
       "resourceUrl": "https://authoring.staging.concord.org/activities/20953"
     },
     {
       "name": "Lesson 5 Post",
-      "url": "offline-activities/staging-precipitating-change/lesson-5-post-v1.json",
+      "contentUrl": "offline-activities/staging-precipitating-change/lesson-5-post-v1.json",
       "resourceUrl": "https://authoring.staging.concord.org/activities/20952"
     }
   ],
