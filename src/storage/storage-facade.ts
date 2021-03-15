@@ -224,7 +224,7 @@ class DexieStorageProvider implements IStorageInterface {
     if (!questionAnswerWatchers) {
       return;
     }
-    questionAnswerWatchers.forEach((callback:any) => {
+    questionAnswerWatchers.forEach((callback:IAnswerWatcherCallback) => {
       callback(docToWrappedAnswer(answer));
     });
   }
