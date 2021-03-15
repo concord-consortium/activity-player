@@ -102,7 +102,7 @@ export const getOfflineManifestAuthoringDownloadJSON = (name: string, data: Offl
 export const mergeOfflineManifestWithAuthoringData = (offlineManifest: OfflineManifest, authoringData: OfflineManifestAuthoringData) => {
   const {activities, cacheList} = authoringData;
   offlineManifest.activities.forEach(activity => {
-    // Note: if the contentUrl has changed this is won't update it in the manifest
+    // Note: if the contentUrl has changed this won't update it in the manifest
     // but in that case it seems reasonable that the author will just manually fix it.
     if (!activities.find(a => a.resourceUrl === activity.resourceUrl)) {
       activities.push(activity);
