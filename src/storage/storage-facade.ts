@@ -1,7 +1,7 @@
 // import { WrappedDBAnswer, FirebaseAppName } from "./firebase-db";
 import * as FirebaseImp from "./firebase-db";
 import { fetchPortalData, IAnonymousPortalData, IPortalData } from "../portal-api";
-import { IAnonymousMetadataPartial, IExportableAnswerMetadata } from "../types";
+import { IExportableAnswerMetadata } from "../types";
 import { dexieStorage, kOfflineAnswerSchemaVersion } from "./dexie-storage";
 import { refIdToAnswersQuestionId } from "../utilities/embeddable-utils";
 
@@ -190,12 +190,16 @@ class FireStoreStorageProvider implements IStorageInterface {
 }
 
 
+interface IAnswerWatcherCallback { (answer: IWrappedDBAnswer): void }
+type IQuestionWatchersRecord =  Record<string, Array<IAnswerWatcherCallback>>;
 class DexieStorageProvider implements IStorageInterface {
   portalData: IPortalData|IAnonymousPortalData;
   haveFireStoreConnection: boolean;
+  answerWatchers: Record<string, IQuestionWatchersRecord>;
 
   constructor(){
     this.haveFireStoreConnection = false;
+    this.answerWatchers = {};
   }
 
   async initializeDB (initializer: IDBInitializer) {
@@ -212,6 +216,17 @@ class DexieStorageProvider implements IStorageInterface {
     const idxDBAnswer = answer as IIndexedDBAnswer;
     idxDBAnswer.resource_url = _currentOfflineResourceUrl;
     dexieStorage.answers.put(idxDBAnswer);
+    const activityAnswerWatchers = this.answerWatchers[_currentOfflineActivityId];
+    if (!activityAnswerWatchers || !answer.question_id) {
+      return;
+    }
+    const questionAnswerWatchers = activityAnswerWatchers[answer.question_id];
+    if (!questionAnswerWatchers) {
+      return;
+    }
+    questionAnswerWatchers.forEach((callback:IAnswerWatcherCallback) => {
+      callback(docToWrappedAnswer(answer));
+    });
   }
 
   getPortalData() {
@@ -244,6 +259,20 @@ class DexieStorageProvider implements IStorageInterface {
         return answers[0];
       });
     };
+
+    let activityAnswerWatchers = this.answerWatchers[_currentOfflineActivityId];
+    if (!activityAnswerWatchers) {
+      activityAnswerWatchers = {};
+      this.answerWatchers[_currentOfflineActivityId] = activityAnswerWatchers;
+    }
+
+    let questionAnswerWatchers = activityAnswerWatchers[questionId];
+    if (!questionAnswerWatchers) {
+      questionAnswerWatchers = [];
+      activityAnswerWatchers[questionId] = questionAnswerWatchers;
+    }
+
+    questionAnswerWatchers.push(callback);
 
     getAnswerFromIndexDB(questionId).then( (answer: IIndexedDBAnswer|null) => {
       if (answer) {
