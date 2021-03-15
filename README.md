@@ -167,6 +167,38 @@ At this point you can either add new activities by manually adding an `activity=
 
 Once you have completed authoring you can click on the "Exit Authoring" button in the authoring nav.  This simply deletes the localstorage key set when the `setOfflineManifestAuthoringId=` query parameter was used.  It **does not** delete the data stored during authoring mode.  To delete that data (for the current offline manifest only) click the "Clear Authoring Data" button in the authoring nav.
 
+#### Frozen activity content
+
+It is safest to freeze the activity content managed by LARA and refer to that frozen activity content in the manifest. Otherwise the resources referenced by activity can change after the manifest was generated, and then when a user goes to install the manifest's files some of them will not be available anymore.
+
+A specific example are the library interactives used for open response and multiple choice in LARA. When a new version of these interactives (question-interactives) is released, the library interactive referenced by most activities in LARA gets updated. Now when the activity content is downloaded by the AP it refers to the new version of this interactive. If the manifest was created with the old version it might record a url of `/models-resources/question-interactives/version/v1.1.0`, but after the new release, LARA might now send down an activity json file that refers to `/models-resources/question-interactives/version/v1.2.0`.  Because the manifest only initially "installs" what is listed in the manifest file, the v1.2.0 interactive would not be cached. Now when the activity is run offline it would not find v1.2.0 and the activity won't run correctly. By freezing the activity json, changes to LARA won't affect this frozen content so the manifest will continue to be valid.
+
+There are still cases where a frozen activity.json won't help. Here is an example:
+If the activity uses a master branch version of question-interactives. The manifest will record a reference to the html, javascript, and css of this master branch. The index file name will always be the same `/models-resources/question-interactivs/branch/master/index.html`, but it will refer to js and css files that include a hash in them. So the manifest will record something like:
+- `/models-resources/question-interactives/branch/master/index.html`
+- `/models-resources/question-interactives/branch/master/index.abc123.js`
+
+When new code is added to the master branch the old files are deleted and new files are added so now the master branch question-interactive index.html will refer to a different js file such as: `/models-resources/question-interactivs/branch/master/index.def456.js`.  This file will not have been cached during the manifest installation process so when running offline the question-interactives won't be able to find its javascript.  Because of this it is always best to refer to versioned interactives which we know will not be modified, so the list of files in the manifest will always be correct.
+
+#### Assignments to support Offline Manifests
+
+The student or teacher will need to install the files from the offline manifest before the student goes offline.
+They'll likely do that with a URL like this one:
+
+    https://activity-player-offline.concord.org/branch/offline-mode/?confirmOfflineManifestInstall=true&offlineManifest=staging-precipitating-change-v1
+
+Then when they run they need to open the url like:
+
+    https://activity-player-offline.concord.org/branch/offline-mode/
+
+They can just bookmark that URL, or they can install a PWA app icon which will open that URL. The PWA installation should increase the stickiness of the application cache.
+
+An author needs to setup assignments for each resources (activities) in the manifest so the student can upload their work on that resource back to the report-service. Because we are using frozen content and we want the portal-report to be able to find the report-structure for the activity. These URLs need to include both an `activity` parameter and a `contentUrl` parameter. An example of this is:
+
+    https://activity-player-offline.concord.org/branch/offline-mode/?activity=https://authoring.staging.concord.org/activities/20926&contentUrl=offline-activities%2Fprecipitatingchange-test-v1.json
+
+The `activity` parameter is used by the AP and the portal-report to compute the resourceUrl. This resourceUrl is used to find the student's answers in the offline indexedDb. It is also used by the portal-report to find the report-structure the report-service. 
+
 ## Models-Resources Proxying
 
 In order for the interactive iframe contents to be cached by the Activity Player service worker the iframes must load content under the same Activity Player domain.  To do this in production a CloudFront origin and behavior were added to proxy any url containing `models-resources` to the models-resources S3 bucket.  This is also done locally with a proxy setup in the webpack-dev-server configuration.
