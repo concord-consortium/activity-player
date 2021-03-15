@@ -6,6 +6,7 @@ import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
 import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
+import { SummaryTable } from "./summary-table";
 import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
 
 import "./completion-page-content.scss";
@@ -55,18 +56,26 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const activityProgress = (currentActivity: Activity) => {
     let numAnswers = 0;
     let numQuestions = 0;
+    const questionsStatus = Array<{number: number, prompt: string, answered: boolean}>();
     currentActivity.pages.forEach((page: Page) => {
       page.embeddables.forEach((embeddableWrapper: EmbeddableWrapper) => {
         if (isQuestion(embeddableWrapper)) {
           numQuestions++;
           const questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
+          const authored_state = embeddableWrapper.embeddable.authored_state 
+                                   ? JSON.parse(embeddableWrapper.embeddable.authored_state)
+                                   : {};
+          let questionAnswered = false;
           if (answers?.find((answer: any) => answer.meta.question_id === questionId)) {
             numAnswers++; //Does't take into account if user erases response after saving
+            questionAnswered = true;
           }
+          const questionStatus = { number: numQuestions, prompt: authored_state.prompt, answered: questionAnswered };
+          questionsStatus.push(questionStatus);
         }
       });
     });
-    return ({ numAnswers, numQuestions });
+    return ({ numAnswers, numQuestions, questionsStatus });
   };
 
   useEffect(() => {
@@ -129,6 +138,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
             </div>
             {showStudentReport && <button className="button" onClick={handleShowAnswers}>Show My Work</button>}
           </div>
+          <SummaryTable questionsStatus={progress.questionsStatus} />
           <div className="exit-container" data-cy="exit-container">
             <div className="box">
               <img src={thumbnailURL ? thumbnailURL : ccPlaceholderLogo} alt="Completion logo" />

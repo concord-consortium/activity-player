@@ -1,0 +1,37 @@
+@import "../vars.scss";
+
+table {
+  border-collapse: collapse;
+  border-top: solid 1px $cc-teal-dark1;
+  border-right: solid 1px $cc-teal-dark1;
+  width: 100%;
+
+  th {
+    background: $cc-teal-dark1;
+    color: white;
+  }
+  th, td {
+    border-bottom: solid 1px $cc-teal-dark1;
+    border-left: solid 1px $cc-teal-dark1;
+    padding: 5px;
+    text-align: left;
+    vertical-align: middle;
+  
+    &:nth-child(1) {
+      width: 90%;
+    }
+    &:nth-child(2) {
+      text-align: center;
+    }
+
+    svg {
+      display: block;
+      height: 24px;
+      margin: 0 auto;
+      width: 24px;
+    }
+  }
+  tr:nth-child(even) {
+    background: $cc-teal-light7;
+  }
+}
