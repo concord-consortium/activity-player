@@ -1,7 +1,7 @@
 // import { WrappedDBAnswer, FirebaseAppName } from "./firebase-db";
 import * as FirebaseImp from "./firebase-db";
 import { fetchPortalData, IAnonymousPortalData, IPortalData } from "../portal-api";
-import { IAnonymousMetadataPartial, IExportableAnswerMetadata } from "../types";
+import { IExportableAnswerMetadata } from "../types";
 import { dexieStorage, kOfflineAnswerSchemaVersion } from "./dexie-storage";
 import { refIdToAnswersQuestionId } from "../utilities/embeddable-utils";
 
@@ -190,10 +190,12 @@ class FireStoreStorageProvider implements IStorageInterface {
 }
 
 
+interface IAnswerWatcherCallback { (answer: IWrappedDBAnswer): void }
+type IQuestionWatchersRecord =  Record<string, Array<IAnswerWatcherCallback>>;
 class DexieStorageProvider implements IStorageInterface {
   portalData: IPortalData|IAnonymousPortalData;
   haveFireStoreConnection: boolean;
-  answerWatchers: any;
+  answerWatchers: Record<string, IQuestionWatchersRecord>;
 
   constructor(){
     this.haveFireStoreConnection = false;
