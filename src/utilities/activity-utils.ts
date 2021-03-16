@@ -43,6 +43,9 @@ export const isEmbeddableSectionHidden = (page: Page, section: string | null) =>
 };
 
 export const getVisibleEmbeddablesOnPage = (page: Page) => {
+  if(page.is_hidden) {
+    return { interactiveBox: [], headerBlock: [], infoAssessment: [] };
+  }
   const headerEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Introduction)
     ? []
     : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction && isVisibleEmbeddable(e));

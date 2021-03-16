@@ -1,5 +1,5 @@
 {
-  "description": "<p>This activity contains a hidden page and a hidden question on each page.&nbsp; There are 4 total pages, but only 3 should be displayed.&nbsp; On the displayed pages, each contains 3 questions but only 2 should be shown (each contains a hidden question) and the interactive block section is hidden.&nbsp;</p>",
+  "description": "<p>This activity contains a hidden page and a hidden question on each page.&nbsp; There are 4 total pages, but only 3 should be displayed.&nbsp; On the displayed pages, each contains 3 questions but only 2 should be shown (each contains a hidden question) and the interactive block section is hidden.&nbsp; There are no questions on the fourth page.</p>",
   "editor_mode": 0,
   "layout": 0,
   "name": "Hidden Content Activity",
