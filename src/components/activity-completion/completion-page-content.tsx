@@ -8,7 +8,7 @@ import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
 import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
-import { SummaryTable } from "./summary-table";
+import { SummaryTable, IQuestionStatus } from "./summary-table";
 import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
 
 import "./completion-page-content.scss";
@@ -59,7 +59,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const activityProgress = (currentActivity: Activity) => {
     let numAnswers = 0;
     let numQuestions = 0;
-    const questionsStatus = Array<{number: number, page: number, prompt: string, answered: boolean}>();
+    const questionsStatus = Array<IQuestionStatus>();
     currentActivity.pages.forEach((page: Page, index) => {
       const pageNum = index + 1;
       page.embeddables.forEach((embeddableWrapper: EmbeddableWrapper) => {

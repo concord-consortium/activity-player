@@ -4,8 +4,15 @@ import IconIncomplete from "../../assets/svg-icons/icon-unfinished-check-circle.
 
 import "./summary-table.scss";
 
+export interface IQuestionStatus {
+  number: number;
+  page: number;
+  prompt: string;
+  answered: boolean;
+}
+
 interface IProps {
-  questionsStatus: Array<{number: number, page: number, prompt: string, answered: boolean}>;
+  questionsStatus: Array<IQuestionStatus>;
 }
 
 export const SummaryTable: React.FC<IProps> = (props) => {
@@ -20,7 +27,7 @@ export const SummaryTable: React.FC<IProps> = (props) => {
         </tr>
       </thead>
       <tbody>
-      {questionsStatus.map((question: {number: number, page: number, prompt: string, answered: boolean}, index) => {
+      {questionsStatus.map((question: IQuestionStatus, index) => {
           const questionAnswered = question.answered ? <IconComplete className="complete" /> : <IconIncomplete className="incomplete" />;
           const questionPrompt = question.prompt ? question.prompt.replace(/<\/?[^>]+(>|$)/g, "") : "";
           return (
