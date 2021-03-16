@@ -12,7 +12,7 @@ export const SummaryTable: React.FC<IProps> = (props) => {
   const { questionsStatus } = props;
 
   return (
-    <table>
+    <table data-cy="summary-table">
       <thead>
         <tr>
           <th>Question</th>
@@ -24,7 +24,7 @@ export const SummaryTable: React.FC<IProps> = (props) => {
           const questionAnswered = question.answered ? <IconComplete className="complete" /> : <IconIncomplete className="incomplete" />;
           const questionPrompt = question.prompt ? question.prompt.replace(/<\/?[^>]+(>|$)/g, "") : "";
           return (
-            <tr key={index}>
+            <tr key={index} data-cy="summary-table-row">
               <td>Page {question.page}: Question {question.number}. <em>{questionPrompt}</em></td>
               <td>{questionAnswered}</td>
             </tr>
