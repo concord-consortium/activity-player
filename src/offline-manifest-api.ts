@@ -1,5 +1,5 @@
 import { dexieStorage } from "./storage/dexie-storage";
-import { OfflineManifest, OfflineManifestActivity } from "./types";
+import { OfflineActivity, OfflineManifest, OfflineManifestActivity } from "./types";
 
 export interface OfflineManifestAuthoringData {
   activities: OfflineManifestActivity[];
@@ -117,16 +117,34 @@ export const mergeOfflineManifestWithAuthoringData = (offlineManifest: OfflineMa
 };
 
 export const saveOfflineManifestToOfflineActivities = async (offlineManifest: OfflineManifest) => {
-  const promises = offlineManifest.activities.map(async (offlineManifestActivity) => {
+  const manifestName = offlineManifest.name;
+  const promises = offlineManifest.activities.map(async (offlineManifestActivity, order) => {
     const {name, resourceUrl, contentUrl} = offlineManifestActivity;
     const offlineActivity = await dexieStorage.offlineActivities.get({resourceUrl});
     if (offlineActivity) {
-      await dexieStorage.offlineActivities.update(resourceUrl, {name, resourceUrl, contentUrl});
+      await dexieStorage.offlineActivities.update(resourceUrl, {name, resourceUrl, contentUrl, manifestName, order});
     } else {
-      await dexieStorage.offlineActivities.put({name, resourceUrl, contentUrl});
+      await dexieStorage.offlineActivities.put({name, resourceUrl, contentUrl, manifestName, order});
     }
   });
   await Promise.all(promises);
 };
 
-export const getOfflineActivities = async () => await dexieStorage.offlineActivities.toArray();
+export const normalizeAndSortOfflineActivities = (rawList: OfflineActivity[]) => {
+  // ensure older saved offline activities have a defined manifest name and order
+  const normalizedList = rawList.map((item, order) => ({...item, manifestName: item.manifestName ?? "", order: item.order ?? order}));
+  normalizedList.sort((a, b) => {
+    const nameSort = a.manifestName.localeCompare(b.manifestName);
+    if (nameSort === 0) {
+      return a.order - b.order;
+    } else {
+      return nameSort;
+    }
+  });
+  return normalizedList;
+};
+
+export const getOfflineActivities = async () => {
+  const offlineActivities = await dexieStorage.offlineActivities.toArray();
+  return normalizeAndSortOfflineActivities(offlineActivities);
+};

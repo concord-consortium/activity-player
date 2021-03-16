@@ -279,6 +279,8 @@ export interface OfflineManifest {
 }
 
 export interface OfflineActivity extends OfflineManifestActivity {
+  manifestName: string;
+  order: number;
   // TBD: add class info once that is figured out
 }
 
