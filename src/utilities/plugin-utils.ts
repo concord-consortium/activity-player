@@ -67,7 +67,9 @@ export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, hand
     script.src = usedPlugin.plugin.approved_script.url;
     script.setAttribute("data-id", pluginLabel);
     script.onload = function() {
-      console.log(`plugin${usedPlugin.id} script loaded`);
+      if (typeof window.jest === undefined) {
+        console.log(`plugin${usedPlugin.id} script loaded`);
+      }
       usedPlugin.loaded = true;
       if (plugins.filter((p) => !p.loaded).length === 0) {
         handleLoadPlugins();
@@ -106,7 +108,7 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 // loads the learner plugin state into the firebase write-through cache
 export const loadLearnerPluginState = async (activity: Activity, teacherEditionMode: boolean) => {
   const plugins = findUsedPlugins(activity, teacherEditionMode);
-  await Promise.all(plugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
+  return await Promise.all(plugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
 };
 
 export const initializePlugin = (context: IEmbeddablePluginContext) => {

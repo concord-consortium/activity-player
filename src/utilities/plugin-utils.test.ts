@@ -2,6 +2,7 @@ import { Activity, Plugin } from "../types";
 import { addUsedPlugin, clearUsedPlugins, findUsedPlugins, getGlossaryEmbeddable, getUsedPlugins, IEmbeddablePluginContext, initializePlugin, IPartialEmbeddablePluginContext, loadLearnerPluginState, loadPluginScripts, validateEmbeddablePluginContextForPlugin, validateEmbeddablePluginContextForWrappedEmbeddable } from "./plugin-utils";
 import sampleActivityGlossaryPlugin from "../data/sample-activity-glossary-plugin.json";
 import { LaraGlobalType } from "../lara-plugin";
+import { clearCachedLearnerPluginState, getCachedLearnerPluginState, setLearnerPluginState, setPortalData } from "../firebase-db";
 
 describe("Plugin utility functions", () => {
 
@@ -124,14 +125,52 @@ describe("Plugin utility functions", () => {
   });
 
   describe("#loadLearnerPluginState", () => {
+    beforeEach(async () => {
+      clearUsedPlugins();
+      setPortalData({
+        type: "authenticated",
+        contextId: "context-id",
+        database: {
+          appName: "report-service-dev",
+          sourceKey: "localhost",
+          rawFirebaseJWT: "abc"
+        },
+        offering: {
+          id: 1,
+          activityUrl: "http://example/activities/1",
+          rubricUrl: ""
+        },
+        platformId: "https://example",
+        platformUserId: "1",
+        resourceLinkId: "2",
+        resourceUrl: "http://example/resource",
+        toolId: "activity-player.concord.org",
+        userType: "learner",
+        runRemoteEndpoint: ""
+      });
+      // these will fail as there is no firebase connection but it will populate the internal cache
+      try {
+        await setLearnerPluginState(0, "test 1");
+      } catch (e) {} // eslint-disable-line no-empty
+      try {
+        await setLearnerPluginState(1, "test 2");
+      } catch (e) {} // eslint-disable-line no-empty
+    });
+
+    it("captures the learner plugin state in a local cache", () => {
+      // cache is set in the beforeEach() call above...
+      expect(getCachedLearnerPluginState(0)).toBe("test 1");
+      expect(getCachedLearnerPluginState(1)).toBe("test 2");
+    });
+
     it("returns the state for all plugins in teacher mode", async () => {
       const pluginState = await loadLearnerPluginState(activity, true);
-      expect(pluginState).toEqual(undefined);
+      expect(pluginState).toEqual(["test 1", "test 2"]);
     });
 
     it("returns the state for all plugins in non teacher mode", async () => {
       const pluginState = await loadLearnerPluginState(activity, false);
-      expect(pluginState).toEqual(undefined);
+      expect(pluginState).toEqual(["test 1"]);
     });
   });
 
@@ -154,6 +193,7 @@ describe("Plugin utility functions", () => {
 
     beforeEach(() => {
       clearUsedPlugins();
+      clearCachedLearnerPluginState();
       jest.resetAllMocks();
     });
 
