@@ -1,6 +1,6 @@
 import { Activity } from "../types";
 import { isQuestion, isEmbeddableSectionHidden, getVisibleEmbeddablesOnPage, VisibleEmbeddables,
-  EmbeddableSections, getPageSectionQuestionCount, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isNotSampleActivityUrl } from "./activity-utils";
+  EmbeddableSections, getPageSectionQuestionCount, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isNotSampleActivityUrl, orderedQuestionsOnPage } from "./activity-utils";
 import _activityHidden from "../data/sample-activity-hidden-content.json";
 import _activity from "../data/sample-activity-multiple-layout-types.json";
 import { DefaultTestActivity } from "../test-utils/model-for-tests";
@@ -99,5 +99,23 @@ describe("Activity utility functions", () => {
     expect(isNotSampleActivityUrl("foo")).toBe(false);
     expect(isNotSampleActivityUrl("http://example.com/foo")).toBe(true);
     expect(isNotSampleActivityUrl("offline-activities/foo")).toBe(true);
+  });
+
+  it("Returns an ordered list of questions, taking into account the layout of sections", () => {
+    const page = activity.pages[0];
+    const expectedRefIds  = [
+      "319-ManagedInteractive", // In header block, but defined last
+      "312-ManagedInteractive", // Section is null
+      "313-ManagedInteractive", // Section is null
+      "352-ManagedInteractive"  // Section is null
+    ];
+    const foundRefIds = orderedQuestionsOnPage(page).map( e=> e.embeddable.ref_id);
+    expect(foundRefIds).toEqual(expectedRefIds);
+    // In the hidden activity we only expect to find:
+    // page0: 2 visible, page1: no visible, page2: 2 visible, page3: 0 visible
+    expect(orderedQuestionsOnPage(activityHidden.pages[0]).length).toEqual(2);
+    expect(orderedQuestionsOnPage(activityHidden.pages[1]).length).toEqual(0);
+    expect(orderedQuestionsOnPage(activityHidden.pages[2]).length).toEqual(2);
+    expect(orderedQuestionsOnPage(activityHidden.pages[3]).length).toEqual(0);
   });
 });
