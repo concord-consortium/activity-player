@@ -13,9 +13,13 @@ table {
   th, td {
     border-bottom: solid 1px $cc-teal-dark1;
     border-left: solid 1px $cc-teal-dark1;
+    max-width: 0;
+    overflow: hidden;
     padding: 5px;
     text-align: left;
+    text-overflow: ellipsis;
     vertical-align: middle;
+    white-space: nowrap;
   
     &:nth-child(1) {
       width: 90%;
@@ -29,6 +33,13 @@ table {
       height: 24px;
       margin: 0 auto;
       width: 24px;
+
+      &.complete {
+        fill: $cc-teal;
+      }
+      &.incomplete {
+        fill: $cc-orange-dark1;
+      }
     }
   }
   tr:nth-child(even) {

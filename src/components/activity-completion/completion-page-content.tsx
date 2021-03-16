@@ -56,8 +56,9 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const activityProgress = (currentActivity: Activity) => {
     let numAnswers = 0;
     let numQuestions = 0;
-    const questionsStatus = Array<{number: number, prompt: string, answered: boolean}>();
-    currentActivity.pages.forEach((page: Page) => {
+    const questionsStatus = Array<{number: number, page: number, prompt: string, answered: boolean}>();
+    currentActivity.pages.forEach((page: Page, index) => {
+      const pageNum = index + 1;
       page.embeddables.forEach((embeddableWrapper: EmbeddableWrapper) => {
         if (isQuestion(embeddableWrapper)) {
           numQuestions++;
@@ -70,7 +71,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
             numAnswers++; //Does't take into account if user erases response after saving
             questionAnswered = true;
           }
-          const questionStatus = { number: numQuestions, prompt: authored_state.prompt, answered: questionAnswered };
+          const questionStatus = { number: numQuestions, page: pageNum, prompt: authored_state.prompt, answered: questionAnswered };
           questionsStatus.push(questionStatus);
         }
       });

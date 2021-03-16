@@ -5,7 +5,7 @@ import IconIncomplete from "../../assets/svg-icons/icon-unfinished-check-circle.
 import "./summary-table.scss";
 
 interface IProps {
-  questionsStatus: Array<{number: number, prompt: string, answered: boolean}>;
+  questionsStatus: Array<{number: number, page: number, prompt: string, answered: boolean}>;
 }
 
 export const SummaryTable: React.FC<IProps> = (props) => {
@@ -20,12 +20,12 @@ export const SummaryTable: React.FC<IProps> = (props) => {
         </tr>
       </thead>
       <tbody>
-      {questionsStatus.map((question: {number: number, prompt: string, answered: boolean}, index: number) => {
-          const questionAnswered = question.answered ? <IconComplete /> : <IconIncomplete />;
-          const questionPrompt = question.prompt.replace(/<\/?[^>]+(>|$)/g, "");
+      {questionsStatus.map((question: {number: number, page: number, prompt: string, answered: boolean}, index) => {
+          const questionAnswered = question.answered ? <IconComplete className="complete" /> : <IconIncomplete className="incomplete" />;
+          const questionPrompt = question.prompt ? question.prompt.replace(/<\/?[^>]+(>|$)/g, "") : "";
           return (
             <tr key={index}>
-              <td>{question.number}) {questionPrompt}</td>
+              <td>Page {question.page}: Question {question.number}. <em>{questionPrompt}</em></td>
               <td>{questionAnswered}</td>
             </tr>
           );
