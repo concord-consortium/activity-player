@@ -2,7 +2,7 @@
 import * as FirebaseImp from "./firebase-db";
 import { fetchPortalData, IAnonymousPortalData, IPortalData } from "../portal-api";
 import { IExportableAnswerMetadata } from "../types";
-import { dexieStorage, kOfflineAnswerSchemaVersion } from "./dexie-storage";
+import { dexieStorage, IDexiePluginRecord, kOfflineAnswerSchemaVersion } from "./dexie-storage";
 import { refIdToAnswersQuestionId } from "../utilities/embeddable-utils";
 
 export interface IInitStorageParams {
@@ -22,7 +22,13 @@ export interface IWrappedDBAnswer {
 
 export type IIndexedDBAnswer = IExportableAnswerMetadata & { resource_url: string };
 
-export type ExportableActivity = { resource_url: string, filename: string, version: number, answers: IIndexedDBAnswer[] };
+export type ExportableActivity = {
+  resource_url: string,
+  filename: string,
+  version: number,
+  answers: IIndexedDBAnswer[],
+  pluginStates: IDexiePluginRecord[]
+}
 
 export const TrackOfflineResourceUrl = (newId: string) => {
   _currentOfflineResourceUrl = newId;
@@ -286,30 +292,38 @@ class DexieStorageProvider implements IStorageInterface {
     return ()=>null;
   }
 
-  exportActivityToJSON(activityId?: string) {
+  async exportActivityToJSON(activityId?: string) {
     const currentActivityId = activityId ? activityId : _currentOfflineResourceUrl;
     const activityShortId = currentActivityId.indexOf("/") > -1 ? currentActivityId.substr(currentActivityId.lastIndexOf("/")+1).replace(".json", "") : currentActivityId;
     const filename = activityExportFileName(activityShortId);
-    const getAllAnswersFromIndexDB = () => {
-      const foundAnswers = dexieStorage
-        .answers
-        .where({resource_url: currentActivityId})
-        .toArray();
-      return foundAnswers.then((answers) => {
-        return answers;
-      });
-    };
 
-    return getAllAnswersFromIndexDB().then((answers: IIndexedDBAnswer[] | null) => {
-      // Adding an explicit variable for the exportable activity for Typescript reasons
-      const exportableActivity: ExportableActivity = { resource_url: currentActivityId, filename, version: kOfflineAnswerSchemaVersion, answers: [] };
+    const getAllAnswersFromIndexDB = () => dexieStorage
+      .answers
+      .where({resource_url: _currentOfflineResourceUrl})
+      .toArray();
+
+    const getAllPluginStates = () => dexieStorage.pluginStates.toArray();
+
+    const exportableActivity: ExportableActivity = {
+      resource_url: currentActivityId,
+      filename, version: kOfflineAnswerSchemaVersion,
+      answers: [],
+      pluginStates: [],
+     };
+
+
+    await getAllAnswersFromIndexDB().then((answers: IIndexedDBAnswer[] | null) => {
       if (answers) {
         exportableActivity.answers = answers;
         return exportableActivity;
-      } else {
-        return exportableActivity;
       }
     });
+    await getAllPluginStates().then((states: IDexiePluginRecord[]) => {
+      if(states) {
+        exportableActivity.pluginStates = states;
+      }
+    });
+    return exportableActivity;
   }
 
   importStudentAnswersFromJSONFile(studentAnswers: string, filename: string) {
@@ -406,7 +420,20 @@ class DexieStorageProvider implements IStorageInterface {
         for(const answer of answers) {
           fsProvider.createOrUpdateAnswer(answer);
         }
+        // TODO: We need to track dirty state, and clear the dirty flag here.
+        // Now do plugin states. No need really, so lets skip it for now.
+        // const pluginStates = await dexieStorage
+        // .pluginStates
+        // .toArray();
+
+        // for(const pState of pluginStates) {
+        //   const {pluginId, state} = pState;
+        //   if(state) {
+        //     fsProvider.setLearnerPluginState(pluginId, state);
+        //   }
+        // }
       }
+
       catch(e) {
         console.error("Could not sync local indexDB to FireStore:");
         console.error(e);
