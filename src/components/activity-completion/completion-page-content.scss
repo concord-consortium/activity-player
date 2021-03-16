@@ -68,6 +68,11 @@
     margin: 0;
     padding: 0;
 
+    &.with-backup-options {
+      margin-right: 30px;
+      width: 570px;
+    }
+
     button {
       align-items: center;
       display: flex;

@@ -6,11 +6,10 @@ import { showReport } from "../../utilities/report-utils";
 import { Sequence, Activity, EmbeddableWrapper, Page } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { getStorage } from "../../storage/storage-facade";
-import { isQuestion, orderedQuestionsOnPage } from "../../utilities/activity-utils";
+import { orderedQuestionsOnPage } from "../../utilities/activity-utils";
 import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
-//import { CompletionExportAnswers } from "./completion-export-answers";
-//import { CompletionReportMyWork } from "./completion-report-my-work";
+import { ReportBackupOptions } from "./report-backup-options";
 import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
 
 import "./completion-page-content.scss";
@@ -20,6 +19,7 @@ interface IProps {
   activityName: string;
   onPageChange: (page: number) => void;
   showStudentReport: boolean;
+  showReportBackupOptions: boolean;
   onOpenReport?: () => void;
   sequence?: Sequence;
   activityIndex?: number;
@@ -28,8 +28,9 @@ interface IProps {
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
-  const { activity, activityName, onPageChange, showStudentReport,
-    sequence, activityIndex, onActivityChange, onShowSequence } = props;
+  const { activity, activityName, onPageChange, showStudentReport, 
+    showReportBackupOptions, sequence, activityIndex, onActivityChange, 
+    onShowSequence } = props;
 
   const [answers, setAnswers] = useState<any>();
 
@@ -119,6 +120,8 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     progressText = isActivityComplete ? completedActivityProgressText : incompleteActivityProgressText;
   }
 
+  const exitContainerClass = showReportBackupOptions ? "exit-container with-backup-options" : "exit-container";
+
   return (
     !answers
       ? <div className="completion-page-content" data-cy="completion-page-content">
@@ -137,13 +140,6 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
             <div className="progress-text" data-cy="progress-text">
               {progressText}
             </div>
-
-            { // TODO: Put in Ethan's buttons, connect with `handleShowAnswers`
-              // <CompletionExportAnswers />
-              // <CompletionReportMyWork />
-              // {showStudentReport && <button className="button" onClick={handleShowAnswers}>Show My Work</button>}
-            }
-
           </div>
           {sequence && !isLastActivityInSequence &&
             <div className="next-step" data-cy="next-step">
@@ -166,7 +162,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               </div>
             </div>
           }
-          <div className="exit-container" data-cy="exit-container">
+          <div className={exitContainerClass} data-cy="exit-container">
             <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
             <SummaryTable questionsStatus={progress.questionsStatus} />
             {showStudentReport && <button className="button show-my-work" onClick={handleShowAnswers}><IconCompletion width={24} height={24} />Show My Work</button>}
@@ -177,6 +173,9 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               </div>
             }
           </div>
+          {showReportBackupOptions &&
+            <ReportBackupOptions />
+          }
         </div>
   );
 };
