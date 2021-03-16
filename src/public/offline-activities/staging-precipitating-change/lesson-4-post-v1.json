@@ -4,7 +4,7 @@
   "layout": 0,
   "name": "AP - Lesson 4: Alaska Mainland 2 Post - What Do You Think?",
   "notes": "",
-  "project_id": 25,
+  "project_id": null,
   "related": "",
   "runtime": "Activity Player",
   "show_submit_button": true,
@@ -210,6 +210,23 @@
       },
       "section": null
     }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 308641,
+    "is_completion": true,
+    "is_hidden": false,
+    "layout": "l-6040",
+    "name": null,
+    "position": 2,
+    "show_header": false,
+    "show_info_assessment": false,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": []
   }],
   "plugins": [],
   "type": "LightweightActivity",
