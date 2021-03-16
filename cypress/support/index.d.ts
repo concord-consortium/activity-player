@@ -3,6 +3,8 @@
 // extend Cypress with commands from cypress-localstorage-commands package
 
 declare namespace Cypress {
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface Chainable<Subject> {
 
     /**
