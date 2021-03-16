@@ -54,14 +54,18 @@ describe("Plugin utility functions", () => {
   });
 
   describe("#findUsedPlugins", () => {
+    beforeEach(() => {
+      clearUsedPlugins();
+    });
+
     it("works in teacher edition mode", () => {
       const usedPlugins = findUsedPlugins(activity, true);
-      expect(usedPlugins.length).toBe(3);
+      expect(usedPlugins.map(p => p.plugin.approved_script_label)).toEqual(["teacherEditionTips", "glossary"]);
     });
 
     it("works in non teacher edition mode", () => {
       const usedPlugins = findUsedPlugins(activity, false);
-      expect(usedPlugins.length).toBe(3);
+      expect(usedPlugins.map(p => p.plugin.approved_script_label)).toEqual(["glossary"]);
     });
   });
 
@@ -75,6 +79,7 @@ describe("Plugin utility functions", () => {
     let savedAppendChild: any;
 
     beforeEach(() => {
+      clearUsedPlugins();
       jest.resetAllMocks();
       savedAppendChild = document.body.appendChild;
       document.body.appendChild = jest.fn((script: HTMLScriptElement) => {
@@ -88,14 +93,14 @@ describe("Plugin utility functions", () => {
 
     it("handles teacher edition mode", () => {
       loadPluginScripts(MockLARA, activity, handleLoadPlugins, true);
-      expect(MockLARA.Plugins.setNextPluginLabel).toHaveBeenCalledTimes(3);
+      expect(MockLARA.Plugins.setNextPluginLabel).toHaveBeenCalledTimes(2);
       expect(handleLoadPlugins).toHaveBeenCalledTimes(1);
     });
 
     it("handles non teacher edition mode", () => {
       loadPluginScripts(MockLARA, activity, handleLoadPlugins, false);
-      expect(MockLARA.Plugins.setNextPluginLabel).toHaveBeenCalledTimes(3);
-      expect(handleLoadPlugins).toHaveBeenCalledTimes(3);
+      expect(MockLARA.Plugins.setNextPluginLabel).toHaveBeenCalledTimes(1);
+      expect(handleLoadPlugins).toHaveBeenCalledTimes(1);
     });
 
   });
