@@ -18,6 +18,9 @@ context("Test the overall app", () => {
       cy.get(".exit-container .show-my-work").should("contain", "Show My Work");
       cy.get(".next-step-text").should("contain", activity2Title);
       cy.get(".next-step button").should("have.length", 2);
+      cy.get("[data-cy=summary-table]").should("have.length", 1);
+      cy.get("[data-cy=summary-table-row]").should("have.length", 7);
+      cy.get("[data-cy=summary-table-row]").eq(0).find("svg").should("have.class", "incomplete");
     });
     it("test next activity button loads next activity", () => {
       cy.get(".next-step button").first().should("contain", "Start Next Activity").click();

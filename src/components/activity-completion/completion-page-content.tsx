@@ -8,6 +8,7 @@ import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
 import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
+import { SummaryTable, IQuestionStatus } from "./summary-table";
 import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
 
 import "./completion-page-content.scss";
@@ -58,18 +59,27 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const activityProgress = (currentActivity: Activity) => {
     let numAnswers = 0;
     let numQuestions = 0;
-    currentActivity.pages.forEach((page: Page) => {
+    const questionsStatus = Array<IQuestionStatus>();
+    currentActivity.pages.forEach((page: Page, index) => {
+      const pageNum = index + 1;
       page.embeddables.forEach((embeddableWrapper: EmbeddableWrapper) => {
         if (isQuestion(embeddableWrapper)) {
           numQuestions++;
           const questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
+          const authored_state = embeddableWrapper.embeddable.authored_state 
+                                   ? JSON.parse(embeddableWrapper.embeddable.authored_state)
+                                   : {};
+          let questionAnswered = false;
           if (answers?.find((answer: any) => answer.meta.question_id === questionId)) {
             numAnswers++; //Does't take into account if user erases response after saving
+            questionAnswered = true;
           }
+          const questionStatus = { number: numQuestions, page: pageNum, prompt: authored_state.prompt, answered: questionAnswered };
+          questionsStatus.push(questionStatus);
         }
       });
     });
-    return ({ numAnswers, numQuestions });
+    return ({ numAnswers, numQuestions, questionsStatus });
   };
 
   useEffect(() => {
@@ -121,7 +131,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           <div className={`progress-container ${!isActivityComplete ? "incomplete" : ""}`} data-cy="progress-container">
             {isActivityComplete
               ? <IconCheck width={24} height={24} className="check" />
-              : <IconUnfinishedCheck width={24} height={24} className="check" />
+              : <IconUnfinishedCheck width={24} height={24} className="check incomplete" />
             }
             <div className="progress-text" data-cy="progress-text">
               {progressText}
@@ -150,6 +160,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           }
           <div className="exit-container" data-cy="exit-container">
             <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
+            <SummaryTable questionsStatus={progress.questionsStatus} />
             {showStudentReport && <button className="button show-my-work" onClick={handleShowAnswers}><IconCompletion width={24} height={24} />Show My Work</button>}
             {(!sequence || isLastActivityInSequence) && 
               <div className="exit-button">

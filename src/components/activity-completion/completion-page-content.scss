@@ -50,6 +50,10 @@
     .check {
       fill: $cc-teal-dark1;
       margin-left: 5px;
+
+      &.incomplete {
+        fill: $cc-orange-dark1;
+      }
     }
     .progress-text {
       padding: 8px 5px 10px;
