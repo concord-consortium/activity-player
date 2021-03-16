@@ -7,11 +7,13 @@ import { Header } from "./activity-header/header";
 import "./offline-activities.scss";
 
 const OfflineActivityListRow = (props: {activity: OfflineActivity;  onSelectOfflineActivity: (activity: OfflineActivity) => void}) => {
+  const {name, manifestName} = props.activity;
+  const displayName = manifestName.length > 0 ? `${manifestName}: ${name}` : name;
   const handleSelectActivity = () => props.onSelectOfflineActivity(props.activity);
   return (
     <tr>
       <td>TDB</td>
-      <td onClick={handleSelectActivity} className="activity">{props.activity.name}</td>
+      <td onClick={handleSelectActivity} className="activity">{displayName}</td>
     </tr>
   );
 };
