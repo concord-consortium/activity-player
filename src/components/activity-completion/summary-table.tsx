@@ -12,7 +12,7 @@ export const SummaryTable: React.FC<IProps> = (props) => {
   const { questionsStatus } = props;
 
   return (
-    <table data-cy="summary-table">
+    <table className="summary-table" data-cy="summary-table">
       <thead>
         <tr>
           <th>Question</th>

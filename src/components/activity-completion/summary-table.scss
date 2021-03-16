@@ -1,9 +1,10 @@
 @import "../vars.scss";
 
-table {
+.summary-table {
   border-collapse: collapse;
   border-top: solid 1px $cc-teal-dark1;
   border-right: solid 1px $cc-teal-dark1;
+  margin-bottom: 20px;
   width: 100%;
 
   th {
@@ -35,7 +36,7 @@ table {
       width: 24px;
 
       &.complete {
-        fill: $cc-teal;
+        fill: $cc-teal-dark1;
       }
       &.incomplete {
         fill: $cc-orange-dark1;

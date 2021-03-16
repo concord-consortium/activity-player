@@ -15,8 +15,7 @@ describe("Completion Page Content component", () => {
                               <CompletionPageContent activity={activityPlugins} 
                                                      activityName={"test"} 
                                                      onPageChange={stubFunction} 
-                                                     showStudentReport={true}
-                                                     thumbnailURL={""}/>
+                                                     showStudentReport={true}/>
                             );
     expect(wrapperComplete.find('[data-cy="completion-page-content"]').length).toBe(1);
     expect(wrapperComplete.find('[data-cy="progress-container"]').length).toBe(1);
