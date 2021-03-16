@@ -3,6 +3,8 @@ import superagent from "superagent";
 import { v4 as uuidv4 } from "uuid";
 import { queryValue, setQueryValue } from "./utilities/url-query";
 import { FirebaseAppName } from "./firebase-db";
+import { getResourceUrl } from "./lara-api";
+import { getCanonicalHostname, isProductionOrigin } from "./utilities/host-utils";
 
 interface PortalClassOffering {
   className: string;
@@ -207,7 +209,7 @@ const getPortalJWTWithBearerToken = (basePortalUrl: string, rawToken: string) =>
 };
 
 // The default firebase app name is based on the URL:
-// only https://activity-player.concord.org defaults to report-service-pro
+// only [production-origin] with no path defaults to report-service-pro
 // everything else defaults to report-service-dev
 //
 // The default can be overridden with a firebaseApp URL param
@@ -234,7 +236,7 @@ export const firebaseAppName = ():FirebaseAppName => {
   // According to the spec an empty path like https://activity-player.concord.org
   // will still have a pathname of "/", but just to be safe this checks for the
   // falsey pathname
-  if(origin === "https://activity-player.concord.org" &&
+  if(isProductionOrigin(origin) &&
      (!pathname || pathname === "/")) {
     _firebaseAppName = "report-service-pro";
   } else {
@@ -431,7 +433,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     platformUserId: firebaseJWT.claims.platform_user_id.toString(),
     contextId: classInfo.classHash,
     toolId,
-    resourceUrl: offeringData.activityUrl,
+    resourceUrl: getResourceUrl(),
     fullName,
     learnerKey: firebaseJWT.claims.user_type === "learner"
                   ? getStudentLearnerKey(portalJWT, firebaseJWT)
@@ -465,19 +467,16 @@ export const anonymousPortalData = (preview: boolean) => {
 
   const hostname = window.location.hostname;
   const toolId = hostname + window.location.pathname;
-  // just save the host and loaded activity-url as the resourceUrl, omitting any other url parameters.
-  // This is currently unused for the purpose of saving and loading data
-  const resourceUrl = hostname + "?activity=" + queryValue("activity");
   const rawPortalData: IAnonymousPortalData = {
     type: "anonymous",
     userType: "learner",
     runKey,
-    resourceUrl,
+    resourceUrl: getResourceUrl(),
     toolId,
     toolUserId: "anonymous",
     database: {
       appName: firebaseAppName(),
-      sourceKey: hostname
+      sourceKey: getCanonicalHostname()
     }
   };
   return rawPortalData;

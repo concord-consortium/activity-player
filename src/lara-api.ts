@@ -1,5 +1,18 @@
 import { sampleActivities, sampleSequences } from "./data";
 import { Activity, Sequence } from "./types";
+import { queryValue } from "./utilities/url-query";
+
+export const getResourceUrl = () => {
+  const sequenceUrl = queryValue("sequence");
+  const activityUrl = queryValue("activity");
+
+  const resourceUrl = sequenceUrl ? sequenceUrl : activityUrl;
+  if (!resourceUrl) {
+    return "";
+  }
+
+  return resourceUrl.split(".json")[0].replace("api/v1/","");
+};
 
 export const getActivityDefinition = (activity: string): Promise<Activity> => {
   return new Promise((resolve, reject) => {

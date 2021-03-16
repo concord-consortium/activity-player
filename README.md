@@ -47,23 +47,42 @@ Testing this is complicated. Here is one approach:
 
 Production releases to S3 are based on the contents of the /dist folder and are built automatically by GitHub Actions for each branch pushed to GitHub and each merge into production.
 
-Merges into production are deployed to https://activity-player.concord.org/ (NOTE: production branch has not yet been created and deployment still needs to be configured).
+The production branch is deployed to https://activity-player.concord.org/.
 
 Other branches are deployed to https://activity-player.concord.org/branch/<name>.
 
 To deploy a production release:
 
-1. Increment version number in package.json
-2. Create new entry in CHANGELOG.md
-3. Run `git log --pretty=oneline --reverse <last release tag>...HEAD | grep '#' | grep -v Merge` and add contents (after edits if needed to CHANGELOG.md)
-4. Run `npm run build`
-5. Copy asset size markdown table from previous release and change sizes to match new sizes in `dist`
-6. Create `release-<version>` branch and commit changes, push to GitHub, create PR and merge
-7. Checkout master and pull
-8. Checkout production
-9. Run `git merge master --no-ff`
-10. Push production to GitHub
-11. Use https://github.com/concord-consortium/activity-player/releases to create a new release tag
+1. Copy CHANGES-template.md to CHANGES.md, and add a list of PT stories related to the release into temporary CHANGES.md
+    - Run `git log --reverse <last release tag>...HEAD | grep '#'` to see a list of PR merges and stories that include PT ids in their message
+    - In a PT workspace that includes Orange and Teal boards, search for the `label:"activity-player-<new version>" includedone:true`. You can select all, and export as CSV. Then copy the id and title columns.
+    - Review recently merged PRs in GitHub UI
+2. Compute asset sizes.
+    1. Run `npm run build`
+    2. Look at file sizes with `ls dist/assets`
+    3. Add file sizes to CHANGES.md
+    4. Look at previous version file sizes from previous version in GitHub and compute the percent change `(new - prev) / prev * 100`
+3. Update package, commit, and tag
+    - **Mac or Linux**:
+        - Run `npm version -m "$(< CHANGES.md)" [new-version-string]`
+        - This updates the version in package.json and package-lock.json and creates a commit with the comment from CHANGES.md, and creates a tag with the name `v[new-version-string]` that has a description based on CHANGES.md.
+    - **Windows**: the command above that injects `CHANGES.md` as the message won't work in the standard windows command application.
+        - git-bash: same as above
+        - PowerShell: `npm version -m "(type CHANGES.md)" [new-version-string]` might work, I haven't tried it though.
+        - Do the steps manually and use a git client so you can paste in the multi line message
+            1. `npm version --no-git-tag-version [new-version-string]` (updates package.json and package-lock.json with the new version)
+            2. create a new commit with the CHANGES.md message
+            3. create a tag `v[new-version-string]` with the CHANGES.md message
+4. Push current branch and tag to GitHub
+5. Create a GitHub Release
+    1. Find the new tag at https://github.com/concord-consortium/activity-player/tags open it, and edit it
+    2. Copy the title from CHANGES.md
+    3. Copy the content from CHANGES.md
+6. QA the built version at `https://activity-player.concord.org/versions/v[new-version-string]``
+7. Checkout production
+8. Run `git reset --hard v[new-version-string]`
+9. Push production to GitHub
+10. Delete CHANGES.md to clean up your working directory
 
 ### Testing
 
@@ -95,10 +114,10 @@ Inside of your `package.json` file:
 * page={n|"page_[id]"}: load page n, where 0 is the activity introduction, 1 is the first page and [id] in "page_[id]" refers to an internal integer id of the page model exported from LARA.
 * themeButtons:         whether to show theme buttons
 * mode={mode}:          sets mode. Values: "teacher-edition"
-* portal-report:        sets the url of the student report
+* portalReport:         override default base URL for the student report. `https://activity-player.concord.org/`, `https://activity-player-offline.concord.org/`, `https://activity-player.concord.org/version/*`, and `https://activity-player-offline.concord.org/version/*`, default to a versioned URL defined as a constant in the code `kProductionPortalReportUrl`. Every other url defaults to the master branch of the portal-report.
 
 #### User data loading:
-* firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ without a path, defaults to `report-service-pro` every other url `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
+* firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ and https://activity-player-offline.concord.org/ without a path, defaults to `report-service-pro` every other url defaults to `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
 * token={n}:         set by the portal when launching external activity, to authenticate with portal API
 * domain={n}:        set by the portal when launching external activity
 * report-source={id}: which source collection to save data to in firestore (defaults to own hostname)
