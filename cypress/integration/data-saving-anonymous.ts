@@ -1,8 +1,8 @@
-import { v4 as uuidv4 } from "uuid";
-import ActivityPage from "../support/elements/activity-page";
-import { getIframeBody } from "../support/elements/iframe";
+// import { v4 as uuidv4 } from "uuid";
+// import ActivityPage from "../support/elements/activity-page";
+// import { getIframeBody } from "../support/elements/iframe";
 
-const activityPage = new ActivityPage;
+// const activityPage = new ActivityPage;
 
 context("Saving and loading data as an anonymous user", () => {
 
