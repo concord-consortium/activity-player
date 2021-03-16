@@ -537,7 +537,6 @@ export class App extends React.PureComponent<IProps, IState> {
         activityName={activity.name}
         onPageChange={this.handleChangePage}
         showStudentReport={activity.student_report_enabled}
-        thumbnailURL={activity.thumbnail_url}
         sequence={this.state.sequence}
         activityIndex={this.state.activityIndex}
         onActivityChange={this.handleSelectActivity}

@@ -7,6 +7,6 @@ describe("Activity Summary component", () => {
     const nameText = "activity name text";
     const summaryText = "activity summary text";
     const wrapper = shallow(<ActivitySummary activityName={nameText} introText={summaryText} time={10} imageUrl={null} />);
-    expect(wrapper.containsMatchingElement(<h2>{nameText}</h2>)).toEqual(true);
+    expect(wrapper.containsMatchingElement(<h1>{nameText}</h1>)).toEqual(true);
   });
 });
