@@ -215,4 +215,12 @@ export const getAllUrlsInActivity = (activity: Activity, urls: string[] = []) =>
   return urls;
 };
 
+export const orderedQuestionsOnPage = (page:Page) => {
+  const embeddables = getVisibleEmbeddablesOnPage(page);
+  let questions = embeddables.headerBlock.filter( (e) => isQuestion(e));
+  questions = questions.concat(embeddables.infoAssessment.filter( (e) => isQuestion(e)));
+  questions = questions.concat(embeddables.interactiveBox.filter( (e) => isQuestion(e)));
+  return questions;
+};
+
 export const isNotSampleActivityUrl = (url: string) => /https?:\/\//.test(url) || /^offline-activities\//.test(url);

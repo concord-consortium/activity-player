@@ -6,7 +6,7 @@ import { showReport } from "../../utilities/report-utils";
 import { Sequence, Activity, EmbeddableWrapper, Page } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { getStorage } from "../../storage/storage-facade";
-import { isQuestion } from "../../utilities/activity-utils";
+import { isQuestion, orderedQuestionsOnPage } from "../../utilities/activity-utils";
 import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
 //import { CompletionExportAnswers } from "./completion-export-answers";
@@ -64,21 +64,19 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     const questionsStatus = Array<IQuestionStatus>();
     currentActivity.pages.forEach((page: Page, index) => {
       const pageNum = index + 1;
-      page.embeddables.forEach((embeddableWrapper: EmbeddableWrapper) => {
-        if (isQuestion(embeddableWrapper)) {
-          numQuestions++;
-          const questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
-          const authored_state = embeddableWrapper.embeddable.authored_state 
-                                   ? JSON.parse(embeddableWrapper.embeddable.authored_state)
-                                   : {};
-          let questionAnswered = false;
-          if (answers?.find((answer: any) => answer.meta.question_id === questionId)) {
-            numAnswers++; //Does't take into account if user erases response after saving
-            questionAnswered = true;
-          }
-          const questionStatus = { number: numQuestions, page: pageNum, prompt: authored_state.prompt, answered: questionAnswered };
-          questionsStatus.push(questionStatus);
+      orderedQuestionsOnPage(page).forEach((embeddableWrapper: EmbeddableWrapper) => {
+        numQuestions++;
+        const questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
+        const authored_state = embeddableWrapper.embeddable.authored_state
+                                  ? JSON.parse(embeddableWrapper.embeddable.authored_state)
+                                  : {};
+        let questionAnswered = false;
+        if (answers?.find((answer: any) => answer.meta.question_id === questionId)) {
+          numAnswers++; //Does't take into account if user erases response after saving
+          questionAnswered = true;
         }
+        const questionStatus = { number: numQuestions, page: pageNum, prompt: authored_state.prompt, answered: questionAnswered };
+        questionsStatus.push(questionStatus);
       });
     });
     return ({ numAnswers, numQuestions, questionsStatus });
@@ -139,10 +137,12 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
             <div className="progress-text" data-cy="progress-text">
               {progressText}
             </div>
-            {   // <CompletionExportAnswers />
-            	// <CompletionReportMyWork />
-            	// {showStudentReport && <button className="button" onClick={handleShowAnswers}>Show My Work</button>}
-			}
+
+            { // TODO: Put in Ethan's buttons, connect with `handleShowAnswers`
+              // <CompletionExportAnswers />
+              // <CompletionReportMyWork />
+              // {showStudentReport && <button className="button" onClick={handleShowAnswers}>Show My Work</button>}
+            }
 
           </div>
           {sequence && !isLastActivityInSequence &&
