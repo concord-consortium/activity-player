@@ -1,0 +1,59 @@
+@import "../vars.scss";
+
+.report-backup-options {
+  border: solid 1.5px $cc-charcoal-light2;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  height: fit-content;
+  padding: 20px;
+  width: 260px;
+
+  .report-backup-option {
+    display: flex;
+    flex-wrap: wrap;
+    height: fit-content;
+    margin-bottom: 30px;
+
+    &.disabled {
+      opacity: 0.35;
+    }
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  a.button, button {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+    padding: 0;
+    text-decoration: none;
+    width: 100%;
+
+    svg {
+      fill: $cc-orange-dark1;
+      margin-right: 5px;
+    }
+  }
+  h2 {
+    border-bottom: solid 1px $cc-charcoal-light2;
+    margin: 0 0 10px;
+    padding: 0 0 14px;
+    width: 100%;
+  }
+  p {
+    font-size: 14px;
+    margin: 0;
+    padding: 0;
+    width: 226px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  svg {
+    margin-right: 5px;
+  }
+}

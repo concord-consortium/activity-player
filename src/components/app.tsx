@@ -531,12 +531,14 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderCompletionContent = (activity: Activity) => {
+    const showReportBackupOptions = this.state.offlineMode || queryValueBoolean("__forceOfflineData");
     return (
       <CompletionPageContent
         activity={activity}
         activityName={activity.name}
         onPageChange={this.handleChangePage}
         showStudentReport={activity.student_report_enabled}
+        showReportBackupOptions={showReportBackupOptions}
         sequence={this.state.sequence}
         activityIndex={this.state.activityIndex}
         onActivityChange={this.handleSelectActivity}
