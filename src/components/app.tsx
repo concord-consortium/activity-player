@@ -446,16 +446,18 @@ export class App extends React.PureComponent<IProps, IState> {
             teacherEditionMode={teacherEditionMode}
             pluginsLoaded={pluginsLoaded}
             glossaryPlugin={glossaryEmbeddable !== null}
+            offlineMode={offlineMode}
           />
         }
         { glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
-          <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} />
+          <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} offlineMode={offlineMode} />
         }
       </React.Fragment>
     );
   }
 
   private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
+    const {offlineMode} = this.state;
     return (
       <>
         { this.state.sequence && this.renderSequenceNav(fullWidth) }
@@ -478,6 +480,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   setNavigation={this.handleSetNavigation}
                   key={`page-${currentPage}`}
                   pluginsLoaded={this.state.pluginsLoaded}
+                  offlineMode={offlineMode}
                 />
         }
         { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
@@ -512,11 +515,13 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderSinglePageContent = (activity: Activity) => {
+    const {offlineMode} = this.state;
     return (
       <SinglePageContent
         activity={activity}
         teacherEditionMode={this.state.teacherEditionMode}
         pluginsLoaded={this.state.pluginsLoaded}
+        offlineMode={offlineMode}
       />
     );
   }

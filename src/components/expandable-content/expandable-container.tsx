@@ -17,10 +17,11 @@ interface IProps {
   teacherEditionMode?: boolean;
   pluginsLoaded?: boolean;
   glossaryPlugin?: boolean;
+  offlineMode: boolean;
 }
 
 export const ExpandableContainer: React.FC<IProps> = (props) => {
-  const { activity, page, pageNumber, teacherEditionMode, pluginsLoaded, glossaryPlugin } = props;
+  const { activity, page, pageNumber, teacherEditionMode, pluginsLoaded, glossaryPlugin, offlineMode } = props;
   const sideTips = pluginsLoaded && page ? getPageSideTipEmbeddables(activity, page) : [];
   const verticalOffset = kExpandableContentTop + (sideTips.length + (glossaryPlugin ? 1 : 0)) * (kExpandableItemHeight + kExpandableContentMargin);
   const sidebars = page && getPageSideBars(activity, page);
@@ -30,6 +31,7 @@ export const ExpandableContainer: React.FC<IProps> = (props) => {
           <EmbeddablePluginSideTip
             key={sideTip.embeddable.ref_id}
             embeddable={sideTip.embeddable}
+            offlineMode={false}
           />)
       }
       { sidebars && sidebars.length > 0 &&

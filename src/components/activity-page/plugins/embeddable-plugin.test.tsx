@@ -26,7 +26,7 @@ describe("Embeddable component", () => {
       "type": "Embeddable::EmbeddablePlugin",
       "ref_id": "2991-Embeddable::EmbeddablePlugin"
     };
-    const wrapper = shallow(<EmbeddablePlugin embeddable={embeddable} pluginsLoaded={true} />);
+    const wrapper = shallow(<EmbeddablePlugin embeddable={embeddable} pluginsLoaded={true} offlineMode={false} />);
     expect(wrapper.find('[data-cy="embeddable-plugin"]').length).toBe(1);
   });
 });

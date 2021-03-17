@@ -9,10 +9,11 @@ import "./glossary-plugin.scss";
 interface IProps {
   embeddable: IEmbeddablePlugin;
   pageNumber: number;
+  offlineMode: boolean;
 }
 
 export const GlossaryPlugin: React.FC<IProps> = (props) => {
-  const { embeddable, pageNumber } = props;
+  const { embeddable, pageNumber, offlineMode } = props;
   const divTarget = useRef<HTMLInputElement>(null);
   const LARA = useContext(LaraGlobalContext);
   useEffect(() => {
@@ -24,7 +25,7 @@ export const GlossaryPlugin: React.FC<IProps> = (props) => {
     };
     const validPluginContext = validateEmbeddablePluginContextForPlugin(pluginContext);
     if (validPluginContext) {
-      initializePlugin(validPluginContext);
+      initializePlugin(validPluginContext, offlineMode);
     }
   }, [LARA, embeddable]);
   return (

@@ -9,10 +9,11 @@ import "./embeddable-plugin.scss";
 interface IProps {
   embeddable: IEmbeddablePlugin;
   pluginsLoaded: boolean;
+  offlineMode: boolean;
 }
 
 export const EmbeddablePlugin: React.FC<IProps> = (props) => {
-    const { embeddable, pluginsLoaded } = props;
+    const { embeddable, pluginsLoaded, offlineMode } = props;
     const divTarget = useRef<HTMLInputElement>(null);
     const LARA = useContext(LaraGlobalContext);
     useEffect(() => {
@@ -24,7 +25,7 @@ export const EmbeddablePlugin: React.FC<IProps> = (props) => {
       };
       const validPluginContext = validateEmbeddablePluginContextForPlugin(pluginContext);
       if (validPluginContext && pluginsLoaded) {
-        initializePlugin(validPluginContext);
+        initializePlugin(validPluginContext, offlineMode);
       }
     }, [LARA, embeddable, pluginsLoaded]);
     return (
