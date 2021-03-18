@@ -88,3 +88,32 @@ export const onInteractiveSupportedFeatures = (handler: IInteractiveSupportedFea
 export const offInteractiveSupportedFeatures = (handler: IInteractiveSupportedFeaturesEventHandler) => {
   emitter.off("interactiveSupportedFeatures", handler);
 };
+
+
+// Events for plugin communication.
+export interface IPluginSyncRequest {
+  maxInterval: number
+  syncCallback: (update: IPluginSyncUpdate)=> void;
+}
+
+export interface IPluginSyncEventHandler { (syncRequest: IPluginSyncRequest): void }
+
+export interface IPluginSyncUpdate {
+  pluginSyncStatus: "start"|"working"|"fail"|"ok";
+}
+
+export const emitPluginSyncRequest = (requestData: IPluginSyncRequest) => {
+  emitter.emit("PluginSyncRequest", requestData);
+};
+
+export const onPluginSyncRequest = (handler: IPluginSyncEventHandler) => {
+  emitter.on("PluginSyncRequest", handler);
+};
+export const offPluginSyncRequest = (handler: IPluginSyncEventHandler) => {
+  emitter.off("PluginSyncRequest", handler);
+};
+
+
+
+
+
