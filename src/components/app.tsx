@@ -55,6 +55,19 @@ const kLearnPortalUrl = "https://learn.concord.org";
 
 export type ErrorType = "auth" | "network" | "timeout";
 
+// This is a combination of the standard service worker states:
+// installing, installed, activating, activated, redundant
+// https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker/state
+// With additional states for the initial "unknown" startup state and
+// a "controlling" state which isn't captured as a "state" by the service worker API
+// a "parsed" state is added to satisfy the ServiceWorker types,
+// this state is documented here: https://bitsofco.de/the-service-worker-lifecycle/
+// but it isn't lised in the MDN article above
+// The actual status is more complex than this because there can be external
+// service workers, but perhaps this simplified list
+// will be good enough for deciding what to do with the UI
+type ServiceWorkerStatus = "unknown" | "parsed" | "installing" | "installed" | "activating" | "activated" | "redundant" | "controlling";
+
 interface IncompleteQuestion {
   refId: string;
   navOptions: INavigationOptions;
@@ -84,6 +97,7 @@ interface IState {
   offlineManifestAuthoringId?: string;
   offlineManifestAuthoringActivities: OfflineManifestActivity[];
   offlineManifestAuthoringCacheList: string[];
+  serviceWorkerStatus: ServiceWorkerStatus;
   showOfflineManifestInstallConfirmation: boolean;
   showEditUserName: boolean;
   networkConnected: boolean;
@@ -130,6 +144,7 @@ export class App extends React.PureComponent<IProps, IState> {
       showOfflineManifestInstallConfirmation: queryValue("confirmOfflineManifestInstall") === "true",
       offlineManifestAuthoringId,
       offlineManifestId,
+      serviceWorkerStatus: "unknown",
       showEditUserName: false,
       networkConnected: isNetworkConnected()
     };
@@ -172,12 +187,20 @@ export class App extends React.PureComponent<IProps, IState> {
         console.log("A new service worker has installed.");
       });
       wb.addEventListener("waiting", (event) => {
+        console.log("A service worker is waiting.");
         alwaysSkipWaitingForNow();
       });
       wb.addEventListener("externalwaiting" as any, (event) => {
+        // I think this externalwaiting event isn't sent anymore
+        // my clue is the comment here:
+        // https://developers.google.com/web/tools/workbox/modules/workbox-window#when_an_unexpected_version_of_the_service_worker_is_found
+        // which implies we'd still get the waiting event and just have a event.isExternal=true property
+        // This page documents the events: https://developers.google.com/web/tools/workbox/reference-docs/latest/module-workbox-window.Workbox#events
         alwaysSkipWaitingForNow();
       });
       wb.addEventListener("controlling", (event) => {
+        // I've seen this fire in development even when wb.controlling has not resolved
+        // this might only happen in the case where a hot reload is done by webpack during development
         console.log("A new service worker has installed and is controlling.");
       });
       wb.addEventListener("activating", (event) => {
@@ -186,6 +209,8 @@ export class App extends React.PureComponent<IProps, IState> {
       wb.addEventListener("activated", (event) => {
         if (!event.isUpdate) {
           console.log("Service worker activated for the first time!");
+        } else {
+          console.log("Service worker activated with an update");
         }
       });
       wb.addEventListener("message", (event) => {
@@ -218,6 +243,97 @@ export class App extends React.PureComponent<IProps, IState> {
 
       wb.register().then((_registration) => {
         registration = _registration;
+        // I haven't found good docs on when this promise resolves
+        // From experimentation:
+        // - on a page that is loaded after the service worker
+        // has been previously this promise resolves after wb.controlling
+        //
+        // The registration is a ServiceWorkerRegistration object
+        // According to the service worker docs (not workbox), this object's
+        // installing, active, and waiting properties will all be null right after
+        // registering. However, at least in the case of workbox, as documented
+        // above this promise resolves at the end so the install, active, and waiting
+        // properties can be set.
+        //
+        // There is a 'updatefound' event which should be fired when
+        // the service worker starts installing.
+        //
+        // Mixing the usage of workbox and direct serviceworker api seems errorprone
+        // so it'd be better if there was a way to use workbox's events to know
+        // about this.
+        console.log("Service worker is now registered");
+        this.setState((prevState) => {
+          // This breaks things when the service work is already active when the page is loaded
+          // the controlling promise resolves first before this register promise
+          let status: ServiceWorkerStatus = "installing";
+          if (registration?.installing) {
+            // this should always be "installing", but typescript thinks it can also be parsed
+            status = registration.installing.state;
+          }
+          if (registration?.waiting) {
+            // this should always be "installed"
+            status = registration.waiting.state;
+          }
+          if (registration?.active) {
+            // registration.active.state this should ways be activing or activated
+            // but it might also already be controlling the page so we need to check that
+            // first
+            if (navigator.serviceWorker.controller) {
+              // the docs on this are not clear, but this seems to follow its
+              // name and is only set if the serviceWorker is controlling the page
+              status = "controlling";
+            } else {
+              status = registration.active.state;
+            }
+          }
+          return {...prevState, serviceWorkerStatus: status};
+        });
+      });
+
+      wb.active.then((worker) => {
+        // Promise resolves when the worker is active
+        console.log("The registered Service worker is now active");
+        this.setState((prevState) => {
+          // It is possible the active promise will resolve after the
+          // service worker starts controlling the page. In this case
+          // we don't want to change the status activating or activated when
+          // really it should be controlling.
+          let status: ServiceWorkerStatus = "activating";
+          if (navigator.serviceWorker.controller) {
+            // the docs on this are not clear, but this seems to follow its
+            // name and is only set if the serviceWorker is controlling the page
+            status = "controlling";
+          } else {
+            status = worker.state;
+          }
+          return {...prevState, serviceWorkerStatus: status};
+
+          // TODO: either here or somewhere else we should be listening to change events
+          // so we know when the worker has gone from activating to activated
+          // When it is activated, we could put up a message about needing to reload
+          // the page if it takes too long before it is controlling
+          // I think this is different than the waiting state which I think only
+          // happens when there is an existing service worker that needs to be
+          // unregistered before the new one can become active.
+        });
+      });
+
+
+      wb.controlling.then((worker) => {
+        // Promise resolves when the worker is controlling the page
+        // Because we are blocking until it is controlling, the code is counting
+        // on this controlling promise to resolve after any other events that might
+        // change the serviceWorkerStatus.
+        // A safer approach might be to always check navigator.serviceWorker.controller
+        // whenver updating the serviceWorkerStatus that way other events won't take
+        // the status out of controlling.
+        // https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/controller
+        // I don't understand though if a service worker is a controller (is controlling)
+        // but the state 'activating' that seems inconsistant to me.
+        console.log("Service worker is now controlling the page");
+        this.setState((prevState) => {
+          return {...prevState, serviceWorkerStatus: "controlling"};
+        });
       });
     }
   }
@@ -362,8 +478,13 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderContent = () => {
-    const {offlineManifest, loadingOfflineManifest, showSequenceIntro, sequence, username, offlineMode, showOfflineManifestInstallConfirmation, activity} = this.state;
-    if (offlineManifest && loadingOfflineManifest) {
+    const {offlineManifest, loadingOfflineManifest, showSequenceIntro, sequence,
+      username, offlineMode, showOfflineManifestInstallConfirmation, activity,
+      serviceWorkerStatus} = this.state;
+    if (offlineMode && serviceWorkerStatus !== "controlling") {
+      return <div>Service Worker Status: {serviceWorkerStatus}</div>;
+    } else if (offlineManifest && loadingOfflineManifest) {
+      // Rendering this has a side effect of actually loading the manifest files
       return <OfflineManifestLoadingModal offlineManifest={offlineManifest} onClose={this.handleCloseLoadingOfflineManifest} showOfflineManifestInstallConfirmation={showOfflineManifestInstallConfirmation} />;
     } else if (offlineMode) {
       return activity ? this.renderActivity() : <OfflineActivities onSelectActivity={this.handleSelectOfflineActivity} username={username} />;
