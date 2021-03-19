@@ -23,7 +23,7 @@ export const EmbeddablePluginSideTip: React.FC<IProps> = (props) => {
         approvedScriptLabel: "teacherEditionTips"
       }, offlineMode);
     }
-  }, [LARA, embeddable]);
+  }, [LARA, embeddable, offlineMode]);
 
   return (
     <div className="embeddable-plugin-sidetip" data-cy="embeddable-plugin-sidetip"  ref={embeddableDivTarget} />

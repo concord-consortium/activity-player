@@ -61,7 +61,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     if (validPluginContext && teacherEditionMode && pluginsLoaded) {
       initializePlugin(validPluginContext, offlineMode);
     }
-  }, [LARA, linkedPluginEmbeddable, embeddable, teacherEditionMode, pluginsLoaded]);
+  }, [LARA, linkedPluginEmbeddable, embeddable, teacherEditionMode, pluginsLoaded, offlineMode]);
 
   useImperativeHandle(ref, () => ({
     requestInteractiveState: () => {

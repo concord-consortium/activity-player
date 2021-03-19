@@ -27,7 +27,7 @@ export const GlossaryPlugin: React.FC<IProps> = (props) => {
     if (validPluginContext) {
       initializePlugin(validPluginContext, offlineMode);
     }
-  }, [LARA, embeddable]);
+  }, [LARA, embeddable, offlineMode]);
   return (
     <div className="glossary-plugin-container" ref={divTarget} data-cy="glossary-embeddable-plugin" key={pageNumber} />
   );

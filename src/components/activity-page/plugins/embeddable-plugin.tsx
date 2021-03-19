@@ -27,7 +27,7 @@ export const EmbeddablePlugin: React.FC<IProps> = (props) => {
       if (validPluginContext && pluginsLoaded) {
         initializePlugin(validPluginContext, offlineMode);
       }
-    }, [LARA, embeddable, pluginsLoaded]);
+    }, [LARA, embeddable, pluginsLoaded, offlineMode]);
     return (
       <div className="plugin-container" ref={divTarget} data-cy="embeddable-plugin" key={embeddable.ref_id} />
     );
