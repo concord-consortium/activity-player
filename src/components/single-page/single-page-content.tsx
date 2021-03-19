@@ -12,10 +12,11 @@ interface IProps {
   activity: Activity;
   teacherEditionMode?: boolean;
   pluginsLoaded: boolean;
+  offlineMode: boolean;
 }
 
 export const SinglePageContent: React.FC<IProps> = (props) => {
-  const { activity, teacherEditionMode, pluginsLoaded } = props;
+  const { activity, teacherEditionMode, pluginsLoaded, offlineMode } = props;
   let questionNumber = 0;
   let embeddableNumber = 0;
 
@@ -41,6 +42,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
                 linkedPluginEmbeddable={linkedPluginEmbeddable}
                 teacherEditionMode={teacherEditionMode}
                 pluginsLoaded={pluginsLoaded}
+                offlineMode={offlineMode}
               />
             );
           })

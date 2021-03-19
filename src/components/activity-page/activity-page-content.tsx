@@ -24,6 +24,7 @@ interface IProps {
   totalPreviousQuestions: number;
   setNavigation: (refId: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
+  offlineMode: boolean;
 }
 
 interface IState {
@@ -132,6 +133,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   private renderEmbeddables = (embeddables: EmbeddableWrapper[], section: EmbeddableSections, totalPreviousQuestions: number) => {
+    const {offlineMode} = this.props;
     let questionNumber = totalPreviousQuestions;
     return (
       <React.Fragment>
@@ -155,6 +157,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                 teacherEditionMode={this.props.teacherEditionMode}
                 setNavigation={this.props.setNavigation}
                 pluginsLoaded={this.props.pluginsLoaded}
+                offlineMode={offlineMode}
               />
             );
           })

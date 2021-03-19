@@ -17,6 +17,7 @@ describe("Activity Page Content component", () => {
       totalPreviousQuestions={5}
       setNavigation={stubFunction}
       pluginsLoaded={true}
+      offlineMode={false}
     />);
     expect(getByTestId("page-content")).toBeDefined();
     expect(getByText("Hide")).toBeEnabled();

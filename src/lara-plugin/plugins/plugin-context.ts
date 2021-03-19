@@ -53,6 +53,8 @@ export interface IPluginRuntimeContextOptions extends IPluginCommonOptions {
   embeddablePluginId: number | null;
   /** URL of the resource associated with the current run (sequence URL or activity URL) */
   resourceUrl: string;
+  /** Flag denoting offline mode of an Activity Player activity */
+  offlineMode: boolean;
 }
 
 export interface IPluginAuthoringContextOptions extends IPluginCommonOptions {
