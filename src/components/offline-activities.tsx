@@ -6,12 +6,14 @@ import { Header } from "./activity-header/header";
 import "./offline-activities.scss";
 
 const OfflineActivityListRow = (props: {activity: OfflineActivity}) => {
-  const {name, manifestName, contentUrl} = props.activity;
+  const {name, manifestName, contentUrl, resourceUrl} = props.activity;
   const displayName = manifestName.length > 0 ? `${manifestName}: ${name}` : name;
   return (
     <tr>
       <td>TDB</td>
-      <td className="activity"><a href={`?activity=${encodeURIComponent(contentUrl)}`}>{displayName}</a></td>
+      <td className="activity">
+        <a href={`?activity=${encodeURIComponent(resourceUrl)}&contentUrl=${encodeURIComponent(contentUrl)}`}>{displayName}</a>
+      </td>
     </tr>
   );
 };
