@@ -30,6 +30,7 @@ export const ExpandableContainer: React.FC<IProps> = (props) => {
           <EmbeddablePluginSideTip
             key={sideTip.embeddable.ref_id}
             embeddable={sideTip.embeddable}
+            {...(pluginsLoaded && {pluginsLoaded: pluginsLoaded})}
           />)
       }
       { sidebars && sidebars.length > 0 &&

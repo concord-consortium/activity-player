@@ -9,10 +9,11 @@ import "./glossary-plugin.scss";
 interface IProps {
   embeddable: IEmbeddablePlugin;
   pageNumber: number;
+  pluginsLoaded: boolean;
 }
 
 export const GlossaryPlugin: React.FC<IProps> = (props) => {
-  const { embeddable, pageNumber } = props;
+  const { embeddable, pageNumber, pluginsLoaded } = props;
   const divTarget = useRef<HTMLInputElement>(null);
   const LARA = useContext(LaraGlobalContext);
   useEffect(() => {
@@ -23,12 +24,12 @@ export const GlossaryPlugin: React.FC<IProps> = (props) => {
       approvedScriptLabel: "glossary"
     };
     const validPluginContext = validateEmbeddablePluginContextForPlugin(pluginContext);
-    if (validPluginContext) {
+    if (validPluginContext && pluginsLoaded) {
       // tslint:disable-next-line:no-console
       console.info("initializePlugin called by GlossaryPlugin");
       initializePlugin(validPluginContext);
     }
-  }, [LARA, embeddable]);
+  }, [LARA, embeddable, pluginsLoaded]);
   return (
     <div className="glossary-plugin-container" ref={divTarget} data-cy="glossary-embeddable-plugin" key={pageNumber} />
   );
