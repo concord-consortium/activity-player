@@ -102,7 +102,7 @@ export const loadLearnerPluginState = async (activity: Activity, teacherEditionM
   await Promise.all(plugins.map(async (plugin) => await storage.getLearnerPluginState(plugin.id)));
 };
 
-export const initializePlugin = (context: IEmbeddablePluginContext) => {
+export const initializePlugin = (context: IEmbeddablePluginContext, offlineMode: boolean) => {
   const { LARA, embeddable, embeddableContainer,
           wrappedEmbeddable, wrappedEmbeddableContainer, sendCustomMessage, approvedScriptLabel } = context;
   const usedPlugin = usedPlugins.find(p => p.plugin.approved_script_label === approvedScriptLabel);
@@ -139,7 +139,8 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
     classInfoUrl: null,
     firebaseJwtUrl: "",
     wrappedEmbeddable: wrappedEmbeddable ? embeddableContextAny : null,
-    resourceUrl: getResourceUrl()
+    resourceUrl: getResourceUrl(),
+    offlineMode
   };
   LARA.Plugins.initPlugin(pluginLabel, pluginContext);
 };

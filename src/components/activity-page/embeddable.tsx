@@ -23,6 +23,7 @@ interface IProps {
   setNavigation?: (id: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
   ref?: React.Ref<EmbeddableImperativeAPI>;
+  offlineMode: boolean;
 }
 
 export interface EmbeddableImperativeAPI {
@@ -32,7 +33,7 @@ export interface EmbeddableImperativeAPI {
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { activityLayout, embeddableWrapper, linkedPluginEmbeddable, pageLayout, pageSection, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded } = props;
+  const { activityLayout, embeddableWrapper, linkedPluginEmbeddable, pageLayout, pageSection, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded, offlineMode } = props;
   const embeddable = embeddableWrapper.embeddable;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
@@ -58,9 +59,9 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     };
     const validPluginContext = validateEmbeddablePluginContextForWrappedEmbeddable(pluginContext);
     if (validPluginContext && teacherEditionMode && pluginsLoaded) {
-      initializePlugin(validPluginContext);
+      initializePlugin(validPluginContext, offlineMode);
     }
-  }, [LARA, linkedPluginEmbeddable, embeddable, teacherEditionMode, pluginsLoaded]);
+  }, [LARA, linkedPluginEmbeddable, embeddable, teacherEditionMode, pluginsLoaded, offlineMode]);
 
   useImperativeHandle(ref, () => ({
     requestInteractiveState: () => {
@@ -86,7 +87,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                     setSendCustomMessage={setSendCustomMessage}
                     setNavigation={handleSetNavigation} />;
   } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {
-    qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} pluginsLoaded={pluginsLoaded} /> : undefined;
+    qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} pluginsLoaded={pluginsLoaded} offlineMode={offlineMode} /> : undefined;
   } else if (embeddable.type === "Embeddable::Xhtml") {
     qComponent = <TextBox embeddable={embeddable} />;
   } else {
