@@ -123,5 +123,14 @@ describe("Plugins", () => {
       // tslint:disable-next-line:no-console
       expect(console.error).toHaveBeenCalledTimes(2);
     });
+
+    it("should gracefully handle a plugin with an unknown label", () => {
+      const runtimeClass = jest.fn();
+      setNextPluginLabel("sdfregdbv");
+      registerPlugin({runtimeClass});
+      initPlugin("testPlugin3", runtimeContextOptions);
+      // tslint:disable-next-line:no-console
+      expect(console.error).toHaveBeenCalledTimes(1);
+    });
   });
 });

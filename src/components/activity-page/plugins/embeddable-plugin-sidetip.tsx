@@ -5,16 +5,17 @@ import { LaraGlobalContext } from "../../lara-global-context";
 
 interface IProps {
   embeddable: IEmbeddablePlugin;
+  pluginsLoaded?: boolean;
 }
 
 export const EmbeddablePluginSideTip: React.FC<IProps> = (props) => {
-  const { embeddable } = props;
+  const { embeddable, pluginsLoaded } = props;
 
   const embeddableDivTarget = useRef<HTMLInputElement>(null);
 
   const LARA = useContext(LaraGlobalContext);
   useEffect(() => {
-    if (LARA && embeddableDivTarget.current) {
+    if (LARA && embeddableDivTarget.current && pluginsLoaded) {
       initializePlugin({
         LARA,
         embeddable,
@@ -22,7 +23,7 @@ export const EmbeddablePluginSideTip: React.FC<IProps> = (props) => {
         approvedScriptLabel: "teacherEditionTips"
       });
     }
-  }, [LARA, embeddable]);
+  }, [LARA, embeddable, pluginsLoaded]);
 
   return (
     <div className="embeddable-plugin-sidetip" data-cy="embeddable-plugin-sidetip"  ref={embeddableDivTarget} />

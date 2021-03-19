@@ -45,6 +45,11 @@ export const initPlugin = (label: string, options: IPluginContextOptions) => {
 };
 
 const initRuntimePlugin = (label: string, options: IPluginRuntimeContextOptions) => {
+  if (!pluginClasses[label]) {
+    // tslint:disable-next-line:no-console
+    console.error(`initRuntimePlugin cannot find plugin class with label: ${label}. Plugin instance is not loaded.`);
+    return;
+  }
   const Constructor = pluginClasses[label].runtimeClass;
   if (typeof Constructor === "function") {
     try {

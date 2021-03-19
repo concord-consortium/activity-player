@@ -27,9 +27,12 @@ export const ExpandableContainer: React.FC<IProps> = (props) => {
   return (
     <div className="expandable-container" id="expandable-container" key={pageNumber} data-cy="expandable-container">
       { teacherEditionMode && sideTips.map((sideTip: any) =>
+          // Technically, the EmbeddablePluginSideTip won't be rendered if the plugins aren't loaded yet, 
+          // but passing pluginLoaded into it makes it more consistent with the other plugins components
           <EmbeddablePluginSideTip
             key={sideTip.embeddable.ref_id}
             embeddable={sideTip.embeddable}
+            pluginsLoaded={pluginsLoaded}
           />)
       }
       { sidebars && sidebars.length > 0 &&
