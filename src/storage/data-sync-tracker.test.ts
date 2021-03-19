@@ -82,8 +82,8 @@ describe("DataSyncTracker", () => {
       expect(pluginsDone).toBeCalledTimes(1);
       expect(receivedPluginStatus).toBeCalledTimes(8); // 4 happy, 4 sad
       expect(syncTimeout).not.toHaveBeenCalled();
-      expect(mySyncTracker.pluginSuccesses).toEqual(1);
-      expect(mySyncTracker.pluginFailures).toEqual(1);
+      expect(mySyncTracker.pluginSuccesses).toEqual(2);
+      expect(mySyncTracker.pluginFailures).toEqual(0);
       expect(mySyncTracker.pluginDrops).toEqual(0);
       expect(promiseFunc).toHaveBeenCalled();
       happyPlugin.stopListening();
