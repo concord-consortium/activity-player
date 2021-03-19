@@ -25,8 +25,6 @@ export const GlossaryPlugin: React.FC<IProps> = (props) => {
     };
     const validPluginContext = validateEmbeddablePluginContextForPlugin(pluginContext);
     if (validPluginContext && pluginsLoaded) {
-      // tslint:disable-next-line:no-console
-      console.info("initializePlugin called by GlossaryPlugin");
       initializePlugin(validPluginContext);
     }
   }, [LARA, embeddable, pluginsLoaded]);

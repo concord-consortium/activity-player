@@ -452,8 +452,6 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private handleLoadPlugins = () => {
-    // tslint:disable-next-line:no-console
-    console.info("handleLoadPlugins called.");
     this.setState({ pluginsLoaded: true });
   }
 
