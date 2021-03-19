@@ -1,0 +1,102 @@
+{
+  "name": "Precipitating Change Offline Manifest",
+  "activities": [
+    {
+      "name": "Interview - Predicting the Weather Without the Weather Channel",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11559"
+    },
+    {
+      "name": "Lesson 1: Making an Initial Prediction",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11501"
+    },
+    {
+      "name": "Lesson 1: Post-thoughts - Predicting the weather without the weather channel",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11630"
+    },
+    {
+      "name": "Lesson 2: Pre-thoughts - What Do You Think?",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11565"
+    },
+    {
+      "name": "Lesson 2: Displaying Temperature Data",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11526"
+    },
+    {
+      "name": "Lesson 2: Post-thoughts - What Do You Think?",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11581"
+    },
+    {
+      "name": "Lesson 3: Pre-thoughts - What Do You Think?",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11583"
+    },
+    {
+      "name": "Lesson 3: Displaying Precipitation & Air Moisture Data",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11582"
+    },
+    {
+      "name": "Lesson 3: Post-thoughts - What Do You Think?",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11584"
+    },
+    {
+      "name": "Lesson 4: Pre-thoughts - What Do You Think?",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11586"
+    },
+    {
+      "name": "Lesson 4: Building Rules",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11585"
+    },
+    {
+      "name": "Lesson 4: Post-thoughts - What Do You Think?",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11587"
+    },
+    {
+      "name": "Lesson 5: Pre-thoughts - How should we represent wind direction?",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11593"
+    },
+    {
+      "name": "Lesson 5: Identifying Air Masses",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11588"
+    },
+    {
+      "name": "Lesson 5: Post-thoughts - How should we represent wind direction?",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11595"
+    },
+    {
+      "name": "Lesson 6: Pre-thoughts - What Do You Think?",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11590"
+    },
+    {
+      "name": "Lesson 6: Modeling Fronts",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11589"
+    },
+    {
+      "name": "Lesson 6: Post-thoughts - What Do You Think?",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11591"
+    },
+    {
+      "name": "Lesson 7: Analyzing Data and Making a Prediction",
+      "contentUrl": "",
+      "resourceUrl": "https://authoring.concord.org/activities/11592"
+    }
+  ],
+  "cacheList": [
+  ]
+}
