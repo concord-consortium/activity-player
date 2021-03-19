@@ -58,6 +58,8 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     };
     const validPluginContext = validateEmbeddablePluginContextForWrappedEmbeddable(pluginContext);
     if (validPluginContext && teacherEditionMode && pluginsLoaded) {
+      // tslint:disable-next-line:no-console
+      console.info("initializePlugin called by Embeddable");
       initializePlugin(validPluginContext);
     }
   }, [LARA, linkedPluginEmbeddable, embeddable, teacherEditionMode, pluginsLoaded]);

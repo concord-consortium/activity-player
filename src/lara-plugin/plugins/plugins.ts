@@ -45,6 +45,13 @@ export const initPlugin = (label: string, options: IPluginContextOptions) => {
 };
 
 const initRuntimePlugin = (label: string, options: IPluginRuntimeContextOptions) => {
+  // tslint:disable-next-line:no-console
+  console.info("initRuntimePlugin called with label: ", label);
+  if (!pluginClasses[label]) {
+    // tslint:disable-next-line:no-console
+    console.error("No pluginClasses label.");
+    return;
+  }
   const Constructor = pluginClasses[label].runtimeClass;
   if (typeof Constructor === "function") {
     try {
@@ -114,6 +121,8 @@ export const registerPlugin = (options: IRegisterPluginOptions): boolean => {
     console.error("Duplicate Plugin for label", nextPluginLabel);
     return false;
   } else {
+    // tslint:disable-next-line:no-console
+    console.info(`Saving plugin with label ${nextPluginLabel}`);
     pluginClasses[nextPluginLabel] = options;
     nextPluginLabel = "";
     return true;

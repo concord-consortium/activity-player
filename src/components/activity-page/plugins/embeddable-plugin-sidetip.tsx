@@ -15,6 +15,8 @@ export const EmbeddablePluginSideTip: React.FC<IProps> = (props) => {
   const LARA = useContext(LaraGlobalContext);
   useEffect(() => {
     if (LARA && embeddableDivTarget.current) {
+      // tslint:disable-next-line:no-console
+      console.info("initializePlugin called by EmbeddablePluginSideTip");
       initializePlugin({
         LARA,
         embeddable,
