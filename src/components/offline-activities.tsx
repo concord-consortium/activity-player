@@ -1,26 +1,23 @@
 import React from "react";
-import { getActivityDefinition } from "../lara-api";
 import { getOfflineActivities } from "../offline-manifest-api";
-import { Activity, OfflineActivity } from "../types";
+import { OfflineActivity } from "../types";
 import { Header } from "./activity-header/header";
 
 import "./offline-activities.scss";
 
-const OfflineActivityListRow = (props: {activity: OfflineActivity;  onSelectOfflineActivity: (activity: OfflineActivity) => void}) => {
-  const {name, manifestName} = props.activity;
+const OfflineActivityListRow = (props: {activity: OfflineActivity}) => {
+  const {name, manifestName, contentUrl} = props.activity;
   const displayName = manifestName.length > 0 ? `${manifestName}: ${name}` : name;
-  const handleSelectActivity = () => props.onSelectOfflineActivity(props.activity);
   return (
     <tr>
       <td>TDB</td>
-      <td onClick={handleSelectActivity} className="activity">{displayName}</td>
+      <td className="activity"><a href={`?activity=${encodeURIComponent(contentUrl)}`}>{displayName}</a></td>
     </tr>
   );
 };
 
 interface IProps {
   username: string;
-  onSelectActivity: (activity: Activity, resourceUrl: string, contentUrl: string) => void;
 }
 
 interface IState {
@@ -43,16 +40,6 @@ export class OfflineActivities extends React.Component<IProps, IState> {
     this.setState({offlineActivities, loading: false});
   }
 
-  handleSelectOfflineActivity = async (offlineActivity: OfflineActivity) => {
-    const { onSelectActivity } = this.props;
-    try {
-      const activity = await getActivityDefinition(offlineActivity.contentUrl);
-      onSelectActivity(activity, offlineActivity.resourceUrl, offlineActivity.contentUrl);
-    } catch (e) {
-      alert("Error loading activity!");
-    }
-  }
-
   renderNoActivitiesFound() {
     return (
       <div>Sorry, no offline activities were found!</div>
@@ -71,7 +58,7 @@ export class OfflineActivities extends React.Component<IProps, IState> {
         </thead>
         <tbody>
           {offlineActivities.map(offlineActivity =>
-            <OfflineActivityListRow key={offlineActivity.resourceUrl} activity={offlineActivity} onSelectOfflineActivity={this.handleSelectOfflineActivity} />
+            <OfflineActivityListRow key={offlineActivity.resourceUrl} activity={offlineActivity}/>
           )}
         </tbody>
       </table>

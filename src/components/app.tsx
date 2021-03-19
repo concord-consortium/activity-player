@@ -366,7 +366,7 @@ export class App extends React.PureComponent<IProps, IState> {
     if (offlineManifest && loadingOfflineManifest) {
       return <OfflineManifestLoadingModal offlineManifest={offlineManifest} onClose={this.handleCloseLoadingOfflineManifest} showOfflineManifestInstallConfirmation={showOfflineManifestInstallConfirmation} />;
     } else if (offlineMode) {
-      return activity ? this.renderActivity() : <OfflineActivities onSelectActivity={this.handleSelectOfflineActivity} username={username} />;
+      return activity ? this.renderActivity() : <OfflineActivities username={username} />;
     } else if (showSequenceIntro) {
       return <SequenceIntroduction sequence={sequence} username={username} onSelectActivity={this.handleSelectActivity} />;
     } else {
