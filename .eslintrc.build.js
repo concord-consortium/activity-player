@@ -2,7 +2,6 @@
 module.exports = {
     extends: "./.eslintrc.js",
     rules: {
-      "no-console": ["warn", { allow: ["warn", "error"] }],
       "no-debugger": "error"
     }
 };
