@@ -1,20 +1,20 @@
 import { DataSyncTracker } from "./data-sync-tracker";
-import { IPluginSyncEventHandler, IPluginSyncUpdate, offPluginSyncRequest, onPluginSyncRequest } from "../lara-plugin/events";
+import { IPluginSyncRequestEventHandler, IPluginSyncUpdate, offPluginSyncRequest, onPluginSyncRequest } from "../lara-plugin/events";
 
 
-interface ITimedResponse {fracInterval:number, state: "start"|"working"| "ok"|"fail"}
+interface ITimedResponse {fracInterval:number, state: IPluginSyncUpdate["status"]}
 
 class FakePlugin {
   timedResponses: Array<ITimedResponse>;
   updateCallback: (update: IPluginSyncUpdate) => void;
   maxInterval: number;
-  syncRecHandler: IPluginSyncEventHandler;
+  syncRecHandler: IPluginSyncRequestEventHandler;
   constructor(timedResponses: Array<ITimedResponse>) {
     this.timedResponses = timedResponses;
     this.syncRecHandler = (req) => {
 
-      this.updateCallback = req.syncCallback;
-      this.maxInterval = req.maxInterval;
+      this.updateCallback = req.updateCallback;
+      this.maxInterval = req.maxUpdateCallbackInterval;
       this.respond();
     };
     onPluginSyncRequest(this.syncRecHandler);
@@ -23,7 +23,7 @@ class FakePlugin {
   respond() {
     this.timedResponses.map( r => {
       window.setTimeout(() => {
-        this.updateCallback({pluginSyncStatus: r.state});
+        this.updateCallback({status: r.state});
       }, r.fracInterval * this.maxInterval);
     });
   }
@@ -53,17 +53,17 @@ describe("DataSyncTracker", () => {
   it("When there are some plugins answering on time", () => {
 
     const happyPlugin = new FakePlugin([
-      {fracInterval: 0.4, state: "start"},
+      {fracInterval: 0.4, state: "started"},
       {fracInterval: 0.4, state: "working"},
       {fracInterval: 0.4, state: "working"},
-      {fracInterval: 0.4, state: "ok"}
+      {fracInterval: 0.4, state: "completed"}
     ]);
 
     const sadPlugin = new FakePlugin([
-      {fracInterval: 0.4, state: "start"},
+      {fracInterval: 0.4, state: "started"},
       {fracInterval: 0.4, state: "working"},
       {fracInterval: 0.4, state: "working"},
-      {fracInterval: 0.4, state: "fail"}
+      {fracInterval: 0.4, state: "completed"}
     ]);
     const promiseFunc = jest.fn();
     const myPromise:Promise<void> = new Promise( (resolve, reject) => {
@@ -92,15 +92,15 @@ describe("DataSyncTracker", () => {
   });
 
   it("When some plugins are too slow in responding", () => {
-    
+
     const slowPlugin = new FakePlugin([
-      {fracInterval: 0.4, state: "start"},
-      {fracInterval: 3, state: "fail"}
+      {fracInterval: 0.4, state: "started"},
+      {fracInterval: 3, state: "failed"}
     ]);
 
     const sadPlugin = new FakePlugin([
-      {fracInterval: 0.4, state: "start"},
-      {fracInterval: 0.4, state: "fail"}
+      {fracInterval: 0.4, state: "started"},
+      {fracInterval: 0.4, state: "failed"}
     ]);
 
     const mySyncTracker = new DataSyncTracker(10,1);

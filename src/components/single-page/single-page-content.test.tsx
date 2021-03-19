@@ -10,11 +10,11 @@ const activitySinglePage = _activitySinglePage as Activity;
 
 describe("Single Page Content component", () => {
   it("renders component", () => {
-    const wrapper = shallow(<SinglePageContent activity={DefaultTestActivity} pluginsLoaded={true} />);
+    const wrapper = shallow(<SinglePageContent activity={DefaultTestActivity} pluginsLoaded={true} offlineMode={false} />);
     expect(wrapper.find('[data-cy="single-page-content"]').length).toBe(1);
   });
   it("renders component content", () => {
-    const wrapper = shallow(<SinglePageContent activity={activitySinglePage} pluginsLoaded={true} />);
+    const wrapper = shallow(<SinglePageContent activity={activitySinglePage} pluginsLoaded={true} offlineMode={false} />);
     expect(wrapper.find('[data-cy="single-page-content"]').length).toBe(1);
     // should render 10 embeddables, there are 11 total, 1 is hidden
     expect(wrapper.find(Embeddable).length).toBe(10);

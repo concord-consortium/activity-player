@@ -10,11 +10,11 @@ const activityPlugins = _activityPlugins as Activity;
 
 describe("Expandable container component", () => {
   it("renders component", () => {
-    const wrapper = shallow(<ExpandableContainer activity={activityPlugins} page={activityPlugins.pages[0]} pageNumber={1} teacherEditionMode={true} />);
+    const wrapper = shallow(<ExpandableContainer activity={activityPlugins} page={activityPlugins.pages[0]} pageNumber={1} teacherEditionMode={true} offlineMode={false} />);
     expect(wrapper.find('[data-cy="expandable-container"]').length).toBe(1);
   });
   it("renders component content", () => {
-    const wrapper = shallow(<ExpandableContainer activity={activityPlugins} page={activityPlugins.pages[2]} pageNumber={3} teacherEditionMode={true} pluginsLoaded={true} />);
+    const wrapper = shallow(<ExpandableContainer activity={activityPlugins} page={activityPlugins.pages[2]} pageNumber={3} teacherEditionMode={true} pluginsLoaded={true} offlineMode={false} />);
     expect(wrapper.find('[data-cy="expandable-container"]').length).toBe(1);
     expect(wrapper.find('[data-cy="expandable-container"]').length).toBe(1);
     expect(wrapper.find('[data-cy="expandable-container"]').length).toBe(1);

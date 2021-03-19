@@ -34,8 +34,8 @@ export class DataSyncTracker {
   start() {
     this.startTimeMs = Date.now();
     emitPluginSyncRequest({
-      maxInterval: this.pluginTimeoutS * 1000,
-      syncCallback: (status:IPluginSyncUpdate) => this.receivedPluginStatus(status)
+      maxUpdateCallbackInterval: this.pluginTimeoutS * 1000,
+      updateCallback: (status:IPluginSyncUpdate) => this.receivedPluginStatus(status)
     });
 
     this.pluginPromise = new Promise((resolve, reject) => {
@@ -82,17 +82,17 @@ export class DataSyncTracker {
 
   receivedPluginStatus(status: IPluginSyncUpdate) {
     // We don't reset the timer if the status is fail or ok, which are terminal.
-    if(status.pluginSyncStatus===("start" || "working")) {
-      if(status.pluginSyncStatus === "start") {
+    if(status.status===("started" || "working")) {
+      if(status.status === "started") {
         this.pluginDrops++;
       }
       this.registerPluginTimeOut();
     }
-    if(status.pluginSyncStatus === "ok")   {
+    if(status.status === "completed")   {
       this.pluginSuccesses++;
       this.pluginDrops--;
     }
-    if(status.pluginSyncStatus === "fail") {
+    if(status.status === "failed") {
       this.pluginFailures++;
       this.pluginDrops--;
     }
