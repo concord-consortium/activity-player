@@ -30,7 +30,7 @@ import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
 import { IdleDetector } from "../utilities/idle-detector";
-import { messageSW, Workbox } from "workbox-window/index";
+import { Workbox } from "workbox-window/index";
 import { getOfflineManifest, getOfflineManifestAuthoringData, getOfflineManifestAuthoringId, OfflineManifestAuthoringData, mergeOfflineManifestWithAuthoringData, saveOfflineManifestToOfflineActivities, setOfflineManifestAuthoringData, setOfflineManifestAuthoringId } from "../offline-manifest-api";
 import { OfflineManifestLoadingModal } from "./offline-manifest-loading-modal";
 import { OfflineActivities } from "./offline-activities";
@@ -155,30 +155,33 @@ export class App extends React.PureComponent<IProps, IState> {
 
     if (enableServiceWorker && ("serviceWorker" in navigator)) {
       const wb = new Workbox("service-worker.js");
-      let registration: ServiceWorkerRegistration | undefined;
-
-      // TODO: in future work this should pop a dialog using this recipe:
-      // https://developers.google.com/web/tools/workbox/guides/advanced-recipes#offer_a_page_reload_for_users
-      // for now just send a message to always skip waiting so we don't have to do it manually in the devtools
-      const alwaysSkipWaitingForNow = () => {
-        if (registration?.waiting) {
-          console.log("Sending SKIP_WAITING to service worker...");
-          messageSW(registration.waiting, {type: "SKIP_WAITING"});
-        }
-      };
 
       // these are all events defined for workbox-window (https://developers.google.com/web/tools/workbox/modules/workbox-window)
       wb.addEventListener("installed", (event) => {
         console.log("A new service worker has installed.");
       });
       wb.addEventListener("waiting", (event) => {
-        alwaysSkipWaitingForNow();
-      });
-      wb.addEventListener("externalwaiting" as any, (event) => {
-        alwaysSkipWaitingForNow();
+        // TODO: in future work we should show a dialog using this recipe:
+        // https://developers.google.com/web/tools/workbox/guides/advanced-recipes#offer_a_page_reload_for_users
+        // For now just send a message to skip waiting so we don't have to do it manually in the devtools
+        // This will trigger a 'controlling' event which we are listening for below and reload the page when
+        // we get it
+        //
+        // Note: with the current setup this will cause 2 reloads for each change while developing
+        // first webpack-dev-server will try to hot load the changes, it will find it can't do this
+        // (I'm not sure why yet), it will reload the page because the hot load failed, this reload
+        // will trigger a service worker update because each change to the activity-player
+        // triggers a new service-worker since it includes a pre-cache manifest that includes
+        // the javascript files. The service worker update will then trigger this
+        // waiting event which we "skip". The new service worker will activate and start
+        // controlling the page which triggers thre reload below.
+        wb.messageSkipWaiting();
       });
       wb.addEventListener("controlling", (event) => {
-        console.log("A new service worker has installed and is controlling.");
+        // If a new service worker is now controlling the page reload it to make sure
+        // all of our assets and resources are in sync with the new service worker
+        console.log("A new service worker has installed and is controlling, reloading the page.");
+        window.location.reload();
       });
       wb.addEventListener("activating", (event) => {
         console.log("A new service worker is activating.");
@@ -217,7 +220,7 @@ export class App extends React.PureComponent<IProps, IState> {
       });
 
       wb.register().then((_registration) => {
-        registration = _registration;
+        console.log("workbox register() resolved");
       });
     }
   }
