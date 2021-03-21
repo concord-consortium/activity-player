@@ -55,6 +55,19 @@ const kLearnPortalUrl = "https://learn.concord.org";
 
 export type ErrorType = "auth" | "network" | "timeout";
 
+// This is a combination of the standard service worker states:
+// installing, installed, activating, activated, redundant
+// https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker/state
+// With additional states for the initial "unknown" startup state and
+// a "controlling" state which isn't captured as a "state" by the service worker API
+// a "parsed" state is added to satisfy the ServiceWorker types,
+// this state is documented here: https://bitsofco.de/the-service-worker-lifecycle/
+// but it isn't lised in the MDN article above
+// The actual status is more complex than this because there can be external
+// service workers, but perhaps this simplified list
+// will be good enough for deciding what to do with the UI
+type ServiceWorkerStatus = "unknown" | "parsed" | "installing" | "installed" | "activating" | "activated" | "redundant" | "controlling";
+
 interface IncompleteQuestion {
   refId: string;
   navOptions: INavigationOptions;
@@ -84,6 +97,7 @@ interface IState {
   offlineManifestAuthoringId?: string;
   offlineManifestAuthoringActivities: OfflineManifestActivity[];
   offlineManifestAuthoringCacheList: string[];
+  serviceWorkerStatus: ServiceWorkerStatus;
   showOfflineManifestInstallConfirmation: boolean;
   showEditUserName: boolean;
   networkConnected: boolean;
@@ -130,6 +144,7 @@ export class App extends React.PureComponent<IProps, IState> {
       showOfflineManifestInstallConfirmation: queryValue("confirmOfflineManifestInstall") === "true",
       offlineManifestAuthoringId,
       offlineManifestId,
+      serviceWorkerStatus: "unknown",
       showEditUserName: false,
       networkConnected: isNetworkConnected()
     };
@@ -189,6 +204,8 @@ export class App extends React.PureComponent<IProps, IState> {
       wb.addEventListener("activated", (event) => {
         if (!event.isUpdate) {
           console.log("Service worker activated for the first time!");
+        } else {
+          console.log("Service worker activated with an update");
         }
       });
       wb.addEventListener("message", (event) => {
@@ -220,7 +237,44 @@ export class App extends React.PureComponent<IProps, IState> {
       });
 
       wb.register().then((_registration) => {
-        console.log("workbox register() resolved");
+        console.log("Workbox register() promise resolved", _registration);
+        if (navigator.serviceWorker.controller) {
+          // We are controlled
+          // This means there was an active service worker when the page was loaded
+          // There might also be a another service worker waiting to the replace
+          // the one currently controlling the page, but for our status monitoring
+          // code we don't care about this waiting service worker.
+          this.setState({serviceWorkerStatus: "controlling"});
+        } else {
+          // Otherwise, this could be the first
+          // time the page is loaded or the user could have used shift-reload
+          // in either case the service worker won't start controlling unless it
+          // calls clients.claim() and our service worker doesn't do that.
+          // The service worker will transition through the states of
+          // installing, installed, waiting, activating, active
+          // The workbox "waiting" event is different than the waiting state of
+          // a service worker. During an initial load workbox won't fire the
+          // waiting event even though the worker passes through the waiting state
+
+          // The _registration has fields for 'installing', 'waiting', and 'active'
+          // The workbox getSW() is supposed to abstract that so we don't need to check
+          // of those fields to find the service worker
+          wb.getSW().then((sw) => {
+            this.setState({serviceWorkerStatus: sw.state});
+
+            sw.addEventListener("statechange", () => {
+              this.setState({serviceWorkerStatus: sw.state});
+            });
+          });
+
+          // Workbox doesn't handle a shift-reload well. In that case
+          // getSW() never resolves even though there could be an active
+          // service worker. I filed a bug about this:
+          // https://github.com/GoogleChrome/workbox/issues/2788
+          if (_registration?.active) {
+            this.setState({serviceWorkerStatus: _registration.active.state});
+          }
+        }
       });
     }
   }
@@ -365,8 +419,13 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderContent = () => {
-    const {offlineManifest, loadingOfflineManifest, showSequenceIntro, sequence, username, offlineMode, showOfflineManifestInstallConfirmation, activity} = this.state;
-    if (offlineManifest && loadingOfflineManifest) {
+    const {offlineManifest, loadingOfflineManifest, showSequenceIntro, sequence,
+      username, offlineMode, showOfflineManifestInstallConfirmation, activity,
+      serviceWorkerStatus} = this.state;
+    if (offlineMode && serviceWorkerStatus !== "controlling") {
+      return <div>Service Worker Status: {serviceWorkerStatus}</div>;
+    } else if (offlineManifest && loadingOfflineManifest) {
+      // Rendering this has a side effect of actually loading the manifest files
       return <OfflineManifestLoadingModal offlineManifest={offlineManifest} onClose={this.handleCloseLoadingOfflineManifest} showOfflineManifestInstallConfirmation={showOfflineManifestInstallConfirmation} />;
     } else if (offlineMode) {
       return activity ? this.renderActivity() : <OfflineActivities username={username} />;
