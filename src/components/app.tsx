@@ -30,7 +30,7 @@ import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
 import { IdleDetector } from "../utilities/idle-detector";
-import { messageSW, Workbox } from "workbox-window";
+import { messageSW, Workbox } from "workbox-window/index";
 import { getOfflineManifest, getOfflineManifestAuthoringData, getOfflineManifestAuthoringId, OfflineManifestAuthoringData, mergeOfflineManifestWithAuthoringData, saveOfflineManifestToOfflineActivities, setOfflineManifestAuthoringData, setOfflineManifestAuthoringId } from "../offline-manifest-api";
 import { OfflineManifestLoadingModal } from "./offline-manifest-loading-modal";
 import { OfflineActivities } from "./offline-activities";
