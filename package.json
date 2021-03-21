@@ -9,8 +9,11 @@
       "<rootDir>src/setupTests.js"
     ],
     "transform": {
-      "^.+\\.tsx?$": "ts-jest"
+      "^.+\\.[jt]sx?$": "ts-jest"
     },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(workbox-window|workbox-core)/)"
+    ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "testPathIgnorePatterns": [
       "/node_modules/",
