@@ -35,6 +35,14 @@
     svg {
       fill: $cc-orange-dark1;
       margin-right: 5px;
+      height: 24px;
+      width: 24px;
+      &.complete {
+        margin-left: 5px;
+      }
+      &.incomplete {
+        margin-left: 5px;
+      }
     }
   }
   h2 {
