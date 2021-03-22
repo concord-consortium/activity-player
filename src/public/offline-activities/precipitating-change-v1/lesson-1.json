@@ -1095,6 +1095,23 @@
       },
       "section": null
     }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 308577,
+    "is_completion": true,
+    "is_hidden": false,
+    "layout": "l-6040",
+    "name": "Completion Page",
+    "position": 9,
+    "show_header": false,
+    "show_info_assessment": false,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": []
   }],
   "plugins": [{
     "description": null,
