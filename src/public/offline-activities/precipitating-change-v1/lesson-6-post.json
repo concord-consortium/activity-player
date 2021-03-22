@@ -1,0 +1,231 @@
+{
+  "description": "\u003Cp\u003EModeling Fronts: How do fronts move?\u003C/p\u003E",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Alaska 2021 - Lesson 6: Post-thoughts - What Do You Think?",
+  "notes": "",
+  "project_id": null,
+  "related": "",
+  "runtime": "Activity Player",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson5.jpg?v2",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "Precipitating Change",
+  "pages": [{
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143611,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Page 1",
+    "position": 1,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003E\u003Cstrong\u003EHow Do We Make An Accurate Model to Predict Weather?\u003C/strong\u003E\u003C/p\u003E\r\n\u003Cp\u003EMs. Tevuk\u0026rsquo;s students wrote rules for their computer model to predict weather in Alaska. Then they tested their model to see how well it worked. They found their predictions were only right about half the time. The students had different ideas for improving the model.\u003C/p\u003E\r\n\u003Cp\u003EHere are the students\u0026rsquo; ideas:\u003C/p\u003E\r\n\u003Ctable cellpadding=\"30\"\u003E\r\n\u003Ctbody\u003E\r\n\u003Ctr\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EAlex\u003C/strong\u003E\u003C/th\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EDelana\u003C/strong\u003E\u003C/th\u003E\r\n\u003C/tr\u003E\r\n\u003Ctr\u003E\r\n\u003Ctd width=\"88\"\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alex%206.png\" width=\"72\" height=\"90\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003EWe need to run the model longer. The longer you run a computer model the better the prediction will be.\u003C/td\u003E\r\n\u003Ctd width=\"88\"\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Delana6.png\" width=\"70\" height=\"90\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003EThere\u0026rsquo;s no way to make a computer model that can predict the weather. Computer models aren\u0026rsquo;t the real world, so they can\u0026rsquo;t predict what will happen in the real world.\u003C/td\u003E\r\n\u003C/tr\u003E\r\n\u003C/tbody\u003E\r\n\u003Ctbody\u003E\r\n\u003Ctr\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EKalin\u003C/strong\u003E\u003C/th\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003ESage\u003C/strong\u003E\u003C/th\u003E\r\n\u003C/tr\u003E\r\n\u003Ctr\u003E\r\n\u003Ctd width=\"88\"\u003E\r\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Kalin1.png\" width=\"72\" height=\"90\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/p\u003E\r\n\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003EWe should keep working on the rules based on the science of weather prediction. If we get the science right, the model will be accurate.\u003C/td\u003E\r\n\u003Ctd width=\"88\"\u003E\r\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Sage4.png\" width=\"72\" height=\"90\" align=\"center\" hspace=\"8\" vspace=\"8\" /\u003E\u003C/p\u003E\r\n\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003EWe should keep working on the rules and testing the model predictions using Alaska weather data. That way we\u0026rsquo;ll know the model works.\u003C/td\u003E\r\n\u003C/tr\u003E\r\n\u003C/tbody\u003E\r\n\u003C/table\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147922-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Pre-Assessment Implementation\\n*Lesson 6, Opening: How Do We Make An Accurate Model To Predict Weather? Pre-Assessment*\\nDuring the pre-assessment, each student will view the probe and make an individual choice. The request for explanation will only be on the post-assessment. After students make an individual choice for the pre-assessment, lead a discussion including, for example, a pair/share opportunity and/or full class discussion. \\n\\nAt this time, encourage students to share and discuss their ideas and reasons without indicating that any one answer is better or worse. Let the students know that they should keep thinking about this question and that the class will return to it at the end of the lesson.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10282-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Computational Thinking Concepts and Practices: \\n* Rule Refinement\\n* Rule Testing\\n\\n###What is the Purpose of this Assessment Probe?\\nThe following information provides background for teachers and is not necessarily representative of the learning goals for everything students should understand. We suggest teachers review the information and think about ways to scaffold students toward developing knowledge and practice as appropriate for their classes. We also recommend emphasizing the underlying ideas and practices, rather than on vocabulary terms. By discussing the different options, students can engage in productive talk related to these computational thinking concepts without using technical terminology. \\n\\nThis assessment probe is designed to assess and scaffold students in thinking and talking about **Rule Refinement** and, especially, **Rule Testing**. **Rule Refinement** involves refining a rule for use in a modeling environment using scientific principles and incorporating additional data, making the rule more precise, computational, and/or detecting and correcting errors. **Rule Testing** is a process of \\\"calibration\\\" between the modeling environment and the observable world. It involves systematically testing a rule to detect errors and limitations, and analyzing the efficiency of various solutions.\\n\\nThe assessment is situated in the unit context to provide an opportunity for students to make sense about rule refinement and rule testing in a specific, tangible weather problem. While one of the responses makes the most sense from a practical standpoint for this problem, other responses have implicit connections to facets of computational thinking (e.g., using understanding of systems to determine model rules and iteration in modeling). Using an indefinite problem provides space for students to think and talk about different approaches to refining and testing rules for a computer model. While having good data and using good science are important for refining rules, calibration (i.e., rule testing) of models of real-world environmental systems like the weather generally rely on comparisons between model outputs and real-world data as critical evidence of model accuracy and usefulness. \\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10283-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###What Are Common Student Ideas and What Supports Could Help Students?\\nBelow are some issues to consider in assessing students\u2019 ideas, and some suggestions of ways to support students in developing more formal reasoning about rule refinement and rule testing.\\n\\n###Less Formal Ideas\\n\u2022\\t**Delana\u2019s response (computer models can\u2019t predict the weather)** suggests the perspective that if you can\u2019t predict something perfectly then your model really doesn\u2019t work or have any value. We sometimes see this type of reasoning when students and even adults talk about climate change models. Some people say things like, \u201cthey are just models, so they don\u2019t really tell us what\u2019s going to happen in the real world.\u201d \\n\\nStudents who choose Delana\u2019s response could use support in developing understanding that computer models don\u2019t need to be perfect in order to be useful. No model is perfectly accurate. Models just need to be good enough for a given purpose. Computer modelers set calibration targets that define how close to the actual event they want their prediction to be (e.g., maybe they want their model to predict the correct outcome of rain or no rain for the next day 95% of the time). Uncertainty is also built into weather models for precipitation in other ways (e.g., a forecast of 70% chance of rain for a given day). Knowing that there is a 70% chance of rain tomorrow is better than not having any information about tomorrow\u2019s weather at all. Students who choose Delana\u2019s response (as well as all the other students) could benefit from conversations about and examples of what it means for a model to be \u201cgood enough\u201d to serve a purpose.\\n\\n###Middle Level \\n\u2022\\t**Alex\u2019s response (run the model longer)** suggests awareness that models are not perfect and that they can improve over time. This response may also appeal to some students who know about the idea of computer iteration (i.e., a process in which a set of instructions is repeated in a sequence multiple times or until a condition is met). Sometimes computer models need to run over time through multiple iterations to reach a certain set of criteria for the output. However, in this case, if the computer model is only making a correct prediction about half the time, then the computer needing more time to process the data probably isn\u2019t the problem. \\n\\nStudents who choose Alex\u2019s response could benefit from a discussion about whether or not they think running the model longer would help in this case.\\n\\n\u2022\\t**Kalin\u2019s response (keep working on rules using science)** has some merit. We do want to work on model rules based on scientific principles. However, when modeling a real-world system, it\u2019s not enough to just use the rules of science to make our models. We need to know that our model is actually going to work (i.e., be sufficiently accurate in outputs such as predictions) when it is applied in the real world. Real-world systems are complex. If we just go by the rules of science, we may be overlooking possible problems with either the rules of the model (e.g., omitting an important variable) or with input data (e.g., perhaps a temperature sensor is faulty or isn\u2019t calibrated correctly). In either case, just working on the rules of the model would not be enough to know that the model really works unless we check our weather model predictions against the weather that actually occurs.\\n\\n###More Formal Ideas\\n\u2022\\t**Sage\u2019s answer (refine and test model predictions using Alaska weather data)** is the only option that acknowledges the importance of using calibration to test model rules, which is essential for establishing confidence in a computer model that is designed to represent or simulate an event or phenomenon in the real world. Weather modelers need to compare their model outputs to real-world data to ascertain how well they are working. Calibration is a process of iteratively refining rules and testing with data until a target level of match between model output and real-world data is consistently achieved. Once this level of match (calibration) is achieved with sufficient consistency across multiple datasets, then the modeler can have an acceptable level of confidence in their model\u2019s performance. Weather modelers can and should use scientific principles to design and refine their models, but without real-world evidence there is no way to check one\u2019s model predictions against what really happens in the world. \\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10284-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Alex\",\"correct\":false},{\"id\":\"2\",\"content\":\"Delana\",\"correct\":false},{\"id\":\"3\",\"content\":\"Kalin\",\"correct\":false},{\"content\":\"Sage\",\"correct\":false,\"id\":\"89f32589-2b6d-47d3-8159-62a30d7f2a92\"}]}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Multiple Choice",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1696-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EWhy do you think the choice you picked is the best idea for improving the model? Please explain your reasoning.\u003C/p\u003E\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Open Response",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1697-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }]
+  }],
+  "plugins": [{
+    "description": "",
+    "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.concord.org/glossary-resources/upZ83jqTZAZuoQqRAfAb/glossary.json\"}",
+    "approved_script_label": "glossary",
+    "component_label": "glossary",
+    "approved_script": {
+      "name": "Glossary",
+      "url": "https://glossary-plugin.concord.org/version/v3.12.0/plugin.js",
+      "label": "glossary",
+      "description": "This plugin provides the glossary activity plugin",
+      "version": 3,
+      "json_url": "https://glossary-plugin.concord.org/version/v3.12.0/manifest.json",
+      "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
+    }
+  }],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

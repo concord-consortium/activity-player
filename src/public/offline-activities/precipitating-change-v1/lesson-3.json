@@ -1,0 +1,712 @@
+{
+  "description": "\u003Cp\u003EDisplaying Data: Where does it rain?\u003C/p\u003E",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Alaska 2021 - Lesson 3: Displaying Precipitation \u0026 Air Moisture Data",
+  "notes": "",
+  "project_id": 25,
+  "related": "",
+  "runtime": "Activity Player",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson3.png",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "Precipitating Change",
+  "pages": [{
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143621,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Real World Application with Jackie Purcell",
+    "position": 1,
+    "show_header": true,
+    "show_info_assessment": false,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EWatch this video featuring\u0026nbsp;Jackie Purcell, a news station meteorologist at station KTUU in Anchorage, AK. She will discuss how air moisture plays an important part in forming precipitation.\u003C/p\u003E",
+        "is_callout": true,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "148013-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/JackieLesson3_88_Captioned.mp4\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L3_Video.png\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": null,
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "34e1a2a39c058da8ff4ffe5a09ad14af337c4a01",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/video-player/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Video Player",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": false,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1765-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": "header_block"
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143588,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Opening",
+    "position": 2,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EEXPLORING PRECIPITATION, AIR MOISTURE AND TEMPERATURE\u003C/p\u003E\n\u003Cp\u003EHave you ever been caught without your parka or boots when you needed them? Predicting rain or snow\u0026nbsp;is a special challenge for weather scientists. Watch the video below to learn more about forecasting the weather in Alaska.\u003C/p\u003E\n\u003Cp\u003EAs weather scientists, you will continue to explore the weather maps. This time you will add two additional pieces of information to each square: precipitation (a symbol) and air moisture content (a number).\u003C/p\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp style=\"text-align: center;\"\u003E\u003Cstrong\u003EPrecipitation symbol = raindrops\u003C/strong\u003E\u0026nbsp;\u0026nbsp;\u003Cimg class=\"\" src=\"https://precipitatingchange-resources.concord.org/images/3-drop-black-staggered.png\" alt=\"\" width=\"48\" height=\"48\" /\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003E\u003Cimg class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/Air%20Moisture.jpg\" alt=\"\" width=\"588\" height=\"141\" /\u003E\u003C/p\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147890-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"### LESSON 3: BUILDING RULES:\\n**WHERE DOES IT RAIN?**\\n\\nIn this lesson, students revisit the weather maps they constructed in Lesson 2 and add precipitation and air moisture data for additional time stamps to the weather maps to answer the question \\\"Where does it rain?\\\" Precipitation is a result of the complex interactions between temperature and moisture. Atmospheric scientists construct graphical displays of temperature and moisture content data to help them come up with rules to identify where precipitation occurs. \\n\\nThis lesson introduces a new way of utilizing the virtual simulation that allows students to start recognizing patterns and formalizing their rule statements with the data set they have been exploring in Lesson 2.\\n\\n**LEARNING GOALS**\\n\\nStudents will be able to:\\n\\n* Describe the relationship between moisture content and temperature by identifying key patterns in weather data\\n\\n* Develop a rule for where precipitation will occur using precise language\\n\\n* Explain the current weather conditions in their local context\\n\\n* Read weather maps using traditional symbols and codes (adding precipitation)\\n\\n* Use CT strategies (rule abstraction, rule development and rule testing) to develop a better understanding of how to model weather\\n\\nComputational Thinking (CT) skills introduced in this lesson can be found in the table below:\\n\\n| CT Skill            | Definition                                                                               | Use in Lesson                                                                                                                                                                                                                                                                                              |\\n|---------------------|---------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\\n| Pattern Recognition | Recognizing that data or information is repeating in a logical (expected) way.                   Students develop a general statement to answer the question \\\"Where does it rain?\\\"|\\n| Rule Abstraction    | Developing a statement of how things work based on observed patterns.                     | Students make a generic statement to answer \\\"Where does it rain?\\\"                                                                                                            |\\n| Rule Testing        | Investigating whether a rule will still be true in different situations.                          | Virtual model activity                                                                                                                                                                                                                                                                                           |\\n| Rule Refinement     | Modifying a rule to be more precise (exact, careful about details) to work in the model.| The virtual model allows students to be able to test their rule statements and make changes based on the model.                                                                                                                                                                                                                                                                                      |\\t\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": true,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10229-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"### IMPLEMENTATION TIME 1 class period with Pre-Assessment (35 minutes)\\n\\n**KEY ACTIVITIES:**\\n\\n**Opening (5 mins)\\n**Activity 1 - Virtual Storm: Exploring Precipitation, Air Moisture and Temperature (20 mins)\\n**Post-Assessment - Which Estimates Should We Trust? (10 mins)\\n\\n\\n### MATERIALS AND SET-UP\\n\\nThe materials and set up are repeated from Lesson 2 - Virtual Storm Technology and included below for your convenience.\\n\\nPer Research Team:\\n\\n* Marker\\n\\n* Fully charged and connected iPad/laptop \\n\\nPer Class:\\n\\n* Set up classroom grid\\n\\nWeather maps:\\n\\n* Display the 7 am, 11 am, and 3 pm completed gridded temperature map students created in Lesson 2, Activity 1 with colored sticky notes for temperatures.\\n\\nCity flags:\\n\\n* Place a printout of each of the Alaskan cities (Bettles, Galena, Nome, Noorvik, St. Mary\u2019s) in locations corresponding to the grid map for Alaska.\\n\\nIn the simulation:\\n\\n* As with the Virtual Storm from the previous lesson, run the simulation (starting at 7 am) and pause it at 3 pm. Students will only collect precipitation data for this activity.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": true,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10230-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Watch this video with your class to give students a perspective on the importance of weather and to build weather science career awareness.\",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Purcell, Jackie. \\\"Lesson 3.\\\" 2019. Good Life Productions. Anchorage, AK. \",\"mediaURL\":\"https://precipitatingchange-resources.concord.org/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/JackieLesson3_88.mp4\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": true,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10231-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": null,
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "34e1a2a39c058da8ff4ffe5a09ad14af337c4a01",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/video-player/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Video Player",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": false,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1761-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143589,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Exploring Precipitation",
+    "position": 3,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": true,
+    "show_sidebar": false,
+    "sidebar": "\u003Cp\u003EWould you change what you selected to wear? Yes or No\u003C/p\u003E\n\u003Cp\u003EIf yes, what would you change and why?\u003C/p\u003E",
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EEXPLORING PRECIPITATION, AIR MOISTURE, AND TEMPERATURE\u003C/p\u003E\n\u003Cp\u003EPretend your classroom represents mainland Alaska and the same virtual storm will move through your classroom. As expert weather scientists, you already know how to combine the data (also known as data aggregation) from this event. This time you are going to focus on collecting precipitation data.\u003C/p\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147891-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "content": "\u003Cp\u003EMap where it is raining at 3 pm. Work in teams to collect data to fill in the map. Look for relationships between rain and temperature.\u003C/p\u003E\r\n\u003Cp\u003EYou will see precipitation as the following symbol on your weather station.\u003C/p\u003E\r\n\u003Cp\u003EPrecipitation = raindrops\u0026nbsp;\u0026nbsp;\u003Cimg class=\"\" src=\"https://precipitatingchange-resources.concord.org/images/3-drop-black-staggered.png\" alt=\"\" width=\"48\" height=\"48\" /\u003E\u0026nbsp;\u003C/p\u003E",
+        "is_callout": true,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "TASK ",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147892-Embeddable::Xhtml"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "default_text": "",
+        "give_prediction_feedback": false,
+        "hint": "\u003Cp\u003E\u0026bull; Where is it raining?\u003C/p\u003E\r\n\u003Cp\u003E\u0026bull; Where is it not raining?\u003C/p\u003E\r\n\u003Cp\u003E\u003Cbr /\u003E\u0026bull; Describe what the shape of the rain area looks like.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cbr /\u003E\u0026bull; Where on the map is there light (1 raindrop), moderate (2 raindrops) or heavy (3 raindrops) precipitation?\u003C/p\u003E",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "name": "",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003ELook at your classroom weather map for 3 pm. What patterns do you see when looking at both precipitation and temperature?\u003C/p\u003E",
+        "show_in_featured_question_report": true,
+        "type": "Embeddable::OpenResponse",
+        "ref_id": "208877-Embeddable::OpenResponse"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Activity 1- Virtual Storm: Exploring Precipitation, Air Moisture, and Temperature\\nThis activity is a continuation of the Virtual Storm simulation and has a similar set-up to the Lesson 2 - Virtual Storm.  \\n\\nKey additions in this activity include:\\n\\n* Reusing the 7 am, 11 am, and 3 pm weather map created in Lesson 2.\\n\\n* Pausing the simulation at 3 pm and completely filling in each square. \\n\\nAdditionally, this lesson provides students with an opportunity to explore and explain why it rains in some areas and not others. Students work in teams of weather scientists to collect precipitation data and look for patterns in rainfall, temperature, and air moisture content. Students use the Virtual Storm technology from the beginning, but focus on what is happening at one point in time (at 3 pm). Students then brainstorm all of the patterns they see in the variables of temperature, air moisture, and precipitation and then use those patterns to come up with a general statement (rule) to explain under what conditions rain occurs. Students apply the CT skills of **Data Aggregation** and **Data Abstraction** as they collect and visualize their rain data, but **Pattern Recognition** is the primary computational thinking practice in this Lesson. This sets the stage for the next activity, where students will use the patterns they discover to abstract a rule statement about where rain occurs.\\n\\n###Activity Breakdown\\n**1. Set the stage for the virtual storm with precipitation.** In their research teams, students will be responsible for collecting precipitation data for the region at 7 am (once), 11 am (once), and the entire 3 pm (multiple times). \\n\\n**2. Start the virtual storm with precipitation.** Students first collect and enter precipitation data for 7 am and 11 am but the virtual storm will stay at 3 pm and students will work to complete the map of the region for 3 pm. Students aggregate precipitation data on the 3 pm weather map on the wall. Have students abstract precipitation data by representing it on the map with a raindrop on top of the temperature sticky notes.\\n\\n**3. Pause the virtual storm at 3 pm.** Students explore simulated precipitation only for 3 pm. Research teams move around the room to different locations collecting rain data to complete the 3 pm weather map. \\n\\n**4. Class brainstorm of precipitation patterns.** Lead a class brainstorm, looking for and recognizing patterns in the data. Have the students record their thoughts for precipitation in the online activity. \",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10232-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"},\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"Temperature and Precipitation Discussion Prompts\\n\\n* After the map is complete, have students record their ideas in their Student Notebooks. Encourage students to use the maps on the wall as they describe observed patterns. \\n\\n* For a list of possible class discussion questions, see below: \\n * Where is the rain on the map?\\n * Why do you think it is raining in some places and not others?\\n * Is there a relationship between temperature and precipitation?\\n\\n**Teacher Note**: Patterns should include some notion of precipitation happening in warm areas, and that the rain is clustered in an area and somewhat resembles a diagonal line. Keep in mind that the data they are collecting is a subset of the larger dataset they saw in Lesson 1, Activity 2 - Making an Initial Prediction. This process is a way to help them dive deeper into the data to help support a stronger prediction later in the unit. \\n\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10233-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"howToUse\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"In this tutorial, you will learn how to guide students in using the virtual storm interactive to test the rules they have created. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Precipitating Change How To Tutorials - Where does it rain virtual model?\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Precipitating%20Change%20How%20To%20Tutorials%20-%20The%20Virtual%20Storm%20Interactive%20Alaska.mp4\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10234-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "aspect_ratio_method": "MANUAL",
+        "authored_state": null,
+        "click_to_play": false,
+        "click_to_play_prompt": null,
+        "enable_learner_state": false,
+        "full_window": false,
+        "has_report_url": false,
+        "image_url": "",
+        "is_full_width": true,
+        "is_hidden": false,
+        "model_library_url": null,
+        "name": "AK EP2",
+        "native_height": 752,
+        "native_width": 920,
+        "no_snapshots": false,
+        "show_delete_data_button": false,
+        "show_in_featured_question_report": true,
+        "url": "https://weather.concord.org/index.html?scenario=AK_EP2\r\n",
+        "type": "MwInteractive",
+        "ref_id": "96958-MwInteractive",
+        "linked_interactives": []
+      },
+      "section": "interactive_box"
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143590,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Exploring Precipitation (Cont.)",
+    "position": 4,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": true,
+    "show_sidebar": false,
+    "sidebar": "\u003Cp\u003EYour teacher will lead a class discussion.\u003C/p\u003E\n\u003Cp\u003EPossible discussion questions:\u003C/p\u003E\n\u003Cp\u003E\u0026bull; What was your prediction for the weather in Boston on November 7th at 7am?\u003Cbr /\u003E\u0026bull; What was your strategy that helped you develop your prediction?\u003C/p\u003E",
+    "sidebar_title": "Class Discussion",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EVIRTUAL STORM: EXPLORING PRECIPITATION, AIR MOISTURE, AND TEMPERATURE\u003C/p\u003E\n\u003Cp\u003EWhat kind of\u0026nbsp;weather\u0026nbsp;is good for playing outside? Can you determine at night what the\u0026nbsp;weather\u0026nbsp;will be the following morning? What kind of information goes into a\u0026nbsp;weather\u0026nbsp;prediction?\u003C/p\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147893-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "content": "\u003Cp\u003EAdd air moisture content to your classroom weather maps. Work in teams to collect data to fill in the map.\u003C/p\u003E",
+        "is_callout": true,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "TASK",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147894-Embeddable::Xhtml"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "default_text": "",
+        "give_prediction_feedback": false,
+        "hint": "\u003Cp\u003E\u0026bull; Where is it the air most wet?\u003C/p\u003E\r\n\u003Cp\u003E\u0026bull; Where is the air most dry?\u003C/p\u003E\r\n\u003Cp\u003E\u0026bull; Is there a relationship between air moisture and temperature?\u003C/p\u003E\r\n\u003Cp\u003E\u0026bull; Is there a relationship between air moisture and precipitation?\u003C/p\u003E\r\n\u003Cp\u003E\u0026bull; Is there a relationship between air moisture and where there is light (1 raindrop), moderate (2 raindrops) or heavy (3 raindrops) precipitation?\u003C/p\u003E",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "name": "",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003ELook at your classroom weather map for 3 pm. What relationships do you see between temperature, air moisture, and rain?\u003C/p\u003E",
+        "show_in_featured_question_report": true,
+        "type": "Embeddable::OpenResponse",
+        "ref_id": "208878-Embeddable::OpenResponse"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Activity 1: Virtual Storm: Exploring Precipitation, Air Moisture and Temperature (Continued)\\n\\n###Activity Breakdown\\n\\n**1. Set up Round 2 by leaving the Virtual Storm at 3 pm.** Explain to students that their new question is: \\\"Why is it raining in some locations and not others? Where does it rain?\\\"\\n\\n**2. Students explore and collect simulated air moisture content data in different spots at 3 pm to complete the weather map. **Air moisture is represented as a number between 1 (very dry air) and 10 (very moist air). Moisture content refers to how much water vapor is in the air. See discussion points below to help guide students through the process.\\n\\n**3. Class brainstorm of air moisture patterns.** See the Discussion Points for possible question prompts.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10235-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"},\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Air Moisture Content\\n* Temperature alone is not sufficient to fully answer the questions, \\\"Why is it raining in some locations and not others? Where does it rain?\\\" Another variable, such as air moisture content, is needed. \\n\\n* Briefly introduce the concept of air moisture content. Explain to the students that air contains microscopic water particles, called water vapor. Air moisture content refers to how much water vapor is in the air.\\n\\n* Reference possible students\u2019 past experiences with very moist air (e.g., in the shower or steam room) and/or very dry air (e.g., in a sauna or in the winter). The amount of water vapor is illustrated by an air moisture content number where 0 = very dry air and 10 = very moist air. Students may remember this concept from the data tables they received in Lesson 1.\\n\\n**Teacher Note**: The air moisture data students receive will already be abstracted, so no further abstraction is needed. It is expressed as a single number on a scale of 0 to 10, with 10 having the most water. This corresponds to mass of water per volume of air (i.e., g water/m\u003Csup\u003E3\u003C/sup\u003E air).\\n\\n###Exploration of Simulated Air Moisture Content at 3 pm. \\n* As research groups move around the room to different locations collecting air moisture data to complete the 3 pm weather map, encourage students to observe and share with each other where in the room the air is wettest, and where they guess it will likely be wettest before they check their instruments.\\n\\n###Air Moisture\\n* Lead a class brainstorm of air moisture patterns and have students record their ideas in their Science Notebooks.\\n* Encourage students to use the map on the wall as they describe observed patterns. \\n\\n* For a list of possible questions to guide your discussion, see below:\\n\\n * Where is the air wettest on the map?\\n\\n * Where is the air driest?\\n\\n * Do you see a relationship between air temperature and air moisture content?\\n\\n * Do you see a relationship between air moisture content and precipitation?\\n\\n**Teacher Note**: Students should come away with some notion of how temperature and air moisture seem to follow the same pattern (warm air = wet, cold air = dry), and that it only rains when the air is wet.\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10236-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "aspect_ratio_method": "MANUAL",
+        "authored_state": null,
+        "click_to_play": false,
+        "click_to_play_prompt": null,
+        "enable_learner_state": false,
+        "full_window": false,
+        "has_report_url": false,
+        "image_url": "",
+        "is_full_width": true,
+        "is_hidden": false,
+        "model_library_url": null,
+        "name": "AK-EP2 ",
+        "native_height": 752,
+        "native_width": 920,
+        "no_snapshots": false,
+        "show_delete_data_button": false,
+        "show_in_featured_question_report": true,
+        "url": "https://weather.concord.org/index.html?scenario=AK_EP2",
+        "type": "MwInteractive",
+        "ref_id": "96959-MwInteractive",
+        "linked_interactives": []
+      },
+      "section": "interactive_box"
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143695,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Quiz",
+    "position": 5,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EPlease answer this quiz of things learned in this lesson.\u003C/p\u003E",
+        "is_callout": true,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "148890-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"a) Any product of the evaporation of water vapor up into the atmosphere such as rain snow, sleet, or hail.\",\"correct\":false},{\"id\":\"2\",\"content\":\"b) The act of a liquid turning into a solid.\",\"correct\":false},{\"id\":\"3\",\"content\":\"c) The act of a solid turning into a gas.\",\"correct\":false},{\"content\":\"d) Any product of the condensation of water vapor in the atmosphere that falls to the ground due to gravity such as rain, snow, sleet, or hail.\",\"correct\":true,\"id\":\"75d5130a-6c7b-45f6-80cd-22d7b2eba0e8\"}],\"enableCheckAnswer\":true,\"prompt\":\"\u003Cp\u003EWhat is the definition of the word \u201cprecipitation\u201d?\u003C/p\u003E\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Multiple Choice",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "2017-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"a) How much rain is falling to the ground\",\"correct\":false},{\"id\":\"2\",\"content\":\"b) Amount or content of water in the air\",\"correct\":true},{\"id\":\"3\",\"content\":\"c) The temperature at which rain will start to fall\",\"correct\":false},{\"content\":\"d) The ratio of the temperature and the wind direction\",\"correct\":false,\"id\":\"65903405-cdf8-4532-a239-e913395a8b36\"}],\"enableCheckAnswer\":true,\"prompt\":\"\u003Cp\u003EWhat is the definition of \u201cair moisture\u201d?\u003C/p\u003E\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Multiple Choice",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "2018-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"a) It will rain when the air is very dry\",\"correct\":false},{\"id\":\"2\",\"content\":\"b) It will rain when the air is very wet\",\"correct\":false},{\"id\":\"3\",\"content\":\"c) It will rain when the air moisture is between 7 and 9\",\"correct\":true},{\"content\":\"d) It will rain when the air moisture is between 5 and 7 \",\"correct\":false,\"id\":\"019a4ccd-da14-4e5f-9692-fe79bddc7c0f\"}],\"enableCheckAnswer\":true,\"prompt\":\"\u003Cp\u003EWhat is the relationship between air moisture and precipitation?\u003C/p\u003E\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Multiple Choice",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "2021-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }]
+  }],
+  "plugins": [{
+    "description": "",
+    "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.concord.org/glossary-resources/upZ83jqTZAZuoQqRAfAb/glossary.json\"}",
+    "approved_script_label": "glossary",
+    "component_label": "glossary",
+    "approved_script": {
+      "name": "Glossary",
+      "url": "https://glossary-plugin.concord.org/version/v3.12.0/plugin.js",
+      "label": "glossary",
+      "description": "This plugin provides the glossary activity plugin",
+      "version": 3,
+      "json_url": "https://glossary-plugin.concord.org/version/v3.12.0/manifest.json",
+      "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
+    }
+  }],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}
