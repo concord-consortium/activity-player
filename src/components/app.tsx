@@ -14,7 +14,7 @@ import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { IPortalData, firebaseAppName } from "../portal-api";
-import { Activity, IEmbeddablePlugin, OfflineManifest, OfflineManifestActivity, Sequence } from "../types";
+import { Activity, IEmbeddablePlugin, OfflineManifest, OfflineManifestActivity, Sequence, ServiceWorkerStatus } from "../types";
 import { TrackOfflineResourceUrl, initStorage } from "../storage/storage-facade";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
@@ -30,9 +30,10 @@ import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
 import { IdleDetector } from "../utilities/idle-detector";
-import { messageSW, Workbox } from "workbox-window";
+import { Workbox } from "workbox-window/index";
 import { getOfflineManifest, getOfflineManifestAuthoringData, getOfflineManifestAuthoringId, OfflineManifestAuthoringData, mergeOfflineManifestWithAuthoringData, saveOfflineManifestToOfflineActivities, setOfflineManifestAuthoringData, setOfflineManifestAuthoringId } from "../offline-manifest-api";
 import { OfflineManifestLoadingModal } from "./offline-manifest-loading-modal";
+import { OfflineInstalling } from "./offline-installing";
 import { OfflineActivities } from "./offline-activities";
 import { OfflineNav } from "./offline-nav";
 import { OfflineManifestAuthoringNav } from "./offline-manifest-authoring-nav";
@@ -84,6 +85,7 @@ interface IState {
   offlineManifestAuthoringId?: string;
   offlineManifestAuthoringActivities: OfflineManifestActivity[];
   offlineManifestAuthoringCacheList: string[];
+  serviceWorkerStatus: ServiceWorkerStatus;
   showOfflineManifestInstallConfirmation: boolean;
   showEditUserName: boolean;
   networkConnected: boolean;
@@ -130,6 +132,7 @@ export class App extends React.PureComponent<IProps, IState> {
       showOfflineManifestInstallConfirmation: queryValue("confirmOfflineManifestInstall") === "true",
       offlineManifestAuthoringId,
       offlineManifestId,
+      serviceWorkerStatus: "unknown",
       showEditUserName: false,
       networkConnected: isNetworkConnected()
     };
@@ -155,30 +158,33 @@ export class App extends React.PureComponent<IProps, IState> {
 
     if (enableServiceWorker && ("serviceWorker" in navigator)) {
       const wb = new Workbox("service-worker.js");
-      let registration: ServiceWorkerRegistration | undefined;
-
-      // TODO: in future work this should pop a dialog using this recipe:
-      // https://developers.google.com/web/tools/workbox/guides/advanced-recipes#offer_a_page_reload_for_users
-      // for now just send a message to always skip waiting so we don't have to do it manually in the devtools
-      const alwaysSkipWaitingForNow = () => {
-        if (registration?.waiting) {
-          console.log("Sending SKIP_WAITING to service worker...");
-          messageSW(registration.waiting, {type: "SKIP_WAITING"});
-        }
-      };
 
       // these are all events defined for workbox-window (https://developers.google.com/web/tools/workbox/modules/workbox-window)
       wb.addEventListener("installed", (event) => {
         console.log("A new service worker has installed.");
       });
       wb.addEventListener("waiting", (event) => {
-        alwaysSkipWaitingForNow();
-      });
-      wb.addEventListener("externalwaiting" as any, (event) => {
-        alwaysSkipWaitingForNow();
+        // TODO: in future work we should show a dialog using this recipe:
+        // https://developers.google.com/web/tools/workbox/guides/advanced-recipes#offer_a_page_reload_for_users
+        // For now just send a message to skip waiting so we don't have to do it manually in the devtools
+        // This will trigger a 'controlling' event which we are listening for below and reload the page when
+        // we get it
+        //
+        // Note: with the current setup this will cause 2 reloads for each change while developing
+        // first webpack-dev-server will try to hot load the changes, it will find it can't do this
+        // (I'm not sure why yet), it will reload the page because the hot load failed, this reload
+        // will trigger a service worker update because each change to the activity-player
+        // triggers a new service-worker since it includes a pre-cache manifest that includes
+        // the javascript files. The service worker update will then trigger this
+        // waiting event which we "skip". The new service worker will activate and start
+        // controlling the page which triggers thre reload below.
+        wb.messageSkipWaiting();
       });
       wb.addEventListener("controlling", (event) => {
-        console.log("A new service worker has installed and is controlling.");
+        // If a new service worker is now controlling the page reload it to make sure
+        // all of our assets and resources are in sync with the new service worker
+        console.log("A new service worker has installed and is controlling, reloading the page.");
+        window.location.reload();
       });
       wb.addEventListener("activating", (event) => {
         console.log("A new service worker is activating.");
@@ -186,6 +192,8 @@ export class App extends React.PureComponent<IProps, IState> {
       wb.addEventListener("activated", (event) => {
         if (!event.isUpdate) {
           console.log("Service worker activated for the first time!");
+        } else {
+          console.log("Service worker activated with an update");
         }
       });
       wb.addEventListener("message", (event) => {
@@ -217,7 +225,59 @@ export class App extends React.PureComponent<IProps, IState> {
       });
 
       wb.register().then((_registration) => {
-        registration = _registration;
+        console.log("Workbox register() promise resolved", _registration);
+        if (navigator.serviceWorker.controller) {
+          // We are controlled
+          // This means there was an active service worker when the page was loaded
+          // There might also be a another service worker waiting to the replace
+          // the one currently controlling the page, but for our status monitoring
+          // code we don't care about this waiting service worker.
+          this.setState({serviceWorkerStatus: "controlling"});
+        } else {
+          // Otherwise, this could be the first
+          // time the page is loaded or the user could have used shift-reload
+          // in either case the service worker won't start controlling unless it
+          // calls clients.claim() and our service worker doesn't do that.
+          // The service worker will transition through the states of
+          // installing, installed, waiting, activating, active
+          // The workbox "waiting" event is different than the waiting state of
+          // a service worker. During an initial load workbox won't fire the
+          // waiting event even though the worker passes through the waiting state
+
+          // The _registration has fields for 'installing', 'waiting', and 'active'
+          // The workbox getSW() is supposed to abstract that so we don't need to check
+          // of those fields to find the service worker
+          wb.getSW().then((sw) => {
+            this.setState({serviceWorkerStatus: sw.state});
+
+            sw.addEventListener("statechange", () => {
+              this.setState({serviceWorkerStatus: sw.state});
+            });
+          });
+
+          // Workbox doesn't handle a shift-reload well. In that case
+          // getSW() never resolves even though there could be an active
+          // service worker. I filed a bug about this:
+          // https://github.com/GoogleChrome/workbox/issues/2788
+          // Likewise it doesn't handle a serviceWorker that started installing
+          // in a different tab and hasn't finished yet.
+          const regSW = _registration?.active ?? _registration?.installing;
+
+          if (regSW) {
+            this.setState({serviceWorkerStatus: regSW.state});
+            // This might conflict with the listener added in getSW()
+            // however currently getSW will only resolve if
+            // navigator.serviceWorker.controller or registration.waiting are set
+            // during the registration. At this point in the logic
+            // navigator.serviceWorker.controller is not set, and
+            // it is unlikely there would be a waiting worker at the same time
+            // as an active or installing worker immediately after the register call.
+            regSW.addEventListener("statechange", () => {
+              this.setState({serviceWorkerStatus: regSW.state});
+            });
+          }
+
+        }
       });
     }
   }
@@ -362,8 +422,13 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderContent = () => {
-    const {offlineManifest, loadingOfflineManifest, showSequenceIntro, sequence, username, offlineMode, showOfflineManifestInstallConfirmation, activity} = this.state;
-    if (offlineManifest && loadingOfflineManifest) {
+    const {offlineManifest, loadingOfflineManifest, showSequenceIntro, sequence,
+      username, offlineMode, showOfflineManifestInstallConfirmation, activity,
+      serviceWorkerStatus} = this.state;
+    if (offlineMode && serviceWorkerStatus !== "controlling") {
+      return <OfflineInstalling serviceWorkerStatus={serviceWorkerStatus}/>;
+    } else if (offlineManifest && loadingOfflineManifest) {
+      // Rendering this has a side effect of actually loading the manifest files
       return <OfflineManifestLoadingModal offlineManifest={offlineManifest} onClose={this.handleCloseLoadingOfflineManifest} showOfflineManifestInstallConfirmation={showOfflineManifestInstallConfirmation} />;
     } else if (offlineMode) {
       return activity ? this.renderActivity() : <OfflineActivities username={username} />;

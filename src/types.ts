@@ -284,6 +284,19 @@ export interface OfflineActivity extends OfflineManifestActivity {
   // TBD: add class info once that is figured out
 }
 
+// This is a combination of the standard service worker states:
+// installing, installed, activating, activated, redundant
+// https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker/state
+// With additional states for the initial "unknown" startup state and
+// a "controlling" state which isn't captured as a "state" by the service worker API
+// a "parsed" state is added to satisfy the ServiceWorker types,
+// this state is documented here: https://bitsofco.de/the-service-worker-lifecycle/
+// but it isn't lised in the MDN article above
+// The actual status is more complex than this because there can be external
+// service workers, but perhaps this simplified list
+// will be good enough for deciding what to do with the UI
+export type ServiceWorkerStatus = "unknown" | "parsed" | "installing" | "installed" | "activating" | "activated" | "redundant" | "controlling";
+
 export interface LogMessage {
   application: string;
   run_remote_endpoint?: string;
