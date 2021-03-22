@@ -4,6 +4,7 @@ import { fetchPortalData, IAnonymousPortalData, IPortalData } from "../portal-ap
 import { IExportableAnswerMetadata } from "../types";
 import { dexieStorage, IDexiePluginRecord, kOfflineAnswerSchemaVersion } from "./dexie-storage";
 import { refIdToAnswersQuestionId } from "../utilities/embeddable-utils";
+import { DataSyncTracker } from "./data-sync-tracker";
 
 export interface IInitStorageParams {
   name: FirebaseImp.FirebaseAppName,
@@ -107,7 +108,7 @@ export interface IStorageInterface {
   exportActivityToJSON: (activityId?: string) => Promise<ExportableActivity>,
   importStudentAnswersFromJSONFile: (studentAnswers: string, filename: string) => boolean,
   canSyncData(): boolean,
-  syncData(): void
+  syncData(): Promise<boolean>
 }
 
 class FireStoreStorageProvider implements IStorageInterface {
@@ -188,7 +189,7 @@ class FireStoreStorageProvider implements IStorageInterface {
 
   // We are FireStore, so our data is synced by default....
   canSyncData() { return false; }
-  syncData(){ return null; }
+  syncData() { return Promise.resolve(false); }
 
   signOut() {
     FirebaseImp.signOut();
@@ -400,48 +401,85 @@ class DexieStorageProvider implements IStorageInterface {
     return false;
   }
 
-  async syncData() {
+  ensureFirebaseConnection(): Promise<FireStoreStorageProvider> {
     const fsProvider = new FireStoreStorageProvider();
-    const portalData = this.portalData;
-    const appName = portalData?.database.appName ?? "report-service-dev";
-    if(portalData) {
-      try {
-        if(! this.haveFireStoreConnection) {
-          await fsProvider.initializeDB({ name: appName, preview: false, offline: false, portalData});
+    if(! this.haveFireStoreConnection) {
+      const portalData = this.portalData;
+      const appName = portalData?.database.appName ?? "report-service-dev";
+      return fsProvider
+        .initializeDB({name: appName, preview: false, offline: false, portalData})
+        .then(() =>  {
           this.haveFireStoreConnection = true;
-        }
-        // FIXME: this should be checking the resourceUrl of the rawPoralData
-        // we don't want to send answers for the wrong resource url to an assignment
-        const answers = await dexieStorage
-          .answers
-          .where({resource_url: _currentOfflineResourceUrl})
-          .toArray();
-        console.dir(answers);
-        for(const answer of answers) {
-          fsProvider.createOrUpdateAnswer(answer);
-        }
-        // TODO: We need to track dirty state, and clear the dirty flag here.
-        // Now do plugin states. No need really, so lets skip it for now.
-        // const pluginStates = await dexieStorage
-        // .pluginStates
-        // .toArray();
-
-        // for(const pState of pluginStates) {
-        //   const {pluginId, state} = pState;
-        //   if(state) {
-        //     fsProvider.setLearnerPluginState(pluginId, state);
-        //   }
-        // }
-      }
-
-      catch(e) {
-        console.error("Could not sync local indexDB to FireStore:");
-        console.error(e);
-        this.haveFireStoreConnection = false;
-        fsProvider.signOut();
-      }
+          return fsProvider;
+        })
+        .catch((e) => {
+          console.error(e);
+          console.warn("reinitialization of database?");
+          return Promise.resolve(fsProvider);
+        });
     }
+    return Promise.resolve(fsProvider);
   }
+
+  // This is hack to simulate requests taking some time.
+  fakeWaitingPromise(timeToResolve=5000) {
+    return new Promise((res) => window.setTimeout(()=> res(), timeToResolve));
+  }
+
+  syncData(): Promise<boolean> {
+    const portalData = this.portalData;
+    if(portalData) {
+      // DataSyncTracker will emit an event that tells plugins
+      // that we are online, and its time to save data:
+      const mySyncTracker = new DataSyncTracker(60 * 30, 5);
+
+      // Save student answers ...
+      const answerSavingPromise = this.ensureFirebaseConnection()
+        .then((fsProvider)  => {
+          dexieStorage.answers
+            .where({resource_url: _currentOfflineResourceUrl})
+            .toArray()
+            .then((answers) => {
+              console.dir(answers);
+              for(const answer of answers) {
+                // TODO: Look into FireStore Batch operations
+                fsProvider.createOrUpdateAnswer(answer);
+              }
+              return this.fakeWaitingPromise();
+            });
+      });
+
+      // Save learner plugin states ...
+      const learnerPluginStateSavingPromise = this.ensureFirebaseConnection()
+        .then((fsProvider)  => {
+          dexieStorage
+            .pluginStates
+            .toArray()
+            .then((pluginStates) => {
+              for(const pState of pluginStates) {
+                const {pluginId, state} = pState;
+                if(state) {
+                  // TODO: Look into FireStore Batch operations
+                  fsProvider.setLearnerPluginState(pluginId, state);
+                }
+              }
+              return this.fakeWaitingPromise();
+            });
+      });
+
+      mySyncTracker.addPromise(answerSavingPromise);
+      mySyncTracker.addPromise(learnerPluginStateSavingPromise);
+      return mySyncTracker.start()
+        .catch((e) => {
+          console.error("Could not sync local indexDB to FireStore:");
+          console.error(e);
+          this.haveFireStoreConnection = false;
+          return Promise.resolve(false);
+        });
+    }
+    return Promise.resolve(false);
+  }
+
 }
 
 let storageInstance: IStorageInterface;
