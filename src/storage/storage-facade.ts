@@ -393,10 +393,12 @@ class DexieStorageProvider implements IStorageInterface {
 
   canSyncData() {
     const portalToken = (this.portalData as IPortalData)?.portalJWT;
+    const correctActivity = this.portalData.resourceUrl === _currentOfflineResourceUrl;
     if(portalToken) {
       const { exp } = portalToken;
       const unixTimeStamp = Math.floor(Date.now()/1000);
-      return (unixTimeStamp < exp);
+      const tokenStillValid = unixTimeStamp < exp;
+      return tokenStillValid && correctActivity;
     }
     return false;
   }
