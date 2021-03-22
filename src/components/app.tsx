@@ -515,7 +515,7 @@ export class App extends React.PureComponent<IProps, IState> {
           />
         }
         { glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
-          <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} offlineMode={offlineMode} />
+          <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} offlineMode={offlineMode} pluginsLoaded={pluginsLoaded}  />
         }
       </React.Fragment>
     );

@@ -26,7 +26,7 @@ describe("Embeddable Sidetip component", () => {
       "type": "Embeddable::EmbeddablePlugin",
       "ref_id": "2991-Embeddable::EmbeddablePlugin"
     };
-    const wrapper = shallow(<EmbeddablePluginSideTip embeddable={embeddable} offlineMode={false} />);
+    const wrapper = shallow(<EmbeddablePluginSideTip embeddable={embeddable} offlineMode={false} pluginsLoaded={true} />);
     expect(wrapper.find('[data-cy="embeddable-plugin-sidetip"]').length).toBe(1);
   });
 });
