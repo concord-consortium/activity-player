@@ -432,12 +432,12 @@ class DexieStorageProvider implements IStorageInterface {
       // DataSyncTracker will emit an event that tells plugins
       // that we are online, and its time to save data:
       const mySyncTracker = new DataSyncTracker(60 * 30, 5);
-
+      const portalResourceUrl = portalData.resourceUrl;
       // Save student answers ...
       const answerSavingPromise = this.ensureFirebaseConnection()
         .then((fsProvider)  => {
           dexieStorage.answers
-            .where({resource_url: _currentOfflineResourceUrl})
+            .where({resource_url: portalResourceUrl})
             .toArray()
             .then((answers) => {
               console.dir(answers);
