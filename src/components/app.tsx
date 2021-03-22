@@ -14,7 +14,7 @@ import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { IPortalData, firebaseAppName } from "../portal-api";
-import { Activity, IEmbeddablePlugin, OfflineManifest, OfflineManifestActivity, Sequence } from "../types";
+import { Activity, IEmbeddablePlugin, OfflineManifest, OfflineManifestActivity, Sequence, ServiceWorkerStatus } from "../types";
 import { TrackOfflineResourceUrl, initStorage } from "../storage/storage-facade";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
@@ -33,6 +33,7 @@ import { IdleDetector } from "../utilities/idle-detector";
 import { Workbox } from "workbox-window/index";
 import { getOfflineManifest, getOfflineManifestAuthoringData, getOfflineManifestAuthoringId, OfflineManifestAuthoringData, mergeOfflineManifestWithAuthoringData, saveOfflineManifestToOfflineActivities, setOfflineManifestAuthoringData, setOfflineManifestAuthoringId } from "../offline-manifest-api";
 import { OfflineManifestLoadingModal } from "./offline-manifest-loading-modal";
+import { OfflineInstalling } from "./offline-installing";
 import { OfflineActivities } from "./offline-activities";
 import { OfflineNav } from "./offline-nav";
 import { OfflineManifestAuthoringNav } from "./offline-manifest-authoring-nav";
@@ -54,19 +55,6 @@ const kTimeout = parseInt(queryValue("__timeout") || `${5 * 60 * 1000}`, 10); //
 const kLearnPortalUrl = "https://learn.concord.org";
 
 export type ErrorType = "auth" | "network" | "timeout";
-
-// This is a combination of the standard service worker states:
-// installing, installed, activating, activated, redundant
-// https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker/state
-// With additional states for the initial "unknown" startup state and
-// a "controlling" state which isn't captured as a "state" by the service worker API
-// a "parsed" state is added to satisfy the ServiceWorker types,
-// this state is documented here: https://bitsofco.de/the-service-worker-lifecycle/
-// but it isn't lised in the MDN article above
-// The actual status is more complex than this because there can be external
-// service workers, but perhaps this simplified list
-// will be good enough for deciding what to do with the UI
-type ServiceWorkerStatus = "unknown" | "parsed" | "installing" | "installed" | "activating" | "activated" | "redundant" | "controlling";
 
 interface IncompleteQuestion {
   refId: string;
@@ -438,7 +426,7 @@ export class App extends React.PureComponent<IProps, IState> {
       username, offlineMode, showOfflineManifestInstallConfirmation, activity,
       serviceWorkerStatus} = this.state;
     if (offlineMode && serviceWorkerStatus !== "controlling") {
-      return <div>Service Worker Status: {serviceWorkerStatus}</div>;
+      return <OfflineInstalling serviceWorkerStatus={serviceWorkerStatus}/>;
     } else if (offlineManifest && loadingOfflineManifest) {
       // Rendering this has a side effect of actually loading the manifest files
       return <OfflineManifestLoadingModal offlineManifest={offlineManifest} onClose={this.handleCloseLoadingOfflineManifest} showOfflineManifestInstallConfirmation={showOfflineManifestInstallConfirmation} />;
