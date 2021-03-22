@@ -98,8 +98,7 @@
     }
   ],
   "cacheList": [
-    "http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css",
-    "http://localhost:11002/question-interactives/version/v0.6.1/image/",
+    "https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css",
     "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/Air%20Moisture.jpg",
     "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alex%206.png",
     "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alex1-1.png",
