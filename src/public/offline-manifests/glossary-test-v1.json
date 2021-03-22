@@ -1,0 +1,18 @@
+{
+  "name": "Glossary Test",
+  "activities": [
+    {
+      "name": "Glossary Test",
+      "resourceUrl": "https://authoring.staging.concord.org/activities/20959",
+      "contentUrl": "offline-activities/glossary-test-v1.json"
+    }
+  ],
+  "cacheList": [
+    "http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css",
+    "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap",
+    "https://fonts.gstatic.com/s/lato/v17/S6u9w4BMUTPHh50XSwiPGQ.woff2",
+    "https://token-service-files.s3.amazonaws.com/glossary-plugin/tbi7A3rcMmkdxZA4kHgW/glossary.json",
+    "models-resources/glossary-plugin/branch/176579659-add-offline-saves/manifest.json",
+    "models-resources/glossary-plugin/branch/176579659-add-offline-saves/plugin.js"
+  ]
+}

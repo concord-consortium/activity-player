@@ -11,6 +11,7 @@ import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
 import { ReportBackupOptions } from "./report-backup-options";
 import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
+import { CompletionReportMyWork } from "./completion-report-my-work";
 
 import "./completion-page-content.scss";
 
@@ -28,8 +29,8 @@ interface IProps {
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
-  const { activity, activityName, onPageChange, showStudentReport, 
-    showReportBackupOptions, sequence, activityIndex, onActivityChange, 
+  const { activity, activityName, onPageChange, showStudentReport,
+    showReportBackupOptions, sequence, activityIndex, onActivityChange,
     onShowSequence } = props;
 
   const [answers, setAnswers] = useState<any>();
@@ -108,7 +109,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   if (sequence) {
     const sequenceComplete = sequenceProgress(sequence);
     if (isLastActivityInSequence) {
-      progressText = sequenceComplete && isActivityComplete 
+      progressText = sequenceComplete && isActivityComplete
                        ? completedActivityProgressText + ` You have completed all your work for this module!`
                        : isActivityComplete
                            ? completedActivityProgressText
@@ -140,6 +141,18 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
             <div className="progress-text" data-cy="progress-text">
               {progressText}
             </div>
+
+            { // TODO: Put in Ethan's buttons, connect with `handleShowAnswers`
+              // <CompletionExportAnswers />
+              // <CompletionReportMyWork />
+              // {showStudentReport && <button className="button" onClick={handleShowAnswers}>Show My Work</button>}
+            }
+
+            {
+              // just here so we can force showing the report my work button to test the glossary
+            }
+            <CompletionReportMyWork />
+
           </div>
           {sequence && !isLastActivityInSequence &&
             <div className="next-step" data-cy="next-step">
@@ -166,7 +179,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
             <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
             <SummaryTable questionsStatus={progress.questionsStatus} />
             {showStudentReport && <button className="button show-my-work" onClick={handleShowAnswers}><IconCompletion width={24} height={24} />Show My Work</button>}
-            {(!sequence || isLastActivityInSequence) && 
+            {(!sequence || isLastActivityInSequence) &&
               <div className="exit-button">
                 <span>or</span>
                 <button className="textButton" onClick={handleExit}>Exit</button>

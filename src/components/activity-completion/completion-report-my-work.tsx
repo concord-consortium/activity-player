@@ -1,4 +1,5 @@
 import React from "react";
+import { emitPluginSyncRequest, IPluginSyncUpdate } from "../../lara-plugin/events";
 import { getStorage } from "../../storage/storage-facade";
 
 import "./completion-report-my-work.scss";
@@ -22,9 +23,19 @@ export class CompletionReportMyWork extends React.PureComponent<IProps, IState> 
     // this.setState({ activityJSON: JSON.stringify(activityJSONComplete), filename });
   }
 
+  private justAStubToWrapSyncDataToBeReplacedWithBetterCode () {
+    // getStorage().syncData();
+    emitPluginSyncRequest({
+      maxUpdateCallbackInterval: 5000,
+      updateCallback: (update: IPluginSyncUpdate) => {
+        console.log("PLUGIN SYNC UPDATE", update);
+      }
+    });
+  }
+
   render() {
     const storage = getStorage();
-    const className = storage.canSyncData() ? "enabled" : "disabled";
+    const className = "enabled"; // storage.canSyncData() ? "enabled" : "disabled";
     const clickAction = storage.canSyncData()
       ? () => storage.syncData()
       : () => null;
@@ -32,7 +43,7 @@ export class CompletionReportMyWork extends React.PureComponent<IProps, IState> 
       <div className={"completion-report-my-work"}>
         <button
           className={className}
-          onClick={clickAction}>
+          onClick={this.justAStubToWrapSyncDataToBeReplacedWithBetterCode}>
           Report My Work
         </button>
         <div className="report-help">

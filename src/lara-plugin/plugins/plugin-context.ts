@@ -213,7 +213,8 @@ export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptio
     getClassInfo: () => getClassInfo(options.classInfoUrl),
     getFirebaseJwt: (appName: string) => getFirebaseJwtFromPortal(appName),
     wrappedEmbeddable: options.wrappedEmbeddable ? generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
-    log: (logData: string | ILogData) => log(options, logData)
+    log: (logData: string | ILogData) => log(options, logData),
+    offlineMode: options.offlineMode
   };
   return context;
 };
