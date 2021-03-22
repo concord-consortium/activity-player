@@ -271,9 +271,24 @@ export class App extends React.PureComponent<IProps, IState> {
           // getSW() never resolves even though there could be an active
           // service worker. I filed a bug about this:
           // https://github.com/GoogleChrome/workbox/issues/2788
-          if (_registration?.active) {
-            this.setState({serviceWorkerStatus: _registration.active.state});
+          // Likewise it doesn't handle a serviceWorker that started installing
+          // in a different tab and hasn't finished yet.
+          const regSW = _registration?.active ?? _registration?.installing;
+
+          if (regSW) {
+            this.setState({serviceWorkerStatus: regSW.state});
+            // This might conflict with the listener added in getSW()
+            // however currently getSW will only resolve if
+            // navigator.serviceWorker.controller or registration.waiting are set
+            // during the registration. At this point in the logic
+            // navigator.serviceWorker.controller is not set, and
+            // it is unlikely there would be a waiting worker at the same time
+            // as an active or installing worker immediately after the register call.
+            regSW.addEventListener("statechange", () => {
+              this.setState({serviceWorkerStatus: regSW.state});
+            });
           }
+
         }
       });
     }
