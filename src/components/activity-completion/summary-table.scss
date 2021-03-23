@@ -7,10 +7,6 @@
   margin-bottom: 20px;
   width: 100%;
 
-  th {
-    background: $cc-teal-dark1;
-    color: white;
-  }
   th, td {
     border-bottom: solid 1px $cc-teal-dark1;
     border-left: solid 1px $cc-teal-dark1;
@@ -42,6 +38,11 @@
         fill: $cc-orange-dark1;
       }
     }
+  }
+  th {
+    background: $cc-teal-dark1;
+    color: white;
+    text-overflow: initial;
   }
   tr:nth-child(even) {
     background: $cc-teal-light7;
