@@ -327,7 +327,7 @@ export class App extends React.PureComponent<IProps, IState> {
         const contentUrl = queryValue("contentUrl") || activityPath;
         activity = await getActivityDefinition(contentUrl);
         if (offlineManifestAuthoringId) {
-          this.addActivityToOfflineManifest(offlineManifestAuthoringId, activity, resourceUrl, contentUrl);
+          await this.addActivityToOfflineManifest(offlineManifestAuthoringId, activity, resourceUrl, contentUrl);
         }
       }
 
@@ -721,14 +721,16 @@ export class App extends React.PureComponent<IProps, IState> {
     this.setState({loadingOfflineManifest: false});
   }
 
-  private addActivityToOfflineManifest = (offlineManifestAuthoringId: string, activity: Activity,
+  private addActivityToOfflineManifest = async (offlineManifestAuthoringId: string, activity: Activity,
     resourceUrl: string, contentUrl: string) => {
     if (offlineManifestAuthoringId && isNotSampleActivityUrl(contentUrl)) {
+      const urls = await getAllUrlsInActivity(activity);
+
       this.setState(prevState => {
         let {offlineManifestAuthoringActivities} = prevState;
         const {offlineManifestAuthoringCacheList} = prevState;
 
-        getAllUrlsInActivity(activity).forEach(urlInActivity => {
+        urls.forEach(urlInActivity => {
           if (offlineManifestAuthoringCacheList.indexOf(urlInActivity) === -1) {
             offlineManifestAuthoringCacheList.push(urlInActivity);
           }
@@ -745,15 +747,6 @@ export class App extends React.PureComponent<IProps, IState> {
 
         return {offlineManifestAuthoringActivities, offlineManifestAuthoringCacheList};
       });
-    }
-  }
-
-  private handleSelectOfflineActivity = (selectedActivity: Activity, resourceUrl: string, contentUrl: string) => {
-    this.setState({ activity: selectedActivity });
-    this.trackOfflineResourceUrl(resourceUrl);
-    if (this.state.offlineManifestAuthoringId) {
-      this.addActivityToOfflineManifest(this.state.offlineManifestAuthoringId, selectedActivity,
-        resourceUrl, contentUrl);
     }
   }
 
