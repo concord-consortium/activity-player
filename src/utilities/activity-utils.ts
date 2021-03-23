@@ -232,6 +232,7 @@ export const getAllUrlsInActivity = async (activity: Activity, urls: string[] = 
       if (authorData?.s3Url) {
         const response = await fetch(authorData.s3Url);
         const glossaryJson = await response.json();
+        urls.push(authorData.s3Url);
         addExternalUrls(glossaryJson);
       }
     } catch (e) {

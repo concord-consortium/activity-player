@@ -167,8 +167,8 @@ describe("Activity utility functions", () => {
         {
           word: "test",
           definition: "this is a test",
-          image: "https://token-service-files.s3.amazonaws.com/glossary-plugin/ZWjh4IciSnBkWfu4gODs/5cacbe00-1c44-11ea-90e3-39c0ba8d079c-sticky note.svg",
-          zoomImage: "https://token-service-files.s3.amazonaws.com/glossary-plugin/ZWjh4IciSnBkWfu4gODs/5d298f20-1c44-11ea-90e3-39c0ba8d079c-IMG_8603.jpeg"
+          image: "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/5cacbe00-1c44-11ea-90e3-39c0ba8d079c-sticky note.svg",
+          zoomImage: "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/5d298f20-1c44-11ea-90e3-39c0ba8d079c-IMG_8603.jpeg"
         }
       ]
     }));
@@ -181,8 +181,9 @@ describe("Activity utility functions", () => {
       "https://example.com/manifest.json",
       "https://glossary-plugin.concord.org/plugin.js",
       "https://glossary-plugin.concord.org/manifest.json",
-      "https://token-service-files.s3.amazonaws.com/glossary-plugin/ZWjh4IciSnBkWfu4gODs/5cacbe00-1c44-11ea-90e3-39c0ba8d079c-sticky note.svg",
-      "https://token-service-files.s3.amazonaws.com/glossary-plugin/ZWjh4IciSnBkWfu4gODs/5d298f20-1c44-11ea-90e3-39c0ba8d079c-IMG_8603.jpeg"
+      "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/glossary.json",
+      "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/5cacbe00-1c44-11ea-90e3-39c0ba8d079c-sticky note.svg",
+      "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/5d298f20-1c44-11ea-90e3-39c0ba8d079c-IMG_8603.jpeg"
     ]);
   });
 });
