@@ -28,7 +28,7 @@ interface IProps {
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
-  const { activity, activityName, onPageChange, showStudentReport, 
+  const { activity, activityName, onPageChange, showStudentReport,
     showReportBackupOptions, sequence, activityIndex, onActivityChange, 
     onShowSequence } = props;
 
@@ -89,7 +89,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
       setAnswers(answerMetas);
     });
   }, []);
-
+  const reportButtonEnabled = getStorage().canSyncData() && showStudentReport;
   const progress = activityProgress(activity);
   const isActivityComplete = progress.numAnswers === progress.numQuestions;
   const activityTitle = (activityName !== "") || (activityName == null) ? activityName : "the activity";
@@ -165,10 +165,10 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           <div className={exitContainerClass} data-cy="exit-container">
             <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
             <SummaryTable questionsStatus={progress.questionsStatus} />
-            {showStudentReport && <button className="button show-my-work" onClick={handleShowAnswers}><IconCompletion width={24} height={24} />Show My Work</button>}
-            {(!sequence || isLastActivityInSequence) && 
+            { reportButtonEnabled && <button className="button show-my-work" onClick={handleShowAnswers}><IconCompletion width={24} height={24} />Show My Work</button>}
+            {(!sequence || isLastActivityInSequence) &&
               <div className="exit-button">
-                <span>or</span>
+                { reportButtonEnabled && <span>or</span> }
                 <button className="textButton" onClick={handleExit}>Exit</button>
               </div>
             }
