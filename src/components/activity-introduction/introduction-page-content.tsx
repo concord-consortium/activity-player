@@ -15,7 +15,6 @@ export const IntroductionPageContent: React.FC<IProps> = (props) => {
   const { activity, onPageChange } = props;
   return (
     <div className="intro-content" data-cy="intro-page-content">
-      <ImportAnswers />
       <div className="introduction">
         <ActivitySummary
           activityName={activity.name}
