@@ -21,12 +21,12 @@ const precacheEntries = [
 
 precacheAndRoute(precacheEntries, {
   // Ignore most URL parameters. We want to ignore the runKey on index.html
-  // as well as other paramters on index.html
+  // as well as other parameters on index.html
   // The exception are the params needed by the lato request above
-  // This approach of not ignoring family and dispaly is hacking.
+  // This approach of not ignoring family and display is hacking.
   // It'd be better if we just ignored all params on index.html and let other
   // params go through. We are about to change this precaching code, so it
-  // it doesn't seem worth the effort to find a better way
+  // doesn't seem worth the effort to find a better way
   ignoreURLParametersMatching: [/(?!(family|display))/]
 });
 
