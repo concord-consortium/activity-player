@@ -4,6 +4,7 @@ import { precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { StaleWhileRevalidate } from "workbox-strategies";
 import { CacheableResponsePlugin } from "workbox-cacheable-response";
+import { RangeRequestsPlugin } from "workbox-range-requests";
 
 const ignoredGets: RegExp[] = [
   /\/sockjs-node\/info/,             // webpack-dev-server
@@ -12,9 +13,21 @@ const ignoredGets: RegExp[] = [
 ];
 
 // InjectManifest will add in the precache manifest here:
-precacheAndRoute((self as any).__WB_MANIFEST, {
-  // Ignore all URL parameters (such as runKey on index.html)
-  ignoreURLParametersMatching: [/.*/]
+const precacheEntries = [
+    // Add URLs that are referenced directly in index.html
+    {url: "https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css", revision: null},
+    {url: "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap", revision: null},
+  ].concat((self as any).__WB_MANIFEST);
+
+precacheAndRoute(precacheEntries, {
+  // Ignore most URL parameters. We want to ignore the runKey on index.html
+  // as well as other paramters on index.html
+  // The exception are the params needed by the lato request above
+  // This approach of not ignoring family and dispaly is hacking.
+  // It'd be better if we just ignored all params on index.html and let other
+  // params go through. We are about to change this precaching code, so it
+  // it doesn't seem worth the effort to find a better way
+  ignoreURLParametersMatching: [/(?!(family|display))/]
 });
 
 // Cache all get requests
@@ -39,6 +52,8 @@ registerRoute(
       new CacheableResponsePlugin({
         statuses: [0, 200],
       }),
+      // handle range requests
+      new RangeRequestsPlugin(),
     ],
   }),
 );
