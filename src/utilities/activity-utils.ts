@@ -168,13 +168,13 @@ export const getPagePositionFromQueryValue = (activity: Activity, pageQueryValue
   return Math.max(0, Math.min((parseInt(pageQueryValue, 10) || 0), activity.pages.length));
 };
 
-export const walkActivity = (activityNode: any, stringCallback: (s: string) => string) => {
+export const walkObject = (activityNode: any, stringCallback: (s: string) => string) => {
   if (!activityNode) {
     return;
   }
   if (activityNode instanceof Array) {
     for (const i in activityNode) {
-      walkActivity(activityNode[i], stringCallback);
+      walkObject(activityNode[i], stringCallback);
     }
   } else if (typeof activityNode === "object" ) {
     Object.keys(activityNode).forEach(key => {
@@ -183,7 +183,7 @@ export const walkActivity = (activityNode: any, stringCallback: (s: string) => s
           activityNode[key] = stringCallback(activityNode[key]);
           break;
         case "object":
-          walkActivity(activityNode[key], stringCallback);
+          walkObject(activityNode[key], stringCallback);
           break;
       }
     });
@@ -198,7 +198,7 @@ export const rewriteModelsResourcesUrls = (activity: Activity) => {
     return activity;
   }
 
-  walkActivity(activity, (s) => {
+  walkObject(activity, (s) => {
     return s
       .replace(/https?:\/\/models-resources\.concord\.org/, "models-resources")
       .replace(/https?:\/\/models-resources\.s3\.amazonaws\.com/, "models-resources")
@@ -208,14 +208,41 @@ export const rewriteModelsResourcesUrls = (activity: Activity) => {
   return activity;
 };
 
-export const getAllUrlsInActivity = (activity: Activity, urls: string[] = []) => {
-  walkActivity(activity, (s) => {
-    if (/^(\s*https?:\/\/|models-resources)/.test(s)) {
-      urls.push(s);
+export const isExternalOrModelsResourcesUrl = (url: string) => /^(\s*https?:\/\/|models-resources)/.test(url);
+
+export const removeDuplicateUrls = (urls: string[]) => urls.filter((url, index) => urls.indexOf(url) === index);
+
+export const getAllUrlsInActivity = async (activity: Activity, urls: string[] = []) => {
+  const addExternalUrls = (object: any) => {
+    walkObject(object, (s) => {
+      if (isExternalOrModelsResourcesUrl(s)) {
+        urls.push(s);
+      }
+      return s;
+    });
+  };
+
+  addExternalUrls(activity);
+
+  // cache the glossary urls
+  const glossaryPlugin = activity.plugins.find(plugin => plugin.approved_script_label === "glossary");
+  if (glossaryPlugin) {
+    try {
+      const authorData = JSON.parse(glossaryPlugin.author_data);
+      if (authorData?.s3Url) {
+        const response = await fetch(authorData.s3Url);
+        const glossaryJson = await response.json();
+        urls.push(authorData.s3Url);
+        addExternalUrls(glossaryJson);
+      }
+    } catch (e) {
+      // tslint:disable-next-line:no-console
+      console.error("Error caching glossary urls:", e);
     }
-    return s;
-  });
-  return urls;
+  }
+
+  // remove duplicate urls
+  return removeDuplicateUrls(urls);
 };
 
 export const orderedQuestionsOnPage = (page:Page) => {

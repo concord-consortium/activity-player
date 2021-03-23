@@ -1,12 +1,18 @@
+import fetch from "jest-fetch-mock";
+
 import { Activity } from "../types";
 import { isQuestion, isEmbeddableSectionHidden, getVisibleEmbeddablesOnPage, VisibleEmbeddables,
-  EmbeddableSections, getPageSectionQuestionCount, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isNotSampleActivityUrl, orderedQuestionsOnPage } from "./activity-utils";
+  EmbeddableSections, getPageSectionQuestionCount, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isNotSampleActivityUrl, orderedQuestionsOnPage, isExternalOrModelsResourcesUrl, getAllUrlsInActivity, removeDuplicateUrls } from "./activity-utils";
 import _activityHidden from "../data/sample-activity-hidden-content.json";
 import _activity from "../data/sample-activity-multiple-layout-types.json";
+import _glossaryActivity from "../data/sample-activity-glossary-plugin.json";
 import { DefaultTestActivity } from "../test-utils/model-for-tests";
+
+(window as any).fetch = fetch;
 
 const activityHidden = _activityHidden as unknown as Activity;
 const activity = _activity as unknown as Activity;
+const glossaryActivity = _glossaryActivity as unknown as Activity;
 
 describe("Activity utility functions", () => {
   it("determines if embeddable is a question", () => {
@@ -117,5 +123,67 @@ describe("Activity utility functions", () => {
     expect(orderedQuestionsOnPage(activityHidden.pages[1]).length).toEqual(0);
     expect(orderedQuestionsOnPage(activityHidden.pages[2]).length).toEqual(2);
     expect(orderedQuestionsOnPage(activityHidden.pages[3]).length).toEqual(0);
+  });
+
+  it("determines if string is an external or models resources url", () => {
+    expect(isExternalOrModelsResourcesUrl("http://example.com")).toBe(true);
+    expect(isExternalOrModelsResourcesUrl("https://example.com")).toBe(true);
+    expect(isExternalOrModelsResourcesUrl("models-resources/foo")).toBe(true);  // models-resources is special as it is proxied
+    expect(isExternalOrModelsResourcesUrl("bar")).toBe(false);
+  });
+
+  it("removes duplicate urls", () => {
+    expect(removeDuplicateUrls([
+      "http://example.com/",
+      "http://example.com/foo",
+      "http://example.com/bar",
+      "http://example.com/",
+      "http://example.com/foo"
+    ])).toEqual([
+      "http://example.com/",
+      "http://example.com/foo",
+      "http://example.com/bar"
+    ]);
+  });
+
+  it("gets all urls in an activity including glossary urls", async () => {
+
+    // first test an activity with no glossary
+    let urls = await getAllUrlsInActivity(activity);
+    expect(urls).toEqual([
+      "https://upload.wikimedia.org/wikipedia/commons/c/c1/Six_weeks_old_cat_%28aka%29.jpg",
+      "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+      "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+      "https://connected-bio-spaces.concord.org/",
+      "https://www.wikipedia.org/"
+    ]);
+
+    // mock the glossary json
+    fetch.mockResponse(JSON.stringify({
+      askForUserDefinition: true,
+      autoShowMediaInPopup: false,
+      showSideBar: false,
+      definitions: [
+        {
+          word: "test",
+          definition: "this is a test",
+          image: "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/5cacbe00-1c44-11ea-90e3-39c0ba8d079c-sticky note.svg",
+          zoomImage: "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/5d298f20-1c44-11ea-90e3-39c0ba8d079c-IMG_8603.jpeg"
+        }
+      ]
+    }));
+
+    // then test an activity with a glossary
+    urls = await getAllUrlsInActivity(glossaryActivity);
+    expect(urls).toEqual([
+      "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+      "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+      "https://example.com/manifest.json",
+      "https://glossary-plugin.concord.org/plugin.js",
+      "https://glossary-plugin.concord.org/manifest.json",
+      "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/glossary.json",
+      "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/5cacbe00-1c44-11ea-90e3-39c0ba8d079c-sticky note.svg",
+      "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/5d298f20-1c44-11ea-90e3-39c0ba8d079c-IMG_8603.jpeg"
+    ]);
   });
 });
