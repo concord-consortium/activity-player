@@ -185,7 +185,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               }
             {(!sequence || isLastActivityInSequence) &&
               <div className="exit-button">
-                { showStudentReportButton && <span>or</span> }
+                <span>or</span>
                 <button className="textButton" onClick={handleExit}>Exit</button>
               </div>
             }
