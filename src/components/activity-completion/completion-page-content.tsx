@@ -167,13 +167,22 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           <div className={exitContainerClass} data-cy="exit-container">
             <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
             <SummaryTable questionsStatus={progress.questionsStatus} />
-              { showStudentReportButton &&
-                  <button
-                    className="button show-my-work"
-                    onClick={handleShowAnswers}>
-                      <IconCompletion width={24} height={24} />
-                      Show My Work
-                  </button>}
+              { showStudentReportButton
+                  ?
+                    <button
+                      className="button show-my-work"
+                      onClick={handleShowAnswers}>
+                        <IconCompletion width={24} height={24} />
+                        Show My Work
+                    </button>
+                  :
+                    <button
+                      className="button show-my-work disabled"
+                      disabled={true}>
+                        <IconCompletion width={24} height={24} />
+                        Show My Work
+                    </button>
+              }
             {(!sequence || isLastActivityInSequence) &&
               <div className="exit-button">
                 { showStudentReportButton && <span>or</span> }
