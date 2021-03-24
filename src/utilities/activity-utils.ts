@@ -1,6 +1,7 @@
 import { Page, Activity, EmbeddableWrapper } from "../types";
 import { SidebarConfiguration } from "../components/page-sidebar/sidebar-wrapper";
 import { isQuestion as isEmbeddableQuestion } from "./embeddable-utils";
+import { runningInCypress } from "./cypress";
 
 export enum ActivityLayouts {
   MultiplePages = 0,
@@ -42,6 +43,9 @@ export const isEmbeddableSectionHidden = (page: Page, section: string | null) =>
 };
 
 export const getVisibleEmbeddablesOnPage = (page: Page) => {
+  if(page.is_hidden) {
+    return { interactiveBox: [], headerBlock: [], infoAssessment: [] };
+  }
   const headerEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Introduction)
     ? []
     : page.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction && isVisibleEmbeddable(e));
@@ -163,3 +167,96 @@ export const getPagePositionFromQueryValue = (activity: Activity, pageQueryValue
   // note that page is 1 based for the actual pages in the activity.
   return Math.max(0, Math.min((parseInt(pageQueryValue, 10) || 0), activity.pages.length));
 };
+
+export const walkObject = (activityNode: any, stringCallback: (s: string, key?: string) => string) => {
+  if (!activityNode) {
+    return;
+  }
+  if (activityNode instanceof Array) {
+    for (const i in activityNode) {
+      walkObject(activityNode[i], stringCallback);
+    }
+  } else if (typeof activityNode === "object" ) {
+    Object.keys(activityNode).forEach(key => {
+      switch (typeof activityNode[key]) {
+        case "string":
+          activityNode[key] = stringCallback(activityNode[key], key);
+          break;
+        case "object":
+          walkObject(activityNode[key], stringCallback);
+          break;
+      }
+    });
+  } else if (typeof activityNode === "string") {
+    activityNode = stringCallback(activityNode);
+  }
+};
+
+export const rewriteModelsResourcesUrls = (activity: Activity) => {
+  // do not rewrite urls when running in Cypress, otherwise the sample activity iframes do not load causing timeouts
+  if (runningInCypress) {
+    return activity;
+  }
+
+  walkObject(activity, (s) => {
+    return s
+      .replace(/https?:\/\/models-resources\.concord\.org/, "models-resources")
+      .replace(/https?:\/\/models-resources\.s3\.amazonaws\.com/, "models-resources")
+      .replace(/https?:\/\/((.+)-plugin)\.concord\.org/, "models-resources/$1");
+
+  });
+  return activity;
+};
+
+export const isExternalOrModelsResourcesUrl = (url: string) => /^(\s*https?:\/\/|models-resources)/.test(url);
+
+export const removeDuplicateUrls = (urls: string[]) => urls.filter((url, index) => urls.indexOf(url) === index);
+
+export const getAllUrlsInActivity = async (activity: Activity, urls: string[] = []) => {
+  const addExternalUrls = (object: any) => {
+    walkObject(object, (s, key) => {
+      if (isExternalOrModelsResourcesUrl(s)) {
+        urls.push(s);
+      }
+      // add all external urls in the stringified author data json
+      if (key === "author_data") {
+        try {
+          const authorData = JSON.parse(s);
+          addExternalUrls(authorData);
+        } catch (e) {} // eslint-disable-line no-empty
+      }
+      return s;
+    });
+  };
+
+  addExternalUrls(activity);
+
+  // cache the glossary urls
+  const glossaryPlugin = activity.plugins.find(plugin => plugin.approved_script_label === "glossary");
+  if (glossaryPlugin) {
+    try {
+      const authorData = JSON.parse(glossaryPlugin.author_data);
+      if (authorData?.s3Url) {
+        const response = await fetch(authorData.s3Url);
+        const glossaryJson = await response.json();
+        addExternalUrls(glossaryJson);
+      }
+    } catch (e) {
+      // tslint:disable-next-line:no-console
+      console.error("Error caching glossary urls:", e);
+    }
+  }
+
+  // remove duplicate urls
+  return removeDuplicateUrls(urls);
+};
+
+export const orderedQuestionsOnPage = (page:Page) => {
+  const embeddables = getVisibleEmbeddablesOnPage(page);
+  let questions = embeddables.headerBlock.filter( (e) => isQuestion(e));
+  questions = questions.concat(embeddables.infoAssessment.filter( (e) => isQuestion(e)));
+  questions = questions.concat(embeddables.interactiveBox.filter( (e) => isQuestion(e)));
+  return questions;
+};
+
+export const isNotSampleActivityUrl = (url: string) => /https?:\/\//.test(url) || /^offline-activities\//.test(url);

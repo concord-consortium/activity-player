@@ -1,0 +1,17 @@
+.offline-activities {
+
+  .offline-content {
+    padding: 20px;
+    background-color: white;
+
+    th {
+      text-align: left;
+    }
+
+    .activity {
+      color: #00f;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  }
+}

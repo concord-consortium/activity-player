@@ -1,6 +1,6 @@
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { Optional } from "utility-types";
-import { getCachedLearnerPluginState, getLearnerPluginState, getPortalData } from "../firebase-db";
+import { getStorage, getCachedLearnerPluginState} from "../storage/storage-facade";
 import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
 import { Activity, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
@@ -98,10 +98,11 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 // loads the learner plugin state into the firebase write-through cache
 export const loadLearnerPluginState = async (activity: Activity, teacherEditionMode: boolean) => {
   const plugins = findUsedPlugins(activity, teacherEditionMode);
-  await Promise.all(plugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
+  const storage = getStorage();
+  await Promise.all(plugins.map(async (plugin) => await storage.getLearnerPluginState(plugin.id)));
 };
 
-export const initializePlugin = (context: IEmbeddablePluginContext) => {
+export const initializePlugin = (context: IEmbeddablePluginContext, offlineMode: boolean) => {
   const { LARA, embeddable, embeddableContainer,
           wrappedEmbeddable, wrappedEmbeddableContainer, sendCustomMessage, approvedScriptLabel } = context;
   const usedPlugin = usedPlugins.find(p => p.plugin.approved_script_label === approvedScriptLabel);
@@ -118,7 +119,8 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
   const embeddableContextAny = embeddableContext as any;
 
   const pluginId = usedPlugin.id;
-  const portalData = getPortalData();
+  const storage = getStorage();
+  const portalData = storage.getPortalData();
   const pluginLabel = `plugin${pluginId}`;
   const pluginContext: IPluginRuntimeContextOptions = {
     type: "runtime",
@@ -137,7 +139,8 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
     classInfoUrl: null,
     firebaseJwtUrl: "",
     wrappedEmbeddable: wrappedEmbeddable ? embeddableContextAny : null,
-    resourceUrl: getResourceUrl()
+    resourceUrl: getResourceUrl(),
+    offlineMode
   };
   LARA.Plugins.initPlugin(pluginLabel, pluginContext);
 };

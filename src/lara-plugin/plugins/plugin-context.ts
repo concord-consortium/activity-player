@@ -7,7 +7,7 @@ import $ from "jquery";
 // LARA_CODE import * as $ from "jquery";
 // ACTIVITY_PLAYER_CODE:
 import { Logger } from "../../lib/logger";
-import { getPortalData, setLearnerPluginState } from "../../firebase-db";
+import { getStorage } from "../../storage/storage-facade";
 import { getFirebaseJWT } from "../../portal-api";
 
 export type IPluginContextOptions = IPluginRuntimeContextOptions | IPluginAuthoringContextOptions;
@@ -53,6 +53,8 @@ export interface IPluginRuntimeContextOptions extends IPluginCommonOptions {
   embeddablePluginId: number | null;
   /** URL of the resource associated with the current run (sequence URL or activity URL) */
   resourceUrl: string;
+  /** Flag denoting offline mode of an Activity Player activity */
+  offlineMode: boolean;
 }
 
 export interface IPluginAuthoringContextOptions extends IPluginCommonOptions {
@@ -138,7 +140,8 @@ export const saveAuthoredPluginState = (authoringSaveStateUrl: string, authorDat
 
 const getFirebaseJwtFromPortal = (appName: string): Promise<IJwtResponse> => {
   return new Promise<IJwtResponse>((resolve, reject) => {
-    const portalData = getPortalData();
+    const storage = getStorage();
+    const portalData = storage.getPortalData();
     if (portalData && (portalData.type === "authenticated") && portalData.basePortalUrl && portalData.rawPortalJWT) {
       return getFirebaseJWT(portalData.basePortalUrl, portalData.rawPortalJWT, {firebase_app: appName})
         .then(([token, firebaseJWT]) => {
@@ -194,6 +197,7 @@ const fetchPluginEventLogData = (context: IPluginRuntimeContextOptions) => {
 };
 
 export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptions): IPluginRuntimeContext => {
+  const storage = getStorage();
   const context = {
     name: options.name,
     url: options.url,
@@ -205,11 +209,12 @@ export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptio
     remoteEndpoint: options.remoteEndpoint,
     userEmail: options.userEmail,
     resourceUrl: options.resourceUrl,
-    saveLearnerPluginState: (state: string) => setLearnerPluginState(options.pluginId, state),
+    saveLearnerPluginState: (state: string) => storage.setLearnerPluginState(options.pluginId, state),
     getClassInfo: () => getClassInfo(options.classInfoUrl),
     getFirebaseJwt: (appName: string) => getFirebaseJwtFromPortal(appName),
     wrappedEmbeddable: options.wrappedEmbeddable ? generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
-    log: (logData: string | ILogData) => log(options, logData)
+    log: (logData: string | ILogData) => log(options, logData),
+    offlineMode: options.offlineMode
   };
   return context;
 };

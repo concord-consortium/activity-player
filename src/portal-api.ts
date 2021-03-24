@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 import superagent from "superagent";
 import { v4 as uuidv4 } from "uuid";
-import { queryValue, setQueryValue } from "./utilities/url-query";
-import { FirebaseAppName } from "./firebase-db";
+import { queryValue, queryValueBoolean, setQueryValue } from "./utilities/url-query";
 import { getResourceUrl } from "./lara-api";
-import { getCanonicalHostname, isProductionOrigin } from "./utilities/host-utils";
+import { getCanonicalHostname, getHostnameWithMaybePort, isOfflineHost, isProduction } from "./utilities/host-utils";
+import { FirebaseAppName } from "./storage/firebase-db";
 
 interface PortalClassOffering {
   className: string;
@@ -69,7 +69,7 @@ export interface ILTIPartial {
   resourceLinkId: string;  // offering ID
 }
 
-interface OfferingData {
+export interface OfferingData {
   id: number;
   activityUrl: string;
   rubricUrl: string;
@@ -94,6 +94,7 @@ export interface IPortalData extends ILTIPartial {
   rawPortalJWT?: string;
   portalJWT?: PortalJWT;
   runRemoteEndpoint: string;
+  classInfo?: ClassInfo;
 }
 
 export interface IAnonymousPortalData {
@@ -232,12 +233,7 @@ export const firebaseAppName = ():FirebaseAppName => {
     return _firebaseAppName;
   }
 
-  const { origin, pathname } = window.location;
-  // According to the spec an empty path like https://activity-player.concord.org
-  // will still have a pathname of "/", but just to be safe this checks for the
-  // falsey pathname
-  if(isProductionOrigin(origin) &&
-     (!pathname || pathname === "/")) {
+  if (isProduction(window.location, {allowVersions: false})) {
     _firebaseAppName = "report-service-pro";
   } else {
     _firebaseAppName = "report-service-dev";
@@ -383,13 +379,20 @@ export const getOfferingData = (params: GetOfferingParams) => {
   });
 };
 
-export const fetchPortalData = async (): Promise<IPortalData> => {
+interface IFetchPortalDataOpts {
+  includeClassData: boolean
+}
+const fetchPortalDataDefaults: IFetchPortalDataOpts = {
+  includeClassData: true
+};
+export const fetchPortalData = async (opts: IFetchPortalDataOpts = fetchPortalDataDefaults): Promise<IPortalData|IAnonymousPortalData> => {
 
   const bearerToken = queryValue("token");
   const basePortalUrl = queryValue("domain");
+  const preview = queryValueBoolean("preview");
 
   if (!bearerToken || !basePortalUrl) {
-    throw new Error("No token provided for authentication (must launch from Portal)");
+    return Promise.resolve(anonymousPortalData(preview));
   }
 
   const [rawPortalJWT, portalJWT] = await getPortalJWTWithBearerToken(basePortalUrl, bearerToken);
@@ -411,17 +414,13 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
   const offeringData = await getOfferingData({portalJWT, rawPortalJWT, offeringId});
   const [rawFirebaseJWT, firebaseJWT] = await getActivityPlayerFirebaseJWT(basePortalUrl, rawPortalJWT, classInfo.classHash);
 
-  // student data gets saved in different buckets of the DB, the "source," depending on the domain
-  // of the activity.
+  // student data gets saved in different buckets of the DB, the "source," depending on
+  // the canonical hostname.
   // This works fine, but for testing the activity player, we may want to load data that was previously
-  // saved in a different domain (e.g. authoring.concord.org), so we first check for a "url-source"
+  // saved in a different domain (e.g. authoring.concord.org), so we first check for a "sourceKey"
   // query parameter.
-  const sourceKey = queryValue("report-source") || parseUrl(offeringData.activityUrl.toLowerCase()).hostname;
+  const sourceKey = queryValue("sourceKey") || getCanonicalHostname();
 
-  // for the tool id we want to distinguish activity-player branches, incase this is ever helpful for
-  // dealing with mis-matched data when we load data in originally saved on another branch.
-  // This is currently unused for the purpose of saving and loading data
-  const toolId = window.location.hostname + window.location.pathname;
   const fullName = classInfo.students.find(s => s.id.toString() === portalJWT.uid.toString())?.fullName;
 
   const rawPortalData: IPortalData = {
@@ -432,7 +431,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     platformId: firebaseJWT.claims.platform_id,
     platformUserId: firebaseJWT.claims.platform_user_id.toString(),
     contextId: classInfo.classHash,
-    toolId,
+    toolId: getToolId(),
     resourceUrl: getResourceUrl(),
     fullName,
     learnerKey: firebaseJWT.claims.user_type === "learner"
@@ -448,6 +447,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     },
     runRemoteEndpoint: firebaseJWT.returnUrl
   };
+  if(opts.includeClassData) { rawPortalData.classInfo = classInfo; }
   return rawPortalData;
 };
 
@@ -460,24 +460,32 @@ export const anonymousPortalData = (preview: boolean) => {
   } else {
     runKey = queryValue("runKey");
     if (!runKey) {
-      runKey = uuidv4();
-      setQueryValue("runKey", runKey);
+      if (isOfflineHost()) {
+        runKey = "offline";
+        // don't update query string with run key in offline mode
+      } else {
+        runKey = uuidv4();
+        setQueryValue("runKey", runKey);
+      }
     }
   }
 
-  const hostname = window.location.hostname;
-  const toolId = hostname + window.location.pathname;
   const rawPortalData: IAnonymousPortalData = {
     type: "anonymous",
     userType: "learner",
     runKey,
     resourceUrl: getResourceUrl(),
-    toolId,
+    toolId: getToolId(),
     toolUserId: "anonymous",
     database: {
       appName: firebaseAppName(),
-      sourceKey: getCanonicalHostname()
+      sourceKey: queryValue("sourceKey") || getCanonicalHostname()
     }
   };
   return rawPortalData;
 };
+
+// for the tool id we want to distinguish activity-player hosts and branches, incase this is ever helpful for
+// dealing with mis-matched data when we load data in originally saved on another branch.
+// This is currently unused for the purpose of saving and loading data
+export const getToolId = () => getHostnameWithMaybePort() + window.location.pathname;

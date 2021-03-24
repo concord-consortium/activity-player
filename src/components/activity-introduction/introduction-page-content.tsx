@@ -4,6 +4,7 @@ import { ActivityPageLinks } from "../activity-introduction/activity-page-links"
 
 import "./introduction-page-content.scss";
 import { Activity } from "../../types";
+import { ImportAnswers } from "./introduction-import-answers";
 
 interface IProps {
   activity: Activity;

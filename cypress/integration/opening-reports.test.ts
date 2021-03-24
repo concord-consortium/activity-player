@@ -12,7 +12,7 @@ context("Test Opening Portal Reports from various places", () => {
     const activityStructureUrl = "https://example.com/activities/123";
     const activityPlayerUrl = "?" +
       "activity="+activityExportUrl+
-      "&report-source=authoring.staging.concord.org" +
+      "&sourceKey=authoring.staging.concord.org" +
       "&runKey="+runKey;
 
     before(() => {
@@ -23,10 +23,9 @@ context("Test Opening Portal Reports from various places", () => {
         fixture: "sample-activity-1.json"
       }
       );
-      cy.visit(activityPlayerUrl, {
-        onBeforeLoad(win) {
-          cy.stub(win, "open");
-        }
+      cy.visit(activityPlayerUrl);
+      cy.window().then((win) => {
+        cy.stub(win, "open").as("windowOpen");
       });
       activityPage.getPage(3).click();
       cy.wait(1000);
@@ -34,7 +33,7 @@ context("Test Opening Portal Reports from various places", () => {
     describe("Open report from end of activity without completion page", () => {
       it("verify correct link is sent to the portal report", () => {
         cy.get("[data-cy=exit-container] > .show-my-work").should("be.visible").click();
-        cy.window().its("open").should("be.calledWith",
+        cy.get("@windowOpen").should("be.calledWith",
           portalReportUrl + "?runKey=" + runKey +
             "&activity=" + activityStructureUrl +
             "&firebase-app=report-service-dev&sourceKey=example.com" +

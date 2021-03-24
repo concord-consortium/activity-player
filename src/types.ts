@@ -1,3 +1,5 @@
+import { Role } from "./student-info";
+
 export type Mode = "runtime" | "authoring" | "report";
 
 export interface IframePhone {
@@ -183,11 +185,11 @@ export interface IReportState {
  */
 export interface ILTIPartial {
   platform_id: string;      // portal
-  platform_user_id: string;
+  platform_user_id: string; // Portal user_id
   context_id: string;       // class hash
-  resource_link_id: string;  // offering ID
-  resource_url: string;
-  run_key: string;
+  resource_link_id: string; // offering ID
+  resource_url: string;     // Activity or sequence ID
+  run_key: string;          // Unique run identifier
   source_key: string;
   tool_id: string;
    // This is not an LTI property but it is required in our authenticated answers
@@ -263,4 +265,54 @@ export interface IAuthenticatedLearnerPluginState extends ILTIPartial {
 export interface IAnonymousLearnerPluginState extends IAnonymousMetadataPartial {
   pluginId: number;
   state: string;
+}
+
+export interface OfflineManifestActivity {
+  name: string;
+  resourceUrl: string;
+  contentUrl: string;
+}
+export interface OfflineManifest {
+  name: string
+  activities: OfflineManifestActivity[];
+  cacheList: string[]
+}
+
+export interface OfflineActivity extends OfflineManifestActivity {
+  manifestName: string;
+  order: number;
+  // TBD: add class info once that is figured out
+}
+
+// This is a combination of the standard service worker states:
+// installing, installed, activating, activated, redundant
+// https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorker/state
+// With additional states for the initial "unknown" startup state and
+// a "controlling" state which isn't captured as a "state" by the service worker API
+// a "parsed" state is added to satisfy the ServiceWorker types,
+// this state is documented here: https://bitsofco.de/the-service-worker-lifecycle/
+// but it isn't lised in the MDN article above
+// The actual status is more complex than this because there can be external
+// service workers, but perhaps this simplified list
+// will be good enough for deciding what to do with the UI
+export type ServiceWorkerStatus = "unknown" | "parsed" | "installing" | "installed" | "activating" | "activated" | "redundant" | "controlling";
+
+export interface LogMessage {
+  application: string;
+  run_remote_endpoint?: string;
+  username: string;
+  role: Role;
+  classHash: string;
+  session: string;
+  appMode: string;
+  sequence: string | undefined;
+  sequenceActivityIndex: number;
+  activity: string | undefined,
+  activityPage: number;
+  time: number;
+  event: string;
+  event_value: any;
+  parameters: any;
+  interactive_id: string | undefined,
+  interactive_url: string | undefined,
 }

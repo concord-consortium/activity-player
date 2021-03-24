@@ -5,11 +5,12 @@ import { LaraGlobalContext } from "../../lara-global-context";
 
 interface IProps {
   embeddable: IEmbeddablePlugin;
+  offlineMode: boolean;
   pluginsLoaded?: boolean;
 }
 
 export const EmbeddablePluginSideTip: React.FC<IProps> = (props) => {
-  const { embeddable, pluginsLoaded } = props;
+  const { embeddable, offlineMode, pluginsLoaded } = props;
 
   const embeddableDivTarget = useRef<HTMLInputElement>(null);
 
@@ -21,9 +22,9 @@ export const EmbeddablePluginSideTip: React.FC<IProps> = (props) => {
         embeddable,
         embeddableContainer: embeddableDivTarget.current,
         approvedScriptLabel: "teacherEditionTips"
-      });
+      }, offlineMode);
     }
-  }, [LARA, embeddable, pluginsLoaded]);
+  }, [LARA, embeddable, offlineMode, pluginsLoaded]);
 
   return (
     <div className="embeddable-plugin-sidetip" data-cy="embeddable-plugin-sidetip"  ref={embeddableDivTarget} />

@@ -26,7 +26,7 @@ describe("Glossary Plugin component", () => {
       "type": "Embeddable::EmbeddablePlugin",
       "ref_id": ""
     };
-    const wrapper = shallow(<GlossaryPlugin embeddable={embeddable} pageNumber={1} pluginsLoaded={true} />);
+    const wrapper = shallow(<GlossaryPlugin embeddable={embeddable} pageNumber={1} offlineMode={false} pluginsLoaded={true} />);
     expect(wrapper.find('[data-cy="glossary-embeddable-plugin"]').length).toBe(1);
   });
 });

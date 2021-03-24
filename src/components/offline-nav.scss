@@ -1,0 +1,26 @@
+@import "./vars.scss";
+
+.offline-nav {
+  height: 60px;
+  width: 100%;
+  margin-bottom: 3px;
+  font-size: 18px;
+  font-weight: bold;
+
+  .inner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 100%;
+    width: $content-width;
+    box-sizing: border-box;
+    margin: auto;
+    background-color: $cc-orange;
+    color: $cc-charcoal;
+    cursor: pointer;
+
+    svg {
+      margin: 0 5px 0 20px;
+    }
+  }
+}

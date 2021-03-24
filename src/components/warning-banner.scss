@@ -1,12 +1,22 @@
 @import "./vars.scss";
 
 .warning-banner {
-  display: flex;
-  flex-direction: row;
-  background-color: $cc-orange;
-  color: black;
-  font-size: 22px;
-  padding: 10px;
-  min-height: 50px;
+  height: 60px;
   width: 100%;
+  margin-bottom: 3px;
+  font-size: 18px;
+  font-weight: bold;
+
+  .inner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: $content-width;
+    box-sizing: border-box;
+    margin: auto;
+    background-color: #f00;
+    color: #fff;
+  }
 }

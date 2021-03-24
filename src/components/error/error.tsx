@@ -5,6 +5,7 @@ import "./error.scss";
 interface IProps {
   type: ErrorType;
   onExit: () => void;
+  offlineMode?: boolean;
 }
 
 export const errorMsg: Record<ErrorType, string> = {
@@ -13,8 +14,12 @@ export const errorMsg: Record<ErrorType, string> = {
   timeout: "Your session has expired."
 };
 
+export const Error: React.FC<IProps> = ({ type, onExit, offlineMode }) => {
+  // do not show network errors when in offline mode
+  if (offlineMode && (type === "network")) {
+    return null;
+  }
 
-export const Error: React.FC<IProps> = ({ type, onExit }) => {
   return (
     <div className="error" data-cy="error">
       <h1>Hmm... we&apos;re having trouble connecting.</h1>

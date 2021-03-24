@@ -10,11 +10,13 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal-api";
-import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
-import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "./types";
-import { queryValueBoolean } from "./utilities/url-query";
-import { RequestTracker } from "./utilities/request-tracker";
+// import "firebase/database"; // TODO: add if we want to use for testing if connected
+import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "../portal-api";
+import { refIdToAnswersQuestionId } from "../utilities/embeddable-utils";
+import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "../types";
+import { queryValueBoolean } from "../utilities/url-query";
+import { RequestTracker } from "../utilities/request-tracker";
+import { docToWrappedAnswer, IWrappedDBAnswer } from "./storage-facade";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
@@ -26,11 +28,8 @@ const answersPath = (answerId?: string) =>
 const learnerPluginStatePath = (docId: string) =>
   `sources/${portalData?.database.sourceKey}/plugin_states/${docId}`;
 
-export interface WrappedDBAnswer {
-  meta: IExportableAnswerMetadata;
-  interactiveState: any;
-}
-export type DBChangeListener = (wrappedDBAnswer: WrappedDBAnswer | null) => void;
+
+export type DBChangeListener = (wrappedDBAnswer: IWrappedDBAnswer | null) => void;
 
 interface IConfig {
   apiKey: string;
@@ -128,7 +127,18 @@ export const signInWithToken = async (rawFirestoreJWT: string) => {
   return app.auth().signInWithCustomToken(rawFirestoreJWT);
 };
 
-export const setPortalData = (_portalData: IPortalData | null) => {
+export const signOut = async() =>{
+  try {
+    await app.auth().signOut();
+  }
+  catch(e) {
+    // maybe we weren't signed in?
+    console.error("unable to signout from FireStore:");
+    console.error(e);
+  }
+};
+
+export const setPortalData = (_portalData: IPortalData | IAnonymousPortalData | null) => {
   portalData = _portalData;
 };
 
@@ -138,9 +148,6 @@ export const getPortalData = (): IPortalData | IAnonymousPortalData | null => {
   return portalData;
 };
 
-export const setAnonymousPortalData = (_portalData: IAnonymousPortalData) => {
-  portalData = _portalData;
-};
 
 type DocumentsListener = (docs: firebase.firestore.DocumentData[]) => void;
 
@@ -181,21 +188,10 @@ const watchAnswerDocs = (listener: DocumentsListener, questionId?: string) => {
   });
 };
 
-const firestoreDocToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
-  const getInteractiveState = () => {
-    const reportState = JSON.parse(doc.report_state);
-    return JSON.parse(reportState.interactiveState);
-  };
-  const interactiveState = getInteractiveState();
-  const wrappedAnswer: WrappedDBAnswer = {
-    meta: doc as IExportableAnswerMetadata,
-    interactiveState
-  };
-  return wrappedAnswer;
-};
+
 
 // Watches ONE question answer defined by embeddableRefId.
-export const watchAnswer = (embeddableRefId: string, callback: (wrappedAnswer: WrappedDBAnswer | null) => void) => {
+export const watchAnswer = (embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void) => {
   const questionId = refIdToAnswersQuestionId(embeddableRefId);
   // Note that watchAnswerDocs returns unsubscribe method.
   return watchAnswerDocs((answers: firebase.firestore.DocumentData[]) => {
@@ -209,15 +205,15 @@ export const watchAnswer = (embeddableRefId: string, callback: (wrappedAnswer: W
         "ActivityPlayer versions. Your data might be corrupted."
       );
     }
-    callback(firestoreDocToWrappedAnswer(answers[0]));
+    callback(docToWrappedAnswer(answers[0]));
   }, questionId); // limit observer to single question
 };
 
 // Watches ALL the answers for the given activity.
-export const watchAllAnswers = (callback: (wrappedAnswer: WrappedDBAnswer[]) => void) => {
+export const watchAllAnswers = (callback: (wrappedAnswer: IWrappedDBAnswer[]) => void) => {
   // Note that watchAnswerDocs returns unsubscribe method.
   return watchAnswerDocs((answers: firebase.firestore.DocumentData[]) => {
-    callback(answers.map(doc => firestoreDocToWrappedAnswer(doc)));
+    callback(answers.map(doc => docToWrappedAnswer(doc)));
   });
 };
 
@@ -283,22 +279,11 @@ export const getLearnerPluginStateDocId = (pluginId: number) => {
   return docId.replace(/[.$[\]#/]/g, "_");
 };
 
-// A write-though cache of the learner plugin states is kept as the plugin's learner state is only loaded
-// once at app startup but it is supplied on the plugin init which happens on any page change.
-
-// TODO: change to watch the learner state so that it works across sessions and not just on the same page
-
-const cachedLearnerPluginState: Record<number, string|null> = {};
-export const getCachedLearnerPluginState = (pluginId: number) => cachedLearnerPluginState[pluginId] || null;
 
 export const getLearnerPluginState = async (pluginId: number) => {
   const docId = getLearnerPluginStateDocId(pluginId);
   if (docId === undefined) {
     return null;
-  }
-
-  if (cachedLearnerPluginState[pluginId]) {
-    return cachedLearnerPluginState[pluginId];
   }
 
   let state: string|null = null;
@@ -311,8 +296,6 @@ export const getLearnerPluginState = async (pluginId: number) => {
 
     state = data?.state || null;
   } catch (e) {} // eslint-disable-line no-empty
-
-  cachedLearnerPluginState[pluginId] = state;
 
   return state;
 };
@@ -361,7 +344,30 @@ export const setLearnerPluginState = async (pluginId: number, state: string): Pr
     .doc(learnerPluginStatePath(docId))
     .set(learnerPluginState);
 
-  cachedLearnerPluginState[pluginId] = state;
+
 
   return state;
+};
+
+export const checkIfOnline = () => {
+  return new Promise<boolean>((resolve) => {
+    /*
+
+    DISABLED FOR NOW: need to decide if we also want to add both the size of the database import
+    and enable the database in the Firebase console.  Use a POST request instead.
+
+    const connectedRef = app.database().ref(".info/connected");
+    return connectedRef.once("value")
+      .then(snap => resolve(snap.val() === true))
+      .catch(() => resolve(false));
+    */
+
+    // if online this will result in a 400 error due to the portal token not being included
+    // we don't care about the status code, just that we get a response to check if we are online
+    // NOTE: if this is the final method we need our own POST endpoint that returns 200 instead
+    // of using this (free) external service which may go down
+    return fetch("https://ipapi.co/json/", {method: "POST"})
+      .then(() => resolve(true))
+      .catch(() => resolve(false));
+  });
 };

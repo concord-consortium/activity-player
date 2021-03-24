@@ -1,0 +1,184 @@
+{
+  "description": "",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "AP - Lesson 5: Alaska Mainland 2 - Pre - What Do You Think?",
+  "notes": "",
+  "project_id": null,
+  "related": "",
+  "runtime": "Activity Player",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson1.png",
+  "time_to_complete": 5,
+  "version": 1,
+  "theme_name": "Precipitating Change",
+  "pages": [{
+    "additional_sections": null,
+    "embeddable_display_mode": "stacked",
+    "id": 308630,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "How Should We Break It Down?",
+    "position": 1,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EMs. Tevuk\u0026rsquo;s class is studying weather. The students will make a computer model to predict weather in Alaska. They need to break Alaska into smaller chunks of area so their model can use information (data) about each chunk to predict the weather. Four students have different ideas about what size the chunks should be.\u0026nbsp;Alaska is approximately 663,000 square miles. The map below shows Alaska with a grid that divides the map into squares.\u003C/p\u003E\n\u003Cp\u003E\u003Cimg class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alaska200grid.jpg\" alt=\"\" width=\"557\" height=\"510\" /\u003E\u003C/p\u003E\n\u003Cp\u003EHere are the students\u0026rsquo; ideas:\u003C/p\u003E\n\u003Ctable cellpadding=\"30\"\u003E\n\u003Ctbody\u003E\n\u003Ctr\u003E\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EAlex\u003C/strong\u003E\u003C/th\u003E\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EDelana\u003C/strong\u003E\u003C/th\u003E\n\u003C/tr\u003E\n\u003Ctr\u003E\n\u003Ctd width=\"88\"\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alex5.png\" width=\"80\" height=\"100\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/td\u003E\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003E\n\u003Cp\u003EWe need to include as much data as possible so our model will be accurate. Let\u0026rsquo;s break Alaska down into chunks that are each one square yard in size (three feet on each side).\u003C/p\u003E\n\u003Cp\u003E\u003Cimg style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/3ftx3ft.png\" width=\"223\" height=\"200\" /\u003E\u003C/p\u003E\n\u003C/td\u003E\n\u003Ctd width=\"88\"\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Delana5.png\" width=\"80\" height=\"100\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/td\u003E\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003E\n\u003Cp\u003EWe want to predict weather for villages, so our chunks should be about the size of an Alaska village. Let\u0026rsquo;s make chunks that are each a square mile (5,280 feet on each side).\u003C/p\u003E\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/1milex1mile.png\" width=\"222\" height=\"200\" /\u003E\u003C/p\u003E\n\u003C/td\u003E\n\u003C/tr\u003E\n\u003C/tbody\u003E\n\u003Ctbody\u003E\n\u003Ctr\u003E\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EKalin\u003C/strong\u003E\u003C/th\u003E\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003ESage\u003C/strong\u003E\u003C/th\u003E\n\u003C/tr\u003E\n\u003Ctr\u003E\n\u003Ctd width=\"88\"\u003E\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Kalin5.png\" width=\"80\" height=\"100\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/p\u003E\n\u003C/td\u003E\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003E\n\u003Cp\u003EThe chunks can be even bigger because there\u0026rsquo;s space in between villages. Let\u0026rsquo;s break Alaska down into chunks that are each 20 miles by 20 miles in size.\u003C/p\u003E\n\u003Cp\u003E\u003Cimg style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/20milesx20miles.png\" width=\"230\" height=\"204\" /\u003E\u003C/p\u003E\n\u003C/td\u003E\n\u003Ctd width=\"88\"\u003E\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Sage3.png\" width=\"80\" height=\"100\" align=\"center\" hspace=\"8\" vspace=\"8\" /\u003E\u003C/p\u003E\n\u003C/td\u003E\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003E\n\u003Cp\u003EIf we use 20 miles by 20 miles, we\u0026rsquo;ll have over 1,500 chunks for Alaska. That\u0026rsquo;s a lot. Let\u0026rsquo;s use 200 miles by 200 miles so we\u0026rsquo;ll only need about 16 chunks.\u003C/p\u003E\n\u003Cp\u003E\u003Cimg style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/200milesx200miles.png\" width=\"230\" height=\"206\" /\u003E\u003C/p\u003E\n\u003C/td\u003E\n\u003C/tr\u003E\n\u003C/tbody\u003E\n\u003C/table\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "272931-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "name": "Multiple Choice Question element",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"choices\":[{\"id\":\"1\",\"content\":\"Alex\",\"correct\":false,\"choiceFeedback\":\"\"},{\"id\":\"2\",\"content\":\"Delana\",\"correct\":false,\"choiceFeedback\":\"\"},{\"id\":\"3\",\"content\":\"Kalin\",\"correct\":false,\"choiceFeedback\":\"\"},{\"id\":\"4\",\"content\":\"Sage\",\"correct\":false,\"choiceFeedback\":\"\"}],\"layout\":\"vertical\",\"prompt\":\"\u003Cp\u003EWhich student\u0026rsquo;s idea do you agree with the most?\u003C/p\u003E\"}",
+        "is_hidden": false,
+        "is_full_width": false,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": null,
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Multiple Choice",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1945-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Pre-Assessment Implementation\\n*Lesson 5, Opening: How Should We Break It Down? Pre-Assessment*\\nDuring the pre-assessment, each student will view the scenario above and make an individual choice. The request for an explanation will only be on the post-assessment. After students make an individual choice for the pre-assessment, you can lead the discussion including, for example, a pair/share opportunity and/or full class discussion. \\n\\nAt this time, encourage students to share and discuss their ideas and reasons without indicating that any answer is better or worse. Let the students know that they should keep thinking about this question and that the class will return to it at the end of the lesson.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "4236-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Computational Thinking Concepts and Practices:\\n* Decomposition\\n* Data Abstraction\\n\\n###What is the Purpose of this Assessment Probe?\\nThe following information provides background for **teachers** and is not necessarily representative of the learning goals for everything students should understand. We suggest you review the information below and think about ways to scaffold students toward developing **knowledge and practice** as appropriate for their classes. We also recommend emphasizing the underlying ideas and practices, rather than on vocabulary terms such as **decomposition** or **data abstraction**. By discussing the different options, students can engage in productive talk related to these computational thinking concepts without using technical terminology. \\n\\nThis assessment probe is designed to assess and scaffold students in thinking and talking about **decomposition**, which is *breaking down data, processes, or problems into smaller components and manageable parts so they can be more easily solved.*\\n\\nIn particular, the probe addresses physical decomposition of a system, which involves *dividing a continuous representation of a system into smaller, discrete parts.* In computational modeling, *physical decomposition makes it possible to apply values to various parameters in each small part (cell) of the model domain, which in turn makes it possible to apply mathematical approaches to the problem.*\\n\\nAt the broader level, this type of discretization is an example of the computational thinking concept of **data abstraction**. Abstraction *involves letting one object stand for many by \u201ccapturing essential properties common to a set of objects while hiding irrelevant distinctions among them\u201d* (Wing, 2014, http://socialissues.cs.toronto.edu/index.html%3Fp=279.html). When we divide the Alaska map into cells, we are stripping away a lot of information about each cell (e.g., how many trees or houses are in that area) so that we can focus on just the pieces of information we need for addressing our particular problem (in this case, we will want to understand some other things about each cell at certain points in time to help us predict the weather, i.e., the temperature of the air, the wind speed and direction, the humidity level in each cell). \\n\\nThis assessment is situated within the unit context to provide an opportunity for students to make sense about decomposition of a specific, tangible weather problem. While one of the responses makes the most sense from a practical standpoint for this problem, there\u2019s no absolutely correct answer. Using an indefinite problem provides space for students to think and talk about the pros and cons of using different sized chunks for predicting weather. This is the kind of real-world problem that weather modelers need to think about as they do their work. \\n\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "4237-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###What Are Common Student Ideas and What Supports Could Help Students?\\nBelow are some issues to consider in assessing students\u2019 ideas, and some suggestions of ways to support students in developing more formal reasoning about decomposition.\\n\\n###Less Formal Ideas\\n\u2022\\t**Alex\u2019s response (3 feet by 3 feet chunks)** is probably too small for this problem. A model decomposed into cells of this size over the state of Alaska would require a very large amount of interpolation because, of course, there are not that many weather stations available to provide observed data for each cell (although satellites could potentially collect this data over land surfaces). Assuming data come from weather stations though, a model composed of one square yard sized cells would provide a false level of accuracy based on an insufficient amount of data for understanding weather at that scale. In addition, this model would require a great deal of computing power. It would take a lot of time and energy for the model to process all the data, and because so much of the data will need to be interpolated, the results will not really be trustworthy at the scale of one square yard.\\n\\nSome students might find Alex\u2019s response appealing because they think it is important to be very accurate with a computer model and/or because they think computer models have the capacity to make very accurate predictions. These students could use support in understanding that computer model outputs are based on computer model inputs. With relatively few data inputs from weather stations compared to the outputs (predictions at the level of each square yard. Alex\u2019s model will not be able to perform very well.  \\n\\n\u2022\\t**Sage\u2019s response (200 miles by 200 miles chunks)** will not provide enough detail for Alaskans to make the decisions they need to make related to the weather. The map below shows an area of about 200 by 200 miles. If this area were used for the weather model, then it would not be possible to give people in Port Lay a separate weather prediction than people in Utqiagvik. While Alex and Delana\u2019s responses have problems with false accuracy, Sage\u2019s response has problems with insufficient precision for the real-world problem (predicting the weather at a scale that will be useful for people in different villages and towns). \\n\\nStudents who choose Sage\u2019s response may think there is a need to enter actual data (i.e., from a weather station) for every cell in a computer model. These students could benefit from discussions that connect this assessment probe to the idea of interpolation \u2013 we don\u2019t necessarily need to enter data for every single cell in a computer model. Much of the data can be interpolated. If we didn\u2019t have the capacity to interpolate data, then Sage would be right, - it would be a whole lot of work to make a computer model for Alaska, even at the scale of 20 by 20 mile cells. Interpolation helps solve this problem (within limits of course, because if we interpolate too much data we end up with the problems associated with Alex\u2019s and Delana\u2019s models). \\n\\n\u003Cimg src=\\\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/200x200milechunkofAlaska.png\\\" width=\\\"300\\\" height=\\\"300\\\" /\u003E\\n\\n\\n###Middle Level \\n\u2022\\t**Delana\u2019s response (1 mile by 1 mile chunks)** is also probably too small for the problem. There would be approximately 663,000 cells in this model. Because of the number of cells, a lot of the data for this model would need to be interpolated. There is not necessarily a need for weather information at this fine-grained scale. While less so than Alex\u2019s response, this model would still have problems with too much interpolation leading to a false level of accuracy at the square mile scale and an excessive amount of computing power needed.\\n\\nDelana\u2019s response shows that she\u2019s doing important thinking about the scale of information that is needed by the audience for the model (i.e., people living in villages and towns). Students often think about computer models and their outputs in terms of what can be shown or seen. While visualizations are an important output of computer models, students can also use support in developing deeper understandings about the need for sufficient data and appropriate processing algorithms for a computer model to show something. Students often think about computer models as black boxes that do something mysterious and then provide an answer. Over the course of the unit, students should develop deeper understanding of how data and rules (algorithms) are the guts of the computer model that help modelers use the model to explain and predict things like weather. \\n\\n\\n###More Formal Ideas\\n\u2022\\t**Kalin\u2019s answer (20 miles by 20 miles chunks)** provides the ability to process data at a reasonable scale for an area as large as the state of Alaska. There would be approximately 1650 cells in this model. If the chunks were much bigger, it would not be possible to process and provide information at a small enough scale for what is needed in terms of weather information for individual villages, towns, and cities. If the chunks were much smaller, they would be subject to the same problems associated with Alex\u2019s and Delana\u2019s responses.\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "4238-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 308642,
+    "is_completion": true,
+    "is_hidden": false,
+    "layout": "l-6040",
+    "name": null,
+    "position": 2,
+    "show_header": false,
+    "show_info_assessment": false,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": []
+  }],
+  "plugins": [],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

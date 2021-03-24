@@ -28,5 +28,24 @@ class ActivityPage {
   getModalDialogClose() {
     return cy.get("[data-cy=modal-dialog-close");
   }
+  getOfflineManifestAuthoringNav(options) {
+    return cy.get("[data-cy=offline-manifest-authoring-nav", options);
+  }
+  getOfflineManifestExitAuthoringButton() {
+    return cy.get("[data-cy=offline-manifest-exit-authoring-button");
+  }
+  getOfflineManifestLoadingDialog(options) {
+    return cy.get("[data-cy=offline-manifest-loading-modal", options);
+  }
+  getOfflineActivities(options) {
+    return cy.get("[data-cy=offline-activities", options);
+  }
+  getOfflineActivityList(options) {
+    return cy.get("[data-cy=offline-activities] td.activity", options);
+  }
+  getActivityTitle(options) {
+    return cy.get("[data-cy=activity-title", options);
+  }
+
 }
 export default ActivityPage;

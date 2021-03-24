@@ -1,7 +1,8 @@
 import { queryValue } from "../utilities/url-query";
-import { getPortalData } from "../firebase-db";
+import { getStorage } from "../storage/storage-facade";
 import { IPortalData, firebaseAppName } from "../portal-api";
-import { getCanonicalHostname, isProductionOrigin } from "./host-utils";
+import { getResourceUrl } from "../lara-api";
+import { getCanonicalHostname, isProduction } from "./host-utils";
 
 export const kProductionPortalReportUrl = "https://portal-report.concord.org/version/v4.1.0/index.html";
 export const kDevPortalReportUrl = "https://portal-report.concord.org/branch/master/index.html";
@@ -18,13 +19,7 @@ export const portalReportBaseUrl= ():string => {
     return portalReportUrlParam;
   }
 
-  const { origin, pathname } = window.location;
-  // According to the spec an empty path like https://activity-player.concord.org
-  // will still have a pathname of "/", but just to be safe this checks for the
-  // falsey pathname
-  if(isProductionOrigin(origin) &&
-     (!pathname || pathname === "/"
-      || pathname.indexOf("/version/") === 0)) {
+  if (isProduction(window.location, {allowVersions: true})) {
     return kProductionPortalReportUrl;
   } else {
     return kDevPortalReportUrl;
@@ -45,10 +40,10 @@ export const getReportUrl = () => {
   const reportLink = portalReportBaseUrl();
   const reportFirebaseApp = firebaseAppName();
   const activity = queryValue("activity");
-  const activityUrl = activity? ((activity.split(".json"))[0]).replace("api/v1/","") : "";
-  const runKey= queryValue("runKey");
-  // Sometimes the location of the answers is overridden with a report-source param
-  const answerSource = queryValue("report-source") || getCanonicalHostname();
+  const activityUrl = getResourceUrl(activity);
+  const runKey = queryValue("runKey");
+  // Sometimes the location of the answers is overridden with a sourceKey param
+  const answerSource = queryValue("sourceKey") || getCanonicalHostname();
   const sourceKey = activityUrl ? makeSourceKey(activityUrl) : getCanonicalHostname();
 
   if (runKey) {
@@ -62,7 +57,8 @@ export const getReportUrl = () => {
   }
   else {
     // We know this is a IPortalData because there is no runKey
-    const portalData = getPortalData() as IPortalData;
+    const storage = getStorage();
+    const portalData = storage.getPortalData() as IPortalData;
     const classInfoUrl = portalData?.portalJWT?.class_info_url;
     const authDomainUrl = classInfoUrl?.split("/api")[0];
     const offeringBaseUrl = classInfoUrl?.split("/classes")[0]+"/offerings/";

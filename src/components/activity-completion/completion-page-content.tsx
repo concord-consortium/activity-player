@@ -5,10 +5,11 @@ import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-ci
 import { showReport } from "../../utilities/report-utils";
 import { Sequence, Activity, EmbeddableWrapper, Page } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
-import { watchAllAnswers } from "../../firebase-db";
-import { isQuestion } from "../../utilities/activity-utils";
+import { getStorage } from "../../storage/storage-facade";
+import { orderedQuestionsOnPage } from "../../utilities/activity-utils";
 import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
+import { ReportBackupOptions } from "./report-backup-options";
 import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
 
 import "./completion-page-content.scss";
@@ -18,6 +19,7 @@ interface IProps {
   activityName: string;
   onPageChange: (page: number) => void;
   showStudentReport: boolean;
+  showReportBackupOptions: boolean;
   onOpenReport?: () => void;
   sequence?: Sequence;
   activityIndex?: number;
@@ -26,10 +28,12 @@ interface IProps {
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
-  const { activity, activityName, onPageChange, showStudentReport,
-    sequence, activityIndex, onActivityChange, onShowSequence } = props;
+  const { activity, activityName, onPageChange, showStudentReport, 
+    showReportBackupOptions, sequence, activityIndex, onActivityChange, 
+    onShowSequence } = props;
 
   const [answers, setAnswers] = useState<any>();
+  const [canProvideStudentReport, setCanProvideStudentReport] = useState<boolean>();
 
   const handleExit = () => {
     if (sequence) {
@@ -62,28 +66,28 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     const questionsStatus = Array<IQuestionStatus>();
     currentActivity.pages.forEach((page: Page, index) => {
       const pageNum = index + 1;
-      page.embeddables.forEach((embeddableWrapper: EmbeddableWrapper) => {
-        if (isQuestion(embeddableWrapper)) {
-          numQuestions++;
-          const questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
-          const authored_state = embeddableWrapper.embeddable.authored_state 
-                                   ? JSON.parse(embeddableWrapper.embeddable.authored_state)
-                                   : {};
-          let questionAnswered = false;
-          if (answers?.find((answer: any) => answer.meta.question_id === questionId)) {
-            numAnswers++; //Does't take into account if user erases response after saving
-            questionAnswered = true;
-          }
-          const questionStatus = { number: numQuestions, page: pageNum, prompt: authored_state.prompt, answered: questionAnswered };
-          questionsStatus.push(questionStatus);
+      orderedQuestionsOnPage(page).forEach((embeddableWrapper: EmbeddableWrapper) => {
+        numQuestions++;
+        const questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
+        const authored_state = embeddableWrapper.embeddable.authored_state
+                                  ? JSON.parse(embeddableWrapper.embeddable.authored_state)
+                                  : {};
+        let questionAnswered = false;
+        if (answers?.find((answer: any) => answer.meta.question_id === questionId)) {
+          numAnswers++; //Does't take into account if user erases response after saving
+          questionAnswered = true;
         }
+        const questionStatus = { number: numQuestions, page: pageNum, prompt: authored_state.prompt, answered: questionAnswered };
+        questionsStatus.push(questionStatus);
       });
     });
     return ({ numAnswers, numQuestions, questionsStatus });
   };
 
   useEffect(() => {
-    watchAllAnswers(answerMetas => {
+    const storage = getStorage();
+    setCanProvideStudentReport(storage.canProvideStudentReport());
+    storage.watchAllAnswers(answerMetas => {
       setAnswers(answerMetas);
     });
   }, []);
@@ -118,6 +122,8 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     progressText = isActivityComplete ? completedActivityProgressText : incompleteActivityProgressText;
   }
 
+  const exitContainerClass = showReportBackupOptions ? "exit-container with-backup-options" : "exit-container";
+  const showStudentReportButton = showStudentReport && canProvideStudentReport;
   return (
     !answers
       ? <div className="completion-page-content" data-cy="completion-page-content">
@@ -158,17 +164,35 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               </div>
             </div>
           }
-          <div className="exit-container" data-cy="exit-container">
+          <div className={exitContainerClass} data-cy="exit-container">
             <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
             <SummaryTable questionsStatus={progress.questionsStatus} />
-            {showStudentReport && <button className="button show-my-work" onClick={handleShowAnswers}><IconCompletion width={24} height={24} />Show My Work</button>}
-            {(!sequence || isLastActivityInSequence) && 
+              { showStudentReportButton
+                  ?
+                    <button
+                      className="button show-my-work"
+                      onClick={handleShowAnswers}>
+                        <IconCompletion width={24} height={24} />
+                        Show My Work
+                    </button>
+                  :
+                    <button
+                      className="button show-my-work disabled"
+                      disabled={true}>
+                        <IconCompletion width={24} height={24} />
+                        Show My Work
+                    </button>
+              }
+            {(!sequence || isLastActivityInSequence) &&
               <div className="exit-button">
                 <span>or</span>
                 <button className="textButton" onClick={handleExit}>Exit</button>
               </div>
             }
           </div>
+          {showReportBackupOptions &&
+            <ReportBackupOptions />
+          }
         </div>
   );
 };

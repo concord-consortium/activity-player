@@ -68,6 +68,11 @@
     margin: 0;
     padding: 0;
 
+    &.with-backup-options {
+      margin-right: 30px;
+      width: 570px;
+    }
+
     button {
       align-items: center;
       display: flex;
@@ -78,6 +83,13 @@
       svg {
         fill: $cc-orange-dark1;
         margin-right: 5px;
+      }
+      &.disabled {
+        cursor: default;
+        opacity: 0.4;
+        &:hover{
+          background-color: $cc-orange-light1;
+        }
       }
     }
     h1 {

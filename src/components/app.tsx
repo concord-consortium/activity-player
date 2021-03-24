@@ -6,16 +6,16 @@ import { SequenceNav } from "./activity-header/sequence-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue } from "../utilities/activity-utils";
-import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
+import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue, getAllUrlsInActivity, isNotSampleActivityUrl } from "../utilities/activity-utils";
+import { getActivityDefinition, getResourceUrl, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
-import { fetchPortalData, IPortalData, firebaseAppName } from "../portal-api";
-import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB, onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout } from "../firebase-db";
-import { Activity, IEmbeddablePlugin, Sequence } from "../types";
+import { IPortalData, firebaseAppName } from "../portal-api";
+import { Activity, IEmbeddablePlugin, OfflineManifest, OfflineManifestActivity, Sequence, ServiceWorkerStatus } from "../types";
+import { TrackOfflineResourceUrl, initStorage } from "../storage/storage-facade";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -30,6 +30,17 @@ import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
 import { IdleDetector } from "../utilities/idle-detector";
+import { Workbox } from "workbox-window/index";
+import { getOfflineManifest, getOfflineManifestAuthoringData, getOfflineManifestAuthoringId, OfflineManifestAuthoringData, mergeOfflineManifestWithAuthoringData, saveOfflineManifestToOfflineActivities, setOfflineManifestAuthoringData, setOfflineManifestAuthoringId } from "../offline-manifest-api";
+import { OfflineManifestLoadingModal } from "./offline-manifest-loading-modal";
+import { OfflineInstalling } from "./offline-installing";
+import { OfflineActivities } from "./offline-activities";
+import { OfflineNav } from "./offline-nav";
+import { OfflineManifestAuthoringNav } from "./offline-manifest-authoring-nav";
+import { StudentInfo } from "../student-info";
+import { StudentInfoModal } from "./student-info-modal";
+import { isNetworkConnected, monitorNetworkConnection } from "../utilities/network-connection";
+import { isOfflineHost } from "../utilities/host-utils";
 
 import "./app.scss";
 
@@ -37,9 +48,9 @@ const kDefaultActivity = "sample-activity-multiple-layout-types";   // may event
 const kDefaultIncompleteMessage = "Please submit an answer first.";
 
 // User will see the idle warning after kMaxIdleTime
-const kMaxIdleTime = 20 * 60 * 1000; // 20 minutes
+const kMaxIdleTime = parseInt(queryValue("__maxIdleTime") || `${20 * 60 * 1000}`, 10); // 20 minutes
 // User session will timeout after kMaxIdleTime + kTimeout
-const kTimeout = 5 * 60 * 1000; // 5 minutes
+const kTimeout = parseInt(queryValue("__timeout") || `${5 * 60 * 1000}`, 10); // 5 minutes
 
 const kLearnPortalUrl = "https://learn.concord.org";
 
@@ -52,6 +63,8 @@ interface IncompleteQuestion {
 
 interface IState {
   activity?: Activity;
+  offlineManifest?: OfflineManifest;
+  loadingOfflineManifest: boolean;
   currentPage: number;
   teacherEditionMode?: boolean;
   showThemeButtons?: boolean;
@@ -67,6 +80,16 @@ interface IState {
   pluginsLoaded: boolean;
   errorType: null | ErrorType;
   idle: boolean;
+  offlineMode: boolean;
+  offlineManifestId?: string;
+  offlineManifestAuthoringId?: string;
+  offlineManifestAuthoringActivities: OfflineManifestActivity[];
+  offlineManifestAuthoringCacheList: string[];
+  serviceWorkerStatus: ServiceWorkerStatus;
+  showOfflineManifestInstallConfirmation: boolean;
+  showEditUserName: boolean;
+  networkConnected: boolean;
+  serviceWorkerVersionInfo?: string;
 }
 interface IProps {}
 
@@ -74,9 +97,23 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private LARA: LaraGlobalType;
   private activityPageContentRef = React.createRef<ActivityPageContent>();
+  private studentInfo: StudentInfo;
+  private unmonitorNetworkConnection?: () => void;
 
   public constructor(props: IProps) {
     super(props);
+
+    const offlineMode = isOfflineHost();
+
+    if (offlineMode) {
+      // set the offline manifest authoring localstorage item if it exists in the params and then read from localstorage
+      // this is done in the constructor as the state value is needed in the UNSAFE_componentWillMount method
+      setOfflineManifestAuthoringId(queryValue("setOfflineManifestAuthoringId"));
+    }
+    const offlineManifestAuthoringId = offlineMode ? getOfflineManifestAuthoringId() : undefined;
+    const offlineManifestId = offlineMode ? queryValue("offlineManifest") : undefined;
+    const loadingOfflineManifest = !!offlineManifestId;
+
     this.state = {
       currentPage: 0,
       teacherEditionMode: false,
@@ -88,7 +125,17 @@ export class App extends React.PureComponent<IProps, IState> {
       incompleteQuestions: [],
       pluginsLoaded: false,
       errorType: null,
-      idle: false
+      idle: false,
+      loadingOfflineManifest,
+      offlineMode,
+      offlineManifestAuthoringActivities: [],
+      offlineManifestAuthoringCacheList: [],
+      showOfflineManifestInstallConfirmation: queryValue("confirmOfflineManifestInstall") === "true",
+      offlineManifestAuthoringId,
+      offlineManifestId,
+      serviceWorkerStatus: "unknown",
+      showEditUserName: false,
+      networkConnected: isNetworkConnected()
     };
   }
 
@@ -103,10 +150,202 @@ export class App extends React.PureComponent<IProps, IState> {
     }
   }
 
+  async UNSAFE_componentWillMount() {
+    // start monitoring the network connection
+    this.unmonitorNetworkConnection = monitorNetworkConnection((networkConnected) => this.setState({networkConnected}));
+
+    // only enable the service worker in offline mode (or in authoring mode which automatically turns on offline mode)
+    const enableServiceWorker = this.state.offlineMode;
+
+    if (enableServiceWorker && ("serviceWorker" in navigator)) {
+      this.setState({serviceWorkerVersionInfo: "Starting..."});
+
+      const wb = new Workbox("service-worker.js");
+
+      // these are all events defined for workbox-window (https://developers.google.com/web/tools/workbox/modules/workbox-window)
+      wb.addEventListener("installed", (event) => {
+        console.log("A new service worker has installed.");
+      });
+      wb.addEventListener("waiting", (event) => {
+        // TODO: in future work we should show a dialog using this recipe:
+        // https://developers.google.com/web/tools/workbox/guides/advanced-recipes#offer_a_page_reload_for_users
+        // For now just send a message to skip waiting so we don't have to do it manually in the devtools
+        // This will trigger a 'controlling' event which we are listening for below and reload the page when
+        // we get it
+        //
+        // Note: with the current setup this will cause 2 reloads for each change while developing
+        // first webpack-dev-server will try to hot load the changes, it will find it can't do this
+        // (I'm not sure why yet), it will reload the page because the hot load failed, this reload
+        // will trigger a service worker update because each change to the activity-player
+        // triggers a new service-worker since it includes a pre-cache manifest that includes
+        // the javascript files. The service worker update will then trigger this
+        // waiting event which we "skip". The new service worker will activate and start
+        // controlling the page which triggers thre reload below.
+        wb.messageSkipWaiting();
+      });
+      wb.addEventListener("controlling", (event) => {
+        // If a new service worker is now controlling the page reload it to make sure
+        // all of our assets and resources are in sync with the new service worker
+        console.log("A new service worker has installed and is controlling, reloading the page.");
+        window.location.reload();
+      });
+      wb.addEventListener("activating", (event) => {
+        console.log("A new service worker is activating.");
+      });
+      wb.addEventListener("activated", (event) => {
+        if (!event.isUpdate) {
+          console.log("Service worker activated for the first time!");
+        } else {
+          console.log("Service worker activated with an update");
+        }
+      });
+      wb.addEventListener("message", (event) => {
+        const {offlineManifestAuthoringId} = this.state;
+        switch (event.data.type) {
+          case "CACHE_UPDATED":
+            console.log(`A newer version of ${event.data.payload.updatedURL} is available!`);
+            break;
+
+          case "GET_REQUEST":
+            if (offlineManifestAuthoringId) {
+              this.setState((prevState) => {
+                // TODO: we only allow cors requests, so it would be helpful to authors
+                // if we checked whether the url can be requested with cors and if not
+                // we notify the author about the invalid url
+                
+                // make sure all models-resources requests use the base folder
+                const url = event.data.url.replace(/.*models-resources\//, "models-resources/");
+                let {offlineManifestAuthoringCacheList} = prevState;
+                const {offlineManifestAuthoringActivities} = prevState;
+                if (!/api\/v1\/activities/.test(url) && (offlineManifestAuthoringCacheList.indexOf(url) === -1)) {
+                  offlineManifestAuthoringCacheList = offlineManifestAuthoringCacheList.concat(url);
+                }
+                setOfflineManifestAuthoringData(offlineManifestAuthoringId, {
+                  activities: offlineManifestAuthoringActivities,
+                  cacheList: offlineManifestAuthoringCacheList
+                });
+                return {...prevState, offlineManifestAuthoringCacheList};
+              });
+            }
+            break;
+        }
+      });
+
+      wb.register().then((_registration) => {
+        console.log("Workbox register() promise resolved", _registration);
+        if (navigator.serviceWorker.controller) {
+          // We are controlled
+          // This means there was an active service worker when the page was loaded
+          // There might also be a another service worker waiting to the replace
+          // the one currently controlling the page, but for our status monitoring
+          // code we don't care about this waiting service worker.
+          this.setState({serviceWorkerStatus: "controlling"});
+        } else {
+          // Otherwise, this could be the first
+          // time the page is loaded or the user could have used shift-reload
+          // in either case the service worker won't start controlling unless it
+          // calls clients.claim() and our service worker doesn't do that.
+          // The service worker will transition through the states of
+          // installing, installed, waiting, activating, active
+          // The workbox "waiting" event is different than the waiting state of
+          // a service worker. During an initial load workbox won't fire the
+          // waiting event even though the worker passes through the waiting state
+
+          // The _registration has fields for 'installing', 'waiting', and 'active'
+          // The workbox getSW() is supposed to abstract that so we don't need to check
+          // of those fields to find the service worker
+          wb.getSW().then((sw) => {
+            this.setState({serviceWorkerStatus: sw.state});
+
+            sw.addEventListener("statechange", () => {
+              this.setState({serviceWorkerStatus: sw.state});
+            });
+          });
+
+          // Workbox doesn't handle a shift-reload well. In that case
+          // getSW() never resolves even though there could be an active
+          // service worker. I filed a bug about this:
+          // https://github.com/GoogleChrome/workbox/issues/2788
+          // Likewise it doesn't handle a serviceWorker that started installing
+          // in a different tab and hasn't finished yet.
+          const regSW = _registration?.active ?? _registration?.installing;
+
+          if (regSW) {
+            this.setState({serviceWorkerStatus: regSW.state});
+            // This might conflict with the listener added in getSW()
+            // however currently getSW will only resolve if
+            // navigator.serviceWorker.controller or registration.waiting are set
+            // during the registration. At this point in the logic
+            // navigator.serviceWorker.controller is not set, and
+            // it is unlikely there would be a waiting worker at the same time
+            // as an active or installing worker immediately after the register call.
+            regSW.addEventListener("statechange", () => {
+              this.setState({serviceWorkerStatus: regSW.state});
+            });
+          }
+        }
+
+        console.log("Sending GET_VERSION_INFO to service worker...");
+        this.setState({serviceWorkerVersionInfo: "Checking..."});
+        wb.messageSW({type: "GET_VERSION_INFO"})
+          .then(versionInfo => {
+            this.setState({serviceWorkerVersionInfo: versionInfo});
+          })
+          .catch(() => {
+            this.setState({serviceWorkerVersionInfo: "No response!"});
+          });
+      });
+    }
+  }
+
   async componentDidMount() {
     try {
-      const activityPath = queryValue("activity") || kDefaultActivity;
-      const activity: Activity = await getActivityDefinition(activityPath);
+      const {offlineMode, offlineManifestId, offlineManifestAuthoringId, loadingOfflineManifest} = this.state;
+
+      let offlineManifestAuthoringData: OfflineManifestAuthoringData | undefined;
+      if (offlineManifestAuthoringId) {
+        offlineManifestAuthoringData = getOfflineManifestAuthoringData(offlineManifestAuthoringId);
+      }
+
+      let offlineManifest: OfflineManifest | undefined = undefined;
+      if (offlineManifestId) {
+        offlineManifest = await getOfflineManifest(offlineManifestId);
+
+        if (offlineManifest) {
+          if (offlineManifestAuthoringId && offlineManifestAuthoringData) {
+            offlineManifestAuthoringData = mergeOfflineManifestWithAuthoringData(offlineManifest, offlineManifestAuthoringData);
+            setOfflineManifestAuthoringData(offlineManifestAuthoringId, offlineManifestAuthoringData);
+          }
+
+          await saveOfflineManifestToOfflineActivities(offlineManifest);
+        }
+      }
+
+      if (offlineManifestAuthoringData) {
+        this.setState({
+          offlineManifestAuthoringActivities: offlineManifestAuthoringData.activities,
+          offlineManifestAuthoringCacheList: offlineManifestAuthoringData.cacheList
+        });
+      }
+
+      let activity: Activity | undefined = undefined;
+      let resourceUrl: string | undefined = undefined;
+      const activityPath = queryValue("activity") || (offlineMode ? undefined : kDefaultActivity);
+      if (activityPath) {
+        resourceUrl = getResourceUrl(activityPath);
+
+        // initial call to set the id in the storage facade
+        this.trackOfflineResourceUrl(resourceUrl);
+
+        // allow overriding the location of the activity definition this way we
+        // can lock down the activity definition, but still use the common
+        // resourceUrl that would be used if the resource was online
+        const contentUrl = queryValue("contentUrl") || activityPath;
+        activity = await getActivityDefinition(contentUrl);
+        if (offlineManifestAuthoringId) {
+          await this.addActivityToOfflineManifest(offlineManifestAuthoringId, activity, resourceUrl, contentUrl);
+        }
+      }
 
       const sequencePath = queryValue("sequence");
       const sequence: Sequence | undefined = sequencePath ? await getSequenceDefinition(sequencePath) : undefined;
@@ -114,71 +353,46 @@ export class App extends React.PureComponent<IProps, IState> {
 
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity if numeric
       // or the page.position of the matching page id if prefixed with "page_<id>"
-      const currentPage = getPagePositionFromQueryValue(activity, queryValue("page"));
+      const currentPage = activity ? getPagePositionFromQueryValue(activity, queryValue("page")) : 0;
 
       const showThemeButtons = queryValueBoolean("themeButtons");
-      // Show the warning if we are not running on production
+      // Show the warning if we are not running on production (disable for now)
       const showWarning = firebaseAppName() !== "report-service-pro";
       const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
 
-      const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode};
+      const newState: Partial<IState> = {activity, offlineManifest, loadingOfflineManifest, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode, offlineManifestAuthoringId};
       setDocumentTitle(activity, currentPage);
 
-      let classHash = "";
-      let role = "unknown";
-      let runRemoteEndpoint = "";
-
-      if (queryValue("token")) {
-        try {
-          const portalData = await fetchPortalData();
-          if (portalData.fullName) {
-            newState.username = portalData.fullName;
-          }
-          if (portalData.userType) {
-            role = portalData.userType;
-          }
-          if (portalData.contextId) {
-            classHash = portalData.contextId;
-          }
-          if (portalData.runRemoteEndpoint) {
-            runRemoteEndpoint = portalData.runRemoteEndpoint;
-          }
-          await initializeDB({ name: portalData.database.appName, preview: false });
-          await signInWithToken(portalData.database.rawFirebaseJWT);
-          this.setState({ portalData });
-
-          setPortalData(portalData);
-        } catch (err) {
-          this.setError("auth", err);
-        }
-      } else {
-        try {
-          await initializeAnonymousDB(preview);
-        } catch (err) {
-          this.setError("auth", err);
-        }
-      }
-
-      if (!preview) {
-        // Notify user about network issues. Note that in preview mode Firestore network is disabled, so it doesn't
-        // make sense to track requests.
-        onFirestoreSaveTimeout(() => this.state.errorType === null && this.setError("network"));
-        // Notify user when network issues are resolved.
-        onFirestoreSaveAfterTimeout(() => this.state.errorType === "network" && this.setError(null));
-      }
-
+      // Initialize Storage provider
+      const useOfflineStorage = this.state.offlineMode || queryValueBoolean("__forceOfflineData");
+      const storage = await initStorage({name: firebaseAppName(), preview, offline: useOfflineStorage});
+      this.studentInfo = new StudentInfo(storage);
+      await this.studentInfo.init();
+      const role = this.studentInfo.role;
+      const classHash = this.studentInfo.getClassHash();
+      const runRemoteEndpoint = this.studentInfo.getRunRemoteEndpoint();
+      newState.username = this.studentInfo.name;
       this.setState(newState as IState);
 
       this.LARA = initializeLara();
-      loadLearnerPluginState(activity, teacherEditionMode).then(() => {
-        loadPluginScripts(this.LARA, activity, this.handleLoadPlugins, teacherEditionMode);
-      });
+      if (activity) {
+        loadLearnerPluginState(activity, teacherEditionMode).then(() => {
+          if (activity) {
+            loadPluginScripts(this.LARA, activity, this.handleLoadPlugins, teacherEditionMode);
+          }
+        });
+      }
 
       Modal.setAppElement("#app");
 
-      Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint);
+      Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint, offlineMode);
+
+      // call this again now that the logger is available
+      if (resourceUrl) {
+        this.trackOfflineResourceUrl(resourceUrl);
+      }
 
       const idleDetector = new IdleDetector({ idle: Number(kMaxIdleTime), onIdle: this.handleIdleness });
       idleDetector.start();
@@ -187,18 +401,36 @@ export class App extends React.PureComponent<IProps, IState> {
     }
   }
 
+  componentWillUnmount() {
+    if (this.unmonitorNetworkConnection) {
+      this.unmonitorNetworkConnection();
+    }
+  }
+
   render() {
+    const appVersionInfo = (window as any).__appVersionInfo;
+    const {serviceWorkerVersionInfo} = this.state;
+    const showOfflineNav = this.state.offlineMode && !!this.state.activity;
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
           <div className="app" data-cy="app">
             { this.state.showWarning && <WarningBanner/> }
             { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-            { this.state.showSequenceIntro
-              ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
-              : this.renderActivity() }
+            { this.state.offlineManifestAuthoringId && <OfflineManifestAuthoringNav
+                offlineManifest={this.state.offlineManifest}
+                offlineManifestAuthoringId={this.state.offlineManifestAuthoringId}
+                offlineManifestAuthoringActivities={this.state.offlineManifestAuthoringActivities}
+                offlineManifestAuthoringCacheList={this.state.offlineManifestAuthoringCacheList}
+              />
+            }
+            { showOfflineNav && <OfflineNav onOfflineActivities={this.handleShowOfflineActivities} /> }
+            { this.renderContent() }
             { this.state.showThemeButtons && <ThemeButtons/>}
-            <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
+            <div className="version-info" data-cy="version-info">
+              Application: {appVersionInfo || "No Version Info"}
+              {serviceWorkerVersionInfo && ` | Service Worker: ${serviceWorkerVersionInfo}`}
+            </div>
             <ModalDialog
               label={this.state.modalLabel}
               onClose={() => {this.setShowModal(false);}}
@@ -210,15 +442,58 @@ export class App extends React.PureComponent<IProps, IState> {
     );
   }
 
+  private renderContent = () => {
+    const {offlineManifest, loadingOfflineManifest, showSequenceIntro, sequence,
+      username, offlineMode, showOfflineManifestInstallConfirmation, activity,
+      serviceWorkerStatus} = this.state;
+    if (offlineMode && serviceWorkerStatus !== "controlling") {
+      return <OfflineInstalling serviceWorkerStatus={serviceWorkerStatus}/>;
+    } else if (offlineManifest && loadingOfflineManifest) {
+      // Rendering this has a side effect of actually loading the manifest files
+      return <OfflineManifestLoadingModal offlineManifest={offlineManifest} onClose={this.handleCloseLoadingOfflineManifest} showOfflineManifestInstallConfirmation={showOfflineManifestInstallConfirmation} />;
+    } else if (offlineMode) {
+      return activity ? this.renderActivity() : <OfflineActivities username={username} />;
+    } else if (showSequenceIntro) {
+      return <SequenceIntroduction sequence={sequence} username={username} onSelectActivity={this.handleSelectActivity} />;
+    } else {
+      return this.renderActivity();
+    }
+  }
+
   private renderActivity = () => {
-    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
-    if (!activity) return (<div>Loading</div>);
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData, showEditUserName, offlineMode } = this.state;
+    if (!activity) return (<div>Loading activity ...</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
+
+    const closeStudentModal = (newUsername?: string) => {
+      if (newUsername) {
+        this.setState({
+          username: newUsername,
+          showEditUserName: false
+        });
+      } else {
+        this.setState({
+          showEditUserName: false
+        });
+      }
+    };
+
+    const openStudentInfoModal = () => {
+      if(this.studentInfo.canChangeName()) {
+        this.setState({showEditUserName: true});
+      }
+    };
+
     return (
       <React.Fragment>
+        <StudentInfoModal
+          showModal={showEditUserName}
+          onClose={closeStudentModal}
+          studentInfo={this.studentInfo}
+        />
         <Header
           fullWidth={fullWidth}
           projectId={activity.project_id}
@@ -226,20 +501,21 @@ export class App extends React.PureComponent<IProps, IState> {
           contentName={sequence ? sequence.display_title || sequence.title || "" : activity.name}
           showSequence={sequence !== undefined}
           onShowSequence={sequence !== undefined ? this.handleShowSequenceIntro : undefined}
+          onClickUsername={openStudentInfoModal}
         />
         {
-          idle && !errorType && 
-          <IdleWarning 
+          idle && !errorType &&
+          <IdleWarning
             // __cypressLoggedIn is used to trigger logged in code path for Cypress tests.
-            // Eventually it should be replaced with better patterns for testing logged in users (probably via using 
+            // Eventually it should be replaced with better patterns for testing logged in users (probably via using
             // `token` param and stubbing network requests).
             timeout={kTimeout} username={username} anonymous={!portalData && queryValue("__cypressLoggedIn") !== "true"}
             onTimeout={this.handleTimeout} onContinue={this.handleContinueSession} onExit={this.goToPortal}
           />
         }
-        { errorType && <Error type={errorType} onExit={this.goToPortal} /> }
+        { errorType && <Error type={errorType} onExit={this.goToPortal} offlineMode={offlineMode} /> }
         {
-          !idle && !errorType && 
+          !idle && !errorType &&
           this.renderActivityContent(activity, currentPage, totalPreviousQuestions, fullWidth)
         }
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
@@ -256,16 +532,18 @@ export class App extends React.PureComponent<IProps, IState> {
             teacherEditionMode={teacherEditionMode}
             pluginsLoaded={pluginsLoaded}
             glossaryPlugin={glossaryEmbeddable !== null}
+            offlineMode={offlineMode}
           />
         }
         { glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
-          <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} pluginsLoaded={pluginsLoaded} />
+          <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} offlineMode={offlineMode} pluginsLoaded={pluginsLoaded}  />
         }
       </React.Fragment>
     );
   }
 
   private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
+    const {offlineMode} = this.state;
     return (
       <>
         { this.state.sequence && this.renderSequenceNav(fullWidth) }
@@ -288,6 +566,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   setNavigation={this.handleSetNavigation}
                   key={`page-${currentPage}`}
                   pluginsLoaded={this.state.pluginsLoaded}
+                  offlineMode={offlineMode}
                 />
         }
         { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
@@ -322,11 +601,13 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderSinglePageContent = (activity: Activity) => {
+    const {offlineMode} = this.state;
     return (
       <SinglePageContent
         activity={activity}
         teacherEditionMode={this.state.teacherEditionMode}
         pluginsLoaded={this.state.pluginsLoaded}
+        offlineMode={offlineMode}
       />
     );
   }
@@ -341,12 +622,14 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderCompletionContent = (activity: Activity) => {
+    const showReportBackupOptions = this.state.offlineMode || queryValueBoolean("__forceOfflineData");
     return (
       <CompletionPageContent
         activity={activity}
         activityName={activity.name}
         onPageChange={this.handleChangePage}
         showStudentReport={activity.student_report_enabled}
+        showReportBackupOptions={showReportBackupOptions}
         sequence={this.state.sequence}
         activityIndex={this.state.activityIndex}
         onActivityChange={this.handleSelectActivity}
@@ -380,7 +663,7 @@ export class App extends React.PureComponent<IProps, IState> {
     Logger.log({ event: LogEventName.go_back_to_portal });
     window.location.href = this.portalUrl;
   }
- 
+
   private handleChangePage = (page: number) => {
     const { currentPage, incompleteQuestions, activity } = this.state;
     if (page > currentPage && incompleteQuestions.length > 0) {
@@ -453,6 +736,46 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleLoadPlugins = () => {
     this.setState({ pluginsLoaded: true });
+  }
+
+  private handleCloseLoadingOfflineManifest = () => {
+    this.setState({loadingOfflineManifest: false});
+  }
+
+  private addActivityToOfflineManifest = async (offlineManifestAuthoringId: string, activity: Activity,
+    resourceUrl: string, contentUrl: string) => {
+    if (offlineManifestAuthoringId && isNotSampleActivityUrl(contentUrl)) {
+      const urls = await getAllUrlsInActivity(activity);
+
+      this.setState(prevState => {
+        let {offlineManifestAuthoringActivities} = prevState;
+        const {offlineManifestAuthoringCacheList} = prevState;
+
+        urls.forEach(urlInActivity => {
+          if (offlineManifestAuthoringCacheList.indexOf(urlInActivity) === -1) {
+            offlineManifestAuthoringCacheList.push(urlInActivity);
+          }
+        });
+
+        if (!prevState.offlineManifestAuthoringActivities.find(a => a.resourceUrl === resourceUrl)) {
+          offlineManifestAuthoringActivities =
+            offlineManifestAuthoringActivities.concat({ name: activity.name, resourceUrl, contentUrl });
+          setOfflineManifestAuthoringData(offlineManifestAuthoringId, {
+            activities: offlineManifestAuthoringActivities,
+            cacheList: offlineManifestAuthoringCacheList
+          });
+        }
+
+        return {offlineManifestAuthoringActivities, offlineManifestAuthoringCacheList};
+      });
+    }
+  }
+
+  private handleShowOfflineActivities = () => this.setState({ activity: undefined });
+
+  private trackOfflineResourceUrl(resourceUrl: string) {
+    TrackOfflineResourceUrl(resourceUrl);
+    Logger.setActivity(resourceUrl);
   }
 
 }
