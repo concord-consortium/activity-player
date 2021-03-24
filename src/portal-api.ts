@@ -3,7 +3,7 @@ import superagent from "superagent";
 import { v4 as uuidv4 } from "uuid";
 import { queryValue, queryValueBoolean, setQueryValue } from "./utilities/url-query";
 import { getResourceUrl } from "./lara-api";
-import { getCanonicalHostname, getHostnameWithMaybePort, isProductionOrigin } from "./utilities/host-utils";
+import { getCanonicalHostname, getHostnameWithMaybePort, isOfflineHost, isProductionOrigin } from "./utilities/host-utils";
 import { FirebaseAppName } from "./storage/firebase-db";
 
 interface PortalClassOffering {
@@ -466,7 +466,9 @@ export const anonymousPortalData = (preview: boolean) => {
     runKey = queryValue("runKey");
     if (!runKey) {
       runKey = uuidv4();
-      setQueryValue("runKey", runKey);
+      if (!isOfflineHost()) {
+        setQueryValue("runKey", runKey);
+      }
     }
   }
 
