@@ -108,11 +108,13 @@ export interface IStorageInterface {
   exportActivityToJSON: (activityId?: string) => Promise<ExportableActivity>,
   importStudentAnswersFromJSONFile: (studentAnswers: string, filename: string) => boolean,
   canSyncData(): boolean,
-  syncData(): Promise<boolean>
+  canProvideStudentReport(): boolean,
+  syncData(): Promise<boolean>,
 }
 
 class FireStoreStorageProvider implements IStorageInterface {
   portalData: IPortalData|IAnonymousPortalData;
+  isPreview: boolean;
   onSaveTimeout(handler: () => void) {
     return FirebaseImp.onFirestoreSaveTimeout(handler);
   }
@@ -123,6 +125,7 @@ class FireStoreStorageProvider implements IStorageInterface {
 
   async initializeDB (initializer: IDBInitializer) {
     const {preview, portalData}  = initializer;
+    this.isPreview = preview;
     this.setPortalData(portalData);
     try {
       if(portalData.type === "authenticated") {
@@ -190,6 +193,10 @@ class FireStoreStorageProvider implements IStorageInterface {
   // We are FireStore, so our data is synced by default....
   canSyncData() { return false; }
   syncData() { return Promise.resolve(false); }
+
+  canProvideStudentReport() {
+    return !this.isPreview;
+  }
 
   signOut() {
     FirebaseImp.signOut();
@@ -482,6 +489,9 @@ class DexieStorageProvider implements IStorageInterface {
     return Promise.resolve(false);
   }
 
+  canProvideStudentReport() {
+    return this.canSyncData();
+  }
 }
 
 let storageInstance: IStorageInterface;

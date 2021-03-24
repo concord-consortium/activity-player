@@ -79,7 +79,6 @@ export class DataSyncTracker {
   }
 
   receivedPluginStatus(status: IPluginSyncUpdate) {
-    console.log(">==== PLUGIN SYNC ==>", status);
     // We don't reset the timer if the status is fail or ok, which are terminal.
     if(status.status===("started" || "working")) {
       if(status.status === "started") {
