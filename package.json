@@ -139,6 +139,7 @@
     "sass-loader": "^10.0.2",
     "script-loader": "^0.7.2",
     "source-map-support": "^0.5.19",
+    "string-replace-loader": "^3.0.1",
     "style-loader": "^1.2.1",
     "ts-jest": "^26.3.0",
     "ts-loader": "^8.0.3",

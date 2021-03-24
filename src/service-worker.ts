@@ -1,5 +1,7 @@
 declare const self: ServiceWorkerGlobalScope;
 
+const versionInfo = "__SERVICE_WORKER_VERSION_INFO__";  // replaced by webpack using string-replace-loader
+
 import { precacheAndRoute } from "workbox-precaching";
 import { registerRoute } from "workbox-routing";
 import { StaleWhileRevalidate } from "workbox-strategies";
@@ -64,6 +66,11 @@ addEventListener("message", (event) => {
       case "SKIP_WAITING":
         console.log("Calling skipWaiting() from service worker...");
         self.skipWaiting();
+        break;
+
+      case "GET_VERSION_INFO":
+        console.log("Got version info request");
+        event.ports[0].postMessage(versionInfo);
         break;
     }
   }
