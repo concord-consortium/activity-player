@@ -33,6 +33,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     onShowSequence } = props;
 
   const [answers, setAnswers] = useState<any>();
+  const [canProvideStudentReport, setCanProvideStudentReport] = useState<boolean>();
 
   const handleExit = () => {
     if (sequence) {
@@ -85,6 +86,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
 
   useEffect(() => {
     const storage = getStorage();
+    setCanProvideStudentReport(storage.canProvideStudentReport());
     storage.watchAllAnswers(answerMetas => {
       setAnswers(answerMetas);
     });
@@ -121,7 +123,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   }
 
   const exitContainerClass = showReportBackupOptions ? "exit-container with-backup-options" : "exit-container";
-  const showStudentReportButton = showStudentReport && getStorage().canProvideStudentReport();
+  const showStudentReportButton = showStudentReport && canProvideStudentReport;
   return (
     !answers
       ? <div className="completion-page-content" data-cy="completion-page-content">
