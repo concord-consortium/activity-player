@@ -1,4 +1,4 @@
-import { getCanonicalHostname, getHostnameWithMaybePort, isOfflineHost, isProductionOrigin } from "./host-utils";
+import { getCanonicalHostname, getHostnameWithMaybePort, isOfflineHost, isProduction } from "./host-utils";
 
 describe("isOfflineHost", () => {
   it("determines offline mode via the window host value", () => {
@@ -48,13 +48,35 @@ describe("getHostnameWithMaybePort", () => {
   });
 });
 
-describe("isProductionOrigin", () => {
-  it("determines the production origin", () => {
-    expect(isProductionOrigin("https://example.com")).toBe(false);
-    expect(isProductionOrigin("https://localhost:11000")).toBe(false);
-    expect(isProductionOrigin("https://activity-player.example.com")).toBe(false);
-    expect(isProductionOrigin("https://activity-player-offline.example.com")).toBe(false);
-    expect(isProductionOrigin("https://activity-player.concord.org")).toBe(true);
-    expect(isProductionOrigin("https://activity-player-offline.concord.org")).toBe(true);
+describe("isProduction", () => {
+  it("determines the production location", () => {
+    expect(isProduction({origin: "https://example.com", pathname: "/"})).toBe(false);
+    expect(isProduction({origin: "https://localhost:11000", pathname: "/"})).toBe(false);
+    expect(isProduction({origin: "https://activity-player.example.com", pathname: "/"})).toBe(false);
+    expect(isProduction({origin: "https://activity-player-offline.example.com", pathname: "/"})).toBe(false);
+
+    expect(isProduction({origin: "https://activity-player.concord.org", pathname: ""})).toBe(true);
+    expect(isProduction({origin: "https://activity-player-offline.concord.org", pathname: ""})).toBe(true);
+
+    expect(isProduction({origin: "https://activity-player.concord.org", pathname: "/"})).toBe(true);
+    expect(isProduction({origin: "https://activity-player-offline.concord.org", pathname: "/"})).toBe(true);
+
+    expect(isProduction({origin: "https://activity-player.concord.org", pathname: "/index.html"})).toBe(true);
+    expect(isProduction({origin: "https://activity-player-offline.concord.org", pathname: "/index.html"})).toBe(true);
+
+    expect(isProduction({origin: "https://activity-player.concord.org", pathname: "/version/1.0.0/"}, {allowVersions: true})).toBe(true);
+    expect(isProduction({origin: "https://activity-player-offline.concord.org", pathname: "/version/1.0.0/"}, {allowVersions: true})).toBe(true);
+
+    expect(isProduction({origin: "https://activity-player.concord.org", pathname: "/version/1.0.0/"}, {allowVersions: false})).toBe(false);
+    expect(isProduction({origin: "https://activity-player-offline.concord.org", pathname: "/version/1.0.0/"}, {allowVersions: false})).toBe(false);
+
+    expect(isProduction({origin: "https://activity-player.concord.org", pathname: "/branch/offline-mode/"})).toBe(true);
+    expect(isProduction({origin: "https://activity-player-offline.concord.org", pathname: "/branch/offline-mode/"})).toBe(true);
+
+    expect(isProduction({origin: "https://activity-player.concord.org", pathname: "/foo/"})).toBe(false);
+    expect(isProduction({origin: "https://activity-player-offline.concord.org", pathname: "/foo/"})).toBe(false);
+
+    expect(isProduction({origin: "https://activity-player.concord.org", pathname: "/branch/foo/"})).toBe(false);
+    expect(isProduction({origin: "https://activity-player-offline.concord.org", pathname: "/branch/foo/"})).toBe(false);
   });
 });

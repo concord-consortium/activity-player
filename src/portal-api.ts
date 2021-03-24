@@ -3,7 +3,7 @@ import superagent from "superagent";
 import { v4 as uuidv4 } from "uuid";
 import { queryValue, queryValueBoolean, setQueryValue } from "./utilities/url-query";
 import { getResourceUrl } from "./lara-api";
-import { getCanonicalHostname, getHostnameWithMaybePort, isProductionOrigin } from "./utilities/host-utils";
+import { getCanonicalHostname, getHostnameWithMaybePort, isProduction } from "./utilities/host-utils";
 import { FirebaseAppName } from "./storage/firebase-db";
 
 interface PortalClassOffering {
@@ -233,12 +233,7 @@ export const firebaseAppName = ():FirebaseAppName => {
     return _firebaseAppName;
   }
 
-  const { origin, pathname } = window.location;
-  // According to the spec an empty path like https://activity-player.concord.org
-  // will still have a pathname of "/", but just to be safe this checks for the
-  // falsey pathname
-  if(isProductionOrigin(origin) &&
-     (!pathname || pathname === "/")) {
+  if (isProduction(window.location, {allowVersions: false})) {
     _firebaseAppName = "report-service-pro";
   } else {
     _firebaseAppName = "report-service-dev";
