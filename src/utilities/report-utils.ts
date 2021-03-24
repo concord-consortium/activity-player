@@ -2,7 +2,7 @@ import { queryValue } from "../utilities/url-query";
 import { getStorage } from "../storage/storage-facade";
 import { IPortalData, firebaseAppName } from "../portal-api";
 import { getResourceUrl } from "../lara-api";
-import { getCanonicalHostname, isProductionOrigin } from "./host-utils";
+import { getCanonicalHostname, isProduction } from "./host-utils";
 
 export const kProductionPortalReportUrl = "https://portal-report.concord.org/version/v4.1.0/index.html";
 export const kDevPortalReportUrl = "https://portal-report.concord.org/branch/master/index.html";
@@ -19,13 +19,7 @@ export const portalReportBaseUrl= ():string => {
     return portalReportUrlParam;
   }
 
-  const { origin, pathname } = window.location;
-  // According to the spec an empty path like https://activity-player.concord.org
-  // will still have a pathname of "/", but just to be safe this checks for the
-  // falsey pathname
-  if(isProductionOrigin(origin) &&
-     (!pathname || pathname === "/"
-      || pathname.indexOf("/version/") === 0)) {
+  if (isProduction(window.location)) {
     return kProductionPortalReportUrl;
   } else {
     return kDevPortalReportUrl;
