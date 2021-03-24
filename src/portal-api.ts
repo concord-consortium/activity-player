@@ -3,7 +3,7 @@ import superagent from "superagent";
 import { v4 as uuidv4 } from "uuid";
 import { queryValue, queryValueBoolean, setQueryValue } from "./utilities/url-query";
 import { getResourceUrl } from "./lara-api";
-import { getCanonicalHostname, getHostnameWithMaybePort, isProduction } from "./utilities/host-utils";
+import { getCanonicalHostname, getHostnameWithMaybePort, isOfflineHost, isProduction } from "./utilities/host-utils";
 import { FirebaseAppName } from "./storage/firebase-db";
 
 interface PortalClassOffering {
@@ -460,8 +460,13 @@ export const anonymousPortalData = (preview: boolean) => {
   } else {
     runKey = queryValue("runKey");
     if (!runKey) {
-      runKey = uuidv4();
-      setQueryValue("runKey", runKey);
+      if (isOfflineHost()) {
+        runKey = "offline";
+        // don't update query string with run key in offline mode
+      } else {
+        runKey = uuidv4();
+        setQueryValue("runKey", runKey);
+      }
     }
   }
 

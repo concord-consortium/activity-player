@@ -1,4 +1,7 @@
-export const isOfflineHost = (host: string) => (host === "localhost:11002") || (host === "activity-player-offline.concord.org");
+export const isOfflineHost = () => {
+  const host = getHostnameWithMaybePort();
+  return (host === "localhost:11002") || (host === "activity-player-offline.concord.org");
+};
 
 export const getCanonicalHostname = () => {
   if(window.location.hostname === "activity-player-offline.concord.org") {

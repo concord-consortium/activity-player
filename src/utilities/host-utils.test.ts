@@ -1,11 +1,25 @@
 import { getCanonicalHostname, getHostnameWithMaybePort, isOfflineHost, isProduction } from "./host-utils";
 
 describe("isOfflineHost", () => {
+  const { location } = window;
+
   it("determines offline mode via the window host value", () => {
-    expect(isOfflineHost("localhost:11000")).toBe(false);
-    expect(isOfflineHost("activity-player.concord.org")).toBe(false);
-    expect(isOfflineHost("localhost:11002")).toBe(true);
-    expect(isOfflineHost("activity-player-offline.concord.org")).toBe(true);
+    delete (window as any).location;
+
+    const mockLocation = {host: ""};
+    (window as any).location = mockLocation;
+
+    mockLocation.host = "localhost:11000";
+    expect(isOfflineHost()).toBe(false);
+
+    mockLocation.host = "activity-player.concord.org";
+    expect(isOfflineHost()).toBe(false);
+
+    mockLocation.host = "localhost:11002";
+    expect(isOfflineHost()).toBe(true);
+
+    mockLocation.host = "activity-player-offline.concord.org";
+    expect(isOfflineHost()).toBe(true);
   });
 });
 
