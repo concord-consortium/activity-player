@@ -10,6 +10,7 @@ const {InjectManifest} = require('workbox-webpack-plugin');
 const version = require("./package.json").version;
 const gitRevPlugin = new GitRevPlugin();
 const appVersionInfo = `Version ${version} (${gitRevPlugin.hash()})`;
+const serviceWorkerVersionInfo = appVersionInfo; // keep the same so we can check and show the result in the app footer
 
 module.exports = (env, argv) => {
   const devMode = argv.mode !== "production";
@@ -90,6 +91,14 @@ module.exports = (env, argv) => {
                 options: {}
               }
             ]
+          },
+          {
+            test: /service-worker\.ts$/,
+            loader: 'string-replace-loader',
+            options: {
+              search: '__SERVICE_WORKER_VERSION_INFO__',
+              replace: serviceWorkerVersionInfo,
+            }
           },
           {
             test: /\.tsx?$/,

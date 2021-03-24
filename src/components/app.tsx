@@ -89,6 +89,7 @@ interface IState {
   showOfflineManifestInstallConfirmation: boolean;
   showEditUserName: boolean;
   networkConnected: boolean;
+  serviceWorkerVersionInfo?: string;
 }
 interface IProps {}
 
@@ -157,6 +158,8 @@ export class App extends React.PureComponent<IProps, IState> {
     const enableServiceWorker = this.state.offlineMode;
 
     if (enableServiceWorker && ("serviceWorker" in navigator)) {
+      this.setState({serviceWorkerVersionInfo: "Starting..."});
+
       const wb = new Workbox("service-worker.js");
 
       // these are all events defined for workbox-window (https://developers.google.com/web/tools/workbox/modules/workbox-window)
@@ -276,8 +279,17 @@ export class App extends React.PureComponent<IProps, IState> {
               this.setState({serviceWorkerStatus: regSW.state});
             });
           }
-
         }
+
+        console.log("Sending GET_VERSION_INFO to service worker...");
+        this.setState({serviceWorkerVersionInfo: "Checking..."});
+        wb.messageSW({type: "GET_VERSION_INFO"})
+          .then(versionInfo => {
+            this.setState({serviceWorkerVersionInfo: versionInfo});
+          })
+          .catch(() => {
+            this.setState({serviceWorkerVersionInfo: "No response!"});
+          });
       });
     }
   }
@@ -392,6 +404,10 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   render() {
+    const appVersionInfo = (window as any).__appVersionInfo;
+    const {serviceWorkerVersionInfo} = this.state;
+    const mismatchedVersions = appVersionInfo !== serviceWorkerVersionInfo;
+
     const showOfflineNav = this.state.offlineMode && !!this.state.activity;
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
@@ -409,7 +425,10 @@ export class App extends React.PureComponent<IProps, IState> {
             { showOfflineNav && <OfflineNav onOfflineActivities={this.handleShowOfflineActivities} /> }
             { this.renderContent() }
             { this.state.showThemeButtons && <ThemeButtons/>}
-            <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
+            <div className="version-info" data-cy="version-info">
+              Application: {appVersionInfo || "No Version Info"}
+              {serviceWorkerVersionInfo && ` | Service Worker: ${serviceWorkerVersionInfo} ${mismatchedVersions ? "❌" : ""}`}
+            </div>
             <ModalDialog
               label={this.state.modalLabel}
               onClose={() => {this.setShowModal(false);}}
