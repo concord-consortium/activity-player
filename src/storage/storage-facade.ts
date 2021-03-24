@@ -163,6 +163,10 @@ class FireStoreStorageProvider implements IStorageInterface {
     return FirebaseImp.createOrUpdateAnswer(answer);
   }
 
+  batchCreateOrUpdateAnswers(answers: Array<IExportableAnswerMetadata>) {
+    return FirebaseImp.batchCreateOrUpdateAnswers(answers);
+  }
+
   async getLearnerPluginState(pluginId: number) {
     if (getCachedLearnerPluginState(pluginId)) {
       return getCachedLearnerPluginState(pluginId);
@@ -443,11 +447,7 @@ class DexieStorageProvider implements IStorageInterface {
             .toArray()
             .then((answers) => {
               console.dir(answers);
-              for(const answer of answers) {
-                // TODO: Look into FireStore Batch operations
-                fsProvider.createOrUpdateAnswer(answer);
-              }
-              return this.fakeWaitingPromise();
+              return fsProvider.batchCreateOrUpdateAnswers(answers);
             });
       });
 

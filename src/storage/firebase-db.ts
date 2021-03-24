@@ -217,15 +217,11 @@ export const watchAllAnswers = (callback: (wrappedAnswer: IWrappedDBAnswer[]) =>
   });
 };
 
-export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
-  if (!portalData) {
-    return;
-  }
-
-  let answerDocData: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata;
-
+function getLTIAnswer(answer: IExportableAnswerMetadata):
+  LTIRuntimeAnswerMetadata|AnonymousRuntimeAnswerMetadata|false{
+  if(!portalData) { return false; }
   if (portalData.type === "authenticated") {
-    const ltiAnswer: LTIRuntimeAnswerMetadata = {
+    return {
       ...answer,
       source_key: portalData.database.sourceKey,
       resource_url: portalData.resourceUrl,
@@ -237,9 +233,8 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
       run_key: "",
       remote_endpoint: portalData.runRemoteEndpoint
     };
-    answerDocData = ltiAnswer;
-  } else {
-    const anonymousAnswer: AnonymousRuntimeAnswerMetadata = {
+  }
+  return {
       ...answer,
       source_key: portalData.database.sourceKey,
       resource_url: portalData.resourceUrl,
@@ -248,8 +243,26 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
       tool_user_id: "anonymous",
       platform_user_id: portalData.runKey
     };
-    answerDocData = anonymousAnswer;
-  }
+}
+
+
+export function batchCreateOrUpdateAnswers(answers: Array<IExportableAnswerMetadata>) {
+  if (!portalData) { return; }
+  const db = app.firestore();
+  const batch = db.batch();
+  answers.forEach((answer) => {
+    const answerDocData = getLTIAnswer(answer);
+    if(answerDocData) {
+      db.doc(answersPath(answer.id))
+      .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
+    }
+  });
+  return batch.commit();
+}
+
+export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
+  if (!portalData) { return; }
+  const answerDocData = getLTIAnswer(answer);
 
   // TODO: LARA stores a created field with the date the answer was created
   // I'm not sure how to do that easily in Firestore, we could at least add
