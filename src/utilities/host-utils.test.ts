@@ -64,8 +64,11 @@ describe("isProduction", () => {
     expect(isProduction({origin: "https://activity-player.concord.org", pathname: "/index.html"})).toBe(true);
     expect(isProduction({origin: "https://activity-player-offline.concord.org", pathname: "/index.html"})).toBe(true);
 
-    expect(isProduction({origin: "https://activity-player.concord.org", pathname: "/version/1.0.0/"})).toBe(true);
-    expect(isProduction({origin: "https://activity-player-offline.concord.org", pathname: "/version/1.0.0/"})).toBe(true);
+    expect(isProduction({origin: "https://activity-player.concord.org", pathname: "/version/1.0.0/"}, {allowVersions: true})).toBe(true);
+    expect(isProduction({origin: "https://activity-player-offline.concord.org", pathname: "/version/1.0.0/"}, {allowVersions: true})).toBe(true);
+
+    expect(isProduction({origin: "https://activity-player.concord.org", pathname: "/version/1.0.0/"}, {allowVersions: false})).toBe(false);
+    expect(isProduction({origin: "https://activity-player-offline.concord.org", pathname: "/version/1.0.0/"}, {allowVersions: false})).toBe(false);
 
     expect(isProduction({origin: "https://activity-player.concord.org", pathname: "/branch/offline-mode/"})).toBe(true);
     expect(isProduction({origin: "https://activity-player-offline.concord.org", pathname: "/branch/offline-mode/"})).toBe(true);

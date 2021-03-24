@@ -19,7 +19,7 @@ export const portalReportBaseUrl= ():string => {
     return portalReportUrlParam;
   }
 
-  if (isProduction(window.location)) {
+  if (isProduction(window.location, {allowVersions: true})) {
     return kProductionPortalReportUrl;
   } else {
     return kDevPortalReportUrl;

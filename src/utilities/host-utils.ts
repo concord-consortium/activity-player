@@ -9,10 +9,12 @@ export const getCanonicalHostname = () => {
 
 export const getHostnameWithMaybePort = () => window.location.host;
 
-export const isProduction = (location: {origin: string, pathname: string}) => {
+export const isProduction = (location: {origin: string, pathname: string}, options?: {allowVersions?: boolean}) => {
   const {origin, pathname} = location;
+  const {allowVersions} = options || {allowVersions: false};
   const isProductionOrigin = origin === "https://activity-player.concord.org" || origin === "https://activity-player-offline.concord.org";
-  const isRootOrVersion = !pathname || pathname === "/" || pathname === "/index.html" || /^\/version\//.test(pathname);
+  const isRoot = !pathname || pathname === "/" || pathname === "/index.html";
+  const isVersion = /^\/version\//.test(pathname);
   const isOfflineMode = /^\/branch\/offline-mode\//.test(pathname);
-  return isProductionOrigin && (isRootOrVersion || isOfflineMode);
+  return isProductionOrigin && (isRoot || (isVersion && allowVersions) || isOfflineMode);
 };

@@ -233,7 +233,7 @@ export const firebaseAppName = ():FirebaseAppName => {
     return _firebaseAppName;
   }
 
-  if (isProduction(window.location)) {
+  if (isProduction(window.location, {allowVersions: false})) {
     _firebaseAppName = "report-service-pro";
   } else {
     _firebaseAppName = "report-service-dev";
