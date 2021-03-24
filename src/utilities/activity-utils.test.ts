@@ -177,11 +177,12 @@ describe("Activity utility functions", () => {
     urls = await getAllUrlsInActivity(glossaryActivity);
     expect(urls).toEqual([
       "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+      "https://example.com/fake.mp4",
       "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
       "https://example.com/manifest.json",
+      "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/glossary.json",
       "https://glossary-plugin.concord.org/plugin.js",
       "https://glossary-plugin.concord.org/manifest.json",
-      "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/glossary.json",
       "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/5cacbe00-1c44-11ea-90e3-39c0ba8d079c-sticky note.svg",
       "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/5d298f20-1c44-11ea-90e3-39c0ba8d079c-IMG_8603.jpeg"
     ]);
