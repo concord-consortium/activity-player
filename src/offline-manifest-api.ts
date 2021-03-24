@@ -45,7 +45,7 @@ export const cacheOfflineManifest = (options: CacheOfflineManifestOptions) => {
   const {offlineManifest, onCachingStarted, onUrlCached, onUrlCacheFailed, onAllUrlsCached, onAllUrlsCacheFailed} = options;
   const urls = offlineManifest.activities.map(a => a.contentUrl).concat(offlineManifest.cacheList);
   const loadingPromises = urls.map(url => {
-    return fetch(url, {mode: "cors"})
+    return fetch(url, {mode: "cors", cache: "no-store"})
       .then(() => onUrlCached(url))
       .catch(err => onUrlCacheFailed(url, err));
   });
