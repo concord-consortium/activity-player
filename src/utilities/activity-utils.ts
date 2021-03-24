@@ -168,7 +168,7 @@ export const getPagePositionFromQueryValue = (activity: Activity, pageQueryValue
   return Math.max(0, Math.min((parseInt(pageQueryValue, 10) || 0), activity.pages.length));
 };
 
-export const walkObject = (activityNode: any, stringCallback: (s: string) => string) => {
+export const walkObject = (activityNode: any, stringCallback: (s: string, key?: string) => string) => {
   if (!activityNode) {
     return;
   }
@@ -180,7 +180,7 @@ export const walkObject = (activityNode: any, stringCallback: (s: string) => str
     Object.keys(activityNode).forEach(key => {
       switch (typeof activityNode[key]) {
         case "string":
-          activityNode[key] = stringCallback(activityNode[key]);
+          activityNode[key] = stringCallback(activityNode[key], key);
           break;
         case "object":
           walkObject(activityNode[key], stringCallback);
@@ -214,9 +214,16 @@ export const removeDuplicateUrls = (urls: string[]) => urls.filter((url, index) 
 
 export const getAllUrlsInActivity = async (activity: Activity, urls: string[] = []) => {
   const addExternalUrls = (object: any) => {
-    walkObject(object, (s) => {
+    walkObject(object, (s, key) => {
       if (isExternalOrModelsResourcesUrl(s)) {
         urls.push(s);
+      }
+      // add all external urls in the stringified author data json
+      if (key === "author_data") {
+        try {
+          const authorData = JSON.parse(s);
+          addExternalUrls(authorData);
+        } catch (e) {} // eslint-disable-line no-empty
       }
       return s;
     });
@@ -232,7 +239,6 @@ export const getAllUrlsInActivity = async (activity: Activity, urls: string[] = 
       if (authorData?.s3Url) {
         const response = await fetch(authorData.s3Url);
         const glossaryJson = await response.json();
-        urls.push(authorData.s3Url);
         addExternalUrls(glossaryJson);
       }
     } catch (e) {
