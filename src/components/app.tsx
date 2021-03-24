@@ -206,6 +206,10 @@ export class App extends React.PureComponent<IProps, IState> {
           case "GET_REQUEST":
             if (offlineManifestAuthoringId) {
               this.setState((prevState) => {
+                // TODO: we only allow cors requests, so it would be helpful to authors
+                // if we checked whether the url can be requested with cors and if not
+                // we notify the author about the invalid url
+                
                 // make sure all models-resources requests use the base folder
                 const url = event.data.url.replace(/.*models-resources\//, "models-resources/");
                 let {offlineManifestAuthoringCacheList} = prevState;

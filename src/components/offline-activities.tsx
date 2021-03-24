@@ -10,7 +10,10 @@ const OfflineActivityListRow = (props: {activity: OfflineActivity}) => {
   const displayName = manifestName.length > 0 ? `${manifestName}: ${name}` : name;
   return (
     <tr>
-      <td>TDB</td>
+      {
+        // Add class column back at a later date
+        // <td>TDB</td>
+      }
       <td className="activity">
         <a href={`?activity=${encodeURIComponent(resourceUrl)}&contentUrl=${encodeURIComponent(contentUrl)}`}>{displayName}</a>
       </td>
@@ -54,7 +57,10 @@ export class OfflineActivities extends React.Component<IProps, IState> {
       <table>
         <thead>
           <tr>
-            <th>Class</th>
+            {
+              // Add class column back at a later date
+              // <th>Class</th>
+            }
             <th>Activity</th>
           </tr>
         </thead>

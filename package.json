@@ -173,6 +173,7 @@
     "superagent": "^6.1.0",
     "workbox-precaching": "^6.0.2",
     "workbox-webpack-plugin": "^6.0.2",
+    "workbox-range-requests": "^6.0.2",
     "workbox-window": "^6.0.2"
   }
 }

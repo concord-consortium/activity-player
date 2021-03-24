@@ -127,7 +127,7 @@
           "embeddable": {
             "plugin": {
               "description": null,
-              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"This is test content\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"none\",\"mediaURL\":\"\"}}",
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"This is test content\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"none\",\"mediaURL\":\"https://example.com/fake.mp4\"}}",
               "approved_script_label": "teacherEditionTips",
               "component_label": "windowShade",
               "approved_script": {
