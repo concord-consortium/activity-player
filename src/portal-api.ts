@@ -465,8 +465,11 @@ export const anonymousPortalData = (preview: boolean) => {
   } else {
     runKey = queryValue("runKey");
     if (!runKey) {
-      runKey = uuidv4();
-      if (!isOfflineHost()) {
+      if (isOfflineHost()) {
+        runKey = "offline";
+        // don't update query string with run key in offline mode
+      } else {
+        runKey = uuidv4();
         setQueryValue("runKey", runKey);
       }
     }
