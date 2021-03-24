@@ -406,8 +406,6 @@ export class App extends React.PureComponent<IProps, IState> {
   render() {
     const appVersionInfo = (window as any).__appVersionInfo;
     const {serviceWorkerVersionInfo} = this.state;
-    const mismatchedVersions = appVersionInfo !== serviceWorkerVersionInfo;
-
     const showOfflineNav = this.state.offlineMode && !!this.state.activity;
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
@@ -427,7 +425,7 @@ export class App extends React.PureComponent<IProps, IState> {
             { this.state.showThemeButtons && <ThemeButtons/>}
             <div className="version-info" data-cy="version-info">
               Application: {appVersionInfo || "No Version Info"}
-              {serviceWorkerVersionInfo && ` | Service Worker: ${serviceWorkerVersionInfo} ${mismatchedVersions ? "❌" : ""}`}
+              {serviceWorkerVersionInfo && ` | Service Worker: ${serviceWorkerVersionInfo}`}
             </div>
             <ModalDialog
               label={this.state.modalLabel}
