@@ -20,6 +20,8 @@ describe("isOfflineHost", () => {
 
     mockLocation.host = "activity-player-offline.concord.org";
     expect(isOfflineHost()).toBe(true);
+
+    (window as any).location = location;
   });
 });
 
