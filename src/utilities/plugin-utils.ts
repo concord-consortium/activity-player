@@ -12,9 +12,17 @@ export interface UsedPluginInfo {
   plugin: Plugin;
 }
 
-const usedPlugins: UsedPluginInfo[] = [];
+let usedPlugins: UsedPluginInfo[] = [];
 
-const addUsedPlugin = (plugin: Plugin) => {
+export const getUsedPlugins = () => {
+  return usedPlugins;
+};
+
+export const clearUsedPlugins = () => {
+  usedPlugins = [];
+};
+
+export const addUsedPlugin = (plugin: Plugin) => {
   if (!usedPlugins.find(p => p.plugin.approved_script_label === plugin.approved_script_label)) {
     usedPlugins.push({
       id: usedPlugins.length,
@@ -58,14 +66,16 @@ export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, hand
     script.type = "text/javascript";
     script.src = usedPlugin.plugin.approved_script.url;
     script.setAttribute("data-id", pluginLabel);
-    document.body.appendChild(script);
     script.onload = function() {
-      console.log(`plugin${usedPlugin.id} script loaded`);
+      if (typeof window.jest === undefined) {
+        console.log(`plugin${usedPlugin.id} script loaded`);
+      }
       usedPlugin.loaded = true;
       if (plugins.filter((p) => !p.loaded).length === 0) {
         handleLoadPlugins();
       }
     };
+    document.body.appendChild(script);
   });
 };
 
@@ -98,7 +108,7 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 // loads the learner plugin state into the firebase write-through cache
 export const loadLearnerPluginState = async (activity: Activity, teacherEditionMode: boolean) => {
   const plugins = findUsedPlugins(activity, teacherEditionMode);
-  await Promise.all(plugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
+  return await Promise.all(plugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
 };
 
 export const initializePlugin = (context: IEmbeddablePluginContext) => {
@@ -122,8 +132,8 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
   const pluginLabel = `plugin${pluginId}`;
   const pluginContext: IPluginRuntimeContextOptions = {
     type: "runtime",
-    name: usedPlugin?.plugin.approved_script.name || "",
-    url: usedPlugin?.plugin.approved_script.url || "",
+    name: usedPlugin.plugin.approved_script.name || "",
+    url: usedPlugin.plugin.approved_script.url || "",
     pluginId,
     embeddablePluginId: null,
     authoredState: embeddable.plugin?.author_data || null,

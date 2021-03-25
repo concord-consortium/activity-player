@@ -288,8 +288,10 @@ export const getLearnerPluginStateDocId = (pluginId: number) => {
 
 // TODO: change to watch the learner state so that it works across sessions and not just on the same page
 
-const cachedLearnerPluginState: Record<number, string|null> = {};
+let cachedLearnerPluginState: Record<number, string|null> = {};
 export const getCachedLearnerPluginState = (pluginId: number) => cachedLearnerPluginState[pluginId] || null;
+
+export const clearCachedLearnerPluginState = () => cachedLearnerPluginState = {};
 
 export const getLearnerPluginState = async (pluginId: number) => {
   const docId = getLearnerPluginStateDocId(pluginId);
@@ -357,9 +359,11 @@ export const setLearnerPluginState = async (pluginId: number, state: string): Pr
     throw new Error("Cannot compute learner plugin state doc id");
   }
 
-  await app.firestore()
+  try {
+    await app.firestore()
     .doc(learnerPluginStatePath(docId))
     .set(learnerPluginState);
+  } catch (e) {} // eslint-disable-line no-empty
 
   cachedLearnerPluginState[pluginId] = state;
 
