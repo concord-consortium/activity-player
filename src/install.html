@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Activity Player</title>
+    <meta name="description" content="Presentation of lightweight activities">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="manifest" href="manifest.json">
+    <script>
+      window.__appVersionInfo = "__APP_VERSION_INFO__";
+    </script>
+    <!-- Currently the revision is handled manually, it should be bumped when a
+        new manifest is available. It would be better for webpack to generate this
+        destination name and inject it into the file. However currently the manifest
+        is built during the application webpack config, so the seperate install
+        config can't inject its value -->
+    <script src="app-manifest.js?revision=2"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+  </body>
+</html>
