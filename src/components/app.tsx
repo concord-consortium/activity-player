@@ -37,7 +37,7 @@ import { OfflineInstalling } from "./offline-installing";
 import { OfflineActivities } from "./offline-activities";
 import { OfflineNav } from "./offline-nav";
 import { OfflineManifestAuthoringNav } from "./offline-manifest-authoring-nav";
-import { StudentInfo } from "../student-info";
+import { DEFAULT_STUDENT_LOGGING_USERNAME, DEFAULT_STUDENT_NAME, StudentInfo } from "../student-info";
 import { StudentInfoModal } from "./student-info-modal";
 import { isNetworkConnected, monitorNetworkConnection } from "../utilities/network-connection";
 import { isOfflineHost } from "../utilities/host-utils";
@@ -70,6 +70,7 @@ interface IState {
   showThemeButtons?: boolean;
   showWarning: boolean;
   username: string;
+  loggingUsername: string;
   portalData?: IPortalData;
   sequence?: Sequence;
   showSequenceIntro?: boolean;
@@ -119,7 +120,8 @@ export class App extends React.PureComponent<IProps, IState> {
       teacherEditionMode: false,
       showThemeButtons: false,
       showWarning: false,
-      username: "Anonymous",
+      username: DEFAULT_STUDENT_NAME,
+      loggingUsername: DEFAULT_STUDENT_LOGGING_USERNAME,
       showModal: false,
       modalLabel: "",
       incompleteQuestions: [],
@@ -374,6 +376,7 @@ export class App extends React.PureComponent<IProps, IState> {
       const classHash = this.studentInfo.getClassHash();
       const runRemoteEndpoint = this.studentInfo.getRunRemoteEndpoint();
       newState.username = this.studentInfo.name;
+      newState.loggingUsername = this.studentInfo.loggingUsername;
       this.setState(newState as IState);
 
       this.LARA = initializeLara();
@@ -387,7 +390,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
       Modal.setAppElement("#app");
 
-      Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint, offlineMode);
+      Logger.initializeLogger(this.LARA, newState.loggingUsername || this.state.loggingUsername, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint, offlineMode);
 
       // call this again now that the logger is available
       if (resourceUrl) {

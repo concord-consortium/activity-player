@@ -4,8 +4,11 @@ import { LaraGlobalType } from "../lara-plugin/index";
 import { Role } from "../student-info";
 import { dexieStorage } from "../storage/dexie-storage";
 import { LogMessage } from "../types";
+import { isProduction } from "../utilities/host-utils";
 
-const logManagerUrl = "//cc-log-manager.herokuapp.com/api/logs";
+interface LogMessageWithId extends LogMessage {
+  id?: string;  // has to optional to allow deletes
+}
 
 export interface LogParams {
   event: string | LogEventName,
@@ -31,7 +34,16 @@ export enum LogEventName {
   session_timeout
 }
 
+export interface ILogSyncUpdate {
+  status: "started" | "working" | "failed" | "completed";
+  message?: string;
+}
+
+export type LogSyncUpdateCallback = (update: ILogSyncUpdate) => void;
+
 export class Logger {
+  private logManagerUrl = "//cc-log-manager.herokuapp.com/api/logs";
+
   public static initializeLogger(LARA: LaraGlobalType,
                                  username: string,
                                  role: Role,
@@ -86,6 +98,53 @@ export class Logger {
     }
   }
 
+  public static async syncOfflineLogs(updateCallback: LogSyncUpdateCallback) {
+    const instance = this._instance;
+    if (!instance) return;
+
+    const heartbeat = (message: string) => updateCallback({status: "working", message});
+
+    updateCallback({status: "started"});
+
+    const {activity, classHash, username, runRemoteEndpoint} = instance;
+    if (activity) {
+      heartbeat("Querying logs...");
+      const logs = await dexieStorage.logs.where("activity").equals(activity).toArray();
+
+      heartbeat(`Found ${logs.length} logs`);
+
+      // we want to try to upload the logs in the order they are stored so this a
+      // hack to do iteration on awaits, see https://stackoverflow.com/a/49499491
+      await logs.reduce(async (promise, log: LogMessageWithId) => {
+        await promise;
+
+        // extract the dexie id but don't send it to the log manager
+        const id = log.id as string;
+        delete log.id;
+
+        // update the log entry with the portal data
+        log = {...log, classHash, username, run_remote_endpoint: runRemoteEndpoint };
+
+        try {
+          heartbeat(`Uploading log #${id}`);
+          const logged = await instance.sendToLoggingServiceAndWaitForReply(log);
+
+          if (logged) {
+            heartbeat(`Deleting log #${id}`);
+
+            // delete the log entry
+            await dexieStorage.logs.where("id").equals(id).delete();
+          }
+        } catch (e) {
+          // don't fail here
+          heartbeat(`Failed uploading log #${id}: ${e.toString()}`);
+        }
+      }, Promise.resolve());
+    }
+
+    updateCallback({status: "completed"});
+  }
+
   private static _instance?: Logger;
 
   public static get Instance() {
@@ -131,6 +190,10 @@ export class Logger {
     this.activityPage = activityPage;
     this.runRemoteEndpoint = runRemoteEndpoint;
     this.offlineMode = offlineMode;
+
+    this.logManagerUrl = isProduction(window.location)
+      ? "//cc-log-manager.herokuapp.com/api/logs"
+      : "//cc-log-manager-dev.herokuapp.com/api/logs";
   }
 
   private createLogMessage(
@@ -166,16 +229,28 @@ export class Logger {
 
   private sendToLoggingService(data: LogMessage) {
     if (DEBUG_LOGGER) {
-      console.log("Logger#sendToLoggingService sending", JSON.stringify(data), "to", logManagerUrl);
+      console.log("Logger#sendToLoggingService sending", JSON.stringify(data), "to", this.logManagerUrl);
     }
     const request = new XMLHttpRequest();
-    request.open("POST", logManagerUrl, true);
+    request.open("POST", this.logManagerUrl, true);
     request.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
     request.send(JSON.stringify(data));
+  }
+
+  private async sendToLoggingServiceAndWaitForReply(data: LogMessage) {
+    let logged = false;
+    try {
+      const result = await fetch(this.logManagerUrl, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {"Content-Type": "application/json; charset=UTF-8"}
+      });
+      logged = (result.status === 200) || (result.status === 201);
+    } catch (e) {} // eslint-disable-line no-empty
+    return logged;
   }
 
   private saveLogMessage(data: LogMessage) {
     dexieStorage.logs.put(data);
   }
-
 }

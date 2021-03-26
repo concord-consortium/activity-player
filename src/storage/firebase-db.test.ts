@@ -88,7 +88,8 @@ describe("Firestore", () => {
       resourceUrl: "http://example/resource",
       toolId: "activity-player.concord.org",
       userType: "learner",
-      runRemoteEndpoint: "https://example.com/learner/1234"
+      runRemoteEndpoint: "https://example.com/learner/1234",
+      loggingUsername: "1@example.com"
     });
 
     const embeddable = {
@@ -250,7 +251,8 @@ describe("Firestore", () => {
             class_info_url: "http://example.com/4",
             offering_id: 8
           },
-          runRemoteEndpoint: "http://example.com/5"
+          runRemoteEndpoint: "http://example.com/5",
+          loggingUsername: "1@example.com"
         });
       });
 
