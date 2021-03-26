@@ -33,7 +33,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>This is a test of the glossary</p>",
+            "content": "<p>This is a test of some of the words in the AK glossary: precipitation, prediction, weather and air moisture.</p>",
             "is_callout": true,
             "is_full_width": false,
             "is_hidden": false,
@@ -66,7 +66,7 @@
   "plugins": [
     {
       "description": null,
-      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"tbi7A3rcMmkdxZA4kHgW\",\"s3Url\":\"https://token-service-files.s3.amazonaws.com/glossary-plugin/tbi7A3rcMmkdxZA4kHgW/glossary.json\"}",
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/upZ83jqTZAZuoQqRAfAb/glossary.json\"}",
       "approved_script_label": "glossary",
       "component_label": "glossary",
       "approved_script": {
