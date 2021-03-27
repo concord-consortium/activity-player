@@ -33,7 +33,7 @@ export const ExpandableContainer: React.FC<IProps> = (props) => {
           <EmbeddablePluginSideTip
             key={sideTip.embeddable.ref_id}
             embeddable={sideTip.embeddable}
-            offlineMode={false}
+            offlineMode={offlineMode}
             pluginsLoaded={pluginsLoaded}
           />)
       }
