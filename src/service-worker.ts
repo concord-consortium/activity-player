@@ -2,9 +2,10 @@ declare const self: ServiceWorkerGlobalScope;
 
 const versionInfo = "__SERVICE_WORKER_VERSION_INFO__";  // replaced by webpack using string-replace-loader
 
+import { WorkboxPlugin } from "workbox-core";
 import { registerRoute } from "workbox-routing";
 import { CacheOnly, NetworkFirst } from "workbox-strategies";
-import { CacheableResponsePlugin } from "workbox-cacheable-response";
+// import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { RangeRequestsPlugin } from "workbox-range-requests";
 
 const ignoredGets: RegExp[] = [
@@ -63,6 +64,23 @@ const ignoredGets: RegExp[] = [
 //   }),
 // );
 
+/**
+   Strip out the __WB_REVISION__ parameter
+   Note this also escapes the parameters, so it needs to be applied to both the
+   write and read operations
+   For example URLs like this one:
+     https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap
+   get converted to this format when passing through:
+     https://fonts.googleapis.com/css2?family=Lato%3Awght%40400%3B700%3B900&display=swap
+**/
+const stripWbRevision: WorkboxPlugin = {
+  cacheKeyWillBeUsed: async ({request, mode, params, event, state}) => {
+    const url = new URL(request.url);
+    url.searchParams.delete("__WB_REVISION__");
+    return url.href;
+  }
+};
+
 registerRoute(
   ({ request }) => {
     const isGet = request.method.toUpperCase() === "GET";
@@ -76,6 +94,9 @@ registerRoute(
     plugins: [
       // handle range requests
       new RangeRequestsPlugin(),
+      // We don't really need to delete the __WB_REVISION__ here
+      // but otherwise the cache key will not match the key used during the install
+      stripWbRevision
     ],
   }),
 );
@@ -118,8 +139,10 @@ interface CacheURLsMessageData {
  */
 function addCacheListener() {
   const networkFirst = new NetworkFirst({
-    // TOOD: this is a seperate cache for now just to test it out
-    cacheName: "cachedGets"
+    cacheName: "cachedGets",
+    plugins: [
+      stripWbRevision
+    ]
   });
 
   // See https://github.com/Microsoft/TypeScript/issues/28357#issuecomment-436484705
@@ -151,7 +174,7 @@ function addCacheListener() {
 
       // TODO: update this so it sends back status as each request is made
       // If a MessageChannel was used, reply to the message on success.
-      if (event.ports && event.ports[0]) {
+      if (event.ports?.[0]) {
         requestPromises.then(() => event.ports[0].postMessage(true));
       }
     }

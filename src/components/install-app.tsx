@@ -1,8 +1,6 @@
 import React from "react";
 import { isOfflineHost } from "../utilities/host-utils";
 import { Workbox } from "workbox-window/index";
-import { cacheOfflineManifest } from "../offline-manifest-api";
-import { OfflineManifest } from "../types";
 import queryString from "query-string";
 
 interface IState {
@@ -72,14 +70,13 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
       // into the service worker so it know what revision to look for either when the actual page
       // requests it, or when it is making the install request and then it should not include
       // the revision param in the cached key
-      // if (entry.revision) {
-      //   const parsedUrl = queryString.parseUrl(entry.url);
-      //   parsedUrl.query.__WB_REVISION__ = entry.revision;
-      //   return queryString.stringifyUrl(parsedUrl);
-      // } else {
-      //   return entry.url;
-      // }
-      return entry.url;
+      if (entry.revision) {
+        const parsedUrl = queryString.parseUrl(entry.url);
+        parsedUrl.query.__WB_REVISION__ = entry.revision;
+        return queryString.stringifyUrl(parsedUrl);
+      } else {
+        return entry.url;
+      }
     });
 
     this.wb.messageSW({type: "CACHE_URLS_WITH_PROGRESS", payload: {urlsToCache: appUrls}})
