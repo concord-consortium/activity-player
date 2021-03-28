@@ -82,6 +82,29 @@ const stripWbRevision: WorkboxPlugin = {
   }
 };
 
+// If the service worker is loaded at:
+// https://example.com/path/service-worker.js
+// Then treat
+//   https://example.com/path/
+//   https://example.com/path/index.html
+//   https://example.com/path/index.html?anyParam=hi&anyOtherParam
+// All as the same url from the cache they all will have the cache key of
+//   https://example.com/path/index.html
+const rootUrl = new URL(".", location.href);
+const rootIndexHtmlUrl = new URL("index.html", location.href);
+const cleanIndexHtmlParams: WorkboxPlugin = {
+  cacheKeyWillBeUsed: async ({request, mode, params, event, state}) => {
+    const url = new URL(request.url);
+    if (url.origin === location.origin &&
+        (url.pathname === rootUrl.pathname ||
+         url.pathname === rootIndexHtmlUrl.pathname) ) {
+      return rootIndexHtmlUrl.href;
+    } else {
+      return request;
+    }
+  }
+};
+
 registerRoute(
   ({ request }) => {
     const isGet = request.method.toUpperCase() === "GET";
@@ -97,7 +120,8 @@ registerRoute(
       new RangeRequestsPlugin(),
       // We don't really need to delete the __WB_REVISION__ here
       // but otherwise the cache key will not match the key used during the install
-      stripWbRevision
+      stripWbRevision,
+      cleanIndexHtmlParams
     ],
   }),
 );
@@ -142,7 +166,8 @@ function addCacheListener() {
   const networkFirst = new NetworkFirst({
     cacheName: "cachedGets",
     plugins: [
-      stripWbRevision
+      stripWbRevision,
+      cleanIndexHtmlParams
     ]
   });
 
