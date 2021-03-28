@@ -2,9 +2,15 @@ import React from "react";
 import { isOfflineHost } from "../utilities/host-utils";
 import { Workbox } from "workbox-window/index";
 import queryString from "query-string";
+import { getOfflineManifest, saveOfflineManifestToOfflineActivities } from "../offline-manifest-api";
+import { OfflineManifest } from "../types";
+import { OfflineManifestLoadingModal } from "./offline-manifest-loading-modal";
+import { queryValue } from "../utilities/url-query";
 
 interface IState {
   serviceWorkerVersionInfo?: string;
+  loadingOfflineManifest: boolean;
+  offlineManifest?: OfflineManifest;
 }
 interface IProps {
 }
@@ -18,15 +24,32 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
 
     if (!isOfflineHost() || !("serviceWorker" in navigator)) {
       // Don't setup workbox
-      this.state = {};
+      this.state = {
+        loadingOfflineManifest: false
+      };
+      // TODO: show some useful message incase some one loads this page from a
+      // non offline host, or in a browser without service worker support
       return;
     }
 
+    const offlineManifestId = queryValue("offlineManifest");
+    const loadingOfflineManifest = !!offlineManifestId;
+
     this.state = {
-      serviceWorkerVersionInfo: "Starting..."
+      serviceWorkerVersionInfo: "Starting...",
+      loadingOfflineManifest
     };
 
     this.wb = new Workbox("service-worker.js");
+
+    this.wb.addEventListener("waiting", (event) => {
+      // TODO: in future work we should show a dialog using this recipe:
+      // https://developers.google.com/web/tools/workbox/guides/advanced-recipes#offer_a_page_reload_for_users
+      // For now just send a message to skip waiting so we don't have to do it manually in the devtools
+      // This will trigger a 'controlling' event which we are listening for below and reload the page when
+      // we get it
+      this.wb.messageSkipWaiting();
+    });
 
     this.wb.register().then((_registration) => {
       console.log("Workbox register() promise resolved", _registration);
@@ -54,6 +77,19 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
         }
     });
 
+    if (offlineManifestId) {
+      getOfflineManifest(offlineManifestId)
+        .then(async (offlineManifest) => {
+          console.log("got offlineManifest", offlineManifest);
+          if (offlineManifest) {
+            await saveOfflineManifestToOfflineActivities(offlineManifest);
+            this.setState({offlineManifest});
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
   }
 
   cacheApplication() {
@@ -90,7 +126,7 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
 
   render() {
     const appVersionInfo = (window as any).__appVersionInfo;
-    const {serviceWorkerVersionInfo} = this.state;
+    const {serviceWorkerVersionInfo, offlineManifest, loadingOfflineManifest} = this.state;
 
     return (
       <div>
@@ -99,6 +135,10 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
           Application: {appVersionInfo || "No Version Info"}
           {serviceWorkerVersionInfo && ` | Service Worker: ${serviceWorkerVersionInfo}`}
         </div>
+        { (offlineManifest && loadingOfflineManifest) ?
+          <OfflineManifestLoadingModal offlineManifest={offlineManifest} showOfflineManifestInstallConfirmation={true} workbox={this.wb} />
+          : null
+        }
       </div>
     );
   }

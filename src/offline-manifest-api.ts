@@ -1,5 +1,6 @@
 import { dexieStorage } from "./storage/dexie-storage";
 import { OfflineActivity, OfflineManifest, OfflineManifestActivity } from "./types";
+import { Workbox } from "workbox-window/index";
 
 export interface OfflineManifestAuthoringData {
   activities: OfflineManifestActivity[];
@@ -33,6 +34,7 @@ export const getOfflineManifest = (id: string): Promise<OfflineManifest> => {
 };
 
 export interface CacheOfflineManifestOptions {
+  workbox?: Workbox;
   offlineManifest: OfflineManifest;
   onCachingStarted: (urls: string[]) => void;
   onUrlCached: (url: string) => void;
@@ -42,17 +44,33 @@ export interface CacheOfflineManifestOptions {
 }
 
 export const cacheOfflineManifest = (options: CacheOfflineManifestOptions) => {
-  const {offlineManifest, onCachingStarted, onUrlCached, onUrlCacheFailed, onAllUrlsCached, onAllUrlsCacheFailed} = options;
+  const {workbox, offlineManifest, onCachingStarted, onUrlCached, onUrlCacheFailed, onAllUrlsCached, onAllUrlsCacheFailed} = options;
   const urls = offlineManifest.activities.map(a => a.contentUrl).concat(offlineManifest.cacheList);
-  const loadingPromises = urls.map(url => {
-    return fetch(url, {mode: "cors"})
-      .then(() => onUrlCached(url))
-      .catch(err => onUrlCacheFailed(url, err));
-  });
-  onCachingStarted(urls);
-  return Promise.all(loadingPromises)
-    .then(() => onAllUrlsCached())
-    .catch(err => onAllUrlsCacheFailed(err));
+
+  if (workbox) {
+    onCachingStarted(urls);
+    // TODO: add handling of messages from service worker indicating the status
+    return workbox.messageSW({type: "CACHE_URLS_WITH_PROGRESS", payload: {urlsToCache: urls}})
+      .then((response: any) => {
+        console.log("url caching finished", response);
+        onAllUrlsCached();
+      })
+      .catch((err) => {
+        // I'm not sure it currently returns an error
+        console.error("url caching failed");
+        onAllUrlsCacheFailed(err);
+      });
+  } else {
+    const loadingPromises = urls.map(url => {
+      return fetch(url, {mode: "cors"})
+        .then(() => onUrlCached(url))
+        .catch(err => onUrlCacheFailed(url, err));
+    });
+    onCachingStarted(urls);
+    return Promise.all(loadingPromises)
+      .then(() => onAllUrlsCached())
+      .catch(err => onAllUrlsCacheFailed(err));
+  }
 };
 
 export const OfflineManifestAuthoringIdKey = "offlineManifestAuthoringId";

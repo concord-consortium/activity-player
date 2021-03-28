@@ -1,13 +1,15 @@
 import React from "react";
 import { cacheOfflineManifest } from "../offline-manifest-api";
 import { OfflineManifest } from "../types";
+import { Workbox } from "workbox-window/index";
 
 import "./offline-manifest-loading-modal.scss";
 
 interface IProps {
   offlineManifest: OfflineManifest;
-  onClose: () => void;
+  onClose?: () => void;
   showOfflineManifestInstallConfirmation: boolean;
+  workbox?: Workbox;
 }
 
 interface IState {
@@ -30,9 +32,10 @@ export class OfflineManifestLoadingModal extends React.Component<IProps, IState>
   }
 
   componentDidMount() {
-    const { offlineManifest } = this.props;
+    const { offlineManifest, workbox } = this.props;
 
     cacheOfflineManifest({
+      workbox,
       offlineManifest,
       onCachingStarted: (urls) => {
         this.setState({urlsToCache: urls});
@@ -60,10 +63,10 @@ export class OfflineManifestLoadingModal extends React.Component<IProps, IState>
 
   checkForAutoClose(props: IProps) {
     const {caching, urlsFailedToCache} = this.state;
-    const {showOfflineManifestInstallConfirmation} = this.props;
-    if (!caching && (urlsFailedToCache.length === 0) && !showOfflineManifestInstallConfirmation) {
+    const {showOfflineManifestInstallConfirmation, onClose} = this.props;
+    if (onClose && !caching && (urlsFailedToCache.length === 0) && !showOfflineManifestInstallConfirmation) {
       // allow the final render
-      setTimeout(() => props.onClose(), 0);
+      setTimeout(() => onClose(), 0);
     }
   }
 

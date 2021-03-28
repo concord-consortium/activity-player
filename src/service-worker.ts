@@ -15,6 +15,7 @@ const ignoredGets: RegExp[] = [
   /\/install\.html/,                 // installer
   /\/assets\/install\.*/,            // installer
   /\/app-manifest\.js/,              // installer
+  /\/offline-manifests\/.*/          // built in manifests
 ];
 
 // FIXME: we need to ignore some URL parameters but not others and it is
