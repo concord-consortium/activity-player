@@ -66,16 +66,16 @@
   "plugins": [
     {
       "description": null,
-      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/upZ83jqTZAZuoQqRAfAb/glossary.json\"}",
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"glossary-files/alaska.json\"}",
       "approved_script_label": "glossary",
       "component_label": "glossary",
       "approved_script": {
-        "name": "Glossary (test offline saves)",
-        "url": "https://glossary-plugin.concord.org/branch/176579659-add-offline-saves/plugin.js",
+        "name": "Glossary (test offline saves with language switcher)",
+        "url": "https://glossary-plugin.concord.org/branch/177305115-add-language-switcher/plugin.js",
         "label": "glossary",
         "description": "This plugin provides the glossary activity plugin",
         "version": 3,
-        "json_url": "https://glossary-plugin.concord.org/branch/176579659-add-offline-saves/manifest.json",
+        "json_url": "https://glossary-plugin.concord.org/branch/177305115-add-language-switcher/manifest.json",
         "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
       }
     }
