@@ -52,14 +52,12 @@ describe("offline manifest api", () => {
     const onCachingStarted = jest.fn();
     const onUrlCached = jest.fn();
     const onUrlCacheFailed = jest.fn();
-    const onAllUrlsCached = jest.fn();
-    const onAllUrlsCacheFailed = jest.fn();
+    const onCachingFinished = jest.fn();
     const resp = cacheOfflineManifest({
       offlineManifest: testManifest,
       onCachingStarted,
       onUrlCached,
-      onAllUrlsCacheFailed,
-      onAllUrlsCached,
+      onCachingFinished,
       onUrlCacheFailed
     });
     expect(resp).toBeInstanceOf(Promise);
@@ -71,9 +69,8 @@ describe("offline manifest api", () => {
         "http://example.com/cache-list-item-2"
       ]);
       expect(onUrlCached).toHaveBeenCalledTimes(4);
-      expect(onAllUrlsCached).toHaveBeenCalledTimes(1);
+      expect(onCachingFinished).toHaveBeenCalledTimes(1);
       expect(onUrlCacheFailed).not.toHaveBeenCalled();
-      expect(onAllUrlsCacheFailed).not.toHaveBeenCalled();
       done();
     });
   });

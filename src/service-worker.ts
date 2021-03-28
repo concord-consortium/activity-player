@@ -175,10 +175,11 @@ function addCacheListener() {
   self.addEventListener("message", ((event: ExtendableMessageEvent) => {
     if (event.data && event.data.type === "CACHE_URLS_WITH_PROGRESS") {
       const {payload}: CacheURLsMessageData = event.data;
+      const messagePort: MessagePort | undefined = event.ports?.[0];
 
       console.log(`Caching URLs from the window`, payload.urlsToCache);
 
-      const requestPromises = Promise.all(payload.urlsToCache.map(
+      const requestPromises = Promise.allSettled(payload.urlsToCache.map(
           (entry: string | [string, RequestInit?]) => {
         if (typeof entry === "string") {
           entry = [entry];
@@ -189,19 +190,37 @@ function addCacheListener() {
         // this way we get WorkBoxes features of stragegies without adding this
         // network stragegy as a way that handles fetch events so regular
         // page requests won't trigger network requests
-        return networkFirst.handle({request, event});
+        const responsePromise = networkFirst.handle({request, event});
+
+        if (messagePort) {
+          responsePromise.then(response => {
+            // TODO include some response info in the message to provide more info
+            messagePort.postMessage({type: "URL_CACHED", payload: {url: request.url}});
+          }).catch(error => {
+            // This is assuming we can pass the error through
+            messagePort.postMessage({type: "URL_CACHE_FAILED", payload: {url: request.url, error}});
+          });
+        }
+
+        return responsePromise;
 
       // TODO(philipwalton): TypeScript errors without this typecast for
       // some reason (probably a bug). The real type here should work but
       // doesn't: `Array<Promise<Response> | undefined>`.
       }) as any[]); // TypeScript
 
+      // This is needed to keep the service worker alive while it is fetching
+      // otherwise the browser can aggresively stop the worker.
+      // This might not actually be needed because the event is being passed
+      // to the networkFirst handler too, which ought to call waitUntil itself
       event.waitUntil(requestPromises);
 
-      // TODO: update this so it sends back status as each request is made
-      // If a MessageChannel was used, reply to the message on success.
-      if (event.ports?.[0]) {
-        requestPromises.then(() => event.ports[0].postMessage(true));
+      if (messagePort) {
+        requestPromises.then(() => {
+          // We are using allSettled so if there is an error the caching will
+          // continue
+          messagePort.postMessage({type: "CACHING_FINISHED"});
+        });
       }
     }
   }) as EventListener);

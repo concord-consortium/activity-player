@@ -47,12 +47,9 @@ export class OfflineManifestLoadingModal extends React.Component<IProps, IState>
         console.error("Failed to cache:", url);
         this.setState((prevState) => ({urlsFailedToCache: prevState.urlsFailedToCache.concat(url)}));
       },
-      onAllUrlsCached: () => {
+      onCachingFinished: () => {
         this.setState({caching: false});
         this.checkForAutoClose(this.props);
-      },
-      onAllUrlsCacheFailed: (err) => {
-        this.setState({caching: false});
       }
     });
   }
