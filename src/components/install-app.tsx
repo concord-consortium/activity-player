@@ -92,19 +92,28 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
     // The index.html request comes from Chrome's new installable detection that
     // makes an offline request to the start_url:
     //   https://goo.gle/improved-pwa-offline-detection
-    // The best solution to this is to somehow indicate to Chrome that
+    // The best solution to this would be to somehow indicate to Chrome that
     // we aren't ready to be used offline until the app has been cached.
-    // The only way I've seen that is to block the service worker in the
-    // installing state, so then there is no active service worker.
-    // I don't think we can do that, because I don't think the page can talk
-    // to the service worker while it is installing.
-    // But perhaps there is some kind of manifest api we can use to give
-    // Chrome more info.
-    // For example there are events like this one:
-    // https://developer.mozilla.org/en-US/docs/Web/API/BeforeInstallPromptEvent
-    // perhaps there are more events where we can tell Chrome we aren't ready yet.
-    // We don't have to worry about this immediaely because it isn't enforced
-    // until Chrome 93 which is due August 2021
+    // The only way I can find to do that is the block the service worker in the
+    // installing state. If the service worker is not active, then Chrome will
+    // not try to make the offline start_url request.
+    // But I don't think we can do that, because we need to block it while we
+    // send it the manifest from the page. I don't think the page can talk
+    // to the service worker while it is installing. We should test that.
+    //
+    // Alternative we could have the service worker respond with a fake index.html
+    // so Chrome will be happy, but really the app won't be installed at this
+    // point. So the page would have to say something to that effect.
+    //
+    //
+    // There is this event:
+    //   https://developer.mozilla.org/en-US/docs/Web/API/BeforeInstallPromptEvent
+    // which is sent when Chrome determines the PWA can be installed. But it
+    // isn't possible to reject it or tell Chrome we aren't ready yet.
+    //
+    // We don't have to worry about this immediately because it isn't enforced
+    // until Chrome 93 which is due August 2021. It is just annoying to see the
+    // errors in the network log.
     const appUrls = wbManifest.map((entry: {revision: null | string; url: string}) => {
       // Add Worbox's standard __WB_REVISION__ to the files. The service worker
       // strips this out from the key used in cache storage, but it is used when
