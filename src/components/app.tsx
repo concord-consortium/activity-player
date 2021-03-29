@@ -182,10 +182,14 @@ export class App extends React.PureComponent<IProps, IState> {
         wb.messageSkipWaiting();
       });
       wb.addEventListener("controlling", (event) => {
-        // If a new service worker is now controlling the page reload it to make sure
-        // all of our assets and resources are in sync with the new service worker
-        console.log("A new service worker has installed and is controlling, reloading the page.");
-        window.location.reload();
+        // A new service worker is now controlling the page.
+        // Our service worker does not do a pre-cache step while installing
+        // so there isn't a reason to reload the page once it is controlling.
+        //
+        // TODO: instead we should be notified when install.html has updated the
+        // the cache and reload the page when that happens, or at least notify
+        // the user.
+        console.log("A new service worker has installed and is controlling.");
       });
       wb.addEventListener("activating", (event) => {
         console.log("A new service worker is activating.");
