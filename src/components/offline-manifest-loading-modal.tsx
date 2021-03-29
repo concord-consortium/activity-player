@@ -9,7 +9,7 @@ interface IProps {
   offlineManifest: OfflineManifest;
   onClose?: () => void;
   showOfflineManifestInstallConfirmation: boolean;
-  workbox?: Workbox;
+  workbox: Workbox;
 }
 
 interface IState {

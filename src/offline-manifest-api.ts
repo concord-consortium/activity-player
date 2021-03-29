@@ -34,7 +34,7 @@ export const getOfflineManifest = (id: string): Promise<OfflineManifest> => {
 };
 
 export interface CacheOfflineManifestOptions {
-  workbox?: Workbox;
+  workbox: Workbox;
   offlineManifest: OfflineManifest;
   onCachingStarted: (urls: string[]) => void;
   onUrlCached: (url: string) => void;
@@ -91,20 +91,8 @@ export const cacheUrlsWithProgress = async (options: CacheUrlsOptions) => {
 export const cacheOfflineManifest = (options: CacheOfflineManifestOptions) => {
   const {workbox, offlineManifest, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished} = options;
   const urls = offlineManifest.activities.map(a => a.contentUrl).concat(offlineManifest.cacheList);
-
-  if (workbox) {
-    const cacheUrlsOptions = {workbox, urls, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished};
-    return cacheUrlsWithProgress(cacheUrlsOptions);
-  } else {
-    const loadingPromises = urls.map(url => {
-      return fetch(url, {mode: "cors", cache: "no-store"})
-        .then(() => onUrlCached(url))
-        .catch(err => onUrlCacheFailed(url, err));
-    });
-    onCachingStarted(urls);
-    return Promise.allSettled(loadingPromises)
-      .then(() => onCachingFinished());
-  }
+  const cacheUrlsOptions = {workbox, urls, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished};
+  return cacheUrlsWithProgress(cacheUrlsOptions);
 };
 
 export const OfflineManifestAuthoringIdKey = "offlineManifestAuthoringId";
