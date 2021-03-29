@@ -9,13 +9,14 @@ import { CacheOnly, NetworkFirst } from "workbox-strategies";
 import { RangeRequestsPlugin } from "workbox-range-requests";
 
 const ignoredGets: RegExp[] = [
-  /\/sockjs-node\/info/,             // webpack-dev-server
-  /\.hot-update\./,                  // webpack-dev-server
-  /\/firestore\.googleapis\.com\//,  // firebase
-  /\/install\.html/,                 // installer
-  /\/assets\/install\.*/,            // installer
-  /\/app-manifest\.js/,              // installer
-  /\/offline-manifests\/.*/          // built in manifests
+  /\/sockjs-node\/info/,                           // webpack-dev-server
+  /\.hot-update\./,                                // webpack-dev-server
+  /\/firestore\.googleapis\.com\//,                // firebase
+  /\/install\.html/,                               // installer
+  /\/assets\/install\.*/,                          // installer
+  /\/app-manifest\.js/,                            // installer
+  /\/offline-manifests\/.*/,                       // built in manifests
+  /https:\/\/learn\.(staging\.)?concord\.org\/.*/  // portal apis when launached from the portal
 ];
 
 // FIXME: we need to ignore some URL parameters but not others and it is
