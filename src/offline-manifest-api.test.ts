@@ -28,6 +28,11 @@ describe("offline manifest api", () => {
     });
   });
 
+  // FIXME: This is critical and really should be tested
+  // The commented out parts were from an earlier version that did the
+  // the caching directly in the page by issuing fetch requests
+  // Now the caching happens in the service worker and it sends messages to
+  // the page about its progress
   it.skip("handles #cacheOfflineManifest", (done) => {
     const testManifest: OfflineManifest = {
       name: "Test Manifest",

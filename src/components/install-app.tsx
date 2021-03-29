@@ -12,6 +12,7 @@ interface IState {
   serviceWorkerVersionInfo?: string;
   loadingOfflineManifest: boolean;
   offlineManifest?: OfflineManifest;
+  offlineManifestId?: string;
 }
 interface IProps {
 }
@@ -38,7 +39,8 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
 
     this.state = {
       serviceWorkerVersionInfo: "Starting...",
-      loadingOfflineManifest
+      loadingOfflineManifest,
+      offlineManifestId
     };
 
     this.wb = new Workbox("service-worker.js");
@@ -76,36 +78,28 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
           this.setState({serviceWorkerVersionInfo: "No response!"});
         });
     });
-
-    if (offlineManifestId) {
-      getOfflineManifest(offlineManifestId)
-        .then(async (offlineManifest) => {
-          console.log("got offlineManifest", offlineManifest);
-          if (offlineManifest) {
-            await saveOfflineManifestToOfflineActivities(offlineManifest);
-            this.setState({offlineManifest});
-          }
-        })
-        .catch(error => {
-          console.error(error);
-        });
-    }
   }
 
   cacheApplication() {
     const wbManifest = (window as any).__wbManifest;
-    // const offlineManifest: OfflineManifest = { name: "Application Manifest", activities: [], cacheList: [] };
 
     // FIXME: this caching is going to happen after the initial page load
-    // that means that the manifest.json and index.html will be cached by chrome as it parses the
-    // manifest.  The index.html request comes from Chrome's new installable dection that makes an offline request
-    // to the start_url in the manifest.
-    // Not clear what the solution to that is yet.
+    // that means that the manifest.json and index.html will be requested by
+    // Chrome as it parses the manifest.
+    // The index.html request comes from Chrome's new installable detection that
+    // makes an offline request to the start_url in the manifest:
+    //   https://goo.gle/improved-pwa-offline-detection
+    // The best solution to this is to somehow indicate to Chrome that
+    // we aren't ready to be used offline until the app has been cached.
+    // I'm not sure if there is a way to do that.
     const appUrls = wbManifest.map((entry: {revision: null | string; url: string}) => {
-      // Add Worbox's standard __WB_REVISION__ to the files. This won't actually be
-      // stored in the cache storage key but is used when fetching the asset. This prevents
-      // caching problems when the url is fetched. Chrome uses the disk cache to get
-      // these responses. 
+      // Add Worbox's standard __WB_REVISION__ to the files. The service worker
+      // strips this out from the key used in cache storage, but it is used when
+      // fetching the asset.  This prevents some caching problems when the url
+      // is fetched. The service worker does use `cache: "no-store"` so the
+      // browser disk cache should not be used during the install of the assets
+      // but cloudfront could still be caching them, so having these revisions
+      // should help avoid caching issues from CloudFront
       if (entry.revision) {
         const parsedUrl = queryString.parseUrl(entry.url);
         parsedUrl.query.__WB_REVISION__ = entry.revision;
@@ -118,8 +112,12 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
     // It is not clear why, but it seems like the service worker only handles one
     // CACHE_URLS_WITH_PROGRESS at time. The next message seems to get queued
     // until the first is complete. Perhaps because it calls event.waitUntil
-    // It seems to do the application cache first and the offline manifest cache
-    // TODO: show something in the UI while this is happening
+    // We are starting the request for caching the offline manifest after this
+    // caching of the application files. But we aren't doing an await or promise
+    // so in theory they might start synchronously. But it seems like the
+    // service worker is serializing the messages
+    //
+    // TODO: show something in the UI while the application files are caching
     cacheUrlsWithProgress({
       workbox: this.wb,
       urls: appUrls,
@@ -136,6 +134,28 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
         console.log("finished caching application");
       },
     });
+
+    const {offlineManifestId} = this.state;
+    if (offlineManifestId) {
+      // The offline manifest is the list of files for the activities needed
+      // offline. Currently this offline manifest file itself is not put into cache
+      // storage by the service worker. The saveOfflineManifestToOfflineActivities
+      // adds information about the manifest to local storage.
+      // The setting of the offlineManifest in the state triggers the loading
+      // of the OfflineManifestLoadingModal which then triggers a call
+      // similiar to cacheUrlsWithProgress but with the urls from the offline manifest
+      getOfflineManifest(offlineManifestId)
+        .then(async (offlineManifest) => {
+          console.log("got offlineManifest", offlineManifest);
+          if (offlineManifest) {
+            await saveOfflineManifestToOfflineActivities(offlineManifest);
+            this.setState({offlineManifest});
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
   }
 
   render() {
