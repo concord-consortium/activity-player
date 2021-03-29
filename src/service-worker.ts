@@ -8,6 +8,10 @@ import { CacheOnly, NetworkFirst } from "workbox-strategies";
 // import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { RangeRequestsPlugin } from "workbox-range-requests";
 
+// FIXME: shouldn't we use something like babel-presets for this?
+import { allSettled } from "promise.allsettled";
+allSettled.shim();
+
 const ignoredGets: RegExp[] = [
   /\/sockjs-node\/info/,                           // webpack-dev-server
   /\.hot-update\./,                                // webpack-dev-server

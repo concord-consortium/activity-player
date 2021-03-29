@@ -2,6 +2,10 @@ import { dexieStorage } from "./storage/dexie-storage";
 import { OfflineActivity, OfflineManifest, OfflineManifestActivity } from "./types";
 import { Workbox } from "workbox-window/index";
 
+// FIXME: shouldn't we use something like babel-presets for this?
+import { allSettled } from "promise.allsettled";
+allSettled.shim();
+
 export interface OfflineManifestAuthoringData {
   activities: OfflineManifestActivity[];
   cacheList: string[]
