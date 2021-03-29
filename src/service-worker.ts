@@ -21,53 +21,6 @@ const ignoredGets: RegExp[] = [
   /https:\/\/learn\.(staging\.)?concord\.org\/.*/  // portal apis when launached from the portal
 ];
 
-// FIXME: we need to ignore some URL parameters but not others and it is
-// different for different cases.
-// When installing files we are adding a __WB_REVISION__ param
-// but when searchig for files that won't be included.
-// The index.html will have an activity and contentUrl param when a link is clicked
-// on.
-// The revision params are useful to so futures installs force updates
-// to files. So it prevents incorrect caching. This is only needed during the
-// install. If we saved these parameters in the actual cache then we'd need to
-// re-add these revisions for each matching request so it would be found in the cache
-// If we don't store them in the cache, then we'll have to maintain them outside
-// of the cache which seems error prone. However to put them in the cache we have
-// to maintain outside anyhow so we can add them to each request. So it seems
-// like we have to use them.
-// In our current application manifest, the only two places they are needed is on the
-// index.html and manifest.json files.
-// In our content manifests they are needed pretty much everywhere.
-
-// Cache all get requests
-// We will need something like this for authoring
-// registerRoute(
-//   ({ request }) => {
-//     const isGet = request.method.toUpperCase() === "GET";
-//     const isIgnored = !!ignoredGets.find(ig => ig.test(request.url));
-//     const isCachable = isGet && !isIgnored;
-//     if (isCachable) {
-//       self.clients.matchAll({type: "window"}).then(clients => {
-//         for (const client of clients) {
-//           client.postMessage({type: "GET_REQUEST", url: request.url});
-//         }
-//       });
-//     }
-//     return isCachable;
-//   },
-//   new StaleWhileRevalidate({
-//     cacheName: "cachedGets",
-//     plugins: [
-//       // Ensure that only requests that result in a 200 status are cached
-//       new CacheableResponsePlugin({
-//         statuses: [0, 200],
-//       }),
-//       // handle range requests
-//       new RangeRequestsPlugin(),
-//     ],
-//   }),
-// );
-
 /**
    Strip out the __WB_REVISION__ parameter
    Note this also escapes the parameters, so it needs to be applied to both the
