@@ -1,3 +1,5 @@
+import "ts-polyfill";
+
 declare const self: ServiceWorkerGlobalScope;
 
 const versionInfo = "__SERVICE_WORKER_VERSION_INFO__";  // replaced by webpack using string-replace-loader
@@ -7,10 +9,6 @@ import { registerRoute } from "workbox-routing";
 import { CacheOnly, NetworkFirst } from "workbox-strategies";
 // import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { RangeRequestsPlugin } from "workbox-range-requests";
-
-// FIXME: shouldn't we use something like babel-presets for this?
-import { allSettled } from "promise.allsettled";
-allSettled.shim();
 
 const ignoredGets: RegExp[] = [
   /\/sockjs-node\/info/,                           // webpack-dev-server
