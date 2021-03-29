@@ -84,6 +84,13 @@
         fill: $cc-orange-dark1;
         margin-right: 5px;
       }
+      &.disabled {
+        cursor: default;
+        opacity: 0.4;
+        &:hover{
+          background-color: $cc-orange-light1;
+        }
+      }
     }
     h1 {
       flex-basis: 100%;

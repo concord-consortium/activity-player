@@ -218,11 +218,11 @@ export const getAllUrlsInActivity = async (activity: Activity, urls: string[] = 
       if (isExternalOrModelsResourcesUrl(s)) {
         urls.push(s);
       }
-      // add all external urls in the stringified author data json
-      if (key === "author_data") {
+      else if(/^\s*\{/.test(s)) {
+        // try to parse value:
         try {
-          const authorData = JSON.parse(s);
-          addExternalUrls(authorData);
+          const jsonData = JSON.parse(s);
+          addExternalUrls(jsonData);
         } catch (e) {} // eslint-disable-line no-empty
       }
       return s;

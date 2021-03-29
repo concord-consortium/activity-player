@@ -33,6 +33,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     onShowSequence } = props;
 
   const [answers, setAnswers] = useState<any>();
+  const [canProvideStudentReport, setCanProvideStudentReport] = useState<boolean>();
 
   const handleExit = () => {
     if (sequence) {
@@ -85,6 +86,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
 
   useEffect(() => {
     const storage = getStorage();
+    setCanProvideStudentReport(storage.canProvideStudentReport());
     storage.watchAllAnswers(answerMetas => {
       setAnswers(answerMetas);
     });
@@ -121,7 +123,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   }
 
   const exitContainerClass = showReportBackupOptions ? "exit-container with-backup-options" : "exit-container";
-
+  const showStudentReportButton = showStudentReport && canProvideStudentReport;
   return (
     !answers
       ? <div className="completion-page-content" data-cy="completion-page-content">
@@ -165,8 +167,23 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           <div className={exitContainerClass} data-cy="exit-container">
             <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
             <SummaryTable questionsStatus={progress.questionsStatus} />
-            {showStudentReport && <button className="button show-my-work" onClick={handleShowAnswers}><IconCompletion width={24} height={24} />Show My Work</button>}
-            {(!sequence || isLastActivityInSequence) && 
+              { showStudentReportButton
+                  ?
+                    <button
+                      className="button show-my-work"
+                      onClick={handleShowAnswers}>
+                        <IconCompletion width={24} height={24} />
+                        Show My Work
+                    </button>
+                  :
+                    <button
+                      className="button show-my-work disabled"
+                      disabled={true}>
+                        <IconCompletion width={24} height={24} />
+                        Show My Work
+                    </button>
+              }
+            {(!sequence || isLastActivityInSequence) &&
               <div className="exit-button">
                 <span>or</span>
                 <button className="textButton" onClick={handleExit}>Exit</button>

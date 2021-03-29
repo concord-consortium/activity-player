@@ -1,0 +1,85 @@
+{
+  "description": "",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Simple AP with Glossary (master)",
+  "notes": "",
+  "project_id": null,
+  "related": "",
+  "runtime": "Activity Player",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": null,
+  "pages": [
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 308544,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": null,
+      "position": 1,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p>This is a test of some of the words in the AK glossary: precipitation, prediction, weather and air moisture.</p>",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "272828-Embeddable::Xhtml"
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": true,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 3,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": []
+    }
+  ],
+  "plugins": [
+    {
+      "description": null,
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"glossary-files/alaska.json\"}",
+      "approved_script_label": "glossary",
+      "component_label": "glossary",
+      "approved_script": {
+        "name": "Glossary (test offline saves with language switcher)",
+        "url": "https://glossary-plugin.concord.org/branch/177305115-add-language-switcher/plugin.js",
+        "label": "glossary",
+        "description": "This plugin provides the glossary activity plugin",
+        "version": 3,
+        "json_url": "https://glossary-plugin.concord.org/branch/177305115-add-language-switcher/manifest.json",
+        "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
+      }
+    }
+  ],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

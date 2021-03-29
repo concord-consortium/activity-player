@@ -1,4 +1,5 @@
-import { firebaseAppName, clearFirebaseAppName, getToolId } from "./portal-api";
+import { firebaseAppName, clearFirebaseAppName, getToolId, convertPortalUserIdToLoggingUsername } from "./portal-api";
+import { DEFAULT_STUDENT_LOGGING_USERNAME } from "./student-info";
 
 describe("firebaseAppName", () => {
 
@@ -67,5 +68,14 @@ describe("getToolId", () => {
     expect(getToolId()).toBe("www.example.com:8080/bar");
 
     (window as any).location = location;
+  });
+});
+
+describe("misc utils", () => {
+
+  it("converts portal user ids to logging usernames", () => {
+    expect(convertPortalUserIdToLoggingUsername("http://example.com/users/1234")).toEqual("1234@example.com");
+    expect(convertPortalUserIdToLoggingUsername("https://example.com/users/1234")).toEqual("1234@example.com");
+    expect(convertPortalUserIdToLoggingUsername("invalid user id")).toEqual(DEFAULT_STUDENT_LOGGING_USERNAME);
   });
 });

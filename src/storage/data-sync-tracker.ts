@@ -1,4 +1,5 @@
 import { emitPluginSyncRequest, IPluginSyncUpdate } from "../lara-plugin/events";
+import { ILogSyncUpdate, Logger } from "../lib/logger";
 
 const KDefaultSyncTimeoutSeconds = 60 * 60; // 1 hour save timeout
 const KDefaultPluginHeartbeatSeconds =  10; // 10 seconds before we give up
@@ -16,6 +17,7 @@ export class DataSyncTracker {
   pluginDrops: number;
   pendingPromises: Array<Promise<number|void>>;
   timeoutRef: number
+  logsSynced: boolean;
 
   constructor(
     syncTimeoutS: number = KDefaultSyncTimeoutSeconds,
@@ -26,6 +28,9 @@ export class DataSyncTracker {
       this.pluginFailures = 0;
       this.pluginSuccesses = 0;
       this.pluginDrops = 0;
+      this.logsSynced = false;
+
+      this.receivedLoggerStatus = this.receivedLoggerStatus.bind(this);
   }
 
   start() {
@@ -41,8 +46,11 @@ export class DataSyncTracker {
     });
 
     this.pendingPromises=[this.pluginPromise];
-    this.registerPluginTimeOut();
+    this.registerTimeOut();
     this.registerSyncTimeOut();
+
+    Logger.syncOfflineLogs(this.receivedLoggerStatus);
+
     return this.finish();
   }
 
@@ -54,17 +62,18 @@ export class DataSyncTracker {
     window.setTimeout(() => this.syncTimeout(), this.syncTimeoutS * 1000);
   }
 
-  registerPluginTimeOut() {
+  registerTimeOut() {
     if(this.timeoutRef) { window.clearTimeout(this.timeoutRef); }
-    this.timeoutRef = window.setTimeout(() => this.pluginsDone(), this.pluginTimeoutS * 1000);
+    this.timeoutRef = window.setTimeout(() => this.syncDone(), this.pluginTimeoutS * 1000);
   }
 
   syncTimeout() {
     this.promiseRejector("Sync operation TimeOut");
   }
-  // We call this when we stop hearing from any plugins:
-  pluginsDone() {
-    // Resolve our internal plugin promise:
+
+  // We call this when we stop hearing from any plugins and the logger:
+  syncDone() {
+    // Resolve our internal promise:
     this.promiseResolver();
   }
 
@@ -79,13 +88,12 @@ export class DataSyncTracker {
   }
 
   receivedPluginStatus(status: IPluginSyncUpdate) {
-    console.log(">==== PLUGIN SYNC ==>", status);
     // We don't reset the timer if the status is fail or ok, which are terminal.
     if(status.status===("started" || "working")) {
       if(status.status === "started") {
         this.pluginDrops++;
       }
-      this.registerPluginTimeOut();
+      this.registerTimeOut();
     }
     if(status.status === "completed")   {
       this.pluginSuccesses++;
@@ -94,6 +102,20 @@ export class DataSyncTracker {
     if(status.status === "failed") {
       this.pluginFailures++;
       this.pluginDrops--;
+    }
+  }
+
+  receivedLoggerStatus(status: ILogSyncUpdate) {
+    console.log(">==== LOGGER SYNC ==>", status);
+    // We don't reset the timer if the status is fail or ok, which are terminal.
+    if(status.status===("started" || "working")) {
+      this.registerTimeOut();
+    }
+    if(status.status === "completed")   {
+      this.logsSynced = true;
+    }
+    if(status.status === "failed") {
+      this.logsSynced = false;
     }
   }
 }

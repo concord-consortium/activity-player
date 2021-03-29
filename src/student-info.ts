@@ -1,7 +1,9 @@
 import { fetchPortalData, IPortalData } from "./portal-api";
 import { IStorageInterface } from "./storage/storage-facade";
 
-const DEFAULT_STUDENT_NAME = "Anonymous";
+export const DEFAULT_STUDENT_NAME = "Anonymous";
+export const DEFAULT_STUDENT_LOGGING_USERNAME = "0@anonymous";
+
 const DEFAULT_TEACHER_NAME = "A teacher";
 const STUDENT_LOCAL_STORAGE_KEY = "ActivityPlayerStudent";
 const DEFAULT_CLASS_HASH = ""; // From `app.tsx` 2021-02-25
@@ -35,6 +37,7 @@ type Run = IAnonymousRun | IPortalRun;
 
 interface IStudentRecord {
   name: string,
+  loggingUsername: string;
   role: Role,
   teacherName: string,
   platformUserId: string,
@@ -45,6 +48,7 @@ interface IStudentRecord {
 
 export class StudentInfo implements IStudentRecord {
   name: string;
+  loggingUsername: string;
   teacherName: string;
   platformUserId: string;
   role: Role;
@@ -65,6 +69,7 @@ export class StudentInfo implements IStudentRecord {
   private loadDefaults() {
     this.role = Role.student;
     this.name = DEFAULT_STUDENT_NAME;
+    this.loggingUsername = DEFAULT_STUDENT_LOGGING_USERNAME;
     this.teacherName = DEFAULT_TEACHER_NAME;
     this._validTokens = false;
   }
@@ -150,6 +155,7 @@ export class StudentInfo implements IStudentRecord {
   private serializeData() {
     const data: IStudentRecord =  {
       name: this.name,
+      loggingUsername: this.loggingUsername,
       role: this.role,
       teacherName: this.teacherName,
       platformUserId: this.platformUserId,
@@ -161,6 +167,7 @@ export class StudentInfo implements IStudentRecord {
 
   private loadData(data: IStudentRecord ) {
     this.name = data.name ?? DEFAULT_STUDENT_NAME;
+    this.loggingUsername = data.loggingUsername ?? DEFAULT_STUDENT_LOGGING_USERNAME;
     this.teacherName = data.name ?? DEFAULT_TEACHER_NAME;
     this.platformUserId = data.platformUserId;
     this.runs = data.runs;
@@ -176,6 +183,7 @@ export class StudentInfo implements IStudentRecord {
     // iat: 1614632137
     this.rawPortalData = portalData;
     this.name = portalData.fullName ?? DEFAULT_STUDENT_NAME;
+    this.loggingUsername = portalData.loggingUsername ?? DEFAULT_STUDENT_LOGGING_USERNAME;
     this.teacherName = portalData?.classInfo?.teachers[0]?.fullName ?? DEFAULT_TEACHER_NAME;
     this.platformUserId = portalData.platformUserId;
     this._validTokens = true;

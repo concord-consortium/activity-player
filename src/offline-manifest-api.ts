@@ -97,7 +97,7 @@ export const cacheOfflineManifest = (options: CacheOfflineManifestOptions) => {
     return cacheUrlsWithProgress(cacheUrlsOptions);
   } else {
     const loadingPromises = urls.map(url => {
-      return fetch(url, {mode: "cors"})
+      return fetch(url, {mode: "cors", cache: "no-store"})
         .then(() => onUrlCached(url))
         .catch(err => onUrlCacheFailed(url, err));
     });

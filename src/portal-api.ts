@@ -5,6 +5,7 @@ import { queryValue, queryValueBoolean, setQueryValue } from "./utilities/url-qu
 import { getResourceUrl } from "./lara-api";
 import { getCanonicalHostname, getHostnameWithMaybePort, isOfflineHost, isProduction } from "./utilities/host-utils";
 import { FirebaseAppName } from "./storage/firebase-db";
+import { DEFAULT_STUDENT_LOGGING_USERNAME } from "./student-info";
 
 interface PortalClassOffering {
   className: string;
@@ -95,6 +96,7 @@ export interface IPortalData extends ILTIPartial {
   portalJWT?: PortalJWT;
   runRemoteEndpoint: string;
   classInfo?: ClassInfo;
+  loggingUsername: string;
 }
 
 export interface IAnonymousPortalData {
@@ -379,6 +381,11 @@ export const getOfferingData = (params: GetOfferingParams) => {
   });
 };
 
+export const convertPortalUserIdToLoggingUsername = (userId: string) => {
+  const matches = userId.match(/https?:\/\/([^/]+)\/users\/(.+)/i);
+  return matches ? `${matches[2]}@${matches[1]}` : DEFAULT_STUDENT_LOGGING_USERNAME;
+};
+
 interface IFetchPortalDataOpts {
   includeClassData: boolean
 }
@@ -423,6 +430,8 @@ export const fetchPortalData = async (opts: IFetchPortalDataOpts = fetchPortalDa
 
   const fullName = classInfo.students.find(s => s.id.toString() === portalJWT.uid.toString())?.fullName;
 
+  const loggingUsername = convertPortalUserIdToLoggingUsername(portalJWT.user_id);
+
   const rawPortalData: IPortalData = {
     type: "authenticated",
     offering: offeringData,
@@ -445,7 +454,8 @@ export const fetchPortalData = async (opts: IFetchPortalDataOpts = fetchPortalDa
       sourceKey,
       rawFirebaseJWT,
     },
-    runRemoteEndpoint: firebaseJWT.returnUrl
+    runRemoteEndpoint: firebaseJWT.returnUrl,
+    loggingUsername
   };
   if(opts.includeClassData) { rawPortalData.classInfo = classInfo; }
   return rawPortalData;

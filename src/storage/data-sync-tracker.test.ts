@@ -36,12 +36,12 @@ class FakePlugin {
 describe("DataSyncTracker", () => {
   it("When no plugins answer the call", ()=> {
     const mySyncTracker = new DataSyncTracker(2,1);
-    const pluginsDone =jest.spyOn(mySyncTracker,"pluginsDone");
+    const syncDone =jest.spyOn(mySyncTracker,"syncDone");
     const receivedPluginStatus = jest.spyOn(mySyncTracker, "receivedPluginStatus");
     const syncTimeout = jest.spyOn(mySyncTracker,"syncTimeout");
 
     return mySyncTracker.start().then(() => {
-      expect(pluginsDone).toBeCalledTimes(1);
+      expect(syncDone).toBeCalledTimes(1);
       expect(receivedPluginStatus).not.toHaveBeenCalled();
       expect(syncTimeout).not.toHaveBeenCalled();
       expect(mySyncTracker.pluginSuccesses).toEqual(0);
@@ -74,12 +74,12 @@ describe("DataSyncTracker", () => {
     });
     const mySyncTracker = new DataSyncTracker(100,1);
     mySyncTracker.addPromise(myPromise);
-    const pluginsDone =jest.spyOn(mySyncTracker,"pluginsDone");
+    const syncDone =jest.spyOn(mySyncTracker,"syncDone");
     const receivedPluginStatus = jest.spyOn(mySyncTracker, "receivedPluginStatus");
     const syncTimeout = jest.spyOn(mySyncTracker,"syncTimeout");
 
     return mySyncTracker.start().then(() => {
-      expect(pluginsDone).toBeCalledTimes(1);
+      expect(syncDone).toBeCalledTimes(1);
       expect(receivedPluginStatus).toBeCalledTimes(8); // 4 happy, 4 sad
       expect(syncTimeout).not.toHaveBeenCalled();
       expect(mySyncTracker.pluginSuccesses).toEqual(2);
@@ -105,12 +105,12 @@ describe("DataSyncTracker", () => {
 
     const mySyncTracker = new DataSyncTracker(10,1);
     // mySyncTracker.addPromise(myPromise);
-    const pluginsDone =jest.spyOn(mySyncTracker,"pluginsDone");
+    const syncDone =jest.spyOn(mySyncTracker,"syncDone");
     const receivedPluginStatus = jest.spyOn(mySyncTracker, "receivedPluginStatus");
     const syncTimeout = jest.spyOn(mySyncTracker,"syncTimeout");
 
     return mySyncTracker.start().then(() => {
-      expect(pluginsDone).toBeCalledTimes(1);
+      expect(syncDone).toBeCalledTimes(1);
       expect(syncTimeout).not.toHaveBeenCalled();
       expect(receivedPluginStatus).toBeCalledTimes(3); // 1 slow, 2 sad
       expect(mySyncTracker.pluginSuccesses).toEqual(0);
