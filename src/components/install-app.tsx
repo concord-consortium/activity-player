@@ -102,10 +102,10 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
     // to the start_url in the manifest.
     // Not clear what the solution to that is yet.
     const appUrls = wbManifest.map((entry: {revision: null | string; url: string}) => {
-      // TODO we are ignoring the revisions for now, because they require moving this code into
-      // into the service worker so it know what revision to look for either when the actual page
-      // requests it, or when it is making the install request and then it should not include
-      // the revision param in the cached key
+      // Add Worbox's standard __WB_REVISION__ to the files. This won't actually be
+      // stored in the cache storage key but is used when fetching the asset. This prevents
+      // caching problems when the url is fetched. Chrome uses the disk cache to get
+      // these responses. 
       if (entry.revision) {
         const parsedUrl = queryString.parseUrl(entry.url);
         parsedUrl.query.__WB_REVISION__ = entry.revision;
