@@ -135,7 +135,23 @@ function addCacheListener() {
     fetchOptions: {cache: "no-store"},
     plugins: [
       stripWbRevision,
-      cleanIndexHtmlParams
+      cleanIndexHtmlParams,
+      {
+        // Don't allow reads from the cache. We only want to populate the cache.
+        // If a network request fails we don't want to return the old value
+        // from the cache. It might be out of date, and we want the network
+        // error to propigate up.
+        //
+        // TODO: it'd be better if every manifest included urls with hashes in
+        // them. The Workbox generated manifests include __WB_REVISION__. If that
+        // was present in every entry then we could add that to a header in
+        // the response stored in the cache, then we'd access that response
+        // and see if the new entry matched, if so we could just return it.
+        // if it didn't match then we'd download it from the network
+        cachedResponseWillBeUsed: async ({cacheName, request, matchOptions, cachedResponse, event, state}) => {
+          return null;
+        }
+      }
     ]
   });
 
@@ -154,10 +170,9 @@ function addCacheListener() {
         }
 
         const request = new Request(...entry);
-        // Use a specific stragegy that is not registered as a route
-        // this way we get WorkBoxes features of stragegies without adding this
-        // network stragegy as a way that handles fetch events so regular
-        // page requests won't trigger network requests
+        // Use a specific strategy that is not registered as a route
+        // this way we get Workbox's strategy features without affecting
+        // regular page network requests
         const responsePromise = networkFirst.handle({request, event});
 
         if (messagePort) {
