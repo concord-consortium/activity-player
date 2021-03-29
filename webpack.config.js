@@ -2,6 +2,7 @@
 
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const HtmlWebpackTagsPlugin = require("html-webpack-tags-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin');
 const GitRevPlugin = require('git-rev-webpack-plugin');
@@ -188,6 +189,22 @@ module.exports = (env, argv) => {
           filename: "install.html",
           template: "src/install.html"
         }),
+        // This adds the app-manifest with a compiliation hash like:
+        // app-manifest.js?ce5603bd7ecdb0c71360
+        //
+        // This approach helps somewhat with caching, but because it isn't
+        // part of the file name it could still cause caching problems if
+        // CloudFront ignores parameters.
+        // The manifest is "built" by the InjectManifest plugin, but it doesn't
+        // seem to have a way to build the file with a hash in a way that
+        // HtmlWebpackPlugin can inject it into install.html.
+        // So this parameter based approach is the best we can do without
+        // modifying or replacing InjectManfest
+        new HtmlWebpackTagsPlugin({
+          scripts: ["assets/app-manifest.js"],
+          hash: true,
+          append: false // prepend this before the main js file
+        }),
         new HtmlReplaceWebpackPlugin([
           {
             pattern: '__APP_VERSION_INFO__',
@@ -308,6 +325,7 @@ module.exports = (env, argv) => {
         }),
         new InjectManifest({
           swSrc: "./src/app-manifest.js",
+          swDest: "assets/app-manifest.js",
           compileSrc: false,
           exclude: [
             /^offline-activities\/.*/,

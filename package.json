@@ -127,6 +127,7 @@
     "git-rev-webpack-plugin": "^0.3.1",
     "html-replace-webpack-plugin": "^2.6.0",
     "html-webpack-plugin": "^4.4.1",
+    "html-webpack-tags-plugin": "^3.0.0",
     "identity-obj-proxy": "^3.0.0",
     "istanbul-instrumenter-loader": "^3.0.1",
     "istanbul-lib-coverage": "^3.0.0",
