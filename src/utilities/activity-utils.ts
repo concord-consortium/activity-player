@@ -2,6 +2,7 @@ import { Page, Activity, EmbeddableWrapper } from "../types";
 import { SidebarConfiguration } from "../components/page-sidebar/sidebar-wrapper";
 import { isQuestion as isEmbeddableQuestion } from "./embeddable-utils";
 import { runningInCypress } from "./cypress";
+import { isGenerator } from "mobx/dist/internal";
 
 export enum ActivityLayouts {
   MultiplePages = 0,
@@ -168,7 +169,23 @@ export const getPagePositionFromQueryValue = (activity: Activity, pageQueryValue
   return Math.max(0, Math.min((parseInt(pageQueryValue, 10) || 0), activity.pages.length));
 };
 
+// Look for Json structures (array, object) in value
 export const walkObject = (activityNode: any, stringCallback: (s: string, key?: string) => string) => {
+
+  const tryToWalkJsonString = (key:string) => {
+    const jsonRegex = /^\s*[{[]/;
+    const stringValue = activityNode[key];
+    if(jsonRegex.test(stringValue)) {
+      try {
+        const jsonData = JSON.parse(activityNode[key]);
+        walkObject(jsonData, stringCallback);
+        activityNode[key] = JSON.stringify(jsonData);
+        return true;
+      } catch (e) {} // eslint-disable-line no-empty
+    }
+    return false;
+  };
+
   if (!activityNode) {
     return;
   }
@@ -180,6 +197,8 @@ export const walkObject = (activityNode: any, stringCallback: (s: string, key?: 
     Object.keys(activityNode).forEach(key => {
       switch (typeof activityNode[key]) {
         case "string":
+          if(tryToWalkJsonString(key)) { break; }
+          // Its just a plain string:
           activityNode[key] = stringCallback(activityNode[key], key);
           break;
         case "object":
@@ -188,23 +207,36 @@ export const walkObject = (activityNode: any, stringCallback: (s: string, key?: 
       }
     });
   } else if (typeof activityNode === "string") {
-    activityNode = stringCallback(activityNode);
+    if(!tryToWalkJsonString(activityNode)) {
+      activityNode = stringCallback(activityNode);
+    }
   }
 };
 
-export const rewriteModelsResourcesUrls = (activity: Activity) => {
-  // do not rewrite urls when running in Cypress, otherwise the sample activity iframes do not load causing timeouts
-  if (runningInCypress) {
-    return activity;
-  }
-
-  walkObject(activity, (s) => {
-    return s
+export const rewriteModelsResourcesUrl = (oldUrl: string) => {
+  const httpRegex =/https?:\/\//;
+  if(httpRegex.test(oldUrl)) {
+    const serverRewrite = oldUrl
       .replace(/https?:\/\/models-resources\.concord\.org/, "models-resources")
       .replace(/https?:\/\/models-resources\.s3\.amazonaws\.com/, "models-resources")
       .replace(/https?:\/\/((.+)-plugin)\.concord\.org/, "models-resources/$1");
 
-  });
+    // NP: 2021-03-29 S3 resources without terminal slashes seem to fail. regexr.com/5pkc0
+    const missingSlashRegex = /\/[^./"]+$/; // URLS with extensions are fine eg *.png
+    if(missingSlashRegex.test(serverRewrite)) {
+      return `${serverRewrite}/`; // Add a slash to URLs missing them.
+    }
+    return serverRewrite;
+  }
+  return oldUrl;
+};
+
+export const rewriteModelsResourcesUrls = (activity: Activity) => {
+  // do not rewrite urls when running in Cypress, otherwise the sample activity iframes do not load causing timeouts
+  if (runningInCypress) { return activity;}
+
+  walkObject(activity, (s) => rewriteModelsResourcesUrl(s));
+
   return activity;
 };
 
@@ -214,16 +246,9 @@ export const removeDuplicateUrls = (urls: string[]) => urls.filter((url, index) 
 
 export const getAllUrlsInActivity = async (activity: Activity, urls: string[] = []) => {
   const addExternalUrls = (object: any) => {
-    walkObject(object, (s, key) => {
+    walkObject(object, (s) => {
       if (isExternalOrModelsResourcesUrl(s)) {
         urls.push(s);
-      }
-      else if(/^\s*\{/.test(s)) {
-        // try to parse value:
-        try {
-          const jsonData = JSON.parse(s);
-          addExternalUrls(jsonData);
-        } catch (e) {} // eslint-disable-line no-empty
       }
       return s;
     });
