@@ -5,6 +5,9 @@
   "main": "index.js",
   "jest": {
     "testURL": "https://activity-player.unexisting.url.com",
+    "setupFiles": [
+      "ts-polyfill"
+    ],
     "setupFilesAfterEnv": [
       "<rootDir>src/setupTests.js"
     ],
