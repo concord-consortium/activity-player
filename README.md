@@ -152,7 +152,7 @@ http://localhost:11002/?offlineManifest=smoke-test-v1
 
 #### Creating an Offline Manifest
 
-Offline manifests can either be authored by hand or more easily by enabling "authoring more" and having the Activity Player itself record the activities loaded and the urls to cache.
+Offline manifests can either be authored by hand or more easily by enabling "authoring mode" and having the Activity Player itself record the activities loaded and the urls to cache.
 
 To enable authoring mode launch the Activity Player with the `setOfflineManifestAuthoringId=` query parameter set to the offline manifest name.  As an example when running locally using `npm start` you would use the following url:
 
