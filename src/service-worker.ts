@@ -168,6 +168,12 @@ interface CacheURLsMessageData {
 function addCacheListener() {
   const networkFirst = new NetworkFirst({
     cacheName: "cachedGets",
+    // Skip the disk cache when fetching
+    // This fixes a problem where a user visiting an online page with some
+    // of the offline assets in it will populate the disk cache with those
+    // assets. But they might be stored without CORS headers in the response
+    // which then breaks the request made here.
+    fetchOptions: {cache: "no-store"},
     plugins: [
       stripWbRevision,
       cleanIndexHtmlParams
