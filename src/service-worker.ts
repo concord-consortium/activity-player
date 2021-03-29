@@ -64,8 +64,14 @@ const cleanIndexHtmlParams: WorkboxPlugin = {
 registerRoute(
   ({ request }) => {
     const isGet = request.method.toUpperCase() === "GET";
-    // TODO: Maybe we want to block firestore requests when not launched from the portal
-    // but those should only happen if the application code is buggy
+    // It is tempting to try to block firestore and portal requests here
+    // when we aren't launched from the portal.
+    // However, those should only happen if the application code is buggy.
+    // Additionally there isn't a good way to implement that, there is just
+    // one service worker used by all clients: browser tabs and the PWA.
+    // So it is possible there will be one 'client' that is launched from the
+    // portal and another client that is not. Because of that we can't
+    // consitently block these requests.
     const isIgnored = !!ignoredGets.find(ig => ig.test(request.url));
     return isGet && !isIgnored;
   },
@@ -156,10 +162,8 @@ function addCacheListener() {
 
         if (messagePort) {
           responsePromise.then(response => {
-            // TODO include some response info in the message to provide more info
             messagePort.postMessage({type: "URL_CACHED", payload: {url: request.url}});
           }).catch(error => {
-            // This is assuming we can pass the error through
             messagePort.postMessage({type: "URL_CACHE_FAILED", payload: {url: request.url, error}});
           });
         }

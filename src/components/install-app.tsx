@@ -85,13 +85,26 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
 
     // FIXME: this caching is going to happen after the initial page load
     // that means that the manifest.json and index.html will be requested by
-    // Chrome as it parses the manifest.
+    // Chrome before they are cached. The manifest.json is referened by
+    // install.html so the user can add the app to their computer from the
+    // install.html page.  The manifest.json references index.html in its
+    // start_url field.
     // The index.html request comes from Chrome's new installable detection that
-    // makes an offline request to the start_url in the manifest:
+    // makes an offline request to the start_url:
     //   https://goo.gle/improved-pwa-offline-detection
     // The best solution to this is to somehow indicate to Chrome that
     // we aren't ready to be used offline until the app has been cached.
-    // I'm not sure if there is a way to do that.
+    // The only way I've seen that is to block the service worker in the
+    // installing state, so then there is no active service worker.
+    // I don't think we can do that, because I don't think the page can talk
+    // to the service worker while it is installing.
+    // But perhaps there is some kind of manifest api we can use to give
+    // Chrome more info.
+    // For example there are events like this one:
+    // https://developer.mozilla.org/en-US/docs/Web/API/BeforeInstallPromptEvent
+    // perhaps there are more events where we can tell Chrome we aren't ready yet.
+    // We don't have to worry about this immediaely because it isn't enforced
+    // until Chrome 93 which is due August 2021
     const appUrls = wbManifest.map((entry: {revision: null | string; url: string}) => {
       // Add Worbox's standard __WB_REVISION__ to the files. The service worker
       // strips this out from the key used in cache storage, but it is used when
