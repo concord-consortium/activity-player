@@ -2,7 +2,8 @@ import React from "react";
 import { isOfflineHost } from "../utilities/host-utils";
 import { Workbox } from "workbox-window/index";
 import queryString from "query-string";
-import { getOfflineManifest, saveOfflineManifestToOfflineActivities } from "../offline-manifest-api";
+import { getOfflineManifest, saveOfflineManifestToOfflineActivities,
+  cacheUrlsWithProgress } from "../offline-manifest-api";
 import { OfflineManifest } from "../types";
 import { OfflineManifestLoadingModal } from "./offline-manifest-loading-modal";
 import { queryValue } from "../utilities/url-query";
@@ -51,6 +52,13 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
       this.wb.messageSkipWaiting();
     });
 
+    navigator.serviceWorker.ready.then(registration => {
+      // Cache the application as soon as there is an active service worker
+      // it doesn't matter if the serivce worker is controlling the page because
+      // the fetches are done by the service worker not the page
+      this.cacheApplication();
+    });
+
     this.wb.register().then((_registration) => {
       console.log("Workbox register() promise resolved", _registration);
 
@@ -67,14 +75,6 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
         .catch(() => {
           this.setState({serviceWorkerVersionInfo: "No response!"});
         });
-
-        if (navigator.serviceWorker.controller) {
-          // Now that we are sending this message to the service worker instead of
-          // using a fetch
-          this.cacheApplication();
-        } else {
-          console.log("service worker is not controlling page yet so we can't install files.");
-        }
     });
 
     if (offlineManifestId) {
@@ -115,13 +115,27 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
       }
     });
 
-    this.wb.messageSW({type: "CACHE_URLS_WITH_PROGRESS", payload: {urlsToCache: appUrls}})
-      .then((response: any) => {
-        console.log("url caching finished", response);
-      })
-      .catch(() => {
-        console.error("url caching failed");
-      });
+    // It is not clear why, but it seems like the service worker only handles one
+    // CACHE_URLS_WITH_PROGRESS at time. The next message seems to get queued
+    // until the first is complete. Perhaps because it calls event.waitUntil
+    // It seems to do the application cache first and the offline manifest cache
+    // TODO: show something in the UI while this is happening
+    cacheUrlsWithProgress({
+      workbox: this.wb,
+      urls: appUrls,
+      onCachingStarted: (urls) => {
+        console.log("stared caching application");
+      },
+      onUrlCached: (url) => {
+        console.log(`cached url ${url}`);
+      },
+      onUrlCacheFailed: (url, err) => {
+        console.error(`failed to cache ${url}`, err);
+      },
+      onCachingFinished: () => {
+        console.log("finished caching application");
+      },
+    });
   }
 
   render() {

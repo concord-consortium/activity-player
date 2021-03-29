@@ -42,27 +42,23 @@ export interface CacheOfflineManifestOptions {
   onCachingFinished: () => void;
 }
 
-/*
-We can't use the built in messageSW because we want to receive multiple
-messges from the channel.
-
-function messageSW(sw: ServiceWorker, data: {}): Promise<any> {
-  return new Promise((resolve) => {
-    const messageChannel = new MessageChannel();
-    messageChannel.port1.onmessage = (event: MessageEvent) => {
-      resolve(event.data);
-    };
-    sw.postMessage(data, [messageChannel.port2]);
-  });
+export interface CacheUrlsOptions {
+  workbox: Workbox;
+  urls: string[];
+  onCachingStarted: (urls: string[]) => void;
+  onUrlCached: (url: string) => void;
+  onUrlCacheFailed: (url: string, err: any) => void;
+  onCachingFinished: () => void;
 }
-*/
-const cacheUrlsWithProgress = async (options: CacheOfflineManifestOptions) => {
-  const {workbox, offlineManifest, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished} = options;
-  const urls = offlineManifest.activities.map(a => a.contentUrl).concat(offlineManifest.cacheList);
 
-  if (!workbox) {
-    return;
-  }
+/*
+  We can't use the built in Workbox CACHE_URLS message because it doesn't provide
+  progress messages.
+  We can't use the built in Workbox messageSW because it only allows a single
+  response on the MessageChannel indicating that it completed.
+*/
+export const cacheUrlsWithProgress = async (options: CacheUrlsOptions) => {
+  const {workbox, urls, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished} = options;
 
   onCachingStarted(urls);
 
@@ -97,7 +93,8 @@ export const cacheOfflineManifest = (options: CacheOfflineManifestOptions) => {
   const urls = offlineManifest.activities.map(a => a.contentUrl).concat(offlineManifest.cacheList);
 
   if (workbox) {
-    return cacheUrlsWithProgress(options);
+    const cacheUrlsOptions = {workbox, urls, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished};
+    return cacheUrlsWithProgress(cacheUrlsOptions);
   } else {
     const loadingPromises = urls.map(url => {
       return fetch(url, {mode: "cors"})
