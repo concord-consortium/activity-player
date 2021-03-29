@@ -28,7 +28,7 @@ describe("offline manifest api", () => {
     });
   });
 
-  it.todo("handles #cacheOfflineManifest", (done) => {
+  it.skip("handles #cacheOfflineManifest", (done) => {
     const testManifest: OfflineManifest = {
       name: "Test Manifest",
       activities: [
