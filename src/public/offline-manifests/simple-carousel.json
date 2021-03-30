@@ -10,14 +10,14 @@
   "cacheList": [
     "https://fonts.googleapis.com/css?family=Lato",
     "models-resources/logos/grasp-head-logo.png",
-    "models-resources/question-interactives/branch/master/carousel/",
-    "models-resources/question-interactives/branch/master/carousel/assets/index.ef6640fdbaa59e7d870c.css",
-    "models-resources/question-interactives/branch/master/carousel/assets/index.ef6640fdbaa59e7d870c.js",
-    "models-resources/question-interactives/branch/master/image/",
-    "models-resources/question-interactives/branch/master/image/assets/index.ef6640fdbaa59e7d870c.css",
-    "models-resources/question-interactives/branch/master/image/assets/index.ef6640fdbaa59e7d870c.js",
-    "models-resources/question-interactives/branch/master/open-response/",
-    "models-resources/question-interactives/branch/master/open-response/assets/index.ef6640fdbaa59e7d870c.css",
-    "models-resources/question-interactives/branch/master/open-response/assets/index.ef6640fdbaa59e7d870c.js"
+    "models-resources/question-interactives/branch/append-trailing-slash-for-proxies/carousel/",
+    "models-resources/question-interactives/branch/append-trailing-slash-for-proxies/carousel/assets/index.22798d8692a336486386.css",
+    "models-resources/question-interactives/branch/append-trailing-slash-for-proxies/carousel/assets/index.22798d8692a336486386.js",
+    "models-resources/question-interactives/branch/append-trailing-slash-for-proxies/image/",
+    "models-resources/question-interactives/branch/append-trailing-slash-for-proxies/image/assets/index.22798d8692a336486386.css",
+    "models-resources/question-interactives/branch/append-trailing-slash-for-proxies/image/assets/index.22798d8692a336486386.js",
+    "models-resources/question-interactives/branch/append-trailing-slash-for-proxies/open-response/",
+    "models-resources/question-interactives/branch/append-trailing-slash-for-proxies/open-response/assets/index.22798d8692a336486386.css",
+    "models-resources/question-interactives/branch/append-trailing-slash-for-proxies/open-response/assets/index.22798d8692a336486386.js"
   ]
 }
