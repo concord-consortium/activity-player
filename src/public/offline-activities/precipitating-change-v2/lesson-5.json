@@ -1,0 +1,1164 @@
+{
+  "description": "\u003Cp\u003EIdentifying Air Masses: Where does the air come from?\u003C/p\u003E",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Alaska 2021 - Lesson 5: Identifying Air Masses",
+  "notes": "",
+  "project_id": null,
+  "related": "",
+  "runtime": "Activity Player",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson4.jpg",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "Precipitating Change",
+  "pages": [{
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143690,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Real World Application",
+    "position": 1,
+    "show_header": true,
+    "show_info_assessment": false,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EWatch this video featuring\u0026nbsp;Jackie Purcell, a news station meteorologist at station KTUU in Anchorage, AK. She will discuss how wind direction\u0026nbsp;impacts different air masses.\u003C/p\u003E",
+        "is_callout": true,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "148015-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/JackieLesson5_88_Captioned.mp4\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L5_Video.png\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": null,
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "34e1a2a39c058da8ff4ffe5a09ad14af337c4a01",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/video-player/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Video Player",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": false,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1767-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": "header_block"
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143599,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Opening",
+    "position": 2,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EHave you ever noticed that the wind can come from one direction and then a few hours later a different direction? As weather scientists, you will explore a new component of the\u0026nbsp;weather\u0026nbsp;- wind! The direction of the wind can give you clues about what\u0026nbsp;weather\u0026nbsp;to expect. And when the wind changes its direction drastically, interesting\u0026nbsp;weather\u0026nbsp;events can happen.\u003C/p\u003E\n\u003Cp\u003E\u003Cbr /\u003EIn this lesson you will explore how air masses interact by\u0026nbsp;setting up a wind table. You will also revisit weather station data and radar maps you used in Lesson 1 with some additions: wind data and five more\u0026nbsp;weather\u0026nbsp;stations. In your Science Notebook, go to Lesson 5 to locate the following information:\u0026nbsp;\u003Cbr /\u003E\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; 0 Map with Additional Weather Stations and Data Tables\u0026nbsp;\u003Cbr /\u003E\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; 0 Alaskan Stations 7 pm Readings \u003Cbr /\u003E\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; 0 Alaskan Stations 7 pm Interpolated Map\u003Cbr /\u003E\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp;\u0026nbsp;0 Alaskan Stations 7 am Interpolated Map\u003Cbr /\u003E\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp;\u003C/p\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147905-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###LESSON 5: IDENTIFYING AIR MASSES\\n\\n**WHERE DOES THE AIR COME FROM?**\\n\\nIn this lesson, students investigate the role that wind plays in determining the weather and are introduced to ways to identify and define an air mass. Air masses have a similar range of weather variables (temperature and moisture), have indistinct boundaries, and are categorized by the range of weather variables within them. The air within an air mass is constantly moving and precipitation can occur where air from different air masses mixes/interacts. Scientists use models to predict where precipitation will occur based on where different air masses interact, the type of air in each, and the movement of that air.\\n\\nTo begin to identify air masses, students will do a hands-on wind table activity, and get new temperature, air moisture content, and wind direction data for five additional weather stations. As in Lesson 4, the students once again construct a set of rules through a series of activities that allow them to uncover patterns in the data, investigate the mechanisms for these patterns, and abstract a rule that describes the relationship between wind direction, its associated air mass, and the resulting precipitation. \\n\\n###LEARNING GOALS\\nStudents will be able to:\\n\\n* Identify and define an air mass\\n\\n* Explain that air masses are defined by where they come from\\n\\n* Explain the role of wind in weather events\\n\\n* Identify where on a map two different masses are interacting/mixing\\n\\n* Develop a rule for how wind moves and test the rule with multiple kinds of air masses\\n\\n* Develop a rule to express the relationship between weather components (temperature and moisture) and air masses\\n\\nComputational Thinking (CT) skills introduced in this lessons can be found in the table below:\\n\\n| CT Skill | Definition |\\n|---------------------|---------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\\n| Pattern Recognition | Recognizing that data or information is repeating in a logical (expected) way |\\n| Rule Abstraction | Developing a statement of how things work based on the patterns you observed |\\n| Rule Testing | Investigating whether a rule will still be true in different situations |\\n| Rule Refinement | Modifying a rule to be more precise (exact, careful about details) to work in the model |\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10259-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###IMPLEMENTATION TIME 2 class periods (90 mins)\\n\\n**Key Activities:**\\n\\nLesson 5: Alaska Mainland - Identifying Air Masses\\n\\n* Activity 1- What is an Air Mass (45 mins)\\n\\n* Activity 2 - What happens when air masses collide (10 mins)\\n\\n* Activity 3 - How do air masses affect precipitation? (25 mins)\\n\\n* Post-Assessment - What Are the Rules for Fronts and Precipitation? (10 mins)\\n\\n###MATERIALS AND SET-UP\\n\\nActivity 1 - What is an Air Mass?\\n\\nPer Research Team:\\n\\n* Direct students to Lesson 5 in their Science Notebooks to find the following information:\\n * Lesson 5, Activity 1: Wind Table Instructions and Questions\\n * Lesson 5, Activity 2: Additional Weather Station Data\\n * Lesson 5, Activity 2: Weather Stations 7 pm Readings\\n * Lesson 5, Activity 2: Weather Stations 7 pm Interpolated\\n * Lesson 5, Activity 2: 7 pm Weather Station Data and 7 pm Radar Map\\n * Lesson 5, Activity 2: 7 am Weather Station Data \\n\\nPer Class:\\n\\n* Set up on one demonstration table that students can gather around: a wind fan, a piece of paper with a wind rose taped to the table, and a single weather vane. See below for a top-down view. \\n\\n\u003Cimg src=\\\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson5WIndTablesTopDownView1.jpg\\\" width=\\\"400\\\" height=\\\"350\\\"\u003E\\n\\n* To print the wind rose, click [here](https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/WindCompass.jpg) to download. \",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10260-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Watch this video with your class to give students a perspective on the importance of weather and to build weather science career awareness.\",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Purcell, Jackie. \\\"Lesson 5.\\\" 2019. Good Life Productions. Anchorage, AK.\",\"mediaURL\":\"https://precipitatingchange-resources.concord.org/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/JackieLesson5_88.mp4\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10261-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143600,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "What is an air mass?",
+    "position": 3,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003E\u003Cstrong\u003EMeasuring Wind with the Compass\u0026nbsp;\u003C/strong\u003E\u003C/p\u003E\n\u003Cp\u003EOne way wind direction\u0026nbsp;can be measured is with\u0026nbsp;a weather\u0026nbsp;vane or air socks. When the wind blows, the\u0026nbsp;weather\u0026nbsp;vane rotates and lines up with the path the air is flowing. So,\u0026nbsp;wind direction\u0026nbsp;is determined by what direction the wind is blowing and measured in degrees (\u0026deg;).\u003C/p\u003E\n\u003Cp\u003E\u003Cimg class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/WindCompass.jpg\" alt=\"\" width=\"323\" height=\"328\" /\u003E\u003C/p\u003E\n\u003Cp\u003EIn this activity, you will use a Wind Table to map the movement of air on a grid representing a region in Alaska. Go to your Science Notebooks, Lesson 5, page 21, for further instructions and to record your observations.\u003C/p\u003E\n\u003Cp\u003E\u003Cstrong\u003EWind Table\u003C/strong\u003E\u003C/p\u003E\n\u003Cp\u003E\u003Cimg style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://precipitatingchange-resources.concord.org/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/WindTunnels.png\" width=\"576\" height=\"510\" /\u003E\u003C/p\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147906-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"\\n###Activity 1 - **What is an Air Mass?**\\nIn this activity students explore the patterns of air movement within and between air masses. Using a hands-on \u201cwind table,\u201d they engage in a tangible interaction with wind. By leveraging patterns from the previous activity dataset and the wind table, they will discover that when two air masses meet, the air converges. Weather scientists refer to these regions as fronts. \\n\\n###Wind Table Directions\\n * **1.Introduce the Wind Table.** Wind is one of the first things that atmospheric scientists look at when investigating the weather, but it can be difficult to understand by just looking at data and maps. A hands-on model is helpful to investigate a phenomenon like the wind.\\n\\n\\n * **2.Assign teams:** Assign research teams a Wind Table position number, either #1 or #2. \\n * **3.Wind tunnel position:** Have students place wind tunnel #1 and wind tunnel #2 according to the diagram in their Science Notebook for their assigned Team #.\\n * **4.Reminders:** Read over the things to keep in mind on page 21 in the Science Notebook, together as a class:\\n   * **BE CAREFUL NOT TO PUT YOUR FINGERS NEAR THE FAN**\\n   * Graph paper represents a region.\\n   * A wind vane can be placed anywhere on the graph paper to determine what direction the wind is coming from.\\n   * Record the wind direction by drawing an arrow in the direction the wind vane is pointing. (Recall that wind is always recorded showing the direction the wind is coming from.) If there is not a clear determination where the wind is coming from, then leave the square blank.\\n   * Place a Styrofoam ball on the wind table to see the interaction between the two air masses.\\n * **5.Analyze air mass interactions** \\n\\n   * Once all of the groups have finished mapping the wind direction, ask the students to determine the boundary of the two air masses by drawing a circle around the different air masses. \\n\\n   * Ask the students if there was anywhere on the grid that they either had trouble deciding what direction to draw their arrow. Some students might remark that the wind vane wobbles or spins in the region between the two distinct air masses. Instruct the students to identify the diagonal region between the two air masses and circle this area with a green marker. \\n\\n* **6.Connecting the Wind Table to the interpolated map.** Ask students to compare Alaska Weather Stations: 7 pm Interpolated data with the wind map they created on their Wind Table. Lead a class conversation. See possible Discussion Points below. \\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10262-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"},\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Identifying Air Mass Properties \\n\\nTo a weather scientist, an air mass is a body of air with similar temperature and air moisture content. (Note that scientists also include pressure, but pressure is not covered in this unit.)\\n\\n###Wind Table Demonstration \\nThe compass rose describes the direction the wind is blowing in degrees. Wind coming directly from the South has a direction of 180\u00b0, from the East 90\u00b0, from the North 360\u00b0, etc. Place the fan to the \u201cNorth\u201d of the weather vane and turn it on. Move the weather vane so that it's at the center of the rose and have students read the wind direction from the rose. Then, move the fan to other locations. Ask students where you should move the fan to get a wind direction of, for example, 180\u00b0, 90\u00b0, 45\u00b0, etc. Move the fan to check their predictions. \\n\\n**Teacher Note:** Wind direction is determined by what direction the wind is coming from. This is a consequence of how it is measured. A weather scientist says, \u201cwinds coming from the northeast\u201d not \u201cwinds heading southwest.\u201d This distinction becomes very important when trying to map the flow of air over a region.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10263-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143601,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "What is an air mass? (cont.)",
+    "position": 4,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": true,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EIDENTIFYING AIR MASSES\u003C/p\u003E\r\n\u003Cp\u003EIn Lesson 5 of your Science Notebook on pages 21-23, you have additional data weather station data and maps that show you the direction of the wind. On page 22, you will find a map that shows you the 7 pm reading from the additional weather stations. The arrows on the map represent the\u0026nbsp;wind direction. The data on page 23 of your Science Notebook, \"Weather Stations 7 pm Interpolated\" comes from an\u0026nbsp;interpolation\u0026nbsp;of wind direction\u0026nbsp;across the mainland of Alaska at 7 pm. See map below. Using the map on page 23, draw a line that splits the map into two parts: one section with the wind coming from the same direction and the other section with the wind coming from a different direction. It is your job to determine where you see that change in the\u0026nbsp;wind direction.\u003C/p\u003E\r\n\u003Cp\u003EStrategy for Identifying Two Air Masses:\u003C/p\u003E\r\n\u003Cp\u003E1. Make Sense of the Map:\u0026nbsp;\u003Cbr /\u003E\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp;\u0026bull; Look at each row and see if the arrows change direction as you move across the row.\u0026nbsp;\u003Cbr /\u003E\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp;\u0026bull; Look at each column and see if the arrows change direction as you move down the column.\u0026nbsp;\u003Cbr /\u003E2. Identify where you are going to place your line.\u0026nbsp;\u003Cbr /\u003E3. Draw your line on your paper map.\u003C/p\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147907-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "default_text": "",
+        "give_prediction_feedback": false,
+        "hint": "",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "name": "",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003EWhy did you draw the line there?\u003C/p\u003E",
+        "show_in_featured_question_report": true,
+        "type": "Embeddable::OpenResponse",
+        "ref_id": "208885-Embeddable::OpenResponse"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "aspect_ratio_method": "DEFAULT",
+        "authored_state": "",
+        "click_to_play": false,
+        "click_to_play_prompt": null,
+        "enable_learner_state": false,
+        "full_window": false,
+        "has_report_url": false,
+        "image_url": null,
+        "is_full_width": true,
+        "is_hidden": false,
+        "model_library_url": null,
+        "name": "Identifying Air Masses and Fronts",
+        "native_height": 435,
+        "native_width": 576,
+        "no_snapshots": false,
+        "show_delete_data_button": true,
+        "show_in_featured_question_report": true,
+        "url": "https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Models-2021/Lesson5-air-masses.v4.html",
+        "type": "MwInteractive",
+        "ref_id": "97692-MwInteractive",
+        "linked_interactives": []
+      },
+      "section": "interactive_box"
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143602,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "What is an air mass? (cont.)",
+    "position": 5,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EThe line that you drew across your map represents a boundary between two\u0026nbsp;air masses. An air mass is a body of air with similar temperature and\u0026nbsp;air moisture\u0026nbsp;content. Identifying air masses and their properties is an important part of the work of atmospheric scientists. On the map you may have noticed a temperature number at the top of the square and an\u0026nbsp;air moisture\u0026nbsp;content number at the bottom of the square.\u003C/p\u003E\n\u003Cp\u003E\u003Cimg style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/TempMoisture.jpg\" width=\"212\" height=\"292\" /\u003E\u003C/p\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147908-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "content": "\u003Cp\u003EDevelop a way to define the two air masses using the temperature and\u0026nbsp;air moisture\u0026nbsp;content values provided on the Alaskan Stations: Interpolated at 7 pm Map.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson5AirMasses1and2.jpg\" width=\"651\" height=\"429\" /\u003E\u003C/p\u003E\r\n\u003Cp\u003EDefined Air Masses for the Alaska Mainland at 7 pm\u003C/p\u003E",
+        "is_callout": true,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "DEFINING AIR MASSES",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147909-Embeddable::Xhtml"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "custom": false,
+        "enable_check_answer": false,
+        "give_prediction_feedback": false,
+        "hint": "",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "layout": "vertical",
+        "multi_answer": false,
+        "name": "Multiple Choice Question element",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003E\u003Cstrong\u003EAir Mass #1 Properties\u003C/strong\u003E\u003C/p\u003E\r\n\u003Cp\u003ETemperature: Compare Air Mass #1 to Air Mass #2.\u003C/p\u003E\r\n\u003Cp\u003EAir Mass #1 is:\u003C/p\u003E",
+        "show_as_menu": false,
+        "show_in_featured_question_report": true,
+        "choices": [{
+          "choice": "colder",
+          "is_correct": false,
+          "prompt": ""
+        }, {
+          "choice": "warmer",
+          "is_correct": false,
+          "prompt": ""
+        }],
+        "type": "Embeddable::MultipleChoice",
+        "ref_id": "17140-Embeddable::MultipleChoice"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "custom": false,
+        "enable_check_answer": false,
+        "give_prediction_feedback": false,
+        "hint": "",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "layout": "vertical",
+        "multi_answer": false,
+        "name": "Multiple Choice Question element",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images/air-moisture-scale.png\" width=\"321\" height=\"88\" /\u003E\u003C/p\u003E\r\n\u003Cp\u003EAir moisture: Compare Air Mass #1 to Air Mass #2.\u003C/p\u003E\r\n\u003Cp\u003EAir Mass #1 is:\u003C/p\u003E",
+        "show_as_menu": false,
+        "show_in_featured_question_report": true,
+        "choices": [{
+          "choice": "more moist",
+          "is_correct": false,
+          "prompt": ""
+        }, {
+          "choice": "more dry",
+          "is_correct": false,
+          "prompt": ""
+        }],
+        "type": "Embeddable::MultipleChoice",
+        "ref_id": "17141-Embeddable::MultipleChoice"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "custom": false,
+        "enable_check_answer": false,
+        "give_prediction_feedback": false,
+        "hint": "",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "layout": "vertical",
+        "multi_answer": false,
+        "name": "Multiple Choice Question element",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003E\u003Cstrong\u003EAir Mass #2 Properties\u003C/strong\u003E\u003C/p\u003E\r\n\u003Cp\u003ETemperature: Compare Air Mass #2 to Air Mass #1.\u003C/p\u003E\r\n\u003Cp\u003EAir Mass #2 over land is:\u003C/p\u003E",
+        "show_as_menu": false,
+        "show_in_featured_question_report": true,
+        "choices": [{
+          "choice": "colder",
+          "is_correct": false,
+          "prompt": ""
+        }, {
+          "choice": "warmer",
+          "is_correct": false,
+          "prompt": ""
+        }],
+        "type": "Embeddable::MultipleChoice",
+        "ref_id": "17142-Embeddable::MultipleChoice"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "custom": false,
+        "enable_check_answer": false,
+        "give_prediction_feedback": false,
+        "hint": "",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "layout": "vertical",
+        "multi_answer": false,
+        "name": "Multiple Choice Question element",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003E\u003Cimg class=\"\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images/air-moisture-scale.png\" alt=\"\" width=\"354\" height=\"99\" /\u003E\u003C/p\u003E\r\n\u003Cp\u003EAir moisture: Compare Air Mass #2 to Air Mass #1.\u003C/p\u003E\r\n\u003Cp\u003EAir Mass #2 is:\u003C/p\u003E",
+        "show_as_menu": false,
+        "show_in_featured_question_report": true,
+        "choices": [{
+          "choice": "more moist",
+          "is_correct": false,
+          "prompt": ""
+        }, {
+          "choice": "more dry",
+          "is_correct": false,
+          "prompt": ""
+        }],
+        "type": "Embeddable::MultipleChoice",
+        "ref_id": "17143-Embeddable::MultipleChoice"
+      },
+      "section": null
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143603,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Two air masses colliding",
+    "position": 6,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003E\u003Cstrong\u003EFronts\u003C/strong\u003E\u003C/p\u003E\n\u003Cp\u003EThe region between two different air masses is called a\u0026nbsp;\u003Cstrong\u003Efront.\u003C/strong\u003E Weather scientists are very interested in fronts because they are where the\u0026nbsp;weather\u0026nbsp;can change. Sometimes this change is very sudden.\u003C/p\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147910-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "content": "\u003Cp\u003EGo to page 24 in your Science Notebook and compare the 7 pm interpolated map and the 7 pm radar map.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cimg class=\"\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson5_7pmInterpolatedRADARMAPcomparison.jpg\" alt=\"\" width=\"860\" height=\"300\" /\u003E\u003C/p\u003E\r\n\u003Cp\u003EDiscuss with your research team and write a general statement that answers the question, \u0026ldquo;How do air masses affect where it rains?\"\u0026nbsp;\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E",
+        "is_callout": true,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "TASK",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147911-Embeddable::Xhtml"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "default_text": "",
+        "give_prediction_feedback": false,
+        "hint": "\u003Cp\u003E\u0026bull; Where is the front? Where is it raining? How do they compare?\u003Cbr /\u003E\u0026bull; How does the location of the precipitation on the radar map compare to the warm air mass, the cold air mass, and the front?\u003Cbr /\u003E\u0026bull; What is the air like where it is raining?\u003C/p\u003E",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "name": "",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003EHow do air masses affect where it rains?\u003C/p\u003E",
+        "show_in_featured_question_report": true,
+        "type": "Embeddable::OpenResponse",
+        "ref_id": "208886-Embeddable::OpenResponse"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "content": "\u003Cp\u003EGo to page 25 in your Science Notebook and work with you research team to make a prediction for where you think it could rain at 7 am by drawing on the 7 am weather station map in your notebook.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L4_ACT1_Alaska%20Weather%20Stations_7am%20Interpolated.png\" width=\"437\" height=\"263\" /\u003E\u003C/p\u003E\r\n\u003Cp\u003EAlaska Stations: Interpolated at 7 am\u003C/p\u003E",
+        "is_callout": true,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "TASK",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147912-Embeddable::Xhtml"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "default_text": "",
+        "give_prediction_feedback": false,
+        "hint": "",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "name": "",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003EExplain why you think it could rain in the area you selected.\u003C/p\u003E",
+        "show_in_featured_question_report": true,
+        "type": "Embeddable::OpenResponse",
+        "ref_id": "208887-Embeddable::OpenResponse"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": "",
+          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"},\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Identifying Air Masses\\n\\nPossible discussion questions:\\n\\n* How do we identify air masses? (Responses should center on temperature, moisture and wind direction.)\\n\\n* What have you learned about the wind?\\n\\n* What questions do you still have?\\n\\n* Why do you think the wind is important in understanding the weather?\\n\\n\u2022 Are there any connections between the location of the air masses, fronts and precipitation? \\n\\n\u2022 Why do you think it is raining in some places and not others?\\n\\n**Teacher note:** Because air is invisible, students tend to have a lot of misconceptions about it. For example, the idea that air is a substance that can move is central to this lesson. It is easy to assume that students understand this concept when they may not. Asking probing questions can help bring their preconceptions to the forefront. The wind table will help students by giving them a concrete experience.\\n\\n###Describing the Front\\n\\n**Teacher note:** Student responses should be in terms of the actual movement of air and not just wind directions. The front is a particularly important area as students should identify it as a place where warm and cold air from the two air masses is coming together or mixing. Students will need a solid understanding of this concept as it will be revisited in the next lesson when they look at how fronts move over a region. \\n\\n###What is Happening at the Front\\n\\n**Teacher Note:** Students will likely notice that there is precipitation outside the area of the front and there are areas along the front that don\u2019t show precipitation. Make note of these discrepancies and remind them that, as we have seen before, we may not have all of the information to explain everything that we see. Some of their observations will be addressed in Lesson 5.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10264-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143604,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Two air masses colliding (cont.)",
+    "position": 7,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EYou have made a prediction for where it could rain at 7 am. Compare your prediction to the radar image for 7 am. The radar image shows where it was actually raining at 7 am.\u003C/p\u003E\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL22_7am.png\" width=\"678\" height=\"500\" /\u003E\u003C/p\u003E\n\u003Cp\u003ERadar Image for 7 am\u003C/p\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147913-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "default_text": "",
+        "give_prediction_feedback": false,
+        "hint": "",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "name": "",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003EHow accurate was your prediction?\u003C/p\u003E",
+        "show_in_featured_question_report": true,
+        "type": "Embeddable::OpenResponse",
+        "ref_id": "208888-Embeddable::OpenResponse"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "default_text": "",
+        "give_prediction_feedback": false,
+        "hint": "",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "name": "",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003ELook back at your original rule for the question, \u0026ldquo;How do air masses affect where it rains?\u0026rdquo; Using what you learned with the 7 am data, revise your rule.\u003C/p\u003E",
+        "show_in_featured_question_report": true,
+        "type": "Embeddable::OpenResponse",
+        "ref_id": "208889-Embeddable::OpenResponse"
+      },
+      "section": null
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143605,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Air masses and precipitation",
+    "position": 8,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": true,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EWhen you feel the wind blow on your face, you are feeling air from another place. Sometimes it feels cold; sometimes it feels warm. The wind is what moves air. Weather scientists use\u0026nbsp;wind direction\u0026nbsp;to distinguish multiple air masses. What happens at the boundary of those two air masses? You will explore that question using a new Virtual Model. \u0026nbsp;\u003C/p\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147914-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "content": "\u003Cp\u003EThis model shows wind as moving arrowheads and precipitation as green circles. There are two air masses. Identify where the front is.\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003EThen, by trying different settings of the temperature and moisture, see if you can make up a rule for what conditions produce precipitation along the front, and on which side of the front the precipitation will occur.\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003EStart by pressing \u003Cstrong\u003ESetup\u003C/strong\u003E and \u003Cstrong\u003ERun\u003C/strong\u003E. As you change temperatures and moisture settings you may want to press \u003Cstrong\u003ESetup\u003C/strong\u003E occasionally to start fresh. Be sure to discuss what you find with your research team.\u003C/p\u003E",
+        "is_callout": true,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "TASK ",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147915-Embeddable::Xhtml"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "default_text": "",
+        "give_prediction_feedback": false,
+        "hint": "",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "name": "",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003EDescribe the position of the front, and explain how you know this.\u003C/p\u003E\r\n\u003Cp\u003EYou may use city names as landmarks.\u003C/p\u003E",
+        "show_in_featured_question_report": true,
+        "type": "Embeddable::OpenResponse",
+        "ref_id": "208890-Embeddable::OpenResponse"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "default_text": "",
+        "give_prediction_feedback": false,
+        "hint": "\u003Cp\u003E\u0026bull; Look at the temperature values for Air Mass 1 and Air Mass 2\u003Cbr /\u003E\u0026bull; Look at the moisture values for Air Mass 1 and Air Mass 2\u003C/p\u003E",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "name": "",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003EWhat are the conditions in the model that result in precipitation happening along a front?\u003C/p\u003E",
+        "show_in_featured_question_report": true,
+        "type": "Embeddable::OpenResponse",
+        "ref_id": "208891-Embeddable::OpenResponse"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "default_text": "",
+        "give_prediction_feedback": false,
+        "hint": "\u003Cp\u003E\u0026bull; Is the precipitation happening more on the colder side of the front?\u003Cbr /\u003E\u0026bull; Is the precipitation happening more on the warmer side of the front?\u003C/p\u003E",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "name": "",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003EDescribe specifically where the precipitation happens within the front.\u003C/p\u003E",
+        "show_in_featured_question_report": true,
+        "type": "Embeddable::OpenResponse",
+        "ref_id": "208892-Embeddable::OpenResponse"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "default_text": "",
+        "give_prediction_feedback": false,
+        "hint": "\u003Cp\u003EMake sure to use precise language and include both temperature and moisture values.\u003C/p\u003E",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "name": "",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003EFinalize your rule statement for \u0026ldquo;How do air masses affect where it rains?\u0026rdquo;\u003C/p\u003E",
+        "show_in_featured_question_report": true,
+        "type": "Embeddable::OpenResponse",
+        "ref_id": "208893-Embeddable::OpenResponse"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Activity 3 - How Do Air Masses Affect Precipitation? Virtual Model\\n\\n**Objective:** To build students\u2019 rule refinement skills by experimenting with a model to figure out its built-in weather rules. In this model, precipitation falls under a variety of conditions that can be set by changing temperatures and moisture for two air masses. \\n\\nStudents can vary the temperature and moisture of two air masses in order to better understand how interacting air masses create patterns of rain at a front. Through this process, students will come up with an even more robust rule for predicting rain that involves interacting air masses. The specific computational thinking practice highlighted and practiced in this activity is **Rule Refinement**.\\n\\n**1. Class discussion about air mass properties.**Use the Alaska Weather Stations: 7am Interpolated map! [](https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson5AirMasses1and2.jpg) to remind students of the properties of the air masses in their regional weather system. See Discussion Points below for possible prompts. \\n\\n**2. Set up the model challenge.** \\n\\n* Have students recall the rule they developed to answer the question \u201cHow do air masses affect where it rains?\u201d \\n\\n* Students will use the Lesson 5 virtual model to help refine their rule.\\n\\n**3. Exploring the Virtual Model.** \\n\\nIntroduce the task, and give students time to explore the model. Then let them tell you what they discovered. They may notice:\\n\\n * The properties of the incoming air can be changed using the sliders on the left and bottom.\\n\\n * The direction of the wind can be seen with arrows and trails that can be turned on or off.\\n\\n * Precipitation appears as green circles with bigger circles meaning heavier rain.\\n\\n * Color of arrows correspond to temperature (Red = Warm, Blue = Cold, Purple = In Between)\\n\\n * Size of arrows correspond to air moisture (Small = dry, Large = moist or humid)\\n\\nYou may want to point out that\\n\\n * Even though the air in the model moves, the model shows airflow for a certain time. Time does not change.\\n\\n**4. Experiment with the Model to find the Rule**\\n\\nTell students that this model has a built-in rule for precipitation made by the model\u2019s programmer. Students\u2019 challenge is to discover the rule by experimenting with the model. \\n\\n * Students may find it helpful to express their experiments comparing warmer or colder temperatures and moister or drier moisture values instead of specific temperatures or air moisture values.\\n\\n * Give students time to play with the model and record their understanding of the model rule design in the questions that follow.\\n\\nNOTE: This is a fairly sophisticated weather model. Don\u2019t expect that students will discover the full precipitation rule. However, students should discover that the front runs up from the southwestern corner through Bethel and Anchorage with one air mass coming down from the northwest and the other up from the south and southwest. They may discover that generally, precipitation occurs along the front if there is a difference in temperature between the two air masses, and tends to form on the warmer side of the front. Although not always true, students will also see that precipitation forms other places than at the front. If the air masses are quite dry they may not produce precipitation. On the other hand, the warmer the air, the more moisture it can hold before precipitation appears. Very warm air can hold a lot of moisture producing a humid day without any rain.\\n\\nIf students are having trouble making rain, have them try a more systematic approach where they vary just one slider a step at a time to see the effect on precipitation. Be sure they know they have to wait a little while to see the effect of a change as the settings only affect the entering wind. Refreshing the screen by pressing Setup is often helpful. The point of this exercise is to see how well students can react to data and test as many options as possible. How deep is their thinking?\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10265-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"After students have completed the questions on this page, project the model for the class, if possible. Ask students to discuss what they noticed about the model and what they learned from experimenting with it. The model is complex so there can be many viewpoints. The objective of this is to have students feel that they can learn from the model themselves. All observations are valid and up for discussion.\\n\\nPossible topics for discussion:\\n* It may be most valuable to discuss the questions student's answered on this page. An extended discussion could come from the question below.\\n\\n* What do the sizes and colors of the wind arrowheads mean? (The redder the warmer; the bluer the cooler; the larger the more moist; and the smaller the drier.)\\n\\n* Does precipitation fall only near the front? (No, it can fall where the arrowheads converge or come closer together.)\\n\\n* If the south settings and the west setting are the same, is there a front? (No, but the air may still converge.)\\n\\n* Do you see precipitation even where there is no front? What is a rule for it forming? (This is a little hard to figure out. By setting a high moisture level and then scanning through the temperatures, students can see that there are some intermediate temperatures that produce a lot of precipitation. At high temperatures, the air holds a lot of moisture; at low temperature the air holds little moisture.)\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10266-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"howToUse\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Watch this video to learn how students will use the Lesson 5 Virtual Model to test and refine their rule for, \\\"How do air masses affect precipitation?\\\"\",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Precipitating Change How to Tutorials: How Do Air Masses Affect Precipitation?, 2020, The Concord Consortium\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/HowtoTutorialVirtualModel2.mp4\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10267-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "aspect_ratio_method": "DEFAULT",
+        "authored_state": null,
+        "click_to_play": false,
+        "click_to_play_prompt": null,
+        "enable_learner_state": false,
+        "full_window": false,
+        "has_report_url": false,
+        "image_url": "",
+        "is_full_width": true,
+        "is_hidden": false,
+        "model_library_url": null,
+        "name": "Lesson 5:Air Mass Model",
+        "native_height": 435,
+        "native_width": 576,
+        "no_snapshots": false,
+        "show_delete_data_button": false,
+        "show_in_featured_question_report": true,
+        "url": "https://models-resources.concord.org/precip-models/lesson-4-ak-v3.html",
+        "type": "MwInteractive",
+        "ref_id": "96961-MwInteractive",
+        "linked_interactives": []
+      },
+      "section": "interactive_box"
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143693,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Quiz",
+    "position": 9,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EPlease answer this quiz of things learned in this lesson.\u003C/p\u003E",
+        "is_callout": true,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "148892-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"a) Can be determined using tools such as a weather vane, flag, or windsock\",\"correct\":false},{\"id\":\"2\",\"content\":\"b) Described by using the direction that the wind came from\",\"correct\":false},{\"id\":\"3\",\"content\":\"c) Described by using the direction that the wind is going to\",\"correct\":false},{\"content\":\"d) Only A and B\",\"correct\":true,\"id\":\"de903f5f-840c-40c0-91db-73c33017a515\"},{\"content\":\"e) Only A and C\",\"correct\":false,\"id\":\"3852ac5d-832a-4558-a526-1729c4a02a20\"}],\"enableCheckAnswer\":true,\"prompt\":\"\u003Cp\u003EWhat is the definition of \u201cwind direction\u201d?\u003C/p\u003E\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Multiple Choice",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "2027-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"a) A body of air with similar temperatures and air moisture content\",\"correct\":false},{\"id\":\"2\",\"content\":\"b) Where the weather begins\",\"correct\":false},{\"id\":\"3\",\"content\":\"c) An air mass that is very dry with calm weather.\",\"correct\":false},{\"content\":\"d) The area between two colliding air masses of different temperatures that result in a change in weather.\",\"correct\":true,\"id\":\"9c06c9a6-3906-4afb-bdb1-066b8d22ad43\"}],\"enableCheckAnswer\":true,\"prompt\":\"\u003Cp\u003EWhat is the definition of the word \u201cfront\u201d?\u003C/p\u003E\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Multiple Choice",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "2029-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"a) A measurement of the weight of the air.\",\"correct\":false},{\"id\":\"2\",\"content\":\"b) A body of air with similar temperatures and air moisture content.\",\"correct\":true},{\"id\":\"3\",\"content\":\"c) A piece of equipment that shows the direction the air is moving.\",\"correct\":false},{\"content\":\"d) The line between two fronts where the wind changes direction.\",\"correct\":false,\"id\":\"adf51964-b089-4d02-92c4-8ba5ddd87113\"}],\"enableCheckAnswer\":true,\"prompt\":\"\u003Cp\u003EWhat is an air mass?\u003C/p\u003E\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Multiple Choice",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "2030-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"a) Compass rose and degree directions always tell where the wind is coming from.\",\"correct\":false},{\"id\":\"2\",\"content\":\"b) Arrows always point where the wind is going.\",\"correct\":false},{\"id\":\"3\",\"content\":\"c) Compass rose and degree directions always tell where the wind is going.\",\"correct\":false},{\"content\":\"d) Arrows always point where the wind is coming from.\",\"correct\":false,\"id\":\"4dcfa49c-9d65-44c8-ba59-30ad0232f898\"},{\"content\":\"e) Both A and B\",\"correct\":true,\"id\":\"cf4fa7b4-5048-40c0-acbe-478fffa79243\"},{\"content\":\"f) Both C and D\",\"correct\":false,\"id\":\"1dcfe310-0d3d-4879-bf47-0158c1310a6a\"},{\"content\":\"g) Both B and C\",\"correct\":false,\"id\":\"7ddeb9e9-b680-4974-8ed5-fc7aaeea1846\"}],\"enableCheckAnswer\":true,\"prompt\":\"\u003Cp\u003EHow do meteorologists talk about the wind direction?\u003C/p\u003E\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Multiple Choice",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "2031-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"a) The colder drier air mass\",\"correct\":false},{\"id\":\"2\",\"content\":\"b) The colder wetter air mass\",\"correct\":false},{\"id\":\"3\",\"content\":\"c) The warmer wetter air mass\",\"correct\":true},{\"content\":\"d) The warmer drier air mass\",\"correct\":false,\"id\":\"cfed3538-0de4-4b54-8414-57afc6d5a849\"}],\"enableCheckAnswer\":true,\"prompt\":\"\u003Cp\u003EWhen a front forms with the right conditions for precipitation, which air mass does the precipitation fall in?\u003C/p\u003E\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Multiple Choice",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "2032-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 308577,
+    "is_completion": true,
+    "is_hidden": false,
+    "layout": "l-6040",
+    "name": "Completion Page",
+    "position": 9,
+    "show_header": false,
+    "show_info_assessment": false,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": []
+  }],
+  "plugins": [{
+    "description": "",
+    "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.concord.org/glossary-resources/upZ83jqTZAZuoQqRAfAb/glossary.json\"}",
+    "approved_script_label": "glossary",
+    "component_label": "glossary",
+    "approved_script": {
+      "name": "Glossary",
+      "url": "https://glossary-plugin.concord.org/version/v3.12.0/plugin.js",
+      "label": "glossary",
+      "description": "This plugin provides the glossary activity plugin",
+      "version": 3,
+      "json_url": "https://glossary-plugin.concord.org/version/v3.12.0/manifest.json",
+      "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
+    }
+  }],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}
