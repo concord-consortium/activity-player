@@ -9,15 +9,15 @@
   ],
   "cacheList": [
     "https://fonts.googleapis.com/css?family=Lato",
-    "https://fonts.gstatic.com/s/lato/v17/S6u9w4BMUTPHh50XSwiPGQ3q5d0.woff2",
-    "https://fonts.gstatic.com/s/lato/v17/S6u9w4BMUTPHh6UVSwiPGQ3q5d0.woff2",
-    "https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXiWtFCc.woff2",
-    "https://models-resources.concord.org/logos/grasp-head-logo.png",
-    "https://models-resources.concord.org/question-interactives/branch/master/image",
+    "models-resources/logos/grasp-head-logo.png",
     "models-resources/question-interactives/branch/master/carousel/",
     "models-resources/question-interactives/branch/master/carousel/assets/index.ef6640fdbaa59e7d870c.css",
     "models-resources/question-interactives/branch/master/carousel/assets/index.ef6640fdbaa59e7d870c.js",
+    "models-resources/question-interactives/branch/master/image/",
+    "models-resources/question-interactives/branch/master/image/assets/index.ef6640fdbaa59e7d870c.css",
+    "models-resources/question-interactives/branch/master/image/assets/index.ef6640fdbaa59e7d870c.js",
     "models-resources/question-interactives/branch/master/open-response/",
-    "models-resources/question-interactives/branch/master/open-response/assets/index.5f534705902ba311d5fe.js"
+    "models-resources/question-interactives/branch/master/open-response/assets/index.ef6640fdbaa59e7d870c.css",
+    "models-resources/question-interactives/branch/master/open-response/assets/index.ef6640fdbaa59e7d870c.js"
   ]
 }
