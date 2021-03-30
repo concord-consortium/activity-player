@@ -7,6 +7,7 @@ import { IIndexedDBAnswer } from "./storage-facade";
 export const kOfflineAnswerSchemaVersion = 6;
 export interface IDexiePluginRecord {
   pluginId: number,
+  resourceUrl: string,
   state: string|null
 }
 
@@ -27,7 +28,7 @@ export class DexieStorage extends Dexie {
     this.version(kOfflineAnswerSchemaVersion).stores({
       logs: "++id, activity",
       answers: "id, resource_url, [resource_url+question_id]",
-      pluginStates: "&pluginId",
+      pluginStates: "[resource+pluginId]",
       offlineActivities: "&resourceUrl"  // unique by resourceUrl
     });
   }

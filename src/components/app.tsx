@@ -378,8 +378,8 @@ export class App extends React.PureComponent<IProps, IState> {
       this.setState(newState as IState);
 
       this.LARA = initializeLara();
-      if (activity) {
-        loadLearnerPluginState(activity, teacherEditionMode).then(() => {
+      if (activity && resourceUrl) {
+        loadLearnerPluginState(activity, resourceUrl, teacherEditionMode).then(() => {
           if (activity) {
             loadPluginScripts(this.LARA, activity, this.handleLoadPlugins, teacherEditionMode);
           }
