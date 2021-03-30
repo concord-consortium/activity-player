@@ -1,5 +1,6 @@
 import { dexieStorage } from "./storage/dexie-storage";
 import { OfflineActivity, OfflineManifest, OfflineManifestActivity } from "./types";
+import { Workbox } from "workbox-window/index";
 
 export interface OfflineManifestAuthoringData {
   activities: OfflineManifestActivity[];
@@ -33,26 +34,65 @@ export const getOfflineManifest = (id: string): Promise<OfflineManifest> => {
 };
 
 export interface CacheOfflineManifestOptions {
+  workbox: Workbox;
   offlineManifest: OfflineManifest;
   onCachingStarted: (urls: string[]) => void;
   onUrlCached: (url: string) => void;
   onUrlCacheFailed: (url: string, err: any) => void;
-  onAllUrlsCached: () => void;
-  onAllUrlsCacheFailed: (errs: any) => void;
+  onCachingFinished: () => void;
 }
 
-export const cacheOfflineManifest = (options: CacheOfflineManifestOptions) => {
-  const {offlineManifest, onCachingStarted, onUrlCached, onUrlCacheFailed, onAllUrlsCached, onAllUrlsCacheFailed} = options;
-  const urls = offlineManifest.activities.map(a => a.contentUrl).concat(offlineManifest.cacheList);
-  const loadingPromises = urls.map(url => {
-    return fetch(url, {mode: "cors", cache: "no-store"})
-      .then(() => onUrlCached(url))
-      .catch(err => onUrlCacheFailed(url, err));
-  });
+export interface CacheUrlsOptions {
+  workbox: Workbox;
+  urls: string[];
+  onCachingStarted: (urls: string[]) => void;
+  onUrlCached: (url: string) => void;
+  onUrlCacheFailed: (url: string, err: any) => void;
+  onCachingFinished: () => void;
+}
+
+/*
+  We can't use the built in Workbox CACHE_URLS message because it doesn't provide
+  progress messages.
+  We can't use the built in Workbox messageSW because it only allows a single
+  response on the MessageChannel indicating that it completed.
+*/
+export const cacheUrlsWithProgress = async (options: CacheUrlsOptions) => {
+  const {workbox, urls, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished} = options;
+
   onCachingStarted(urls);
-  return Promise.all(loadingPromises)
-    .then(() => onAllUrlsCached())
-    .catch(err => onAllUrlsCacheFailed(err));
+
+  const sw = await workbox.getSW();
+  const messageChannel = new MessageChannel();
+
+  messageChannel.port1.onmessage = (event: MessageEvent) => {
+    // Handle the various messages from the channel
+    if (event.data?.type === "URL_CACHED") {
+      console.log("URL_CACHED", event.data.payload);
+      onUrlCached(event.data.payload?.url);
+    } else if (event.data?.type === "URL_CACHE_FAILED") {
+      console.error("URL_CACHE_FAILED", event.data.payload);
+      onUrlCacheFailed(event.data.payload?.url, event.data.payload?.error);
+    } else if (event.data?.type === "CACHING_FINISHED") {
+      console.log("CACHING_FINISHED");
+      onCachingFinished();
+      // TODO having a promise here that we can resolve could be helpful
+    }
+  };
+
+  sw.postMessage({type: "CACHE_URLS_WITH_PROGRESS", payload: {urlsToCache: urls}},
+    [messageChannel.port2]);
+
+  // We might need to block until complete so the messageChannel doesn't get
+  // garbage collected, but it isn't simple to just do an await here
+  // so maybe we can get by without blocking.
+};
+
+export const cacheOfflineManifest = (options: CacheOfflineManifestOptions) => {
+  const {workbox, offlineManifest, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished} = options;
+  const urls = offlineManifest.activities.map(a => a.contentUrl).concat(offlineManifest.cacheList);
+  const cacheUrlsOptions = {workbox, urls, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished};
+  return cacheUrlsWithProgress(cacheUrlsOptions);
 };
 
 export const OfflineManifestAuthoringIdKey = "offlineManifestAuthoringId";

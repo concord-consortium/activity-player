@@ -32,7 +32,6 @@ import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plu
 import { IdleDetector } from "../utilities/idle-detector";
 import { Workbox } from "workbox-window/index";
 import { getOfflineManifest, getOfflineManifestAuthoringData, getOfflineManifestAuthoringId, OfflineManifestAuthoringData, mergeOfflineManifestWithAuthoringData, saveOfflineManifestToOfflineActivities, setOfflineManifestAuthoringData, setOfflineManifestAuthoringId } from "../offline-manifest-api";
-import { OfflineManifestLoadingModal } from "./offline-manifest-loading-modal";
 import { OfflineInstalling } from "./offline-installing";
 import { OfflineActivities } from "./offline-activities";
 import { OfflineNav } from "./offline-nav";
@@ -64,7 +63,6 @@ interface IncompleteQuestion {
 interface IState {
   activity?: Activity;
   offlineManifest?: OfflineManifest;
-  loadingOfflineManifest: boolean;
   currentPage: number;
   teacherEditionMode?: boolean;
   showThemeButtons?: boolean;
@@ -87,7 +85,6 @@ interface IState {
   offlineManifestAuthoringActivities: OfflineManifestActivity[];
   offlineManifestAuthoringCacheList: string[];
   serviceWorkerStatus: ServiceWorkerStatus;
-  showOfflineManifestInstallConfirmation: boolean;
   showEditUserName: boolean;
   networkConnected: boolean;
   serviceWorkerVersionInfo?: string;
@@ -113,7 +110,6 @@ export class App extends React.PureComponent<IProps, IState> {
     }
     const offlineManifestAuthoringId = offlineMode ? getOfflineManifestAuthoringId() : undefined;
     const offlineManifestId = offlineMode ? queryValue("offlineManifest") : undefined;
-    const loadingOfflineManifest = !!offlineManifestId;
 
     this.state = {
       currentPage: 0,
@@ -128,11 +124,9 @@ export class App extends React.PureComponent<IProps, IState> {
       pluginsLoaded: false,
       errorType: null,
       idle: false,
-      loadingOfflineManifest,
       offlineMode,
       offlineManifestAuthoringActivities: [],
       offlineManifestAuthoringCacheList: [],
-      showOfflineManifestInstallConfirmation: queryValue("confirmOfflineManifestInstall") === "true",
       offlineManifestAuthoringId,
       offlineManifestId,
       serviceWorkerStatus: "unknown",
@@ -186,10 +180,14 @@ export class App extends React.PureComponent<IProps, IState> {
         wb.messageSkipWaiting();
       });
       wb.addEventListener("controlling", (event) => {
-        // If a new service worker is now controlling the page reload it to make sure
-        // all of our assets and resources are in sync with the new service worker
-        console.log("A new service worker has installed and is controlling, reloading the page.");
-        window.location.reload();
+        // A new service worker is now controlling the page.
+        // Our service worker does not do a pre-cache step while installing
+        // so there isn't a reason to reload the page once it is controlling.
+        //
+        // TODO: instead we should be notified when install.html has updated the
+        // the cache and reload the page when that happens, or at least notify
+        // the user.
+        console.log("A new service worker has installed and is controlling.");
       });
       wb.addEventListener("activating", (event) => {
         console.log("A new service worker is activating.");
@@ -214,7 +212,7 @@ export class App extends React.PureComponent<IProps, IState> {
                 // TODO: we only allow cors requests, so it would be helpful to authors
                 // if we checked whether the url can be requested with cors and if not
                 // we notify the author about the invalid url
-                
+
                 // make sure all models-resources requests use the base folder
                 const url = event.data.url.replace(/.*models-resources\//, "models-resources/");
                 let {offlineManifestAuthoringCacheList} = prevState;
@@ -302,7 +300,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const {offlineMode, offlineManifestId, offlineManifestAuthoringId, loadingOfflineManifest} = this.state;
+      const {offlineMode, offlineManifestId, offlineManifestAuthoringId } = this.state;
 
       let offlineManifestAuthoringData: OfflineManifestAuthoringData | undefined;
       if (offlineManifestAuthoringId) {
@@ -364,7 +362,7 @@ export class App extends React.PureComponent<IProps, IState> {
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
 
-      const newState: Partial<IState> = {activity, offlineManifest, loadingOfflineManifest, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode, offlineManifestAuthoringId};
+      const newState: Partial<IState> = {activity, offlineManifest, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode, offlineManifestAuthoringId};
       setDocumentTitle(activity, currentPage);
 
       // Initialize Storage provider
@@ -446,14 +444,11 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderContent = () => {
-    const {offlineManifest, loadingOfflineManifest, showSequenceIntro, sequence,
-      username, offlineMode, showOfflineManifestInstallConfirmation, activity,
+    const {showSequenceIntro, sequence,
+      username, offlineMode, activity,
       serviceWorkerStatus} = this.state;
     if (offlineMode && serviceWorkerStatus !== "controlling") {
       return <OfflineInstalling serviceWorkerStatus={serviceWorkerStatus}/>;
-    } else if (offlineManifest && loadingOfflineManifest) {
-      // Rendering this has a side effect of actually loading the manifest files
-      return <OfflineManifestLoadingModal offlineManifest={offlineManifest} onClose={this.handleCloseLoadingOfflineManifest} showOfflineManifestInstallConfirmation={showOfflineManifestInstallConfirmation} />;
     } else if (offlineMode) {
       return activity ? this.renderActivity() : <OfflineActivities username={username} />;
     } else if (showSequenceIntro) {
@@ -739,10 +734,6 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleLoadPlugins = () => {
     this.setState({ pluginsLoaded: true });
-  }
-
-  private handleCloseLoadingOfflineManifest = () => {
-    this.setState({loadingOfflineManifest: false});
   }
 
   private addActivityToOfflineManifest = async (offlineManifestAuthoringId: string, activity: Activity,
