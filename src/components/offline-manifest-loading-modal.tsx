@@ -8,7 +8,6 @@ import "./offline-manifest-loading-modal.scss";
 interface IProps {
   offlineManifest: OfflineManifest;
   onClose: () => void;
-  showOfflineManifestInstallConfirmation: boolean;
   workbox: Workbox;
   onCachingStarted?: (urls: string[]) => void;
   onUrlCached?: (url: string) => void;
@@ -56,23 +55,9 @@ export class OfflineManifestLoadingModal extends React.Component<IProps, IState>
       },
       onCachingFinished: () => {
         this.setState({caching: false});
-        this.checkForAutoClose(this.props);
         this.props.onCachingFinished?.();
       }
     });
-  }
-
-  UNSAFE_componentWillReceiveProps(nextProps: IProps) {
-    this.checkForAutoClose(nextProps);
-  }
-
-  checkForAutoClose(props: IProps) {
-    const {caching, urlsFailedToCache} = this.state;
-    const {showOfflineManifestInstallConfirmation, onClose} = this.props;
-    if (onClose && !caching && (urlsFailedToCache.length === 0) && !showOfflineManifestInstallConfirmation) {
-      // allow the final render
-      setTimeout(() => onClose(), 0);
-    }
   }
 
   renderCaching() {

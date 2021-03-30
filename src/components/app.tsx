@@ -85,7 +85,6 @@ interface IState {
   offlineManifestAuthoringActivities: OfflineManifestActivity[];
   offlineManifestAuthoringCacheList: string[];
   serviceWorkerStatus: ServiceWorkerStatus;
-  showOfflineManifestInstallConfirmation: boolean;
   showEditUserName: boolean;
   networkConnected: boolean;
   serviceWorkerVersionInfo?: string;
@@ -128,7 +127,6 @@ export class App extends React.PureComponent<IProps, IState> {
       offlineMode,
       offlineManifestAuthoringActivities: [],
       offlineManifestAuthoringCacheList: [],
-      showOfflineManifestInstallConfirmation: queryValue("confirmOfflineManifestInstall") === "true",
       offlineManifestAuthoringId,
       offlineManifestId,
       serviceWorkerStatus: "unknown",

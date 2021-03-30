@@ -240,7 +240,7 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
           "No activities specified" }
         { (offlineManifest && loadingOfflineManifest) ?
           <OfflineManifestLoadingModal offlineManifest={offlineManifest}
-            showOfflineManifestInstallConfirmation={true} workbox={this.wb}
+            workbox={this.wb}
             onUrlCached={(url: string) => this.addInstalledContentUrl(true, url)}
             onUrlCacheFailed={(url: string, err: any) => this.addInstalledContentUrl(false, url)}
             onClose={() => this.setState({loadingOfflineManifest: false})} />
