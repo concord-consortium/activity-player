@@ -13,7 +13,7 @@ const die = (message: string) => {
 };
 
 const getManifestPath = () => {
-  const [_, __, filename, ...rest] = process.argv;
+  const filename = process.argv[2];
 
   if (!filename) {
     die("Usage: npm run update-offline-manifest <offline-manifest-filename>");
@@ -83,14 +83,14 @@ const main = async () => {
   console.log("\nTesting all urls...");
   const allUrls = cacheList.concat(oldMissingUrls);
 
-  let badUrls: {url: string, status: number}[] = [];
+  const badUrls: {url: string, status: number}[] = [];
   await allUrls.reduce(async (promise, url: string) => {
     await promise;
 
     url = maybeProxyUrl(url);
     console.log("  ", url);
     try {
-      const resp = await request.head(url);
+      await request.head(url);
     } catch (e) {
       if (e.status >= 400) {
         badUrls.push({url, status: e.status});
