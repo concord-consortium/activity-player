@@ -13,6 +13,8 @@ interface IState {
   loadingOfflineManifest: boolean;
   offlineManifest?: OfflineManifest;
   offlineManifestId?: string;
+  installedApplicationUrls: {success: boolean; url: string}[];
+  installedContentUrls: {success: boolean; url: string}[];
 }
 interface IProps {
 }
@@ -27,7 +29,9 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
     if (!isOfflineHost() || !("serviceWorker" in navigator)) {
       // Don't setup workbox
       this.state = {
-        loadingOfflineManifest: false
+        loadingOfflineManifest: false,
+        installedApplicationUrls: [],
+        installedContentUrls: []
       };
       // TODO: show some useful message incase some one loads this page from a
       // non offline host, or in a browser without service worker support
@@ -40,7 +44,9 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
     this.state = {
       serviceWorkerVersionInfo: "Starting...",
       loadingOfflineManifest,
-      offlineManifestId
+      offlineManifestId,
+      installedApplicationUrls: [],
+      installedContentUrls: []
     };
 
     this.wb = new Workbox("service-worker.js");
@@ -77,6 +83,20 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
         .catch(() => {
           this.setState({serviceWorkerVersionInfo: "No response!"});
         });
+    });
+  }
+
+  addInstalledApplicationUrl(success:boolean, url:string) {
+    this.setState((prevState) => {
+      const updatedUrls = prevState.installedApplicationUrls.concat([{success, url}]);
+      return {installedApplicationUrls: updatedUrls};
+    });
+  }
+
+  addInstalledContentUrl(success:boolean, url:string) {
+    this.setState((prevState) => {
+      const updatedUrls = prevState.installedContentUrls.concat([{success, url}]);
+      return {installedContentUrls: updatedUrls};
     });
   }
 
@@ -148,9 +168,11 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
       },
       onUrlCached: (url) => {
         console.log(`cached url ${url}`);
+        this.addInstalledApplicationUrl(true, url);
       },
       onUrlCacheFailed: (url, err) => {
         console.error(`failed to cache ${url}`, err);
+        this.addInstalledApplicationUrl(false, url);
       },
       onCachingFinished: () => {
         console.log("finished caching application");
@@ -182,17 +204,46 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
 
   render() {
     const appVersionInfo = (window as any).__appVersionInfo;
-    const {serviceWorkerVersionInfo, offlineManifest, loadingOfflineManifest} = this.state;
+    const {serviceWorkerVersionInfo, offlineManifest, offlineManifestId,
+      loadingOfflineManifest, installedApplicationUrls,
+      installedContentUrls} = this.state;
+
+    const installedItems = installedApplicationUrls.map(urlInfo => {
+      return (
+        <div key={urlInfo.url}>
+          {urlInfo.success ? "" : "❌"} {urlInfo.url}
+        </div>
+      );
+    });
+
+
+    const contentItems = installedContentUrls.map(urlInfo => {
+      return (
+        <div key={urlInfo.url}>
+          {urlInfo.success ? "" : "❌"} {urlInfo.url}
+        </div>
+      );
+    });
 
     return (
       <div>
-        <div >Hello from Install Component</div>
+        <h1>Installing Activity Player Offline</h1>
         <div className="version-info" data-cy="version-info">
           Application: {appVersionInfo || "No Version Info"}
           {serviceWorkerVersionInfo && ` | Service Worker: ${serviceWorkerVersionInfo}`}
         </div>
+        <h2>Application Files</h2>
+        {installedItems}
+        <h2>Content Files</h2>
+        { offlineManifestId ?
+          (contentItems.length > 0 ? contentItems : "waiting...") :
+          "No activities specified" }
         { (offlineManifest && loadingOfflineManifest) ?
-          <OfflineManifestLoadingModal offlineManifest={offlineManifest} showOfflineManifestInstallConfirmation={true} workbox={this.wb} />
+          <OfflineManifestLoadingModal offlineManifest={offlineManifest}
+            showOfflineManifestInstallConfirmation={true} workbox={this.wb}
+            onUrlCached={(url: string) => this.addInstalledContentUrl(true, url)}
+            onUrlCacheFailed={(url: string, err: any) => this.addInstalledContentUrl(false, url)}
+            onClose={() => this.setState({loadingOfflineManifest: false})} />
           : null
         }
       </div>

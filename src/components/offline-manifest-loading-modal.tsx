@@ -7,9 +7,13 @@ import "./offline-manifest-loading-modal.scss";
 
 interface IProps {
   offlineManifest: OfflineManifest;
-  onClose?: () => void;
+  onClose: () => void;
   showOfflineManifestInstallConfirmation: boolean;
   workbox: Workbox;
+  onCachingStarted?: (urls: string[]) => void;
+  onUrlCached?: (url: string) => void;
+  onUrlCacheFailed?: (url: string, err: any) => void;
+  onCachingFinished?: () => void;
 }
 
 interface IState {
@@ -39,17 +43,21 @@ export class OfflineManifestLoadingModal extends React.Component<IProps, IState>
       offlineManifest,
       onCachingStarted: (urls) => {
         this.setState({urlsToCache: urls});
+        this.props.onCachingStarted?.(urls);
       },
       onUrlCached: (url) => {
         this.setState((prevState) => ({urlsCached: prevState.urlsCached.concat(url)}));
+        this.props.onUrlCached?.(url);
       },
       onUrlCacheFailed: (url, err) => {
         console.error("Failed to cache:", url);
         this.setState((prevState) => ({urlsFailedToCache: prevState.urlsFailedToCache.concat(url)}));
+        this.props.onUrlCacheFailed?.(url, err);
       },
       onCachingFinished: () => {
         this.setState({caching: false});
         this.checkForAutoClose(this.props);
+        this.props.onCachingFinished?.();
       }
     });
   }
@@ -97,10 +105,23 @@ export class OfflineManifestLoadingModal extends React.Component<IProps, IState>
         {numFailedUrls > 0
           ?
             <>
-              <div>Sorry, you cannot continue.</div>
+              <div>Sorry, some files failed to install. Close the dialog to see the details.</div>
               <div>{numFailedUrls} assets failed to load</div>
+              <div><button onClick={() => this.props.onClose()}>Close</button></div>
             </>
-          : <div>Everything is installed!</div>
+          : <>
+              <div>Everything is installed!</div>
+              <div>To Finish the install on a Mac:</div>
+              <ol>
+                <li>Click the install icon on the right of the browser address bar.</li>
+                <li>Confirm you want to install the application.</li>
+                <li>This will open these instructions in the newly installed application.</li>
+                <li>Find the light bulb logo in the dock.</li>
+                <li>Right click and select options, then keep in dock.</li>
+                <li>Close the application.</li>
+                <li>Open the application. You can now use the activities you just installed.</li>
+              </ol>
+            </>
         }
       </>
     );
