@@ -273,14 +273,14 @@
     "position": 4,
     "show_header": true,
     "show_info_assessment": true,
-    "show_interactive": false,
+    "show_interactive": true,
     "show_sidebar": false,
     "sidebar": null,
     "sidebar_title": "Did you know?",
     "toggle_info_assessment": false,
     "embeddables": [{
       "embeddable": {
-        "content": "\u003Cp\u003EIDENTIFYING AIR MASSES\u003C/p\u003E\n\u003Cp\u003EIn Lesson 5 of your Science Notebook on pages 21-23, you have additional data weather station data and maps that show you the direction of the wind. On page 22, you will find a map that shows you the 7 pm reading from the additional weather stations. The arrows on the map represent the\u0026nbsp;wind direction. The data on page 23 of your Science Notebook, \"Weather Stations 7 pm Interpolated\" comes from an\u0026nbsp;interpolation\u0026nbsp;of wind direction\u0026nbsp;across the mainland of Alaska at 7 pm. See map below. Using the map on page 23, draw a line that splits the map into two parts: one section with the wind coming from the same direction and the other section with the wind coming from a different direction. It is your job to determine where you see that change in the\u0026nbsp;wind direction.\u003C/p\u003E\n\u003Cp\u003EStrategy for Identifying Two Air Masses:\u003C/p\u003E\n\u003Cp\u003E1. Make Sense of the Map:\u0026nbsp;\u003Cbr /\u003E\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp;\u0026bull; Look at each row and see if the arrows change direction as you move across the row.\u0026nbsp;\u003Cbr /\u003E\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp;\u0026bull; Look at each column and see if the arrows change direction as you move down the column.\u0026nbsp;\u003Cbr /\u003E2. Identify where you are going to place your line.\u0026nbsp;\u003Cbr /\u003E3. Draw your line on your paper map.\u003C/p\u003E\n\u003Cp\u003E\u003Cimg style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson57pmInterpolated.jpg\" width=\"623\" height=\"382\" /\u003E\u003C/p\u003E",
+        "content": "\u003Cp\u003EIDENTIFYING AIR MASSES\u003C/p\u003E\r\n\u003Cp\u003EIn Lesson 5 of your Science Notebook on pages 21-23, you have additional data weather station data and maps that show you the direction of the wind. On page 22, you will find a map that shows you the 7 pm reading from the additional weather stations. The arrows on the map represent the\u0026nbsp;wind direction. The data on page 23 of your Science Notebook, \"Weather Stations 7 pm Interpolated\" comes from an\u0026nbsp;interpolation\u0026nbsp;of wind direction\u0026nbsp;across the mainland of Alaska at 7 pm. See map below. Using the map on page 23, draw a line that splits the map into two parts: one section with the wind coming from the same direction and the other section with the wind coming from a different direction. It is your job to determine where you see that change in the\u0026nbsp;wind direction.\u003C/p\u003E\r\n\u003Cp\u003EStrategy for Identifying Two Air Masses:\u003C/p\u003E\r\n\u003Cp\u003E1. Make Sense of the Map:\u0026nbsp;\u003Cbr /\u003E\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp;\u0026bull; Look at each row and see if the arrows change direction as you move across the row.\u0026nbsp;\u003Cbr /\u003E\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp;\u0026bull; Look at each column and see if the arrows change direction as you move down the column.\u0026nbsp;\u003Cbr /\u003E2. Identify where you are going to place your line.\u0026nbsp;\u003Cbr /\u003E3. Draw your line on your paper map.\u003C/p\u003E",
         "is_callout": false,
         "is_full_width": true,
         "is_hidden": false,
@@ -305,6 +305,31 @@
         "ref_id": "208885-Embeddable::OpenResponse"
       },
       "section": null
+    }, {
+      "embeddable": {
+        "aspect_ratio_method": "DEFAULT",
+        "authored_state": "",
+        "click_to_play": false,
+        "click_to_play_prompt": null,
+        "enable_learner_state": false,
+        "full_window": false,
+        "has_report_url": false,
+        "image_url": null,
+        "is_full_width": true,
+        "is_hidden": false,
+        "model_library_url": null,
+        "name": "Identifying Air Masses and Fronts",
+        "native_height": 435,
+        "native_width": 576,
+        "no_snapshots": false,
+        "show_delete_data_button": true,
+        "show_in_featured_question_report": true,
+        "url": "https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Models-2021/Lesson5-air-masses.v4.html",
+        "type": "MwInteractive",
+        "ref_id": "97692-MwInteractive",
+        "linked_interactives": []
+      },
+      "section": "interactive_box"
     }]
   }, {
     "additional_sections": {},
