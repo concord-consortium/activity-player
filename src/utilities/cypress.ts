@@ -1,1 +1,1 @@
-export const runningInCypress = !!(window as any).Cypress;
+export const runningInCypress = !!(global as any).Cypress;
