@@ -233,9 +233,10 @@ export const rewriteModelsResourcesUrl = (oldUrl: string) => {
 export const rewriteModelsResourcesUrls = (activity: Activity) => {
   // do not rewrite urls when running in Cypress, otherwise the sample activity iframes do not load causing timeouts
   if (runningInCypress) { return activity;}
-
-  walkObject(activity, (s) => rewriteModelsResourcesUrl(s));
-
+  // TODO: 2021-03-30 NP/SC — For now we are going to rewrite urls by hand...
+  // TODO: Some nested resources (image refs inside image question interactives
+  // TODO: Can't be naively rewritten.
+  // walkObject(activity, (s) => rewriteModelsResourcesUrl(s));
   return activity;
 };
 
