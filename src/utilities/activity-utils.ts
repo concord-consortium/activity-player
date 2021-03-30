@@ -2,7 +2,6 @@ import { Page, Activity, EmbeddableWrapper } from "../types";
 import { SidebarConfiguration } from "../components/page-sidebar/sidebar-wrapper";
 import { isQuestion as isEmbeddableQuestion } from "./embeddable-utils";
 import { runningInCypress } from "./cypress";
-import { isGenerator } from "mobx/dist/internal";
 
 export enum ActivityLayouts {
   MultiplePages = 0,
