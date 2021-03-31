@@ -313,7 +313,10 @@ class DexieStorageProvider implements IStorageInterface {
       .where({resource_url: _currentOfflineResourceUrl})
       .toArray();
 
-    const getAllPluginStates = () => dexieStorage.pluginStates.toArray();
+    const getAllPluginStates = () => dexieStorage
+      .savedPluginStates
+      .where({resourceUrl: _currentOfflineResourceUrl})
+      .toArray();
 
     const exportableActivity: ExportableActivity = {
       resource_url: currentActivityId,
@@ -387,14 +390,14 @@ class DexieStorageProvider implements IStorageInterface {
     if (getCachedLearnerPluginState(pluginId, resourceUrl)) {
       return getCachedLearnerPluginState(pluginId, resourceUrl);
     }
-    const record = await dexieStorage.pluginStates.get({pluginId, resourceUrl});
+    const record = await dexieStorage.savedPluginStates.get({pluginId, resourceUrl});
     const state = record?.state || null;
     setCachedLearnerPluginState(pluginId, resourceUrl, state);
     return state;
   }
 
   async setLearnerPluginState(pluginId: number, resourceUrl: string, state: string){
-    dexieStorage.pluginStates.put({pluginId, resourceUrl, state});
+    dexieStorage.savedPluginStates.put({pluginId, resourceUrl, state});
     setCachedLearnerPluginState(pluginId, resourceUrl, state);
     return state;
   }
@@ -463,10 +466,11 @@ class DexieStorageProvider implements IStorageInterface {
       const learnerPluginStateSavingPromise = this.ensureFirebaseConnection()
         .then((fsProvider)  => {
           dexieStorage
-            .pluginStates
+            .savedPluginStates
+            .where({resourceUrl: portalResourceUrl})
             .toArray()
-            .then((pluginStates) => {
-              for(const pState of pluginStates) {
+            .then((savedPluginStates) => {
+              for(const pState of savedPluginStates) {
                 const {pluginId, state} = pState;
                 if(state) {
                   // TODO: Look into FireStore Batch operations
