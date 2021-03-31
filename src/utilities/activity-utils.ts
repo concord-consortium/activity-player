@@ -213,8 +213,9 @@ export const walkObject = (activityNode: any, stringCallback: (s: string, key?: 
 };
 
 export const rewriteModelsResourcesUrl = (oldUrl: string) => {
-  const httpRegex =/https?:\/\//;
-  if(httpRegex.test(oldUrl)) {
+  const httpRegex = /https?:\/\//;
+  const noRewriteRegex = /__noUrlRewrite/;
+  if (httpRegex.test(oldUrl) && !noRewriteRegex.test(oldUrl)) {
     const serverRewrite = oldUrl
       .replace(/https?:\/\/models-resources\.concord\.org/, "models-resources")
       .replace(/https?:\/\/models-resources\.s3\.amazonaws\.com/, "models-resources")

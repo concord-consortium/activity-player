@@ -2,7 +2,7 @@ import fetch from "jest-fetch-mock";
 
 import { Activity } from "../types";
 import { isQuestion, isEmbeddableSectionHidden, getVisibleEmbeddablesOnPage, VisibleEmbeddables,
-  EmbeddableSections, getPageSectionQuestionCount, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isNotSampleActivityUrl, orderedQuestionsOnPage, isExternalOrModelsResourcesUrl, getAllUrlsInActivity, removeDuplicateUrls } from "./activity-utils";
+  EmbeddableSections, getPageSectionQuestionCount, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isNotSampleActivityUrl, orderedQuestionsOnPage, isExternalOrModelsResourcesUrl, getAllUrlsInActivity, removeDuplicateUrls, rewriteModelsResourcesUrl } from "./activity-utils";
 import _activityHidden from "../data/sample-activity-hidden-content.json";
 import _activity from "../data/sample-activity-multiple-layout-types.json";
 import _glossaryActivity from "../data/sample-activity-glossary-plugin.json";
@@ -186,5 +186,26 @@ describe("Activity utility functions", () => {
       "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/5cacbe00-1c44-11ea-90e3-39c0ba8d079c-sticky note.svg",
       "https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/5d298f20-1c44-11ea-90e3-39c0ba8d079c-IMG_8603.jpeg"
     ]);
+  });
+
+  it("rewrites some domains to models-resources with trailing slash", () => {
+    const protocols = ["http", "https"];
+    const rewriteMap: Record<string, string> = {
+      "models-resources.concord.org/foo": "models-resources/foo/",
+      "models-resources.s3.amazonaws.com/foo": "models-resources/foo/",
+      "test-plugin.concord.org/foo": "models-resources/test-plugin/foo/",
+      "non-rewritten-domain.com/foo": "__PROTOCOL__://non-rewritten-domain.com/foo/"
+    };
+    protocols.forEach(protocol => {
+      Object.keys(rewriteMap).forEach(domainAndPath => {
+        const url = `${protocol}://${domainAndPath}`;
+        const rewriteUrl = rewriteMap[domainAndPath].replace("__PROTOCOL__", protocol);
+        const noRewriteUrl = `${url}?__noUrlRewrite`.replace("__PROTOCOL__", protocol);
+
+        expect(rewriteModelsResourcesUrl(url)).toBe(rewriteUrl);
+        expect(rewriteModelsResourcesUrl(`${url}/`)).toBe(rewriteUrl);
+        expect(rewriteModelsResourcesUrl(noRewriteUrl)).toBe(noRewriteUrl);
+      });
+    });
   });
 });
