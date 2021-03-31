@@ -429,8 +429,9 @@ class DexieStorageProvider implements IStorageInterface {
           return fsProvider;
         })
         .catch((e) => {
-          console.error(e);
-          console.warn("reinitialization of database?");
+          console.warn(e);
+          console.warn("TODO: Above error ⬆ is probably from an attempt to");
+          console.warn("initialize FireStore twice.");
           return Promise.resolve(fsProvider);
         });
     }
