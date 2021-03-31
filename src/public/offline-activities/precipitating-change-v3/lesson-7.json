@@ -822,7 +822,7 @@
           "data": {
             "aspect_ratio_method": "DEFAULT",
             "authoring_guidance": "",
-            "base_url": "https://models-resources.concord.org/question-interactives/branch/master/drag-and-drop/",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/drag-and-drop/",
             "click_to_play": false,
             "click_to_play_prompt": null,
             "description": "This shouldn't be used by any real activities it is still under development.",
@@ -872,7 +872,7 @@
           "data": {
             "aspect_ratio_method": "DEFAULT",
             "authoring_guidance": "",
-            "base_url": "https://models-resources.concord.org/question-interactives/branch/master/drag-and-drop/",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/drag-and-drop/",
             "click_to_play": false,
             "click_to_play_prompt": null,
             "description": "This shouldn't be used by any real activities it is still under development.",
