@@ -693,7 +693,7 @@
           "data": {
             "aspect_ratio_method": "DEFAULT",
             "authoring_guidance": "",
-            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/carousel/",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/carousel/",
             "click_to_play": false,
             "click_to_play_prompt": null,
             "description": "",
