@@ -1,0 +1,248 @@
+{
+  "description": "\u003Cp\u003EBuilding Rules: Where does it rain?\u003C/p\u003E",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Alaska 2021 - Lesson 4: Post-thoughts - What Do You Think?",
+  "notes": "",
+  "project_id": 25,
+  "related": "",
+  "runtime": "Activity Player",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson3.png",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "Precipitating Change",
+  "pages": [{
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143598,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Page 1",
+    "position": 1,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003E\u003Cstrong\u003EWhat Are the Rules for Fronts and Precipitation?\u003C/strong\u003E\u003C/p\u003E\r\n\u003Cp\u003EMs. Tevuk\u0026rsquo;s students need to write a rule for their computer model to predict areas of precipitation on a map showing weather fronts. They have different ideas for what the rule should be.\u003C/p\u003E\r\n\u003Cp\u003EHere are the students\u0026rsquo; ideas: The rule should be that precipitation happens\u0026hellip;\u003C/p\u003E\r\n\u003Ctable cellpadding=\"30\"\u003E\r\n\u003Ctbody\u003E\r\n\u003Ctr\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EAlex\u003C/strong\u003E\u003C/th\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EDelana\u003C/strong\u003E\u003C/th\u003E\r\n\u003C/tr\u003E\r\n\u003Ctr\u003E\r\n\u003Ctd width=\"88\"\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alex4.png\" width=\"72\" height=\"90\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003E\u003Cstrong\u003Ewith a warm front coming in\u003C/strong\u003E because warm air moves in and mixes with cold air, which leads to precipitation. You don\u0026rsquo;t get precipitation with a cold front because cold air is dry.\u003C/td\u003E\r\n\u003Ctd width=\"88\"\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Delana4.png\" width=\"70\" height=\"90\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003E\u003Cstrong\u003Ewith both cold fronts and warm fronts coming in\u003C/strong\u003E because in both cases warm air and cold air meet, leading to condensation and precipitation.\u003C/td\u003E\r\n\u003C/tr\u003E\r\n\u003C/tbody\u003E\r\n\u003Ctbody\u003E\r\n\u003Ctr\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EKalin\u003C/strong\u003E\u003C/th\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003ESage\u003C/strong\u003E\u003C/th\u003E\r\n\u003C/tr\u003E\r\n\u003Ctr\u003E\r\n\u003Ctd width=\"88\"\u003E\r\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Kalin6.png\" width=\"72\" height=\"90\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/p\u003E\r\n\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003E\u003Cstrong\u003Ewith a cold front coming in\u003C/strong\u003E because it\u0026rsquo;s usually rainy or snowy when it\u0026rsquo;s cold out. You don\u0026rsquo;t get precipitation with a warm front because it\u0026rsquo;s warm when the sun is shining.\u003C/td\u003E\r\n\u003Ctd width=\"88\"\u003E\r\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Sage2.png\" width=\"72\" height=\"90\" align=\"center\" hspace=\"8\" vspace=\"8\" /\u003E\u003C/p\u003E\r\n\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003E\u003Cstrong\u003Eafter a cold front has passed by\u003C/strong\u003E because the cold air the front leaves behind is humid, which leads to precipitation.\u003C/td\u003E\r\n\u003C/tr\u003E\r\n\u003C/tbody\u003E\r\n\u003C/table\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147904-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Pre-Assessment Implementation\\n*Lesson 4, Opening: What Are the Rules for Fronts and Precipitation? Pre-Assessment*\\nDuring the pre-assessment, each student will view the probe and make an individual choice. The request for explanation will only be on the post-assessment. After students make an individual choice for the pre-assessment, the teacher can lead discussion including, for example, a pair/share opportunity and/or full class discussion. \\n\\nAt this time, encourage students to share and discuss their ideas and reasons without indicating that any one answer is better or worse. Let the students know that they should keep thinking about this question and that the class will return to it at the end of the next lesson (Lesson 5).\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10256-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Computational Thinking Concepts and Practices:\\n* Pattern Recognition\\n* Data-based Prediction\\n* Rule Abstraction\\n\\n###What is the Purpose of this Assessment Probe?\\nThe following information provides background for teachers. We suggest teachers review the information below and think about ways to scaffold students toward developing knowledge and practice as appropriate for their classes. Also, we recommend that during the first implementation of the probe, teachers scaffold students to focus on students\u2019 own ideas about this problem. By discussing the different options, students can engage in productive talk related to the different response patterns, priming them to look for productive patterns to associate with precipitation in the upcoming lessons. \\n\\nDuring the ensuing two lessons and the second implementation of the probe, students should be able to use the data from the virtual storm to identify the patterns of temperature, humidity, and movement that are associated with precipitation.\\n\\nThis assessment probe is designed to assess and scaffold students in thinking and talking about how patterns of data (i.e., temperature, humidity, and air movement) are associated with precipitation in a location. To keep things simple, we only focus on two types of fronts: cold fronts and warm fronts. Both types of fronts can be associated with precipitation. Identifying patterns associated with precipitation is an example of the computational thinking practice of **Pattern Recognition**. Once patterns associated with precipitation are identified, they can be used in conjunction with data to make a **Data-based Prediction**, which is what Ms. Tevuk\u2019s students are trying to do in the scenario for this assessment probe. **Data-based Prediction** involves identifying patterns and trends within and across groups of data/information as seen in the observable world. The patterns of data associated with precipitation in turn can be used to create rules for the computer model in a process of **Rule Abstraction**. **Rule abstraction** involves creating a general statement derived from exploring patterns in data in order to establish rule(s) or principles. In other words, if you know the patterns of variable values associated with precipitation, you can use those patterns to write rules for predicting precipitation.\\n\\nAs a **cold front** moves into an area, the heavier cool air pushes under the lighter warm air. The air behind a cold front is colder and usually drier than the warm air in front. The warm air in front becomes cooler as it is pushed upward by the entering cold air. If the warm air is humid enough, the water vapor it contains will condense into clouds as it rises, and precipitation may fall. \\n\u003Cimg src=\\\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L4L5AssessmentTeacherGuideImage2.png\\\" width=\\\"850\\\" height=\\\"180\\\" /\u003E\\n \\n\\nWhen a **warm front** moves into an area, warm air moves above a cool air mass. As the warm air rises, it condenses, often forming clouds and precipitation. \\n\u003Cimg src=\\\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L4L5AssessmentTeacherGuideImage1.png\\\" width=\\\"850\\\" height=\\\"180\\\" /\u003E\\n\\nThe assessment is situated in the unit context to provide an opportunity for students to make sense about patterns when reasoning about air masses, fronts, and precipitation. In this assessment, one of the responses is scientifically correct while the other responses that relate to some informal ideas about weather that students may hold. \",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10257-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###What Are Common Student Ideas and What Supports Could Help Students?\\nBelow are some issues to consider in assessing students\u2019 ideas, and some suggestions of ways to support students in developing more formal reasoning about patterns associated with fronts and precipitation.\\n\\n###Less Formal Ideas\\n\u2022\\t**Kalin\u2019s response (precipitation with a cold front coming in)** suggests that Kalin may just be thinking about patterns of familiar things going together (cold and wet, warm and sunny) rather than thinking about patterns associated with different types of air masses interacting with one another. Students may associate sun with warm, and rain and snow with cold. Based on that experience, they may think that a cold front is connected to precipitation.\\n\\nStudents who choose Kalin\u2019s response could benefit from having experiences that challenge their simple association idea. For example, looking at weather maps that show warmer air often has more moisture in it and colder air is often drier can help these students develop understanding that relationships might not be as simple as they think. Students who choose Kalin\u2019s response may not think about weather as something that happens with matter. Instead, they may just think of weather in terms of the actions of natural \\\"actors\\\" (e.g., the sun makes it warm, the wind makes it cold). These students could use help in learning that air masses are matter (they are made up of molecules and have mass). If we didn\u2019t have air masses made of matter on Earth, then we wouldn\u2019t have weather. You might talk with students about concrete examples that they can extend to think about air masses as entities made of stuff \u2013 for example, they could compare an empty balloon, a balloon filled with warm air, and a balloon filled with cold air. There is very little stuff (matter or molecules of air) in the empty balloon, while there is more stuff (matter) in the balloons filled with warm and cold air.\\n\\n###Middle Level \\n\u2022\\t**Both Alex\u2019s response (precipitation occurs with a warm front coming in)** and **Sage\u2019s response (precipitation occurs after a cold front has passed by an area)** suggest that they are aware that precipitation is associated with bodies of air moving and with the different conditions in those bodies of air (i.e., temperature, levels of humidity). However, both Sage\u2019s and Alex\u2019s ideas include some incorrect patterns that lead to problematic rules. \\n\\n\u2022\\t**Alex** thinks that cold air and warm air mixing causes precipitation. However, warm and cold air masses don\u2019t mix very readily, and it is instead actually warm air rising, expanding, and condensing that generally leads to precipitation. In addition, while Alex knows that cold fronts can be drier than warm fronts, that doesn\u2019t mean that there won\u2019t be any precipitation with cold fronts. Precipitation can occur with a cold front when warm air is pushed up, expands, and condenses.\\n\\nStudents who choose Alex\u2019s response could benefit from working with data to observe the following patterns: (1) precipitation can occur with a cold front and (2) fronts do not necessarily mix.\\n\\n\u2022\\t**Sage** thinks that cold air is humid, which leads to condensation and precipitation. However, warm air masses often have a higher level of humidity compared with cold air masses. It can be confusing that condensation occurs with rising, expanding, and cooling. The unit does not go into this in depth, however. For students who choose Sage\u2019s response, it is probably sufficient here to scaffold experiences with data and virtual storm showing the general pattern of warm air masses having higher levels of humidity than cool air masses.\\n\\n\u2022\\tStudents who choose Alex or Sage\u2019s response can also benefit from discussion and emphasis on the importance of getting the rule right (enough) in order to create a computational model that works. The students working on their weather model will not be able to predict weather with any consistency or accuracy if there is a big problem with the rule (algorithm) they have written into their computer model. \\n\\n###More Formal Idea\\n\u2022\\t**Delana\u2019s response (precipitation occurs with both cold fronts and warm fronts coming in)** is the best answer. Delana\u2019s explanation does not include a more complete mechanistic sequence involving cold air pushing warm air up; warm air rising, expanding, and condensing; and precipitation occurring as a result. This is because the Precipitating Change curriculum simplifies weather phenomena by emphasizing important patterns and de-emphasizing complicated mechanisms. This focus allows the curriculum to scaffold students in connecting observed patterns with rules that can be used to create predictive weather forecasting computer models. Delana\u2019s response both recognizes that weather fronts are made of air (matter) and demonstrates recognition of the correct pattern of conditions in air masses (temperatures, levels of humidity) associated with precipitation forming. \",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10258-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Alex\",\"correct\":false},{\"id\":\"2\",\"content\":\"Delana\",\"correct\":false},{\"id\":\"3\",\"content\":\"Kalin\",\"correct\":false},{\"content\":\"Sage\",\"correct\":false,\"id\":\"6bd7ac18-6b07-4996-9e4b-199430b43e0c\"}]}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Multiple Choice",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1692-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EWhy do you think the rule you picked is the best one for predicting precipitation? Please explain your reasoning.\u003C/p\u003E\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Open Response",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1693-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 308577,
+    "is_completion": true,
+    "is_hidden": false,
+    "layout": "l-6040",
+    "name": "Completion Page",
+    "position": 9,
+    "show_header": false,
+    "show_info_assessment": false,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": []
+  }],
+  "plugins": [{
+    "description": "",
+    "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v1.json\"}",
+    "approved_script_label": "glossary",
+    "component_label": "glossary",
+    "approved_script": {
+      "name": "Glossary",
+      "url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/plugin.js",
+      "label": "glossary",
+      "description": "This plugin provides the glossary activity plugin",
+      "version": 3,
+      "json_url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/manifest.json",
+      "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
+    }
+  }],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

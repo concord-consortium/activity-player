@@ -1,0 +1,248 @@
+{
+  "description": "\u003Cp\u003EDisplaying Data: Where does it rain?\u003C/p\u003E",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Alaska 2021 -  Lesson 3: Post-thoughts  - What Do You Think?",
+  "notes": "",
+  "project_id": 25,
+  "related": "",
+  "runtime": "Activity Player",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson3.png",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "Precipitating Change",
+  "pages": [{
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143592,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Page 1",
+    "position": 1,
+    "show_header": true,
+    "show_info_assessment": true,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003EWhich Estimates Should We Trust?\u003C/p\u003E\r\n\u003Cp\u003EMs. Tevuk\u0026rsquo;s class is looking at a temperature map with five data points taken from weather station observations. All five weather station observations were made at the same time on the same day. The map also shows some temperatures that were estimated using the weather station observation data (estimated temperatures are in parentheses).\u003C/p\u003E\r\n\u003Cp\u003E\u003Cimg style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L3AssessmentProbeMap.png\" width=\"555\" height=\"444\" /\u003E\u003C/p\u003E\r\n\u003Cp\u003EMs. Tevuk asks the students which of the estimated temperatures they are LEAST CERTAIN (MOST UNSURE) about.\u003C/p\u003E\r\n\u003Cp\u003EHere are the students\u0026rsquo; ideas. (Each student\u0026rsquo;s estimated temperature choice is in \u003Cstrong\u003Ebold\u003C/strong\u003E to make it easier to find.)\u003C/p\u003E\r\n\u003Ctable cellpadding=\"30\"\u003E\r\n\u003Ctbody\u003E\r\n\u003Ctr\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EAlex\u003C/strong\u003E\u003C/th\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EDelana\u003C/strong\u003E\u003C/th\u003E\r\n\u003C/tr\u003E\r\n\u003Ctr\u003E\r\n\u003Ctd width=\"88\"\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alex1-1.png\" width=\"80\" height=\"100\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003E\r\n\u003Cp\u003EI\u0026rsquo;m least certain about the estimate of \u003Cstrong\u003E53\u02da\u003C/strong\u003E because it\u0026rsquo;s furthest outside of the temperatures that were actually measured at a weather station.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cimg style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson3AlexsChoice.png\" width=\"223\" height=\"200\" /\u003E\u003C/p\u003E\r\n\u003C/td\u003E\r\n\u003Ctd width=\"88\"\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Delana2.png\" width=\"80\" height=\"100\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003E\r\n\u003Cp\u003EI\u0026rsquo;m least certain about the estimate of \u003Cstrong\u003E43\u02da\u003C/strong\u003E because it\u0026rsquo;s far away from any temperatures measured at a weather station.\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u003Cimg style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson3DelanasChoice.png\" width=\"222\" height=\"200\" /\u003E\u003C/p\u003E\r\n\u003C/td\u003E\r\n\u003C/tr\u003E\r\n\u003C/tbody\u003E\r\n\u003Ctbody\u003E\r\n\u003Ctr\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EKalin\u003C/strong\u003E\u003C/th\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003ESage\u003C/strong\u003E\u003C/th\u003E\r\n\u003C/tr\u003E\r\n\u003Ctr\u003E\r\n\u003Ctd width=\"88\"\u003E\r\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Kalin3.png\" width=\"80\" height=\"100\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/p\u003E\r\n\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003E\r\n\u003Cp\u003EI\u0026rsquo;m least certain about the estimate of \u003Cstrong\u003E39\u02da\u003C/strong\u003E because there aren\u0026rsquo;t any other estimated temperatures near the 39\u02da estimate.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cimg style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson3KalinsChoice.png\" width=\"230\" height=\"204\" /\u003E\u003C/p\u003E\r\n\u003C/td\u003E\r\n\u003Ctd width=\"88\"\u003E\r\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson3SageAvatar.png\" width=\"80\" height=\"100\" align=\"center\" hspace=\"8\" vspace=\"8\" /\u003E\u003C/p\u003E\r\n\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003E\r\n\u003Cp\u003EI\u0026rsquo;m least certain about the estimate of \u003Cstrong\u003E37\u02da\u003C/strong\u003E because weather usually moves from west to east, so I\u0026rsquo;m unsure about estimates on the west side of the map.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cimg class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson3SagesChoice.png\" alt=\"\" width=\"230\" height=\"206\" /\u003E\u003C/p\u003E\r\n\u003C/td\u003E\r\n\u003C/tr\u003E\r\n\u003C/tbody\u003E\r\n\u003C/table\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147898-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Pre-Assessment Implementation\\n*Lesson 3, Opening: Which Estimates Should We Trust? Pre-Assessment*\\nDuring the pre-assessment, each student will view the probe and make an individual choice. The request for explanation will only be on the post-assessment implementation. After students make an individual choice for the pre-assessment, you can lead discussion including, for example, a pair/share opportunity and/or full class discussion. \\n\\nAt this time, encourage students to share and discuss their ideas and reasons without indicating that any one answer is better or worse. Let the students know that they should keep thinking about this question and that the class will return to it at the end of the lesson.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10240-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Computational Thinking Concepts and Practices:\\n- Interpolation\\n- Extrapolation\\n- Pattern Recognition\\n- Data Aggregation\\n\\n###What is the Purpose of this Assessment Probe?\\nThe following information provides background for teachers and is not necessarily representative of the learning goals for everything students should understand. Review the information below and think about ways to scaffold students toward developing knowledge and practice as appropriate for their classes. Also, we recommend that during the first implementation of the probe, that you scaffold students to focus on their own ideas about this problem, rather than on vocabulary terms such as **interpolation** and **extrapolation**. By discussing the different options, students can engage in productive talk related to these data sense making and computational thinking concepts without necessarily using technical terminology. During the ensuing lesson and the second implementation of the probe, the terms **interpolation** and **extrapolation** can be used, if appropriate.\\n\\nThis assessment probe is designed to assess and scaffold students in thinking and talking about **interpolation** and **extrapolation**.  **Interpolation** means finding an estimation of a value between ones that are known or tabulated using surrounding points or values (that is, estimating an unknown value based on surrounding information). **Extrapolation** means finding or concluding something by assuming that existing trends will continue, or a current method will remain applicable beyond existing known values (that is, following a pattern beyond the known data points). \\n\\nInterpolation and extrapolation are similar, but because extrapolation involves estimating beyond the known data points, this approach is subject to greater uncertainty and has a higher risk of producing more imprecise or potentially even meaningless results compared with interpolation. \\n\\nThe assessment is situated in the unit context to provide an opportunity for students to make sense about extrapolation and interpolation of a specific, tangible weather problem (i.e., temperatures in a two-dimensional area at one point in time). While extrapolation is associated with higher levels of uncertainty, it\u2019s also sometimes necessary. This is true, for example, for forecasting (prediction). Prediction of future weather will always involve extrapolation (i.e., extending the pattern of weather data into the future given that observed data cannot be obtained for the future until time passes and the future becomes the present!). Uncertainty associated with extrapolation is why there\u2019s always some level of uncertainty in weather forecasts. Basically, this is why weather forecasts are sometimes wrong. There is always some uncertainty associated with interpolation too, though generally it is less so than with extrapolation.\\n\\nThis assessment also relates to **pattern recognition** and **data aggregation**. **Pattern recognition** involves identifying patterns and trends within and across groups of data/information as seen in the observable world. Students employ **pattern recognition** in this assessment as they view the distribution of temperatures in the map grid and make sense of patterns and trends across the grid (in both observed and estimated values) to think about the question. **Data aggregation** involves determining the appropriate data to collect or generate in order to study the identified phenomenon. Students should consider more and less appropriate ways to aggregate data in the map grid as they figure out which response they think is best. For example, students should be think about which cells in the grid have enough data to estimate temperatures for from collected data, and which temperatures might be problematic to estimate \u2013 meaning we might need to collect more data to generate a good estimate for temperatures in those cells.  \\n\\nWhile one of the responses makes the most sense from a practical standpoint for this particular problem, there\u2019s no absolutely correct answer. Using an indefinite problem provides space for students to think and talk about how much confidence we can have in different interpolated and extrapolated values. \",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10241-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###What Are Common Student Ideas and What Supports Could Help Students?\\nBelow are some issues to consider in assessing students\u2019 ideas, and some suggestions of ways to support students in developing more formal reasoning.\\n\\n###Less Formal Ideas\\n\u2022\\t**Kalin\u2019s response (39\u00b0)** suggests that he may not be differentiating between observed and estimated values. The values in parentheses are all estimated, so having other estimated values near the value that Kalin chooses would not necessarily make us more confident about Kalin\u2019s choice. If there were additional observed values near the cell that Kalin chose, that would help boost our confidence. We can feel more confident about interpolated values for data the more observed data values we have for a given area. \\n\\nStudents who choose 39\u00b0 as the most uncertain value could benefit from discussions about the difference between observed data points and estimated data points. Students can think about which types of values are more trustworthy and why (e.g., local conditions like elevation changes or water bodies could affect local values, making estimated temperatures less reliable than observed values). Students may come up with potential problems with observed values too (e.g., a faulty thermometer), which is fine. \\n\\n\\n###Middle Level\\n\u2022\\t**Sage\u2019s response (37\u00b0)** suggests that she may be thinking beyond interpolation to also consider weather processes (e.g., movement of air masses across Alaska). While that shows some good thinking, the values on the assessment probe map all represent one point in time, so we would be less concerned about air movement over time and issues like east versus west in Alaska for this particular problem. \\n\\nLater in the unit, students who chose 37\u00b0 may benefit from discussions that emphasize the difference between interpolating data from known values at one point in time versus doing things like making predictions into the future across a two-dimensional area based on known information such as wind speed, wind direction, etc. \\n\\n\\n###Upper Middle Level\\n\u2022\\t**Delana\u2019s response (43\u00b0)** suggests that she understands that we can be more confident about estimates when we have observed values nearby. We should be less confident about interpolated data (there are many estimated values near the 43\u00b0 cell) nearby in comparison with nearby observed data.\\n\\nWhile students who choose Delana\u2019s response have useful ideas about confidence and interpolation, they could also benefit from some scaffolding to reason more deeply about interpolation versus extrapolation. Moving beyond the area of known data points (i.e., extrapolation) is generally associated with higher uncertainty compared with interpolation. For example, if there is a weather front just to the east of the 46\u00b0 and 51\u00b0 measured temperature values, the 53\u00b0 estimated value could be quite different from what an actual observed measurement taken at that location would be. \\n\\n\\n###More Formal Idea\\n\u2022\\t**Alex\u2019s response (53\u00b0)** and rationale recognizes the problems associated with extrapolation beyond known data points. As described in the discussion of Delana\u2019s response above, if there were a weather front just to the east of the 46\u00b0 and 51\u00b0 observed temperature values, the 53\u00b0 estimated value could be quite different from what an actual observed measurement taken at that location would be. Data sense making about interpolation and extrapolation involves understanding the differences between these two estimation approaches and, in particular, the generally higher level of uncertainty associated with extrapolation versus interpolation.\\n\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10242-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Alex\",\"correct\":false},{\"id\":\"2\",\"content\":\"Delana\",\"correct\":false},{\"id\":\"3\",\"content\":\"Kalin\",\"correct\":false},{\"content\":\"Sage\",\"correct\":false,\"id\":\"9d08acd6-bc42-4b6d-9c82-6a37abc8cd3e\"}]}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Multiple Choice",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1688-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EWhy do you think the estimated temperature you picked is the one we should be least certain (most unsure) about? Please explain your reasoning.\u003C/p\u003E\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Open Response",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1689-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": null
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 308577,
+    "is_completion": true,
+    "is_hidden": false,
+    "layout": "l-6040",
+    "name": "Completion Page",
+    "position": 9,
+    "show_header": false,
+    "show_info_assessment": false,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": []
+  }],
+  "plugins": [{
+    "description": "",
+    "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v1.json\"}",
+    "approved_script_label": "glossary",
+    "component_label": "glossary",
+    "approved_script": {
+      "name": "Glossary",
+      "url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/plugin.js",
+      "label": "glossary",
+      "description": "This plugin provides the glossary activity plugin",
+      "version": 3,
+      "json_url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/manifest.json",
+      "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
+    }
+  }],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}
