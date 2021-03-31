@@ -18,7 +18,7 @@ export class DexieStorage extends Dexie {
   logs: Dexie.Table<LogMessage, number>;
   offlineActivities: Dexie.Table<OfflineActivity, string>;
   answers: Dexie.Table<IIndexedDBAnswer, string>; // number = type of the primary key
-  savedPluginStates: Dexie.Table<IDexiePluginRecord, number>;
+  savedPluginStates: Dexie.Table<IDexiePluginRecord, string>;
 
   constructor () {
     // the database was called ActivityPlayer, but changes to the offlineActivities
