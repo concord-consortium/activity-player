@@ -5,6 +5,7 @@ import { IExportableAnswerMetadata } from "../types";
 import { dexieStorage, IDexiePluginRecord, kOfflineAnswerSchemaVersion } from "./dexie-storage";
 import { refIdToAnswersQuestionId } from "../utilities/embeddable-utils";
 import { DataSyncTracker } from "./data-sync-tracker";
+import Dexie from "dexie";
 
 export interface IInitStorageParams {
   name: FirebaseImp.FirebaseAppName,
@@ -315,7 +316,9 @@ class DexieStorageProvider implements IStorageInterface {
 
     const getAllPluginStates = () => dexieStorage
       .savedPluginStates
-      .where({resourceUrl: _currentOfflineResourceUrl})
+      .where("[resourceUrl+pluginId]").between(
+        [_currentOfflineResourceUrl, Dexie.minKey],
+        [_currentOfflineResourceUrl, Dexie.maxKey])
       .toArray();
 
     const exportableActivity: ExportableActivity = {
@@ -467,7 +470,9 @@ class DexieStorageProvider implements IStorageInterface {
         .then((fsProvider)  => {
           dexieStorage
             .savedPluginStates
-            .where({resourceUrl: portalResourceUrl})
+            .where("[resourceUrl+pluginId]").between(
+              [portalResourceUrl, Dexie.minKey],
+              [portalResourceUrl, Dexie.maxKey])
             .toArray()
             .then((savedPluginStates) => {
               for(const pState of savedPluginStates) {
