@@ -96,10 +96,10 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 };
 
 // loads the learner plugin state into the firebase write-through cache
-export const loadLearnerPluginState = async (activity: Activity, teacherEditionMode: boolean) => {
+export const loadLearnerPluginState = async (activity: Activity, resourceUrl: string, teacherEditionMode: boolean) => {
   const plugins = findUsedPlugins(activity, teacherEditionMode);
   const storage = getStorage();
-  await Promise.all(plugins.map(async (plugin) => await storage.getLearnerPluginState(plugin.id)));
+  await Promise.all(plugins.map(async (plugin) => await storage.getLearnerPluginState(plugin.id, resourceUrl)));
 };
 
 export const initializePlugin = (context: IEmbeddablePluginContext, offlineMode: boolean) => {
@@ -122,6 +122,7 @@ export const initializePlugin = (context: IEmbeddablePluginContext, offlineMode:
   const storage = getStorage();
   const portalData = storage.getPortalData();
   const pluginLabel = `plugin${pluginId}`;
+  const resourceUrl = getResourceUrl();
   const pluginContext: IPluginRuntimeContextOptions = {
     type: "runtime",
     name: usedPlugin?.plugin.approved_script.name || "",
@@ -129,7 +130,7 @@ export const initializePlugin = (context: IEmbeddablePluginContext, offlineMode:
     pluginId,
     embeddablePluginId: null,
     authoredState: embeddable.plugin?.author_data || null,
-    learnerState: getCachedLearnerPluginState(pluginId),
+    learnerState: getCachedLearnerPluginState(pluginId, resourceUrl),
     learnerStateSaveUrl: "",
     container: embeddableContainer,
     componentLabel: pluginLabel,
@@ -139,7 +140,7 @@ export const initializePlugin = (context: IEmbeddablePluginContext, offlineMode:
     classInfoUrl: null,
     firebaseJwtUrl: "",
     wrappedEmbeddable: wrappedEmbeddable ? embeddableContextAny : null,
-    resourceUrl: getResourceUrl(),
+    resourceUrl,
     offlineMode
   };
   LARA.Plugins.initPlugin(pluginLabel, pluginContext);

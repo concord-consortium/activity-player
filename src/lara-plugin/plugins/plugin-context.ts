@@ -209,7 +209,7 @@ export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptio
     remoteEndpoint: options.remoteEndpoint,
     userEmail: options.userEmail,
     resourceUrl: options.resourceUrl,
-    saveLearnerPluginState: (state: string) => storage.setLearnerPluginState(options.pluginId, state),
+    saveLearnerPluginState: (state: string) => storage.setLearnerPluginState(options.pluginId, options.resourceUrl, state),
     getClassInfo: () => getClassInfo(options.classInfoUrl),
     getFirebaseJwt: (appName: string) => getFirebaseJwtFromPortal(appName),
     wrappedEmbeddable: options.wrappedEmbeddable ? generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,

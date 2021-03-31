@@ -5,6 +5,7 @@ import { IExportableAnswerMetadata } from "../types";
 import { dexieStorage, IDexiePluginRecord, kOfflineAnswerSchemaVersion } from "./dexie-storage";
 import { refIdToAnswersQuestionId } from "../utilities/embeddable-utils";
 import { DataSyncTracker } from "./data-sync-tracker";
+import Dexie from "dexie";
 
 export interface IInitStorageParams {
   name: FirebaseImp.FirebaseAppName,
@@ -45,12 +46,15 @@ let _currentOfflineResourceUrl = "/testactivity.json";
 // TODO: change to watch the learner state so that it works across sessions and
 // not just on the same page
 
-const cachedLearnerPluginState: Record<number, string|null> = {};
-export const getCachedLearnerPluginState = (pluginId: number) => cachedLearnerPluginState[pluginId] || null;
+const cachedLearnerPluginState: Record<string, string|null> = {};
 
-export const setCachedLearnerPluginState = (pluginId: number, value: string|null) => cachedLearnerPluginState[pluginId]=value;
+export const getCachedLearnerPluginStateKey = (pluginId: number, resourceUrl: string) => `${resourceUrl}_${pluginId}`;
 
-const localStoragePluginStateKey = (id: number) => `ActivityPlayerPluginState-plugin-${id}`;
+export const getCachedLearnerPluginState = (pluginId: number, resourceUrl: string) =>
+  cachedLearnerPluginState[getCachedLearnerPluginStateKey(pluginId, resourceUrl)] || null;
+
+export const setCachedLearnerPluginState = (pluginId: number, resourceUrl: string, value: string|null) =>
+  cachedLearnerPluginState[getCachedLearnerPluginStateKey(pluginId, resourceUrl)] = value;
 
 export const docToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
   const getInteractiveState = () => {
@@ -101,8 +105,8 @@ export interface IStorageInterface {
   watchAnswer(embeddableRefId: string, callback: (wrappedAnswer: IWrappedDBAnswer | null) => void): () => void
   watchAllAnswers: (callback: (wrappedAnswer: IWrappedDBAnswer[]) => void) => void,
   createOrUpdateAnswer: (answer: IExportableAnswerMetadata) => void,
-  getLearnerPluginState: (pluginId: number) => Promise<string|null>,
-  setLearnerPluginState: (pluginId: number, state: string) => Promise<string>,
+  getLearnerPluginState: (pluginId: number, resourceUrl: string) => Promise<string|null>,
+  setLearnerPluginState: (pluginId: number, resourceUrl: string, state: string) => Promise<string>,
 
   // for saving a whole activity to JSON
   exportActivityToJSON: (activityId?: string) => Promise<ExportableActivity>,
@@ -166,18 +170,18 @@ class FireStoreStorageProvider implements IStorageInterface {
     return FirebaseImp.createOrUpdateAnswer(answer);
   }
 
-  async getLearnerPluginState(pluginId: number) {
-    if (getCachedLearnerPluginState(pluginId)) {
-      return getCachedLearnerPluginState(pluginId);
+  async getLearnerPluginState(pluginId: number, resourceUrl: string) {
+    if (getCachedLearnerPluginState(pluginId, resourceUrl)) {
+      return getCachedLearnerPluginState(pluginId, resourceUrl);
     }
     const state = await FirebaseImp.getLearnerPluginState(pluginId);
-    setCachedLearnerPluginState(pluginId,state);
+    setCachedLearnerPluginState(pluginId, resourceUrl, state);
     return state;
   }
 
-  async setLearnerPluginState(pluginId: number, state: string){
+  async setLearnerPluginState(pluginId: number, resourceUrl: string, state: string){
     FirebaseImp.setLearnerPluginState(pluginId, state);
-    setCachedLearnerPluginState(pluginId, state);
+    setCachedLearnerPluginState(pluginId, resourceUrl, state);
     return state;
   }
 
@@ -310,7 +314,12 @@ class DexieStorageProvider implements IStorageInterface {
       .where({resource_url: _currentOfflineResourceUrl})
       .toArray();
 
-    const getAllPluginStates = () => dexieStorage.pluginStates.toArray();
+    const getAllPluginStates = () => dexieStorage
+      .savedPluginStates
+      .where("[resourceUrl+pluginId]").between(
+        [_currentOfflineResourceUrl, Dexie.minKey],
+        [_currentOfflineResourceUrl, Dexie.maxKey])
+      .toArray();
 
     const exportableActivity: ExportableActivity = {
       resource_url: currentActivityId,
@@ -380,21 +389,19 @@ class DexieStorageProvider implements IStorageInterface {
     }
   }
 
-  async getLearnerPluginState(pluginId: number) {
-    if (getCachedLearnerPluginState(pluginId)) {
-      return getCachedLearnerPluginState(pluginId);
+  async getLearnerPluginState(pluginId: number, resourceUrl: string) {
+    if (getCachedLearnerPluginState(pluginId, resourceUrl)) {
+      return getCachedLearnerPluginState(pluginId, resourceUrl);
     }
-    const record = await dexieStorage.pluginStates.get({pluginId});
+    const record = await dexieStorage.savedPluginStates.get({pluginId, resourceUrl});
     const state = record?.state || null;
-    setCachedLearnerPluginState(pluginId, state);
+    setCachedLearnerPluginState(pluginId, resourceUrl, state);
     return state;
   }
 
-  async setLearnerPluginState(pluginId: number, state: string){
-    const key = localStoragePluginStateKey(pluginId);
-    localStorage.setItem(key,state);
-    dexieStorage.pluginStates.put({pluginId, state});
-    setCachedLearnerPluginState(pluginId, state);
+  async setLearnerPluginState(pluginId: number, resourceUrl: string, state: string){
+    dexieStorage.savedPluginStates.put({pluginId, resourceUrl, state});
+    setCachedLearnerPluginState(pluginId, resourceUrl, state);
     return state;
   }
 
@@ -462,14 +469,17 @@ class DexieStorageProvider implements IStorageInterface {
       const learnerPluginStateSavingPromise = this.ensureFirebaseConnection()
         .then((fsProvider)  => {
           dexieStorage
-            .pluginStates
+            .savedPluginStates
+            .where("[resourceUrl+pluginId]").between(
+              [portalResourceUrl, Dexie.minKey],
+              [portalResourceUrl, Dexie.maxKey])
             .toArray()
-            .then((pluginStates) => {
-              for(const pState of pluginStates) {
+            .then((savedPluginStates) => {
+              for(const pState of savedPluginStates) {
                 const {pluginId, state} = pState;
                 if(state) {
                   // TODO: Look into FireStore Batch operations
-                  fsProvider.setLearnerPluginState(pluginId, state);
+                  fsProvider.setLearnerPluginState(pluginId, portalResourceUrl, state);
                 }
               }
               return this.fakeWaitingPromise();

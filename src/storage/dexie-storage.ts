@@ -4,9 +4,10 @@ import { IIndexedDBAnswer } from "./storage-facade";
 
 // We need to ensure a version match between data stored and exported
 // version 5: switched from activity to resource_url field for identifying answer's activity
-export const kOfflineAnswerSchemaVersion = 6;
+export const kOfflineAnswerSchemaVersion = 7;
 export interface IDexiePluginRecord {
   pluginId: number,
+  resourceUrl: string,
   state: string|null
 }
 
@@ -17,7 +18,7 @@ export class DexieStorage extends Dexie {
   logs: Dexie.Table<LogMessage, number>;
   offlineActivities: Dexie.Table<OfflineActivity, string>;
   answers: Dexie.Table<IIndexedDBAnswer, string>; // number = type of the primary key
-  pluginStates: Dexie.Table<IDexiePluginRecord, number>;
+  savedPluginStates: Dexie.Table<IDexiePluginRecord, string>;
 
   constructor () {
     // the database was called ActivityPlayer, but changes to the offlineActivities
@@ -27,7 +28,7 @@ export class DexieStorage extends Dexie {
     this.version(kOfflineAnswerSchemaVersion).stores({
       logs: "++id, activity",
       answers: "id, resource_url, [resource_url+question_id]",
-      pluginStates: "&pluginId",
+      savedPluginStates: "[resourceUrl+pluginId]",
       offlineActivities: "&resourceUrl"  // unique by resourceUrl
     });
   }
