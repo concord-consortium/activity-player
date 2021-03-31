@@ -230,16 +230,16 @@
   }],
   "plugins": [{
     "description": "",
-    "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.concord.org/glossary-resources/upZ83jqTZAZuoQqRAfAb/glossary.json\"}",
+    "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v1.json\"}",
     "approved_script_label": "glossary",
     "component_label": "glossary",
     "approved_script": {
       "name": "Glossary",
-      "url": "https://glossary-plugin.concord.org/version/v3.12.0/plugin.js",
+      "url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/plugin.js",
       "label": "glossary",
       "description": "This plugin provides the glossary activity plugin",
       "version": 3,
-      "json_url": "https://glossary-plugin.concord.org/version/v3.12.0/manifest.json",
+      "json_url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/manifest.json",
       "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
     }
   }],
