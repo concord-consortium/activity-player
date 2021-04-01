@@ -1,0 +1,285 @@
+{
+  "description": "",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Alaska 2021 - Lesson 2: Post-thoughts - What Do You Think?",
+  "notes": "",
+  "project_id": 25,
+  "related": "",
+  "runtime": "Activity Player",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson2.png",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "Precipitating Change",
+  "pages": [{
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 143587,
+    "is_completion": false,
+    "is_hidden": false,
+    "layout": "l-full-width",
+    "name": "Page 1",
+    "position": 1,
+    "show_header": true,
+    "show_info_assessment": false,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": [{
+      "embeddable": {
+        "content": "\u003Cp\u003E\u003Cstrong\u003EHow Should We Estimate the Temperature?\u003C/strong\u003E\u003C/p\u003E\r\n\u003Cp\u003EMs. Tevuk\u0026rsquo;s class is studying\u0026nbsp;weather. The students will make a computer model to predict\u0026nbsp;weather\u0026nbsp;in Alaska.\u003C/p\u003E\r\n\u003Cp\u003EFour students in Ms. Tevuk\u0026rsquo;s class are figuring out how to estimate the temperature of a location. The students are looking at the map below and have different ideas for estimating the temperature at the location marked X using the recorded temperatures of 31\u02da and 59\u02da.\u003C/p\u003E\r\n\u003Cp\u003E\u003Cimg class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L2AssessmentQ.png\" alt=\"\" width=\"550\" height=\"62\" /\u003E\u003C/p\u003E\r\n\u003Cp\u003EHere are the students\u0026rsquo; ideas:\u003C/p\u003E\r\n\u003Ctable cellpadding=\"30\"\u003E\r\n\u003Ctbody\u003E\r\n\u003Ctr\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EAlex\u003C/strong\u003E\u003C/th\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EDelana\u003C/strong\u003E\u003C/th\u003E\r\n\u003C/tr\u003E\r\n\u003Ctr\u003E\r\n\u003Ctd width=\"88\"\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alex1.png\" width=\"60\" height=\"88\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003EWe should use the number that is exactly halfway in between 31\u02daand 59\u02da. That\u0026rsquo;s the most exact way to estimate.\u003C/td\u003E\r\n\u003Ctd width=\"88\"\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Delana1.png\" width=\"65\" height=\"92\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003EWe should mark a number line along the map with the estimate in each square going up the same amount between 31\u02da and 59\u02da. That\u0026rsquo;d be the best estimate.\u003C/td\u003E\r\n\u003C/tr\u003E\r\n\u003C/tbody\u003E\r\n\u003Ctbody\u003E\r\n\u003Ctr\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003EKalin\u003C/strong\u003E\u003C/th\u003E\r\n\u003Cth colspan=\"2\"\u003E\u003Cstrong\u003ESage\u003C/strong\u003E\u003C/th\u003E\r\n\u003C/tr\u003E\r\n\u003Ctr\u003E\r\n\u003Ctd width=\"88\"\u003E\r\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Kalin.png\" width=\"65\" height=\"88\" align=\"center\" hspace=\"10\" vspace=\"10\" /\u003E\u003C/p\u003E\r\n\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003EIt doesn\u0026rsquo;t make sense to estimate the temperature at the X. We\u0026rsquo;d need to go there and measure the temperature. You can\u0026rsquo;t be confident unless you measure it.\u003C/td\u003E\r\n\u003Ctd width=\"88\"\u003E\r\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Sage1.png\" width=\"65\" height=\"92\" align=\"center\" hspace=\"8\" vspace=\"8\" /\u003E\u003C/p\u003E\r\n\u003C/td\u003E\r\n\u003Ctd style=\"padding: 10px;\" width=\"350\"\u003EThe X is closer to the 59\u02da than to the 31\u02da, so let\u0026rsquo;s choose a number closer to 59\u02da. That\u0026rsquo;s the best we can do because we don\u0026rsquo;t know what\u0026rsquo;s happening with the weather in those places.\u003C/td\u003E\r\n\u003C/tr\u003E\r\n\u003C/tbody\u003E\r\n\u003C/table\u003E",
+        "is_callout": false,
+        "is_full_width": true,
+        "is_hidden": false,
+        "name": "",
+        "type": "Embeddable::Xhtml",
+        "ref_id": "147889-Embeddable::Xhtml"
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Alex\",\"correct\":false},{\"id\":\"2\",\"content\":\"Delana\",\"correct\":false},{\"id\":\"3\",\"content\":\"Kalin\",\"correct\":false},{\"content\":\"Sage\",\"correct\":false,\"id\":\"48ed2c41-2f41-4d5e-b70c-89cc42e2eb72\"}],\"prompt\":\"\u003Cp\u003EWhich student\u2019s idea do you agree with the most?\u003C/p\u003E\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Multiple Choice",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1684-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "name": "",
+        "url_fragment": null,
+        "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EWhy do you think the choice you picked is the best for estimating the temperature? Please explain your reasoning.\u003C/p\u003E\"}",
+        "is_hidden": false,
+        "is_full_width": true,
+        "show_in_featured_question_report": true,
+        "inherit_aspect_ratio_method": true,
+        "custom_aspect_ratio_method": "DEFAULT",
+        "inherit_native_width": true,
+        "custom_native_width": 576,
+        "inherit_native_height": true,
+        "custom_native_height": 435,
+        "inherit_click_to_play": true,
+        "custom_click_to_play": false,
+        "inherit_full_window": true,
+        "custom_full_window": false,
+        "inherit_click_to_play_prompt": true,
+        "custom_click_to_play_prompt": null,
+        "inherit_image_url": true,
+        "custom_image_url": null,
+        "library_interactive": {
+          "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+          "data": {
+            "aspect_ratio_method": "DEFAULT",
+            "authoring_guidance": "",
+            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "description": "",
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "name": "Open Response",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "show_delete_data_button": false,
+            "thumbnail_url": "",
+            "customizable": true,
+            "authorable": true
+          }
+        },
+        "type": "ManagedInteractive",
+        "ref_id": "1685-ManagedInteractive",
+        "linked_interactives": []
+      },
+      "section": "header_block"
+    }, {
+      "embeddable": {
+        "custom": false,
+        "enable_check_answer": false,
+        "give_prediction_feedback": false,
+        "hint": "",
+        "is_full_width": true,
+        "is_hidden": false,
+        "is_prediction": false,
+        "layout": "vertical",
+        "multi_answer": false,
+        "name": "Multiple Choice Question element",
+        "prediction_feedback": "",
+        "prompt": "\u003Cp\u003EWhich student\u0026rsquo;s idea do you agree with the most?\u003C/p\u003E",
+        "show_as_menu": false,
+        "show_in_featured_question_report": true,
+        "choices": [{
+          "choice": "Alex",
+          "is_correct": false,
+          "prompt": ""
+        }, {
+          "choice": "Delana",
+          "is_correct": false,
+          "prompt": ""
+        }, {
+          "choice": "Kalin",
+          "is_correct": false,
+          "prompt": ""
+        }, {
+          "choice": "Sage",
+          "is_correct": false,
+          "prompt": ""
+        }],
+        "type": "Embeddable::MultipleChoice",
+        "ref_id": "17136-Embeddable::MultipleChoice"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Pre-Assessment Implementation\\n*Lesson 2, Opening: How Should We Estimate the Temperature? Pre-Assessment*\\nDuring the pre-assessment, each student will view the probe and make an individual choice. The request for explanation will only be on the post-assessment. After students make an individual commitment for the pre-assessment, you can lead a discussion including, for example, a pair/share opportunity and/or full class discussion. \\n\\nAt this time, encourage students to share and discuss their ideas and reasons without indicating that any one answer is better or worse. Let the students know that they should keep thinking about this question and that the class will return to it at the end of the lesson.\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10226-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Computational Thinking Concept and Practice:\\n* Interpolation\\n\\n###What is the Purpose of this Assessment Probe?\\nThe following information provides background for **teachers** and is not necessarily representative of the learning goals for everything students should understand. Review the information and consider ways to scaffold students toward developing knowledge and practice as appropriate for their classes. We also recommend during the first implementation of the probe, you scaffold students to focus on student ideas about this problem, rather than on vocabulary terms such as **interpolation**. By discussing the different options, students can engage in productive talk related to data sense making and computational thinking without using technical terminology. During the ensuing lesson and the second implementation of the probe, the term interpolation can be used, as appropriate.\\n\\nThis assessment probe is designed to assess and scaffold students in thinking and talking about **interpolation**. **Interpolation** means estimating a value between ones that are known or tabulated using surrounding points or values (that is, estimating an unknown value based on surrounding information). \\n\\nThe assessment is situated within the unit context to provide an opportunity for students to make sense about interpolation of a specific, tangible weather question (i.e., temperatures along a map transect). There is always uncertainty involved when interpolating across data. Also, depending on circumstances, different methods may be appropriate. For example, if the students were trying to figure out how to dress for the day at location X, then simply choosing a number somewhere between the two might be sufficient. However, for developing a computer model, the students would likely want to choose a more robust approach. Using an indefinite problem provides space for students to think and talk about things like when and why it might make sense to use the different interpolation approaches. \\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10227-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }, {
+      "embeddable": {
+        "plugin": {
+          "description": null,
+          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###What Are Common Student Ideas and What Supports Could Help Students?\\nBelow are some issues to consider in assessing students\u2019 ideas, and some suggestions of ways to support students in developing more formal reasoning.\\n\\n###Less Formal Ideas\\n\u2022\\t**Kalin\u2019s response (It doesn\u2019t make sense to estimate; you need to go there and measure.)** suggests a very concrete thinking approach consistent with the idea that \u201cyou\u2019ve got to see it to believe it.\u201d \\n\\nStudents who choose Kalin\u2019s response could benefit from discussions about how while estimates and interpolations may not be perfect, they can still give us a sense of what\u2019s going on in a system when we have limited data. It might be helpful to discuss that we can never collect all the data in the world; there\u2019s too much! Because of this, we need a way to fill in missing values using the data that we do have available. \\n\\n###Middle Level \\n\u2022\\t**Both Alex\u2019s response (choose the value half way between)** and **Sage\u2019s response (choose a number closer to 59)** might be reasonable estimates in certain circumstances (e.g., for picking out what clothes to wear if you were at location X at that time). These approaches are both better than just choosing a random value as an estimate for X. However, for contexts in which more precision is called for (e.g., making a weather model), then there are ways that we can be more precise in our approaches to interpolation.  \\n\\nStudents who choose Alex\u2019s and/or Sage\u2019s response could benefit from discussions of when and why we sometimes might need to be more precise in our estimation approaches. \\n\\n\\n###More Formal Idea\\n\u2022\\t**Delana\u2019s response (mark a number line with the estimate in each square going up the same amount between the two measured values)** suggests that she understands which mathematical interpolation approach will give the most precise value. Again, this level of precision will take more time and effort, and may not even be necessary in some circumstances, as discussed above. However, if our goal is to be precise in our interpolation estimate, then Delana\u2019s response is the most appropriate of the options. \\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+          "approved_script_label": "teacherEditionTips",
+          "component_label": "windowShade",
+          "approved_script": {
+            "name": "Teacher Edition",
+            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+            "label": "teacherEditionTips",
+            "description": "This plugin provides Teacher Edition components",
+            "version": 3,
+            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+          }
+        },
+        "is_hidden": false,
+        "is_full_width": true,
+        "type": "Embeddable::EmbeddablePlugin",
+        "ref_id": "10228-Embeddable::EmbeddablePlugin"
+      },
+      "section": null
+    }]
+  }, {
+    "additional_sections": {},
+    "embeddable_display_mode": "stacked",
+    "id": 308577,
+    "is_completion": true,
+    "is_hidden": false,
+    "layout": "l-6040",
+    "name": "Completion Page",
+    "position": 9,
+    "show_header": false,
+    "show_info_assessment": false,
+    "show_interactive": false,
+    "show_sidebar": false,
+    "sidebar": null,
+    "sidebar_title": "Did you know?",
+    "toggle_info_assessment": false,
+    "embeddables": []
+  }],
+  "plugins": [{
+    "description": "",
+    "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v1.json?__noUrlRewrite\"}",
+    "approved_script_label": "glossary",
+    "component_label": "glossary",
+    "approved_script": {
+      "name": "Glossary",
+      "url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/plugin.js",
+      "label": "glossary",
+      "description": "This plugin provides the glossary activity plugin",
+      "version": 3,
+      "json_url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/manifest.json",
+      "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
+    }
+  }],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}
