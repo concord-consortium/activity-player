@@ -448,8 +448,11 @@ class DexieStorageProvider implements IStorageInterface {
     if(portalData) {
       // DataSyncTracker will emit an event that tells plugins
       // that we are online, and its time to save data:
-      const mySyncTracker = new DataSyncTracker(60 * 30, 5);
+      const syncTimeout = 60 * 30; // Abort sync after 30 minutes…
+      const pluginTimeout = 5;      // Ignore plugins silent for five seconds or more.
+      const mySyncTracker = new DataSyncTracker(syncTimeout, pluginTimeout);
       const portalResourceUrl = portalData.resourceUrl;
+
       // Save student answers ...
       const answerSavingPromise = this.ensureFirebaseConnection()
         .then((fsProvider)  => {
@@ -457,7 +460,6 @@ class DexieStorageProvider implements IStorageInterface {
             .where({resource_url: portalResourceUrl})
             .toArray()
             .then((answers) => {
-              console.dir(answers);
               for(const answer of answers) {
                 // TODO: Look into FireStore Batch operations
                 fsProvider.createOrUpdateAnswer(answer);
@@ -497,6 +499,8 @@ class DexieStorageProvider implements IStorageInterface {
           return Promise.resolve(false);
         });
     }
+
+    // We can't upload (sync) without portal data
     return Promise.resolve(false);
   }
 
