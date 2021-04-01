@@ -133,6 +133,7 @@ const updateActivityUrls = (activity: Activity) => {
       authorData.s3Url = config.glossary.s3Url;
       plugin.author_data = JSON.stringify(authorData);
       plugin.approved_script.url = config.glossary.pluginUrl;
+      plugin.approved_script.json_url = config.glossary.manifestUrl;
     }
     return plugin;
   });
@@ -223,4 +224,3 @@ const main = async () => {
 };
 
 main();
-
