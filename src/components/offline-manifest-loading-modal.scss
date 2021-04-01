@@ -1,3 +1,4 @@
+@import "./vars.scss";
 .offline-manifest-loading-modal {
   position: fixed;
   top: 0;
@@ -20,16 +21,27 @@
   .dialog {
     z-index: 1;
     background-color: #fff;
-    padding: 20px;
     color: #000;
-    min-width: 300px;
+    width: 500px;
+    padding: 21px 22.5px 25px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    font-family: Arial;
+    font-size: 11.3pt;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+    color: #000000;
 
     div {
-      margin: 10px 0;
+      border: solid 1px var(--cc-charcoal-light-1);
+      background-color: var(--white);
+      margin: 15px 28px 12px;
+      text-align: center;
     }
   }
 }
