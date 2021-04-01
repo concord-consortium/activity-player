@@ -47,7 +47,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/JackieLesson3_88_Captioned.mp4\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L3_Video.png\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/JackieLesson3_88_Captioned.mp4\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L3_Video.png\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -70,7 +70,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/video-player/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/video-player/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
@@ -106,7 +106,7 @@
       "name": "Opening",
       "position": 2,
       "show_header": true,
-      "show_info_assessment": true,
+      "show_info_assessment": false,
       "show_interactive": false,
       "show_sidebar": false,
       "sidebar": null,
@@ -127,81 +127,9 @@
         },
         {
           "embeddable": {
-            "plugin": {
-              "description": "",
-              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"### LESSON 3: BUILDING RULES:\\n**WHERE DOES IT RAIN?**\\n\\nIn this lesson, students revisit the weather maps they constructed in Lesson 2 and add precipitation and air moisture data for additional time stamps to the weather maps to answer the question \\\"Where does it rain?\\\" Precipitation is a result of the complex interactions between temperature and moisture. Atmospheric scientists construct graphical displays of temperature and moisture content data to help them come up with rules to identify where precipitation occurs. \\n\\nThis lesson introduces a new way of utilizing the virtual simulation that allows students to start recognizing patterns and formalizing their rule statements with the data set they have been exploring in Lesson 2.\\n\\n**LEARNING GOALS**\\n\\nStudents will be able to:\\n\\n* Describe the relationship between moisture content and temperature by identifying key patterns in weather data\\n\\n* Develop a rule for where precipitation will occur using precise language\\n\\n* Explain the current weather conditions in their local context\\n\\n* Read weather maps using traditional symbols and codes (adding precipitation)\\n\\n* Use CT strategies (rule abstraction, rule development and rule testing) to develop a better understanding of how to model weather\\n\\nComputational Thinking (CT) skills introduced in this lesson can be found in the table below:\\n\\n| CT Skill            | Definition                                                                               | Use in Lesson                                                                                                                                                                                                                                                                                              |\\n|---------------------|---------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\\n| Pattern Recognition | Recognizing that data or information is repeating in a logical (expected) way.                   Students develop a general statement to answer the question \\\"Where does it rain?\\\"|\\n| Rule Abstraction    | Developing a statement of how things work based on observed patterns.                     | Students make a generic statement to answer \\\"Where does it rain?\\\"                                                                                                            |\\n| Rule Testing        | Investigating whether a rule will still be true in different situations.                          | Virtual model activity                                                                                                                                                                                                                                                                                           |\\n| Rule Refinement     | Modifying a rule to be more precise (exact, careful about details) to work in the model.| The virtual model allows students to be able to test their rule statements and make changes based on the model.                                                                                                                                                                                                                                                                                      |\\t\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": true,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10229-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": "",
-              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"### IMPLEMENTATION TIME 1 class period with Pre-Assessment (35 minutes)\\n\\n**KEY ACTIVITIES:**\\n\\n**Opening (5 mins)\\n**Activity 1 - Virtual Storm: Exploring Precipitation, Air Moisture and Temperature (20 mins)\\n**Post-Assessment - Which Estimates Should We Trust? (10 mins)\\n\\n\\n### MATERIALS AND SET-UP\\n\\nThe materials and set up are repeated from Lesson 2 - Virtual Storm Technology and included below for your convenience.\\n\\nPer Research Team:\\n\\n* Marker\\n\\n* Fully charged and connected iPad/laptop \\n\\nPer Class:\\n\\n* Set up classroom grid\\n\\nWeather maps:\\n\\n* Display the 7 am, 11 am, and 3 pm completed gridded temperature map students created in Lesson 2, Activity 1 with colored sticky notes for temperatures.\\n\\nCity flags:\\n\\n* Place a printout of each of the Alaskan cities (Bettles, Galena, Nome, Noorvik, St. Mary’s) in locations corresponding to the grid map for Alaska.\\n\\nIn the simulation:\\n\\n* As with the Virtual Storm from the previous lesson, run the simulation (starting at 7 am) and pause it at 3 pm. Students will only collect precipitation data for this activity.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": true,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10230-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": null,
-              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Watch this video with your class to give students a perspective on the importance of weather and to build weather science career awareness.\",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Purcell, Jackie. \\\"Lesson 3.\\\" 2019. Good Life Productions. Anchorage, AK. \",\"mediaURL\":\"https://precipitatingchange-resources.concord.org/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/JackieLesson3_88.mp4\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": true,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10231-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "name": "",
+            "name": "Introduction to Precipitation Model",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson3-Optimized/Intro%20and%20precipitation%20model%20demo%20Final.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -224,7 +152,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/video-player/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/video-player/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
@@ -243,10 +171,10 @@
               }
             },
             "type": "ManagedInteractive",
-            "ref_id": "1761-ManagedInteractive",
+            "ref_id": "2241-ManagedInteractive",
             "linked_interactives": []
           },
-          "section": null
+          "section": "header_block"
         }
       ]
     },
@@ -306,7 +234,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -357,7 +285,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -408,7 +336,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -531,7 +459,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -639,7 +567,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -690,7 +618,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -741,7 +669,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -909,7 +837,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -960,7 +888,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/image/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/image/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1042,7 +970,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1093,7 +1021,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1144,7 +1072,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1177,7 +1105,7 @@
       "is_completion": true,
       "is_hidden": false,
       "layout": "l-6040",
-      "name": "Completion Page",
+      "name": "Show My Work",
       "position": 7,
       "show_header": false,
       "show_info_assessment": false,

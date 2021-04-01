@@ -47,7 +47,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L4_Video.png\",\"videoUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/JackieLesson4_88_Captioned.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L4_Video.png\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/JackieLesson4_88_Captioned.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -70,7 +70,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/video-player/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/video-player/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
@@ -106,7 +106,7 @@
       "name": "Opening",
       "position": 2,
       "show_header": true,
-      "show_info_assessment": true,
+      "show_info_assessment": false,
       "show_interactive": false,
       "show_sidebar": false,
       "sidebar": null,
@@ -127,75 +127,54 @@
         },
         {
           "embeddable": {
-            "plugin": {
-              "description": "",
-              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"### LESSON 4: BUILDING RULES\\n**WHERE DOES IT RAIN?**\\n\\nIn this lesson, students develop a rule for where it will rain and test their rule using a Virtual Model. This lesson supports students to build their understanding of how observations of natural phenomena (weather) can be generalized (rule abstraction) for computational modeling (rule testing and rule refinement) and predictive purposes. This lesson introduces new technology, a Virtual Model, that allows students to test rules with the dataset they have been exploring in Lesson 3. \\n\\n**LEARNING GOALS**\\n\\nStudents will be able to:\\n\\n* Describe the relationship between moisture content and temperature by identifying key patterns in weather data\\n\\n* Develop a rule for where precipitation will occur using precise language\\n\\n\\n\\nComputational thinking (CT) Skills introduced in this lesson can be found in the table below:\\n\\n| CT Skill            | CT Skill Definition                                                                               | Use in Lesson                                                                                                                                                                                                                                                                                              |\\n|---------------------|---------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|\\n| Pattern Recognition | Recognizing that data or information is repeating in a logical (expected) way.                    | Students develop a general statement to answer the question, \\\"Where does it rain?\\\"  |\\n| Rule Abstraction    | Developing a statement of how things work based on the patterns you observed.                     | Students make a generic statement to answer, \\\"Where does it rain?\\\"                                                                                                                                                                   |\\n| Rule Testing        | Investigating whether a rule will still be true in different situations.                          | Virtual Model activity|\\n| Rule Refinement     | Modifying a rule to be more precise to work in the model. Precise (exact, careful about details) | The Virtual Model allows students to be able to test their rule statements and make changes based on the model.                                                                                                                                                                                                                                                                                      |\\t\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
+            "name": "Introduction to Computational Rules",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson4-Optimized/Intro%20to%20Lesson%20-%20Rules.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10243-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": "",
-              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"### IMPLEMENTATION TIME 1 class period with Pre-Assessment (45 minutes)\\n\\n**KEY ACTIVITIES:**\\n\\n**Activity 1 - Rule Abstraction Conversation (20 mins)\\n\\n**Activity 2 - Refining and Testing Rules using a Virtual Model (25 mins)\\n\\n### MATERIALS AND SET-UP\\n\\nPer Student:\\n\\n* Science Notebooks\\n* Access to Student Online Activities\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "34e1a2a39c058da8ff4ffe5a09ad14af337c4a01",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/video-player/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
+                "enable_learner_state": false,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Video Player",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
               }
             },
-            "is_hidden": false,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10244-Embeddable::EmbeddablePlugin"
+            "type": "ManagedInteractive",
+            "ref_id": "2243-ManagedInteractive",
+            "linked_interactives": []
           },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": null,
-              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Watch this video with your class to give students a perspective on the importance of weather and to build weather science career awareness.\",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Purcell, Jackie. \\\"Lesson 4.\\\" 2019. Good Life Productions. Anchorage, AK. \",\"mediaURL\":\"https://precipitatingchange-resources.concord.org/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/JackieLesson4_88.mp4\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": false,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10245-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
+          "section": "header_block"
         }
       ]
     },
@@ -267,7 +246,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -318,7 +297,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -346,7 +325,7 @@
           "embeddable": {
             "name": "If / Then Rule 3",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"horizontal\",\"choices\":[{\"id\":\"1\",\"content\":\"A.\",\"correct\":false},{\"id\":\"2\",\"content\":\"B.\",\"correct\":false},{\"id\":\"3\",\"content\":\"C.\",\"correct\":true}],\"prompt\":\"<p>Which square will rain according to the following rule:</p>\\n<p>&quot;If the upper square (the northwest square) is colder than the lower square by [5 degrees] AND IF the moisture of the lower square is [6] THEN it rains in the lower square.&quot;</p>\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"horizontal\",\"choices\":[{\"id\":\"1\",\"content\":\"A.\",\"correct\":false},{\"id\":\"2\",\"content\":\"B.\",\"correct\":false},{\"id\":\"3\",\"content\":\"C.\",\"correct\":true}],\"prompt\":\"<p>Which square will have rain according to the following rule:</p>\\n<p>&quot;If the upper square (the northwest square) is colder than the lower square by [5 degrees] AND IF the moisture of the lower square is [6] THEN it rains in the lower square.&quot;</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -369,7 +348,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -404,7 +383,7 @@
       "layout": "l-full-width",
       "name": "Finding the Rule with a Model ",
       "position": 4,
-      "show_header": false,
+      "show_header": true,
       "show_info_assessment": true,
       "show_interactive": true,
       "show_sidebar": false,
@@ -412,6 +391,57 @@
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": false,
       "embeddables": [
+        {
+          "embeddable": {
+            "name": "Rules Model Explanation",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson4-Optimized/Model%20Demo%20Task%20Explanation%20Final.mp4\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "34e1a2a39c058da8ff4ffe5a09ad14af337c4a01",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/video-player/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
+                "enable_learner_state": false,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Video Player",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "2242-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": "header_block"
+        },
         {
           "embeddable": {
             "name": "Best Rule",
@@ -439,7 +469,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -490,7 +520,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -730,7 +760,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -781,7 +811,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -832,7 +862,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -861,12 +891,12 @@
     {
       "additional_sections": {},
       "embeddable_display_mode": "stacked",
-      "id": 308577,
+      "id": 144867,
       "is_completion": true,
       "is_hidden": false,
       "layout": "l-6040",
-      "name": "Completion Page",
-      "position": 9,
+      "name": "Show My Work",
+      "position": 6,
       "show_header": false,
       "show_info_assessment": false,
       "show_interactive": false,

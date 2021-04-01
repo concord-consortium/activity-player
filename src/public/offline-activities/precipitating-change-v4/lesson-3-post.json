@@ -142,7 +142,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -193,7 +193,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -222,12 +222,12 @@
     {
       "additional_sections": {},
       "embeddable_display_mode": "stacked",
-      "id": 308577,
+      "id": 144903,
       "is_completion": true,
       "is_hidden": false,
       "layout": "l-6040",
-      "name": "Completion Page",
-      "position": 9,
+      "name": "Show My Work",
+      "position": 2,
       "show_header": false,
       "show_info_assessment": false,
       "show_interactive": false,

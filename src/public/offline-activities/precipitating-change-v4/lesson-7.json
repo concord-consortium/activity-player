@@ -70,7 +70,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/video-player/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/video-player/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
@@ -124,102 +124,6 @@
             "ref_id": "147923-Embeddable::Xhtml"
           },
           "section": "header_block"
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": "",
-              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###LESSON 7: ANALYZING DATA AND MAKING A PREDICTION\\n\\n**What will the local weather be 24 hours from now?**\\n\\nIn this lesson, students revisit the unit challenge and the original question posted to them in Lesson 1, \\\"Should the NYO Games proceed as planned, be postponed or canceled?\\\" Students assume the role of weather forecasters and make a weather prediction for Anchorage on April 23 at 7 am using regional data and models they have been exploring throughout this unit. This lesson is the unit’s capstone experience. \\n\\n<br>**LEARNING GOALS:**\\n\\nStudents will be able to:\\n\\n* Articulate how data is visualized from a historic weather event (i.e., temperature, precipitation, wind speed, and wind direction)\\n\\n* Analyze data from a historical weather dataset and provide a description/explanation of the weather event\\n\\n* Make a prediction of future weather using data and reasoning to support their claim\\n\\n* Apply the CT skills they have developed in their analysis of the weather event\\n\\n\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": false,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10285-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": "",
-              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###IMPLEMENTATION TIME 3 class periods (135 minutes)\\n\\n**KEY ACTIVITIES:**\\n\\nActivity 1 - Reflecting on the Unit (45 mins)\\n\\nActivity 2 - Research Teams in Action(120 mins)\\n\\nConclusion (15 mins)\\n\\n\\n<br>**MATERIALS AND SET-UP:**\\n\\nActivity 2 - Research Teams in Action\\n\\n* Student Presentation Template in [Keynote](https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Lesson7WeatherForecastTemplate.key), [Google](https://docs.google.com/presentation/d/1nKIKQ8mAZTjG5u6_C4qGxXwOLRwVPt0-RYhOIqGKoK0/edit?usp=sharing/?target=_blank), or [Powerpoint](https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Lesson7WeatherForecastTemplate.pptx)\\n\\n* Actual weather in Anchorage on day of event: Moderate to heavy rain passed through Anchorage around 10 pm the night before the event but it ended a little after midnight (12 am). At 7 am on April 23 the temperature in Anchorage was a little colder than the day before with winds out of the North-Northwest, but there was no rain.\\n\\nTemperature: 43°F/6.1°C\\nWind: 280°\\nPrecipitation: none\\n\\n* [Virtual Model](https://models-resources.concord.org/precip-models/lesson-5-ak-v3.html) to display where the front will be at the time of the NYO games. \\n\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"!Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": false,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10286-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": null,
-              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Watch this video with your class to give students a perspective on the importance of weather and to build weather science career awareness. Please note that this video has a lower resolution and requires a lower bandwidth and should be used if you have difficulty downloading the higher resolution/higher bandwidth option. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Purcell, Jackie. \\\"Lesson 7.\\\" 2019. Good Life Productions. Anchorage, AK. \",\"mediaURL\":\"https://precipitatingchange-resources.concord.org/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Jackie80.mp4\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": false,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10287-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": null,
-              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Watch this video with your class to give students a perspective on the importance of weather and to build weather science career awareness. Please note that this video has a higher resolution and requires a higher bandwidth. If you have difficulty downloading this video use the lower bandwidth option.\",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Purcell, Jackie. \\\"Lesson 7.\\\" 2019. Good Life Productions. Anchorage, AK.\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/ConcordAlaska7Final-low.mp4\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": false,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10288-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
         }
       ]
     },
@@ -254,88 +158,6 @@
         },
         {
           "embeddable": {
-            "default_text": "",
-            "give_prediction_feedback": false,
-            "hint": "",
-            "is_full_width": true,
-            "is_hidden": true,
-            "is_prediction": false,
-            "name": "",
-            "prediction_feedback": "",
-            "prompt": "<p>Which skill was the easiest to use? Please explain why.</p>\r\n<p>a)&nbsp;&nbsp; &nbsp;Decomposition</p>\r\n<p>b)&nbsp;&nbsp; Pattern Recognition</p>\r\n<p>c)&nbsp;&nbsp; Interpolation</p>\r\n<p>d)&nbsp;&nbsp; Extrapolation</p>\r\n<p>e)&nbsp;&nbsp; Data Aggregation</p>\r\n<p>f)&nbsp;&nbsp;&nbsp;&nbsp; Data Abstraction</p>\r\n<p>g)&nbsp;&nbsp; Rule Abstraction</p>\r\n<p>h)&nbsp;&nbsp; Model Evaluation</p>\r\n<p>i)&nbsp;&nbsp;&nbsp;&nbsp; Rule Refinement</p>\r\n<p>j)&nbsp;&nbsp;&nbsp;&nbsp; Data-based Prediction</p>",
-            "show_in_featured_question_report": true,
-            "type": "Embeddable::OpenResponse",
-            "ref_id": "208898-Embeddable::OpenResponse"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "default_text": "",
-            "give_prediction_feedback": false,
-            "hint": "",
-            "is_full_width": true,
-            "is_hidden": true,
-            "is_prediction": false,
-            "name": "",
-            "prediction_feedback": "",
-            "prompt": "<p>Which skill was the hardest to use? Please explain why?</p>\r\n<p>a)&nbsp;&nbsp; Decomposition</p>\r\n<p>b)&nbsp;&nbsp; Pattern Recognition</p>\r\n<p>c)&nbsp;&nbsp; Interpolation</p>\r\n<p>d)&nbsp;&nbsp; Extrapolation</p>\r\n<p>e)&nbsp;&nbsp; Data Aggregation</p>\r\n<p>f)&nbsp;&nbsp;&nbsp;&nbsp; Data Abstraction</p>\r\n<p>g)&nbsp;&nbsp; Rule Abstraction</p>\r\n<p>h)&nbsp;&nbsp; Model Evaluation</p>\r\n<p>i)&nbsp;&nbsp;&nbsp;&nbsp; Rule Refinement</p>\r\n<p>j)&nbsp;&nbsp;&nbsp;&nbsp; Data-based Prediction</p>",
-            "show_in_featured_question_report": true,
-            "type": "Embeddable::OpenResponse",
-            "ref_id": "208899-Embeddable::OpenResponse"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": "",
-              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Activity 1 - Reflecting on the Unit\\n\\nThe focus of this activity is for students to reflect upon all the computational thinking skills they developed over the unit. The specific computational thinking skill highlighted and practiced in this lesson is **Data-based Prediction**.\\n\\n\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": true,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10289-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": "",
-              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Synthesis Discussion\\n\\n* Introduce Data-based Prediction as the new CT skill used in this Lesson and discuss as a class using the prompts below: \\n\\n * How will you use this skill in this lesson?\\n\\n * How is your process for making your prediction different now in Lesson 7 than in Lesson 1?\\n\\n * Why do you think knowing this is important?\\n\\n* Review the Computational Thinking (CT) skills chart with your students and see if they can recall when they used the different skills throughout the lesson.\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": true,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10290-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
             "name": "",
             "url_fragment": null,
             "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Which skill was the easiest to use? Please explain why.</p>\\n<p>a)    Decomposition</p>\\n<p>b)   Pattern Recognition</p>\\n<p>c)   Interpolation</p>\\n<p>d)   Extrapolation</p>\\n<p>e)   Data Aggregation</p>\\n<p>f)     Data Abstraction</p>\\n<p>g)   Rule Abstraction</p>\\n<p>h)   Model Evaluation</p>\\n<p>i)     Rule Refinement</p>\\n<p>j)     Data-based Prediction</p>\"}",
@@ -361,7 +183,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -412,7 +234,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -469,33 +291,9 @@
         },
         {
           "embeddable": {
-            "plugin": {
-              "description": null,
-              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"\",\"teacherTip\":\"You may need to turn on Lesson 1 again if students don't remember what their prediction was on (page ?) in Lesson 1. \",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "questionWrapper",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": false,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10291-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>In Lesson 1, Activity 2 - Making a Prediction, what did you predict the weather will be at 7:00 am in Anchorage on April 23?</p>\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>In Lesson 1, Page 5 - Making a Prediction, what did you predict the weather will be at 7:00 am in Anchorage on April 23?</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -518,7 +316,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -569,7 +367,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -592,206 +390,55 @@
             "linked_interactives": []
           },
           "section": null
-        }
-      ]
-    },
-    {
-      "additional_sections": {},
-      "embeddable_display_mode": "stacked",
-      "id": 143615,
-      "is_completion": false,
-      "is_hidden": false,
-      "layout": "l-full-width",
-      "name": "Research Teams in Action",
-      "position": 5,
-      "show_header": true,
-      "show_info_assessment": true,
-      "show_interactive": false,
-      "show_sidebar": false,
-      "sidebar": null,
-      "sidebar_title": "Did you know?",
-      "toggle_info_assessment": false,
-      "embeddables": [
-        {
-          "embeddable": {
-            "content": "<p>Your team will produce up to a two-minute weather forecast. You may use the template provided or you may develop your own. In addition, each team needs to write a script or outline that explains your forecast. Include in your forecast the following:</p>\n<ul>\n<li>Location of the front that you have been tracking</li>\n<li>Temperature</li>\n<li>Precipitation</li>\n<li>Wind Direction</li>\n<li>Decide to hold NYO or to cancel or postpone it due to bad weather preventing teams from flying into Anchorage</li>\n</ul>\n<p>You can access the Student Presentation Template in <a href=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Lesson7WeatherForecastTemplate.key\" target=\"_blank\" rel=\"noopener\">Keynote</a>, <a href=\"https://docs.google.com/presentation/d/1nKIKQ8mAZTjG5u6_C4qGxXwOLRwVPt0-RYhOIqGKoK0/edit?usp=sharing\" target=\"_blank\" rel=\"noopener\">Google</a>, or <a href=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Lesson7WeatherForecastTemplate.pptx\" target=\"_blank\" rel=\"noopener\">Powerpoint</a> to prepare your forecast.</p>\n<p>You have additional resources to help you:</p>\n<ul>\n<li>Weather&nbsp;Station Data (temperature, moisture content, and&nbsp;wind direction&nbsp;from 10 stations for every 2 hours)</li>\n<li>Radar Images (shows&nbsp;precipitation&nbsp;in the region every 6 hours)</li>\n<li>Rules for where&nbsp;precipitation&nbsp;is likely to occur</li>\n<li>Rules for how heavy&nbsp;precipitation&nbsp;is likely to be when it occurs</li>\n<li>Your model analysis statement of the speed and direction the&nbsp;front&nbsp;is moving</li>\n</ul>",
-            "is_callout": false,
-            "is_full_width": true,
-            "is_hidden": false,
-            "name": "",
-            "type": "Embeddable::Xhtml",
-            "ref_id": "147926-Embeddable::Xhtml"
-          },
-          "section": "header_block"
         },
         {
           "embeddable": {
-            "plugin": {
-              "description": null,
-              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"**1. Guide student teams to complete their weather forecast.**\\n\\n**2. Reveal the actual weather for 7 am on the NYO Games day.**\\n\\nIf possible, project this [MODEL](https://models-resources.concord.org/precip-models/lesson-5-ak-v3.html) for your students. It is designed to easily show the progress of the front leading up to the NYO Games. It is designed to give your students a sense of completion with their work in this curriculum. It could also help frame a final discussion.\\n\\nThe model has wind data for 13 different days and times from the 10 Alaska weather stations. The drop-down menu, the slider, and the arrow buttons allow you to easily select the wind data in 2-hour intervals between April 21 at 7am to April 22 at 7 am. If you uncheck the \\\"wind-visible?\\\" and \\\"trails?\\\" features you can click through a 24 hour period to see how the wind changes at each station. Repeating this more slowly with one or both checkboxes set true, will show the progress of the front. Finally, press the Reveal button to see the wind at the beginning of the NYO Games. \\n\\nAlso, please see the **Anchorage weather report** below:\\nModerate to heavy rain passed through Anchorage around 10 pm the night before the event but it ended a little after midnight (12 am). At 7 am on April 23 the temperature in Anchorage was a little colder than the day before with winds out of the North-Northwest, but there was no rain. \\n\\n* Temperature: 43°F/6.1°C\\n* Wind: 280°\\n* Precipitation: none\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>What did you learn during this unit that helped you make a more accurate prediction.</p>\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
               }
             },
-            "is_hidden": false,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10292-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": null,
-              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Students will be producing a weather forecast in this lesson. They will deciding to hold the Native Youth Olympics in Anchorage on April 23. Students could also recommend postponing NYO as well.\\n\\nStudents in their teams will be editing a presentation template or creating their own and will be develop a script or outline for the weather forecast to be presented to the class. Please see steps to guide students through the process below:\\n\\n1. Teams will edit the template for their forecast or create their own.\\n\\n2. Teams will write a script or outline to use in their forecast presentation.\\n\\n3. When the team is ready to present, project the presentation. \\n\\n4. As each team presents, video record the presentation.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": false,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10293-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        }
-      ]
-    },
-    {
-      "additional_sections": {},
-      "embeddable_display_mode": "stacked",
-      "id": 143616,
-      "is_completion": false,
-      "is_hidden": false,
-      "layout": "l-full-width",
-      "name": "Quiz",
-      "position": 6,
-      "show_header": true,
-      "show_info_assessment": true,
-      "show_interactive": false,
-      "show_sidebar": false,
-      "sidebar": null,
-      "sidebar_title": "Did you know?",
-      "toggle_info_assessment": false,
-      "embeddables": [
-        {
-          "embeddable": {
-            "content": "<p>As a research team, reflect on your experience both in this lesson and the weather unit as a whole.</p>",
-            "is_callout": false,
-            "is_full_width": true,
-            "is_hidden": false,
-            "name": "",
-            "type": "Embeddable::Xhtml",
-            "ref_id": "147927-Embeddable::Xhtml"
-          },
-          "section": "header_block"
-        },
-        {
-          "embeddable": {
-            "default_text": "",
-            "give_prediction_feedback": false,
-            "hint": "",
-            "is_full_width": true,
-            "is_hidden": false,
-            "is_prediction": false,
-            "name": "",
-            "prediction_feedback": "",
-            "prompt": "<p>Did your weather predictions get better at the end of the unit? Why or why not?</p>",
-            "show_in_featured_question_report": true,
-            "type": "Embeddable::OpenResponse",
-            "ref_id": "208901-Embeddable::OpenResponse"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "default_text": "",
-            "give_prediction_feedback": false,
-            "hint": "",
-            "is_full_width": true,
-            "is_hidden": false,
-            "is_prediction": false,
-            "name": "",
-            "prediction_feedback": "",
-            "prompt": "<p>Why do you think weather forecasters sometimes get weather predictions wrong?</p>",
-            "show_in_featured_question_report": true,
-            "type": "Embeddable::OpenResponse",
-            "ref_id": "208902-Embeddable::OpenResponse"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "default_text": "",
-            "give_prediction_feedback": false,
-            "hint": "",
-            "is_full_width": true,
-            "is_hidden": false,
-            "is_prediction": false,
-            "name": "",
-            "prediction_feedback": "",
-            "prompt": "<p>Imagine you could create your own computer weather model to make an even better weather prediction. What extra features would your model have? What could your model do?</p>",
-            "show_in_featured_question_report": true,
-            "type": "Embeddable::OpenResponse",
-            "ref_id": "208903-Embeddable::OpenResponse"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "default_text": "",
-            "give_prediction_feedback": false,
-            "hint": "",
-            "is_full_width": true,
-            "is_hidden": false,
-            "is_prediction": false,
-            "name": "",
-            "prediction_feedback": "",
-            "prompt": "<p>What other problems do you think you could use computational thinking to solve?</p>",
-            "show_in_featured_question_report": true,
-            "type": "Embeddable::OpenResponse",
-            "ref_id": "208904-Embeddable::OpenResponse"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": "",
-              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Reflection on the computational thinking practices students learned throughout the unit. \\n\\n* Have a class discussion about computational thinking and weather. You can use the online activity questions as prompts:\\n\\n * Did your weather predictions get better at the end of the unit?\\n\\n * Why do you think weather forecasters sometimes get weather predictions wrong?\\n\\n * If you could have created your own computer weather model to make a better prediction, what else would you have your model do?\\n\\n * What other problems do you think you could use computational thinking to solve?\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": false,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10294-Embeddable::EmbeddablePlugin"
+            "type": "ManagedInteractive",
+            "ref_id": "2252-ManagedInteractive",
+            "linked_interactives": []
           },
           "section": null
         }
@@ -803,9 +450,9 @@
       "id": 144656,
       "is_completion": false,
       "is_hidden": false,
-      "layout": "l-6040",
+      "layout": "l-full-width",
       "name": "Presentation",
-      "position": 7,
+      "position": 5,
       "show_header": true,
       "show_info_assessment": true,
       "show_interactive": false,
@@ -816,135 +463,9 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p style=\"padding-left: 30px;\"><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/L7instructionsscale.png\" width=\"720\" height=\"329\" /></p>",
-            "is_callout": true,
-            "is_full_width": true,
-            "is_hidden": false,
-            "name": "",
-            "type": "Embeddable::Xhtml",
-            "ref_id": "149053-Embeddable::Xhtml"
-          },
-          "section": "header_block"
-        },
-        {
-          "embeddable": {
-            "content": "<p><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/weather_forecasting_tools.png\" width=\"720\" height=\"215\" /></p>",
-            "is_callout": true,
-            "is_full_width": true,
-            "is_hidden": false,
-            "name": "",
-            "type": "Embeddable::Xhtml",
-            "ref_id": "149055-Embeddable::Xhtml"
-          },
-          "section": "header_block"
-        },
-        {
-          "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"draggingAreaPrompt\":\"Drag following items:\",\"canvasWidth\":330,\"canvasHeight\":300,\"initialState\":{\"itemPositions\":{\"b74ab519-8aa4-47d3-999b-39455379f007\":{\"left\":203,\"top\":20},\"9645999f-9613-4843-9cda-cb216a1d39c2\":{\"left\":107,\"top\":113},\"8df99d36-e54c-4eb9-b403-ab6d9f1b84a4\":{\"left\":202,\"top\":187}}},\"draggableItems\":[{\"id\":\"f6793037-7a87-445d-8772-9c9eb7855150\",\"imageUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/clouds.png\"},{\"id\":\"b74ab519-8aa4-47d3-999b-39455379f007\",\"imageUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/cloudsandsun.png\"},{\"id\":\"9645999f-9613-4843-9cda-cb216a1d39c2\",\"imageUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/rain.png\"},{\"id\":\"f83a70e2-efee-4bba-a64e-1eef54f47478\",\"imageUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/snow.png\"},{\"id\":\"8df99d36-e54c-4eb9-b403-ab6d9f1b84a4\",\"imageUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/sun.png\"}]}",
-            "is_hidden": false,
-            "is_full_width": true,
-            "show_in_featured_question_report": true,
-            "inherit_aspect_ratio_method": true,
-            "custom_aspect_ratio_method": null,
-            "inherit_native_width": true,
-            "custom_native_width": 576,
-            "inherit_native_height": true,
-            "custom_native_height": 435,
-            "inherit_click_to_play": true,
-            "custom_click_to_play": false,
-            "inherit_full_window": true,
-            "custom_full_window": false,
-            "inherit_click_to_play_prompt": true,
-            "custom_click_to_play_prompt": null,
-            "inherit_image_url": true,
-            "custom_image_url": null,
-            "library_interactive": {
-              "hash": "bc60f7570392901235434f601d724026a4e4c3b1",
-              "data": {
-                "aspect_ratio_method": "DEFAULT",
-                "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/drag-and-drop/",
-                "click_to_play": false,
-                "click_to_play_prompt": null,
-                "description": "This shouldn't be used by any real activities it is still under development.",
-                "enable_learner_state": true,
-                "full_window": false,
-                "has_report_url": false,
-                "image_url": null,
-                "name": "Drag and Drop (master)",
-                "native_height": 435,
-                "native_width": 576,
-                "no_snapshots": false,
-                "show_delete_data_button": false,
-                "thumbnail_url": "",
-                "customizable": false,
-                "authorable": true
-              }
-            },
-            "type": "ManagedInteractive",
-            "ref_id": "2125-ManagedInteractive",
-            "linked_interactives": []
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "name": "",
-            "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"draggingAreaPrompt\":\"Drag following items:\",\"canvasWidth\":800,\"canvasHeight\":500,\"initialState\":{\"itemPositions\":{}},\"backgroundImageUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/Move_the_line.png\"}",
-            "is_hidden": false,
-            "is_full_width": true,
-            "show_in_featured_question_report": true,
-            "inherit_aspect_ratio_method": true,
-            "custom_aspect_ratio_method": null,
-            "inherit_native_width": true,
-            "custom_native_width": 576,
-            "inherit_native_height": true,
-            "custom_native_height": 435,
-            "inherit_click_to_play": true,
-            "custom_click_to_play": false,
-            "inherit_full_window": true,
-            "custom_full_window": false,
-            "inherit_click_to_play_prompt": true,
-            "custom_click_to_play_prompt": null,
-            "inherit_image_url": true,
-            "custom_image_url": null,
-            "library_interactive": {
-              "hash": "bc60f7570392901235434f601d724026a4e4c3b1",
-              "data": {
-                "aspect_ratio_method": "DEFAULT",
-                "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/drag-and-drop/",
-                "click_to_play": false,
-                "click_to_play_prompt": null,
-                "description": "This shouldn't be used by any real activities it is still under development.",
-                "enable_learner_state": true,
-                "full_window": false,
-                "has_report_url": false,
-                "image_url": null,
-                "name": "Drag and Drop (master)",
-                "native_height": 435,
-                "native_width": 576,
-                "no_snapshots": false,
-                "show_delete_data_button": false,
-                "thumbnail_url": "",
-                "customizable": false,
-                "authorable": true
-              }
-            },
-            "type": "ManagedInteractive",
-            "ref_id": "2126-ManagedInteractive",
-            "linked_interactives": []
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "name": "",
-            "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"draggingAreaPrompt\":\"<p>Drag following items:</p>\",\"canvasWidth\":330,\"canvasHeight\":300,\"initialState\":{\"itemPositions\":{}},\"backgroundImageUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/Move_the_line.png\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"draggingAreaPrompt\":\"Drag following items:\",\"canvasWidth\":1200,\"canvasHeight\":800,\"initialState\":{\"itemPositions\":{\"a058923a-4542-4e84-951c-e2f36b2c8251\":{\"left\":442,\"top\":-28},\"9ed8abe0-e8d0-445e-a096-f08e3e00d802\":{\"left\":266,\"top\":-43},\"7551a26e-ba62-4809-8ea6-6521c3ba5eac\":{\"left\":740,\"top\":-31},\"4310bd82-1a68-412e-9b07-53073da246a1\":{\"left\":588,\"top\":-35},\"c1839dfa-e5de-431b-b6cf-ba0f2c769ade\":{\"left\":103,\"top\":-38},\"fdf5a484-bc9f-4edb-926a-1368647f8d7b\":{\"left\":779,\"top\":71}}},\"draggableItems\":[{\"id\":\"9ed8abe0-e8d0-445e-a096-f08e3e00d802\",\"imageUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/clouds.png\"},{\"id\":\"c1839dfa-e5de-431b-b6cf-ba0f2c769ade\",\"imageUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/cloudsandsun.png\"},{\"id\":\"7551a26e-ba62-4809-8ea6-6521c3ba5eac\",\"imageUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/rain.png\"},{\"id\":\"4310bd82-1a68-412e-9b07-53073da246a1\",\"imageUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/snow.png\"},{\"id\":\"a058923a-4542-4e84-951c-e2f36b2c8251\",\"imageUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/sun.png\"},{\"id\":\"fdf5a484-bc9f-4edb-926a-1368647f8d7b\",\"imageUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/lineforprediction.png\"}],\"backgroundImageUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/Move_the_line.png\",\"prompt\":\"<p><strong>FINAL STEP</strong>!!!  Show us what the weather will be on <strong>April 23rd at 7am</strong>!!! </p>\\n<p>Drag the icon that fits your prediction of the weather over Anchorage during the NYO  games. Also drag the yellow line to show where the front is during the time of the games.</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -967,7 +488,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/drag-and-drop/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/drag-and-drop/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -986,7 +507,58 @@
               }
             },
             "type": "ManagedInteractive",
-            "ref_id": "2127-ManagedInteractive",
+            "ref_id": "2221-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Did you decide to hold NYO or to cancel or postpone it due to bad weather preventing teams from flying into Anchorage? Explain your reasoning including the temperature, precipitation, and wind direction that you predict will happen in Anchorage.</p>\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "2224-ManagedInteractive",
             "linked_interactives": []
           },
           "section": null
@@ -996,12 +568,12 @@
     {
       "additional_sections": {},
       "embeddable_display_mode": "stacked",
-      "id": 308577,
+      "id": 144869,
       "is_completion": true,
       "is_hidden": false,
       "layout": "l-6040",
-      "name": "Completion Page",
-      "position": 9,
+      "name": "Show My Work",
+      "position": 6,
       "show_header": false,
       "show_info_assessment": false,
       "show_interactive": false,

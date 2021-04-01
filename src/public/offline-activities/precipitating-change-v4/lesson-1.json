@@ -37,7 +37,7 @@
             "is_callout": true,
             "is_full_width": true,
             "is_hidden": false,
-            "name": "",
+            "name": "Introducing Jackie Purcell, a news station meteorologist",
             "type": "Embeddable::Xhtml",
             "ref_id": "147485-Embeddable::Xhtml"
           },
@@ -45,9 +45,9 @@
         },
         {
           "embeddable": {
-            "name": "Jackie Purcell - L1",
+            "name": "Jackie Purcell - Lesson 1",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L1_Video.png\",\"videoUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/JackieLesson1_88_Captioned.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L1_Video.png\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/JackieLesson1_88_Captioned.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -70,7 +70,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/video-player/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/video-player/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
@@ -129,7 +129,7 @@
           "embeddable": {
             "name": "Mr. Neyhard's Introduction",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/PC%20Intro.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson1-Optimized/Intro%20Navigation%20Glossary%20Final.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -152,7 +152,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/video-player/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/video-player/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
@@ -211,7 +211,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/PC%20Lesson%201%20Pg%201.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson1-Optimized/Challenge%20Introduction%20Final.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -234,7 +234,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/video-player/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/video-player/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
@@ -316,7 +316,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/image/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/image/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -336,6 +336,57 @@
             },
             "type": "ManagedInteractive",
             "ref_id": "1263-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        },
+        {
+          "embeddable": {
+            "name": "Reading Weather Forcasts",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson1-Optimized/Reading%20Weather%20Forecast.mp4\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "34e1a2a39c058da8ff4ffe5a09ad14af337c4a01",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/video-player/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
+                "enable_learner_state": false,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Video Player",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "2230-ManagedInteractive",
             "linked_interactives": []
           },
           "section": "interactive_box"
@@ -379,7 +430,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -430,7 +481,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -481,7 +532,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -509,7 +560,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":true,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"A sweater, some pants, and either an umbrella or a rain jacket because it’s not too cold or too warm but it is supposed to be raining.\",\"correct\":true},{\"id\":\"2\",\"content\":\"My parka/big fluffy coat, snow pants, snow boots, and ski goggles because snow will be falling.\",\"correct\":false},{\"id\":\"3\",\"content\":\"Shorts and T-shirt with sunglasses because it will be sunny and hot.\",\"correct\":false}],\"prompt\":\"<p>Based on the weather forecast, what would you wear on Tuesday morning?</p>\",\"enableCheckAnswer\":true}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"3\",\"content\":\"Shorts and T-shirt with sunglasses because it will be sunny and hot.\",\"correct\":false},{\"id\":\"2\",\"content\":\"My parka/big fluffy coat, snow pants, snow boots, and ski goggles because snow will be falling.\",\"correct\":false},{\"id\":\"1\",\"content\":\"A sweater, some pants, and either an umbrella or a rain jacket because it’s not too cold or too warm but it is supposed to be raining.\",\"correct\":true}],\"prompt\":\"<p>Based on the weather forecast, what would you wear on Tuesday morning?</p>\",\"enableCheckAnswer\":true}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -532,7 +583,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -577,41 +628,66 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>MAKING A&nbsp;PREDICTION</p>\r\n<p>Can you determine at night what the&nbsp;weather&nbsp;will be the following morning? What kind of information goes into a&nbsp;weather&nbsp;prediction?</p>\r\n<p>You have been planning to go to the NYO Games in Anchorage on April 23 at 7 am. This event has been planned for months and you are expecting that about 500 students will compete from all over the state. One of your jobs is to watch the&nbsp;weather&nbsp;and determine if the event is safe to proceed as&nbsp;planned, or if it should be&nbsp;postponed&nbsp;or&nbsp;cancelled.</p>\r\n<p>Below is an Alaska&nbsp;weather&nbsp;dataset from weather stations that includes temperature,&nbsp;precipitation, wind speed, and&nbsp;wind direction.</p>\r\n<p>The data from the&nbsp;weather&nbsp;stations are organized to show information for a 24-hour time period.</p>",
-            "is_callout": true,
-            "is_full_width": true,
+            "name": "Data Dump Video",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson1-Optimized/Data%20Dump%20Prediction%20Final.mp4\"}",
             "is_hidden": false,
-            "name": "",
-            "type": "Embeddable::Xhtml",
-            "ref_id": "147487-Embeddable::Xhtml"
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "34e1a2a39c058da8ff4ffe5a09ad14af337c4a01",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/video-player/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
+                "enable_learner_state": false,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Video Player",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "2231-ManagedInteractive",
+            "linked_interactives": []
           },
           "section": "header_block"
         },
         {
           "embeddable": {
-            "aspect_ratio_method": "DEFAULT",
-            "authored_state": "",
-            "click_to_play": false,
-            "click_to_play_prompt": null,
-            "enable_learner_state": false,
-            "full_window": false,
-            "has_report_url": false,
-            "image_url": null,
+            "content": "<p>Can you determine at night what the&nbsp;weather&nbsp;will be the following morning? What kind of information goes into a&nbsp;weather&nbsp;prediction?</p>\r\n<p>You have been planning to go to the NYO Games in Anchorage on April 23 at 7 am. This event has been planned for months and you are expecting that about 500 students will compete from all over the state. One of your jobs is to watch the&nbsp;weather&nbsp;and determine if the event is safe to proceed as&nbsp;planned, or if it should be&nbsp;postponed&nbsp;or&nbsp;cancelled.</p>\r\n<p>Below is an Alaska&nbsp;weather&nbsp;dataset from weather stations that includes temperature,&nbsp;precipitation, wind speed, and&nbsp;wind direction.</p>\r\n<p>The data from the&nbsp;weather&nbsp;stations are organized to show information for a 24-hour time period.</p>",
+            "is_callout": true,
             "is_full_width": true,
-            "is_hidden": true,
-            "model_library_url": null,
-            "name": "Alaska Full Map",
-            "native_height": 435,
-            "native_width": 576,
-            "no_snapshots": false,
-            "show_delete_data_button": true,
-            "show_in_featured_question_report": true,
-            "url": "https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/new_picts/data_map_with_arrows.png",
-            "type": "MwInteractive",
-            "ref_id": "96755-MwInteractive",
-            "linked_interactives": []
+            "is_hidden": false,
+            "name": "Making a Prediction",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "147487-Embeddable::Xhtml"
           },
-          "section": "interactive_box"
+          "section": "header_block"
         },
         {
           "embeddable": {
@@ -640,7 +716,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/image/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/image/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -771,7 +847,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -822,7 +898,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -904,7 +980,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -955,7 +1031,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1006,7 +1082,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1057,7 +1133,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1108,7 +1184,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1137,12 +1213,12 @@
     {
       "additional_sections": {},
       "embeddable_display_mode": "stacked",
-      "id": 308577,
+      "id": 144863,
       "is_completion": true,
       "is_hidden": false,
       "layout": "l-6040",
-      "name": "Completion Page",
-      "position": 9,
+      "name": "Show My Work",
+      "position": 7,
       "show_header": false,
       "show_info_assessment": false,
       "show_interactive": false,
