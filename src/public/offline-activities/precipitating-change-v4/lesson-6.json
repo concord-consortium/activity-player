@@ -1,5 +1,5 @@
 {
-  "description": "\u003Cp\u003EModeling Fronts: How do fronts move?\u003C/p\u003E",
+  "description": "<p>Modeling Fronts: How do fronts move?</p>",
   "editor_mode": 0,
   "layout": 0,
   "name": "Alaska 2021 - Lesson 6: Modeling Fronts",
@@ -13,534 +13,569 @@
   "time_to_complete": null,
   "version": 1,
   "theme_name": "Precipitating Change",
-  "pages": [{
-    "additional_sections": {},
-    "embeddable_display_mode": "stacked",
-    "id": 143691,
-    "is_completion": false,
-    "is_hidden": false,
-    "layout": "l-full-width",
-    "name": "Real World Application",
-    "position": 1,
-    "show_header": true,
-    "show_info_assessment": false,
-    "show_interactive": false,
-    "show_sidebar": false,
-    "sidebar": null,
-    "sidebar_title": "Did you know?",
-    "toggle_info_assessment": false,
-    "embeddables": [{
-      "embeddable": {
-        "content": "\u003Cp\u003EWatch this video featuring\u0026nbsp;Jackie Purcell, a news station meteorologist at station KTUU in Anchorage, AK. She will discuss how moving fronts impact the weather.\u003C/p\u003E",
-        "is_callout": true,
-        "is_full_width": true,
-        "is_hidden": false,
-        "name": "",
-        "type": "Embeddable::Xhtml",
-        "ref_id": "148016-Embeddable::Xhtml"
-      },
-      "section": "header_block"
-    }, {
-      "embeddable": {
-        "name": "",
-        "url_fragment": null,
-        "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/JackieLesson6_88_Captioned.mp4\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L6_Video.png\"}",
-        "is_hidden": false,
-        "is_full_width": true,
-        "show_in_featured_question_report": true,
-        "inherit_aspect_ratio_method": true,
-        "custom_aspect_ratio_method": null,
-        "inherit_native_width": true,
-        "custom_native_width": 576,
-        "inherit_native_height": true,
-        "custom_native_height": 435,
-        "inherit_click_to_play": true,
-        "custom_click_to_play": false,
-        "inherit_full_window": true,
-        "custom_full_window": false,
-        "inherit_click_to_play_prompt": true,
-        "custom_click_to_play_prompt": null,
-        "inherit_image_url": true,
-        "custom_image_url": null,
-        "library_interactive": {
-          "hash": "34e1a2a39c058da8ff4ffe5a09ad14af337c4a01",
-          "data": {
-            "aspect_ratio_method": "DEFAULT",
-            "authoring_guidance": "",
-            "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/video-player/",
-            "click_to_play": false,
-            "click_to_play_prompt": null,
-            "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
-            "enable_learner_state": false,
-            "full_window": false,
-            "has_report_url": false,
-            "image_url": null,
-            "name": "Video Player",
-            "native_height": 435,
-            "native_width": 576,
-            "no_snapshots": false,
-            "show_delete_data_button": false,
-            "thumbnail_url": "",
-            "customizable": false,
-            "authorable": true
-          }
+  "pages": [
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 143691,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Real World Application",
+      "position": 1,
+      "show_header": true,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p>Watch this video featuring&nbsp;Jackie Purcell, a news station meteorologist at station KTUU in Anchorage, AK. She will discuss how moving fronts impact the weather.</p>",
+            "is_callout": true,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "148016-Embeddable::Xhtml"
+          },
+          "section": "header_block"
         },
-        "type": "ManagedInteractive",
-        "ref_id": "1768-ManagedInteractive",
-        "linked_interactives": []
-      },
-      "section": "header_block"
-    }]
-  }, {
-    "additional_sections": {},
-    "embeddable_display_mode": "stacked",
-    "id": 143607,
-    "is_completion": false,
-    "is_hidden": false,
-    "layout": "l-full-width",
-    "name": "Opening",
-    "position": 2,
-    "show_header": true,
-    "show_info_assessment": true,
-    "show_interactive": false,
-    "show_sidebar": false,
-    "sidebar": null,
-    "sidebar_title": "Did you know?",
-    "toggle_info_assessment": false,
-    "embeddables": [{
-      "embeddable": {
-        "content": "\u003Cp\u003E\u003Cstrong\u003EHow do fronts move?\u003C/strong\u003E\u003C/p\u003E\n\u003Cp\u003EOver the last couple of weeks, you have been exploring different aspects of regional data. You are now ready to begin to apply all of that knowledge to the unit challenge:\u0026nbsp;What will the\u0026nbsp;weather\u0026nbsp;be in Anchorage 24 hours from now?\u003C/p\u003E\n\u003Cp\u003EUse the resources from your past lessons to help inform your prediction. Go to page 28 in your Science Notebooks to review the Lesson 1, Weather Radar Maps for the Alaskan Region, to help you.\u003C/p\u003E\n\u003Cp\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL21_7am.png\" width=\"303\" height=\"231\" /\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL21_1pm.png\" width=\"303\" height=\"231\" /\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL21_7pm.png\" width=\"303\" height=\"231\" /\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL22_1am.png\" width=\"297\" height=\"230\" /\u003E\u003Cimg src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL22_7am.png\" width=\"303\" height=\"231\" /\u003E\u003C/p\u003E\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E",
-        "is_callout": false,
-        "is_full_width": true,
-        "is_hidden": false,
-        "name": "",
-        "type": "Embeddable::Xhtml",
-        "ref_id": "147917-Embeddable::Xhtml"
-      },
-      "section": "header_block"
-    }, {
-      "embeddable": {
-        "plugin": {
-          "description": "",
-          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###LESSON 6: MODELING FRONTS\\n**HOW DO FRONTS MOVE?**\\n\\nIn this lesson, students identify the location, direction, and rate of movement of the front. When warm and cold air masses collide, a front forms resulting in a change in weather. Fronts move across regions causing the local weather to change, sometimes suddenly. Scientists use models to predict changes in weather using the properties (temperature and moisture) of the air masses and their movement patterns. In this lesson, the focus shifts to how students can use the data to solve a problem and less on learning about the components of weather (as they did in Lessons 1 - 5). The understandings developed in this lesson support students in developing their predictions for the unit challenge in Lesson 7. \\n\\n**LEARNING GOALS**\\n\\nStudents will be able to:\\n\\n* Understand that air masses are constantly moving and their characteristics (temperature and moisture) change\\n\\n* Identify evidence of a front moving through a given location \\n\\n* Analyze the speed and direction of a front moving over a region from given data\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-          "approved_script_label": "teacherEditionTips",
-          "component_label": "windowShade",
-          "approved_script": {
-            "name": "Teacher Edition",
-            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-            "label": "teacherEditionTips",
-            "description": "This plugin provides Teacher Edition components",
-            "version": 3,
-            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-          }
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/JackieLesson6_88_Captioned.mp4\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L6_Video.png\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "34e1a2a39c058da8ff4ffe5a09ad14af337c4a01",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.1.0/video-player/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
+                "enable_learner_state": false,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Video Player",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "1768-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": "header_block"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 143607,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Opening",
+      "position": 2,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p><strong>How do fronts move?</strong></p>\n<p>Over the last couple of weeks, you have been exploring different aspects of regional data. You are now ready to begin to apply all of that knowledge to the unit challenge:&nbsp;What will the&nbsp;weather&nbsp;be in Anchorage 24 hours from now?</p>\n<p>Use the resources from your past lessons to help inform your prediction. Go to page 28 in your Science Notebooks to review the Lesson 1, Weather Radar Maps for the Alaskan Region, to help you.</p>\n<p><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL21_7am.png\" width=\"303\" height=\"231\" /><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL21_1pm.png\" width=\"303\" height=\"231\" /><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL21_7pm.png\" width=\"303\" height=\"231\" /><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL22_1am.png\" width=\"297\" height=\"230\" /><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL22_7am.png\" width=\"303\" height=\"231\" /></p>\n<p>&nbsp;</p>",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "147917-Embeddable::Xhtml"
+          },
+          "section": "header_block"
         },
-        "is_hidden": false,
-        "is_full_width": true,
-        "type": "Embeddable::EmbeddablePlugin",
-        "ref_id": "10269-Embeddable::EmbeddablePlugin"
-      },
-      "section": null
-    }, {
-      "embeddable": {
-        "plugin": {
-          "description": "",
-          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###IMPLEMENTATION TIME 2 class periods (1 hour and 30 minutes)\\n\\n**KEY ACTIVITIES:**\\nPre-Assessment: Lesson 6: What Do You Think? (10 mins)\\nActivity 1 - Where is the Front Going? (35 mins)\\n\\nActivity 2 - How Fast is the Front Moving? (45 mins)\\n\\n###MATERIALS AND SET-UP\\n\\nActivity 1 - Where is the Front Going?\\n\\nPer Research Team:\\n\\n* Tablet/laptop\\n\\n* Science Notebook\\n \\n * Front Visualizations at 11 am, 9 pm, and 7 am\\n\\n* Alaska Map Transparency\\n\\n* Straight edge (ruler)\\n\\n* Wet erase markers\\n\\n* Paper towels (for erasing)\\n\\nPer Class:\\n\\n* Water (for students to erase on their transparencies, if needed)\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"\",\"mediaURL\":\"\"}}",
-          "approved_script_label": "teacherEditionTips",
-          "component_label": "windowShade",
-          "approved_script": {
-            "name": "Teacher Edition",
-            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-            "label": "teacherEditionTips",
-            "description": "This plugin provides Teacher Edition components",
-            "version": 3,
-            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-          }
+        {
+          "embeddable": {
+            "plugin": {
+              "description": "",
+              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###LESSON 6: MODELING FRONTS\\n**HOW DO FRONTS MOVE?**\\n\\nIn this lesson, students identify the location, direction, and rate of movement of the front. When warm and cold air masses collide, a front forms resulting in a change in weather. Fronts move across regions causing the local weather to change, sometimes suddenly. Scientists use models to predict changes in weather using the properties (temperature and moisture) of the air masses and their movement patterns. In this lesson, the focus shifts to how students can use the data to solve a problem and less on learning about the components of weather (as they did in Lessons 1 - 5). The understandings developed in this lesson support students in developing their predictions for the unit challenge in Lesson 7. \\n\\n**LEARNING GOALS**\\n\\nStudents will be able to:\\n\\n* Understand that air masses are constantly moving and their characteristics (temperature and moisture) change\\n\\n* Identify evidence of a front moving through a given location \\n\\n* Analyze the speed and direction of a front moving over a region from given data\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "This plugin provides Teacher Edition components",
+                "version": 3,
+                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+              }
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "10269-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
         },
-        "is_hidden": false,
-        "is_full_width": true,
-        "type": "Embeddable::EmbeddablePlugin",
-        "ref_id": "10270-Embeddable::EmbeddablePlugin"
-      },
-      "section": null
-    }, {
-      "embeddable": {
-        "plugin": {
-          "description": null,
-          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Watch this video with your class to give students a perspective on the importance of weather and to build weather science career awareness. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Purcell, Jackie. \\\"Lesson 6.\\\" 2019. Good Life Productions. Anchorage, AK.\",\"mediaURL\":\"https://precipitatingchange-resources.concord.org/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/JackieLesson6_88.mp4\"}}",
-          "approved_script_label": "teacherEditionTips",
-          "component_label": "windowShade",
-          "approved_script": {
-            "name": "Teacher Edition",
-            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-            "label": "teacherEditionTips",
-            "description": "This plugin provides Teacher Edition components",
-            "version": 3,
-            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-          }
+        {
+          "embeddable": {
+            "plugin": {
+              "description": "",
+              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###IMPLEMENTATION TIME 2 class periods (1 hour and 30 minutes)\\n\\n**KEY ACTIVITIES:**\\nPre-Assessment: Lesson 6: What Do You Think? (10 mins)\\nActivity 1 - Where is the Front Going? (35 mins)\\n\\nActivity 2 - How Fast is the Front Moving? (45 mins)\\n\\n###MATERIALS AND SET-UP\\n\\nActivity 1 - Where is the Front Going?\\n\\nPer Research Team:\\n\\n* Tablet/laptop\\n\\n* Science Notebook\\n \\n * Front Visualizations at 11 am, 9 pm, and 7 am\\n\\n* Alaska Map Transparency\\n\\n* Straight edge (ruler)\\n\\n* Wet erase markers\\n\\n* Paper towels (for erasing)\\n\\nPer Class:\\n\\n* Water (for students to erase on their transparencies, if needed)\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "This plugin provides Teacher Edition components",
+                "version": 3,
+                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+              }
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "10270-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
         },
-        "is_hidden": false,
-        "is_full_width": true,
-        "type": "Embeddable::EmbeddablePlugin",
-        "ref_id": "10271-Embeddable::EmbeddablePlugin"
-      },
-      "section": null
-    }]
-  }, {
-    "additional_sections": {},
-    "embeddable_display_mode": "stacked",
-    "id": 143608,
-    "is_completion": false,
-    "is_hidden": false,
-    "layout": "l-full-width",
-    "name": "Where is the front going?",
-    "position": 3,
-    "show_header": true,
-    "show_info_assessment": true,
-    "show_interactive": false,
-    "show_sidebar": false,
-    "sidebar": null,
-    "sidebar_title": "Did you know?",
-    "toggle_info_assessment": false,
-    "embeddables": [{
-      "embeddable": {
-        "content": "\u003Cp\u003EWatch the \"Lesson 6: Modeling Fronts\" video as a class and think about the question, \"Where is the\u0026nbsp;front\u0026nbsp;going?\" and \u0026ldquo;What do we need to know about the\u0026nbsp;front\u0026nbsp;to predict where it will be in the future?\u0026rdquo;\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003EUsing all the resources you have available to you, including your computational thinking skills, datasets, and the Virtual Model images showing the following time steps (11 am, 9 pm, and 7am), work with your research team to answer the question, \"In what direction is your front moving?\"\u003C/p\u003E\n\u003Cp\u003E\u003Cimg class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/FrontVisualizations.jpg\" alt=\"\" width=\"743\" height=\"278\" /\u003E\u003C/p\u003E",
-        "is_callout": false,
-        "is_full_width": true,
-        "is_hidden": false,
-        "name": "",
-        "type": "Embeddable::Xhtml",
-        "ref_id": "147918-Embeddable::Xhtml"
-      },
-      "section": "header_block"
-    }, {
-      "embeddable": {
-        "default_text": "",
-        "give_prediction_feedback": false,
-        "hint": "",
-        "is_full_width": true,
-        "is_hidden": false,
-        "is_prediction": false,
-        "name": "",
-        "prediction_feedback": "",
-        "prompt": "\u003Cp\u003EIn what direction is your front moving? Be as specific as you can.\u003C/p\u003E",
-        "show_in_featured_question_report": true,
-        "type": "Embeddable::OpenResponse",
-        "ref_id": "208894-Embeddable::OpenResponse"
-      },
-      "section": null
-    }, {
-      "embeddable": {
-        "default_text": "",
-        "give_prediction_feedback": false,
-        "hint": "",
-        "is_full_width": true,
-        "is_hidden": false,
-        "is_prediction": false,
-        "name": "",
-        "prediction_feedback": "",
-        "prompt": "\u003Cp\u003EHow do you know the front is moving in that direction?\u003C/p\u003E",
-        "show_in_featured_question_report": true,
-        "type": "Embeddable::OpenResponse",
-        "ref_id": "208895-Embeddable::OpenResponse"
-      },
-      "section": null
-    }, {
-      "embeddable": {
-        "plugin": {
-          "description": null,
-          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Activity 1 - Where is the Front Going?\\n\\nThe focus of this activity is to provide students an opportunity to decompose a smaller challenge before they revisit the unit challenge in Lesson 7. In this activity, students use front visualizations from 11 am, 9 pm, and 7 am to see where the air masses are colliding (i.e., the front) at different times and to track the direction of the front. The specific computational thinking skills highlighted and practiced in this activity are **Decomposition**, **Pattern Recognition**, and **Model Evaluation**.\\n\\n###Activity Breakdown\\n\\n1.Play the Lesson 6 Virtual Model tutorial.\\n\\n2.Research teams use the Front Visualizations in their Science Notebooks and the Alaska Map Transparency to describe the direction the front is moving.\\n\\n3.In the student online activity, teams summarize their findings for the direction the front is moving within the region.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-          "approved_script_label": "teacherEditionTips",
-          "component_label": "windowShade",
-          "approved_script": {
-            "name": "Teacher Edition",
-            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-            "label": "teacherEditionTips",
-            "description": "This plugin provides Teacher Edition components",
-            "version": 3,
-            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-          }
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Watch this video with your class to give students a perspective on the importance of weather and to build weather science career awareness. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Purcell, Jackie. \\\"Lesson 6.\\\" 2019. Good Life Productions. Anchorage, AK.\",\"mediaURL\":\"https://precipitatingchange-resources.concord.org/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/JackieLesson6_88.mp4\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "This plugin provides Teacher Edition components",
+                "version": 3,
+                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+              }
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "10271-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 143608,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Where is the front going?",
+      "position": 3,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p>Watch the \"Lesson 6: Modeling Fronts\" video as a class and think about the question, \"Where is the&nbsp;front&nbsp;going?\" and &ldquo;What do we need to know about the&nbsp;front&nbsp;to predict where it will be in the future?&rdquo;&nbsp;</p>\n<p>Using all the resources you have available to you, including your computational thinking skills, datasets, and the Virtual Model images showing the following time steps (11 am, 9 pm, and 7am), work with your research team to answer the question, \"In what direction is your front moving?\"</p>\n<p><img class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/FrontVisualizations.jpg\" alt=\"\" width=\"743\" height=\"278\" /></p>",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "147918-Embeddable::Xhtml"
+          },
+          "section": "header_block"
         },
-        "is_hidden": false,
-        "is_full_width": true,
-        "type": "Embeddable::EmbeddablePlugin",
-        "ref_id": "10272-Embeddable::EmbeddablePlugin"
-      },
-      "section": null
-    }, {
-      "embeddable": {
-        "plugin": {
-          "description": null,
-          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Where is the Front Going? Strategy Tips \\nThe intention of this task is to provide students with a more open-ended task than seen in Lessons 1 - 4 and to give them an opportunity to apply their CT skills before solving the unit challenge. It is important that students work independently. The goal is to see if students can decompose the mini front challenge on their own. Additionally, this shift in perspective gives the students agency in their own learning to identify which CT skills are key to addressing this question. Students should realize that they know how to identify a front from Lesson 4, and have data at their disposal that can help them figure out the location of the front is at different points in time. Ideally, they will decompose \u201chow the front moves\u201d into two components: direction (which way it is heading) and speed (distance/time). Please see a list of possible discussion prompts to guide students through this process:\\n\\n\\n* Remind students that they learned how to identify a front in the last lesson, and that fronts can be an indicator of complex weather. \\n\\n* Point out that the unit challenge is to make a decision on if they are to continue, cancel, or postpone the Native Youth Olympics (NYO Games) and explain to them that figuring out where this front will be in 24 hours can help improve their prediction.\\n\\n* Raise the question: What do we need to know about the front to predict where it will be in the future? \\n\\n* Ask the research teams to:\\n\\n * Think about the question and brainstorm their ideas as a group.\\n * Identify the computational thinking skills they think will help them address this challenge. \\n\\n * Identify what features in the Virtual Model would help them answer this question. \\n * Identify what data they have from Lessons 1 - 5 that would help them answer this question.\\n* Have research teams answer the online activity questions.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-          "approved_script_label": "teacherEditionTips",
-          "component_label": "windowShade",
-          "approved_script": {
-            "name": "Teacher Edition",
-            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-            "label": "teacherEditionTips",
-            "description": "This plugin provides Teacher Edition components",
-            "version": 3,
-            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-          }
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "<p>In what direction is your front moving? Be as specific as you can.</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "208894-Embeddable::OpenResponse"
+          },
+          "section": null
         },
-        "is_hidden": false,
-        "is_full_width": true,
-        "type": "Embeddable::EmbeddablePlugin",
-        "ref_id": "10273-Embeddable::EmbeddablePlugin"
-      },
-      "section": null
-    }, {
-      "embeddable": {
-        "plugin": {
-          "description": null,
-          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Show this video to your students before directing them to page 29 in their Science Notebooks and have students answer the question, \\\"Where is the front going?\\\" Students will then use the transparency and the Virtual Model maps of the front from 11 am, 9 pm, and 7 am on pages 30-32 to determine how fast the front is moving. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Precipitating Change How to Tutorials - Modeling Fronts.\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson6WhereistheFrontGoing.mp4\"}}",
-          "approved_script_label": "teacherEditionTips",
-          "component_label": "windowShade",
-          "approved_script": {
-            "name": "Teacher Edition",
-            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-            "label": "teacherEditionTips",
-            "description": "This plugin provides Teacher Edition components",
-            "version": 3,
-            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-          }
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "<p>How do you know the front is moving in that direction?</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "208895-Embeddable::OpenResponse"
+          },
+          "section": null
         },
-        "is_hidden": false,
-        "is_full_width": true,
-        "type": "Embeddable::EmbeddablePlugin",
-        "ref_id": "10274-Embeddable::EmbeddablePlugin"
-      },
-      "section": null
-    }]
-  }, {
-    "additional_sections": {},
-    "embeddable_display_mode": "stacked",
-    "id": 143609,
-    "is_completion": false,
-    "is_hidden": false,
-    "layout": "l-full-width",
-    "name": "How fast is the front moving?",
-    "position": 4,
-    "show_header": true,
-    "show_info_assessment": true,
-    "show_interactive": false,
-    "show_sidebar": false,
-    "sidebar": null,
-    "sidebar_title": "Did you know?",
-    "toggle_info_assessment": false,
-    "embeddables": [{
-      "embeddable": {
-        "content": "\u003Cp\u003ENow that you and your research team have figured out which way the\u0026nbsp;front\u0026nbsp;is going, you may have noticed it is heading toward Anchorage! So you may be wondering when it\u0026rsquo;s going to pass through there. Where the\u0026nbsp;front\u0026nbsp;is at the time of the Alaskan Native Youth Olympics (NYO Games) will greatly affect the\u0026nbsp;weather.\u003C/p\u003E\n\u003Cp\u003ETo best predict where the\u0026nbsp;front\u0026nbsp;will be in 24 hours, you will need to figure out how fast it is moving. This is a calculation of speed (distance over time). Once you know both speed and direction (from Activity 1) of the\u0026nbsp;front, your\u0026nbsp;weather\u0026nbsp;analysis will help you answer the question \u0026ldquo;How fast is the\u0026nbsp;front\u0026nbsp;moving?\u0026rdquo;\u003C/p\u003E\n\u003Cp\u003EYou will have the following tools to help you:\u003C/p\u003E\n\u003Cp\u003E\u0026bull; Your\u0026nbsp;front images from the Virtual Model\u003Cbr /\u003E\u0026bull; A regional map transparency\u003Cbr /\u003E\u0026bull; Rulers and pens\u003C/p\u003E",
-        "is_callout": false,
-        "is_full_width": true,
-        "is_hidden": false,
-        "name": "",
-        "type": "Embeddable::Xhtml",
-        "ref_id": "147919-Embeddable::Xhtml"
-      },
-      "section": "header_block"
-    }, {
-      "embeddable": {
-        "content": "\u003Cp\u003EUsing the available materials, develop a strategy for calculating the rate of the\u0026nbsp;front. Remember that speed equals distance an object moves divided by the time it takes the object to move to its new location.\u003C/p\u003E\r\n\u003Cp style=\"padding-left: 30px;\"\u003E\u003Cstrong\u003E\u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp; \u0026nbsp;Speed = Distance/Time\u003C/strong\u003E\u003C/p\u003E",
-        "is_callout": true,
-        "is_full_width": true,
-        "is_hidden": false,
-        "name": "TASK ",
-        "type": "Embeddable::Xhtml",
-        "ref_id": "147920-Embeddable::Xhtml"
-      },
-      "section": null
-    }, {
-      "embeddable": {
-        "default_text": "",
-        "give_prediction_feedback": false,
-        "hint": "\u003Cp\u003E\u0026bull; Your answer should be a rate or speed.\u003C/p\u003E\r\n\u003Cp\u003E\u0026bull; Speed is a measurement of distance over time.\u003C/p\u003E\r\n\u003Cp\u003E\u0026bull; Distance can be measured in units of kilometers, miles, etc.\u003C/p\u003E\r\n\u003Cp\u003E\u0026bull; Time can be measured in hours, days, etc.\u003C/p\u003E",
-        "is_full_width": true,
-        "is_hidden": false,
-        "is_prediction": false,
-        "name": "",
-        "prediction_feedback": "",
-        "prompt": "\u003Cp\u003EHow fast is the\u0026nbsp;front\u0026nbsp;moving? Be as specific as you can.\u003C/p\u003E",
-        "show_in_featured_question_report": true,
-        "type": "Embeddable::OpenResponse",
-        "ref_id": "208896-Embeddable::OpenResponse"
-      },
-      "section": null
-    }, {
-      "embeddable": {
-        "default_text": "",
-        "give_prediction_feedback": false,
-        "hint": "\u003Cp\u003E\u0026bull; Explain your strategy.\u003C/p\u003E\r\n\u003Cp\u003E\u0026bull; Talk about what you did to come up with your answer.\u003C/p\u003E",
-        "is_full_width": true,
-        "is_hidden": false,
-        "is_prediction": false,
-        "name": "",
-        "prediction_feedback": "",
-        "prompt": "\u003Cp\u003EDescribe how your team figured out how fast the\u0026nbsp;front\u0026nbsp;is moving.\u003C/p\u003E",
-        "show_in_featured_question_report": true,
-        "type": "Embeddable::OpenResponse",
-        "ref_id": "208897-Embeddable::OpenResponse"
-      },
-      "section": null
-    }, {
-      "embeddable": {
-        "plugin": {
-          "description": "",
-          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Activity 2 - How Fast is the Front Moving?\\n\\nThe focus of this activity is for students to analyze the visualization data they generated in Activity 1 and to develop a statement defining the speed of the front moving across the region. The activity ends with research teams developing a description of how fast the front is moving and recording it in the student online activity. The specific computational thinking practice highlighted and practiced in this activity is **Pattern Recognition**.\\n\\n\u003Cbr\u003E**1. Calculate the speed the front is moving.**\\n\\n* Pass out to the research teams their Science Notebooks with the front visualizations, Regional Map Transparency, wet erase markers, paper towels, and rulers. \\n\\n* Students may also want to use the [L1A2: Alaska Weather Station Data Sheet](https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1A2_WeatherStationDataAK.png) and the [L4A1: Alaska Additional Weather Stations handouts](https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L4A1_AdditionalWeatherStationsDataSheet_AK.png). \\n\\n* The primary challenge for students will be deciding where on the front to use as a reference point when measuring the distance that it moves from timestamp to timestamp. Here are some possible suggestions to help the students with this:\\n\\n * Use a ruler to draw a straight line that approximates the middle of the front.\\n\\n * If the front is curved, choose an area that is generally straight.\\n\\n * Encourage students to be consistent, i.e., choose the same reference point every time.\\n\\n**2. Create an analysis statement.** Students use their tools to analyze the movement of the front and develop an analysis statement that summarizes the front movement. They record their statement in the student online activity. \",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-          "approved_script_label": "teacherEditionTips",
-          "component_label": "windowShade",
-          "approved_script": {
-            "name": "Teacher Edition",
-            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-            "label": "teacherEditionTips",
-            "description": "This plugin provides Teacher Edition components",
-            "version": 3,
-            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-          }
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Activity 1 - Where is the Front Going?\\n\\nThe focus of this activity is to provide students an opportunity to decompose a smaller challenge before they revisit the unit challenge in Lesson 7. In this activity, students use front visualizations from 11 am, 9 pm, and 7 am to see where the air masses are colliding (i.e., the front) at different times and to track the direction of the front. The specific computational thinking skills highlighted and practiced in this activity are **Decomposition**, **Pattern Recognition**, and **Model Evaluation**.\\n\\n###Activity Breakdown\\n\\n1.Play the Lesson 6 Virtual Model tutorial.\\n\\n2.Research teams use the Front Visualizations in their Science Notebooks and the Alaska Map Transparency to describe the direction the front is moving.\\n\\n3.In the student online activity, teams summarize their findings for the direction the front is moving within the region.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "This plugin provides Teacher Edition components",
+                "version": 3,
+                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+              }
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "10272-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
         },
-        "is_hidden": false,
-        "is_full_width": true,
-        "type": "Embeddable::EmbeddablePlugin",
-        "ref_id": "10275-Embeddable::EmbeddablePlugin"
-      },
-      "section": null
-    }, {
-      "embeddable": {
-        "plugin": {
-          "description": "",
-          "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"},\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"The key to this activity is for students to mark up the Regional Map Transparency with the location of the front at each of the time steps that were captured in the visualizations. Once all the time steps are captured on one map (via a transparency marker), students can calculate the speed by measuring the distance between each location of the front and taking an average. Once they have an average distance the front moves and the amount of time between each front line, they can plug their number into a standard speed formula.\\n\\n\u003Cbr\u003EPlease see an example below of a final statement students will make after completing this activity:\u003Cbr\u003E\u003Cbr\u003E\\n**The front is moving from X to Y at a speed of Z.**\u003Cbr\u003E\u003Cbr\u003E\\n\\n\\n\\nStudents can use whatever terms make sense to them. For example, X can stand for \u201cleft,\\\" \u201cupper left,\\\" or \u201cNorthwest.\\\" Speed can be in recorded in squares per hour, squares per every two hours, kilometers per hour, etc.\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"\",\"mediaURL\":\"\"}}",
-          "approved_script_label": "teacherEditionTips",
-          "component_label": "windowShade",
-          "approved_script": {
-            "name": "Teacher Edition",
-            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-            "label": "teacherEditionTips",
-            "description": "This plugin provides Teacher Edition components",
-            "version": 3,
-            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-          }
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"###Where is the Front Going? Strategy Tips \\nThe intention of this task is to provide students with a more open-ended task than seen in Lessons 1 - 4 and to give them an opportunity to apply their CT skills before solving the unit challenge. It is important that students work independently. The goal is to see if students can decompose the mini front challenge on their own. Additionally, this shift in perspective gives the students agency in their own learning to identify which CT skills are key to addressing this question. Students should realize that they know how to identify a front from Lesson 4, and have data at their disposal that can help them figure out the location of the front is at different points in time. Ideally, they will decompose “how the front moves” into two components: direction (which way it is heading) and speed (distance/time). Please see a list of possible discussion prompts to guide students through this process:\\n\\n\\n* Remind students that they learned how to identify a front in the last lesson, and that fronts can be an indicator of complex weather. \\n\\n* Point out that the unit challenge is to make a decision on if they are to continue, cancel, or postpone the Native Youth Olympics (NYO Games) and explain to them that figuring out where this front will be in 24 hours can help improve their prediction.\\n\\n* Raise the question: What do we need to know about the front to predict where it will be in the future? \\n\\n* Ask the research teams to:\\n\\n * Think about the question and brainstorm their ideas as a group.\\n * Identify the computational thinking skills they think will help them address this challenge. \\n\\n * Identify what features in the Virtual Model would help them answer this question. \\n * Identify what data they have from Lessons 1 - 5 that would help them answer this question.\\n* Have research teams answer the online activity questions.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "This plugin provides Teacher Edition components",
+                "version": 3,
+                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+              }
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "10273-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
         },
-        "is_hidden": false,
-        "is_full_width": true,
-        "type": "Embeddable::EmbeddablePlugin",
-        "ref_id": "10276-Embeddable::EmbeddablePlugin"
-      },
-      "section": null
-    }, {
-      "embeddable": {
-        "plugin": {
-          "description": null,
-          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"diggingDeeper\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Weather plays an important part of all of our lives. It is especially important when you are navigating the skies. Watch the video with your class to learn more about how Heather Mase, a pilot from Naknek, uses models to help her predict if it is safe to fly. Please note that this video has a higher resolution and requires a higher bandwidth to download. Please use the lower resolution/lower bandwidth video option below if you have trouble downloading this video.\",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"\\\"Heather Mase, Pilot, King Flying Service, Naknek Alaska\\\" 2019. Filmed by Sharon Thompson, Steelbird Productions, and edited by Kathryn Costello. This material is based upon work supported by the National Science Foundation.\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/alaska-pilot-final.mp4\"}}",
-          "approved_script_label": "teacherEditionTips",
-          "component_label": "windowShade",
-          "approved_script": {
-            "name": "Teacher Edition",
-            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-            "label": "teacherEditionTips",
-            "description": "This plugin provides Teacher Edition components",
-            "version": 3,
-            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-          }
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Show this video to your students before directing them to page 29 in their Science Notebooks and have students answer the question, \\\"Where is the front going?\\\" Students will then use the transparency and the Virtual Model maps of the front from 11 am, 9 pm, and 7 am on pages 30-32 to determine how fast the front is moving. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Precipitating Change How to Tutorials - Modeling Fronts.\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson6WhereistheFrontGoing.mp4\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "This plugin provides Teacher Edition components",
+                "version": 3,
+                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+              }
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "10274-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 143609,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "How fast is the front moving?",
+      "position": 4,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p>Now that you and your research team have figured out which way the&nbsp;front&nbsp;is going, you may have noticed it is heading toward Anchorage! So you may be wondering when it&rsquo;s going to pass through there. Where the&nbsp;front&nbsp;is at the time of the Alaskan Native Youth Olympics (NYO Games) will greatly affect the&nbsp;weather.</p>\n<p>To best predict where the&nbsp;front&nbsp;will be in 24 hours, you will need to figure out how fast it is moving. This is a calculation of speed (distance over time). Once you know both speed and direction (from Activity 1) of the&nbsp;front, your&nbsp;weather&nbsp;analysis will help you answer the question &ldquo;How fast is the&nbsp;front&nbsp;moving?&rdquo;</p>\n<p>You will have the following tools to help you:</p>\n<p>&bull; Your&nbsp;front images from the Virtual Model<br />&bull; A regional map transparency<br />&bull; Rulers and pens</p>",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "147919-Embeddable::Xhtml"
+          },
+          "section": "header_block"
         },
-        "is_hidden": false,
-        "is_full_width": true,
-        "type": "Embeddable::EmbeddablePlugin",
-        "ref_id": "10277-Embeddable::EmbeddablePlugin"
-      },
-      "section": null
-    }, {
-      "embeddable": {
-        "plugin": {
-          "description": null,
-          "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"diggingDeeper\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Weather plays an important part of all of our lives. It is especially important when you are navigating the skies. Watch the video with your class to learn more about how Heather Mase, a pilot from Naknek, uses models to help her predict if it is safe to fly. Please note that this video has a lower resolution and should be used if you have trouble downloading the higher resolution video above.\",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Heather Mase, Pilot, King Flying Service, Naknek Alaska\\\" 2019. Filmed by Sharon Thompson, Steelbird Productions, and edited by Kathryn Costello. This material is based upon work supported by the National Science Foundation.\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alaska-Pilot-Final-low-res.mp4\"}}",
-          "approved_script_label": "teacherEditionTips",
-          "component_label": "windowShade",
-          "approved_script": {
-            "name": "Teacher Edition",
-            "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-            "label": "teacherEditionTips",
-            "description": "This plugin provides Teacher Edition components",
-            "version": 3,
-            "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-            "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-          }
+        {
+          "embeddable": {
+            "content": "<p>Using the available materials, develop a strategy for calculating the rate of the&nbsp;front. Remember that speed equals distance an object moves divided by the time it takes the object to move to its new location.</p>\r\n<p style=\"padding-left: 30px;\"><strong>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Speed = Distance/Time</strong></p>",
+            "is_callout": true,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "TASK ",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "147920-Embeddable::Xhtml"
+          },
+          "section": null
         },
-        "is_hidden": false,
-        "is_full_width": true,
-        "type": "Embeddable::EmbeddablePlugin",
-        "ref_id": "10278-Embeddable::EmbeddablePlugin"
-      },
-      "section": null
-    }]
-  }, {
-    "additional_sections": {},
-    "embeddable_display_mode": "stacked",
-    "id": 143692,
-    "is_completion": false,
-    "is_hidden": false,
-    "layout": "l-full-width",
-    "name": "Quiz",
-    "position": 5,
-    "show_header": true,
-    "show_info_assessment": true,
-    "show_interactive": false,
-    "show_sidebar": false,
-    "sidebar": null,
-    "sidebar_title": "Did you know?",
-    "toggle_info_assessment": false,
-    "embeddables": [{
-      "embeddable": {
-        "content": "\u003Cp\u003EPlease answer this quiz of things learned in this lesson.\u003C/p\u003E",
-        "is_callout": true,
-        "is_full_width": true,
-        "is_hidden": false,
-        "name": "",
-        "type": "Embeddable::Xhtml",
-        "ref_id": "148894-Embeddable::Xhtml"
-      },
-      "section": "header_block"
-    }]
-  }, {
-    "additional_sections": {},
-    "embeddable_display_mode": "stacked",
-    "id": 308577,
-    "is_completion": true,
-    "is_hidden": false,
-    "layout": "l-6040",
-    "name": "Completion Page",
-    "position": 9,
-    "show_header": false,
-    "show_info_assessment": false,
-    "show_interactive": false,
-    "show_sidebar": false,
-    "sidebar": null,
-    "sidebar_title": "Did you know?",
-    "toggle_info_assessment": false,
-    "embeddables": []
-  }],
-  "plugins": [{
-    "description": "",
-    "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v1.json?__noUrlRewrite\"}",
-    "approved_script_label": "glossary",
-    "component_label": "glossary",
-    "approved_script": {
-      "name": "Glossary",
-      "url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/plugin.js",
-      "label": "glossary",
-      "description": "This plugin provides the glossary activity plugin",
-      "version": 3,
-      "json_url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/manifest.json",
-      "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "<p>&bull; Your answer should be a rate or speed.</p>\r\n<p>&bull; Speed is a measurement of distance over time.</p>\r\n<p>&bull; Distance can be measured in units of kilometers, miles, etc.</p>\r\n<p>&bull; Time can be measured in hours, days, etc.</p>",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "<p>How fast is the&nbsp;front&nbsp;moving? Be as specific as you can.</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "208896-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "default_text": "",
+            "give_prediction_feedback": false,
+            "hint": "<p>&bull; Explain your strategy.</p>\r\n<p>&bull; Talk about what you did to come up with your answer.</p>",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "name": "",
+            "prediction_feedback": "",
+            "prompt": "<p>Describe how your team figured out how fast the&nbsp;front&nbsp;is moving.</p>",
+            "show_in_featured_question_report": true,
+            "type": "Embeddable::OpenResponse",
+            "ref_id": "208897-Embeddable::OpenResponse"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": "",
+              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Activity 2 - How Fast is the Front Moving?\\n\\nThe focus of this activity is for students to analyze the visualization data they generated in Activity 1 and to develop a statement defining the speed of the front moving across the region. The activity ends with research teams developing a description of how fast the front is moving and recording it in the student online activity. The specific computational thinking practice highlighted and practiced in this activity is **Pattern Recognition**.\\n\\n<br>**1. Calculate the speed the front is moving.**\\n\\n* Pass out to the research teams their Science Notebooks with the front visualizations, Regional Map Transparency, wet erase markers, paper towels, and rulers. \\n\\n* Students may also want to use the [L1A2: Alaska Weather Station Data Sheet](https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1A2_WeatherStationDataAK.png) and the [L4A1: Alaska Additional Weather Stations handouts](https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L4A1_AdditionalWeatherStationsDataSheet_AK.png). \\n\\n* The primary challenge for students will be deciding where on the front to use as a reference point when measuring the distance that it moves from timestamp to timestamp. Here are some possible suggestions to help the students with this:\\n\\n * Use a ruler to draw a straight line that approximates the middle of the front.\\n\\n * If the front is curved, choose an area that is generally straight.\\n\\n * Encourage students to be consistent, i.e., choose the same reference point every time.\\n\\n**2. Create an analysis statement.** Students use their tools to analyze the movement of the front and develop an analysis statement that summarizes the front movement. They record their statement in the student online activity. \",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "This plugin provides Teacher Edition components",
+                "version": 3,
+                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+              }
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "10275-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": "",
+              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"},\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"The key to this activity is for students to mark up the Regional Map Transparency with the location of the front at each of the time steps that were captured in the visualizations. Once all the time steps are captured on one map (via a transparency marker), students can calculate the speed by measuring the distance between each location of the front and taking an average. Once they have an average distance the front moves and the amount of time between each front line, they can plug their number into a standard speed formula.\\n\\n<br>Please see an example below of a final statement students will make after completing this activity:<br><br>\\n**The front is moving from X to Y at a speed of Z.**<br><br>\\n\\n\\n\\nStudents can use whatever terms make sense to them. For example, X can stand for “left,\\\" “upper left,\\\" or “Northwest.\\\" Speed can be in recorded in squares per hour, squares per every two hours, kilometers per hour, etc.\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"\",\"mediaURL\":\"\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "This plugin provides Teacher Edition components",
+                "version": 3,
+                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+              }
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "10276-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"diggingDeeper\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Weather plays an important part of all of our lives. It is especially important when you are navigating the skies. Watch the video with your class to learn more about how Heather Mase, a pilot from Naknek, uses models to help her predict if it is safe to fly. Please note that this video has a higher resolution and requires a higher bandwidth to download. Please use the lower resolution/lower bandwidth video option below if you have trouble downloading this video.\",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"\\\"Heather Mase, Pilot, King Flying Service, Naknek Alaska\\\" 2019. Filmed by Sharon Thompson, Steelbird Productions, and edited by Kathryn Costello. This material is based upon work supported by the National Science Foundation.\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/alaska-pilot-final.mp4\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "This plugin provides Teacher Edition components",
+                "version": 3,
+                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+              }
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "10277-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "description": null,
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"diggingDeeper\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Weather plays an important part of all of our lives. It is especially important when you are navigating the skies. Watch the video with your class to learn more about how Heather Mase, a pilot from Naknek, uses models to help her predict if it is safe to fly. Please note that this video has a lower resolution and should be used if you have trouble downloading the higher resolution video above.\",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Heather Mase, Pilot, King Flying Service, Naknek Alaska\\\" 2019. Filmed by Sharon Thompson, Steelbird Productions, and edited by Kathryn Costello. This material is based upon work supported by the National Science Foundation.\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alaska-Pilot-Final-low-res.mp4\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "windowShade",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "This plugin provides Teacher Edition components",
+                "version": 3,
+                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
+                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+              }
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "10278-Embeddable::EmbeddablePlugin"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 143692,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Quiz",
+      "position": 5,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p>Please answer this quiz of things learned in this lesson.</p>",
+            "is_callout": true,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "148894-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 308577,
+      "is_completion": true,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "Completion Page",
+      "position": 9,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": []
     }
-  }],
+  ],
+  "plugins": [
+    {
+      "description": "",
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v1.json?__noUrlRewrite\"}",
+      "approved_script_label": "glossary",
+      "component_label": "glossary",
+      "approved_script": {
+        "name": "Glossary",
+        "url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/plugin.js",
+        "label": "glossary",
+        "description": "This plugin provides the glossary activity plugin",
+        "version": 3,
+        "json_url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/manifest.json",
+        "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
+      }
+    }
+  ],
   "type": "LightweightActivity",
   "export_site": "Lightweight Activities Runtime and Authoring"
 }
