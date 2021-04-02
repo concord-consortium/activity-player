@@ -3,6 +3,9 @@ import { getPortalData } from "../firebase-db";
 import { IPortalData, firebaseAppName } from "../portal-api";
 import { getCanonicalHostname, isProductionOrigin } from "./host-utils";
 
+// *** IMPORTANT NOTE ***
+// When you change these URLs you need to edit the portal-report Auth Client in
+// the portals to allow redirects back to the the updated URLs.
 export const kProductionPortalReportUrl = "https://portal-report.concord.org/version/v4.1.0/index.html";
 export const kDevPortalReportUrl = "https://portal-report.concord.org/branch/master/index.html";
 
