@@ -47,7 +47,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/JackieLesson6_88_Captioned.mp4\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L6_Video.png\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/JackieLesson6_88_Captioned.mp4\",\"poster\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/Posters/Poster_L6_Video.png\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -115,7 +115,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>Where is the front going and how fast is the front moving?</p>\r\n<p>Throughout this unit you have been exploring different aspects of regional weather data. There is one more piece of information we need to figure out before you can make your final prediction for the unit challenge:</p>\r\n<p><strong>What will the&nbsp;weather&nbsp;be in Anchorage 24 hours from now?</strong></p>\r\n<p><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL21_7am.png\" width=\"303\" height=\"231\" /><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL21_1pm.png\" width=\"303\" height=\"231\" /><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL21_7pm.png\" width=\"303\" height=\"231\" /><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL22_1am.png\" width=\"297\" height=\"230\" /><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL22_7am.png\" width=\"303\" height=\"231\" /></p>\r\n<p>&nbsp;</p>",
+            "content": "<p>Where is the front going and how fast is the front moving?</p>\r\n<p>Throughout this unit you have been exploring different aspects of regional weather data. There is one more piece of information we need to figure out before you can make your final prediction for the unit challenge:</p>\r\n<p><strong>What will the&nbsp;weather&nbsp;be in Anchorage 24 hours from now?</strong></p>\r\n<p><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL21_7am.png\" width=\"303\" height=\"231\" /><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL21_1pm.png\" width=\"303\" height=\"231\" /><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL21_7pm.png\" width=\"303\" height=\"231\" /><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL22_1am.png\" width=\"297\" height=\"230\" /><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL22_7am.png\" width=\"303\" height=\"231\" /></p>\r\n<p>&nbsp;</p>",
             "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
@@ -277,7 +277,7 @@
             "no_snapshots": false,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Models-2021/Lesson6-1-v1.html",
+            "url": "https://project-resources.concord.org/precipitatingchange/Models-2021/Lesson6-1-v1.html",
             "type": "MwInteractive",
             "ref_id": "97811-MwInteractive",
             "linked_interactives": []
@@ -538,7 +538,7 @@
             "no_snapshots": false,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Models-2021/lesson6-2.v1.html",
+            "url": "https://project-resources.concord.org/precipitatingchange/Models-2021/lesson6-2.v1.html",
             "type": "MwInteractive",
             "ref_id": "97812-MwInteractive",
             "linked_interactives": []

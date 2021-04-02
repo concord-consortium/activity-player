@@ -35,7 +35,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/new_picts/SKy_MG_2.png\"}",
+            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/SKy_MG_2.png\"}",
             "is_hidden": true,
             "is_full_width": false,
             "show_in_featured_question_report": true,
@@ -98,7 +98,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/new_picts/Sky_MG.png\"}",
+            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/Sky_MG.png\"}",
             "is_hidden": false,
             "is_full_width": false,
             "show_in_featured_question_report": true,

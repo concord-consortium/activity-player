@@ -47,7 +47,7 @@
           "embeddable": {
             "name": "Jackie Purcell - Lesson 1",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L1_Video.png\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/JackieLesson1_88_Captioned.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"poster\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/Posters/Poster_L1_Video.png\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/JackieLesson1_88_Captioned.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -129,7 +129,7 @@
           "embeddable": {
             "name": "Mr. Neyhard's Introduction",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson1-Optimized/Intro%20Navigation%20Glossary%20Final.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson1-Optimized/Intro%20Navigation%20Glossary%20Final.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -211,7 +211,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson1-Optimized/Challenge%20Introduction%20Final.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson1-Optimized/Challenge%20Introduction%20Final.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -293,7 +293,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://precipitatingchange-resources.concord.org/images/Morning+Image+-+Revised+v2.png\",\"highResUrl\":\"https://precipitatingchange-resources.concord.org/images/Morning+Image+-+Revised+v2.png\"}",
+            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/images/Morning%20Image%20-%20Revised%20v2.png\",\"highResUrl\":\"https://project-resources.concord.org/precipitatingchange/images/Morning%20Image%20-%20Revised%20v2.png\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -344,7 +344,7 @@
           "embeddable": {
             "name": "Reading Weather Forcasts",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson1-Optimized/Reading%20Weather%20Forecast.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson1-Optimized/Reading%20Weather%20Forecast.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -509,7 +509,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Sunshine\",\"correct\":false},{\"id\":\"2\",\"content\":\"Snow\",\"correct\":false},{\"id\":\"3\",\"content\":\"Rain\",\"correct\":true}],\"prompt\":\"<p>What does the symbol on Tuesday mean?</p>\\n<p><img src=\\\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/new_picts/cloudwithlines.png\\\" width=\\\"50\\\" height=\\\"44\\\"/></p>\",\"enableCheckAnswer\":true}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Sunshine\",\"correct\":false},{\"id\":\"2\",\"content\":\"Snow\",\"correct\":false},{\"id\":\"3\",\"content\":\"Rain\",\"correct\":true}],\"prompt\":\"<p>What does the symbol on Tuesday mean?</p>\\n<p><img src=\\\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/cloudwithlines.png\\\" width=\\\"50\\\" height=\\\"44\\\"/></p>\",\"enableCheckAnswer\":true}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -630,7 +630,7 @@
           "embeddable": {
             "name": "Data Dump Video",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson1-Optimized/Data%20Dump%20Prediction%20Final.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson1-Optimized/Data%20Dump%20Prediction%20Final.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -693,7 +693,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/new_picts/data_map_with_arrows.png\"}",
+            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/data_map_with_arrows.png\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -773,7 +773,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"prompt\":\"<p>Click through the radar images which provide precipitation changes for a 24-hour time period.</p>\",\"subinteractives\":[{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/new_picts/radar_map_%207_amAlaska_Mainland.png\"},\"id\":\"e2d9c1ad-3de3-4180-ad77-6204ac763054\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/new_picts/radar_map_1_pmAlaska_Mainland.png\"},\"id\":\"9dc95d66-5ef9-48ba-9c7d-8196af99ff02\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/new_picts/radar_map_7pmAlaska_Mainland.png\"},\"id\":\"7def587c-00c8-4ac8-be4e-62967412f70e\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/new_picts/radar_map_1amAlaska_Mainland.png\"},\"id\":\"ed20f53f-3f0b-46c0-9dac-89459cdaf673\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/new_picts/radar_map_7amnextday_Alaska_Mainland.png\"},\"id\":\"e7435ef2-3a84-47d3-9234-6e061c04ad28\",\"navImageUrl\":\"\"}]}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"prompt\":\"<p>Click through the radar images which provide precipitation changes for a 24-hour time period.</p>\",\"subinteractives\":[{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_%207_amAlaska_Mainland.png\"},\"id\":\"e2d9c1ad-3de3-4180-ad77-6204ac763054\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_1_pmAlaska_Mainland.png\"},\"id\":\"9dc95d66-5ef9-48ba-9c7d-8196af99ff02\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_7pmAlaska_Mainland.png\"},\"id\":\"7def587c-00c8-4ac8-be4e-62967412f70e\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_1amAlaska_Mainland.png\"},\"id\":\"ed20f53f-3f0b-46c0-9dac-89459cdaf673\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_7amnextday_Alaska_Mainland.png\"},\"id\":\"e7435ef2-3a84-47d3-9234-6e061c04ad28\",\"navImageUrl\":\"\"}]}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,

@@ -47,7 +47,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/JackieLesson2_88_Captioned.mp4\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L2_Video.png\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/JackieLesson2_88_Captioned.mp4\",\"poster\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/Posters/Poster_L2_Video.png\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -129,7 +129,7 @@
           "embeddable": {
             "name": "Holder for Kevin's video",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson2-Optimized/Virtual%20Storm%20Intro%20Final2.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson2-Optimized/Virtual%20Storm%20Intro%20Final2.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -403,7 +403,7 @@
             "no_snapshots": false,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Models-2021/Lesson2-1.html",
+            "url": "https://project-resources.concord.org/precipitatingchange/Models-2021/Lesson2-1.html",
             "type": "MwInteractive",
             "ref_id": "97687-MwInteractive",
             "linked_interactives": []
@@ -661,7 +661,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/images-2021/ak-map-3-unknowns2.png\"}",
+            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/images-2021/ak-map-3-unknowns2.png\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -947,7 +947,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/images-2021/ak-map-8-unknowns2.png\"}",
+            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/images-2021/ak-map-8-unknowns2.png\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -1027,7 +1027,7 @@
         },
         {
           "embeddable": {
-            "content": "<p><img class=\"\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images/AKABCinterpolationtemp.jpg\" alt=\"\" width=\"484\" height=\"383\" /></p>\r\n<p>For Square A, you may have guessed 54&deg;F degrees or something very close to that. This is the simplest&nbsp;interpolation&nbsp;method. It is called&nbsp;<strong>Nearest Neighbor</strong>. With this method, you find the nearest&nbsp;weather station to the unknown point and assume it has a similar temperature.</p>\r\n<p>&nbsp;</p>",
+            "content": "<p><img class=\"\" src=\"https://project-resources.concord.org/precipitatingchange/images/AKABCinterpolationtemp.jpg\" alt=\"\" width=\"484\" height=\"383\" /></p>\r\n<p>For Square A, you may have guessed 54&deg;F degrees or something very close to that. This is the simplest&nbsp;interpolation&nbsp;method. It is called&nbsp;<strong>Nearest Neighbor</strong>. With this method, you find the nearest&nbsp;weather station to the unknown point and assume it has a similar temperature.</p>\r\n<p>&nbsp;</p>",
             "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
@@ -1041,7 +1041,7 @@
           "embeddable": {
             "name": "Mr. Neyhard's Introduction to Nearest Neighbor Interpolation",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson2-Optimized/Interpolation%20-%20Nearest%20Neighbor%20Final.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson2-Optimized/Interpolation%20-%20Nearest%20Neighbor%20Final.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -1160,7 +1160,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p><img class=\"\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images/AKABCinterpolationtemp.jpg\" alt=\"\" width=\"484\" height=\"383\" /></p>\r\n<p>For Square B, you may have guessed between 38&deg;F and 50&deg;F, but closer to 50&deg;F. Since this square is between two known temperatures, the unknown temperature is probably between 38&deg;F and 50&deg;F. To be even closer, you can think of it like a number line with temperature in each square increasing by four degrees.</p>\r\n<p><img class=\"\" src=\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/images/linearinterpolation.jpg\" alt=\"Number Line interpolation\" width=\"206\" height=\"105\" /></p>\r\n<p>This method is called Linear Interpolation.</p>",
+            "content": "<p><img class=\"\" src=\"https://project-resources.concord.org/precipitatingchange/images/AKABCinterpolationtemp.jpg\" alt=\"\" width=\"484\" height=\"383\" /></p>\r\n<p>For Square B, you may have guessed between 38&deg;F and 50&deg;F, but closer to 50&deg;F. Since this square is between two known temperatures, the unknown temperature is probably between 38&deg;F and 50&deg;F. To be even closer, you can think of it like a number line with temperature in each square increasing by four degrees.</p>\r\n<p><img class=\"\" src=\"https://project-resources.concord.org/precipitatingchange/images/linearinterpolation.jpg\" alt=\"Number Line interpolation\" width=\"206\" height=\"105\" /></p>\r\n<p>This method is called Linear Interpolation.</p>",
             "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
@@ -1174,7 +1174,7 @@
           "embeddable": {
             "name": "Linear Interpolation",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson2-Optimized/Interpolation%20-%20Linear%20Final.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson2-Optimized/Interpolation%20-%20Linear%20Final.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -1242,7 +1242,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>For Square C, the square is between other squares at 30&deg;F, 48&deg;F, and 50&deg;F. You could average the three numbers and get approximately 43&deg;F. Or you could try to be even more precise. The unknown square is closer to the 50&deg;F square than to the others. Therefore, you can estimate the temperature to be a little higher than the average (maybe 45&deg;F or 46&deg;F). This method is called&nbsp;<strong>Weighted Average&nbsp;Interpolation</strong>&nbsp;since we give more &ldquo;weight&rdquo; or influence to the closer stations.</p>\r\n<p><img class=\"\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images/AKweightedneigborinterpolation.jpg\" alt=\"\" width=\"453\" height=\"374\" /></p>\r\n<p>&nbsp;</p>",
+            "content": "<p>For Square C, the square is between other squares at 30&deg;F, 48&deg;F, and 50&deg;F. You could average the three numbers and get approximately 43&deg;F. Or you could try to be even more precise. The unknown square is closer to the 50&deg;F square than to the others. Therefore, you can estimate the temperature to be a little higher than the average (maybe 45&deg;F or 46&deg;F). This method is called&nbsp;<strong>Weighted Average&nbsp;Interpolation</strong>&nbsp;since we give more &ldquo;weight&rdquo; or influence to the closer stations.</p>\r\n<p><img class=\"\" src=\"https://project-resources.concord.org/precipitatingchange/images/AKweightedneigborinterpolation.jpg\" alt=\"\" width=\"453\" height=\"374\" /></p>\r\n<p>&nbsp;</p>",
             "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
@@ -1256,7 +1256,7 @@
           "embeddable": {
             "name": "Weighted Average Interpolation",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson2-Optimized/Interpolation%20-%20Weighted%20Average.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson2-Optimized/Interpolation%20-%20Weighted%20Average.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -1375,7 +1375,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>Each of the following maps used the same station data but a different data&nbsp;interpolation&nbsp;method:</p>\r\n<p><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images/AK-3-maps-interpolation.png\" width=\"900\" height=\"315\" /></p>",
+            "content": "<p>Each of the following maps used the same station data but a different data&nbsp;interpolation&nbsp;method:</p>\r\n<p><img src=\"https://project-resources.concord.org/precipitatingchange/images/AK-3-maps-interpolation.png\" width=\"900\" height=\"315\" /></p>",
             "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
@@ -1653,7 +1653,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/images-2021/ak-map-all-temps-no-color.png\"}",
+            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/images-2021/ak-map-all-temps-no-color.png\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -1954,7 +1954,7 @@
             "no_snapshots": false,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Models-2021/Lesson2-2-colors-v3.html",
+            "url": "https://project-resources.concord.org/precipitatingchange/Models-2021/Lesson2-2-colors-v3.html",
             "type": "MwInteractive",
             "ref_id": "97688-MwInteractive",
             "linked_interactives": []
@@ -1965,7 +1965,7 @@
           "embeddable": {
             "name": "Painting the Map",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson2-Optimized/Paint%20Colors%20Model.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson2-Optimized/Paint%20Colors%20Model.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -2098,7 +2098,7 @@
           "embeddable": {
             "name": "Temperature Map at Three Times",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/images-2021/AK-maps-at-3-times.png\"}",
+            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/images-2021/AK-maps-at-3-times.png\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -2462,7 +2462,7 @@
             "no_snapshots": false,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Models-2021/Lesson2-3-time-slider-v1.html",
+            "url": "https://project-resources.concord.org/precipitatingchange/Models-2021/Lesson2-3-time-slider-v1.html",
             "type": "MwInteractive",
             "ref_id": "97689-MwInteractive",
             "linked_interactives": []
@@ -2723,7 +2723,7 @@
             "no_snapshots": false,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Models-2021/Lesson2-3-time-slider-v1a.html",
+            "url": "https://project-resources.concord.org/precipitatingchange/Models-2021/Lesson2-3-time-slider-v1a.html",
             "type": "MwInteractive",
             "ref_id": "97691-MwInteractive",
             "linked_interactives": []

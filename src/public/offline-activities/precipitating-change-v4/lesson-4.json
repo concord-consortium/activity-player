@@ -47,7 +47,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L4_Video.png\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/JackieLesson4_88_Captioned.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"poster\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/Posters/Poster_L4_Video.png\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/JackieLesson4_88_Captioned.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -115,7 +115,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>As weather scientists, your job is not only to collect and organize data, but also to make sense of the data you collected. One way to make sense of the data is to develop a rule, generalized statements of patterns you see again and again.</p>\n<p>Example: This rule has two parts that must happen to have a certain result. If it was a [ <strong>very nice summer</strong> ] and if it is [ <strong>August</strong> ], then there will be [ <strong>lots of berries to pick</strong> ].&nbsp;</p>\n<p style=\"text-align: justify;\"><img class=\"\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/RuleStatement.jpg\" alt=\"\" width=\"472\" height=\"221\" /></p>\n<p>Think about developing a similar statement that could be used to determine where it will rain.</p>",
+            "content": "<p>As weather scientists, your job is not only to collect and organize data, but also to make sense of the data you collected. One way to make sense of the data is to develop a rule, generalized statements of patterns you see again and again.</p>\n<p>Example: This rule has two parts that must happen to have a certain result. If it was a [ <strong>very nice summer</strong> ] and if it is [ <strong>August</strong> ], then there will be [ <strong>lots of berries to pick</strong> ].&nbsp;</p>\n<p style=\"text-align: justify;\"><img class=\"\" src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/RuleStatement.jpg\" alt=\"\" width=\"472\" height=\"221\" /></p>\n<p>Think about developing a similar statement that could be used to determine where it will rain.</p>",
             "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
@@ -129,7 +129,7 @@
           "embeddable": {
             "name": "Introduction to Computational Rules",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson4-Optimized/Intro%20to%20Lesson%20-%20Rules.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson4-Optimized/Intro%20to%20Lesson%20-%20Rules.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -209,7 +209,7 @@
         },
         {
           "embeddable": {
-            "content": "<p>Using the following rule, which pair of grid squares (A, B, or C) will produce rain?&nbsp;</p>\r\n<p><img class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson4NWImage.png\" alt=\"\" width=\"70\" height=\"72\" /><br />IF the upper square (the northwest square)&nbsp;&nbsp;is colder than the lower square by [ <strong><span style=\"text-decoration: underline;\">5 or more degrees</span></strong> ] AND IF the moisture of the lower square is [ <strong><span style=\"text-decoration: underline;\">7 or more</span></strong> ] THEN it rains in the lower square.</p>\r\n<p>&nbsp;</p>\r\n<p><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson4RuleRefinementABCquestionRVSD\" width=\"424\" height=\"182\" /></p>",
+            "content": "<p>Using the following rule, which pair of grid squares (A, B, or C) will produce rain?&nbsp;</p>\r\n<p><img class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson4NWImage.png\" alt=\"\" width=\"70\" height=\"72\" /><br />IF the upper square (the northwest square)&nbsp;&nbsp;is colder than the lower square by [ <strong><span style=\"text-decoration: underline;\">5 or more degrees</span></strong> ] AND IF the moisture of the lower square is [ <strong><span style=\"text-decoration: underline;\">7 or more</span></strong> ] THEN it rains in the lower square.</p>\r\n<p>&nbsp;</p>\r\n<p><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson4RuleRefinementABCquestionRVSD\" width=\"424\" height=\"182\" /></p>",
             "is_callout": true,
             "is_full_width": true,
             "is_hidden": false,
@@ -395,7 +395,7 @@
           "embeddable": {
             "name": "Rules Model Explanation",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson4-Optimized/Model%20Demo%20Task%20Explanation%20Final.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson4-Optimized/Model%20Demo%20Task%20Explanation%20Final.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -596,7 +596,7 @@
           "embeddable": {
             "plugin": {
               "description": null,
-              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"diggingDeeper\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"As weather scientists, students are learning to build relationships based on patterns that they see in the environment. This is a skill that elders in your community do to support the livelihood of their families and their community. Watch the video as a class to learn more about the current patterns that elders are witnessing. Please note: we do not formally have permission to use this movie. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"\\\"Alaskan Native Thoughts on Climate Change\\\", The International Polar Year, Sep 2, 2008, Run Time:02:09, http://www.ipy.org/index.php?/ipy/multimedia/&view=1869\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alaskan%20Native%20thoughts%20on%20climate%20change.mp4\"}}",
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"diggingDeeper\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"As weather scientists, students are learning to build relationships based on patterns that they see in the environment. This is a skill that elders in your community do to support the livelihood of their families and their community. Watch the video as a class to learn more about the current patterns that elders are witnessing. Please note: we do not formally have permission to use this movie. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"\\\"Alaskan Native Thoughts on Climate Change\\\", The International Polar Year, Sep 2, 2008, Run Time:02:09, http://www.ipy.org/index.php?/ipy/multimedia/&view=1869\",\"mediaURL\":\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alaskan%20Native%20thoughts%20on%20climate%20change.mp4\"}}",
               "approved_script_label": "teacherEditionTips",
               "component_label": "windowShade",
               "approved_script": {
@@ -620,7 +620,7 @@
           "embeddable": {
             "plugin": {
               "description": null,
-              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"diggingDeeper\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"As weather scientists, students are learning to build relationships based on patterns that they see in the environment. This is a skill that elders in your community do to support the livelihood of their families and their community. Watch the video as a class to learn more about the current patterns that elders are witnessing. Please note: we do not formally have permission to use this movie. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"\\\"Passport To Knowledge: Polar Palooza\\\", http://passporttoknowledge.com/polar-palooza/video/native01a.mp4\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/native01a.mp4\"}}",
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"diggingDeeper\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"As weather scientists, students are learning to build relationships based on patterns that they see in the environment. This is a skill that elders in your community do to support the livelihood of their families and their community. Watch the video as a class to learn more about the current patterns that elders are witnessing. Please note: we do not formally have permission to use this movie. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"\\\"Passport To Knowledge: Polar Palooza\\\", http://passporttoknowledge.com/polar-palooza/video/native01a.mp4\",\"mediaURL\":\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/native01a.mp4\"}}",
               "approved_script_label": "teacherEditionTips",
               "component_label": "windowShade",
               "approved_script": {
@@ -644,7 +644,7 @@
           "embeddable": {
             "plugin": {
               "description": null,
-              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"howToUse\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Watch this tutorial to learn how students will be interacting with the Virtual Model to test and refine their rule statements to answer the question, \\\"Where does it rain?\\\"\",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Precipitating Change How to Tutorials: Where Does It Rain?, 2019, The Concord Consortium\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/HowtoTutorialVirtualModel1.mp4\"}}",
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"howToUse\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"Watch this tutorial to learn how students will be interacting with the Virtual Model to test and refine their rule statements to answer the question, \\\"Where does it rain?\\\"\",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Precipitating Change How to Tutorials: Where Does It Rain?, 2019, The Concord Consortium\",\"mediaURL\":\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/HowtoTutorialVirtualModel1.mp4\"}}",
               "approved_script_label": "teacherEditionTips",
               "component_label": "windowShade",
               "approved_script": {

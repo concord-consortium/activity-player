@@ -47,7 +47,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/JackieLesson3_88_Captioned.mp4\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L3_Video.png\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/JackieLesson3_88_Captioned.mp4\",\"poster\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/Posters/Poster_L3_Video.png\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -115,7 +115,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>Have you ever been caught without your parka or boots when you needed them? Predicting rain or snow&nbsp;is a special challenge for weather scientists. Watch the video below to learn more about forecasting the weather in Alaska.</p>\r\n<p>As weather scientists, you will continue to explore weather maps. Now, you will add two additional pieces of information to each square: precipitation (a symbol) and air moisture content (a number). The larger this number is, the more moisture is contained in the air.</p>\r\n<p>&nbsp;</p>\r\n<p style=\"text-align: center;\"><strong>Precipitation symbol = raindrops</strong>&nbsp;&nbsp;<img class=\"\" src=\"https://precipitatingchange-resources.concord.org/images/3-drop-black-staggered.png\" alt=\"\" width=\"48\" height=\"48\" />&nbsp;</p>\r\n<p>&nbsp;</p>\r\n<p><img class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/Air%20Moisture.jpg\" alt=\"\" width=\"588\" height=\"141\" /></p>\r\n<p>&nbsp;</p>",
+            "content": "<p>Have you ever been caught without your parka or boots when you needed them? Predicting rain or snow&nbsp;is a special challenge for weather scientists. Watch the video below to learn more about forecasting the weather in Alaska.</p>\r\n<p>As weather scientists, you will continue to explore weather maps. Now, you will add two additional pieces of information to each square: precipitation (a symbol) and air moisture content (a number). The larger this number is, the more moisture is contained in the air.</p>\r\n<p>&nbsp;</p>\r\n<p style=\"text-align: center;\"><strong>Precipitation symbol = raindrops</strong>&nbsp;&nbsp;<img class=\"\" src=\"https://project-resources.concord.org/precipitatingchange/images/3-drop-black-staggered.png\" alt=\"\" width=\"48\" height=\"48\" />&nbsp;</p>\r\n<p>&nbsp;</p>\r\n<p><img class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/Air%20Moisture.jpg\" alt=\"\" width=\"588\" height=\"141\" /></p>\r\n<p>&nbsp;</p>",
             "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
@@ -129,7 +129,7 @@
           "embeddable": {
             "name": "Introduction to Precipitation Model",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson3-Optimized/Intro%20and%20precipitation%20model%20demo%20Final.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson3-Optimized/Intro%20and%20precipitation%20model%20demo%20Final.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -197,7 +197,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>The map below shows the virtual storm that you have seen before. With the slider, you can see the storm at three times during one day. This map adds <em>humidity</em> and <em>precipitation</em>&nbsp;data to the temperature data. Combining related data is called data aggregation.</p>\r\n<p>Look at the temperature and humidity data that is close to where the precipitation falls. Watch how the precipitation moves through the three times. Does the other data move too?&nbsp;Can you see a pattern?&nbsp;</p>\r\n<p>Precipitation is shown with three raindrops:&nbsp;&nbsp;<img class=\"\" src=\"https://precipitatingchange-resources.concord.org/images/3-drop-black-staggered.png\" alt=\"\" width=\"48\" height=\"48\" />&nbsp;</p>\r\n<p>The air moisture and temperature data are shown this way:<img class=\"\" src=\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/images-2021/Temp-Moisture-Key.png\" alt=\"\" width=\"250\" height=\"173\" />&nbsp;</p>",
+            "content": "<p>The map below shows the virtual storm that you have seen before. With the slider, you can see the storm at three times during one day. This map adds <em>humidity</em> and <em>precipitation</em>&nbsp;data to the temperature data. Combining related data is called data aggregation.</p>\r\n<p>Look at the temperature and humidity data that is close to where the precipitation falls. Watch how the precipitation moves through the three times. Does the other data move too?&nbsp;Can you see a pattern?&nbsp;</p>\r\n<p>Precipitation is shown with three raindrops:&nbsp;&nbsp;<img class=\"\" src=\"https://project-resources.concord.org/precipitatingchange/images/3-drop-black-staggered.png\" alt=\"\" width=\"48\" height=\"48\" />&nbsp;</p>\r\n<p>The air moisture and temperature data are shown this way:<img class=\"\" src=\"https://project-resources.concord.org/precipitatingchange/images-2021/Temp-Moisture-Key.png\" alt=\"\" width=\"250\" height=\"173\" />&nbsp;</p>",
             "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
@@ -412,7 +412,7 @@
           "embeddable": {
             "plugin": {
               "description": null,
-              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"howToUse\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"In this tutorial, you will learn how to guide students in using the virtual storm interactive to test the rules they have created. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Precipitating Change How To Tutorials - Where does it rain virtual model?\",\"mediaURL\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Precipitating%20Change%20How%20To%20Tutorials%20-%20The%20Virtual%20Storm%20Interactive%20Alaska.mp4\"}}",
+              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"howToUse\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"In this tutorial, you will learn how to guide students in using the virtual storm interactive to test the rules they have created. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Precipitating Change How To Tutorials - Where does it rain virtual model?\",\"mediaURL\":\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Precipitating%20Change%20How%20To%20Tutorials%20-%20The%20Virtual%20Storm%20Interactive%20Alaska.mp4\"}}",
               "approved_script_label": "teacherEditionTips",
               "component_label": "windowShade",
               "approved_script": {
@@ -514,7 +514,7 @@
             "no_snapshots": true,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Models-2021/Lesson3-1.v1.html",
+            "url": "https://project-resources.concord.org/precipitatingchange/Models-2021/Lesson3-1.v1.html",
             "type": "MwInteractive",
             "ref_id": "97738-MwInteractive",
             "linked_interactives": []
@@ -724,7 +724,7 @@
             "no_snapshots": false,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Models-2021/Lesson3-1.v1.html",
+            "url": "https://project-resources.concord.org/precipitatingchange/Models-2021/Lesson3-1.v1.html",
             "type": "MwInteractive",
             "ref_id": "97739-MwInteractive",
             "linked_interactives": []
@@ -865,7 +865,7 @@
           "embeddable": {
             "name": "Virtual Storm at 7 pm - No Precipitation Shown",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/images-2021/VirtualStorm-7pm-No-Rain-Shown.png\"}",
+            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/images-2021/VirtualStorm-7pm-No-Rain-Shown.png\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,

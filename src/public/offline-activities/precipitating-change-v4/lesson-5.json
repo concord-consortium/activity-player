@@ -47,7 +47,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/JackieLesson5_88_Captioned.mp4\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/Captioned_Videos/Posters/Poster_L5_Video.png\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/JackieLesson5_88_Captioned.mp4\",\"poster\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/Posters/Poster_L5_Video.png\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -146,7 +146,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>In this activity, you will see how wind blowing from two directions interacts on a Wind Table. Please watch the video below for a demonstration on how a Wind Table maps the movement of air on a gird representing a region of Alaska.</p>\r\n<p><strong>Wind Table</strong></p>\r\n<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://precipitatingchange-resources.concord.org/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/WindTunnels.png\" width=\"576\" height=\"510\" /></p>\r\n<p>&nbsp;</p>",
+            "content": "<p>In this activity, you will see how wind blowing from two directions interacts on a Wind Table. Please watch the video below for a demonstration on how a Wind Table maps the movement of air on a gird representing a region of Alaska.</p>\r\n<p><strong>Wind Table</strong></p>\r\n<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/WindTunnels.png\" width=\"576\" height=\"510\" /></p>\r\n<p>&nbsp;</p>",
             "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
@@ -160,7 +160,7 @@
           "embeddable": {
             "name": "Mr. Nyhard's Wind Table Demonstration",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson5-Optimized/Wind%20Table%20Final.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson5-Optimized/Wind%20Table%20Final.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -228,7 +228,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>Wind direction is often measured with a weather vane or an air sock. When the wind blows, the weather vane rotates and lines up with the path that the air is flowing. So, wind direction is determined by what direction the <strong><em>wind is coming from</em></strong>. It is measured in degrees&nbsp;(&deg;).</p>\r\n<p><img class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/WindCompass.jpg\" alt=\"\" width=\"323\" height=\"328\" /></p>",
+            "content": "<p>Wind direction is often measured with a weather vane or an air sock. When the wind blows, the weather vane rotates and lines up with the path that the air is flowing. So, wind direction is determined by what direction the <strong><em>wind is coming from</em></strong>. It is measured in degrees&nbsp;(&deg;).</p>\r\n<p><img class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/WindCompass.jpg\" alt=\"\" width=\"323\" height=\"328\" /></p>",
             "is_callout": true,
             "is_full_width": true,
             "is_hidden": false,
@@ -261,7 +261,7 @@
           "embeddable": {
             "name": "Wind Direction and Air Masses",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Lesson5-Optimized/Wind%20Direction%20Air%20Mass%20Front%20Final.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson5-Optimized/Wind%20Direction%20Air%20Mass%20Front%20Final.mp4\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -390,7 +390,7 @@
             "no_snapshots": false,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Models-2021/Lesson5-air-masses.v4-new.html",
+            "url": "https://project-resources.concord.org/precipitatingchange/Models-2021/Lesson5-air-masses.v4-new.html",
             "type": "MwInteractive",
             "ref_id": "97692-MwInteractive",
             "linked_interactives": []
@@ -418,7 +418,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>Now that you have identified the air masses, lets discuss what an air mass actually is.</p>\r\n<p><strong><em>An air mass is a body of air with similar temperature and&nbsp;air moisture&nbsp;content.</em></strong></p>\r\n<p>Identifying air masses and their properties is an important part of the work of atmospheric scientists. On the map you may have noticed a temperature number at the top of the square and an&nbsp;air moisture&nbsp;content number at the bottom of the square.</p>\r\n<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/TempMoisture.jpg\" width=\"212\" height=\"292\" /></p>",
+            "content": "<p>Now that you have identified the air masses, lets discuss what an air mass actually is.</p>\r\n<p><strong><em>An air mass is a body of air with similar temperature and&nbsp;air moisture&nbsp;content.</em></strong></p>\r\n<p>Identifying air masses and their properties is an important part of the work of atmospheric scientists. On the map you may have noticed a temperature number at the top of the square and an&nbsp;air moisture&nbsp;content number at the bottom of the square.</p>\r\n<p><img style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/TempMoisture.jpg\" width=\"212\" height=\"292\" /></p>",
             "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
@@ -430,7 +430,7 @@
         },
         {
           "embeddable": {
-            "content": "<p>Develop a way to identify the two air masses using temperature and air moisture content values provided on the map you just colored.</p>\r\n<p><img class=\"\" src=\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/images-2021/AirMassMap-Colored.png\" alt=\"Air Mass Map\" width=\"500\" height=\"308\" /></p>",
+            "content": "<p>Develop a way to identify the two air masses using temperature and air moisture content values provided on the map you just colored.</p>\r\n<p><img class=\"\" src=\"https://project-resources.concord.org/precipitatingchange/images-2021/AirMassMap-Colored.png\" alt=\"Air Mass Map\" width=\"500\" height=\"308\" /></p>",
             "is_callout": true,
             "is_full_width": true,
             "is_hidden": false,
@@ -677,7 +677,7 @@
         },
         {
           "embeddable": {
-            "content": "<p>Compare the 7 pm interpolated map and the 7 pm radar map.</p>\r\n<p><img class=\"\" src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson5_7pmInterpolatedRADARMAPcomparison.jpg\" alt=\"\" width=\"860\" height=\"300\" /></p>\r\n<p>Comparing these maps think about how air masses affect where it rains.</p>\r\n<p>&nbsp;</p>",
+            "content": "<p>Compare the 7 pm interpolated map and the 7 pm radar map.</p>\r\n<p><img class=\"\" src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Lesson5_7pmInterpolatedRADARMAPcomparison.jpg\" alt=\"\" width=\"860\" height=\"300\" /></p>\r\n<p>Comparing these maps think about how air masses affect where it rains.</p>\r\n<p>&nbsp;</p>",
             "is_callout": true,
             "is_full_width": true,
             "is_hidden": false,
@@ -740,7 +740,7 @@
         },
         {
           "embeddable": {
-            "content": "<p>The weather map below shows wind direction, temperature, and air moisture, but not precipitation. Look at this data and think about where raining would most likely occur.</p>\r\n<p><img src=\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/images-2021/Alaska%20Weather%20Stations_7am%20Interpolated-w-coordinates.png\" width=\"437\" height=\"263\" /></p>\r\n<p>Alaska Stations: Interpolated at 7 am</p>",
+            "content": "<p>The weather map below shows wind direction, temperature, and air moisture, but not precipitation. Look at this data and think about where raining would most likely occur.</p>\r\n<p><img src=\"https://project-resources.concord.org/precipitatingchange/images-2021/Alaska%20Weather%20Stations_7am%20Interpolated-w-coordinates.png\" width=\"437\" height=\"263\" /></p>\r\n<p>Alaska Stations: Interpolated at 7 am</p>",
             "is_callout": true,
             "is_full_width": true,
             "is_hidden": false,
@@ -822,7 +822,7 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>On the previous page, you made a prediction for where it could rain at 7 am. Compare your prediction to the radar image for 7 am below. The radar image shows where it was actually raining at 7 am.</p>\r\n<p><img src=\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL22_7am.png\" width=\"678\" height=\"500\" /></p>\r\n<p>Radar Image for 7 am</p>",
+            "content": "<p>On the previous page, you made a prediction for where it could rain at 7 am. Compare your prediction to the radar image for 7 am below. The radar image shows where it was actually raining at 7 am.</p>\r\n<p><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L1AKRADARMAPAPRIL22_7am.png\" width=\"678\" height=\"500\" /></p>\r\n<p>Radar Image for 7 am</p>",
             "is_callout": false,
             "is_full_width": true,
             "is_hidden": false,
@@ -1089,7 +1089,7 @@
           "embeddable": {
             "name": "Perspective of a Bush Pilot",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"poster\":\"https://cc-project-resources.s3.amazonaws.com/precipitatingchange/images-2021/PCL7images/poster_bush_pilot.png\",\"videoUrl\":\"https://s3.amazonaws.com/cc-project-resources/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/Alaska-Pilot-Final_Captioned.mp4\",\"credit\":\"Heather Mase, Pilot, King Flying Service, Naknek Alaska 2019. Filmed by Sharon Thompson, Steelbird Productions, and edited by Kathryn Costello. This material is based upon work supported by the National Science Foundation\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"poster\":\"https://project-resources.concord.org/precipitatingchange/images-2021/PCL7images/poster_bush_pilot.png\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/Alaska-Pilot-Final_Captioned.mp4\",\"credit\":\"Heather Mase, Pilot, King Flying Service, Naknek Alaska 2019. Filmed by Sharon Thompson, Steelbird Productions, and edited by Kathryn Costello. This material is based upon work supported by the National Science Foundation\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
