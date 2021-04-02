@@ -3,7 +3,8 @@
 export const config = {
   glossary: {
     s3Url: "https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v1.json?__noUrlRewrite",
-    pluginUrl: "https://glossary-plugin.concord.org/branch/177305115-add-language-switcher/plugin.js"
+    pluginUrl: "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/plugin.js",
+    manifestUrl: "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/manifest.json"
   },
   questionInteractives: {
     version: "v1.2.0-pre.1"

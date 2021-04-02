@@ -133,6 +133,7 @@ const updateActivityUrls = (activity: Activity) => {
       authorData.s3Url = config.glossary.s3Url;
       plugin.author_data = JSON.stringify(authorData);
       plugin.approved_script.url = config.glossary.pluginUrl;
+      plugin.approved_script.json_url = config.glossary.manifestUrl;
     }
     return plugin;
   });
@@ -145,6 +146,16 @@ const updateActivityUrls = (activity: Activity) => {
       }
     }
     return s;
+  });
+};
+
+const removeTeacherEdition = (activity: Activity) => {
+  activity.pages.forEach(page => {
+    page.embeddables = page.embeddables.filter(embeddableWrapper => {
+      const embeddable = embeddableWrapper.embeddable;
+      return !(embeddable.type === "Embeddable::EmbeddablePlugin" &&
+               embeddable.plugin?.approved_script_label === "teacherEditionTips");
+    });
   });
 };
 
@@ -167,6 +178,9 @@ const main = async () => {
     if (activity) {
       // update glossary urls and question interactives in activity
       updateActivityUrls(activity);
+
+      // remove teacher edition
+      removeTeacherEdition(activity);
 
       if (bumpInfo) {
         saveActivity(bumpInfo, offlineActivity, activity);
@@ -223,4 +237,3 @@ const main = async () => {
 };
 
 main();
-
