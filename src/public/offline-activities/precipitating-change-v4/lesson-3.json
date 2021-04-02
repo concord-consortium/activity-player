@@ -362,78 +362,6 @@
         },
         {
           "embeddable": {
-            "plugin": {
-              "description": "",
-              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Activity 1- Virtual Storm: Exploring Precipitation, Air Moisture, and Temperature\\nThis activity is a continuation of the Virtual Storm simulation and has a similar set-up to the Lesson 2 - Virtual Storm.  \\n\\nKey additions in this activity include:\\n\\n* Reusing the 7 am, 11 am, and 3 pm weather map created in Lesson 2.\\n\\n* Pausing the simulation at 3 pm and completely filling in each square. \\n\\nAdditionally, this lesson provides students with an opportunity to explore and explain why it rains in some areas and not others. Students work in teams of weather scientists to collect precipitation data and look for patterns in rainfall, temperature, and air moisture content. Students use the Virtual Storm technology from the beginning, but focus on what is happening at one point in time (at 3 pm). Students then brainstorm all of the patterns they see in the variables of temperature, air moisture, and precipitation and then use those patterns to come up with a general statement (rule) to explain under what conditions rain occurs. Students apply the CT skills of **Data Aggregation** and **Data Abstraction** as they collect and visualize their rain data, but **Pattern Recognition** is the primary computational thinking practice in this Lesson. This sets the stage for the next activity, where students will use the patterns they discover to abstract a rule statement about where rain occurs.\\n\\n###Activity Breakdown\\n**1. Set the stage for the virtual storm with precipitation.** In their research teams, students will be responsible for collecting precipitation data for the region at 7 am (once), 11 am (once), and the entire 3 pm (multiple times). \\n\\n**2. Start the virtual storm with precipitation.** Students first collect and enter precipitation data for 7 am and 11 am but the virtual storm will stay at 3 pm and students will work to complete the map of the region for 3 pm. Students aggregate precipitation data on the 3 pm weather map on the wall. Have students abstract precipitation data by representing it on the map with a raindrop on top of the temperature sticky notes.\\n\\n**3. Pause the virtual storm at 3 pm.** Students explore simulated precipitation only for 3 pm. Research teams move around the room to different locations collecting rain data to complete the 3 pm weather map. \\n\\n**4. Class brainstorm of precipitation patterns.** Lead a class brainstorm, looking for and recognizing patterns in the data. Have the students record their thoughts for precipitation in the online activity. \",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": true,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10232-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": "",
-              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"},\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"Temperature and Precipitation Discussion Prompts\\n\\n* After the map is complete, have students record their ideas in their Student Notebooks. Encourage students to use the maps on the wall as they describe observed patterns. \\n\\n* For a list of possible class discussion questions, see below: \\n * Where is the rain on the map?\\n * Why do you think it is raining in some places and not others?\\n * Is there a relationship between temperature and precipitation?\\n\\n**Teacher Note**: Patterns should include some notion of precipitation happening in warm areas, and that the rain is clustered in an area and somewhat resembles a diagonal line. Keep in mind that the data they are collecting is a subset of the larger dataset they saw in Lesson 1, Activity 2 - Making an Initial Prediction. This process is a way to help them dive deeper into the data to help support a stronger prediction later in the unit. \\n\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": true,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10233-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": null,
-              "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"howToUse\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"In this tutorial, you will learn how to guide students in using the virtual storm interactive to test the rules they have created. \",\"content2\":\"\",\"mediaType\":\"video\",\"mediaCaption\":\"Precipitating Change How To Tutorials - Where does it rain virtual model?\",\"mediaURL\":\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Precipitating%20Change%20How%20To%20Tutorials%20-%20The%20Virtual%20Storm%20Interactive%20Alaska.mp4\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": true,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10234-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
             "name": "Data Relationships",
             "url_fragment": null,
             "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>How would you describe the relationship between temperature and precipitation? </p>\"}",
@@ -761,54 +689,6 @@
             "ref_id": "147893-Embeddable::Xhtml"
           },
           "section": "header_block"
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": "",
-              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\"},\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Activity 1: Virtual Storm: Exploring Precipitation, Air Moisture and Temperature (Continued)\\n\\n###Activity Breakdown\\n\\n**1. Set up Round 2 by leaving the Virtual Storm at 3 pm.** Explain to students that their new question is: \\\"Why is it raining in some locations and not others? Where does it rain?\\\"\\n\\n**2. Students explore and collect simulated air moisture content data in different spots at 3 pm to complete the weather map. **Air moisture is represented as a number between 1 (very dry air) and 10 (very moist air). Moisture content refers to how much water vapor is in the air. See discussion points below to help guide students through the process.\\n\\n**3. Class brainstorm of air moisture patterns.** See the Discussion Points for possible question prompts.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": false,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10235-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "plugin": {
-              "description": "",
-              "author_data": "{\"tipType\":\"windowShade\",\"questionWrapper\":{\"correctExplanation\":\"correct\",\"distractorsExplanation\":\"distractor\",\"exemplar\":\"exemplar\",\"teacherTip\":\"teacherTip\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"},\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":false,\"content\":\"###Air Moisture Content\\n* Temperature alone is not sufficient to fully answer the questions, \\\"Why is it raining in some locations and not others? Where does it rain?\\\" Another variable, such as air moisture content, is needed. \\n\\n* Briefly introduce the concept of air moisture content. Explain to the students that air contains microscopic water particles, called water vapor. Air moisture content refers to how much water vapor is in the air.\\n\\n* Reference possible students’ past experiences with very moist air (e.g., in the shower or steam room) and/or very dry air (e.g., in a sauna or in the winter). The amount of water vapor is illustrated by an air moisture content number where 0 = very dry air and 10 = very moist air. Students may remember this concept from the data tables they received in Lesson 1.\\n\\n**Teacher Note**: The air moisture data students receive will already be abstracted, so no further abstraction is needed. It is expressed as a single number on a scale of 0 to 10, with 10 having the most water. This corresponds to mass of water per volume of air (i.e., g water/m<sup>3</sup> air).\\n\\n###Exploration of Simulated Air Moisture Content at 3 pm. \\n* As research groups move around the room to different locations collecting air moisture data to complete the 3 pm weather map, encourage students to observe and share with each other where in the room the air is wettest, and where they guess it will likely be wettest before they check their instruments.\\n\\n###Air Moisture\\n* Lead a class brainstorm of air moisture patterns and have students record their ideas in their Science Notebooks.\\n* Encourage students to use the map on the wall as they describe observed patterns. \\n\\n* For a list of possible questions to guide your discussion, see below:\\n\\n * Where is the air wettest on the map?\\n\\n * Where is the air driest?\\n\\n * Do you see a relationship between air temperature and air moisture content?\\n\\n * Do you see a relationship between air moisture content and precipitation?\\n\\n**Teacher Note**: Students should come away with some notion of how temperature and air moisture seem to follow the same pattern (warm air = wet, cold air = dry), and that it only rains when the air is wet.\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
-              "approved_script_label": "teacherEditionTips",
-              "component_label": "windowShade",
-              "approved_script": {
-                "name": "Teacher Edition",
-                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/plugin.js",
-                "label": "teacherEditionTips",
-                "description": "This plugin provides Teacher Edition components",
-                "version": 3,
-                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.6.0/manifest.json",
-                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
-              }
-            },
-            "is_hidden": false,
-            "is_full_width": true,
-            "type": "Embeddable::EmbeddablePlugin",
-            "ref_id": "10236-Embeddable::EmbeddablePlugin"
-          },
-          "section": null
         },
         {
           "embeddable": {

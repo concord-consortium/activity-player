@@ -137,10 +137,6 @@
     "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson5.jpg?v2",
     "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson6.jpg",
     "https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v1.json?__noUrlRewrite",
-    "https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alaskan%20Native%20thoughts%20on%20climate%20change.mp4",
-    "https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/HowtoTutorialVirtualModel1.mp4",
-    "https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Precipitating%20Change%20How%20To%20Tutorials%20-%20The%20Virtual%20Storm%20Interactive%20Alaska.mp4",
-    "https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/native01a.mp4",
     "https://project-resources.concord.org/precipitatingchange/Captioned_Videos/Jackie80_Captioned.mp4",
     "https://project-resources.concord.org/precipitatingchange/Captioned_Videos/JackieLesson6_88_Captioned.mp4",
     "https://project-resources.concord.org/precipitatingchange/Captioned_Videos/Posters/Poster_L1_Video.png",
@@ -211,8 +207,6 @@
     "models-resources/question-interactives/version/v1.2.0-pre.1/image/",
     "models-resources/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
     "models-resources/question-interactives/version/v1.2.0-pre.1/open-response/",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/video-player/",
-    "models-resources/teacher-edition-tips-plugin/version/v3.6.0/manifest.json",
-    "models-resources/teacher-edition-tips-plugin/version/v3.6.0/plugin.js"
+    "models-resources/question-interactives/version/v1.2.0-pre.1/video-player/"
   ]
 }

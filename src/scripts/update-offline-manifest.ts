@@ -149,6 +149,16 @@ const updateActivityUrls = (activity: Activity) => {
   });
 };
 
+const removeTeacherEdition = (activity: Activity) => {
+  activity.pages.forEach(page => {
+    page.embeddables = page.embeddables.filter(embeddableWrapper => {
+      const embeddable = embeddableWrapper.embeddable;
+      return !(embeddable.type === "Embeddable::EmbeddablePlugin" &&
+               embeddable.plugin?.approved_script_label === "teacherEditionTips");
+    });
+  });
+};
+
 const main = async () => {
   const manifestPath = getManifestPath();
   const manifestJSON = loadJSONFile(manifestPath) as OfflineManifest;
@@ -168,6 +178,9 @@ const main = async () => {
     if (activity) {
       // update glossary urls and question interactives in activity
       updateActivityUrls(activity);
+
+      // remove teacher edition
+      removeTeacherEdition(activity);
 
       if (bumpInfo) {
         saveActivity(bumpInfo, offlineActivity, activity);
