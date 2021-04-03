@@ -20,10 +20,10 @@ interface BumpInfo {
 // This approach was taken from here:
 // https://github.com/node-fetch/node-fetch/issues/591#issuecomment-474457866
 (global as any).fetch = (url:any , args:any = {}) => {
-  args.headers = args.headers || {}
-  args.headers["user-agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36"
+  args.headers = args.headers || {};
+  args.headers["user-agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36";
   return fetch(url, args);
-}
+};
 
 let bumpVersion = false;
 let fetchActivities = true;
