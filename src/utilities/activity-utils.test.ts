@@ -155,6 +155,13 @@ describe("Activity utility functions", () => {
       "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
       "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
       "https://connected-bio-spaces.concord.org/",
+      "https://s-media-cache-ak0.pinimg.com/originals/73/ec/f3/73ecf348c3ef190be4e8c4a3269fc0d8.jpg",
+      // This is an example of a href link that we wouldn't want to cache,
+      // but at the same time we probably want to know about it to warn the author
+      // This particular one is further complicated because it is inside of a description
+      // that is only shown at authoring time, so our getAllUrlsInActivity could be
+      // smarter about this
+      "https://connected-bio-spaces.concord.org/?authoring",
       "https://www.wikipedia.org/"
     ]);
 
@@ -189,23 +196,25 @@ describe("Activity utility functions", () => {
   });
 
   it("rewrites some domains to models-resources with trailing slash", () => {
-    const protocols = ["http", "https"];
     const rewriteMap: Record<string, string> = {
-      "models-resources.concord.org/foo": "models-resources/foo/",
-      "models-resources.s3.amazonaws.com/foo": "models-resources/foo/",
-      "test-plugin.concord.org/foo": "models-resources/test-plugin/foo/",
-      "non-rewritten-domain.com/foo": "__PROTOCOL__://non-rewritten-domain.com/foo/"
+      "https://models-resources.concord.org/foo": "models-resources/foo/",
+      "https://models-resources.concord.org/foo/": "models-resources/foo/",
+      "https://models-resources.concord.org/foo/image.jpg": "models-resources/foo/image.jpg",
+      "https://models-resources.s3.amazonaws.com/foo": "models-resources/foo/",
+      "https://models-resources.s3.amazonaws.com/foo/": "models-resources/foo/",
+      "https://models-resources.s3.amazonaws.com/foo/image.jpg": "models-resources/foo/image.jpg",
+      // NOTE how non-rewritten urls do not have slashes appended
+      "https://non-rewritten-domain.com/foo": "https://non-rewritten-domain.com/foo",
+      "https://non-rewritten-domain.com/foo/": "https://non-rewritten-domain.com/foo/"
     };
-    protocols.forEach(protocol => {
-      Object.keys(rewriteMap).forEach(domainAndPath => {
-        const url = `${protocol}://${domainAndPath}`;
-        const rewriteUrl = rewriteMap[domainAndPath].replace("__PROTOCOL__", protocol);
-        const noRewriteUrl = `${url}?__noUrlRewrite`.replace("__PROTOCOL__", protocol);
-
-        expect(rewriteModelsResourcesUrl(url)).toBe(rewriteUrl);
-        expect(rewriteModelsResourcesUrl(`${url}/`)).toBe(rewriteUrl);
-        expect(rewriteModelsResourcesUrl(noRewriteUrl)).toBe(noRewriteUrl);
-      });
+    Object.keys(rewriteMap).forEach(url => {
+      expect(rewriteModelsResourcesUrl(url)).toBe(rewriteMap[url]);
+    });
+    // Check them all with http for completeness
+    Object.keys(rewriteMap).forEach(url => {
+      const httpUrl = url.replace("https://", "http://");
+      const rewrittenUrl = rewriteMap[url].replace("https://", "http://");
+      expect(rewriteModelsResourcesUrl(httpUrl)).toBe(rewrittenUrl);
     });
   });
 });

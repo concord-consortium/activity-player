@@ -2,7 +2,8 @@ import fs from "fs";
 import path from "path";
 import { Activity, OfflineManifest, OfflineManifestActivity } from "../types";
 import request from "superagent";
-import { getAllUrlsInActivity, removeDuplicateUrls, rewriteModelsResourcesUrl, walkObject } from "../utilities/activity-utils";
+import { getAllUrlsInActivity, removeDuplicateUrls, rewriteProxiableIframeUrls,
+  walkObject } from "../utilities/activity-utils";
 import fetch from "node-fetch";
 import { config } from "./update-offline-manifest.config";
 
@@ -14,9 +15,18 @@ interface BumpInfo {
   newVersionName: string;
 }
 
-(global as any).fetch = fetch;
+// pretend to be chrome, this helps with google fonts
+// might be a problem if we want to support iPad offline
+// This approach was taken from here:
+// https://github.com/node-fetch/node-fetch/issues/591#issuecomment-474457866
+(global as any).fetch = (url:any , args:any = {}) => {
+  args.headers = args.headers || {}
+  args.headers["user-agent"] = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.90 Safari/537.36"
+  return fetch(url, args);
+}
 
 let bumpVersion = false;
+let fetchActivities = true;
 
 const die = (message: string) => {
   console.error(message);
@@ -30,6 +40,7 @@ const getManifestPath = () => {
 
   const filename = nonOptions[0];
   bumpVersion = options.indexOf("--bump-version") !== -1;
+  fetchActivities = !(options.indexOf("--no-fetch-activities") !== -1);
 
   if (!filename) {
     die("Usage: npm run update-offline-manifest <offline-manifest-filename>");
@@ -65,7 +76,8 @@ const getActivity = async (offlineActivity: OfflineManifestActivity): Promise<Ac
   console.log("Processing", offlineActivity.name, "...");
   const url = convertToApiUrl(offlineActivity.resourceUrl);
   console.log("  ", url, "...");
-  if (/http/.test(url)) {
+
+  if (fetchActivities) {
     try {
       const resp = await request.get(url);
       return JSON.parse(resp.text) as Activity;
@@ -73,7 +85,7 @@ const getActivity = async (offlineActivity: OfflineManifestActivity): Promise<Ac
       die(`Unable to get ${url} - ${e.toString()}`);
     }
   } else {
-    const activityPath = path.join(__dirname, "../public/", url);
+    const activityPath = path.join(__dirname, "../public/", offlineActivity.contentUrl);
     return loadJSONFile(activityPath) as Activity;
   }
 
@@ -185,13 +197,22 @@ const main = async () => {
       if (bumpInfo) {
         saveActivity(bumpInfo, offlineActivity, activity);
       }
+
+      // Replace the iframe urls with models-resources when we can
+      // But do this after we save the activity since the same thing is going
+      // to be applied at runtime
+      // Perhaps we want to change this behavior to simplify the runtime.
+      // Also it would be useful if this function told us about iframe urls
+      // that can't be re-written because these will likely fail when offline
+      rewriteProxiableIframeUrls(activity);
+
       const urls = await getAllUrlsInActivity(activity);
       console.log(`    found ${urls.length} urls ...`);
       cacheList.push(...urls);
     }
   }, Promise.resolve());
 
-  cacheList = removeDuplicateUrls(cacheList.map(rewriteModelsResourcesUrl));
+  cacheList = removeDuplicateUrls(cacheList);
   cacheList.sort();
 
   // const oldMissingUrls = manifestJSON.cacheList.filter(url => cacheList.indexOf(url) === -1);

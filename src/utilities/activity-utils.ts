@@ -214,41 +214,104 @@ export const walkObject = (activityNode: any, stringCallback: (s: string, key?: 
 
 export const rewriteModelsResourcesUrl = (oldUrl: string) => {
   const httpRegex = /https?:\/\//;
-  const noRewriteRegex = /__noUrlRewrite/;
-  if (httpRegex.test(oldUrl) && !noRewriteRegex.test(oldUrl)) {
+  if (httpRegex.test(oldUrl)) {
     const serverRewrite = oldUrl
       .replace(/https?:\/\/models-resources\.concord\.org/, "models-resources")
-      .replace(/https?:\/\/models-resources\.s3\.amazonaws\.com/, "models-resources")
-      .replace(/https?:\/\/((.+)-plugin)\.concord\.org/, "models-resources/$1");
+      .replace(/https?:\/\/models-resources\.s3\.amazonaws\.com/, "models-resources");
 
     // NP: 2021-03-29 S3 resources without terminal slashes seem to fail. regexr.com/5pkc0
-    const missingSlashRegex = /\/[^./"]+$/; // URLS with extensions are fine eg *.png
-    if(missingSlashRegex.test(serverRewrite)) {
-      return `${serverRewrite}/`; // Add a slash to URLs missing them.
+    // SC: 2021-04-02 Only do this if they have been modified to go through the proxy
+    if (serverRewrite !== oldUrl) {
+      const missingSlashRegex = /\/[^./"]+$/; // URLS with extensions are fine eg *.png
+      if(missingSlashRegex.test(serverRewrite)) {
+        return `${serverRewrite}/`; // Add a slash to URLs missing them.
+      }
     }
     return serverRewrite;
   }
   return oldUrl;
 };
 
-export const rewriteModelsResourcesUrls = (activity: Activity) => {
+export const processIframeUrls = (activity: Activity, stringCallback: (s: string) => string) => {
+  activity.pages.forEach(page => {
+    page.embeddables.forEach(embeddableWrapper => {
+      const embeddable = embeddableWrapper.embeddable;
+      if (embeddable.type === "ManagedInteractive" && embeddable?.library_interactive?.data) {
+        const data = embeddable.library_interactive.data;
+        data.base_url = stringCallback(data.base_url);
+      }
+      if (embeddable.type === "MwInteractive" && embeddable.url) {
+        embeddable.url = stringCallback(embeddable.url);
+      }
+    });
+  });
+};
+
+export const rewriteProxiableIframeUrls = (activity: Activity) => {
   // do not rewrite urls when running in Cypress, otherwise the sample activity iframes do not load causing timeouts
   if (runningInCypress) { return activity;}
 
-  walkObject(activity, (s) => rewriteModelsResourcesUrl(s));
+  processIframeUrls(activity, rewriteModelsResourcesUrl);
 
   return activity;
 };
 
-export const isExternalOrModelsResourcesUrl = (url: string) => /^(\s*https?:\/\/|models-resources)/.test(url);
+export const isExternalOrModelsResourcesUrl = (url: string) => /^(\s*https?:\/\/|models-resources\/)/.test(url);
 
 export const removeDuplicateUrls = (urls: string[]) => urls.filter((url, index) => urls.indexOf(url) === index);
+
+export const matchAllFirstGroup = (stringToSearch: string, regExp: RegExp): string[] => {
+  const results: string[] = [];
+  let match;
+
+  while ((match = regExp.exec(stringToSearch)) !== null) {
+    results.push(match[1]);
+  }
+  return results;
+};
+
+
+export const getUrlsInString = (stringToSearch: string): string[] => {
+  return matchAllFirstGroup(stringToSearch, /"(https?:\/\/[^"]*)"/g);
+};
+
+// Find nonCSS assets
+// These are heuristics based on our limited set of files
+export const getAssetsInHtml = (htmlString: string): string[] => {
+
+  // <script src="../video-player/assets/index.4625e4716a2dfe8f0462.js"
+  const scriptAssets = matchAllFirstGroup(htmlString, /<script src="([^"]*)"/g);
+
+  // import-drawing "./ak-base-map-with-rose.png"
+  // Note the use of the m flag so we are using multi-line mode
+  const netlogoImports = matchAllFirstGroup(htmlString, /^\s*import-drawing\s+"([^"]*)"/gm);
+
+  // fetch:url-async ("https://s3.amazonaws.com/cc-project-resources/precipitatingchange/images-2021/ak-w-cities.png")
+  // Note the use of the m flag so we are using multi-line mode
+  const netlogoFetches = matchAllFirstGroup(htmlString, /^\s*fetch:url-async\s*\(\s*"([^"]*)"/gm);
+
+  return scriptAssets.concat(netlogoImports).concat(netlogoFetches);
+};
+
+export const getCssLinksInHtml = (htmlString: string): string[] => {
+  // <link href="../video-player/assets/index.4625e4716a2dfe8f0462.css"
+  // <link href="https://fonts.googleapis.com/css?family=Lato"
+  return matchAllFirstGroup(htmlString, /<link href="([^"]*)"/g);
+};
 
 export const getAllUrlsInActivity = async (activity: Activity, urls: string[] = []) => {
   const addExternalUrls = (object: any) => {
     walkObject(object, (s) => {
       if (isExternalOrModelsResourcesUrl(s)) {
         urls.push(s);
+      }
+
+      // Warning if there are links in the content to other pages this is going to
+      // pick them up. However for offline content we wouldn't want these links
+      // anyhow
+      const urlsInString = getUrlsInString(s);
+      if (urlsInString.length > 0) {
+        urls.push(...urlsInString);
       }
       return s;
     });
@@ -270,6 +333,80 @@ export const getAllUrlsInActivity = async (activity: Activity, urls: string[] = 
       // tslint:disable-next-line:no-console
       console.error("Error caching glossary urls:", e);
     }
+  }
+
+  // cache basic references from proxied iframes
+  // collect the urls
+  const proxiedIframeUrls: string[] = [];
+  processIframeUrls(activity, (iframeUrl) => {
+    // The content should already have been processed to replace proxiable urls
+    // currently those urls will always start with models-resources/
+    if (/^models-resources\//.test(iframeUrl)) {
+      const path = iframeUrl.replace("models-resources/", "");
+      const actualUrl = `https://models-resources.concord.org/${path}`;
+      proxiedIframeUrls.push(actualUrl);
+    }
+
+    // return the url because we don't want to modify the content
+    return iframeUrl;
+  });
+
+  const uniqueIframeUrls = removeDuplicateUrls(proxiedIframeUrls);
+
+  const cssLinksToFetch: string[] = [];
+
+  for (const iframeUrl of uniqueIframeUrls) {
+    const response = await fetch(iframeUrl);
+    const body = await response.text();
+
+    // look for specific items in the html
+    // this approach was tested with our current content and seems to work
+    const assets = getAssetsInHtml(body);
+    const cssLinks = getCssLinksInHtml(body);
+    assets.concat(cssLinks).forEach(asset => {
+      // construct an absolute url based on the iframeURl
+      // note this won't handle baseUrl in the html, but this is just a
+      // a quick way to find assets from our built interactives
+
+      if (/^https?:\/\//.test(asset)) {
+        // If the asset is absolute it will not be proxied even if it is in
+        // models resources, this is because we aren't rewriting urls in the iframes
+        urls.push(asset);
+      } else {
+        // If the asset is relative then it will be proxied because the iframe
+        // is proxied
+        // Because we constructed the iframeUrl above we know it will always start
+        // with the fixed string https://models-resources.concord.org
+        const assetUrl = new URL(asset, iframeUrl);
+        const relativeUrl = assetUrl.href.replace("https://models-resources.concord.org","models-resources");
+        urls.push(relativeUrl);
+      }
+    });
+
+    // look at the css for urls too, this might be a problem
+    cssLinks.forEach(cssLink => {
+      // resolve any relaive urls
+      const linkUrl = new URL(cssLink, iframeUrl);
+      cssLinksToFetch.push(linkUrl.href);
+    });
+  }
+
+  // This might not be worth it. It is to pick up images or fonts referenced by css
+  // and this is mainly need for google fonts. However google changes its the css
+  // reerencing these font faces regularly, so we can't safely cache this using
+  // our current approach
+  const uniqueCssLinksToFetch = removeDuplicateUrls(cssLinksToFetch);
+  for (const cssLink of uniqueCssLinksToFetch) {
+    console.log("fetching: ", cssLink);
+    const response = await fetch(cssLink);
+    const body = await response.text();
+
+    // match url(https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXiWtFCc.woff2)
+    // NOTE there are many other types of urls that we aren't matching here
+    const cssUrls = matchAllFirstGroup(body, /url\((https:\/\/[^)'"]*)\)/g);
+
+    // NOTE we are only matching absolute urls so we don't need to resolve them
+    urls.push(...cssUrls);
   }
 
   // remove duplicate urls
