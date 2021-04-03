@@ -47,7 +47,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/JackieLesson6_88_Captioned.mp4\",\"poster\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/Posters/Poster_L6_Video.png\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Captioned%20Videos-Optimized/JackieLesson6_88_Captioned.mp4\",\"poster\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/Posters/Poster_L6_Video.png\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -260,6 +260,57 @@
         },
         {
           "embeddable": {
+            "name": "Front Direction Model Explanation",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson6-Optimized/Front%20Direction%20Model%20Explanation.mp4\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "34e1a2a39c058da8ff4ffe5a09ad14af337c4a01",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/video-player/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
+                "enable_learner_state": false,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Video Player",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "2278-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
             "aspect_ratio_method": "DEFAULT",
             "authored_state": "",
             "click_to_play": false,
@@ -277,7 +328,7 @@
             "no_snapshots": false,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://project-resources.concord.org/precipitatingchange/Models-2021/Lesson6-1-v1.html",
+            "url": "https://models-resources.concord.org/precip-models/Models-2021/Lesson6-1-v1.html",
             "type": "MwInteractive",
             "ref_id": "97811-MwInteractive",
             "linked_interactives": []
@@ -303,6 +354,57 @@
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": false,
       "embeddables": [
+        {
+          "embeddable": {
+            "name": "Speed of the Front Model",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://project-resources.concord.org/precipitatingchange/Videos-2021/Lesson6-Optimized/Speed%20Front%20Model%20Explanation.mp4\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": null,
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "34e1a2a39c058da8ff4ffe5a09ad14af337c4a01",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/video-player/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
+                "enable_learner_state": false,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Video Player",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": false,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "2279-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": "header_block"
+        },
         {
           "embeddable": {
             "content": "<p>Now that you have figured out which way the&nbsp;front&nbsp;is going, you may have noticed it is heading toward Anchorage! So you may be wondering when it&rsquo;s going to pass through there. Where the&nbsp;front&nbsp;is at the time of the Alaskan Native Youth Olympics (NYO Games) will greatly affect the&nbsp;weather.</p>\r\n<p>To best predict where the&nbsp;front&nbsp;will be in 24 hours, you will need to figure out how fast it is moving. This is a calculation of speed (distance divided by time). Once you know both speed and direction of the&nbsp;front, your&nbsp;weather&nbsp;analysis will help you answer the question, &ldquo;Will it be raining in Anchorage?&rdquo;</p>\r\n<p>The model below allows you to mark the fronts at three times and measure the distance between them. With the time and distance data you can calculate the approximate speed of the front and then calculate where it will be 24 hours after the last measurement. To do this you can use the tools built into this model.</p>\r\n<p><strong>First, mark the fronts.</strong></p>\r\n<p>&bull; Click <em>Setup</em> and <em>Run</em> and see where the front forms. (Once the front has formed click&nbsp;<em>Run</em>&nbsp;again to turn it off.) See Mr. Neyhard's video for help.<br />&bull; Click <em>Draw Line</em> and use the mouse to mark the front. (Be sure the mouse stays inside the map while dragging.)&nbsp;&nbsp;<br />&bull; You can always start over by clicking <em>Clear Last Line</em> or <em>Clear All Lines</em>.&nbsp;<br />&bull; Repeat this for 9pm and 7am. You can turn <em>Run</em> off or click <em>Setup</em> again if the map gets too dark.</p>\r\n<p><strong>Second, measure the distance between fronts.</strong></p>\r\n<p>&bull; Turn off <em>Run</em> and click <em>show-distance?</em>. Now, lines that you draw will show their length in kilometers. (You can click <em>Setup</em>&nbsp;to see the map more clearly.)<br />&bull; Draw a line from one front to the other to measure the distance between them. Start near Fairbanks because the front there will be close to where it will cross Anchorage. Do this for the distance between the first and second front and the second and third front.</p>\r\n<p><strong>Third, calculate the speed of the front. See Mr. Neyhard's video for help.</strong></p>\r\n<p>&bull; Each set of data is separated by 10 hours.&nbsp;&nbsp;<br />&bull; Divide the distance between the top and middle front by 10 to get the speed in kilometers per hour.<br />&bull; Divide the distance between the middle and bottom front by 10 to get the speed in kilometers per hour.<br />&bull; Average the two speeds by adding them together and then divide by 2.</p>\r\n<p><strong>Finally, calculate the location of the front 24 hours later.</strong></p>\r\n<p>&bull; Mutliply the average speed by 24 hours to predict where it will be on April 23 at 7am.&nbsp;&nbsp;<br />&bull; Will the front be on top of Anchorage? Should the NYO Games go on as planned?</p>",
@@ -538,7 +640,7 @@
             "no_snapshots": false,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://project-resources.concord.org/precipitatingchange/Models-2021/lesson6-2.v1.html",
+            "url": "https://models-resources.concord.org/precip-models/Models-2021/lesson6-2.v1.html",
             "type": "MwInteractive",
             "ref_id": "97812-MwInteractive",
             "linked_interactives": []
@@ -569,7 +671,7 @@
   "plugins": [
     {
       "description": "",
-      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v1.json?__noUrlRewrite\"}",
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v2.json?__noUrlRewrite\"}",
       "approved_script_label": "glossary",
       "component_label": "glossary",
       "approved_script": {

@@ -559,7 +559,7 @@
         {
           "embeddable": {
             "aspect_ratio_method": "MANUAL",
-            "authored_state": null,
+            "authored_state": "",
             "click_to_play": false,
             "click_to_play_prompt": null,
             "enable_learner_state": false,
@@ -790,7 +790,7 @@
   "plugins": [
     {
       "description": "",
-      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v1.json?__noUrlRewrite\"}",
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v2.json?__noUrlRewrite\"}",
       "approved_script_label": "glossary",
       "component_label": "glossary",
       "approved_script": {

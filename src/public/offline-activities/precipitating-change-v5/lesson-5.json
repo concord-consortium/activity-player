@@ -390,7 +390,7 @@
             "no_snapshots": false,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://project-resources.concord.org/precipitatingchange/Models-2021/Lesson5-air-masses.v4-new.html",
+            "url": "https://models-resources.concord.org/precip-models/Models-2021/Lesson5-air-masses.v4-new.html",
             "type": "MwInteractive",
             "ref_id": "97692-MwInteractive",
             "linked_interactives": []
@@ -740,7 +740,7 @@
         },
         {
           "embeddable": {
-            "content": "<p>The weather map below shows wind direction, temperature, and air moisture, but not precipitation. Look at this data and think about where raining would most likely occur.</p>\r\n<p><img src=\"https://project-resources.concord.org/precipitatingchange/images-2021/Alaska%20Weather%20Stations_7am%20Interpolated-w-coordinates.png\" width=\"437\" height=\"263\" /></p>\r\n<p>Alaska Stations: Interpolated at 7 am</p>",
+            "content": "<p>The weather map below shows wind direction, temperature, and air moisture, but not precipitation. Look at this data and think about where raining would most likely occur.</p>\r\n<p><img src=\"https://project-resources.concord.org/precipitatingchange/images-2021/Alaska%20Weather%20Stations_7am%20Interpolated-w-coordinates.png\" width=\"656\" height=\"395\" /></p>\r\n<p>Alaska Stations: Interpolated at 7 am</p>",
             "is_callout": true,
             "is_full_width": true,
             "is_hidden": false,
@@ -1031,7 +1031,7 @@
         {
           "embeddable": {
             "aspect_ratio_method": "DEFAULT",
-            "authored_state": null,
+            "authored_state": "",
             "click_to_play": false,
             "click_to_play_prompt": null,
             "enable_learner_state": false,
@@ -1047,7 +1047,7 @@
             "no_snapshots": false,
             "show_delete_data_button": false,
             "show_in_featured_question_report": true,
-            "url": "https://models-resources.concord.org/precip-models/lesson-4-ak-v3.html",
+            "url": "https://models-resources.concord.org/precip-models/Models-2021/lesson5-sliders.html\r\n",
             "type": "MwInteractive",
             "ref_id": "96961-MwInteractive",
             "linked_interactives": []
@@ -1446,7 +1446,7 @@
   "plugins": [
     {
       "description": "",
-      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v1.json?__noUrlRewrite\"}",
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v2.json?__noUrlRewrite\"}",
       "approved_script_label": "glossary",
       "component_label": "glossary",
       "approved_script": {

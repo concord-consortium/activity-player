@@ -773,7 +773,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"prompt\":\"<p>Click through the radar images which provide precipitation changes for a 24-hour time period.</p>\",\"subinteractives\":[{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_%207_amAlaska_Mainland.png\"},\"id\":\"e2d9c1ad-3de3-4180-ad77-6204ac763054\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_1_pmAlaska_Mainland.png\"},\"id\":\"9dc95d66-5ef9-48ba-9c7d-8196af99ff02\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_7pmAlaska_Mainland.png\"},\"id\":\"7def587c-00c8-4ac8-be4e-62967412f70e\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_1amAlaska_Mainland.png\"},\"id\":\"ed20f53f-3f0b-46c0-9dac-89459cdaf673\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_7amnextday_Alaska_Mainland.png\"},\"id\":\"e7435ef2-3a84-47d3-9234-6e061c04ad28\",\"navImageUrl\":\"\"}]}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"prompt\":\"<p>Click through the radar images which provide precipitation changes for a 24-hour time period.</p>\",\"subinteractives\":[{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_%207_amAlaska_Mainland.png\"},\"id\":\"e2d9c1ad-3de3-4180-ad77-6204ac763054\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_1_pmAlaska_Mainland.png\"},\"id\":\"9dc95d66-5ef9-48ba-9c7d-8196af99ff02\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_7pmAlaska_Mainland.png\"},\"id\":\"7def587c-00c8-4ac8-be4e-62967412f70e\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_1amAlaska_Mainland.png\"},\"id\":\"ed20f53f-3f0b-46c0-9dac-89459cdaf673\",\"navImageUrl\":\"\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.6.1/image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://project-resources.concord.org/precipitatingchange/Captioned_Videos/new_picts/radar_map_7amnextday_Alaska_Mainland.png\"},\"id\":\"e7435ef2-3a84-47d3-9234-6e061c04ad28\",\"navImageUrl\":\"\"}],\"hint\":\"\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -792,30 +792,30 @@
             "inherit_image_url": true,
             "custom_image_url": null,
             "library_interactive": {
-              "hash": "d28c5f7719a5e637904c6b1de2d0036ba4f76313",
+              "hash": "ce065054c8b26efaac977457d0e7332c457e6061",
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
                 "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/carousel/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
-                "description": "",
-                "enable_learner_state": true,
+                "description": "This Carousel is configured to not save state. So it won't show up the report. This is useful if it is only showing a collection of pictures or videos. ",
+                "enable_learner_state": false,
                 "full_window": false,
                 "has_report_url": false,
                 "image_url": null,
-                "name": "Carousel Interactive",
+                "name": "Carousel Interactive not a Question",
                 "native_height": 435,
                 "native_width": 576,
                 "no_snapshots": false,
-                "show_delete_data_button": true,
+                "show_delete_data_button": false,
                 "thumbnail_url": "",
                 "customizable": true,
                 "authorable": true
               }
             },
             "type": "ManagedInteractive",
-            "ref_id": "1316-ManagedInteractive",
+            "ref_id": "2280-ManagedInteractive",
             "linked_interactives": []
           },
           "section": "interactive_box"
@@ -1232,7 +1232,7 @@
   "plugins": [
     {
       "description": null,
-      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v1.json?__noUrlRewrite\"}",
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v2.json?__noUrlRewrite\"}",
       "approved_script_label": "glossary",
       "component_label": "glossary",
       "approved_script": {

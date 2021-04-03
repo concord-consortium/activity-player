@@ -442,7 +442,7 @@
             "no_snapshots": true,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://project-resources.concord.org/precipitatingchange/Models-2021/Lesson3-1.v1.html",
+            "url": "https://models-resources.concord.org/precip-models/Models-2021/Lesson3-1.v1.html",
             "type": "MwInteractive",
             "ref_id": "97738-MwInteractive",
             "linked_interactives": []
@@ -652,7 +652,7 @@
             "no_snapshots": false,
             "show_delete_data_button": true,
             "show_in_featured_question_report": true,
-            "url": "https://project-resources.concord.org/precipitatingchange/Models-2021/Lesson3-1.v1.html",
+            "url": "https://models-resources.concord.org/precip-models/Models-2021/Lesson3-1.v1.html",
             "type": "MwInteractive",
             "ref_id": "97739-MwInteractive",
             "linked_interactives": []
@@ -1000,7 +1000,7 @@
   "plugins": [
     {
       "description": "",
-      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v1.json?__noUrlRewrite\"}",
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v2.json?__noUrlRewrite\"}",
       "approved_script_label": "glossary",
       "component_label": "glossary",
       "approved_script": {
