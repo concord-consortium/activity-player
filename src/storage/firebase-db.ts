@@ -20,6 +20,8 @@ import { docToWrappedAnswer, IWrappedDBAnswer } from "./storage-facade";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
+export const kLocalApplicationName = "activity-player";
+
 let portalData: IPortalData | IAnonymousPortalData | null;
 
 const answersPath = (answerId?: string) =>
@@ -81,7 +83,19 @@ let app: firebase.app.App;
 // preview mode will run Firestore in offline mode and clear it (as otherwise the local data is persisted).
 export async function initializeDB({ name, preview }: { name: FirebaseAppName, preview: boolean }) {
   const config = configurations[name];
-  app = firebase.initializeApp(config, "activity-player");
+  try {
+    // The API will throw an exception if the app doesn't exist yet:
+    // See: https://firebase.google.com/docs/reference/js/firebase.app
+    const existing = firebase.app(kLocalApplicationName);
+    if(existing) {
+      console.debug(`Firebase-db.ts: found existing application to use ${kLocalApplicationName}`);
+      app = existing;
+      return existing;
+    }
+  } catch {
+    console.debug(`Firebase-db.ts: no existing application for ${kLocalApplicationName}`);
+  }
+  app = firebase.initializeApp(config, kLocalApplicationName);
 
   // Save action seems to be failing when you try to save a document with a property explicitly set to undefined value.
   // `null` or empty string are fine. ActivityPlayer was not saving some interactive states because of that.
