@@ -1,5 +1,7 @@
 "use strict";
 
+const fs = require("fs");
+const crypto = require("crypto");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const HtmlWebpackTagsPlugin = require("html-webpack-tags-plugin");
@@ -10,8 +12,17 @@ const {InjectManifest} = require('workbox-webpack-plugin');
 
 const version = require("./package.json").version;
 const gitRevPlugin = new GitRevPlugin();
-const appVersionInfo = `Version ${version} (${gitRevPlugin.hash()})`;
-const serviceWorkerVersionInfo = appVersionInfo; // keep the same for the build
+const versionInfo = `Version ${version} (${gitRevPlugin.hash()} / **SERVICE_WORKER_HASH**)`;
+
+const versionInfoReplacer = () => {
+  // this is done dynamically so that it is updated after each build
+  const hash = crypto.createHash("sha256");
+  const serviceWorkerHash = hash
+    .update(fs.readFileSync('./src/service-worker.ts').toString())
+    .digest("hex")
+    .substr(0, 8);
+  return versionInfo.replace("**SERVICE_WORKER_HASH**", serviceWorkerHash);
+}
 
 module.exports = (env, argv) => {
   const devMode = argv.mode !== "production";
@@ -59,7 +70,7 @@ module.exports = (env, argv) => {
             loader: 'string-replace-loader',
             options: {
               search: '__SERVICE_WORKER_VERSION_INFO__',
-              replace: serviceWorkerVersionInfo,
+              replace: versionInfoReplacer,
             }
           },
           {
@@ -111,7 +122,7 @@ module.exports = (env, argv) => {
             loader: 'string-replace-loader',
             options: {
               search: '__SERVICE_WORKER_VERSION_INFO__',
-              replace: serviceWorkerVersionInfo,
+              replace: versionInfoReplacer,
             }
           },
           {
@@ -208,7 +219,7 @@ module.exports = (env, argv) => {
         new HtmlReplaceWebpackPlugin([
           {
             pattern: '__APP_VERSION_INFO__',
-            replacement: appVersionInfo
+            replacement: versionInfoReplacer
           }
         ]),
       ]
@@ -315,7 +326,7 @@ module.exports = (env, argv) => {
         new HtmlReplaceWebpackPlugin([
           {
             pattern: '__APP_VERSION_INFO__',
-            replacement: appVersionInfo
+            replacement: versionInfoReplacer
           }
         ]),
         new CopyWebpackPlugin({
