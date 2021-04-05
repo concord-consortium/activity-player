@@ -184,7 +184,7 @@ function addCacheListener() {
             // there is a seperate body promise that is used to access that.
             // The donePromise resolves when this caching is complete.
           }).catch(error => {
-            // Only report an error once. It is possilbe the donePromise errored
+            // Only report an error once. It is possible the donePromise errored
             // first.
             if(!errorOccurred) {
               messagePort.postMessage({type: "URL_CACHE_FAILED", payload: {url: request.url, error}});
@@ -195,7 +195,7 @@ function addCacheListener() {
           donePromise.then(() => {
             // Based on the implementation it is impossible for the responsePromise
             // to thow an error and the donePromise to complete. But based on the
-            // api definition this could be possilbe, so I'm erring on the side
+            // api definition this could be possible, so I'm erring on the side
             // of caution. And checking for the error here.
             // We wouldn't want to send both a failed message and a
             // success message for the same url.
@@ -203,7 +203,7 @@ function addCacheListener() {
               messagePort.postMessage({type: "URL_CACHED", payload: {url: request.url}});
             }
           }).catch(error => {
-            // Only report an error once. It is possilbe the responsePromise errored
+            // Only report an error once. It is possible the responsePromise errored
             // first.
             if(!errorOccurred) {
               messagePort.postMessage({type: "URL_CACHE_FAILED", payload: {url: request.url, error}});
