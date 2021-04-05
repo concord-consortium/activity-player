@@ -15,7 +15,7 @@ export class DataSyncTracker {
   pluginFailures: number;
   pluginSuccesses: number;
   pluginDrops: number;
-  pendingPromises: Array<Promise<number|void>>;
+  pendingPromises: Array<Promise<number|string|void>>;
   timeoutRef: number
   logsSynced: boolean;
 
@@ -54,7 +54,7 @@ export class DataSyncTracker {
     return this.finish();
   }
 
-  addPromise(promise: Promise<number|void>) {
+  addPromise(promise: Promise<number|string|void>) {
     this.pendingPromises.push(promise);
   }
 

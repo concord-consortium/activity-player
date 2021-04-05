@@ -232,9 +232,7 @@ export const watchAllAnswers = (callback: (wrappedAnswer: IWrappedDBAnswer[]) =>
 };
 
 export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
-  if (!portalData) {
-    return;
-  }
+  if (!portalData) { throw("No portal Data"); }
 
   let answerDocData: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata;
 

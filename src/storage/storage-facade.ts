@@ -450,7 +450,7 @@ class DexieStorageProvider implements IStorageInterface {
       const mySyncTracker = new DataSyncTracker(60 * 30, 5);
       const portalResourceUrl = portalData.resourceUrl;
       // Save student answers ...
-      const answerSavingPromise = this.ensureFirebaseConnection()
+      this.ensureFirebaseConnection()
         .then((fsProvider)  => {
           dexieStorage.answers
             .where({resource_url: portalResourceUrl})
@@ -458,15 +458,14 @@ class DexieStorageProvider implements IStorageInterface {
             .then((answers) => {
               console.dir(answers);
               for(const answer of answers) {
-                // TODO: Look into FireStore Batch operations
-                fsProvider.createOrUpdateAnswer(answer);
+                mySyncTracker.addPromise(fsProvider.createOrUpdateAnswer(answer));
               }
               return this.fakeWaitingPromise();
             });
       });
 
       // Save learner plugin states ...
-      const learnerPluginStateSavingPromise = this.ensureFirebaseConnection()
+      this.ensureFirebaseConnection()
         .then((fsProvider)  => {
           dexieStorage
             .savedPluginStates
@@ -479,15 +478,11 @@ class DexieStorageProvider implements IStorageInterface {
                 const {pluginId, state} = pState;
                 if(state) {
                   // TODO: Look into FireStore Batch operations
-                  fsProvider.setLearnerPluginState(pluginId, portalResourceUrl, state);
+                  mySyncTracker.addPromise(fsProvider.setLearnerPluginState(pluginId, portalResourceUrl, state));
                 }
               }
-              return this.fakeWaitingPromise();
             });
       });
-
-      mySyncTracker.addPromise(answerSavingPromise);
-      mySyncTracker.addPromise(learnerPluginStateSavingPromise);
       return mySyncTracker.start()
         .catch((e) => {
           console.error("Could not sync local indexDB to FireStore:");
