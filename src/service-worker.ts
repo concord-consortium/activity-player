@@ -181,17 +181,46 @@ function addCacheListener() {
         // Use a specific strategy that is not registered as a route
         // this way we get Workbox's strategy features without affecting
         // regular page network requests
-        const responsePromise = networkFirst.handle({request, event});
+        const [responsePromise, donePromise] = networkFirst.handleAll({request, event});
 
         if (messagePort) {
+          let errorOccurred = false;
           responsePromise.then(response => {
-            messagePort.postMessage({type: "URL_CACHED", payload: {url: request.url}});
+            // At this point the response is ready. But this seems to happen
+            // when the browser recieves the headers from the get request.
+            // The actual caching of the data might take a while longer as
+            // there is a seperate body promise that is used to access that.
+            // The donePromise resolves when this caching is complete.
           }).catch(error => {
-            messagePort.postMessage({type: "URL_CACHE_FAILED", payload: {url: request.url, error}});
+            // Only report an error once. It is possible the donePromise errored
+            // first.
+            if(!errorOccurred) {
+              messagePort.postMessage({type: "URL_CACHE_FAILED", payload: {url: request.url, error}});
+              errorOccurred = true;
+            }
+          });
+
+          donePromise.then(() => {
+            // Based on the implementation it is impossible for the responsePromise
+            // to thow an error and the donePromise to complete. But based on the
+            // api definition this could be possible, so I'm erring on the side
+            // of caution. And checking for the error here.
+            // We wouldn't want to send both a failed message and a
+            // success message for the same url.
+            if(!errorOccurred){
+              messagePort.postMessage({type: "URL_CACHED", payload: {url: request.url}});
+            }
+          }).catch(error => {
+            // Only report an error once. It is possible the responsePromise errored
+            // first.
+            if(!errorOccurred) {
+              messagePort.postMessage({type: "URL_CACHE_FAILED", payload: {url: request.url, error}});
+              errorOccurred = true;
+            }
           });
         }
 
-        return responsePromise;
+        return donePromise;
 
       // TODO(philipwalton): TypeScript errors without this typecast for
       // some reason (probably a bug). The real type here should work but
