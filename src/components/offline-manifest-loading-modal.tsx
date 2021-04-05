@@ -85,7 +85,7 @@ export class OfflineManifestLoadingModal extends React.Component<IProps, IState>
     return (
       <>
         <div>
-          Finished {message} <strong>{offlineManifest.name}</strong> assets
+          Finished {message} <strong>{offlineManifest.name}</strong> assets.
         </div>
         {numFailedUrls > 0
           ?
@@ -95,16 +95,36 @@ export class OfflineManifestLoadingModal extends React.Component<IProps, IState>
               <div><button onClick={() => this.props.onClose()}>Close</button></div>
             </>
           : <>
-              <div>Everything is installed!</div>
-              <div>To Finish the install on a Mac:</div>
+              <div>All assets have been installed!</div>
+              <div>
+                To access activities on a Mac, install the <strong>Activity Player</strong> app:
+              </div>
               <ol>
-                <li>Click the install icon on the right of the browser address bar.</li>
-                <li>Confirm you want to install the application.</li>
-                <li>This will open these instructions in the newly installed application.</li>
-                <li>Find the light bulb logo in the dock.</li>
-                <li>Right click and select options, then keep in dock.</li>
-                <li>Close the application.</li>
-                <li>Open the application. You can now use the activities you just installed.</li>
+                <li>
+                  Click the <strong>Install</strong> icon to the right of your browser’s address bar.
+                </li>
+                <li>
+                  In the prompt, click the <strong>Install</strong> button.
+                  <em><br/><br/>
+                    The <strong>Activity Player</strong> app window will open with these instructions. Also, the app icon — a light bulb — will be placed in the Dock.
+                  </em><br/><br/>
+                </li>
+                <li>
+                  Find the light bulb icon in the Dock.
+                </li>
+                <li>
+                  Right-click on the icon and select <strong>Options &gt; Keep in Dock.</strong>
+                  <em><br/><br/>
+                    The <strong>Activity Player</strong> app can now be opened using this light bulb icon.
+                  </em><br/><br/>
+                </li>
+                <li>
+                  <strong>To access activities:</strong> close this <strong>Activity Player</strong> app window and then re-open it using the light bulb icon in the Dock.
+                  <em><br/><br/>
+                    Note: upon re-opening the <strong>Activity Player</strong> app, these instructions will
+                    be replaced with a list of activities.
+                  </em><br/><br/>
+                </li>
               </ol>
             </>
         }

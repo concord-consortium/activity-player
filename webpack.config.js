@@ -333,6 +333,12 @@ module.exports = (env, argv) => {
           ],
           additionalManifestEntries: [
             {url: "https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css", revision: null},
+            {url: "https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_444444_256x240.png", revision: null},
+            {url: "https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_555555_256x240.png", revision: null},
+            {url: "https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_ffffff_256x240.png", revision: null},
+            {url: "https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_777620_256x240.png", revision: null},
+            {url: "https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_cc0000_256x240.png", revision: null},
+            {url: "https://code.jquery.com/ui/1.12.1/themes/base/images/ui-icons_777777_256x240.png", revision: null},
             {url: "https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap", revision: null},
             // These URLS might not be stable. They are referenced by the css which could be updated
             // to refer to new font files.

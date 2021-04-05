@@ -1,6 +1,6 @@
 import { sampleActivities, sampleSequences } from "./data";
 import { Activity, Sequence } from "./types";
-import { isNotSampleActivityUrl, rewriteModelsResourcesUrls } from "./utilities/activity-utils";
+import { isNotSampleActivityUrl, rewriteProxiableIframeUrls } from "./utilities/activity-utils";
 import { queryValue } from "./utilities/url-query";
 
 export const getResourceUrl = (url?: string) => {
@@ -13,7 +13,7 @@ export const getActivityDefinition = (activity: string): Promise<Activity> => {
     if (isNotSampleActivityUrl(activity)) {
       fetchActivityDefinition(activity).then(resolve);
     } else if (sampleActivities[activity]) {
-      setTimeout(() => resolve(rewriteModelsResourcesUrls(sampleActivities[activity])), 250);
+      setTimeout(() => resolve(rewriteProxiableIframeUrls(sampleActivities[activity])), 250);
     } else {
       reject(`No sample activity matches ${activity}`);
     }
@@ -29,7 +29,7 @@ const fetchActivityDefinition = (activityUrl: string): Promise<any> => {
           return;
         }
         response.json()
-          .then((data) => resolve(rewriteModelsResourcesUrls(data)))
+          .then((data) => resolve(rewriteProxiableIframeUrls(data)))
           .catch(reject);
       })
       .catch(function(err) {
