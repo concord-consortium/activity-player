@@ -34,10 +34,10 @@ const stripWbRevision: WorkboxPlugin = {
   cacheKeyWillBeUsed: async ({request, mode, params, event, state}) => {
     const url = new URL(request.url);
     url.searchParams.delete("__WB_REVISION__");
-    // We need create a request with headers because the return value is
+    // We need to create a request with headers because the return value is
     // passed through to future callbacks. If a simple url is returned then
     // Workbox makes a generic Request object with no headers.
-    // The headers are important specificially for the Range Plugin which
+    // The headers are important specifically for the Range Plugin which
     // hooks into the cachedResponseWillBeUsed and looks at the headers of
     // the response object passed in.
     return new Request(url.href, {headers: request.headers});
@@ -60,7 +60,7 @@ const cleanIndexHtmlParams: WorkboxPlugin = {
     if (url.origin === location.origin &&
         (url.pathname === rootUrl.pathname ||
          url.pathname === rootIndexHtmlUrl.pathname) ) {
-      // To be safe we pass the headers through, jut like we do when
+      // To be safe we pass the headers through, just like we do when
       // stripping the __WB_REVISION__
       return new Request(rootIndexHtmlUrl.href, {headers: request.headers});
     } else {
