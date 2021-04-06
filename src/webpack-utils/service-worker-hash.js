@@ -4,7 +4,7 @@ const path = require("path");
 
 module.exports = (options, loaderContext) => {
 
-  const filePath = path.join(__dirname, "../service-worker.ts")
+  const filePath = path.join(__dirname, "../service-worker.ts");
   const hash = crypto.createHash("sha256");
   const serviceWorkerHash = hash
     .update(fs.readFileSync(filePath).toString())
