@@ -437,11 +437,6 @@ class DexieStorageProvider implements IStorageInterface {
     return Promise.resolve(fsProvider);
   }
 
-  // This is hack to simulate requests taking some time.
-  fakeWaitingPromise(timeToResolve=5000) {
-    return new Promise((res) => window.setTimeout(()=> res(), timeToResolve));
-  }
-
   syncData(): Promise<boolean> {
     const portalData = this.portalData;
     if(portalData) {
@@ -460,7 +455,6 @@ class DexieStorageProvider implements IStorageInterface {
               for(const answer of answers) {
                 mySyncTracker.addPromise(fsProvider.createOrUpdateAnswer(answer));
               }
-              return this.fakeWaitingPromise();
             });
       });
 
