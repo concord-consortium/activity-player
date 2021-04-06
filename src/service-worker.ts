@@ -2,8 +2,6 @@ import "ts-polyfill";
 
 declare const self: ServiceWorkerGlobalScope;
 
-const versionInfo = "__SERVICE_WORKER_VERSION_INFO__";  // replaced by webpack using string-replace-loader
-
 import { WorkboxPlugin } from "workbox-core";
 import { registerRoute } from "workbox-routing";
 import { CacheOnly, NetworkFirst } from "workbox-strategies";
@@ -256,7 +254,7 @@ addEventListener("message", (event) => {
 
       case "GET_VERSION_INFO":
         console.log("Got version info request");
-        event.ports[0].postMessage(versionInfo);
+        event.ports[0].postMessage(__VERSION_INFO__);
         break;
     }
   }

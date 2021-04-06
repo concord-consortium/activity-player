@@ -1,6 +1,7 @@
 "use strict";
 
 const fs = require("fs");
+const path = require("path");
 const crypto = require("crypto");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -9,20 +10,28 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin');
 const GitRevPlugin = require('git-rev-webpack-plugin');
 const {InjectManifest} = require('workbox-webpack-plugin');
+const webpack = require('webpack');
 
 const version = require("./package.json").version;
 const gitRevPlugin = new GitRevPlugin();
-const versionInfo = `Version ${version} (${gitRevPlugin.hash()} / **SERVICE_WORKER_HASH**)`;
-
-const versionInfoReplacer = () => {
+const serviceWorkerSrcPath = path.join(__dirname, "src/service-worker.ts");
+const versionInfo = () => {
   // this is done dynamically so that it is updated after each build
   const hash = crypto.createHash("sha256");
   const serviceWorkerHash = hash
-    .update(fs.readFileSync('./src/service-worker.ts').toString())
+    .update(fs.readFileSync(serviceWorkerSrcPath).toString())
     .digest("hex")
     .substr(0, 8);
-  return versionInfo.replace("**SERVICE_WORKER_HASH**", serviceWorkerHash);
+  // This is injected in source, so quotes are necessary
+  return `"Version ${version} (git:${gitRevPlugin.hash()}, sw:${serviceWorkerHash})"`;
 }
+
+const definePlugin = new webpack.DefinePlugin({
+  // This has a dependency on serviceWorkSrcPath so all configs are rebuilt when that
+  // file changes. It is also dependent on package.json and git, but getting those to
+  // work seems more complicated and not worth the effort
+  __VERSION_INFO__: webpack.DefinePlugin.runtimeValue(versionInfo, [serviceWorkerSrcPath]),
+});
 
 module.exports = (env, argv) => {
   const devMode = argv.mode !== "production";
@@ -66,14 +75,6 @@ module.exports = (env, argv) => {
             ]
           },
           {
-            test: /service-worker\.ts$/,
-            loader: 'string-replace-loader',
-            options: {
-              search: '__SERVICE_WORKER_VERSION_INFO__',
-              replace: versionInfoReplacer,
-            }
-          },
-          {
             test: /\.ts$/,
             loader: "ts-loader",
             options: {
@@ -88,7 +89,10 @@ module.exports = (env, argv) => {
       resolve: {
         extensions: [ ".ts", ".js" ]
       },
-      devServer
+      devServer,
+      plugins: [
+        definePlugin
+      ]
     },
 
     // install (auto-bundled into install.html)
@@ -116,14 +120,6 @@ module.exports = (env, argv) => {
                 options: {}
               }
             ]
-          },
-          {
-            test: /service-worker\.ts$/,
-            loader: 'string-replace-loader',
-            options: {
-              search: '__SERVICE_WORKER_VERSION_INFO__',
-              replace: versionInfoReplacer,
-            }
           },
           {
             test: /\.tsx?$/,
@@ -216,12 +212,7 @@ module.exports = (env, argv) => {
           hash: true,
           append: false // prepend this before the main js file
         }),
-        new HtmlReplaceWebpackPlugin([
-          {
-            pattern: '__APP_VERSION_INFO__',
-            replacement: versionInfoReplacer
-          }
-        ]),
+        definePlugin,
       ]
     },
 
@@ -323,12 +314,6 @@ module.exports = (env, argv) => {
           filename: "index.html",
           template: "src/index.html"
         }),
-        new HtmlReplaceWebpackPlugin([
-          {
-            pattern: '__APP_VERSION_INFO__',
-            replacement: versionInfoReplacer
-          }
-        ]),
         new CopyWebpackPlugin({
           patterns: [
             {from: "src/public"}
@@ -357,7 +342,8 @@ module.exports = (env, argv) => {
             {url: "https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXiWtFCc.woff2", revision: null}
           ],
           maximumFileSizeToCacheInBytes: 1024 * 1024 * 10
-        })
+        }),
+        definePlugin,
       ]
     }
 
