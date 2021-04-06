@@ -7,6 +7,7 @@ import { getOfflineManifest, saveOfflineManifestToOfflineActivities,
 import { OfflineManifest } from "../types";
 import { OfflineManifestLoadingModal } from "./offline-manifest-loading-modal";
 import { queryValue } from "../utilities/url-query";
+import serviceWorkerHash from "../webpack-utils/service-worker-hash";
 
 interface IState {
   serviceWorkerVersionInfo?: string;
@@ -203,7 +204,7 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const appVersionInfo = (window as any).__appVersionInfo;
+    const appVersionInfo = (window as any).__appVersionInfo + " hash: " + serviceWorkerHash;
     const {serviceWorkerVersionInfo, offlineManifest, offlineManifestId,
       loadingOfflineManifest, installedApplicationUrls,
       installedContentUrls} = this.state;

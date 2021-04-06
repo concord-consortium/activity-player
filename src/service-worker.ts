@@ -10,6 +10,8 @@ import { CacheOnly, NetworkFirst } from "workbox-strategies";
 // import { CacheableResponsePlugin } from "workbox-cacheable-response";
 import { RangeRequestsPlugin } from "workbox-range-requests";
 
+import serviceWorkerHash from "./webpack-utils/service-worker-hash";
+
 const ignoredGets: RegExp[] = [
   /\/sockjs-node\/info/,                           // webpack-dev-server
   /\.hot-update\./,                                // webpack-dev-server
@@ -256,7 +258,7 @@ addEventListener("message", (event) => {
 
       case "GET_VERSION_INFO":
         console.log("Got version info request");
-        event.ports[0].postMessage(versionInfo);
+        event.ports[0].postMessage(versionInfo + " hash: " + serviceWorkerHash);
         break;
     }
   }

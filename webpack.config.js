@@ -29,6 +29,14 @@ module.exports = (env, argv) => {
       }
     }
   };
+  const serviceWorkerHashLoader = {
+    test: /service-worker-hash.js$/,
+    use: [
+      {
+        loader: `val-loader`,
+      },
+    ],
+  };
 
   return [
     // service-worker (not auto-bundled but registered in app)
@@ -62,6 +70,7 @@ module.exports = (env, argv) => {
               replace: serviceWorkerVersionInfo,
             }
           },
+          serviceWorkerHashLoader,
           {
             test: /\.ts$/,
             loader: "ts-loader",
@@ -114,6 +123,7 @@ module.exports = (env, argv) => {
               replace: serviceWorkerVersionInfo,
             }
           },
+          serviceWorkerHashLoader,
           {
             test: /\.tsx?$/,
             loader: "ts-loader"
