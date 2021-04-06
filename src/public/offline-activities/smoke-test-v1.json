@@ -214,7 +214,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -265,7 +265,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This shouldn't be used by any real activities it is still under development.",
@@ -316,7 +316,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/fill-in-the-blank/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/fill-in-the-blank/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -367,7 +367,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/scaffolded-question/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/scaffolded-question/",
                 "click_to_play": false,
                 "click_to_play_prompt": "Click here please ..",
                 "description": "Master branch Scaffolded question",
@@ -418,7 +418,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/image/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -469,7 +469,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/video-player/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/video-player/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "New video player ",
@@ -551,7 +551,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image-question/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/image-question/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -602,7 +602,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image-question/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/image-question/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -658,7 +658,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/drawing-tool/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/drawing-tool/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -709,7 +709,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/drawing-tool/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/drawing-tool/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -760,7 +760,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/image/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -811,7 +811,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/drag-and-drop/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/drag-and-drop/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -893,7 +893,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/carousel/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/carousel/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -995,7 +995,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/graph/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/graph/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1163,7 +1163,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This shouldn't be used by any real activities it is still under development.",
