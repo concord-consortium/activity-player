@@ -5,6 +5,7 @@ import IconHelp from "../../assets/svg-icons/icon-help.svg";
 import { getStorage } from "../../storage/storage-facade";
 import IconComplete from "../../assets/svg-icons/icon-check-circle.svg";
 import IconIncomplete from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
+import IconSpin from "../../assets/svg-icons/icon-clock-spin.svg";
 
 import "./report-backup-options.scss";
 
@@ -30,7 +31,16 @@ export class ReportBackupOptions extends React.PureComponent<IProps, IState> {
     this.setState({ activityJSON: JSON.stringify(activityJSONComplete), filename });
   }
 
-  render() {
+  renderProgress() {
+    return(
+      <div className="report-backup-options" data-cy="report-backup-options">
+        <h2>Reporting/Backing Up My Work</h2>
+        <div className="sending-text">Sending ...</div>
+        <div className="sending-icon"> <IconSpin className="progress"/> </div>
+      </div>
+    );
+  }
+  renderButtons() {
     const { activityJSON, lastSend, filename, sending } = this.state;
     const bb = new Blob([activityJSON], { type: "text/plain" });
     const activityLink = window.URL.createObjectURL(bb);
@@ -49,8 +59,8 @@ export class ReportBackupOptions extends React.PureComponent<IProps, IState> {
       : () => null;
 
     const reportButtonLabel = sending
-      ? "sending ..."
-      : "Report My Work";
+      ? <>Sending...  &nbsp; <IconSpin className="progress"/></>
+      : <>Report My Work</>;
     const successLabel = lastSend != null
       ? lastSend ? <IconComplete className="complete"/> : <IconIncomplete className="incomplete"/>
       : "";
@@ -68,6 +78,14 @@ export class ReportBackupOptions extends React.PureComponent<IProps, IState> {
           <p>Back up your answers to create a desktop file that you can send to your teacher by email.</p>
         </div>
       </div>
+    );
+  }
+
+  render(){
+    const { sending } = this.state;
+    return (sending
+      ? this.renderProgress()
+      : this.renderButtons()
     );
   }
 }
