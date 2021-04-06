@@ -231,7 +231,7 @@ export const watchAllAnswers = (callback: (wrappedAnswer: IWrappedDBAnswer[]) =>
   });
 };
 
-export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
+function prepareAnswerForFireStore(answer: IExportableAnswerMetadata) {
   if (!portalData) { throw("No portal Data"); }
 
   let answerDocData: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata;
@@ -262,6 +262,11 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     };
     answerDocData = anonymousAnswer;
   }
+  return answerDocData;
+}
+
+export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
+  const answerDocData = prepareAnswerForFireStore(answer);
 
   // TODO: LARA stores a created field with the date the answer was created
   // I'm not sure how to do that easily in Firestore, we could at least add
@@ -271,8 +276,17 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
 
   requestTracker.registerRequest(firestoreSetPromise);
-
   return firestoreSetPromise;
+}
+
+export function batchCreateOrUpdateAnswers(answers: Array<IExportableAnswerMetadata>) {
+  const batch = app.firestore().batch();
+  for(const answer of answers) {
+    const answerDocData = prepareAnswerForFireStore(answer);
+    const doc = app.firestore().doc(answersPath(answer.id));
+    batch.set(doc, answerDocData, {merge: true});
+  }
+  return batch.commit();
 }
 
 export const getLearnerPluginStateDocId = (pluginId: number) => {

@@ -169,6 +169,9 @@ class FireStoreStorageProvider implements IStorageInterface {
   createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     return FirebaseImp.createOrUpdateAnswer(answer);
   }
+  batchCreateOrUpdateAnswers(answers: Array<IExportableAnswerMetadata>) {
+    return FirebaseImp.batchCreateOrUpdateAnswers(answers);
+  }
 
   async getLearnerPluginState(pluginId: number, resourceUrl: string) {
     if (getCachedLearnerPluginState(pluginId, resourceUrl)) {
@@ -442,6 +445,8 @@ class DexieStorageProvider implements IStorageInterface {
     if(portalData) {
       // DataSyncTracker will emit an event that tells plugins
       // that we are online, and its time to save data:
+      // NOTE: We wait 5 seconds to hear from plugins so saving will never
+      // complete in less than 5 seconds.
       const mySyncTracker = new DataSyncTracker(60 * 30, 5);
       const portalResourceUrl = portalData.resourceUrl;
       // Save student answers ...
@@ -451,10 +456,7 @@ class DexieStorageProvider implements IStorageInterface {
             .where({resource_url: portalResourceUrl})
             .toArray()
             .then((answers) => {
-              console.dir(answers);
-              for(const answer of answers) {
-                mySyncTracker.addPromise(fsProvider.createOrUpdateAnswer(answer));
-              }
+              mySyncTracker.addPromise(fsProvider.batchCreateOrUpdateAnswers(answers));
             });
       });
 
@@ -471,7 +473,7 @@ class DexieStorageProvider implements IStorageInterface {
               for(const pState of savedPluginStates) {
                 const {pluginId, state} = pState;
                 if(state) {
-                  // TODO: Look into FireStore Batch operations
+                  // We could opt for batch operations in the future...
                   mySyncTracker.addPromise(fsProvider.setLearnerPluginState(pluginId, portalResourceUrl, state));
                 }
               }
