@@ -152,9 +152,9 @@ const updateActivityUrls = (activity: Activity) => {
 
   walkObject(activity, (s, key) => {
     if (key === "base_url") {
-      const matches = s.match(/^((.*)question-interactives\/version\/)([^/]+)(\/(.*))$/);
+      const matches = s.match(/^.*\/question-interactives\/(version|branch)\/([^/]+)(\/(.*))$/);
       if (matches) {
-        return `${matches[1]}${config.questionInteractives.version}${matches[4]}`;
+        return `https://models-resources.concord.org/question-interactives/version/${config.questionInteractives.version}${matches[3]}`;
       }
     }
     return s;
