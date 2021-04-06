@@ -19,6 +19,10 @@ const ignoredGets: RegExp[] = [
   /https:\/\/learn\.(staging\.)?concord\.org\/.*/  // portal apis when launached from the portal
 ];
 
+// Disable the noisy workbox dev logs.
+// If you are debugging a stragegy issue turning these on can be useful
+(self as any).__WB_DISABLE_DEV_LOGS = true;
+
 /**
    Strip out the __WB_REVISION__ parameter
    Note this also escapes the parameters, so it needs to be applied to both the
@@ -248,16 +252,14 @@ addEventListener("message", (event) => {
   if (event.data) {
     switch (event.data.type) {
       case "SKIP_WAITING":
-        console.log("Calling skipWaiting() from service worker...");
         self.skipWaiting();
         break;
 
       case "GET_VERSION_INFO":
-        console.log("Got version info request");
         event.ports[0].postMessage(__VERSION_INFO__);
         break;
     }
   }
 });
 
-console.log("hello from the compiled service-worker!!!!!");
+console.log("Service Worker started. version: ", __VERSION_INFO__);
