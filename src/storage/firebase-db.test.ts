@@ -49,7 +49,7 @@ describe("Firestore", () => {
     expect(signInWithCustomTokenMock).toHaveBeenCalledWith("test");
   });
 
-  it("does nothing in the absence of metadata", () => {
+  it("Throws exception without metadata", () => {
     const embeddable = {
       ...DefaultManagedInteractive,
       authored_state: `{"version":1,"questionType":"open_response","prompt":"<p>Write something:</p>"}`,
@@ -62,10 +62,7 @@ describe("Firestore", () => {
     };
 
     const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableAnswerMetadata;
-
-    createOrUpdateAnswer(exportableAnswer);
-
-    expect(appMock.firestore().doc().set).not.toHaveBeenCalled();
+    expect(() => createOrUpdateAnswer(exportableAnswer) ).toThrow("No portal Data");
   });
 
   it("creates answers with the correct metadata for authenticated users", () => {
