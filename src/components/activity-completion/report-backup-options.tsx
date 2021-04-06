@@ -41,11 +41,11 @@ export class ReportBackupOptions extends React.PureComponent<IProps, IState> {
   }
   
   renderButtons() {
-    const { activityJSON, lastSend, filename, sending } = this.state;
+    const { activityJSON, lastSend, filename } = this.state;
     const bb = new Blob([activityJSON], { type: "text/plain" });
     const activityLink = window.URL.createObjectURL(bb);
     const storage = getStorage();
-    const reportButtonDisabled = (!storage.canSyncData()) || sending;
+    const reportButtonDisabled = !storage.canSyncData();
     const reportOptionClass = reportButtonDisabled
       ? "report-backup-option disabled"
       : "report-backup-option";
@@ -58,16 +58,13 @@ export class ReportBackupOptions extends React.PureComponent<IProps, IState> {
       }
       : () => null;
 
-    const reportButtonLabel = sending
-      ? <>Sending...  &nbsp; <IconSpin className="progress"/></>
-      : <>Report My Work</>;
     const successLabel = lastSend != null
       ? lastSend ? <IconComplete className="complete"/> : <IconIncomplete className="incomplete"/>
       : "";
     return (
         <>
           <div className={reportOptionClass}>
-            <button className="button" onClick={reportAction} disabled={reportButtonDisabled} data-cy="report-backup-upload-button"><IconFileUpload width={24} height={24} />{reportButtonLabel}{successLabel}</button>
+            <button className="button" onClick={reportAction} disabled={reportButtonDisabled} data-cy="report-backup-upload-button"><IconFileUpload width={24} height={24} />Report My Work{successLabel}</button>
             <IconHelp width={24} height={24} className="help" />
             <p>Share any work you have done in this activity with your teacher. You will have to be connected to the internet.</p>
           </div>
