@@ -57,7 +57,7 @@
     "build:dev": "webpack",
     "apo:dev:build": "npm-run-all clean build:dev",
     "clean": "rimraf dist",
-    "lint:others": "eslint -c \".eslintrc.build.js\" \"./src/**/*.{json,js,jsx,ts,tsx}\" --ignore-pattern \"/src/lara-plugin/**/*\" --ignore-pattern \"/src/lib/**/*\"",
+    "lint:others": "eslint -c \".eslintrc.build.js\" \"./src/**/*.{json,js,jsx,ts,tsx}\" --ignore-pattern \"/src/lara-plugin/**/*\" --ignore-pattern \"/src/lib/**/*\" --ignore-pattern \"/src/webpack-utils/**/*\" ",
     "lint:plugins": "eslint -c \"./src/lara-plugin/.eslintrc.js\" \"./src/lara-plugin\"",
     "lint:lib": "eslint -c \"./src/lib/.eslintrc.js\" \"./src/lib\"",
     "lint:build": "npm run lint:others && npm run lint:plugins && npm run lint:lib",
