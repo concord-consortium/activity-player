@@ -33,13 +33,13 @@ export class ReportBackupOptions extends React.PureComponent<IProps, IState> {
 
   renderProgress() {
     return(
-      <div className="report-backup-options" data-cy="report-backup-options">
-        <h2>Reporting/Backing Up My Work</h2>
+      <>
         <div className="sending-text">Sending ...</div>
         <div className="sending-icon"> <IconSpin className="progress"/> </div>
-      </div>
+      </>
     );
   }
+  
   renderButtons() {
     const { activityJSON, lastSend, filename, sending } = this.state;
     const bb = new Blob([activityJSON], { type: "text/plain" });
@@ -65,27 +65,31 @@ export class ReportBackupOptions extends React.PureComponent<IProps, IState> {
       ? lastSend ? <IconComplete className="complete"/> : <IconIncomplete className="incomplete"/>
       : "";
     return (
-      <div className="report-backup-options" data-cy="report-backup-options">
-        <h2>Reporting/Backing Up My Work</h2>
-        <div className={reportOptionClass}>
-          <button className="button" onClick={reportAction} disabled={reportButtonDisabled} data-cy="report-backup-upload-button"><IconFileUpload width={24} height={24} />{reportButtonLabel}{successLabel}</button>
-          <IconHelp width={24} height={24} className="help" />
-          <p>Share any work you have done in this activity with your teacher. You will have to be connected to the internet.</p>
-        </div>
-        <div className="report-backup-option">
-          <a className="button" href={activityLink} download={`${filename}.json`} data-cy="report-backup-download-button"><IconFileDownload width={24} height={24} />Back Up My Work</a>
-          <IconHelp width={24} height={24} className="help" />
-          <p>Back up your answers to create a desktop file that you can send to your teacher by email.</p>
-        </div>
-      </div>
+        <>
+          <div className={reportOptionClass}>
+            <button className="button" onClick={reportAction} disabled={reportButtonDisabled} data-cy="report-backup-upload-button"><IconFileUpload width={24} height={24} />{reportButtonLabel}{successLabel}</button>
+            <IconHelp width={24} height={24} className="help" />
+            <p>Share any work you have done in this activity with your teacher. You will have to be connected to the internet.</p>
+          </div>
+          <div className="report-backup-option">
+            <a className="button" href={activityLink} download={`${filename}.json`} data-cy="report-backup-download-button"><IconFileDownload width={24} height={24} />Back Up My Work</a>
+            <IconHelp width={24} height={24} className="help" />
+            <p>Back up your answers to create a desktop file that you can send to your teacher by email.</p>
+          </div>
+        </>
     );
   }
 
   render(){
     const { sending } = this.state;
-    return (sending
-      ? this.renderProgress()
-      : this.renderButtons()
+    return (
+      <div className="report-backup-options" data-cy="report-backup-options">
+        <h2>Reporting/Backing Up My Work</h2>
+        { sending
+          ? this.renderProgress()
+          : this.renderButtons()
+        }
+      </div>
     );
   }
 }
