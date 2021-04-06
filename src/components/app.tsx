@@ -409,7 +409,6 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const appVersionInfo = (window as any).__appVersionInfo;
     const {serviceWorkerVersionInfo} = this.state;
     const showOfflineNav = this.state.offlineMode && !!this.state.activity;
     return (
@@ -429,7 +428,7 @@ export class App extends React.PureComponent<IProps, IState> {
             { this.renderContent() }
             { this.state.showThemeButtons && <ThemeButtons/>}
             <div className="version-info" data-cy="version-info">
-              Application: {appVersionInfo || "No Version Info"}
+              Application: {__VERSION_INFO__}
               {serviceWorkerVersionInfo && ` | Service Worker: ${serviceWorkerVersionInfo}`}
             </div>
             <ModalDialog

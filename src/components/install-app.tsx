@@ -203,7 +203,6 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const appVersionInfo = (window as any).__appVersionInfo;
     const {serviceWorkerVersionInfo, offlineManifest, offlineManifestId,
       loadingOfflineManifest, installedApplicationUrls,
       installedContentUrls} = this.state;
@@ -229,7 +228,7 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
       <div>
         <h1>Installing Activity Player Offline</h1>
         <div className="version-info" data-cy="version-info">
-          Application: {appVersionInfo || "No Version Info"}
+          Application: {__VERSION_INFO__}
           {serviceWorkerVersionInfo && ` | Service Worker: ${serviceWorkerVersionInfo}`}
         </div>
         <h2>Application Files</h2>

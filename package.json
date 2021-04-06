@@ -38,7 +38,10 @@
       "json",
       "node"
     ],
-    "coverageDirectory": "coverage-jest"
+    "coverageDirectory": "coverage-jest",
+    "globals": {
+      "__VERSION_INFO__": "fake version for jest"
+    }
   },
   "nyc": {
     "extends": "@istanbuljs/nyc-config-typescript",
