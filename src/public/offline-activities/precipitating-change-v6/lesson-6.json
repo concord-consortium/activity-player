@@ -421,7 +421,7 @@
           "embeddable": {
             "name": "Measured distances",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>You have marked three fronts. Please answer the following questions: </p>\\n<p>(1) What distance did you measure between the fronts at April 21, 11am, and April 21, 9pm? </p>\\n<p>(2) What distance did you measure between the fronts at April 21, 9pm and April 22, 7am? </p>\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>You have marked three fronts. Please answer the following questions: </p>\\n<p>(1) What distance did you measure between the fronts at April 21, 11am and April 21, 9pm? </p>\\n<p>(2) What distance did you measure between the fronts at April 21, 9pm and April 22, 7am? </p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
