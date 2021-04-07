@@ -1059,7 +1059,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"a) Any product of the evaporation of water vapor up into the atmosphere such as rain snow, sleet, or hail.\",\"correct\":false},{\"id\":\"2\",\"content\":\"b) The act of a liquid turning into a solid.\",\"correct\":false},{\"id\":\"3\",\"content\":\"c) The act of a solid turning into a gas.\",\"correct\":false},{\"content\":\"d) Any product of the condensation of water vapor in the atmosphere that falls to the ground due to gravity such as rain, snow, sleet, or hail.\",\"correct\":true,\"id\":\"ec77134a-e481-44b6-ae6b-3c946755ecae\"}],\"enableCheckAnswer\":true}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"a) Any product of the evaporation of water vapor up into the atmosphere such as rain snow, sleet, or hail.\",\"correct\":false},{\"id\":\"2\",\"content\":\"b) The act of a liquid turning into a solid.\",\"correct\":false},{\"id\":\"3\",\"content\":\"c) The act of a solid turning into a gas.\",\"correct\":false},{\"content\":\"d) Any product of the condensation of water vapor in the atmosphere that falls to the ground due to gravity such as rain, snow, sleet, or hail.\",\"correct\":true,\"id\":\"ec77134a-e481-44b6-ae6b-3c946755ecae\"}],\"enableCheckAnswer\":true,\"prompt\":\"<p>What is the definition for the word “precipitation”?</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -1237,11 +1237,11 @@
       "component_label": "glossary",
       "approved_script": {
         "name": "Glossary",
-        "url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/plugin.js",
+        "url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.3/plugin.js",
         "label": "glossary",
         "description": "This plugin provides the glossary activity plugin",
         "version": 3,
-        "json_url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/manifest.json",
+        "json_url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.3/manifest.json",
         "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
       }
     }
