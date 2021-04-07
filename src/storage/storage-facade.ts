@@ -17,6 +17,9 @@ export interface IDBInitializer extends IInitStorageParams{
 }
 
 
+interface IAnswerWatcherCallback { (answer: IWrappedDBAnswer): void }
+type IQuestionWatchersRecord =  Record<string, Array<IAnswerWatcherCallback>>;
+
 export interface IWrappedDBAnswer {
   meta: IExportableAnswerMetadata;
   interactiveState: any;
@@ -116,7 +119,7 @@ export interface IStorageInterface {
   syncData(): Promise<boolean>,
 }
 
-class FireStoreStorageProvider implements IStorageInterface {
+export class FireStoreStorageProvider implements IStorageInterface {
   portalData: IPortalData|IAnonymousPortalData;
   isPreview: boolean;
   onSaveTimeout(handler: () => void) {
@@ -211,9 +214,7 @@ class FireStoreStorageProvider implements IStorageInterface {
 }
 
 
-interface IAnswerWatcherCallback { (answer: IWrappedDBAnswer): void }
-type IQuestionWatchersRecord =  Record<string, Array<IAnswerWatcherCallback>>;
-class DexieStorageProvider implements IStorageInterface {
+export class DexieStorageProvider implements IStorageInterface {
   portalData: IPortalData|IAnonymousPortalData;
   haveFireStoreConnection: boolean;
   answerWatchers: Record<string, IQuestionWatchersRecord>;
