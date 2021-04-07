@@ -47,7 +47,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Alex\",\"correct\":false},{\"id\":\"2\",\"content\":\"Delana\",\"correct\":false},{\"id\":\"3\",\"content\":\"Kalin\",\"correct\":false},{\"content\":\"Sage\",\"correct\":false,\"id\":\"89f32589-2b6d-47d3-8159-62a30d7f2a92\"}]}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Alex\",\"correct\":false},{\"id\":\"2\",\"content\":\"Delana\",\"correct\":false},{\"id\":\"3\",\"content\":\"Kalin\",\"correct\":false},{\"content\":\"Sage\",\"correct\":false,\"id\":\"89f32589-2b6d-47d3-8159-62a30d7f2a92\"}],\"prompt\":\"<p>Which student&#x27;s idea do you agree with the most?</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
