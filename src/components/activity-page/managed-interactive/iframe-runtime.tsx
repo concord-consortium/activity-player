@@ -335,6 +335,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     <div data-cy="iframe-runtime">
       <iframe ref={iframeRef} src={url} id={id} width="100%" height={height} frameBorder={0}
               allowFullScreen={true}
+              scrolling={"no"}
               allow="geolocation *; microphone *; camera *"
               title={iframeTitle}
       />
