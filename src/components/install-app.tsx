@@ -1,6 +1,6 @@
 import React from "react";
 import { isOfflineHost } from "../utilities/host-utils";
-import { Workbox } from "workbox-window/index";
+import { Workbox, messageSW } from "workbox-window/index";
 import queryString from "query-string";
 import { getOfflineManifest, saveOfflineManifestToOfflineActivities,
   cacheUrlsWithProgress } from "../offline-manifest-api";
@@ -15,13 +15,14 @@ interface IState {
   offlineManifestId?: string;
   installedApplicationUrls: {success: boolean; url: string}[];
   installedContentUrls: {success: boolean; url: string}[];
+  shouldStartInstalling: boolean;
 }
 interface IProps {
 }
 
 export class InstallApp extends React.PureComponent<IProps, IState> {
   private wb: Workbox;
-
+  private startedInstalling = false;
 
   public constructor(props: IProps) {
     super(props);
@@ -31,7 +32,8 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
       this.state = {
         loadingOfflineManifest: false,
         installedApplicationUrls: [],
-        installedContentUrls: []
+        installedContentUrls: [],
+        shouldStartInstalling: false
       };
       // TODO: show some useful message incase some one loads this page from a
       // non offline host, or in a browser without service worker support
@@ -46,7 +48,8 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
       loadingOfflineManifest,
       offlineManifestId,
       installedApplicationUrls: [],
-      installedContentUrls: []
+      installedContentUrls: [],
+      shouldStartInstalling: false
     };
 
     this.wb = new Workbox("service-worker.js");
@@ -60,30 +63,70 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
       this.wb.messageSkipWaiting();
     });
 
+    this.wb.addEventListener("activated", (event) => {
+      // Notes on when this fires:
+      // 1. On Page Load: this only fires if there isn't an active service worker.
+      //    So it will only fire the first time a user visits the page.
+      // 2. On SW Update: This will also fire when the page is already loaded and
+      //    a new version of the service worker becomes active.  In this case
+      //    Workbox is supposed to tell us with `event.isUpdate`
+      if (event.isUpdate) {
+        console.log("Workbox found an updated service worker has activated.");
+        if (!event.sw) {
+          // This should not happen
+          console.error("Worbox activated event without sw.", event);
+          this.setState({serviceWorkerVersionInfo: "Unknown worker activated..."});
+        } else {
+          this.getSWVersionInfoAndUpdateState(event.sw);
+        }
+      } else {
+        console.log("Workbox found the initial service worker has activated.");
+      }
+    });
+
     navigator.serviceWorker.ready.then(registration => {
-      // Cache the application as soon as there is an active service worker
-      // it doesn't matter if the serivce worker is controlling the page because
-      // the fetches are done by the service worker not the page
-      this.cacheApplication();
+      console.log("Browser says service worker is ready.");
+
+      // This promise should resolve on every page load once the service
+      // work becomes active.  If the page is loaded in a way without a SW then
+      // it would never resolve.
+
+      // The registration.active is supposed to be set based on the docs for the ready
+      // promise: https://developer.mozilla.org/en-US/docs/Web/API/ServiceWorkerContainer/ready
+      if (registration.active) {
+        this.getSWVersionInfoAndUpdateState(registration.active);
+      } else {
+        console.error("browser did not provide the active service worker");
+      }
     });
 
     this.wb.register().then((_registration) => {
       console.log("Workbox register() promise resolved", _registration);
-
-      console.log("Sending GET_VERSION_INFO to service worker...");
-      this.setState({serviceWorkerVersionInfo: "Checking..."});
-      this.wb.messageSW({type: "GET_VERSION_INFO"})
-        .then((versionInfo: unknown) => {
-          if (typeof versionInfo === "string") {
-            this.setState({serviceWorkerVersionInfo: versionInfo});
-          } else {
-            this.setState({serviceWorkerVersionInfo: "Invalid response!"});
-          }
-        })
-        .catch(() => {
-          this.setState({serviceWorkerVersionInfo: "No response!"});
-        });
     });
+  }
+
+  async getSWVersionInfoAndUpdateState(sw: ServiceWorker) {
+    this.setState({serviceWorkerVersionInfo: "Checking..."});
+
+    const serviceWorkerVersionInfo = await this.getSWVersionInfo(sw);
+    this.setState({serviceWorkerVersionInfo});
+    if (serviceWorkerVersionInfo === __VERSION_INFO__) {
+      this.setState({shouldStartInstalling: true});
+    }
+  }
+
+  async getSWVersionInfo(sw: ServiceWorker): Promise<string> {
+    try {
+      const versionInfo = await messageSW(sw, {type: "GET_VERSION_INFO"});
+      console.log("got service worker version info", versionInfo);
+      if (typeof versionInfo === "string") {
+        return versionInfo as string;
+      } else {
+        return "Invalid response!";
+      }
+    } catch (error) {
+      return "No response!";
+    }
   }
 
   addInstalledApplicationUrl(success:boolean, url:string) {
@@ -100,7 +143,13 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
     });
   }
 
-  cacheApplication() {
+  async cacheApplication() {
+    // double check we haven't already started
+    if (this.startedInstalling) {
+      return;
+    }
+
+    this.startedInstalling = true;
     const wbManifest = (window as any).__wbManifest;
 
     // FIXME: this caching is going to happen after the initial page load
@@ -164,7 +213,7 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
       workbox: this.wb,
       urls: appUrls,
       onCachingStarted: (urls) => {
-        console.log("stared caching application");
+        console.log("started caching application");
       },
       onUrlCached: (url) => {
         console.log(`cached url ${url}`);
@@ -205,7 +254,11 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
   render() {
     const {serviceWorkerVersionInfo, offlineManifest, offlineManifestId,
       loadingOfflineManifest, installedApplicationUrls,
-      installedContentUrls} = this.state;
+      installedContentUrls, shouldStartInstalling} = this.state;
+
+    if (shouldStartInstalling && !this.startedInstalling) {
+      this.cacheApplication();
+    }
 
     const installedItems = installedApplicationUrls.map(urlInfo => {
       return (
@@ -230,6 +283,9 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
         <div className="version-info" data-cy="version-info">
           Application: {__VERSION_INFO__}
           {serviceWorkerVersionInfo && ` | Service Worker: ${serviceWorkerVersionInfo}`}
+        </div>
+        <div>
+          { !shouldStartInstalling && "Waiting for service worker to update..." }
         </div>
         <h2>Application Files</h2>
         {installedItems}
