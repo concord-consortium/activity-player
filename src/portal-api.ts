@@ -128,7 +128,7 @@ interface PortalStudentJWT extends BasePortalJWT {
   offering_id: number;
 }
 
-type PortalJWT = PortalStudentJWT;     // eventually may include other user types
+export type PortalJWT = PortalStudentJWT;     // eventually may include other user types
 
 interface BasePortalFirebaseJWT {
   alg: string;
