@@ -1,0 +1,188 @@
+{
+  "description": "<p>Modeling Fronts: How do fronts move?</p>",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Alaska 2021 - Lesson 6: Post-thoughts - What Do You Think?",
+  "notes": "",
+  "project_id": null,
+  "related": "",
+  "runtime": "Activity Player",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson5.jpg?v2",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "Precipitating Change",
+  "pages": [
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 143611,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Page 1",
+      "position": 1,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p><strong>How Do We Make An Accurate Model to Predict Weather?</strong></p>\r\n<p>Ms. Tevuk&rsquo;s students wrote rules for their computer model to predict weather in Alaska. Then they tested their model to see how well it worked. They found their predictions were only right about half the time. The students had different ideas for improving the model.</p>\r\n<p>Here are the students&rsquo; ideas:</p>\r\n<table cellpadding=\"30\">\r\n<tbody>\r\n<tr>\r\n<th colspan=\"2\"><strong>Alex</strong></th>\r\n<th colspan=\"2\"><strong>Delana</strong></th>\r\n</tr>\r\n<tr>\r\n<td width=\"88\"><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alex%206.png\" width=\"72\" height=\"90\" align=\"center\" hspace=\"10\" vspace=\"10\" /></td>\r\n<td style=\"padding: 10px;\" width=\"350\">We need to run the model longer. The longer you run a computer model the better the prediction will be.</td>\r\n<td width=\"88\"><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Delana6.png\" width=\"70\" height=\"90\" align=\"center\" hspace=\"10\" vspace=\"10\" /></td>\r\n<td style=\"padding: 10px;\" width=\"350\">There&rsquo;s no way to make a computer model that can predict the weather. Computer models aren&rsquo;t the real world, so they can&rsquo;t predict what will happen in the real world.</td>\r\n</tr>\r\n</tbody>\r\n<tbody>\r\n<tr>\r\n<th colspan=\"2\"><strong>Kalin</strong></th>\r\n<th colspan=\"2\"><strong>Sage</strong></th>\r\n</tr>\r\n<tr>\r\n<td width=\"88\">\r\n<p><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Kalin1.png\" width=\"72\" height=\"90\" align=\"center\" hspace=\"10\" vspace=\"10\" /></p>\r\n</td>\r\n<td style=\"padding: 10px;\" width=\"350\">We should keep working on the rules based on the science of weather prediction. If we get the science right, the model will be accurate.</td>\r\n<td width=\"88\">\r\n<p><img src=\"https://project-resources.concord.org/precipitatingchange/Sage4.png\" width=\"72\" height=\"90\" align=\"center\" hspace=\"8\" vspace=\"8\" /></p>\r\n</td>\r\n<td style=\"padding: 10px;\" width=\"350\">We should keep working on the rules and testing the model predictions using Alaska weather data. That way we&rsquo;ll know the model works.</td>\r\n</tr>\r\n</tbody>\r\n</table>",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "147922-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Alex\",\"correct\":false},{\"id\":\"2\",\"content\":\"Delana\",\"correct\":false},{\"id\":\"3\",\"content\":\"Kalin\",\"correct\":false},{\"content\":\"Sage\",\"correct\":false,\"id\":\"89f32589-2b6d-47d3-8159-62a30d7f2a92\"}],\"prompt\":\"<p>Which student&#x27;s idea do you agree with the most?</p>\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "1696-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Why do you think the choice you picked is the best idea for improving the model? Please explain your reasoning.</p>\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "1697-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 144909,
+      "is_completion": true,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "Show My Work",
+      "position": 2,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": []
+    }
+  ],
+  "plugins": [
+    {
+      "description": "",
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v2.json?__noUrlRewrite\"}",
+      "approved_script_label": "glossary",
+      "component_label": "glossary",
+      "approved_script": {
+        "name": "Glossary",
+        "url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.3/plugin.js",
+        "label": "glossary",
+        "description": "This plugin provides the glossary activity plugin",
+        "version": 3,
+        "json_url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.3/manifest.json",
+        "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
+      }
+    }
+  ],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

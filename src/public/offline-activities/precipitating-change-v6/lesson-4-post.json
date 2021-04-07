@@ -1,0 +1,188 @@
+{
+  "description": "<p>Building Rules: Where does it rain?</p>",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Alaska 2021 - Lesson 4: Post-thoughts - What Do You Think?",
+  "notes": "",
+  "project_id": 25,
+  "related": "",
+  "runtime": "Activity Player",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson3.png",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "Precipitating Change",
+  "pages": [
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 143598,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Page 1",
+      "position": 1,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p><strong>What Are the Rules for Fronts and Precipitation?</strong></p>\r\n<p>Ms. Tevuk&rsquo;s students need to write a rule for their computer model to predict areas of precipitation on a map showing weather fronts. They have different ideas for what the rule should be.</p>\r\n<p>Here are the students&rsquo; ideas: The rule should be that precipitation happens&hellip;</p>\r\n<table cellpadding=\"30\">\r\n<tbody>\r\n<tr>\r\n<th colspan=\"2\"><strong>Alex</strong></th>\r\n<th colspan=\"2\"><strong>Delana</strong></th>\r\n</tr>\r\n<tr>\r\n<td width=\"88\"><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alex4.png\" width=\"72\" height=\"90\" align=\"center\" hspace=\"10\" vspace=\"10\" /></td>\r\n<td style=\"padding: 10px;\" width=\"350\"><strong>with a warm front coming in</strong> because warm air moves in and mixes with cold air, which leads to precipitation. You don&rsquo;t get precipitation with a cold front because cold air is dry.</td>\r\n<td width=\"88\"><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Delana4.png\" width=\"70\" height=\"90\" align=\"center\" hspace=\"10\" vspace=\"10\" /></td>\r\n<td style=\"padding: 10px;\" width=\"350\"><strong>with both cold fronts and warm fronts coming in</strong> because in both cases warm air and cold air meet, leading to condensation and precipitation.</td>\r\n</tr>\r\n</tbody>\r\n<tbody>\r\n<tr>\r\n<th colspan=\"2\"><strong>Kalin</strong></th>\r\n<th colspan=\"2\"><strong>Sage</strong></th>\r\n</tr>\r\n<tr>\r\n<td width=\"88\">\r\n<p><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Kalin6.png\" width=\"72\" height=\"90\" align=\"center\" hspace=\"10\" vspace=\"10\" /></p>\r\n</td>\r\n<td style=\"padding: 10px;\" width=\"350\"><strong>with a cold front coming in</strong> because it&rsquo;s usually rainy or snowy when it&rsquo;s cold out. You don&rsquo;t get precipitation with a warm front because it&rsquo;s warm when the sun is shining.</td>\r\n<td width=\"88\">\r\n<p><img src=\"https://project-resources.concord.org/precipitatingchange/Sage2.png\" width=\"72\" height=\"90\" align=\"center\" hspace=\"8\" vspace=\"8\" /></p>\r\n</td>\r\n<td style=\"padding: 10px;\" width=\"350\"><strong>after a cold front has passed by</strong> because the cold air the front leaves behind is humid, which leads to precipitation.</td>\r\n</tr>\r\n</tbody>\r\n</table>",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "147904-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Alex\",\"correct\":false},{\"id\":\"2\",\"content\":\"Delana\",\"correct\":false},{\"id\":\"3\",\"content\":\"Kalin\",\"correct\":false},{\"content\":\"Sage\",\"correct\":false,\"id\":\"6bd7ac18-6b07-4996-9e4b-199430b43e0c\"}]}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "1692-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Why do you think the rule you picked is the best one for predicting precipitation? Please explain your reasoning.</p>\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "1693-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 144905,
+      "is_completion": true,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "Show My Work",
+      "position": 2,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": []
+    }
+  ],
+  "plugins": [
+    {
+      "description": "",
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v2.json?__noUrlRewrite\"}",
+      "approved_script_label": "glossary",
+      "component_label": "glossary",
+      "approved_script": {
+        "name": "Glossary",
+        "url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.3/plugin.js",
+        "label": "glossary",
+        "description": "This plugin provides the glossary activity plugin",
+        "version": 3,
+        "json_url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.3/manifest.json",
+        "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
+      }
+    }
+  ],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}
