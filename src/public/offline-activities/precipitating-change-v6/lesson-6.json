@@ -421,7 +421,7 @@
           "embeddable": {
             "name": "Measured distances",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>You have marked three fronts. Please answer the following three questions: </p>\\n<p>(1) What distance did you measure between the fronts at April 21, 11am, and April 21, 9pm? </p>\\n<p>(2) What distance did you measure between the fronts at April 21, 9pm and April 22, 7am? </p>\\n<p>(3) What is the average distance between the fronts?</p>\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>You have marked three fronts. Please answer the following questions: </p>\\n<p>(1) What distance did you measure between the fronts at April 21, 11am, and April 21, 9pm? </p>\\n<p>(2) What distance did you measure between the fronts at April 21, 9pm and April 22, 7am? </p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -472,7 +472,7 @@
           "embeddable": {
             "name": "Speed of the front",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>How fast is the front moving in kilometers per hour? Please show your calculation.</p>\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>What is the average speed of the front in kilometers per hour?  Please show your work.</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -574,7 +574,7 @@
           "embeddable": {
             "name": "Testing your prediction with the Reveal",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Click <em>Run</em> again and then Reveal April 23, am. Where is the front? Was your prediction correct? Please describe.</p>\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Click <em>Run</em> again and then Reveal April 23, 7am. Where is the front? Was your prediction correct? Please describe.</p>\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
