@@ -169,6 +169,9 @@ class FireStoreStorageProvider implements IStorageInterface {
   createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     return FirebaseImp.createOrUpdateAnswer(answer);
   }
+  batchCreateOrUpdateAnswers(answers: Array<IExportableAnswerMetadata>) {
+    return FirebaseImp.batchCreateOrUpdateAnswers(answers);
+  }
 
   async getLearnerPluginState(pluginId: number, resourceUrl: string) {
     if (getCachedLearnerPluginState(pluginId, resourceUrl)) {
@@ -437,36 +440,28 @@ class DexieStorageProvider implements IStorageInterface {
     return Promise.resolve(fsProvider);
   }
 
-  // This is hack to simulate requests taking some time.
-  fakeWaitingPromise(timeToResolve=5000) {
-    return new Promise((res) => window.setTimeout(()=> res(), timeToResolve));
-  }
-
   syncData(): Promise<boolean> {
     const portalData = this.portalData;
     if(portalData) {
       // DataSyncTracker will emit an event that tells plugins
       // that we are online, and its time to save data:
+      // NOTE: We wait 5 seconds to hear from plugins so saving will never
+      // complete in less than 5 seconds.
       const mySyncTracker = new DataSyncTracker(60 * 30, 5);
       const portalResourceUrl = portalData.resourceUrl;
       // Save student answers ...
-      const answerSavingPromise = this.ensureFirebaseConnection()
+      this.ensureFirebaseConnection()
         .then((fsProvider)  => {
           dexieStorage.answers
             .where({resource_url: portalResourceUrl})
             .toArray()
             .then((answers) => {
-              console.dir(answers);
-              for(const answer of answers) {
-                // TODO: Look into FireStore Batch operations
-                fsProvider.createOrUpdateAnswer(answer);
-              }
-              return this.fakeWaitingPromise();
+              mySyncTracker.addPromise(fsProvider.batchCreateOrUpdateAnswers(answers));
             });
       });
 
       // Save learner plugin states ...
-      const learnerPluginStateSavingPromise = this.ensureFirebaseConnection()
+      this.ensureFirebaseConnection()
         .then((fsProvider)  => {
           dexieStorage
             .savedPluginStates
@@ -478,16 +473,12 @@ class DexieStorageProvider implements IStorageInterface {
               for(const pState of savedPluginStates) {
                 const {pluginId, state} = pState;
                 if(state) {
-                  // TODO: Look into FireStore Batch operations
-                  fsProvider.setLearnerPluginState(pluginId, portalResourceUrl, state);
+                  // We could opt for batch operations in the future...
+                  mySyncTracker.addPromise(fsProvider.setLearnerPluginState(pluginId, portalResourceUrl, state));
                 }
               }
-              return this.fakeWaitingPromise();
             });
       });
-
-      mySyncTracker.addPromise(answerSavingPromise);
-      mySyncTracker.addPromise(learnerPluginStateSavingPromise);
       return mySyncTracker.start()
         .catch((e) => {
           console.error("Could not sync local indexDB to FireStore:");

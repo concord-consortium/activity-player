@@ -20,6 +20,8 @@ import { docToWrappedAnswer, IWrappedDBAnswer } from "./storage-facade";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
+export const kLocalApplicationName = "activity-player";
+
 let portalData: IPortalData | IAnonymousPortalData | null;
 
 const answersPath = (answerId?: string) =>
@@ -81,7 +83,19 @@ let app: firebase.app.App;
 // preview mode will run Firestore in offline mode and clear it (as otherwise the local data is persisted).
 export async function initializeDB({ name, preview }: { name: FirebaseAppName, preview: boolean }) {
   const config = configurations[name];
-  app = firebase.initializeApp(config, "activity-player");
+  try {
+    // The API will throw an exception if the app doesn't exist yet:
+    // See: https://firebase.google.com/docs/reference/js/firebase.app
+    const existing = firebase.app(kLocalApplicationName);
+    if(existing) {
+      console.debug(`Firebase-db.ts: found existing application to use ${kLocalApplicationName}`);
+      app = existing;
+      return existing;
+    }
+  } catch {
+    console.debug(`Firebase-db.ts: no existing application for ${kLocalApplicationName}`);
+  }
+  app = firebase.initializeApp(config, kLocalApplicationName);
 
   // Save action seems to be failing when you try to save a document with a property explicitly set to undefined value.
   // `null` or empty string are fine. ActivityPlayer was not saving some interactive states because of that.
@@ -217,10 +231,8 @@ export const watchAllAnswers = (callback: (wrappedAnswer: IWrappedDBAnswer[]) =>
   });
 };
 
-export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
-  if (!portalData) {
-    return;
-  }
+function prepareAnswerForFireStore(answer: IExportableAnswerMetadata) {
+  if (!portalData) { throw("No portal Data"); }
 
   let answerDocData: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata;
 
@@ -250,6 +262,11 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     };
     answerDocData = anonymousAnswer;
   }
+  return answerDocData;
+}
+
+export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
+  const answerDocData = prepareAnswerForFireStore(answer);
 
   // TODO: LARA stores a created field with the date the answer was created
   // I'm not sure how to do that easily in Firestore, we could at least add
@@ -259,8 +276,17 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
     .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
 
   requestTracker.registerRequest(firestoreSetPromise);
-
   return firestoreSetPromise;
+}
+
+export function batchCreateOrUpdateAnswers(answers: Array<IExportableAnswerMetadata>) {
+  const batch = app.firestore().batch();
+  for(const answer of answers) {
+    const answerDocData = prepareAnswerForFireStore(answer);
+    const doc = app.firestore().doc(answersPath(answer.id));
+    batch.set(doc, answerDocData, {merge: true});
+  }
+  return batch.commit();
 }
 
 export const getLearnerPluginStateDocId = (pluginId: number) => {
