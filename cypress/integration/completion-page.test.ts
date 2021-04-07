@@ -1,7 +1,6 @@
 import ActivityPage from "../support/elements/activity-page";
 
 const activityPage = new ActivityPage;
-const activity1Title = "Question-Interactives Activity Player";
 const activity2Title = "Activity Player Copy of LARA Smoke Test v2";
 
 context("Test the overall app", () => {
