@@ -1,0 +1,231 @@
+{
+  "description": "",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Alaska 2021 - Lesson 2: Post-thoughts - What Do You Think?",
+  "notes": "",
+  "project_id": 25,
+  "related": "",
+  "runtime": "Activity Player",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "https://learn-resources.concord.org/images/stem-resources/icons/pc-lesson2.png",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "Precipitating Change",
+  "pages": [
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 143587,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Page 1",
+      "position": 1,
+      "show_header": true,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "<p><strong>How Should We Estimate the Temperature?</strong></p>\r\n<p>Ms. Tevuk&rsquo;s class is studying&nbsp;weather. The students will make a computer model to predict&nbsp;weather&nbsp;in Alaska.</p>\r\n<p>Four students in Ms. Tevuk&rsquo;s class are figuring out how to estimate the temperature of a location. The students are looking at the map below and have different ideas for estimating the temperature at the location marked X using the recorded temperatures of 31˚ and 59˚.</p>\r\n<p><img class=\"\" style=\"display: block; margin-left: auto; margin-right: auto;\" src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/L2AssessmentQ.png\" alt=\"\" width=\"550\" height=\"62\" /></p>\r\n<p>Here are the students&rsquo; ideas:</p>\r\n<table cellpadding=\"30\">\r\n<tbody>\r\n<tr>\r\n<th colspan=\"2\"><strong>Alex</strong></th>\r\n<th colspan=\"2\"><strong>Delana</strong></th>\r\n</tr>\r\n<tr>\r\n<td width=\"88\"><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Alex1.png\" width=\"60\" height=\"88\" align=\"center\" hspace=\"10\" vspace=\"10\" /></td>\r\n<td style=\"padding: 10px;\" width=\"350\">We should use the number that is exactly halfway in between 31˚and 59˚. That&rsquo;s the most exact way to estimate.</td>\r\n<td width=\"88\"><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Delana1.png\" width=\"65\" height=\"92\" align=\"center\" hspace=\"10\" vspace=\"10\" /></td>\r\n<td style=\"padding: 10px;\" width=\"350\">We should mark a number line along the map with the estimate in each square going up the same amount between 31˚ and 59˚. That&rsquo;d be the best estimate.</td>\r\n</tr>\r\n</tbody>\r\n<tbody>\r\n<tr>\r\n<th colspan=\"2\"><strong>Kalin</strong></th>\r\n<th colspan=\"2\"><strong>Sage</strong></th>\r\n</tr>\r\n<tr>\r\n<td width=\"88\">\r\n<p><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Kalin.png\" width=\"65\" height=\"88\" align=\"center\" hspace=\"10\" vspace=\"10\" /></p>\r\n</td>\r\n<td style=\"padding: 10px;\" width=\"350\">It doesn&rsquo;t make sense to estimate the temperature at the X. We&rsquo;d need to go there and measure the temperature. You can&rsquo;t be confident unless you measure it.</td>\r\n<td width=\"88\">\r\n<p><img src=\"https://project-resources.concord.org/precipitatingchange/2019_20_Curriculum_%20Documents/PrecipitatingChangeClassHandouts-AK/Sage1.png\" width=\"65\" height=\"92\" align=\"center\" hspace=\"8\" vspace=\"8\" /></p>\r\n</td>\r\n<td style=\"padding: 10px;\" width=\"350\">The X is closer to the 59˚ than to the 31˚, so let&rsquo;s choose a number closer to 59˚. That&rsquo;s the best we can do because we don&rsquo;t know what&rsquo;s happening with the weather in those places.</td>\r\n</tr>\r\n</tbody>\r\n</table>",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "147889-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Alex\",\"correct\":false},{\"id\":\"2\",\"content\":\"Delana\",\"correct\":false},{\"id\":\"3\",\"content\":\"Kalin\",\"correct\":false},{\"content\":\"Sage\",\"correct\":false,\"id\":\"48ed2c41-2f41-4d5e-b70c-89cc42e2eb72\"}],\"prompt\":\"<p>Which student’s idea do you agree with the most?</p>\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "98f3d10aa7f2fce6bdeb0ecda339fa56dc80b37c",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Multiple Choice",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "1684-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "name": "",
+            "url_fragment": null,
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Why do you think the choice you picked is the best for estimating the temperature? Please explain your reasoning.</p>\"}",
+            "is_hidden": false,
+            "is_full_width": true,
+            "show_in_featured_question_report": true,
+            "inherit_aspect_ratio_method": true,
+            "custom_aspect_ratio_method": "DEFAULT",
+            "inherit_native_width": true,
+            "custom_native_width": 576,
+            "inherit_native_height": true,
+            "custom_native_height": 435,
+            "inherit_click_to_play": true,
+            "custom_click_to_play": false,
+            "inherit_full_window": true,
+            "custom_full_window": false,
+            "inherit_click_to_play_prompt": true,
+            "custom_click_to_play_prompt": null,
+            "inherit_image_url": true,
+            "custom_image_url": null,
+            "library_interactive": {
+              "hash": "512e0a0a74a0e1cd6247a8ec98fa94dabb8a6132",
+              "data": {
+                "aspect_ratio_method": "DEFAULT",
+                "authoring_guidance": "",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.2.0-pre.1/open-response/",
+                "click_to_play": false,
+                "click_to_play_prompt": null,
+                "description": "",
+                "enable_learner_state": true,
+                "full_window": false,
+                "has_report_url": false,
+                "image_url": null,
+                "name": "Open Response",
+                "native_height": 435,
+                "native_width": 576,
+                "no_snapshots": false,
+                "show_delete_data_button": false,
+                "thumbnail_url": "",
+                "customizable": true,
+                "authorable": true
+              }
+            },
+            "type": "ManagedInteractive",
+            "ref_id": "1685-ManagedInteractive",
+            "linked_interactives": []
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "custom": false,
+            "enable_check_answer": false,
+            "give_prediction_feedback": false,
+            "hint": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "is_prediction": false,
+            "layout": "vertical",
+            "multi_answer": false,
+            "name": "Multiple Choice Question element",
+            "prediction_feedback": "",
+            "prompt": "<p>Which student&rsquo;s idea do you agree with the most?</p>",
+            "show_as_menu": false,
+            "show_in_featured_question_report": true,
+            "choices": [
+              {
+                "choice": "Alex",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "Delana",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "Kalin",
+                "is_correct": false,
+                "prompt": ""
+              },
+              {
+                "choice": "Sage",
+                "is_correct": false,
+                "prompt": ""
+              }
+            ],
+            "type": "Embeddable::MultipleChoice",
+            "ref_id": "17136-Embeddable::MultipleChoice"
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 144901,
+      "is_completion": true,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "Show My Work",
+      "position": 2,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": []
+    }
+  ],
+  "plugins": [
+    {
+      "description": "",
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"upZ83jqTZAZuoQqRAfAb\",\"s3Url\":\"https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v2.json?__noUrlRewrite\"}",
+      "approved_script_label": "glossary",
+      "component_label": "glossary",
+      "approved_script": {
+        "name": "Glossary",
+        "url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/plugin.js",
+        "label": "glossary",
+        "description": "This plugin provides the glossary activity plugin",
+        "version": 3,
+        "json_url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/manifest.json",
+        "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
+      }
+    }
+  ],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}
