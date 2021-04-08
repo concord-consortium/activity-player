@@ -1,11 +1,6 @@
 import { dexieStorage } from "./storage/dexie-storage";
-import { OfflineActivity, OfflineManifest, OfflineManifestActivity } from "./types";
+import { OfflineActivity, OfflineManifest } from "./types";
 import { Workbox } from "workbox-window/index";
-
-export interface OfflineManifestAuthoringData {
-  activities: OfflineManifestActivity[];
-  cacheList: string[]
-}
 
 export const getOfflineManifestUrl = (id: string): string => {
   if (/^\s*https?:\/\//.test(id)) {
@@ -93,67 +88,6 @@ export const cacheOfflineManifest = (options: CacheOfflineManifestOptions) => {
   const urls = offlineManifest.activities.map(a => a.contentUrl).concat(offlineManifest.cacheList);
   const cacheUrlsOptions = {workbox, urls, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished};
   return cacheUrlsWithProgress(cacheUrlsOptions);
-};
-
-export const OfflineManifestAuthoringIdKey = "offlineManifestAuthoringId";
-export const OfflineManifestAuthoringDataKeyPrefix = "offlineManifestAuthoringData:";
-
-export const setOfflineManifestAuthoringId = (value: string | undefined) => {
-  if (value !== undefined) {
-    window.localStorage.setItem(OfflineManifestAuthoringIdKey, value);
-  }
-};
-
-export const clearOfflineManifestAuthoringId = () => {
-  window.localStorage.removeItem(OfflineManifestAuthoringIdKey);
-};
-
-export const getOfflineManifestAuthoringId = (): string|undefined => {
-  return window.localStorage.getItem(OfflineManifestAuthoringIdKey) || undefined;
-};
-
-export const getOfflineManifestAuthoringData = (authoringId: string): OfflineManifestAuthoringData => {
-  try {
-    const key = `${OfflineManifestAuthoringDataKeyPrefix}:${authoringId}`;
-    return JSON.parse(window.localStorage.getItem(key) || "fail");
-  } catch (e) {
-    return ({
-      activities: [],
-      cacheList: []
-    });
-  }
-};
-
-export const setOfflineManifestAuthoringData = (authoringId: string, data: OfflineManifestAuthoringData) => {
-  const key = `${OfflineManifestAuthoringDataKeyPrefix}:${authoringId}`;
-  window.localStorage.setItem(key, JSON.stringify(data));
-};
-
-export const clearOfflineManifestAuthoringData = (authoringId: string) => {
-  const key = `${OfflineManifestAuthoringDataKeyPrefix}:${authoringId}`;
-  window.localStorage.removeItem(key);
-};
-
-export const getOfflineManifestAuthoringDownloadJSON = (name: string, data: OfflineManifestAuthoringData): OfflineManifest => {
-  const {activities, cacheList} = data;
-  return { name, activities, cacheList };
-};
-
-export const mergeOfflineManifestWithAuthoringData = (offlineManifest: OfflineManifest, authoringData: OfflineManifestAuthoringData) => {
-  const {activities, cacheList} = authoringData;
-  offlineManifest.activities.forEach(activity => {
-    // Note: if the contentUrl has changed this won't update it in the manifest
-    // but in that case it seems reasonable that the author will just manually fix it.
-    if (!activities.find(a => a.resourceUrl === activity.resourceUrl)) {
-      activities.push(activity);
-    }
-  });
-  offlineManifest.cacheList.forEach(url => {
-    if (!cacheList.find(item => item === url)) {
-      cacheList.push(url);
-    }
-  });
-  return {activities, cacheList};
 };
 
 export const saveOfflineManifestToOfflineActivities = async (offlineManifest: OfflineManifest) => {
