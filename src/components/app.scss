@@ -1,6 +1,10 @@
 @import "./vars.scss";
 @import "./tinymce.scss";
 
+body {
+  -webkit-overflow-scrolling: touch;
+}
+
 #app {
   position: fixed;
   top: 0;
