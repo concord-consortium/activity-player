@@ -211,6 +211,21 @@ If the activity uses a master branch version of question-interactives. The manif
 
 When new code is added to the master branch the old files are deleted and new files are added so now the master branch question-interactive index.html will refer to a different js file such as: `/models-resources/question-interactivs/branch/master/index.def456.js`.  This file will not have been cached during the manifest installation process so when running offline the question-interactives won't be able to find its javascript.  Because of this it is always best to refer to versioned interactives which we know will not be modified, so the list of files in the manifest will always be correct.
 
+### Updating a Manifest
+
+Once you have the list of activities in the manifest you can use `npm run update-offline-manifest <manifest-name>` to update the activity content and regenerate the cache list in the manifest based on the content of the activities. By default the script will download the activities from LARA based on their `resourceUrl` and update the activity files stored in this repository based on the `contentUrl`. Additionally the script has two options:
+- `--bump-version` this will duplicate the manifest and its associated activities with a new version name. So if it was `project-v1` the new one would be `project-v2`.
+- `--no-fetch-activities` don't download the activities from LARA, just use the existing activities. The script might still modify the existing activities because it makes local changes.
+
+To pass options through `npm run` an addition `--` is required so an example of bumping the version is
+
+    npm run update-offline-manifest -- --bump-version precipitating-change-v6 
+
+Besides regenerating the cacheList, the script will modify the activities:
+- remove the teacher edition embeddables
+- update the glossary plugin urls
+- update the question-interactive urls
+
 ### Assignments to support Offline Manifests
 
 The student or teacher will need to install the files from the offline manifest before the student goes offline.
