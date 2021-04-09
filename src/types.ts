@@ -272,10 +272,19 @@ export interface OfflineManifestActivity {
   resourceUrl: string;
   contentUrl: string;
 }
+
+export interface OfflineManifestCacheEntry {
+  url: string;
+  revision?: string;
+  size?: number;
+}
+
+export type OfflineManifestCacheList = (string|OfflineManifestCacheEntry)[];
+
 export interface OfflineManifest {
-  name: string
+  name: string;
   activities: OfflineManifestActivity[];
-  cacheList: string[]
+  cacheList: OfflineManifestCacheList;
 }
 
 export interface OfflineActivity extends OfflineManifestActivity {

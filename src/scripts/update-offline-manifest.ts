@@ -1,6 +1,7 @@
 import fs from "fs";
 import path from "path";
-import { Activity, OfflineManifest, OfflineManifestActivity } from "../types";
+import { Activity, OfflineManifest, OfflineManifestActivity,
+  OfflineManifestCacheEntry, OfflineManifestCacheList } from "../types";
 import request from "superagent";
 import { getAllUrlsInActivity, removeDuplicateUrls, rewriteProxiableIframeUrls,
   walkObject } from "../utilities/activity-utils";
@@ -27,6 +28,7 @@ interface OutputInfo {
 
 let bumpVersion = false;
 let fetchActivities = true;
+let printDomainPaths = false;
 
 const die = (message: string) => {
   console.error(message);
@@ -41,6 +43,7 @@ const getManifestPath = () => {
   const filename = nonOptions[0];
   bumpVersion = options.indexOf("--bump-version") !== -1;
   fetchActivities = !(options.indexOf("--no-fetch-activities") !== -1);
+  printDomainPaths = (options.indexOf("--print-domain-paths") !== -1);
 
   if (!filename) {
     die("Usage: npm run update-offline-manifest <offline-manifest-filename>");
@@ -92,7 +95,7 @@ const getActivity = async (offlineActivity: OfflineManifestActivity): Promise<Ac
   return null;
 };
 
-const maybeProxyUrl = (url: string) => /^models-resources\//.test(url) ? `http://activity-player-offline.concord.org/${url}` : url;
+const maybeProxyUrl = (url: string) => /^models-resources\//.test(url) ? `https://activity-player-offline.concord.org/${url}` : url;
 
 const getOutputInfo = (manifestPath: string): OutputInfo => {
   const {dir, base} = path.parse(manifestPath);
@@ -179,7 +182,8 @@ const removeTeacherEdition = (activity: Activity) => {
   });
 };
 
-const saveUpdatedManifest = (outputInfo: OutputInfo, sourceManifest: OfflineManifest, cacheList: string[]) => {
+const saveUpdatedManifest = (outputInfo: OutputInfo, sourceManifest: OfflineManifest,
+  cacheList: OfflineManifestCacheList) => {
 
   let activities = sourceManifest.activities;
   if (bumpVersion) {
@@ -190,7 +194,7 @@ const saveUpdatedManifest = (outputInfo: OutputInfo, sourceManifest: OfflineMani
     activities,
     cacheList
   };
-  console.log(`   saving ${outputInfo.outputManifestPath}...`);
+  console.log(`\nSaving ${outputInfo.outputManifestPath}...`);
   fs.writeFileSync(outputInfo.outputManifestPath, JSON.stringify(newOfflineManifest, null, 2));
 };
 
@@ -233,35 +237,93 @@ const main = async () => {
   cacheList = removeDuplicateUrls(cacheList);
   cacheList.sort();
 
-  // const oldMissingUrls = manifestJSON.cacheList.filter(url => cacheList.indexOf(url) === -1);
-  // const allUrls = cacheList.concat(oldMissingUrls);
-  // console.log(`\nFound ${cacheList.length} unique urls in content and ${oldMissingUrls.length} urls in manifest cache list not in activities`);
   console.log(`\nFound ${cacheList.length} unique urls in content`);
+  console.log("\nGetting headers of all urls...");
 
-  saveUpdatedManifest(outputInfo, manifestJSON, cacheList);
-
-  console.log("\nTesting all urls...");
-
-  const badUrls: {url: string, status: number}[] = [];
-  for (let url of cacheList) {
-    url = maybeProxyUrl(url);
-    console.log("  ", url);
+  const badUrls: {description: string, error: any}[] = [];
+  const updatedCacheList: OfflineManifestCacheList = [];
+  for (const url of cacheList) {
+    const urlToCheck = maybeProxyUrl(url);
+    const proxyTag = urlToCheck !== url ? " (proxied)" : "";
+    const entryDescription = `${urlToCheck}${proxyTag}`
+    console.log(`  ${entryDescription}`);
     try {
-      await request.head(url);
-    } catch (e) {
-      if (e.status >= 400) {
-        badUrls.push({url, status: e.status});
+      // We set the Origin header so we can check that the server returns a valid
+      // CORS response
+      const response = await request.head(urlToCheck).set("Origin", "https://activity-player-offline.concord.org");
+      const cacheEntry: OfflineManifestCacheEntry = {url};
+
+      if (!response.headers['access-control-allow-origin']) {
+        // We only cache CORS responses, so exclude this from the list
+        badUrls.push({description: entryDescription, error: "CORS is not supported"});
+        continue;
       }
+
+      const etag = response.headers.etag;
+      // Weak etags start with `W/` we don't want those
+      if (etag?.startsWith(`"`)) {
+        // Inorder for the service worker to access the ETag in the cached response from
+        // a CORS request, the server must send a Access-Control-Expose-Headers header
+        // that includes 'etag'. We can still cache the response it just won't be as
+        // efficient without access to the etag.
+        const exposeHeaders = response.headers['access-control-expose-headers'];
+        if (! exposeHeaders?.toLowerCase().includes("etag")) {
+          console.log("   warning: URL has an etag, but access-control-expose-headers does not include etag");
+        }
+
+        // Using JSON.parse to strip off surrounding quotes
+        cacheEntry.revision = JSON.parse(etag);
+      }
+
+      // Save the size so we in the future we can give the user an estimated download
+      // size
+      const contentLength = response.headers["content-length"];
+      if (contentLength) {
+        cacheEntry.size = parseInt(contentLength, 10);
+      }
+      updatedCacheList.push(cacheEntry);
+    } catch (e) {
+      let msg = e;
+      if (e.status && e.status !== 200) {
+        msg = `${e.status} ${e.response?.res?.statusMessage}`;
+        if (e.status === 301 || e.status === 302) {
+          msg += `\n    location: ${e.response.headers.location}`;
+        }
+      }
+      badUrls.push({description: entryDescription, error: msg});
     }
   }
 
   if (badUrls.length > 0) {
     console.error(`\nFound ${badUrls.length} bad urls...`);
     for (const badUrl of badUrls) {
-      console.log(`${badUrl.status}: ${badUrl.url}`);
+      console.log(`  ${badUrl.description}`, badUrl.error);
     }
   }
 
+  saveUpdatedManifest(outputInfo, manifestJSON, updatedCacheList);
+
+
+  // If the S3 bucket CORS configuration needs to be adjusted, it is useful to get a list
+  // of paths to use in a CloudFront invalidation. This is
+  if (printDomainPaths) {
+    const domains: Record<string, string[]> = {};
+    for (const entry of updatedCacheList) {
+      const urlString = typeof entry === "string" ? entry : entry.url;
+      const url = new URL(urlString, "https://activity-player-offline.concord.org");
+      const domainPaths: string[] = domains[url.hostname] ?? [];
+      // set it if it wasn't set before
+      domains[url.hostname] = domainPaths;
+      domainPaths.push(url.pathname);
+    }
+
+    Object.keys(domains).forEach(domain => {
+      console.log("");
+      console.log(`${domain} Paths`);
+      console.log("------------------");
+      domains[domain].forEach(path => console.log(path));
+    });
+  }
 };
 
 main();

@@ -1,5 +1,6 @@
 import { dexieStorage } from "./storage/dexie-storage";
-import { OfflineActivity, OfflineManifest, OfflineManifestActivity } from "./types";
+import { OfflineActivity, OfflineManifest, OfflineManifestActivity,
+  OfflineManifestCacheList } from "./types";
 import { Workbox } from "workbox-window/index";
 
 export interface OfflineManifestAuthoringData {
@@ -36,7 +37,7 @@ export const getOfflineManifest = (id: string): Promise<OfflineManifest> => {
 export interface CacheOfflineManifestOptions {
   workbox: Workbox;
   offlineManifest: OfflineManifest;
-  onCachingStarted: (urls: string[]) => void;
+  onCachingStarted: (entries: OfflineManifestCacheList) => void;
   onUrlCached: (url: string) => void;
   onUrlCacheFailed: (url: string, err: any) => void;
   onCachingFinished: () => void;
@@ -44,8 +45,8 @@ export interface CacheOfflineManifestOptions {
 
 export interface CacheUrlsOptions {
   workbox: Workbox;
-  urls: string[];
-  onCachingStarted: (urls: string[]) => void;
+  entries: OfflineManifestCacheList;
+  onCachingStarted: (entries: OfflineManifestCacheList) => void;
   onUrlCached: (url: string) => void;
   onUrlCacheFailed: (url: string, err: any) => void;
   onCachingFinished: () => void;
@@ -58,20 +59,23 @@ export interface CacheUrlsOptions {
   response on the MessageChannel indicating that it completed.
 */
 export const cacheUrlsWithProgress = async (options: CacheUrlsOptions) => {
-  const {workbox, urls, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished} = options;
+  const {workbox, entries, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished} = options;
 
-  onCachingStarted(urls);
+  onCachingStarted(entries);
 
   const sw = await workbox.getSW();
   const messageChannel = new MessageChannel();
 
   messageChannel.port1.onmessage = (event: MessageEvent) => {
     // Handle the various messages from the channel
-    if (event.data?.type === "URL_CACHED") {
-      console.log("URL_CACHED", event.data.payload);
+    if (event.data?.type === "ENTRY_CACHED") {
+      console.log("ENTRY_CACHED", event.data.payload);
       onUrlCached(event.data.payload?.url);
-    } else if (event.data?.type === "URL_CACHE_FAILED") {
-      console.error("URL_CACHE_FAILED", event.data.payload);
+    } else if (event.data?.type === "ENTRY_FOUND") {
+      console.log("ENTRY_FOUND", event.data.payload);
+      onUrlCached(event.data.payload?.url);
+    } else if (event.data?.type === "ENTRY_CACHE_FAILED") {
+      console.error("ENTRY_CACHE_FAILED", event.data.payload);
       onUrlCacheFailed(event.data.payload?.url, event.data.payload?.error);
     } else if (event.data?.type === "CACHING_FINISHED") {
       console.log("CACHING_FINISHED");
@@ -80,7 +84,7 @@ export const cacheUrlsWithProgress = async (options: CacheUrlsOptions) => {
     }
   };
 
-  sw.postMessage({type: "CACHE_URLS_WITH_PROGRESS", payload: {urlsToCache: urls}},
+  sw.postMessage({type: "CACHE_ENTRIES_WITH_PROGRESS", payload: {entriesToCache: entries}},
     [messageChannel.port2]);
 
   // We might need to block until complete so the messageChannel doesn't get
@@ -90,8 +94,9 @@ export const cacheUrlsWithProgress = async (options: CacheUrlsOptions) => {
 
 export const cacheOfflineManifest = (options: CacheOfflineManifestOptions) => {
   const {workbox, offlineManifest, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished} = options;
-  const urls = offlineManifest.activities.map(a => a.contentUrl).concat(offlineManifest.cacheList);
-  const cacheUrlsOptions = {workbox, urls, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished};
+  const activityUrls = offlineManifest.activities.map(a => a.contentUrl) as OfflineManifestCacheList;
+  const entries: OfflineManifestCacheList = activityUrls.concat(offlineManifest.cacheList);
+  const cacheUrlsOptions = {workbox, entries, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished};
   return cacheUrlsWithProgress(cacheUrlsOptions);
 };
 
@@ -150,7 +155,9 @@ export const mergeOfflineManifestWithAuthoringData = (offlineManifest: OfflineMa
   });
   offlineManifest.cacheList.forEach(url => {
     if (!cacheList.find(item => item === url)) {
-      cacheList.push(url);
+      // NOTE: the type is hacked here since this isn't used and likely to be removed
+      // https://github.com/concord-consortium/activity-player/pull/237
+      cacheList.push(url as any);
     }
   });
   return {activities, cacheList};

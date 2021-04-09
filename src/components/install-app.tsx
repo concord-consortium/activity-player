@@ -1,7 +1,6 @@
 import React from "react";
 import { isOfflineHost } from "../utilities/host-utils";
 import { Workbox, messageSW } from "workbox-window/index";
-import queryString from "query-string";
 import { getOfflineManifest, saveOfflineManifestToOfflineActivities,
   cacheUrlsWithProgress } from "../offline-manifest-api";
 import { OfflineManifest } from "../types";
@@ -183,22 +182,6 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
     // We don't have to worry about this immediately because it isn't enforced
     // until Chrome 93 which is due August 2021. It is just annoying to see the
     // errors in the network log.
-    const appUrls = wbManifest.map((entry: {revision: null | string; url: string}) => {
-      // Add Worbox's standard __WB_REVISION__ to the files. The service worker
-      // strips this out from the key used in cache storage, but it is used when
-      // fetching the asset.  This prevents some caching problems when the url
-      // is fetched. The service worker does use `cache: "no-store"` so the
-      // browser disk cache should not be used during the install of the assets
-      // but cloudfront could still be caching them, so having these revisions
-      // should help avoid caching issues from CloudFront
-      if (entry.revision) {
-        const parsedUrl = queryString.parseUrl(entry.url);
-        parsedUrl.query.__WB_REVISION__ = entry.revision;
-        return queryString.stringifyUrl(parsedUrl);
-      } else {
-        return entry.url;
-      }
-    });
 
     // It is not clear why, but it seems like the service worker only handles one
     // CACHE_URLS_WITH_PROGRESS at time. The next message seems to get queued
@@ -211,16 +194,14 @@ export class InstallApp extends React.PureComponent<IProps, IState> {
     // TODO: show something in the UI while the application files are caching
     cacheUrlsWithProgress({
       workbox: this.wb,
-      urls: appUrls,
+      entries: wbManifest,
       onCachingStarted: (urls) => {
         console.log("started caching application");
       },
       onUrlCached: (url) => {
-        console.log(`cached url ${url}`);
         this.addInstalledApplicationUrl(true, url);
       },
       onUrlCacheFailed: (url, err) => {
-        console.error(`failed to cache ${url}`, err);
         this.addInstalledApplicationUrl(false, url);
       },
       onCachingFinished: () => {

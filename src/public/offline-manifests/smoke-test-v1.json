@@ -8,103 +8,470 @@
     }
   ],
   "cacheList": [
-    "https://building-models-resources.concord.org/Evaporation/water-drop-300-250.png",
-    "https://connected-bio-spaces.concord.org",
-    "https://fonts.googleapis.com/css?family=Lato",
-    "https://fonts.googleapis.com/css?family=Roboto&display=swap",
-    "https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXiWtFCc.woff2",
-    "https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjxAwXiWtFCfQ7A.woff2",
-    "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4WxKKTU1Kvnz.woff2",
-    "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2",
-    "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu5mxKKTU1Kvnz.woff2",
-    "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu72xKKTU1Kvnz.woff2",
-    "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu7GxKKTU1Kvnz.woff2",
-    "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu7WxKKTU1Kvnz.woff2",
-    "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu7mxKKTU1Kvnz.woff2",
-    "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/manifest.json",
-    "https://glossary-plugin.concord.org/version/v3.13.0-pre.1/plugin.js",
-    "https://leaf-pack.concord.org/branch/main/",
-    "https://models-resources.s3.amazonaws.com/geniblocks/resources/fablevision/rooms/missioncontrol.jpg",
-    "https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v2.json?__noUrlRewrite",
-    "https://models-resources.s3.amazonaws.com/precip-models/ak-base-map-with-rose.png",
-    "https://placekitten.com/200/300",
-    "https://placekitten.com/392/343",
-    "https://placekitten.com/50/60",
-    "https://placekitten.com/50/61",
-    "https://placekitten.com/50/62",
-    "https://placekitten.com/50/65",
-    "https://placekitten.com/600/400",
-    "https://placekitten.com/800/1200",
-    "https://project-resources.concord.org/precipitatingchange/Glossary/abstraction.jpg",
-    "https://project-resources.concord.org/precipitatingchange/Glossary/aggregation.jpg",
-    "https://project-resources.concord.org/precipitatingchange/Glossary/air_moisture_fog-high.jpg",
-    "https://project-resources.concord.org/precipitatingchange/Glossary/pattern-recognition.jpg",
-    "https://project-resources.concord.org/precipitatingchange/Glossary/precipitation.jpg",
-    "https://project-resources.concord.org/precipitatingchange/Glossary/weather.jpg",
-    "https://project-resources.concord.org/precipitatingchange/Glossary/wind-direction.jpg",
-    "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/decomposition/decomposition.jpg",
-    "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/decomposition/decomposition.mp4",
-    "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/extrapolation/exptrapolation.jpg",
-    "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/extrapolation/extrapolation.mp4",
-    "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/front/front.jpg",
-    "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/front/front.mp4",
-    "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/interpolation/interpolation.jpg",
-    "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/interpolation/interpolation.mp4",
-    "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/prediction/prediction-sm.jpg",
-    "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/prediction/prediction.mp4",
-    "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Doodzxantidhitriyh_An_East_Wind_is_starting_to_blow.mp3",
-    "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Ghoghoyyigidighoy-pattern.mp3",
-    "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Gitsanxitodo_The_weather_is_going_to_change.mp3",
-    "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Gonghoghoyyigidigh_I_am_going_to_use_this_pattern.mp3",
-    "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Ndadzchenh_Whats_next.mp3",
-    "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Tthetingndadzdixeta_What_is_it_doing_outside.mp3",
-    "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Vitotuq_between_middle.mp3",
-    "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Xidetriyh_it_is_windy.mp3",
-    "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Xiyhtuxiyoth_It_snows_during_the_winter.mp3",
-    "https://project-resources.concord.org/precipitatingchange/videos/AbstractionMovie.mp4",
-    "https://project-resources.concord.org/precipitatingchange/videos/Aggregation.mp4",
-    "https://project-resources.concord.org/precipitatingchange/videos/PatternRecognition.mp4",
-    "https://project-resources.concord.org/precipitatingchange/videos/WindDirection.mp4",
-    "https://project-resources.concord.org/precipitatingchange/videos/moisture-amount.mp4",
-    "https://project-resources.concord.org/precipitatingchange/videos/precipitation_snow_v2.mp4",
-    "https://project-resources.concord.org/precipitatingchange/videos/weather-movie.mp4",
-    "https://project-resources.concord.org/test-project/Big_Buck_Bunny_360_10s_1MB.mp4",
-    "https://project-resources.concord.org/test-project/Big_Buck_Bunny_360_10s_1MB.mp4\n",
-    "https://www.thelabradorsite.com/wp-content/uploads/2016/05/6t.jpg",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/carousel/",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/carousel/assets/index.4625e4716a2dfe8f0462.css",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/carousel/assets/index.4625e4716a2dfe8f0462.js",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/drag-and-drop/",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/drag-and-drop/assets/index.4625e4716a2dfe8f0462.css",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/drag-and-drop/assets/index.4625e4716a2dfe8f0462.js",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/drawing-tool/",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/drawing-tool/assets/index.4625e4716a2dfe8f0462.css",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/drawing-tool/assets/index.4625e4716a2dfe8f0462.js",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/fill-in-the-blank/",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/fill-in-the-blank/assets/index.4625e4716a2dfe8f0462.css",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/fill-in-the-blank/assets/index.4625e4716a2dfe8f0462.js",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/graph/",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/graph/assets/index.4625e4716a2dfe8f0462.css",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/graph/assets/index.4625e4716a2dfe8f0462.js",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/image-question/",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/image-question/assets/index.4625e4716a2dfe8f0462.css",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/image-question/assets/index.4625e4716a2dfe8f0462.js",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/image/",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/image/assets/index.4625e4716a2dfe8f0462.css",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/image/assets/index.4625e4716a2dfe8f0462.js",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/multiple-choice/assets/index.4625e4716a2dfe8f0462.css",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/multiple-choice/assets/index.4625e4716a2dfe8f0462.js",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/open-response/",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/open-response/assets/index.4625e4716a2dfe8f0462.css",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/open-response/assets/index.4625e4716a2dfe8f0462.js",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/scaffolded-question/",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/scaffolded-question/assets/index.4625e4716a2dfe8f0462.css",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/scaffolded-question/assets/index.4625e4716a2dfe8f0462.js",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/video-player/",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/video-player/assets/index.4625e4716a2dfe8f0462.css",
-    "models-resources/question-interactives/version/v1.2.0-pre.1/video-player/assets/index.4625e4716a2dfe8f0462.js",
-    "models-resources/vortex/version/v1.3.0/lara-app/assets/index.ec7bceae2a203a9db004.css",
-    "models-resources/vortex/version/v1.3.0/lara-app/index.html"
+    {
+      "url": "https://building-models-resources.concord.org/Evaporation/water-drop-300-250.png",
+      "revision": "8cfc34450779f741f97080e700cf21d5",
+      "size": 8774
+    },
+    {
+      "url": "https://connected-bio-spaces.concord.org",
+      "revision": "7249f08225e3701ac827ad016f33f551",
+      "size": 22203
+    },
+    {
+      "url": "https://fonts.googleapis.com/css?family=Lato",
+      "size": 172
+    },
+    {
+      "url": "https://fonts.googleapis.com/css?family=Roboto&display=swap",
+      "size": 200
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXiWtFCc.woff2",
+      "size": 14044
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjxAwXiWtFCfQ7A.woff2",
+      "size": 2888
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4WxKKTU1Kvnz.woff2",
+      "size": 4824
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu4mxKKTU1Kg.woff2",
+      "size": 11032
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu5mxKKTU1Kvnz.woff2",
+      "size": 6416
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu72xKKTU1Kvnz.woff2",
+      "size": 10332
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu7GxKKTU1Kvnz.woff2",
+      "size": 7700
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu7WxKKTU1Kvnz.woff2",
+      "size": 3480
+    },
+    {
+      "url": "https://fonts.gstatic.com/s/roboto/v27/KFOmCnqEu92Fr1Mu7mxKKTU1Kvnz.woff2",
+      "size": 820
+    },
+    {
+      "url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.3/manifest.json",
+      "revision": "1d0ee3b3c86e90e295af044bfe891f39",
+      "size": 344
+    },
+    {
+      "url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.3/plugin.js",
+      "revision": "1470e0e05937bf315acc26dcb56dafb7",
+      "size": 632728
+    },
+    {
+      "url": "https://leaf-pack.concord.org/branch/main/",
+      "revision": "2edb3c1e3197f59252548f3e195ad58c",
+      "size": 302
+    },
+    {
+      "url": "https://models-resources.s3.amazonaws.com/geniblocks/resources/fablevision/rooms/missioncontrol.jpg",
+      "revision": "63db7a45c757d1e345791c1b5d5142a1",
+      "size": 1658448
+    },
+    {
+      "url": "https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v2.json?__noUrlRewrite",
+      "revision": "895289d71fe744b150d482f1dde21ec6",
+      "size": 17136
+    },
+    {
+      "url": "https://models-resources.s3.amazonaws.com/precip-models/ak-base-map-with-rose.png",
+      "revision": "d6e35c18399eaed99dc8eb22f5554e6d",
+      "size": 306601
+    },
+    {
+      "url": "https://placekitten.com/200/300",
+      "size": 7183
+    },
+    {
+      "url": "https://placekitten.com/392/343"
+    },
+    {
+      "url": "https://placekitten.com/50/60"
+    },
+    {
+      "url": "https://placekitten.com/50/61"
+    },
+    {
+      "url": "https://placekitten.com/50/62"
+    },
+    {
+      "url": "https://placekitten.com/50/65",
+      "size": 1324
+    },
+    {
+      "url": "https://placekitten.com/600/400"
+    },
+    {
+      "url": "https://placekitten.com/800/1200"
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Glossary/abstraction.jpg",
+      "revision": "1f0ab0d58dabea019691ed5e567d4da4",
+      "size": 604043
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Glossary/aggregation.jpg",
+      "revision": "4afd00fe75c0bc39692b36f99b449dc8",
+      "size": 40018
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Glossary/air_moisture_fog-high.jpg",
+      "revision": "71d8d44e1eb15b13a0334af040c603a5",
+      "size": 1181687
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Glossary/pattern-recognition.jpg",
+      "revision": "b374fb81b61bd7010efe0f4c1a4f795f",
+      "size": 38085
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Glossary/precipitation.jpg",
+      "revision": "1b762df2d3e299fc6db25f00bbc70239",
+      "size": 66688
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Glossary/weather.jpg",
+      "revision": "86c2a2722d4d935a6965d3bb143e3d39",
+      "size": 9192
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Glossary/wind-direction.jpg",
+      "revision": "43379af9036e2da1e8b637b89c14c67e",
+      "size": 75267
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/decomposition/decomposition.jpg",
+      "revision": "5c2f805128019693907aecdc83a1d610",
+      "size": 48447
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/decomposition/decomposition.mp4",
+      "revision": "073513d8dde828c720f3195f5b9da940",
+      "size": 1205133
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/extrapolation/exptrapolation.jpg",
+      "revision": "62802b72d061c46af782477bb667e58f",
+      "size": 32389
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/extrapolation/extrapolation.mp4",
+      "revision": "83519d935a332d405be29f5e82599df1",
+      "size": 461575
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/front/front.jpg",
+      "revision": "95b2428440aa311216811c5fb0089241",
+      "size": 106464
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/front/front.mp4",
+      "revision": "3574f9225e70eb6216c416f188333605-5",
+      "size": 35479134
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/interpolation/interpolation.jpg",
+      "revision": "a27b967bbd0766e42544ffb117321c6b",
+      "size": 44079
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/interpolation/interpolation.mp4",
+      "revision": "db03451865537c99352b61f0821081b2",
+      "size": 501991
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/prediction/prediction-sm.jpg",
+      "revision": "d494af17f52ce96ad54ed38d05173100",
+      "size": 43375
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/Kathy%27s%20latest/precipitating-change-visuals/prediction/prediction.mp4",
+      "revision": "973607ae5cb56d16b6ca424e4b783ab2",
+      "size": 4096132
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Doodzxantidhitriyh_An_East_Wind_is_starting_to_blow.mp3",
+      "revision": "3d56d4d18781fe948b82b4c11c8e35d6",
+      "size": 20496
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Ghoghoyyigidighoy-pattern.mp3",
+      "revision": "05195fa6a97ad6348c82d199180675c4",
+      "size": 28792
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Gitsanxitodo_The_weather_is_going_to_change.mp3",
+      "revision": "81d76ee02141a9c6dc992d41dc084724",
+      "size": 28431
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Gonghoghoyyigidigh_I_am_going_to_use_this_pattern.mp3",
+      "revision": "ff1647e6a44040213524c71b4cb81d47",
+      "size": 67589
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Ndadzchenh_Whats_next.mp3",
+      "revision": "e97ebf00d6eba22ccf21ea2d90301451",
+      "size": 23601
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Tthetingndadzdixeta_What_is_it_doing_outside.mp3",
+      "revision": "91f0625299ac7c1e726b28186c221635",
+      "size": 35546
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Vitotuq_between_middle.mp3",
+      "revision": "458b1148a6e0775813464542531d1c46",
+      "size": 19022
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Xidetriyh_it_is_windy.mp3",
+      "revision": "858f92a06e620fb7dd3871b776f956eb",
+      "size": 18397
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/audio/Athabaskan/Xiyhtuxiyoth_It_snows_during_the_winter.mp3",
+      "revision": "b8da6c6c0eb4d04227ea674f46231a8e",
+      "size": 28222
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/videos/AbstractionMovie.mp4",
+      "revision": "2d1a4d36d138128ce1c40604170ef0c6",
+      "size": 4732200
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/videos/Aggregation.mp4",
+      "revision": "c8c0b9a9cd80860db987a0995cad54a3",
+      "size": 617900
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/videos/PatternRecognition.mp4",
+      "revision": "40f2dd543e723d0f421e4053dcfc439f",
+      "size": 645947
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/videos/WindDirection.mp4",
+      "revision": "19e939022c20a58785b1ef4fd163d205-4",
+      "size": 26046382
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/videos/moisture-amount.mp4",
+      "revision": "e5b589b5ab024dfa43189cd09fcaa138-2",
+      "size": 10165497
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/videos/precipitation_snow_v2.mp4",
+      "revision": "afc5c3870c2ae7fdb160d6dbbe000f56",
+      "size": 8843401
+    },
+    {
+      "url": "https://project-resources.concord.org/precipitatingchange/videos/weather-movie.mp4",
+      "revision": "9365e4fdd91289f310062e2cd8078a77",
+      "size": 5976050
+    },
+    {
+      "url": "https://project-resources.concord.org/test-project/Big_Buck_Bunny_360_10s_1MB.mp4",
+      "revision": "998c59f9d2db205c1302cabfc168a18b",
+      "size": 991017
+    },
+    {
+      "url": "https://project-resources.concord.org/test-project/Big_Buck_Bunny_360_10s_1MB.mp4\n",
+      "revision": "998c59f9d2db205c1302cabfc168a18b",
+      "size": 991017
+    },
+    {
+      "url": "https://www.thelabradorsite.com/wp-content/uploads/2016/05/6t.jpg",
+      "revision": "5b6b38c1-9611",
+      "size": 33567
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/carousel/",
+      "revision": "49ebb05e6b317a7534e37c02311aae32",
+      "size": 348
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/carousel/assets/index.4625e4716a2dfe8f0462.css",
+      "revision": "8c773e7bfd5ad5baf87bf232ba4a5fe1",
+      "size": 65432
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/carousel/assets/index.4625e4716a2dfe8f0462.js",
+      "revision": "a2162e02a4430251f2e7cfc6cf039cb7",
+      "size": 371366
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/drag-and-drop/",
+      "revision": "1ef5be911f6177b4a69b250ebc4a5f44",
+      "size": 351
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/drag-and-drop/assets/index.4625e4716a2dfe8f0462.css",
+      "revision": "2127c43b17326cee8b318888f83c72d5",
+      "size": 64387
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/drag-and-drop/assets/index.4625e4716a2dfe8f0462.js",
+      "revision": "b07c717c1df5507effbe51a02bde37a3",
+      "size": 370304
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/drawing-tool/",
+      "revision": "eda14bcb95043f3ccec77c9a9d464027",
+      "size": 350
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/drawing-tool/assets/index.4625e4716a2dfe8f0462.css",
+      "revision": "5374d0886c7cab08b62182b55c96f566",
+      "size": 77747
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/drawing-tool/assets/index.4625e4716a2dfe8f0462.js",
+      "revision": "5b57bceeb2985b111f46c41d530bbbcf",
+      "size": 510063
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/fill-in-the-blank/",
+      "revision": "0bcfd7fdb295a464cbc57b43fc7d0945",
+      "size": 355
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/fill-in-the-blank/assets/index.4625e4716a2dfe8f0462.css",
+      "revision": "ef76e72c27450fe967b2ae2f3a303be2",
+      "size": 64007
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/fill-in-the-blank/assets/index.4625e4716a2dfe8f0462.js",
+      "revision": "91db66c4e16a2df96eefc226dae0ec3f",
+      "size": 401982
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/graph/",
+      "revision": "166a0bb2f738045d66c3663bb1184972",
+      "size": 345
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/graph/assets/index.4625e4716a2dfe8f0462.css",
+      "revision": "9c5083361b0cd3ab21a4becac2f427d4",
+      "size": 63805
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/graph/assets/index.4625e4716a2dfe8f0462.js",
+      "revision": "48df6e97c993a72812f702ee4cb8a70a",
+      "size": 466004
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/image-question/",
+      "revision": "dc4e8aa76d5a7a135ff7cddf4929116e",
+      "size": 350
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/image-question/assets/index.4625e4716a2dfe8f0462.css",
+      "revision": "7b6c33969dbb9a7a467122e1f4131f9c",
+      "size": 78491
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/image-question/assets/index.4625e4716a2dfe8f0462.js",
+      "revision": "9b47bf6c95f475f3ea57d2ea59012c23",
+      "size": 512659
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/image/",
+      "revision": "aa4d4cecfc337acb05ea764b9340c862",
+      "size": 346
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/image/assets/index.4625e4716a2dfe8f0462.css",
+      "revision": "ccb9c50af7c357df24f0abf81173e933",
+      "size": 63858
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/image/assets/index.4625e4716a2dfe8f0462.js",
+      "revision": "7fa1446a40eb16ec53e908cdd267518b",
+      "size": 400510
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/multiple-choice/",
+      "revision": "c4a74a20ba4086928044b5b1ea7e2dd3",
+      "size": 353
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/multiple-choice/assets/index.4625e4716a2dfe8f0462.css",
+      "revision": "07f51acf03dc4bf0ba7b92959dea11e2",
+      "size": 64474
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/multiple-choice/assets/index.4625e4716a2dfe8f0462.js",
+      "revision": "20a6a239c1e1906f8d34f6f36b324a4f",
+      "size": 405770
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/open-response/",
+      "revision": "8a189b495cd1b934093fcab503161f92",
+      "size": 351
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/open-response/assets/index.4625e4716a2dfe8f0462.css",
+      "revision": "6ad95425fe377149f18a443bdffccc2f",
+      "size": 63926
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/open-response/assets/index.4625e4716a2dfe8f0462.js",
+      "revision": "a8281cd50d56dd7dde45907d11674b7f",
+      "size": 400637
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/scaffolded-question/",
+      "revision": "fff285a13c82ca616569cd707694da1a",
+      "size": 353
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/scaffolded-question/assets/index.4625e4716a2dfe8f0462.css",
+      "revision": "73d786344ee5a4ae61c8b5904db7c334",
+      "size": 64143
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/scaffolded-question/assets/index.4625e4716a2dfe8f0462.js",
+      "revision": "a5d9d680535e66f34a959dac37226ca4",
+      "size": 643595
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/video-player/",
+      "revision": "df3a8a925000b0b1b5cb18c6f418aca8",
+      "size": 351
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/video-player/assets/index.4625e4716a2dfe8f0462.css",
+      "revision": "62155b7bfb8cf8f1198f0ce9b715d680",
+      "size": 74700
+    },
+    {
+      "url": "models-resources/question-interactives/version/v1.2.0-pre.1/video-player/assets/index.4625e4716a2dfe8f0462.js",
+      "revision": "8649cecdf75e98b9b6b7958071206f47",
+      "size": 548532
+    },
+    {
+      "url": "models-resources/vortex/version/v1.3.0/lara-app/assets/index.ec7bceae2a203a9db004.css",
+      "revision": "42ccf018b940d726d931b36d604c4977",
+      "size": 66581
+    },
+    {
+      "url": "models-resources/vortex/version/v1.3.0/lara-app/index.html",
+      "revision": "f51f8f01b577b0969e290508f89db0b9",
+      "size": 355
+    }
   ]
 }

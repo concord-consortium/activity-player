@@ -213,13 +213,14 @@ When new code is added to the master branch the old files are deleted and new fi
 
 ### Updating a Manifest
 
-Once you have the list of activities in the manifest you can use `npm run update-offline-manifest <manifest-name>` to update the activity content and regenerate the cache list in the manifest based on the content of the activities. By default the script will download the activities from LARA based on their `resourceUrl` and update the activity files stored in this repository based on the `contentUrl`. Additionally the script has two options:
+Once you have the list of activities in the manifest you can use `npm run update-offline-manifest <manifest-name>` to update the activity content and regenerate the cache list in the manifest based on the content of the activities. By default the script will download the activities from LARA based on their `resourceUrl` and update the activity files stored in this repository based on the `contentUrl`. Additionally the script has these options:
 - `--bump-version` this will duplicate the manifest and its associated activities with a new version name. So if it was `project-v1` the new one would be `project-v2`.
 - `--no-fetch-activities` don't download the activities from LARA, just use the existing activities. The script might still modify the existing activities because it makes local changes.
+- `--print-domain-paths` print out a list of paths references on each domain, this is useful if you need to run CloudFront invalidations
 
 To pass options through `npm run` an addition `--` is required so an example of bumping the version is
 
-    npm run update-offline-manifest -- --bump-version precipitating-change-v6 
+    npm run update-offline-manifest -- --bump-version precipitating-change-v6
 
 Besides regenerating the cacheList, the script will modify the activities:
 - remove the teacher edition embeddables
