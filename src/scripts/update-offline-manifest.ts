@@ -94,7 +94,7 @@ const getActivity = async (offlineActivity: OfflineManifestActivity): Promise<Ac
 
 const maybeProxyUrl = (url: string) => /^models-resources\//.test(url) ? `http://activity-player-offline.concord.org/${url}` : url;
 
-const getOutputInfo = (manifestPath: string, bumpVersion: boolean): OutputInfo => {
+const getOutputInfo = (manifestPath: string): OutputInfo => {
   const {dir, base} = path.parse(manifestPath);
 
   const matches = base.match(/^(.*)-v(\d+)\.json$/);
@@ -179,8 +179,7 @@ const removeTeacherEdition = (activity: Activity) => {
   });
 };
 
-const saveUpdatedManifest = (outputInfo: OutputInfo, bumpVersion: boolean,
-  sourceManifest: OfflineManifest, cacheList: string[]) => {
+const saveUpdatedManifest = (outputInfo: OutputInfo, sourceManifest: OfflineManifest, cacheList: string[]) => {
 
   let activities = sourceManifest.activities;
   if (bumpVersion) {
@@ -200,7 +199,7 @@ const main = async () => {
   const manifestJSON = loadJSONFile(manifestPath) as OfflineManifest;
   let cacheList: string[] = [];
 
-  const outputInfo = getOutputInfo(manifestPath, bumpVersion);
+  const outputInfo = getOutputInfo(manifestPath);
   if (outputInfo?.createOutputDir) {
     try {
       fs.mkdirSync(outputInfo.outputActivityDir);
@@ -239,7 +238,7 @@ const main = async () => {
   // console.log(`\nFound ${cacheList.length} unique urls in content and ${oldMissingUrls.length} urls in manifest cache list not in activities`);
   console.log(`\nFound ${cacheList.length} unique urls in content`);
 
-  saveUpdatedManifest(outputInfo, bumpVersion, manifestJSON, cacheList);
+  saveUpdatedManifest(outputInfo, manifestJSON, cacheList);
 
   console.log("\nTesting all urls...");
 
