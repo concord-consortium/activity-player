@@ -7,12 +7,12 @@ import { getAllUrlsInActivity, removeDuplicateUrls, rewriteProxiableIframeUrls,
 import fetch from "node-fetch";
 import { config } from "./update-offline-manifest.config";
 
-interface BumpInfo {
-  newManifestPath: string;
-  newActivityDir: string;
-  createNewDir: boolean;
-  oldVersionName: string;
-  newVersionName: string;
+interface OutputInfo {
+  outputManifestPath: string;
+  outputActivityDir: string;
+  createOutputDir: boolean;
+  sourceVersionName: string;
+  outputVersionName: string;
 }
 
 // pretend to be chrome, this helps with google fonts
@@ -94,46 +94,54 @@ const getActivity = async (offlineActivity: OfflineManifestActivity): Promise<Ac
 
 const maybeProxyUrl = (url: string) => /^models-resources\//.test(url) ? `http://activity-player-offline.concord.org/${url}` : url;
 
-const getBumpInfo = (manifestPath: string): BumpInfo => {
+const getOutputInfo = (manifestPath: string): OutputInfo => {
   const {dir, base} = path.parse(manifestPath);
+
   const matches = base.match(/^(.*)-v(\d+)\.json$/);
   if (!matches) {
     return die(`Not a versioned manifest we can deal with: ${manifestPath}`);
   }
-  const version = parseInt(matches[2], 10);
-  if (isNaN(version)) {
+
+  const sourceVersion = parseInt(matches[2], 10);
+  if (isNaN(sourceVersion)) {
     return die(`Not a integer version: ${matches[2]}`);
   }
-  const oldVersionName = `${matches[1]}-v${version}`;
-  const newVersionName = `${matches[1]}-v${version + 1}`;
-  const newManifestPath = path.join(dir, `${newVersionName}.json`);
-  let newActivityDir = dir.replace("offline-manifests", "offline-activities");
-  const oldActivityDir = path.join(newActivityDir, oldVersionName);
+  const sourceVersionName = `${matches[1]}-v${sourceVersion}`;
 
-  let createNewDir = false;
+  const outputVersion = bumpVersion ? sourceVersion + 1 : sourceVersion;
+
+  const outputVersionName = `${matches[1]}-v${outputVersion}`;
+  const outputManifestPath = path.join(dir, `${outputVersionName}.json`);
+  const offlineActivitiesDir = dir.replace("offline-manifests", "offline-activities");
+
+  let outputActivityDir = offlineActivitiesDir;
+  let createOutputDir = false;
+
+  // Some manifests use directories for their activities files
   try {
-    const oldVersionStat = fs.statSync(oldActivityDir);
-    if (oldVersionStat.isDirectory()) {
-      newActivityDir = path.join(newActivityDir, newVersionName);
-      createNewDir = true;
+    const possibleSourceActivityDir = path.join(offlineActivitiesDir, sourceVersionName);
+    const sourceVersionStat = fs.statSync(possibleSourceActivityDir);
+    if (sourceVersionStat.isDirectory()) {
+      outputActivityDir = path.join(outputActivityDir, outputVersionName);
+      createOutputDir = true;
     }
   } catch (e) {} // eslint-disable-line no-empty
 
   return ({
-    newManifestPath,
-    newActivityDir,
-    createNewDir,
-    oldVersionName,
-    newVersionName
+    outputManifestPath,
+    outputActivityDir,
+    createOutputDir,
+    sourceVersionName,
+    outputVersionName
   });
 };
 
-const saveActivity = (bumpInfo: BumpInfo, offlineActivity: OfflineManifestActivity, activity: Activity) => {
+const saveActivity = (outputInfo: OutputInfo, offlineActivity: OfflineManifestActivity, activity: Activity) => {
   let {base} = path.parse(offlineActivity.contentUrl);
-  if (!bumpInfo.createNewDir) {
-    base = base.replace(bumpInfo.oldVersionName, bumpInfo.newVersionName);
+  if (!outputInfo.createOutputDir) {
+    base = base.replace(outputInfo.sourceVersionName, outputInfo.outputVersionName);
   }
-  const filename = path.join(bumpInfo.newActivityDir, base);
+  const filename = path.join(outputInfo.outputActivityDir, base);
   console.log(`   saving ${filename}...`);
   fs.writeFileSync(filename, JSON.stringify(activity, null, 2));
 };
@@ -171,32 +179,42 @@ const removeTeacherEdition = (activity: Activity) => {
   });
 };
 
+const saveUpdatedManifest = (outputInfo: OutputInfo, sourceManifest: OfflineManifest, cacheList: string[]) => {
+
+  let activities = sourceManifest.activities;
+  if (bumpVersion) {
+    activities = sourceManifest.activities.map(a => ({...a, contentUrl: a.contentUrl.replace(outputInfo.sourceVersionName, outputInfo.outputVersionName)}));
+  }
+  const newOfflineManifest: OfflineManifest = {
+    name: sourceManifest.name,
+    activities,
+    cacheList
+  };
+  console.log(`   saving ${outputInfo.outputManifestPath}...`);
+  fs.writeFileSync(outputInfo.outputManifestPath, JSON.stringify(newOfflineManifest, null, 2));
+};
+
 const main = async () => {
   const manifestPath = getManifestPath();
   const manifestJSON = loadJSONFile(manifestPath) as OfflineManifest;
   let cacheList: string[] = [];
 
-  const bumpInfo = bumpVersion ? getBumpInfo(manifestPath) : null;
-  if (bumpInfo?.createNewDir) {
+  const outputInfo = getOutputInfo(manifestPath);
+  if (outputInfo?.createOutputDir) {
     try {
-      fs.mkdirSync(bumpInfo.newActivityDir);
+      fs.mkdirSync(outputInfo.outputActivityDir);
     } catch (e) {} // eslint-disable-line no-empty
   }
 
-  await manifestJSON.activities.reduce(async (promise, offlineActivity: OfflineManifestActivity) => {
-    await promise;
-
+  for (const offlineActivity of manifestJSON.activities) {
     const activity = await getActivity(offlineActivity);
     if (activity) {
       // update glossary urls and question interactives in activity
       updateActivityUrls(activity);
 
-      // remove teacher edition
       removeTeacherEdition(activity);
 
-      if (bumpInfo) {
-        saveActivity(bumpInfo, offlineActivity, activity);
-      }
+      saveActivity(outputInfo, offlineActivity, activity);
 
       // Replace the iframe urls with models-resources when we can
       // But do this after we save the activity since the same thing is going
@@ -210,7 +228,7 @@ const main = async () => {
       console.log(`    found ${urls.length} urls ...`);
       cacheList.push(...urls);
     }
-  }, Promise.resolve());
+  }
 
   cacheList = removeDuplicateUrls(cacheList);
   cacheList.sort();
@@ -220,23 +238,12 @@ const main = async () => {
   // console.log(`\nFound ${cacheList.length} unique urls in content and ${oldMissingUrls.length} urls in manifest cache list not in activities`);
   console.log(`\nFound ${cacheList.length} unique urls in content`);
 
-  if (bumpInfo) {
-    // save the cacheList in the new manifest version
-    const newOfflineManifest: OfflineManifest = {
-      name: manifestJSON.name,
-      activities: manifestJSON.activities.map(a => ({...a, contentUrl: a.contentUrl.replace(bumpInfo.oldVersionName, bumpInfo.newVersionName)})),
-      cacheList
-    };
-    console.log(`   saving ${bumpInfo.newManifestPath}...`);
-    fs.writeFileSync(bumpInfo.newManifestPath, JSON.stringify(newOfflineManifest, null, 2));
-  }
+  saveUpdatedManifest(outputInfo, manifestJSON, cacheList);
 
   console.log("\nTesting all urls...");
 
   const badUrls: {url: string, status: number}[] = [];
-  await cacheList.reduce(async (promise, url: string) => {
-    await promise;
-
+  for (let url of cacheList) {
     url = maybeProxyUrl(url);
     console.log("  ", url);
     try {
@@ -246,7 +253,7 @@ const main = async () => {
         badUrls.push({url, status: e.status});
       }
     }
-  }, Promise.resolve());
+  }
 
   if (badUrls.length > 0) {
     console.error(`\nFound ${badUrls.length} bad urls...`);

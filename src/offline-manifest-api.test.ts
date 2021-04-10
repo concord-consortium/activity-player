@@ -1,6 +1,11 @@
 import fetch from "jest-fetch-mock";
 
-import { cacheOfflineManifest, clearOfflineManifestAuthoringData, clearOfflineManifestAuthoringId, getOfflineManifest, getOfflineManifestAuthoringData, getOfflineManifestAuthoringDownloadJSON, getOfflineManifestAuthoringId, getOfflineManifestUrl, mergeOfflineManifestWithAuthoringData, normalizeAndSortOfflineActivities, OfflineManifestAuthoringData, OfflineManifestAuthoringDataKeyPrefix, OfflineManifestAuthoringIdKey, setOfflineManifestAuthoringData, setOfflineManifestAuthoringId } from "./offline-manifest-api";
+import { clearOfflineManifestAuthoringData, clearOfflineManifestAuthoringId,
+  getOfflineManifest, getOfflineManifestAuthoringData, getOfflineManifestAuthoringDownloadJSON,
+  getOfflineManifestAuthoringId, getOfflineManifestUrl, mergeOfflineManifestWithAuthoringData,
+  normalizeAndSortOfflineActivities, OfflineManifestAuthoringData,
+  OfflineManifestAuthoringDataKeyPrefix, OfflineManifestAuthoringIdKey,
+  setOfflineManifestAuthoringData, setOfflineManifestAuthoringId } from "./offline-manifest-api";
 import { OfflineManifest } from "./types";
 
 (window as any).fetch = fetch;
@@ -34,29 +39,29 @@ describe("offline manifest api", () => {
   // Now the caching happens in the service worker and it sends messages to
   // the page about its progress
   it.skip("handles #cacheOfflineManifest", (done) => {
-    const testManifest: OfflineManifest = {
-      name: "Test Manifest",
-      activities: [
-        {
-          name: "Activity 1",
-          resourceUrl: "http://example.com/activity-1-resource-url",
-          contentUrl: "http://example.com/activity-1-content-url"
-        },
-        {
-          name: "Activity 2",
-          resourceUrl: "http://example.com/activity-2-resource-url",
-          contentUrl: "http://example.com/activity-2-content-url"
-        }
-      ],
-      cacheList: [
-        "http://example.com/cache-list-item-1",
-        "http://example.com/cache-list-item-2"
-      ]
-    };
-    const onCachingStarted = jest.fn();
-    const onUrlCached = jest.fn();
-    const onUrlCacheFailed = jest.fn();
-    const onCachingFinished = jest.fn();
+    // const testManifest: OfflineManifest = {
+    //   name: "Test Manifest",
+    //   activities: [
+    //     {
+    //       name: "Activity 1",
+    //       resourceUrl: "http://example.com/activity-1-resource-url",
+    //       contentUrl: "http://example.com/activity-1-content-url"
+    //     },
+    //     {
+    //       name: "Activity 2",
+    //       resourceUrl: "http://example.com/activity-2-resource-url",
+    //       contentUrl: "http://example.com/activity-2-content-url"
+    //     }
+    //   ],
+    //   cacheList: [
+    //     "http://example.com/cache-list-item-1",
+    //     "http://example.com/cache-list-item-2"
+    //   ]
+    // };
+    // const onCachingStarted = jest.fn();
+    // const onUrlCached = jest.fn();
+    // const onUrlCacheFailed = jest.fn();
+    // const onCachingFinished = jest.fn();
     // const resp = cacheOfflineManifest({
     //   offlineManifest: testManifest,
     //   onCachingStarted,
