@@ -24,16 +24,6 @@ const ignoredGets: RegExp[] = [
 // If you are debugging a stragegy issue turning these on can be useful
 (self as any).__WB_DISABLE_DEV_LOGS = true;
 
-/**
-   Strip out the __WB_REVISION__ parameter
-   Note this also escapes the parameters, so it needs to be applied to both the
-   write and read operations
-   For example URLs like this one:
-     https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap
-   get converted to this format when passing through:
-     https://fonts.googleapis.com/css2?family=Lato%3Awght%40400%3B700%3B900&display=swap
-**/
-
 // TODO we might want to bring this back by adding the __WB_REVISION__ (or our own param)
 // onto the requests when installing. Since we have a revision, we might as well use it
 // to bust any caches. It would be a odd case that would have things cached wrong because
@@ -46,19 +36,28 @@ const ignoredGets: RegExp[] = [
 // If the server doesn't support it, then we can check the etag of the response.
 // This approach is safer than cache busting and should acheive the same goal of trying
 // to make sure we download an unexpected revision of a resource.
-const stripWbRevision: WorkboxPlugin = {
-  cacheKeyWillBeUsed: async ({request, mode, params, event, state}) => {
-    const url = new URL(request.url);
-    url.searchParams.delete("__WB_REVISION__");
-    // We need to create a request with headers because the return value is
-    // passed through to future callbacks. If a simple url is returned then
-    // Workbox makes a generic Request object with no headers.
-    // The headers are important specifically for the Range Plugin which
-    // hooks into the cachedResponseWillBeUsed and looks at the headers of
-    // the response object passed in.
-    return new Request(url.href, {headers: request.headers});
-  }
-};
+/**
+   Strip out the __WB_REVISION__ parameter
+   Note this also escapes the parameters, so it needs to be applied to both the
+   write and read operations
+   For example URLs like this one:
+     https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap
+   get converted to this format when passing through:
+     https://fonts.googleapis.com/css2?family=Lato%3Awght%40400%3B700%3B900&display=swap
+**/
+// const stripWbRevision: WorkboxPlugin = {
+//   cacheKeyWillBeUsed: async ({request, mode, params, event, state}) => {
+//     const url = new URL(request.url);
+//     url.searchParams.delete("__WB_REVISION__");
+//     // We need to create a request with headers because the return value is
+//     // passed through to future callbacks. If a simple url is returned then
+//     // Workbox makes a generic Request object with no headers.
+//     // The headers are important specifically for the Range Plugin which
+//     // hooks into the cachedResponseWillBeUsed and looks at the headers of
+//     // the response object passed in.
+//     return new Request(url.href, {headers: request.headers});
+//   }
+// };
 
 // If the service worker is loaded at:
 // https://example.com/path/service-worker.js

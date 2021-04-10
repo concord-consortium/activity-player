@@ -245,7 +245,7 @@ const main = async () => {
   for (const url of cacheList) {
     const urlToCheck = maybeProxyUrl(url);
     const proxyTag = urlToCheck !== url ? " (proxied)" : "";
-    const entryDescription = `${urlToCheck}${proxyTag}`
+    const entryDescription = `${urlToCheck}${proxyTag}`;
     console.log(`  ${entryDescription}`);
     try {
       // We set the Origin header so we can check that the server returns a valid
@@ -253,7 +253,7 @@ const main = async () => {
       const response = await request.head(urlToCheck).set("Origin", "https://activity-player-offline.concord.org");
       const cacheEntry: OfflineManifestCacheEntry = {url};
 
-      if (!response.headers['access-control-allow-origin']) {
+      if (!response.headers["access-control-allow-origin"]) {
         // We only cache CORS responses, so exclude this from the list
         badUrls.push({description: entryDescription, error: "CORS is not supported"});
         continue;
@@ -266,7 +266,7 @@ const main = async () => {
         // a CORS request, the server must send a Access-Control-Expose-Headers header
         // that includes 'etag'. We can still cache the response it just won't be as
         // efficient without access to the etag.
-        const exposeHeaders = response.headers['access-control-expose-headers'];
+        const exposeHeaders = response.headers["access-control-expose-headers"];
         if (! exposeHeaders?.toLowerCase().includes("etag")) {
           console.log("   warning: URL has an etag, but access-control-expose-headers does not include etag");
         }
@@ -321,7 +321,7 @@ const main = async () => {
       console.log("");
       console.log(`${domain} Paths`);
       console.log("------------------");
-      domains[domain].forEach(path => console.log(path));
+      domains[domain].forEach(pathInDomain => console.log(pathInDomain));
     });
   }
 };
