@@ -5,8 +5,11 @@ import { clearOfflineManifestAuthoringData, clearOfflineManifestAuthoringId,
   getOfflineManifestAuthoringId, getOfflineManifestUrl, mergeOfflineManifestWithAuthoringData,
   normalizeAndSortOfflineActivities, OfflineManifestAuthoringData,
   OfflineManifestAuthoringDataKeyPrefix, OfflineManifestAuthoringIdKey,
-  setOfflineManifestAuthoringData, setOfflineManifestAuthoringId } from "./offline-manifest-api";
+  setOfflineManifestAuthoringData, setOfflineManifestAuthoringId,
+  CacheUrlsOptions, cacheUrlsWithProgress } from "./offline-manifest-api";
 import { OfflineManifest } from "./types";
+import { Workbox } from "workbox-window/index";
+import mockConsole from "jest-mock-console";
 
 (window as any).fetch = fetch;
 
@@ -31,6 +34,58 @@ describe("offline manifest api", () => {
       expect(data).toEqual(testManifest);
       done();
     });
+  });
+
+  it("handles cacheUrlsWithProgress", async () => {
+    const restoreConsole = mockConsole();
+    // We are using NodeJs's message channel. It is basically the same as the browser
+    // message channel. Its ports need to be closed otherwise node won't exist
+    window.MessageChannel = (await import("worker_threads")).MessageChannel as any;
+
+    const entriesToCache = [
+      "https://example.com",
+      "https://example.com/bad",
+      "https://example.com/found"];
+
+    const mockServiceWorker = {
+      postMessage: (data: any, ports: MessagePort[]) => {
+        expect(data.type).toEqual("CACHE_ENTRIES_WITH_PROGRESS");
+        expect(data.payload.entriesToCache).toEqual(entriesToCache);
+        expect(ports).toHaveLength(1);
+        const port = ports[0];
+        port.postMessage({type: "ENTRY_CACHED", payload: {url: "https://example.com"}});
+        port.postMessage({type: "ENTRY_CACHE_FAILED",
+          payload: {url: "https://example.com/bad", error: "mock error"}});
+        port.postMessage({type: "ENTRY_FOUND", payload: {url: "https://example.com/found"}});
+        port.postMessage({type: "CACHING_FINISHED"});
+        port.close();
+      }
+    };
+
+    const workbox = {
+      getSW: async () => mockServiceWorker
+    };
+
+    const options: CacheUrlsOptions = {
+      workbox: workbox as Workbox,
+      entries: entriesToCache,
+      onCachingStarted: jest.fn(),
+      onUrlCached: jest.fn(),
+      onUrlCacheFailed: jest.fn(),
+      onCachingFinished: jest.fn()
+    };
+
+    expect.assertions(3+7);
+    await cacheUrlsWithProgress(options);
+    expect(options.onCachingStarted).toHaveBeenCalled();
+    expect(options.onUrlCached).toHaveBeenCalledWith("https://example.com");
+    expect(options.onUrlCacheFailed).toHaveBeenCalledWith("https://example.com/bad", "mock error");
+    expect(options.onUrlCached).toHaveBeenCalledWith("https://example.com/found");
+    expect(options.onCachingFinished).toHaveBeenCalled();
+    expect(console.error).toHaveBeenCalledTimes(1);
+    expect(console.log).toHaveBeenCalledTimes(3);
+
+    restoreConsole();
   });
 
   // FIXME: This is critical and really should be tested

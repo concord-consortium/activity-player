@@ -58,38 +58,41 @@ export interface CacheUrlsOptions {
   We can't use the built in Workbox messageSW because it only allows a single
   response on the MessageChannel indicating that it completed.
 */
-export const cacheUrlsWithProgress = async (options: CacheUrlsOptions) => {
+export const cacheUrlsWithProgress = (options: CacheUrlsOptions): Promise<void> => {
   const {workbox, entries, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished} = options;
 
-  onCachingStarted(entries);
+  // TODO: is this using the right service worker?
+  // If the page has loaded with an active service worker and then a new one is downloaded
+  // we'll delay calling this function until the new service worker has loaded based on our
+  // version comparison. But this getSW promise might still be pointing at the old version
+  return workbox.getSW()
+  .then(sw => new Promise( (resolve, reject ) => {
+    onCachingStarted(entries);
 
-  const sw = await workbox.getSW();
-  const messageChannel = new MessageChannel();
+    const messageChannel = new MessageChannel();
 
-  messageChannel.port1.onmessage = (event: MessageEvent) => {
-    // Handle the various messages from the channel
-    if (event.data?.type === "ENTRY_CACHED") {
-      console.log("ENTRY_CACHED", event.data.payload);
-      onUrlCached(event.data.payload?.url);
-    } else if (event.data?.type === "ENTRY_FOUND") {
-      console.log("ENTRY_FOUND", event.data.payload);
-      onUrlCached(event.data.payload?.url);
-    } else if (event.data?.type === "ENTRY_CACHE_FAILED") {
-      console.error("ENTRY_CACHE_FAILED", event.data.payload);
-      onUrlCacheFailed(event.data.payload?.url, event.data.payload?.error);
-    } else if (event.data?.type === "CACHING_FINISHED") {
-      console.log("CACHING_FINISHED");
-      onCachingFinished();
-      // TODO having a promise here that we can resolve could be helpful
-    }
-  };
+    messageChannel.port1.onmessage = (event: MessageEvent) => {
+      // Handle the various messages from the channel
+      if (event.data?.type === "ENTRY_CACHED") {
+        console.log("ENTRY_CACHED", event.data.payload);
+        onUrlCached(event.data.payload?.url);
+      } else if (event.data?.type === "ENTRY_FOUND") {
+        console.log("ENTRY_FOUND", event.data.payload);
+        onUrlCached(event.data.payload?.url);
+      } else if (event.data?.type === "ENTRY_CACHE_FAILED") {
+        console.error("ENTRY_CACHE_FAILED", event.data.payload);
+        onUrlCacheFailed(event.data.payload?.url, event.data.payload?.error);
+      } else if (event.data?.type === "CACHING_FINISHED") {
+        console.log("CACHING_FINISHED");
+        onCachingFinished();
+        resolve();
+      }
+    };
 
-  sw.postMessage({type: "CACHE_ENTRIES_WITH_PROGRESS", payload: {entriesToCache: entries}},
-    [messageChannel.port2]);
+    sw.postMessage({type: "CACHE_ENTRIES_WITH_PROGRESS", payload: {entriesToCache: entries}},
+      [messageChannel.port2]);
+  }));
 
-  // We might need to block until complete so the messageChannel doesn't get
-  // garbage collected, but it isn't simple to just do an await here
-  // so maybe we can get by without blocking.
 };
 
 export const cacheOfflineManifest = (options: CacheOfflineManifestOptions) => {
