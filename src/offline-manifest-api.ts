@@ -61,10 +61,10 @@ export interface CacheUrlsOptions {
 export const cacheUrlsWithProgress = (options: CacheUrlsOptions): Promise<void> => {
   const {workbox, entries, onCachingStarted, onUrlCached, onUrlCacheFailed, onCachingFinished} = options;
 
-  // TODO: is this using the right service worker?
-  // If the page has loaded with an active service worker and then a new one is downloaded
-  // we'll delay calling this function until the new service worker has loaded based on our
-  // version comparison. But this getSW promise might still be pointing at the old version
+  // workbox.getSW() is a little fuzzy here. As long as it is called after we have
+  // a version match, then it should correctly resolve to the active or newly installed
+  // service worker. However that is only the case if the updated service worker triggered
+  // an update event within 60 seconds of when we called workbox.register.
   return workbox.getSW()
   .then(sw => new Promise( (resolve, reject ) => {
     onCachingStarted(entries);
