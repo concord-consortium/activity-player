@@ -1,5 +1,5 @@
 /**
- * @jest-environment ./src/test-utils/service-worker-environment.ts
+ * @jest-environment ./src/test-utils/service-worker-environment.js
  */
 
 // This is using service-worker-mock to unit test the service worker
