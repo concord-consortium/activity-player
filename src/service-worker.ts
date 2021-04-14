@@ -260,7 +260,7 @@ function addCacheListener() {
 
 addCacheListener();
 
-addEventListener("message", (event) => {
+self.addEventListener("message", (event) => {
   if (event.data) {
     switch (event.data.type) {
       case "SKIP_WAITING":

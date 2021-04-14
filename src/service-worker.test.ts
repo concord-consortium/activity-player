@@ -1,47 +1,69 @@
-// I started using service-worker-mock to unit test the service worker
+/**
+ * @jest-environment ./src/test-utils/service-worker-environment.ts
+ */
+
+// This is using service-worker-mock to unit test the service worker
 // https://github.com/zackargyle/service-workers/tree/master/packages/service-worker-mock
-// Then I realized that for what we want to test we can just use JSDOM
-// Using service-worker-mock could be useful, but I ran into conflicts with JSDOM
-// they both setup addEventListener and maintain their own listeners, so
-// to test it right with service-worker-mock we'd need to disable jsdom in this
-// test.
+// We can get pretty far just using JSDOM because it provides dispatchEvent and
+// addEventListener. However it doesn't have an easy way to reset listeners between
+// tests.
+//
+// The service-worker-mock is added to the jest environment using the comment above.
+// The import below is just to get the types.
+import "service-worker-mock";
+
+// The types for service-worker-mock do not include everything it can do
+// Here are the extra parts we are using.
+interface ExtraServiceWorkerMock {
+  resetSwEnv: () => void;
+  skipWaiting: () => Promise<void>;
+}
+
+declare const self: WorkerGlobalScope & ExtraServiceWorkerMock;
+
 describe("Service Worker", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
+    self.resetSwEnv();
     jest.resetModules();
+
+    // Because of resetModules the service worker will be re-imported on each
+    // test. Each import will trigger addEventListener calls.
+    // The self.resetSwEnv() is what resets any listeners added in the previous
+    // test.
+    await import("./service-worker");
   });
 
   it("should return its version", async () => {
-    // Because of resetModules the service worker will be re-imported on each
-    // new test. Each import will trigger addEventListener calls
-    // It seems JSDOM doesn't clean up listeners between files, so this could
-    // be a problem.
-    // https://github.com/facebook/jest/issues/1224
-    await import("./service-worker");
+    // TODO: It'd be nice if we could use workbox window here
+    // since it has the convent messaging mechanism
 
-    // We are using NodeJs's message channel. It is basically the same as the browser
-    // message channel. Its ports need to be closed otherwise node won't exist
-    window.MessageChannel = (await import("worker_threads")).MessageChannel as any;
+    // I'm pretty sure this MessageChannel object is coming from service-worker-mock
+    // However I think the types for it are coming from typescript's core types
+    const channel = new MessageChannel();
+    channel.port1.onmessage = (event: MessageEvent) => {
+      expect(event.data).toEqual(__VERSION_INFO__);
+    };
 
-    return new Promise((resolve, reject) => {
-      // TODO: It'd be nice if we could use workbox window here
-      // since it has the convent messaging mechanism
-      const channel = new MessageChannel();
-      channel.port1.onmessage = (event: MessageEvent) => {
-        expect(event.data).toEqual(__VERSION_INFO__);
-        // The port needs to be closed so the node process will exit
-        channel.port1.close();
-        resolve();
-      };
+    expect.assertions(1);
 
-      expect.assertions(1);
-      // JSDOM doesn't support ports in its postMessage implementation
-      // So we construct the event ourselves and use dispatchEvent to send it.
-      // If JSDOM supported it then the call would be something like:
-      //   self.postMessage({ type: "GET_VERSION_INFO"}, "*", [channel.port2]);
-      self.dispatchEvent(new MessageEvent("message", {
-        data: { type: "GET_VERSION_INFO"},
-        ports: [channel.port2]
-      }));
+    // In a real browser posting a message is an asynchronous operation, so to test this
+    // we'd need to wrap this in a promise and call resolve() when we recieve the response
+    // on channel.port2.  However in this test environment the messaging is synchronous
+    // so once the trigger is done, then we know our expectations have finished
+    await self.trigger("message", {
+      data: { type: "GET_VERSION_INFO"},
+      ports: [channel.port2]
     });
+
+  });
+
+  it("should call skipWaiting", async () => {
+    self.skipWaiting = jest.fn();
+
+    await self.trigger("message", {
+      data: { type: "SKIP_WAITING"}
+    });
+
+    expect(self.skipWaiting).toHaveBeenCalledTimes(1);
   });
 });
