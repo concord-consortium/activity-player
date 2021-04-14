@@ -4,13 +4,16 @@
 
 // This is using service-worker-mock to unit test the service worker
 // https://github.com/zackargyle/service-workers/tree/master/packages/service-worker-mock
-// We can get pretty far just using JSDOM because it provides dispatchEvent and
+// We could get pretty far just using JSDOM because it provides dispatchEvent and
 // addEventListener. However it doesn't have an easy way to reset listeners between
 // tests.
 //
-// The service-worker-mock is added to the jest environment using the comment above.
+// The service-worker-mock is added to the jest environment using the doc block comment
+// at the top of the file.
 // The import below is just to get the types.
 import "service-worker-mock";
+
+import fetchMock from "jest-fetch-mock";
 
 // The types for service-worker-mock do not include everything it can do
 // Here are the extra parts we are using.
@@ -25,6 +28,7 @@ describe("Service Worker", () => {
   beforeEach(async () => {
     self.resetSwEnv();
     jest.resetModules();
+    fetchMock.enableMocks();
 
     // Because of resetModules the service worker will be re-imported on each
     // test. Each import will trigger addEventListener calls.
@@ -65,5 +69,83 @@ describe("Service Worker", () => {
     });
 
     expect(self.skipWaiting).toHaveBeenCalledTimes(1);
+  });
+
+  it("should cache resources", (done) => {
+    fetchMock.mockIf(/.*/, async req => {
+      switch (req.url) {
+        // TODO: Note how the slash is added automatic I'm not sure why yet...
+        case "https://example.com/":
+          return {
+            body: "another response body",
+            headers: {
+              "Access-Control-Allow-Origin": "*"
+            }
+          };
+        case "https://example.com/found":
+          done.fail("Request to https://example.com/found made when it should be in the cache");
+          return "response for resource that should be in the cache";
+        case "https://example.com/bad":
+          throw new Error("Bad Url");
+          // TODO: the service worker does not report 404 as errors currently it just seems
+          // to silently cache them.
+          // return {
+          //   status: 404,
+          //   body: "Not Found",
+          //   headers: {
+          //     "Access-Control-Allow-Origin": "*"
+          //   }
+          // };
+        default:
+          done.fail(`Unexpected Request for ${req.url}`);
+          return "response for resource that was unexpected";
+      }
+    });
+
+    const channel = new MessageChannel();
+    channel.port1.onmessage = (event: MessageEvent) => {
+      // This is going to be called multiple times
+      // I'm not quite sure how to handle I guess we
+      // can manually track the number of calls and
+      // assert it later
+      // This will likely real asynchronous
+      try {
+        switch (event.data.type) {
+          case "ENTRY_CACHED":
+            expect(event.data.payload.url).toEqual("https://example.com/");
+            break;
+          case "ENTRY_FOUND":
+            console.log("ENTRY_FOUND", event.data.payload.url);
+            expect(event.data.payload.url).toEqual("https://example.com/found");
+            break;
+          case "ENTRY_CACHE_FAILED":
+            expect(event.data.payload.url).toEqual("https://example.com/bad");
+            break;
+          case "CACHING_FINISHED":
+            done();
+            break;
+          default:
+            done.fail("Recived an un expected message");
+          }
+      } catch (error) {
+        // the expect statements throw errors that we need to hand back up to done
+        done(error);
+      }
+    };
+
+    expect.assertions(2);
+    self.trigger("message", {
+      data: {
+        type: "CACHE_ENTRIES_WITH_PROGRESS",
+        payload: {
+          entriesToCache: [
+            "https://example.com",
+            "https://example.com/bad",
+            // "https://example.com/found"
+          ]
+        }
+      },
+      ports: [channel.port2]
+    });
   });
 });
