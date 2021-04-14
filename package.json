@@ -15,7 +15,7 @@
       "^.+\\.[jt]sx?$": "ts-jest"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!(workbox-window|workbox-core)/)"
+      "node_modules/(?!(workbox-window|workbox-core|workbox-routing|workbox-strategies|workbox-range-requests)/)"
     ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "testPathIgnorePatterns": [
