@@ -44,7 +44,7 @@ describe("offline manifest api", () => {
   it("handles #cacheUrlsWithProgress", async () => {
     const restoreConsole = mockConsole();
     // We are using NodeJs's message channel. It is basically the same as the browser
-    // message channel. Its ports need to be closed otherwise node won't exist
+    // message channel. Its ports need to be closed otherwise Node won't exit
     window.MessageChannel = (await import("worker_threads")).MessageChannel as any;
 
     const entriesToCache = [
