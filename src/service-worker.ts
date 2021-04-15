@@ -166,99 +166,92 @@ interface CacheEntriesMessageData {
  * }
  * ```
  */
-function addCacheListener() {
-  // See https://github.com/Microsoft/TypeScript/issues/28357#issuecomment-436484705
-  self.addEventListener("message", ((event: ExtendableMessageEvent) => {
-    if (event.data && event.data.type === "CACHE_ENTRIES_WITH_PROGRESS") {
-      const {payload}: CacheEntriesMessageData = event.data;
-      const messagePort: MessagePort | undefined = event.ports?.[0];
+function cacheEntriesWithProgress(event: ExtendableMessageEvent) {
+  const {payload}: CacheEntriesMessageData = event.data;
+  const messagePort: MessagePort | undefined = event.ports?.[0];
 
-      console.log(`Caching URLs from the window`, payload.entriesToCache);
+  console.log(`Caching URLs from the window`, payload.entriesToCache);
 
-      const requestPromises = Promise.allSettled(payload.entriesToCache.map(async (entry) => {
-        if (typeof entry === "string") {
-          entry = {url: entry};
-        }
+  const requestPromises = Promise.allSettled(payload.entriesToCache.map(async (entry) => {
+    if (typeof entry === "string") {
+      entry = {url: entry};
+    }
 
-        const request = new Request(entry.url);
+    const request = new Request(entry.url);
 
-        if (entry.revision) {
-          try {
-            const response = await cacheOnlyHandler.handle({request, event});
-            const etag = response?.headers.get("etag");
+    if (entry.revision) {
+      try {
+        const response = await cacheOnlyHandler.handle({request, event});
+        const etag = response?.headers.get("etag");
 
-            // This will return a quoted string, and possibly a previs of `W/`
-            // we don't want to deal with the `W/` etags so we just check for the quotes
-            // and then use JSON.parse to remove the quotes
-            if (etag?.startsWith(`"`)) {
-              const cacheRevision = JSON.parse(etag);
-              if (cacheRevision === entry.revision) {
-                // We found a matching response in the cache.
-                messagePort.postMessage({type: "ENTRY_FOUND", payload: {url: request.url}});
-                return;
-              }
-            }
-          } catch (error) {
-            // failed to find the response in the cache
+        // This will return a quoted string, and possibly a previs of `W/`
+        // we don't want to deal with the `W/` etags so we just check for the quotes
+        // and then use JSON.parse to remove the quotes
+        if (etag?.startsWith(`"`)) {
+          const cacheRevision = JSON.parse(etag);
+          if (cacheRevision === entry.revision) {
+            // We found a matching response in the cache.
+            messagePort.postMessage({type: "ENTRY_FOUND", payload: {url: request.url}});
+            return;
           }
         }
-
-        // Use a specific strategy that is not registered as a route
-        // this way we get Workbox's strategy features without affecting
-        // regular page network requests
-        const [responsePromise, donePromise] = networkFirstHandler.handleAll({request, event});
-
-        if (messagePort) {
-          try {
-            // The response Promise resolves when the browser recieves the headers
-            // from the get request.
-            // The actual caching of the data can take a while longer as
-            // there is a seperate body promise that is used to access that data.
-            // The donePromise resolves when this caching is complete.
-            await responsePromise;
-
-            // TODO: if we have a revision, we could check the etag of the response to
-            // verify we are getting what we expected.
-          } catch (error) {
-            messagePort.postMessage({type: "ENTRY_CACHE_FAILED", payload: {url: request.url, error}});
-            // If we get an error with the request then report the error and bail.
-            // We don't want to keep going and possibly report the error twice.
-            // Perhaps Workbox does some cleanup after the responsePromise fails so
-            // the donePromise is used to make sure that cleanup finishes
-            return donePromise;
-          }
-
-          try {
-            await donePromise;
-            messagePort.postMessage({type: "ENTRY_CACHED", payload: {url: request.url}});
-          } catch (error) {
-            messagePort.postMessage({type: "ENTRY_CACHE_FAILED", payload: {url: request.url, error}});
-          }
-        }
-
-      // TODO(philipwalton): TypeScript errors without this typecast for
-      // some reason (probably a bug). The real type here should work but
-      // doesn't: `Array<Promise<Response> | undefined>`.
-      }) as any[]); // TypeScript
-
-      // This is needed to keep the service worker alive while it is fetching
-      // otherwise the browser can aggresively stop the worker.
-      // This might not actually be needed because the event is being passed
-      // to the networkFirst handler too, which ought to call waitUntil itself
-      event.waitUntil(requestPromises);
-
-      if (messagePort) {
-        requestPromises.then(() => {
-          // We are using allSettled so if there is an error the caching will
-          // continue
-          messagePort.postMessage({type: "CACHING_FINISHED"});
-        });
+      } catch (error) {
+        // failed to find the response in the cache
       }
     }
-  }) as EventListener);
-}
 
-addCacheListener();
+    // Use a specific strategy that is not registered as a route
+    // this way we get Workbox's strategy features without affecting
+    // regular page network requests
+    const [responsePromise, donePromise] = networkFirstHandler.handleAll({request, event});
+
+    if (messagePort) {
+      try {
+        // The response Promise resolves when the browser recieves the headers
+        // from the get request.
+        // The actual caching of the data can take a while longer as
+        // there is a seperate body promise that is used to access that data.
+        // The donePromise resolves when this caching is complete.
+        await responsePromise;
+
+        // TODO: if we have a revision, we could check the etag of the response to
+        // verify we are getting what we expected.
+      } catch (error) {
+        messagePort.postMessage({type: "ENTRY_CACHE_FAILED", payload: {url: request.url, error}});
+        // If we get an error with the request then report the error and bail.
+        // We don't want to keep going and possibly report the error twice.
+        // Perhaps Workbox does some cleanup after the responsePromise fails so
+        // the donePromise is used to make sure that cleanup finishes
+        return donePromise;
+      }
+
+      try {
+        await donePromise;
+        messagePort.postMessage({type: "ENTRY_CACHED", payload: {url: request.url}});
+      } catch (error) {
+        messagePort.postMessage({type: "ENTRY_CACHE_FAILED", payload: {url: request.url, error}});
+      }
+    }
+
+  // TODO(philipwalton): TypeScript errors without this typecast for
+  // some reason (probably a bug). The real type here should work but
+  // doesn't: `Array<Promise<Response> | undefined>`.
+  }) as any[]); // TypeScript
+
+  // This is needed to keep the service worker alive while it is fetching
+  // otherwise the browser can aggresively stop the worker.
+  // This might not actually be needed because the event is being passed
+  // to the networkFirst handler too, which ought to call waitUntil itself
+  event.waitUntil(requestPromises);
+
+  if (messagePort) {
+    requestPromises.then(() => {
+      // We are using allSettled so if there is an error the caching will
+      // continue
+      messagePort.postMessage({type: "CACHING_FINISHED"});
+    });
+  }
+}
 
 self.addEventListener("message", (event) => {
   if (event.data) {
@@ -269,6 +262,10 @@ self.addEventListener("message", (event) => {
 
       case "GET_VERSION_INFO":
         event.ports[0].postMessage(__VERSION_INFO__);
+        break;
+
+      case "CACHE_ENTRIES_WITH_PROGRESS":
+        cacheEntriesWithProgress(event);
         break;
     }
   }
