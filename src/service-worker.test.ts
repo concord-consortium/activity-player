@@ -76,6 +76,7 @@ describe("Service Worker", () => {
       switch (req.url) {
         // TODO: Note how the slash is added automatic I'm not sure why yet...
         case "https://example.com/":
+        case "https://example.com/not-found":
           return {
             body: "another response body",
             headers: {
@@ -112,10 +113,11 @@ describe("Service Worker", () => {
       try {
         switch (event.data.type) {
           case "ENTRY_CACHED":
-            expect(event.data.payload.url).toEqual("https://example.com/");
+            const url = event.data.payload.url;
+            expect(url === "https://example.com/" ||
+                   url === "https://example.com/not-found").toBeTruthy();
             break;
           case "ENTRY_FOUND":
-            console.log("ENTRY_FOUND", event.data.payload.url);
             expect(event.data.payload.url).toEqual("https://example.com/found");
             break;
           case "ENTRY_CACHE_FAILED":
@@ -133,19 +135,34 @@ describe("Service Worker", () => {
       }
     };
 
-    expect.assertions(2);
-    self.trigger("message", {
-      data: {
-        type: "CACHE_ENTRIES_WITH_PROGRESS",
-        payload: {
-          entriesToCache: [
-            "https://example.com",
-            "https://example.com/bad",
-            // "https://example.com/found"
-          ]
-        }
-      },
-      ports: [channel.port2]
+    expect.assertions(4);
+
+    self.caches.open("cachedGets")
+    .then(cache => {
+      cache.put(new Request("https://example.com/found"),
+        new Response("cached response", { headers: {etag: `"matching-revision"`}}));
+    })
+    .then( () => {
+      self.trigger("message", {
+        data: {
+          type: "CACHE_ENTRIES_WITH_PROGRESS",
+          payload: {
+            entriesToCache: [
+              "https://example.com",
+              "https://example.com/bad",
+              {
+                url: "https://example.com/not-found",
+                revision: "12345abcdf"
+              },
+              {
+                url: "https://example.com/found",
+                revision: "matching-revision"
+              },
+            ]
+          }
+        },
+        ports: [channel.port2]
+      });
     });
   });
 });
