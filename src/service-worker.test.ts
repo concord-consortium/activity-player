@@ -111,9 +111,9 @@ describe("Service Worker", () => {
       // assert it later
       // This will likely real asynchronous
       try {
+        const url = event.data?.payload?.url;
         switch (event.data.type) {
           case "ENTRY_CACHED":
-            const url = event.data.payload.url;
             expect(url === "https://example.com/" ||
                    url === "https://example.com/not-found").toBeTruthy();
             break;
