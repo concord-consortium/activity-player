@@ -6,7 +6,7 @@ import { SequenceNav } from "./activity-header/sequence-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue, getAllUrlsInActivity, isNotSampleActivityUrl } from "../utilities/activity-utils";
+import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue } from "../utilities/activity-utils";
 import { getActivityDefinition, getResourceUrl, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
@@ -14,7 +14,7 @@ import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean } from "../utilities/url-query";
 import { IPortalData, firebaseAppName } from "../portal-api";
-import { Activity, IEmbeddablePlugin, OfflineManifest, OfflineManifestActivity, Sequence, ServiceWorkerStatus } from "../types";
+import { Activity, IEmbeddablePlugin, Sequence, ServiceWorkerStatus } from "../types";
 import { TrackOfflineResourceUrl, initStorage } from "../storage/storage-facade";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
@@ -31,11 +31,9 @@ import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
 import { IdleDetector } from "../utilities/idle-detector";
 import { Workbox } from "workbox-window/index";
-import { getOfflineManifest, getOfflineManifestAuthoringData, getOfflineManifestAuthoringId, OfflineManifestAuthoringData, mergeOfflineManifestWithAuthoringData, saveOfflineManifestToOfflineActivities, setOfflineManifestAuthoringData, setOfflineManifestAuthoringId } from "../offline-manifest-api";
 import { OfflineInstalling } from "./offline-installing";
 import { OfflineActivities } from "./offline-activities";
 import { OfflineNav } from "./offline-nav";
-import { OfflineManifestAuthoringNav } from "./offline-manifest-authoring-nav";
 import { DEFAULT_STUDENT_LOGGING_USERNAME, DEFAULT_STUDENT_NAME, StudentInfo } from "../student-info";
 import { StudentInfoModal } from "./student-info-modal";
 import { isNetworkConnected, monitorNetworkConnection } from "../utilities/network-connection";
@@ -62,7 +60,6 @@ interface IncompleteQuestion {
 
 interface IState {
   activity?: Activity;
-  offlineManifest?: OfflineManifest;
   currentPage: number;
   teacherEditionMode?: boolean;
   showThemeButtons?: boolean;
@@ -80,10 +77,6 @@ interface IState {
   errorType: null | ErrorType;
   idle: boolean;
   offlineMode: boolean;
-  offlineManifestId?: string;
-  offlineManifestAuthoringId?: string;
-  offlineManifestAuthoringActivities: OfflineManifestActivity[];
-  offlineManifestAuthoringCacheList: string[];
   serviceWorkerStatus: ServiceWorkerStatus;
   showEditUserName: boolean;
   networkConnected: boolean;
@@ -103,14 +96,6 @@ export class App extends React.PureComponent<IProps, IState> {
 
     const offlineMode = isOfflineHost();
 
-    if (offlineMode) {
-      // set the offline manifest authoring localstorage item if it exists in the params and then read from localstorage
-      // this is done in the constructor as the state value is needed in the UNSAFE_componentWillMount method
-      setOfflineManifestAuthoringId(queryValue("setOfflineManifestAuthoringId"));
-    }
-    const offlineManifestAuthoringId = offlineMode ? getOfflineManifestAuthoringId() : undefined;
-    const offlineManifestId = offlineMode ? queryValue("offlineManifest") : undefined;
-
     this.state = {
       currentPage: 0,
       teacherEditionMode: false,
@@ -125,10 +110,6 @@ export class App extends React.PureComponent<IProps, IState> {
       errorType: null,
       idle: false,
       offlineMode,
-      offlineManifestAuthoringActivities: [],
-      offlineManifestAuthoringCacheList: [],
-      offlineManifestAuthoringId,
-      offlineManifestId,
       serviceWorkerStatus: "unknown",
       showEditUserName: false,
       networkConnected: isNetworkConnected()
@@ -150,7 +131,7 @@ export class App extends React.PureComponent<IProps, IState> {
     // start monitoring the network connection
     this.unmonitorNetworkConnection = monitorNetworkConnection((networkConnected) => this.setState({networkConnected}));
 
-    // only enable the service worker in offline mode (or in authoring mode which automatically turns on offline mode)
+    // only enable the service worker in offline mode
     const enableServiceWorker = this.state.offlineMode;
 
     if (enableServiceWorker && ("serviceWorker" in navigator)) {
@@ -163,20 +144,6 @@ export class App extends React.PureComponent<IProps, IState> {
         console.log("A new service worker has installed.");
       });
       wb.addEventListener("waiting", (event) => {
-        // TODO: in future work we should show a dialog using this recipe:
-        // https://developers.google.com/web/tools/workbox/guides/advanced-recipes#offer_a_page_reload_for_users
-        // For now just send a message to skip waiting so we don't have to do it manually in the devtools
-        // This will trigger a 'controlling' event which we are listening for below and reload the page when
-        // we get it
-        //
-        // Note: with the current setup this will cause 2 reloads for each change while developing
-        // first webpack-dev-server will try to hot load the changes, it will find it can't do this
-        // (I'm not sure why yet), it will reload the page because the hot load failed, this reload
-        // will trigger a service worker update because each change to the activity-player
-        // triggers a new service-worker since it includes a pre-cache manifest that includes
-        // the javascript files. The service worker update will then trigger this
-        // waiting event which we "skip". The new service worker will activate and start
-        // controlling the page which triggers thre reload below.
         wb.messageSkipWaiting();
       });
       wb.addEventListener("controlling", (event) => {
@@ -197,37 +164,6 @@ export class App extends React.PureComponent<IProps, IState> {
           console.log("Service worker activated for the first time!");
         } else {
           console.log("Service worker activated with an update");
-        }
-      });
-      wb.addEventListener("message", (event) => {
-        const {offlineManifestAuthoringId} = this.state;
-        switch (event.data.type) {
-          case "CACHE_UPDATED":
-            console.log(`A newer version of ${event.data.payload.updatedURL} is available!`);
-            break;
-
-          case "GET_REQUEST":
-            if (offlineManifestAuthoringId) {
-              this.setState((prevState) => {
-                // TODO: we only allow cors requests, so it would be helpful to authors
-                // if we checked whether the url can be requested with cors and if not
-                // we notify the author about the invalid url
-
-                // make sure all models-resources requests use the base folder
-                const url = event.data.url.replace(/.*models-resources\//, "models-resources/");
-                let {offlineManifestAuthoringCacheList} = prevState;
-                const {offlineManifestAuthoringActivities} = prevState;
-                if (!/api\/v1\/activities/.test(url) && (offlineManifestAuthoringCacheList.indexOf(url) === -1)) {
-                  offlineManifestAuthoringCacheList = offlineManifestAuthoringCacheList.concat(url);
-                }
-                setOfflineManifestAuthoringData(offlineManifestAuthoringId, {
-                  activities: offlineManifestAuthoringActivities,
-                  cacheList: offlineManifestAuthoringCacheList
-                });
-                return {...prevState, offlineManifestAuthoringCacheList};
-              });
-            }
-            break;
         }
       });
 
@@ -285,6 +221,9 @@ export class App extends React.PureComponent<IProps, IState> {
           }
         }
 
+        // TODO update this to work the same as the install-app
+        // If a new service worker is downloaded and activitated it will start
+        // controlling the page so this version info will become stale
         console.log("Sending GET_VERSION_INFO to service worker...");
         this.setState({serviceWorkerVersionInfo: "Checking..."});
         wb.messageSW({type: "GET_VERSION_INFO"})
@@ -300,33 +239,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const {offlineMode, offlineManifestId, offlineManifestAuthoringId } = this.state;
-
-      let offlineManifestAuthoringData: OfflineManifestAuthoringData | undefined;
-      if (offlineManifestAuthoringId) {
-        offlineManifestAuthoringData = getOfflineManifestAuthoringData(offlineManifestAuthoringId);
-      }
-
-      let offlineManifest: OfflineManifest | undefined = undefined;
-      if (offlineManifestId) {
-        offlineManifest = await getOfflineManifest(offlineManifestId);
-
-        if (offlineManifest) {
-          if (offlineManifestAuthoringId && offlineManifestAuthoringData) {
-            offlineManifestAuthoringData = mergeOfflineManifestWithAuthoringData(offlineManifest, offlineManifestAuthoringData);
-            setOfflineManifestAuthoringData(offlineManifestAuthoringId, offlineManifestAuthoringData);
-          }
-
-          await saveOfflineManifestToOfflineActivities(offlineManifest);
-        }
-      }
-
-      if (offlineManifestAuthoringData) {
-        this.setState({
-          offlineManifestAuthoringActivities: offlineManifestAuthoringData.activities,
-          offlineManifestAuthoringCacheList: offlineManifestAuthoringData.cacheList
-        });
-      }
+      const {offlineMode } = this.state;
 
       let activity: Activity | undefined = undefined;
       let resourceUrl: string | undefined = undefined;
@@ -342,9 +255,6 @@ export class App extends React.PureComponent<IProps, IState> {
         // resourceUrl that would be used if the resource was online
         const contentUrl = queryValue("contentUrl") || activityPath;
         activity = await getActivityDefinition(contentUrl);
-        if (offlineManifestAuthoringId) {
-          await this.addActivityToOfflineManifest(offlineManifestAuthoringId, activity, resourceUrl, contentUrl);
-        }
       }
 
       const sequencePath = queryValue("sequence");
@@ -362,7 +272,7 @@ export class App extends React.PureComponent<IProps, IState> {
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
 
-      const newState: Partial<IState> = {activity, offlineManifest, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode, offlineManifestAuthoringId};
+      const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode };
       setDocumentTitle(activity, currentPage);
 
       // Initialize Storage provider
@@ -409,7 +319,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    const {serviceWorkerVersionInfo} = this.state;
+    const {serviceWorkerVersionInfo, networkConnected } = this.state;
     const showOfflineNav = this.state.offlineMode && !!this.state.activity;
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
@@ -417,19 +327,14 @@ export class App extends React.PureComponent<IProps, IState> {
           <div className="app" data-cy="app">
             { this.state.showWarning && <WarningBanner/> }
             { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-            { this.state.offlineManifestAuthoringId && <OfflineManifestAuthoringNav
-                offlineManifest={this.state.offlineManifest}
-                offlineManifestAuthoringId={this.state.offlineManifestAuthoringId}
-                offlineManifestAuthoringActivities={this.state.offlineManifestAuthoringActivities}
-                offlineManifestAuthoringCacheList={this.state.offlineManifestAuthoringCacheList}
-              />
-            }
             { showOfflineNav && <OfflineNav onOfflineActivities={this.handleShowOfflineActivities} /> }
             { this.renderContent() }
             { this.state.showThemeButtons && <ThemeButtons/>}
             <div className="version-info" data-cy="version-info">
               Application: {__VERSION_INFO__}
               {serviceWorkerVersionInfo && ` | Service Worker: ${serviceWorkerVersionInfo}`}
+              |
+              {networkConnected ? "network connected" : "no network connection" }
             </div>
             <ModalDialog
               label={this.state.modalLabel}
@@ -733,35 +638,6 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleLoadPlugins = () => {
     this.setState({ pluginsLoaded: true });
-  }
-
-  private addActivityToOfflineManifest = async (offlineManifestAuthoringId: string, activity: Activity,
-    resourceUrl: string, contentUrl: string) => {
-    if (offlineManifestAuthoringId && isNotSampleActivityUrl(contentUrl)) {
-      const urls = await getAllUrlsInActivity(activity);
-
-      this.setState(prevState => {
-        let {offlineManifestAuthoringActivities} = prevState;
-        const {offlineManifestAuthoringCacheList} = prevState;
-
-        urls.forEach(urlInActivity => {
-          if (offlineManifestAuthoringCacheList.indexOf(urlInActivity) === -1) {
-            offlineManifestAuthoringCacheList.push(urlInActivity);
-          }
-        });
-
-        if (!prevState.offlineManifestAuthoringActivities.find(a => a.resourceUrl === resourceUrl)) {
-          offlineManifestAuthoringActivities =
-            offlineManifestAuthoringActivities.concat({ name: activity.name, resourceUrl, contentUrl });
-          setOfflineManifestAuthoringData(offlineManifestAuthoringId, {
-            activities: offlineManifestAuthoringActivities,
-            cacheList: offlineManifestAuthoringCacheList
-          });
-        }
-
-        return {offlineManifestAuthoringActivities, offlineManifestAuthoringCacheList};
-      });
-    }
   }
 
   private handleShowOfflineActivities = () => this.setState({ activity: undefined });

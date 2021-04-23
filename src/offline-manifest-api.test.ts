@@ -1,11 +1,7 @@
 import fetch from "jest-fetch-mock";
 
-import { clearOfflineManifestAuthoringData, clearOfflineManifestAuthoringId,
-  getOfflineManifest, getOfflineManifestAuthoringData, getOfflineManifestAuthoringDownloadJSON,
-  getOfflineManifestAuthoringId, getOfflineManifestUrl, mergeOfflineManifestWithAuthoringData,
-  normalizeAndSortOfflineActivities, OfflineManifestAuthoringData,
-  OfflineManifestAuthoringDataKeyPrefix, OfflineManifestAuthoringIdKey,
-  setOfflineManifestAuthoringData, setOfflineManifestAuthoringId } from "./offline-manifest-api";
+import { getOfflineManifest, getOfflineManifestUrl,
+  normalizeAndSortOfflineActivities } from "./offline-manifest-api";
 import { OfflineManifest } from "./types";
 
 (window as any).fetch = fetch;
@@ -82,110 +78,6 @@ describe("offline manifest api", () => {
     //   expect(onUrlCacheFailed).not.toHaveBeenCalled();
     //   done();
     // });
-  });
-
-  it("handles #setOfflineManifestAuthoringId", () => {
-    jest.spyOn(window.localStorage.__proto__, "setItem");
-    setOfflineManifestAuthoringId(undefined);
-    expect(window.localStorage.setItem).not.toHaveBeenCalled();
-    setOfflineManifestAuthoringId("test");
-    expect(window.localStorage.setItem).toHaveBeenCalledWith(OfflineManifestAuthoringIdKey, "test");
-  });
-
-  it("handles #clearOfflineManifestAuthoringId", () => {
-    jest.spyOn(window.localStorage.__proto__, "removeItem");
-    clearOfflineManifestAuthoringId();
-    expect(window.localStorage.removeItem).toHaveBeenCalledWith(OfflineManifestAuthoringIdKey);
-  });
-
-  it("handles #getOfflineManifestAuthoringId", () => {
-    jest.spyOn(window.localStorage.__proto__, "getItem");
-    getOfflineManifestAuthoringId();
-    expect(window.localStorage.getItem).toHaveBeenCalledWith(OfflineManifestAuthoringIdKey);
-  });
-
-  it("handles #getOfflineManifestAuthoringData", () => {
-    jest.spyOn(window.localStorage.__proto__, "getItem");
-    getOfflineManifestAuthoringData("test");
-    expect(window.localStorage.getItem).toHaveBeenCalledWith(`${OfflineManifestAuthoringDataKeyPrefix}:test`);
-  });
-
-  it("handles #setOfflineManifestAuthoringData", () => {
-    const data: OfflineManifestAuthoringData = {activities: [], cacheList: []};
-    jest.spyOn(window.localStorage.__proto__, "setItem");
-    setOfflineManifestAuthoringData("test", data);
-    expect(window.localStorage.setItem).toHaveBeenCalledWith(`${OfflineManifestAuthoringDataKeyPrefix}:test`, JSON.stringify(data));
-  });
-
-  it("handles #clearOfflineManifestAuthoringData", () => {
-    jest.spyOn(window.localStorage.__proto__, "removeItem");
-    clearOfflineManifestAuthoringData("test");
-    expect(window.localStorage.removeItem).toHaveBeenCalledWith(`${OfflineManifestAuthoringDataKeyPrefix}:test`);
-  });
-
-  it("handles #getOfflineManifestAuthoringDownloadJSON", () => {
-    const data: OfflineManifestAuthoringData = {activities: [], cacheList: []};
-    expect(getOfflineManifestAuthoringDownloadJSON("test", data)).toEqual({name: "test", activities: [], cacheList: []});
-  });
-
-  it("handles #mergeOfflineManifestWithAuthoringData", () => {
-    const testManifest: OfflineManifest = {
-      name: "Test Manifest",
-      activities: [
-        {
-          name: "Activity 1",
-          resourceUrl: "http://example.com/activity-1-resource-url",
-          contentUrl: "http://example.com/activity-1-content-url"
-        },
-        {
-          name: "Activity 2",
-          resourceUrl: "http://example.com/activity-2-resource-url",
-          contentUrl: "http://example.com/activity-2-content-url"
-        }
-      ],
-      cacheList: [
-        "http://example.com/cache-list-item-1",
-        "http://example.com/cache-list-item-2"
-      ]
-    };
-    const authoringData: OfflineManifestAuthoringData = {
-      activities: [
-        {
-          name: "Activity 3",
-          resourceUrl: "http://example.com/activity-3-resource-url",
-          contentUrl: "http://example.com/activity-3-content-url"
-        }
-      ],
-      cacheList: [
-        "http://example.com/cache-list-item-3",
-        "http://example.com/cache-list-item-4"
-      ]
-    };
-    expect(mergeOfflineManifestWithAuthoringData(testManifest, authoringData)).toEqual({
-      activities: [
-        {
-          name: "Activity 3",
-          resourceUrl: "http://example.com/activity-3-resource-url",
-          contentUrl: "http://example.com/activity-3-content-url"
-        },
-        {
-          name: "Activity 1",
-          resourceUrl: "http://example.com/activity-1-resource-url",
-          contentUrl: "http://example.com/activity-1-content-url"
-        },
-        {
-          name: "Activity 2",
-          resourceUrl: "http://example.com/activity-2-resource-url",
-          contentUrl: "http://example.com/activity-2-content-url"
-        },
-      ],
-      cacheList: [
-        "http://example.com/cache-list-item-3",
-        "http://example.com/cache-list-item-4",
-        "http://example.com/cache-list-item-1",
-        "http://example.com/cache-list-item-2",
-      ]
-    });
   });
 
   it("handles #saveOfflineManifestToOfflineActivities", () => {
