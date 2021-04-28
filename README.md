@@ -82,7 +82,7 @@ To deploy a production release:
     2. Copy the title from CHANGES.md
     3. Copy the content from CHANGES.md
     4. Hit "Publish Release" button
-6. QA the built version at `https://activity-player.concord.org/version/v[new-version-string]`
+6. QA the built version at `https://activity-player.concord.org/version/v[new-version-string]/`
 7. Checkout production
 8. Run `git reset --hard v[new-version-string]`
 9. Push production to GitHub
