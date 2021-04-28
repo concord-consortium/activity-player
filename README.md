@@ -54,7 +54,8 @@ Other branches are deployed to https://activity-player.concord.org/branch/<name>
 To deploy a production release:
 
 1. Copy CHANGES-template.md to CHANGES.md, and add a list of PT stories related to the release into temporary CHANGES.md
-    - Run `git log --reverse <last release tag>...HEAD | grep '#'` to see a list of PR merges and stories that include PT ids in their message
+    - Update the version and date at the top of the CHANGES.md
+    - Run `git log --reverse v<last version>...HEAD | grep '#'` to see a list of PR merges and stories that include PT ids in their message
     - In a PT workspace that includes Orange and Teal boards, search for the `label:"activity-player-<new version>" includedone:true`. You can select all, and export as CSV. Then copy the id and title columns.
     - Review recently merged PRs in GitHub UI
 2. Compute asset sizes.
@@ -74,11 +75,14 @@ To deploy a production release:
             2. create a new commit with the CHANGES.md message
             3. create a tag `v[new-version-string]` with the CHANGES.md message
 4. Push current branch and tag to GitHub
+  - `git push origin master`
+  - `git push origin v<new version>`
 5. Create a GitHub Release
     1. Find the new tag at https://github.com/concord-consortium/activity-player/tags open it, and edit it
     2. Copy the title from CHANGES.md
     3. Copy the content from CHANGES.md
-6. QA the built version at `https://activity-player.concord.org/versions/v[new-version-string]``
+    4. Hit "Publish Release" button
+6. QA the built version at `https://activity-player.concord.org/version/v[new-version-string]`
 7. Checkout production
 8. Run `git reset --hard v[new-version-string]`
 9. Push production to GitHub
