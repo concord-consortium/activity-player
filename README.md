@@ -59,10 +59,11 @@ To deploy a production release:
     - In a PT workspace that includes Orange and Teal boards, search for the `label:"activity-player-<new version>" includedone:true`. You can select all, and export as CSV. Then copy the id and title columns.
     - Review recently merged PRs in GitHub UI
 2. Compute asset sizes.
-    1. Run `npm run build`
-    2. Look at file sizes with `ls dist/assets`
-    3. Add file sizes to CHANGES.md
-    4. Look at previous version file sizes from previous version in GitHub and compute the percent change `(new - prev) / prev * 100`
+    1. Run `npm install`
+    2. Run `npm run build`
+    3. Look at file sizes with `ls -a dist/assets`
+    4. Add file sizes to CHANGES.md
+    5. Look at previous version file sizes listed in the previous release notes in GitHub. Compute the percent change `(new - prev) / prev * 100`
 3. Update package, commit, and tag
     - **Mac or Linux**:
         - Run `npm version -m "$(< CHANGES.md)" [new-version-string]`
@@ -84,9 +85,16 @@ To deploy a production release:
     4. Hit "Publish Release" button
 6. QA the built version at `https://activity-player.concord.org/version/v[new-version-string]/`
 7. Checkout production
+    1. `git checkout production`
 8. Run `git reset --hard v[new-version-string]`
-9. Push production to GitHub
-10. Delete CHANGES.md to clean up your working directory
+9. Push production to GitHub **<-- this actually releases the new code**
+    1. `git push --force origin production`
+10. Check the release
+    1. Watch the GitHub actions build to see that the S3 Deploy step finished
+    2. Load the https://activity-player.concord.org and to make sure the new version is released. You can look at the version number at the bottom of the page to check this.
+11. Clean up your working directory
+    1. Delete `CHANGES.md`
+    2. `git checkout master`
 
 ### Testing
 
