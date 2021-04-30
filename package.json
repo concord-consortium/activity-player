@@ -15,7 +15,7 @@
       "^.+\\.[jt]sx?$": "ts-jest"
     },
     "transformIgnorePatterns": [
-      "node_modules/(?!(workbox-window|workbox-core)/)"
+      "node_modules/(?!(workbox-window|workbox-core|workbox-routing|workbox-strategies|workbox-range-requests)/)"
     ],
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "testPathIgnorePatterns": [
@@ -107,6 +107,7 @@
     "@types/react-dom": "^16.9.8",
     "@types/react-modal": "^3.10.6",
     "@types/react-paginate": "^6.2.1",
+    "@types/service-worker-mock": "^2.0.1",
     "@types/superagent": "^4.1.10",
     "@types/uuid": "^8.3.0",
     "@typescript-eslint/eslint-plugin": "^4.1.1",
@@ -139,6 +140,7 @@
     "istanbul-lib-coverage": "^3.0.0",
     "jest": "^26.4.2",
     "jest-fetch-mock": "^3.0.3",
+    "jest-mock-console": "^1.0.1",
     "live-server": "^1.2.1",
     "mini-css-extract-plugin": "^0.11.2",
     "node-fetch": "^2.6.1",
@@ -149,6 +151,7 @@
     "rimraf": "^3.0.2",
     "sass-loader": "^10.0.2",
     "script-loader": "^0.7.2",
+    "service-worker-mock": "^2.0.5",
     "source-map-support": "^0.5.19",
     "string-replace-loader": "^3.0.1",
     "style-loader": "^1.2.1",

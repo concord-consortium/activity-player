@@ -1,12 +1,20 @@
 import fetch from "jest-fetch-mock";
 
+import * as OfflineManifestAPI from "./offline-manifest-api";
+// We need the full module import to spy on some of the functions
+// eslint-disable-next-line no-duplicate-imports
 import { clearOfflineManifestAuthoringData, clearOfflineManifestAuthoringId,
   getOfflineManifest, getOfflineManifestAuthoringData, getOfflineManifestAuthoringDownloadJSON,
   getOfflineManifestAuthoringId, getOfflineManifestUrl, mergeOfflineManifestWithAuthoringData,
   normalizeAndSortOfflineActivities, OfflineManifestAuthoringData,
   OfflineManifestAuthoringDataKeyPrefix, OfflineManifestAuthoringIdKey,
-  setOfflineManifestAuthoringData, setOfflineManifestAuthoringId } from "./offline-manifest-api";
+  setOfflineManifestAuthoringData, setOfflineManifestAuthoringId,
+  CacheUrlsOptions, cacheUrlsWithProgress,
+  CacheOfflineManifestOptions, cacheOfflineManifest } from "./offline-manifest-api";
+
 import { OfflineManifest } from "./types";
+import { Workbox } from "workbox-window/index";
+import mockConsole from "jest-mock-console";
 
 (window as any).fetch = fetch;
 
@@ -33,55 +41,103 @@ describe("offline manifest api", () => {
     });
   });
 
-  // FIXME: This is critical and really should be tested
-  // The commented out parts were from an earlier version that did the
-  // the caching directly in the page by issuing fetch requests
-  // Now the caching happens in the service worker and it sends messages to
-  // the page about its progress
-  it.skip("handles #cacheOfflineManifest", (done) => {
-    // const testManifest: OfflineManifest = {
-    //   name: "Test Manifest",
-    //   activities: [
-    //     {
-    //       name: "Activity 1",
-    //       resourceUrl: "http://example.com/activity-1-resource-url",
-    //       contentUrl: "http://example.com/activity-1-content-url"
-    //     },
-    //     {
-    //       name: "Activity 2",
-    //       resourceUrl: "http://example.com/activity-2-resource-url",
-    //       contentUrl: "http://example.com/activity-2-content-url"
-    //     }
-    //   ],
-    //   cacheList: [
-    //     "http://example.com/cache-list-item-1",
-    //     "http://example.com/cache-list-item-2"
-    //   ]
-    // };
-    // const onCachingStarted = jest.fn();
-    // const onUrlCached = jest.fn();
-    // const onUrlCacheFailed = jest.fn();
-    // const onCachingFinished = jest.fn();
-    // const resp = cacheOfflineManifest({
-    //   offlineManifest: testManifest,
-    //   onCachingStarted,
-    //   onUrlCached,
-    //   onCachingFinished,
-    //   onUrlCacheFailed
-    // });
-    // expect(resp).toBeInstanceOf(Promise);
-    // resp!.then(() => {
-    //   expect(onCachingStarted).toHaveBeenCalledWith([
-    //     "http://example.com/activity-1-content-url",
-    //     "http://example.com/activity-2-content-url",
-    //     "http://example.com/cache-list-item-1",
-    //     "http://example.com/cache-list-item-2"
-    //   ]);
-    //   expect(onUrlCached).toHaveBeenCalledTimes(4);
-    //   expect(onCachingFinished).toHaveBeenCalledTimes(1);
-    //   expect(onUrlCacheFailed).not.toHaveBeenCalled();
-    //   done();
-    // });
+  it("handles #cacheUrlsWithProgress", async () => {
+    const restoreConsole = mockConsole();
+    // We are using NodeJs's message channel. It is basically the same as the browser
+    // message channel. Its ports need to be closed otherwise Node won't exit
+    window.MessageChannel = (await import("worker_threads")).MessageChannel as any;
+
+    const entriesToCache = [
+      "https://example.com",
+      "https://example.com/bad",
+      "https://example.com/found"];
+
+    const mockServiceWorker = {
+      postMessage: (data: any, ports: MessagePort[]) => {
+        expect(data.type).toEqual("CACHE_ENTRIES_WITH_PROGRESS");
+        expect(data.payload.entriesToCache).toEqual(entriesToCache);
+        expect(ports).toHaveLength(1);
+        const port = ports[0];
+        port.postMessage({type: "ENTRY_CACHED", payload: {url: "https://example.com"}});
+        port.postMessage({type: "ENTRY_CACHE_FAILED",
+          payload: {url: "https://example.com/bad", error: "mock error"}});
+        port.postMessage({type: "ENTRY_FOUND", payload: {url: "https://example.com/found"}});
+        port.postMessage({type: "CACHING_FINISHED"});
+        port.close();
+      }
+    };
+
+    const workbox = {
+      getSW: async () => mockServiceWorker
+    };
+
+    const options: CacheUrlsOptions = {
+      workbox: workbox as Workbox,
+      entries: entriesToCache,
+      onCachingStarted: jest.fn(),
+      onUrlCached: jest.fn(),
+      onUrlCacheFailed: jest.fn(),
+      onCachingFinished: jest.fn()
+    };
+
+    expect.assertions(3+7);
+    await cacheUrlsWithProgress(options);
+    expect(options.onCachingStarted).toHaveBeenCalled();
+    expect(options.onUrlCached).toHaveBeenCalledWith("https://example.com");
+    expect(options.onUrlCacheFailed).toHaveBeenCalledWith("https://example.com/bad", "mock error");
+    expect(options.onUrlCached).toHaveBeenCalledWith("https://example.com/found");
+    expect(options.onCachingFinished).toHaveBeenCalled();
+    expect(console.error).toHaveBeenCalledTimes(1);
+    expect(console.log).toHaveBeenCalledTimes(3);
+
+    restoreConsole();
+  });
+
+  it("handles #cacheOfflineManifest", () => {
+    const spy = jest.spyOn(OfflineManifestAPI, "cacheUrlsWithProgress").mockReturnValue(Promise.resolve());
+
+    const workbox = {};
+
+    const offlineManifest: OfflineManifest = {
+      name: "Test Manifest",
+      activities: [
+        {
+          name: "Activity 1",
+          resourceUrl: "http://example.com/activity-1-resource-url",
+          contentUrl: "http://example.com/activity-1-content-url"
+        },
+        {
+          name: "Activity 2",
+          resourceUrl: "http://example.com/activity-2-resource-url",
+          contentUrl: "http://example.com/activity-2-content-url"
+        }
+      ],
+      cacheList: [
+        "http://example.com/cache-list-item-1",
+        "http://example.com/cache-list-item-2"
+      ]
+    };
+
+    const options: CacheOfflineManifestOptions = {
+      workbox: workbox as Workbox,
+      offlineManifest,
+      onCachingStarted: jest.fn(),
+      onUrlCached: jest.fn(),
+      onUrlCacheFailed: jest.fn(),
+      onCachingFinished: jest.fn()
+    };
+
+    cacheOfflineManifest(options);
+    expect(spy).toHaveBeenCalledWith({
+      ...options,
+      offlineManifest: undefined,
+      entries: [
+        "http://example.com/activity-1-content-url",
+        "http://example.com/activity-2-content-url",
+        "http://example.com/cache-list-item-1",
+        "http://example.com/cache-list-item-2"
+      ]
+    });
   });
 
   it("handles #setOfflineManifestAuthoringId", () => {

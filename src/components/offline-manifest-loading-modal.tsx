@@ -40,7 +40,10 @@ export class OfflineManifestLoadingModal extends React.Component<IProps, IState>
     cacheOfflineManifest({
       workbox,
       offlineManifest,
-      onCachingStarted: (urls) => {
+      onCachingStarted: (entries) => {
+        const urls = entries.map(entry => {
+          return (typeof entry === "string") ? entry : entry.url;
+        });
         this.setState({urlsToCache: urls});
         this.props.onCachingStarted?.(urls);
       },
