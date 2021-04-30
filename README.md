@@ -93,7 +93,7 @@ To deploy a production release:
     1. Watch the GitHub actions build to see that the S3 Deploy step finished
     2. Load the https://activity-player.concord.org and to make sure the new version is released. You can look at the version number at the bottom of the page to check this.
 11. Clean up your working directory
-    1. Delete CHANGES.md to
+    1. Delete `CHANGES.md`
     2. `git checkout master`
 
 ### Testing
