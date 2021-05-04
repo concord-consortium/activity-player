@@ -28,7 +28,7 @@ context("Test Opening Portal Reports from various places", () => {
           cy.stub(win, "open");
         }
       });
-      activityPage.getPage(3).click();
+      activityPage.getPage(5).click();
       cy.wait(1000);
     });
     describe("Open report from end of activity without completion page", () => {
