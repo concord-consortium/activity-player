@@ -23,7 +23,7 @@ context("Saving and loading data as an anonymous user", () => {
     const runKey = uuidv4();
     const activityUrl = "?activity=sample-activity-1&enableFirestorePersistence";
 
-    it("we can use a runKey to retrieve data previously persisted", () => {
+    it("we can use a runKey to retrieve data previously persisted in ManagedInteractives", () => {
       const activityUrlWithRunKey = activityUrl + "&runKey=" + runKey;
 
       cy.visit(activityUrlWithRunKey + "&clearFirestorePersistence");
@@ -44,6 +44,53 @@ context("Saving and loading data as an anonymous user", () => {
       activityPage.getNavPage(2).click();
       cy.wait(1000);
       getIframeBody("body").find("[data-cy=choices-container] input").eq(1).should("be.checked");
+    });
+
+    it("we can use a runKey to retrieve data previously persisted in MWInteractives", () => {
+      const activityUrlWithRunKey = activityUrl + "&runKey=" + runKey;
+
+      cy.visit(activityUrlWithRunKey + "&clearFirestorePersistence");
+      activityPage.getNavPage(3).click();
+      cy.wait(1000);
+      getIframeBody("body").find(".htCore ").first().within(($table) => {
+        cy.get("td").eq(1).click().type("444{enter}");
+      });
+      cy.get("[data-cy=account-owner").click({force: true});
+      cy.wait(3000);
+      activityPage.getNavPage(1).click();
+
+      // We are essentially reloading the page here but in this case we are not clearing the persistance first
+      // this should force the activity player to load the data back in from the runKey
+      cy.visit(activityUrlWithRunKey);
+      activityPage.getNavPage(3).click();
+      cy.wait(1000);
+      getIframeBody("body").find(".htCore ").first().within(($table) => {
+        cy.get("td").eq(1).should("contain", "444");
+      });
+    });
+
+    it("verify that interactives that do not have save state enabled does not save data", () => {
+      // testing with a MWInteractive authorable tables
+      const activityUrlWithRunKey = activityUrl + "&runKey=" + runKey;
+
+      cy.visit(activityUrlWithRunKey + "&clearFirestorePersistence");
+      activityPage.getNavPage(4).click();
+      cy.wait(1000);
+      getIframeBody("body").find(".htCore ").first().within(($table) => {
+        cy.get("td").eq(1).click().type("555{enter}");
+      });
+      cy.get("[data-cy=account-owner").click({force: true});
+      cy.wait(3000);
+      activityPage.getNavPage(1).click();
+
+      // We are essentially reloading the page here but in this case we are not clearing the persistance first
+      // this should force the activity player to load the data back in from the runKey
+      cy.visit(activityUrlWithRunKey);
+      activityPage.getNavPage(3).click();
+      cy.wait(1000);
+      getIframeBody("body").find(".htCore ").first().within(($table) => {
+        cy.get("td").eq(1).should("not.contain", "555");
+      });
     });
 
     it("we can remove a runKey and we will no longer see our data", () => {
