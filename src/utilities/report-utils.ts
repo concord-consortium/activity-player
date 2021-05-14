@@ -2,6 +2,7 @@ import { queryValue } from "../utilities/url-query";
 import { getPortalData } from "../firebase-db";
 import { IPortalData, firebaseAppName } from "../portal-api";
 import { getCanonicalHostname, isProductionOrigin } from "./host-utils";
+import { getResourceUrl } from "../lara-api";
 
 // *** IMPORTANT NOTE ***
 // When you change these URLs you need to edit the portal-report Auth Client in
@@ -47,18 +48,17 @@ const makeSourceKey = (url: string | null) => {
 export const getReportUrl = () => {
   const reportLink = portalReportBaseUrl();
   const reportFirebaseApp = firebaseAppName();
-  const activity = queryValue("activity");
-  const activityUrl = activity? ((activity.split(".json"))[0]).replace("api/v1/","") : "";
+  const resourceUrl = getResourceUrl();
   const runKey= queryValue("runKey");
   // Sometimes the location of the answers is overridden with a report-source param
   const answerSource = queryValue("report-source") || getCanonicalHostname();
-  const sourceKey = activityUrl ? makeSourceKey(activityUrl) : getCanonicalHostname();
+  const sourceKey = resourceUrl ? makeSourceKey(resourceUrl) : getCanonicalHostname();
 
   if (runKey) {
     return reportLink
             + "?"
             + "runKey=" + runKey
-            + "&activity=" + activityUrl
+            + "&activity=" + resourceUrl
             + "&firebase-app="+reportFirebaseApp
             + "&sourceKey="+sourceKey
             + "&answersSourceKey="+answerSource;
