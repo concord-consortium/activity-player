@@ -59,6 +59,7 @@ export const getReportUrl = () => {
             + "?"
             + "runKey=" + runKey
             + "&activity=" + resourceUrl
+            + "&resourceUrl=" + resourceUrl
             + "&firebase-app="+reportFirebaseApp
             + "&sourceKey="+sourceKey
             + "&answersSourceKey="+answerSource;
