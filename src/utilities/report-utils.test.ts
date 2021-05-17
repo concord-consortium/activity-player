@@ -36,6 +36,7 @@ describe("getReportUrl", () => {
         kDevPortalReportUrl
         + "?runKey=" + runKey
         + "&activity=https://lara.example.com/activities/345"
+        + "&resourceUrl=https://lara.example.com/activities/345"
         + "&firebase-app=report-service-dev"
         + "&sourceKey=lara.example.com"
         + "&answersSourceKey=activity-player.unexisting.url.com"
@@ -51,6 +52,7 @@ describe("getReportUrl", () => {
         kDevPortalReportUrl
         + "?runKey=" + runKey
         + "&activity=https://lara.example.com/activities/345"
+        + "&resourceUrl=https://lara.example.com/activities/345"
         + "&firebase-app=report-service-dev"
         + "&sourceKey=lara.example.com"
         + "&answersSourceKey=activity-player.unexisting.url.com"
@@ -66,6 +68,7 @@ describe("getReportUrl", () => {
         kDevPortalReportUrl
         + "?runKey=" + runKey
         + "&activity=https://lara.example.com/activities/345"
+        + "&resourceUrl=https://lara.example.com/activities/345"
         + "&firebase-app=report-service-pro"
         + "&sourceKey=lara.example.com"
         + "&answersSourceKey=activity-player.unexisting.url.com"

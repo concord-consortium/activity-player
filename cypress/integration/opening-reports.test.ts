@@ -12,6 +12,7 @@ context("Test Opening Portal Reports from various places", () => {
     const activityStructureUrl = "https://example.com/activities/123";
     const activityPlayerUrl = "?" +
       "activity="+activityExportUrl+
+      "resourceUrl="+activityExportUrl+
       "&report-source=authoring.staging.concord.org" +
       "&runKey="+runKey;
 
@@ -37,6 +38,7 @@ context("Test Opening Portal Reports from various places", () => {
         cy.window().its("open").should("be.calledWith",
           portalReportUrl + "?runKey=" + runKey +
             "&activity=" + activityStructureUrl +
+            "&resourceUrl=" + activityStructureUrl +
             "&firebase-app=report-service-dev&sourceKey=example.com" +
             "&answersSourceKey=authoring.staging.concord.org");
       });
