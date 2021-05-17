@@ -417,7 +417,8 @@ export class App extends React.PureComponent<IProps, IState> {
     this.setState((prevState) =>
       ({ activity: prevState.sequence?.activities[activityNum],
          showSequenceIntro: false,
-         activityIndex: activityNum
+         activityIndex: activityNum,
+         currentPage: 0
       })
     );
   }
