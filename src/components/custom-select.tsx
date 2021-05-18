@@ -66,7 +66,7 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
     const currentValue = value || this.state.value;
     return (
       <div className="list-container">
-        <div className={`list ${(this.state.showList ?"show" : "")}`} data-cy="custom-select-list">
+        <div className={`list ${(this.state.showList ? "show" : "")}`} data-cy="custom-select-list">
           { items?.map((item: string, i: number) => {
             const currentClass = currentValue === item ? "selected" : "";
             return (

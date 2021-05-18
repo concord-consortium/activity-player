@@ -12,7 +12,7 @@ import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
-import { queryValue, queryValueBoolean } from "../utilities/url-query";
+import { queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
 import { fetchPortalData, IPortalData, firebaseAppName } from "../portal-api";
 import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB, onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout } from "../firebase-db";
 import { Activity, IEmbeddablePlugin, Sequence } from "../types";
@@ -78,6 +78,7 @@ export class App extends React.PureComponent<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
     this.state = {
+      activityIndex: 0,
       currentPage: 0,
       teacherEditionMode: false,
       showThemeButtons: false,
@@ -105,12 +106,21 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const activityPath = queryValue("activity") || kDefaultActivity;
-      const activity: Activity = await getActivityDefinition(activityPath);
-
       const sequencePath = queryValue("sequence");
       const sequence: Sequence | undefined = sequencePath ? await getSequenceDefinition(sequencePath) : undefined;
-      const showSequenceIntro = sequence != null;
+      let sequenceActivityNum = Number(queryValue("sequence-activity"));
+      if (sequence && (sequenceActivityNum > sequence.activities.length || sequenceActivityNum < 0)) {
+        sequenceActivityNum = 0;
+      }
+      const activityIndex = sequence && Number.isFinite(sequenceActivityNum)
+                              ? sequenceActivityNum - 1
+                              : 0;
+      const activityPath = queryValue("activity") || kDefaultActivity;
+      const activity: Activity = sequence !== undefined && activityIndex > 0
+                                   ? sequence.activities[activityIndex]
+                                   : await getActivityDefinition(activityPath);
+
+      const showSequenceIntro = sequence != null && (sequenceActivityNum < 1 || isNaN(sequenceActivityNum));
 
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity if numeric
       // or the page.position of the matching page id if prefixed with "page_<id>"
@@ -123,7 +133,7 @@ export class App extends React.PureComponent<IProps, IState> {
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
 
-      const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode};
+      const newState: Partial<IState> = {activity, activityIndex, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode};
       setDocumentTitle(activity, currentPage);
 
       let classHash = "";
@@ -211,12 +221,14 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
+    const { activity, activityIndex, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
+    console.log(activityIndex);
+    activityIndex !== undefined && activityIndex >= 0 && setQueryValue("sequence-activity", activityIndex + 1);
     return (
       <React.Fragment>
         <Header
@@ -311,10 +323,13 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderSequenceNav = (fullWidth: boolean) => {
+    const { activity, activityIndex, sequence } = this.state;
+    const activityNum = activityIndex ? activityIndex + 1 : 1;
+    const currentActivity = activity && activityNum + ": " + activity.name;
     return (
       <SequenceNav
-        activities={this.state.sequence?.activities.map((a: Activity) => a.name)}
-        currentActivity={this.state.activity?.name}
+        activities={sequence?.activities.map((a: Activity) => a.name)}
+        currentActivity={currentActivity}
         fullWidth={fullWidth}
         onActivityChange={this.handleSelectActivity}
       />

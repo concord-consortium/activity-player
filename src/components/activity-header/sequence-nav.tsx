@@ -1,6 +1,7 @@
 import React from "react";
 import { CustomSelect } from "../custom-select";
 import ActivityIcon from "../../assets/svg-icons/activity-icon.svg";
+import { setQueryValue } from "../../utilities/url-query";
 
 import "./sequence-nav.scss";
 
@@ -15,14 +16,13 @@ export class SequenceNav extends React.PureComponent <IProps> {
 
   render() {
     const { activities, fullWidth, currentActivity } = this.props;
-    const indexedActivities = this.createIndexedActivitiesMap();
     return (
       <div className={`sequence-nav ${fullWidth ? "full" : ""}`} data-cy="sequence-nav-header">
         <div className="select-label">Activity:</div>
         { activities &&
           <CustomSelect
             items={activities.map((a, i) => `${i + 1}: ${a}`)}
-            value={indexedActivities.get(currentActivity)}
+            value={currentActivity}
             HeaderIcon={ActivityIcon}
             onSelectItem={this.handleSelect}
           />
@@ -42,8 +42,9 @@ export class SequenceNav extends React.PureComponent <IProps> {
     const { activities } = this.props;
     const indexedActivities = this.createIndexedActivitiesMap();
     const selectedActivity = indexedActivities.get(item);
-    const activityIndex = activities?.findIndex((activity) => activity === selectedActivity);
-    activityIndex && this.props.onActivityChange(activityIndex);
+    const activityIndex = activities?.findIndex((activity) => activity === selectedActivity) || 0;
+    activityIndex >= 0 && this.props.onActivityChange(activityIndex);
+    activityIndex >= 0 && setQueryValue("sequence-activity", activityIndex + 1);
   }
 
 }
