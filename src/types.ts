@@ -136,6 +136,7 @@ export interface Page {
 }
 
 export interface Activity {
+  id?: number | null;
   description: string | null;
   editor_mode: number;
   layout: number;

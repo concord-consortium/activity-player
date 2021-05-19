@@ -1,4 +1,4 @@
-import { Page, Activity, EmbeddableWrapper } from "../types";
+import { Page, Activity, EmbeddableWrapper, Sequence } from "../types";
 import { SidebarConfiguration } from "../components/page-sidebar/sidebar-wrapper";
 import { isQuestion as isEmbeddableQuestion } from "./embeddable-utils";
 
@@ -162,4 +162,23 @@ export const getPagePositionFromQueryValue = (activity: Activity, pageQueryValue
   // page should be in the range [0, <number of pages>].
   // note that page is 1 based for the actual pages in the activity.
   return Math.max(0, Math.min((parseInt(pageQueryValue, 10) || 0), activity.pages.length));
+};
+
+export const getSequenceActivityFromQueryValue = (sequence: Sequence, sequenceActivityQueryValue = "0"): number => {
+  const activityId = sequenceActivityQueryValue.startsWith("activity_") ? parseInt(sequenceActivityQueryValue.split("_")[1], 10) : NaN;
+
+  if (!isNaN(activityId)) {
+    for (const activity of sequence.activities) {
+      if (activity.id === activityId) {
+        // add 1 to the index value because we start counting sequence activities with 1
+        return sequence.activities.indexOf(activity) + 1;
+      }
+    }
+
+    // default to index page when id not found
+    return 0;
+  }
+
+  // activity should be in the range [0, <number of activities>].
+  return Math.max(0, Math.min((parseInt(sequenceActivityQueryValue, 10) || 0), sequence.activities.length));
 };

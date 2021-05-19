@@ -44,7 +44,7 @@ export class SequenceNav extends React.PureComponent <IProps> {
     const selectedActivity = indexedActivities.get(item);
     const activityIndex = activities?.findIndex((activity) => activity === selectedActivity) || 0;
     activityIndex >= 0 && this.props.onActivityChange(activityIndex);
-    activityIndex >= 0 && setQueryValue("sequence-activity", activityIndex + 1);
+    activityIndex >= 0 && setQueryValue("sequenceActivity", activityIndex + 1);
   }
 
 }
