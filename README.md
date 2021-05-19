@@ -123,7 +123,7 @@ Inside of your `package.json` file:
 
 * activity={id|url}:                  load sample-activity {id} or load json from specified url
 * sequence={id|url}:                  load sample-sequence {id} or load json from specified url
-* sequence-activity={activityNumber}: load a specific activity within a sequence, where activityNumber corresponds to the activity's placement in the order of sequenced activities. 1 = first activity, 2 = second activity, etc.
+* sequenceActivity={n|activity_[id]}: load activity n where n corresponds to the activity's placement in the order of sequenced activities (1 = first activity, 2 = second activity, etc.), or by the activity's unique ID
 * page={n|"page_[id]"}:               load page n, where 0 is the activity introduction, 1 is the first page and [id] in "page_[id]" refers to an internal integer id of the page model exported from LARA.
 * themeButtons:                       whether to show theme buttons
 * mode={mode}:                        sets mode. Values: "teacher-edition"

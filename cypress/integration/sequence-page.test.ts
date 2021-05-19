@@ -17,7 +17,7 @@ context("Test sequences", () => {
       activityPage.getHeader().should("contain", "Sequence");
       sequencePage.getThumbnails().eq(0).click();
       activityPage.getHeader().should("contain", "Sequence");
-      cy.url().should("contain", "sequence-activity=1");
+      cy.url().should("contain", "sequenceActivity=1");
     });
   });
   describe("test sequence nav", () => {
@@ -36,11 +36,11 @@ context("Test sequences", () => {
       cy.get("[data-cy=custom-select-header]").click();
       cy.get("[data-cy^=list-item-2]").click();
       cy.get("[data-cy=custom-select-header]").should("contain", "2: Sample Sequence Activity 2");
-      cy.url().should("contain", "sequence-activity=2");
+      cy.url().should("contain", "sequenceActivity=2");
       cy.get("[data-cy=custom-select-header]").click();
       cy.get("[data-cy^=list-item-3]").click();
       cy.get("[data-cy=custom-select-header]").should("contain", "3: Sample Sequence Activity 3");
-      cy.url().should("contain", "sequence-activity=3");
+      cy.url().should("contain", "sequenceActivity=3");
     });
   });
 });

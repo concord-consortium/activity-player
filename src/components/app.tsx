@@ -6,7 +6,7 @@ import { SequenceNav } from "./activity-header/sequence-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue } from "../utilities/activity-utils";
+import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue, getSequenceActivityFromQueryValue } from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
@@ -108,19 +108,16 @@ export class App extends React.PureComponent<IProps, IState> {
     try {
       const sequencePath = queryValue("sequence");
       const sequence: Sequence | undefined = sequencePath ? await getSequenceDefinition(sequencePath) : undefined;
-      let sequenceActivityNum = Number(queryValue("sequence-activity"));
-      if (sequence && (sequenceActivityNum > sequence.activities.length || sequenceActivityNum < 0)) {
-        sequenceActivityNum = 0;
-      }
-      const activityIndex = sequence && Number.isFinite(sequenceActivityNum)
-                              ? sequenceActivityNum - 1
-                              : 0;
+      const sequenceActivityNum = sequence != null
+                                    ? getSequenceActivityFromQueryValue(sequence, queryValue("sequenceActivity"))
+                                    : 0;
+      const activityIndex = sequence && sequenceActivityNum ? sequenceActivityNum - 1 : 0;
       const activityPath = queryValue("activity") || kDefaultActivity;
-      const activity: Activity = sequence !== undefined && activityIndex > 0
+      const activity: Activity = sequence != null && activityIndex >= 0
                                    ? sequence.activities[activityIndex]
                                    : await getActivityDefinition(activityPath);
 
-      const showSequenceIntro = sequence != null && (sequenceActivityNum < 1 || isNaN(sequenceActivityNum));
+      const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
 
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity if numeric
       // or the page.position of the matching page id if prefixed with "page_<id>"
@@ -227,8 +224,7 @@ export class App extends React.PureComponent<IProps, IState> {
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
-    console.log(activityIndex);
-    activityIndex !== undefined && activityIndex >= 0 && setQueryValue("sequence-activity", activityIndex + 1);
+    activityIndex !== undefined && activityIndex >= 0 && setQueryValue("sequenceActivity", activityIndex + 1);
     return (
       <React.Fragment>
         <Header
