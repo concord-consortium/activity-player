@@ -6,7 +6,9 @@ import { SequenceNav } from "./activity-header/sequence-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue, getSequenceActivityFromQueryValue } from "../utilities/activity-utils";
+import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, 
+         enableReportButton, setDocumentTitle, getPagePositionFromQueryValue, 
+         getSequenceActivityFromQueryValue, getSequenceActivityId } from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
@@ -14,7 +16,8 @@ import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
 import { fetchPortalData, IPortalData, firebaseAppName } from "../portal-api";
-import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB, onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout } from "../firebase-db";
+import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB, 
+         onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout } from "../firebase-db";
 import { Activity, IEmbeddablePlugin, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
@@ -111,9 +114,9 @@ export class App extends React.PureComponent<IProps, IState> {
       const sequenceActivityNum = sequence != null
                                     ? getSequenceActivityFromQueryValue(sequence, queryValue("sequenceActivity"))
                                     : 0;
-      const activityIndex = sequence && sequenceActivityNum ? sequenceActivityNum - 1 : 0;
+      const activityIndex = sequence && sequenceActivityNum ? sequenceActivityNum - 1 : undefined;
       const activityPath = queryValue("activity") || kDefaultActivity;
-      const activity: Activity = sequence != null && activityIndex >= 0
+      const activity: Activity = sequence != null && activityIndex && activityIndex >= 0
                                    ? sequence.activities[activityIndex]
                                    : await getActivityDefinition(activityPath);
 
@@ -224,7 +227,13 @@ export class App extends React.PureComponent<IProps, IState> {
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
-    activityIndex !== undefined && activityIndex >= 0 && setQueryValue("sequenceActivity", activityIndex + 1);
+    const sequenceActivityId = sequence !== undefined ? getSequenceActivityId(sequence, activityIndex) : undefined;
+    const sequenceActivity = sequenceActivityId !== undefined 
+                               ? sequenceActivityId 
+                               : activityIndex !== undefined && activityIndex >= 0
+                                 ? activityIndex + 1
+                                 : undefined;
+    sequenceActivity !== undefined && setQueryValue("sequenceActivity", sequenceActivity);
     return (
       <React.Fragment>
         <Header

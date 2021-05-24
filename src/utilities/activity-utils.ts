@@ -182,3 +182,15 @@ export const getSequenceActivityFromQueryValue = (sequence: Sequence, sequenceAc
   // activity should be in the range [0, <number of activities>].
   return Math.max(0, Math.min((parseInt(sequenceActivityQueryValue, 10) || 0), sequence.activities.length));
 };
+
+export const getSequenceActivityId = (sequence: Sequence, activityIndex: number | undefined): string | undefined => {
+  if (activityIndex !== undefined) {
+    for (const activity of sequence.activities) {
+      if (sequence.activities.indexOf(activity) === activityIndex && activity.id !== undefined) {
+        return `activity_${activity.id}`;
+      }
+    }
+  }
+
+  return undefined;
+};
