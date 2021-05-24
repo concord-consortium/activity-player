@@ -17,7 +17,7 @@ context("Test sequences", () => {
       activityPage.getHeader().should("contain", "Sequence");
       sequencePage.getThumbnails().eq(0).click();
       activityPage.getHeader().should("contain", "Sequence");
-      cy.url().should("contain", "sequenceActivity=1");
+      cy.url().should("contain", "sequenceActivity=activity_1");
     });
   });
   describe("test sequence nav", () => {
@@ -36,11 +36,22 @@ context("Test sequences", () => {
       cy.get("[data-cy=custom-select-header]").click();
       cy.get("[data-cy^=list-item-2]").click();
       cy.get("[data-cy=custom-select-header]").should("contain", "2: Sample Sequence Activity 2");
-      cy.url().should("contain", "sequenceActivity=2");
+      cy.url().should("contain", "sequenceActivity=activity_2");
       cy.get("[data-cy=custom-select-header]").click();
       cy.get("[data-cy^=list-item-3]").click();
       cy.get("[data-cy=custom-select-header]").should("contain", "3: Sample Sequence Activity 3");
-      cy.url().should("contain", "sequenceActivity=3");
+      cy.url().should("contain", "sequenceActivity=activity_3");
+    });
+    it("should always take you to the index page of an activity when navigating to another activity within the sequence", () => {
+      cy.get("[data-cy=custom-select-header]").click();
+      cy.get("[data-cy^=list-item-2]").click();
+      cy.get("[data-cy=custom-select-header]").should("contain", "2: Sample Sequence Activity 2");
+      cy.get("[data-cy=activity-page-links] .page-item").eq(0).click();
+      cy.get("[data-cy=custom-select-header]").click();
+      cy.get("[data-cy^=list-item-3]").click();
+      cy.get("[data-cy=custom-select-header]").should("contain", "3: Sample Sequence Activity 3");
+      cy.get("[data-cy=activity-summary]").should("exist");
+      cy.get("[data-cy=activity-summary]").should("contain", "Sample Sequence Activity 3");
     });
   });
 });
