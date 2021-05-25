@@ -116,7 +116,7 @@ export class App extends React.PureComponent<IProps, IState> {
                                     : 0;
       const activityIndex = sequence && sequenceActivityNum ? sequenceActivityNum - 1 : undefined;
       const activityPath = queryValue("activity") || kDefaultActivity;
-      const activity: Activity = sequence != null && activityIndex && activityIndex >= 0
+      const activity: Activity = sequence != null && activityIndex !== undefined && activityIndex >= 0
                                    ? sequence.activities[activityIndex]
                                    : await getActivityDefinition(activityPath);
 
