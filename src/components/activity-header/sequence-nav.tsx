@@ -1,7 +1,6 @@
 import React from "react";
 import { CustomSelect } from "../custom-select";
 import ActivityIcon from "../../assets/svg-icons/activity-icon.svg";
-import { setQueryValue } from "../../utilities/url-query";
 
 import "./sequence-nav.scss";
 
