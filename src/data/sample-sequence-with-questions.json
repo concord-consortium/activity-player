@@ -9,6 +9,7 @@
   "title": "Sample Sequence Activity Player",
   "activities": [
     {
+      "id": 1,
       "description": "",
       "editor_mode": 0,
       "layout": 0,
@@ -504,6 +505,7 @@
       "position": 1
     },
     {
+      "id": 2,
       "description": "",
       "editor_mode": 0,
       "layout": 0,

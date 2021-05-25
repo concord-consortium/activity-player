@@ -9,6 +9,7 @@
   "title": "Test Sequence",
   "activities": [
     {
+      "id": 1,
       "description": "<p>This is a sequence activity.&nbsp; It should appear first.</p>",
       "editor_mode": 0,
       "layout": 0,
@@ -79,6 +80,7 @@
       "position": 1
     },
     {
+      "id": 2,
       "description": "<p>This is a sequence activity.&nbsp; It should appear second.</p>",
       "editor_mode": 0,
       "layout": 0,
@@ -131,6 +133,7 @@
       "position": 2
     },
     {
+      "id": 3,
       "description": "<p>This is a sequence activity.&nbsp; It should appear third.</p>",
       "editor_mode": 0,
       "layout": 0,
@@ -183,6 +186,7 @@
       "position": 3
     },
     {
+      "id": 4,
       "description": "<p>This is a sequence activity.&nbsp; It should appear fourth.</p>",
       "editor_mode": 0,
       "layout": 0,
@@ -253,6 +257,7 @@
       "position": 4
     },
     {
+      "id": 5,
       "description": "<p>This is a sequence activity.&nbsp; It should appear fifth.</p>",
       "editor_mode": 0,
       "layout": 0,

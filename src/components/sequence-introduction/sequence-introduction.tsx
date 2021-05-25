@@ -3,6 +3,7 @@ import { Sequence } from "../../types";
 import { Footer } from "../activity-introduction/footer";
 import { Header } from "../activity-header/header";
 import { SequencePageContent } from "../sequence-introduction/sequence-page-content";
+import { setQueryValue } from "../../utilities/url-query";
 
 interface IProps {
   sequence: Sequence | undefined;
@@ -12,6 +13,7 @@ interface IProps {
 
 export const SequenceIntroduction: React.FC<IProps> = (props) => {
   const { sequence, username, onSelectActivity } = props;
+  setQueryValue("sequenceActivity", "0");
   return (
     !sequence
     ? <div data-cy="sequence-loading">Loading</div>

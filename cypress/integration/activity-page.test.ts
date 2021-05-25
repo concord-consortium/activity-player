@@ -8,6 +8,11 @@ context("Test the overall app", () => {
     cy.visit("?activity=sample-activity-multiple-layout-types&preview");
     activityPage.getPage(2).click();
   });
+  describe("URL",() => {
+    it("verify URL does not include sequenceActivity param",()=>{
+      cy.url().should("not.contain", "sequenceActivity");
+    });
+  });
   describe("Sidebar",() => {
     it("verify sidebar opens",()=>{
       const content="Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
