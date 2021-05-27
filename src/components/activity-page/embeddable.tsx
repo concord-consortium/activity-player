@@ -93,6 +93,10 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     qComponent = <div>Content type not supported</div>;
   }
 
+  if (qComponent === undefined) {
+    return null;
+  }
+
   const fillContainerWidth = pageSection !== EmbeddableSections.Introduction &&
                              (pageLayout === PageLayouts.FortySixty ||
                               pageLayout === PageLayouts.SixtyForty ||
