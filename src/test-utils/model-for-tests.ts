@@ -1,4 +1,4 @@
-import { Embeddable, EmbeddableWrapper, Page, Activity, LibraryInteractive, IManagedInteractive, IEmbeddableXhtml } from "../types";
+import { Embeddable, EmbeddableWrapper, Page, Activity, LibraryInteractive, IManagedInteractive, IEmbeddableXhtml, IEmbeddablePlugin } from "../types";
 
 export const DefaultTestEmbeddable: Embeddable = {
   type: "MwInteractive",
@@ -80,4 +80,26 @@ export const DefaultXhtmlComponent: IEmbeddableXhtml = {
   is_hidden: false,
   is_full_width: false,
   is_callout: true
+};
+
+export const DefaultTEWindowshadeComponent: IEmbeddablePlugin = {
+  type: "Embeddable::EmbeddablePlugin",
+  ref_id: "123-Embeddable::EmbeddablePlugin",
+  is_hidden: false,
+  is_full_width: false,
+  plugin: {
+    description: null,
+    author_data: "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"this is a windowshade\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+    approved_script_label: "teacherEditionTips",
+    component_label: "windowShade",
+    approved_script: {
+      name: "Teacher Edition",
+      url: "https://example.com/plugin.js",
+      label: "teacherEditionTips",
+      description: "Teacher Edition Plugin",
+      version: "1.0.0",
+      json_url: "https://example.com/manifest.json",
+      authoring_metadata: "{}"
+    }
+  }
 };

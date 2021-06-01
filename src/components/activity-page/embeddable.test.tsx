@@ -4,7 +4,7 @@ import { Embeddable } from "./embeddable";
 import { PageLayouts, EmbeddableSections } from "../../utilities/activity-utils";
 import { mount } from "enzyme";
 import { EmbeddableWrapper, IManagedInteractive } from "../../types";
-import { DefaultManagedInteractive, DefaultXhtmlComponent } from "../../test-utils/model-for-tests";
+import { DefaultManagedInteractive, DefaultXhtmlComponent, DefaultTEWindowshadeComponent } from "../../test-utils/model-for-tests";
 
 describe("Embeddable component", () => {
   it("renders a non-callout text component", () => {
@@ -72,5 +72,31 @@ describe("Embeddable component", () => {
     expect(wrapper.find("iframe").length).toBe(1);
     expect(wrapper.find('[data-cy="iframe-runtime"]').length).toBe(1);
     expect(wrapper.html()).toContain("iframe-runtime");
+  });
+
+  it("renders nothing for a teacher edition window shade when not in teacher edition mode", () => {
+    const embeddableWrapper: EmbeddableWrapper = {
+      "embeddable": {
+        ...DefaultTEWindowshadeComponent
+      },
+      "section": "header_block"
+    };
+
+    const wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.Introduction} pluginsLoaded={true} />);
+    expect(wrapper.html()).toBe(null);
+  });
+
+  it("renders HTML for a teacher edition window shade when in teacher edition mode", () => {
+    const embeddableWrapper: EmbeddableWrapper = {
+      "embeddable": {
+        ...DefaultTEWindowshadeComponent
+      },
+      "section": "header_block"
+    };
+
+    const wrapper = mount(<Embeddable embeddableWrapper={embeddableWrapper} teacherEditionMode={true} pageLayout={PageLayouts.Responsive} pageSection={EmbeddableSections.Introduction} pluginsLoaded={true} />);
+    expect(wrapper.html()).not.toBe(null);
+    expect(wrapper.html()).toContain("embeddable");
+    expect(wrapper.html()).toContain("plugin-container");
   });
 });
