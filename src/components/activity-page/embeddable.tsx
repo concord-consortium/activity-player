@@ -93,6 +93,11 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     qComponent = <div>Content type not supported</div>;
   }
 
+  // The following conditional prevents teacher edition containers from being rendered 
+  // when not in teacher edition mode. LARA handles this differently by using a mutation observer 
+  // (see https://github.com/concord-consortium/lara/blob/master/app/views/plugins/_show.haml). 
+  // It would be better to do that here as well if we update Activity Player to not use direct 
+  // dependencies on teacherEditionMode.
   if (qComponent === undefined) {
     return null;
   }
