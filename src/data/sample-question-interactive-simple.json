@@ -4,7 +4,16 @@
   "layout": 0,
   "name": "Simple Test for Reporting",
   "notes": "",
-  "project_id": 3,
+  "project": {
+    "about": "",
+    "footer": "",
+    "help": "",
+    "logo_ap": "",
+    "logo_lara": "",
+    "project_key": "default",
+    "title": "Default",
+    "url": ""
+  },
   "related": "",
   "show_submit_button": true,
   "student_report_enabled": true,

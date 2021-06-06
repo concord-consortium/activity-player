@@ -4,7 +4,16 @@
   "layout": 0,
   "name": "Linked Interactives Test",
   "notes": "",
-  "project_id": 12,
+  "project": {
+    "about": "",
+    "footer": "<p>Copyright &copy; 2018 The Concord Consortium. This open educational resource is free for use under the Creative Commons Attribution International license (<a href=\"https://creativecommons.org/licenses/by/4.0/\" target=\"_blank\" rel=\"noopener\">CC BY 4.0</a>) and powered by open source software packages. When sharing this resource, please include attribution to the Concord Consortium and the URL <a href=\"http://concord.org\" target=\"_blank\" rel=\"noopener\">http://concord.org</a> and the CC-BY-4.0 license.</p>",
+    "help": "",
+    "logo_ap": "https://static.concord.org/projects/logos/ap/geni-logo.png",
+    "logo_lara": "https://static.concord.org/projects/logos/lara/geni-logo.png",
+    "project_key": "geniventure",
+    "title": "Geniventure",
+    "url": ""
+  },
   "related": "",
   "show_submit_button": true,
   "student_report_enabled": true,

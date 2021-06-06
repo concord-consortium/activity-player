@@ -225,6 +225,7 @@ export class App extends React.PureComponent<IProps, IState> {
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
+    const project = activity.project ? activity.project : null;
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
     const sequenceActivityId = sequence !== undefined ? getSequenceActivityId(sequence, activityIndex) : undefined;
@@ -238,7 +239,7 @@ export class App extends React.PureComponent<IProps, IState> {
       <React.Fragment>
         <Header
           fullWidth={fullWidth}
-          projectId={activity.project_id}
+          project={project}
           userName={username}
           contentName={sequence ? sequence.display_title || sequence.title || "" : activity.name}
           showSequence={sequence !== undefined}
@@ -262,7 +263,7 @@ export class App extends React.PureComponent<IProps, IState> {
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
           <Footer
             fullWidth={fullWidth}
-            projectId={activity.project_id}
+            project={project}
           />
         }
         { (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&

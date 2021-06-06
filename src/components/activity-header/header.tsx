@@ -1,5 +1,5 @@
 import React from "react";
-import { ProjectTypes } from "../../utilities/project-utils";
+import { Project } from "../../types";
 import { AccountOwner } from "./account-owner";
 import { Logo } from "./logo";
 import SequenceBackIcon from "../../assets/svg-icons/arrow-back-icon.svg";
@@ -8,7 +8,7 @@ import "./header.scss";
 
 interface IProps {
   fullWidth?: boolean;
-  projectId: number | null;
+  project?: Project | null;
   userName: string;
   contentName: string;
   showSequence?: boolean;
@@ -18,10 +18,9 @@ interface IProps {
 export class Header extends React.PureComponent<IProps> {
   render() {
     const ccLogoLink = "https://concord.org/";
-    const { fullWidth, projectId, userName, showSequence, onShowSequence } = this.props;
-    const projectType = ProjectTypes.find(pt => pt.id === projectId);
-    const logo = projectType?.headerLogo;
-    const projectURL = projectType?.url || ccLogoLink;
+    const { fullWidth, project, userName, showSequence, onShowSequence } = this.props;
+    const logo = project?.logo_ap;
+    const projectURL = project?.url || ccLogoLink;
     return (
       <div className={`activity-header ${showSequence ? "in-sequence" : ""}`} data-cy="activity-header">
         <div className={`inner ${fullWidth ? "full" : ""}`}>

@@ -4,7 +4,7 @@
   "layout": 0,
   "name": "Glossary Plugin and Example Interactive",
   "notes": "",
-  "project_id": null,
+  "project": null,
   "related": "",
   "runtime": "LARA",
   "show_submit_button": true,

@@ -35,7 +35,16 @@ export const DefaultTestActivity: Activity = {
   editor_mode: 0,
   layout: 0,
   name: "name",
-  project_id: null,
+  project: {
+    "about": "",
+    "footer": "",
+    "help": "",
+    "logo_ap": "",
+    "logo_lara": "",
+    "project_key": "default",
+    "title": "Default",
+    "url": ""
+  },
   show_submit_button: false,
   student_report_enabled: false,
   thumbnail_url: null,
