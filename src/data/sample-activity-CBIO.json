@@ -4,7 +4,16 @@
   "layout": 0,
   "name": "Single Page Test Activity",
   "notes": "",
-  "project_id": 13,
+  "project": {
+    "about": "",
+    "footer": "<p>Copyright &copy; 2020 The Concord Consortium. All rights reserved. This activity is licensed under a&nbsp;Creative Commons Attribution 3.0 Unported License. The software is licensed under&nbsp;Simplified BSD,&nbsp;MIT&nbsp;or&nbsp;Apache 2.0&nbsp;licenses. Please provide attribution to the Concord Consortium and the URL&nbsp;http://concord.org.</p><p>This ConnectedBio activity was developed with a grant from the National Science Foundation (DRL-1620910) in collaboration with Michigan State University.</p>",
+    "help": "",
+    "logo_ap": "https://static.concord.org/projects/logos/ap/connectedbio-logo.png",
+    "logo_lara": "https://static.concord.org/projects/logos/lara/connectedbio-logo.png",
+    "project_key": "connectedbio",
+    "title": "ConnectedBio",
+    "url": ""
+  },
   "related": "<p>Related content for the&nbsp;sample activity used to test the LARA single page application.</p>",
   "show_submit_button": true,
   "student_report_enabled": true,

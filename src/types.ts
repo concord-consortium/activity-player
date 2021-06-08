@@ -135,6 +135,17 @@ export interface Page {
   embeddables: EmbeddableWrapper[];
 }
 
+export interface Project {
+  about: string | null;
+  footer: string | null;
+  help: string | null;
+  logo_ap: string | null;
+  logo_lara: string | null;
+  project_key: string;
+  title: string | null;
+  url: string | null;
+}
+
 export interface Activity {
   id?: number | null;
   description: string | null;
@@ -142,7 +153,7 @@ export interface Activity {
   layout: number;
   name: string;
   notes?: string | null;
-  project_id: number | null;
+  project?: Project | null;
   related?: string | null;
   show_submit_button: boolean;
   student_report_enabled: boolean;
@@ -162,7 +173,7 @@ export interface Sequence {
   description: string | null;
   display_title: string | null;
   logo: string | null;
-  project_id: number | null;
+  project?: Project | null;
   theme_id: number | null;
   thumbnail_url: string | null;
   title: string | null;

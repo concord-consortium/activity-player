@@ -4,7 +4,16 @@
   "layout": 1,
   "name": "Single Page Layout",
   "notes": "",
-  "project_id": 6,
+  "project": {
+    "about": "",
+    "footer": "<p><span>Copyright &copy; 2017 The Concord Consortium. All rights reserved. This activity is licensed under a Creative Commons Attribution 3.0 Unported License. The software is licensed under Simplified BSD , MIT or Apache 2.0 licenses. Please provide attribution to the Concord Consortium and the URL <a title=\"\" href=\"http://authoring.concord.org\" target=\"http://concord.org\">http://concord.org</a>.</span></p>",
+    "help": "",
+    "logo_ap": "https://static.concord.org/projects/logos/ap/itsi-logo.png",
+    "logo_lara": "https://static.concord.org/projects/logos/lara/itsi-logo.png",
+    "project_key": "itsi",
+    "title": "ITSI",
+    "url": "https://itsi.portal.concord.org/"
+  },
   "related": "<p><strong>Activity related content</strong>: activity related content goes here.</p>",
   "show_submit_button": true,
   "student_report_enabled": true,

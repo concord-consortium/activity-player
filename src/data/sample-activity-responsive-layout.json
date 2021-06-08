@@ -4,7 +4,16 @@
   "layout": 0,
   "name": "Sample Responsive Page Layout",
   "notes": "",
-  "project_id": 24,
+  "project": {
+    "about": "",
+    "footer": "<p>These <a title=\"The Concord Consortium: InSPECT\" href=\"http://concord.org/inspect\" target=\"\">InSPECT</a>&nbsp;materials were developed and researched with funding from the&nbsp;<a title=\"National Science Foundation\" href=\"http://nsf.gov/\" target=\"\">National Science Foundation</a>&nbsp;(DRL-1640054).</p><p>This open educational resource from&nbsp;<a title=\"The Concord Consortium\" href=\"http://concord.org/\" target=\"\">The Concord Consortium</a>&nbsp;is free for use under the&nbsp;Creative Commons Attribution International license (<a title=\"\" href=\"http://creativecommons.org/licenses/by/4.0/\" target=\"\">CC-BY 4.0</a>) and powered by open source software packages. When sharing this resource, please include attribution to the Concord Consortium and links to&nbsp;<a title=\"\" href=\"http://concord.org/\" target=\"\">concord.org</a>&nbsp;and the CC-BY-4.0 license (see&nbsp;<a title=\"\" href=\"http://concord.org/licenses\" target=\"\">licensing details</a>). Copyright 2018 The Concord Consortium.</p><p><br />Questions? Comments? You can reach us at&nbsp;<a href=\"mailto:inspect@concord.org\">inspect@concord.org</a>.</p>",
+    "help": "",
+    "logo_ap": "",
+    "logo_lara": "",
+    "project_key": "inspect",
+    "title": "InSPECT",
+    "url": ""
+  },
   "related": "<p>Related content for responsive page layout.</p>",
   "show_submit_button": true,
   "student_report_enabled": true,

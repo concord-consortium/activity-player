@@ -20,7 +20,7 @@ export const SequenceIntroduction: React.FC<IProps> = (props) => {
     : <React.Fragment>
         <Header
           fullWidth={false}
-          projectId={sequence.project_id}
+          project={sequence.project}
           userName={username}
           contentName={sequence.display_title || sequence.title || ""}
           showSequence={true}
@@ -31,7 +31,7 @@ export const SequenceIntroduction: React.FC<IProps> = (props) => {
         />
         <Footer
           fullWidth={true}
-          projectId={sequence.project_id}
+          project={sequence.project}
         />
       </React.Fragment>
   );
