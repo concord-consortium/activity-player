@@ -60,7 +60,7 @@
     "https://fonts.gstatic.com/s/lato/v17/S6u9w4BMUTPHh6UVSwiPGQ.woff2",
     "https://fonts.gstatic.com/s/lato/v17/S6uyw4BMUTPHjx4wXg.woff2",
     "https://models-resources.s3.amazonaws.com/glossary-resources/custom-apo/alaska-v1.json?__noUrlRewrite",
-    "models-resources/glossary-plugin/branch/176579659-add-offline-saves/manifest.json",
-    "models-resources/glossary-plugin/branch/176579659-add-offline-saves/plugin.js"
+    "https://glossary-plugin.concord.org/version/v3.13.0-pre.4/manifest.json",
+    "https://glossary-plugin.concord.org/version/v3.13.0-pre.4/plugin.js"
    ]
 }

@@ -71,11 +71,11 @@
       "component_label": "glossary",
       "approved_script": {
         "name": "Glossary (test offline saves with language switcher)",
-        "url": "https://glossary-plugin.concord.org/branch/177305115-add-language-switcher/plugin.js",
+        "url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.4/plugin.js",
         "label": "glossary",
         "description": "This plugin provides the glossary activity plugin",
         "version": 3,
-        "json_url": "https://glossary-plugin.concord.org/branch/177305115-add-language-switcher/manifest.json",
+        "json_url": "https://glossary-plugin.concord.org/version/v3.13.0-pre.4/manifest.json",
         "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
       }
     }
