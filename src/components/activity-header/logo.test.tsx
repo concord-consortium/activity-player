@@ -1,7 +1,6 @@
 import React from "react";
 import { Logo } from "./logo";
 import { shallow } from "enzyme";
-import { accessibilityClick } from "../../utilities/accessibility-helper";
 import CCLogo from "../../assets/svg-icons/cclogo.svg";
 
 describe("Logo component", () => {
