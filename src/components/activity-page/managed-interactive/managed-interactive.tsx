@@ -216,6 +216,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         iframeTitle={questionNumber
                      ? `Question ${questionNumber} ${questionName} content`
                      : embeddable.name || "Interactive content"}
+        portalData={portalData}
       />;
 
     return (

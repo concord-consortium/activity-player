@@ -104,7 +104,7 @@ export interface IAnonymousPortalData {
   toolId: string;
   toolUserId: "anonymous";
   database: {
-    appName: FirebaseAppName,
+    appName: FirebaseAppName;
     sourceKey: string;
   };
 }
