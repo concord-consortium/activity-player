@@ -14,7 +14,7 @@ describe("Firestore", () => {
 
   beforeEach(async () => {
     const docResult = {
-      set: jest.fn(() => new Promise((resolve) => resolve())),
+      set: jest.fn(() => new Promise<void>((resolve) => resolve())),
       onSnapshot: jest.fn()
     };
     const docMock: any = jest.fn(() => docResult);
@@ -26,7 +26,7 @@ describe("Firestore", () => {
     const collectionMock: any = jest.fn(() => collectionResult);
 
     signInWithCustomTokenMock = jest.fn();
-    signOutMock = jest.fn(() => new Promise((resolve) => resolve()));
+    signOutMock = jest.fn(() => new Promise<void>((resolve) => resolve()));
     appMock = {
       firestore: jest.fn(() => ({
         doc: docMock,
