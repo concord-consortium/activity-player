@@ -31,7 +31,7 @@ export class Logo extends React.PureComponent<IProps> {
     );
   }
 
-  private handleProjectLogoLink = (url: string | undefined) => () => {
+  private handleProjectLogoLink = (url?: string) => (event: any) => {
     if (url && accessibilityClick(event)) {
       window.open(url);
     }
