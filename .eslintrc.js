@@ -45,7 +45,7 @@ module.exports = {
       "dot-notation": "error",
       "eol-last": "warn",
       eqeqeq: ["error", "smart"],
-      "eslint-comments/no-unused-disable": "warn",
+      "eslint-comments/no-unused-disable": "off",   // enabled in .eslintrc.build.js
       "no-debugger": "off",
       "no-duplicate-imports": "error",
       "no-sequences": "error",

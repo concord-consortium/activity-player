@@ -68,6 +68,7 @@ export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, hand
     script.setAttribute("data-id", pluginLabel);
     script.onload = function() {
       if (typeof window.jest === undefined) {
+        // eslint-disable-next-line no-console
         console.log(`plugin${usedPlugin.id} script loaded`);
       }
       usedPlugin.loaded = true;

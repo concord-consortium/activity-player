@@ -1,4 +1,5 @@
 // cf. https://github.com/concord-consortium/question-interactives/blob/master/src/scaffolded-question/components/iframe-runtime.tsx
+import { autorun } from "mobx";
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { IframePhone } from "../../../types";
 import iframePhone from "iframe-phone";
@@ -13,7 +14,7 @@ import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
-import { autorun } from "mobx";
+import { IPortalData } from "../../../portal-api";
 
 const kDefaultHeight = 300;
 
@@ -62,12 +63,13 @@ interface IProps {
   setNavigation?: (options: INavigationOptions) => void;
   ref?: React.Ref<IframeRuntimeImperativeAPI>;
   iframeTitle: string;
+  portalData?: IPortalData;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, showModal, closeModal, setSupportedFeatures,
-    setSendCustomMessage, setNavigation, iframeTitle } = props;
+    setSendCustomMessage, setNavigation, iframeTitle, portalData } = props;
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
@@ -255,16 +257,17 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   globalInteractiveState: null,
                   interactiveStateUrl: "",
                   collaboratorUrls: null,
-                  classInfoUrl: "",
+                  classInfoUrl: portalData?.portalJWT?.class_info_url ?? "",
                   interactive: {
                     id: 0,
                     name: ""
                   },
                   authInfo: {
                     provider: "",
-                    loggedIn: false,
+                    loggedIn: !!portalData?.platformUserId,
                     email: ""
                   },
+                  runRemoteEndpoint: portalData?.runRemoteEndpoint,
                   ...linkedInteractivesRef.current
                 };
       phone.post("initInteractive", initInteractiveMsg);
@@ -293,7 +296,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     return autorun(() => {
       if (phoneRef.current && pluginInfo.textDecorationHandlerInfo) {
         const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo();
-        phoneRef.current.post("decorateContent", textDecorationInfo);
+        phoneRef.current.post?.("decorateContent", textDecorationInfo);
       }
     });
   }, []);
