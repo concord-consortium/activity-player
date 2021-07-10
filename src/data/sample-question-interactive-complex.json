@@ -961,7 +961,7 @@
           "embeddable": {
             "name": "Sample Image",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://upload.wikimedia.org/wikipedia/commons/4/4a/Pixelated_Georgia_Flag.v4.png\",\"highResUrl\":\"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Georgia_state_flag.png/1920px-Georgia_state_flag.png\",\"altText\":\"Georgia state flag\",\"caption\":\"Georgia state flag\"}",
+            "authored_state": "{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://upload.wikimedia.org/wikipedia/commons/e/ee/Pixelated_Georgia_Flag.png\",\"highResUrl\":\"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Georgia_state_flag.png/1920px-Georgia_state_flag.png\",\"altText\":\"Georgia state flag\",\"caption\":\"Georgia state flag\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
