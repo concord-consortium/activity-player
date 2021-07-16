@@ -56,6 +56,14 @@ context("Test the overall app", () => {
       getIframeBody("body").find("[data-cy=choices-container]").should("be.visible");
     });
   });
+  describe("Hidden pages",()=>{
+    it("verify hidden content",()=>{
+      cy.visit("?activity=sample-activity-hidden-content&preview");
+      activityPage.getNavPage(2).click();
+      cy.wait(500);
+      cy.get("[data-cy=text-box]").should("contain", "This is the 3rd activity page.");
+    });
+  });
 });
 
 context("Test the teacher edition plugin", () => {
