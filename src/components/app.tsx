@@ -6,8 +6,8 @@ import { SequenceNav } from "./activity-header/sequence-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, 
-         enableReportButton, setDocumentTitle, getPagePositionFromQueryValue, 
+import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages,
+         enableReportButton, setDocumentTitle, getPagePositionFromQueryValue,
          getSequenceActivityFromQueryValue, getSequenceActivityId } from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
@@ -16,7 +16,7 @@ import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
 import { fetchPortalData, IPortalData, firebaseAppName } from "../portal-api";
-import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB, 
+import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
          onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout } from "../firebase-db";
 import { Activity, IEmbeddablePlugin, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
@@ -229,8 +229,8 @@ export class App extends React.PureComponent<IProps, IState> {
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
     const sequenceActivityId = sequence !== undefined ? getSequenceActivityId(sequence, activityIndex) : undefined;
-    const sequenceActivity = sequenceActivityId !== undefined 
-                               ? sequenceActivityId 
+    const sequenceActivity = sequenceActivityId !== undefined
+                               ? sequenceActivityId
                                : activityIndex !== undefined && activityIndex >= 0
                                  ? activityIndex + 1
                                  : undefined;
@@ -246,10 +246,10 @@ export class App extends React.PureComponent<IProps, IState> {
           onShowSequence={sequence !== undefined ? this.handleShowSequenceIntro : undefined}
         />
         {
-          idle && !errorType && 
-          <IdleWarning 
+          idle && !errorType &&
+          <IdleWarning
             // __cypressLoggedIn is used to trigger logged in code path for Cypress tests.
-            // Eventually it should be replaced with better patterns for testing logged in users (probably via using 
+            // Eventually it should be replaced with better patterns for testing logged in users (probably via using
             // `token` param and stubbing network requests).
             timeout={kTimeout} username={username} anonymous={!portalData && queryValue("__cypressLoggedIn") !== "true"}
             onTimeout={this.handleTimeout} onContinue={this.handleContinueSession} onExit={this.goToPortal}
@@ -257,7 +257,7 @@ export class App extends React.PureComponent<IProps, IState> {
         }
         { errorType && <Error type={errorType} onExit={this.goToPortal} /> }
         {
-          !idle && !errorType && 
+          !idle && !errorType &&
           this.renderActivityContent(activity, currentPage, totalPreviousQuestions, fullWidth)
         }
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
@@ -294,7 +294,7 @@ export class App extends React.PureComponent<IProps, IState> {
           ? this.renderSinglePageContent(activity)
           : currentPage === 0
             ? this.renderIntroductionContent(activity)
-            : activity.pages[currentPage - 1].is_completion
+            : activity.pages.filter((page) => !page.is_hidden)[currentPage - 1].is_completion
               ? this.renderCompletionContent(activity)
               : <ActivityPageContent
                   ref={this.activityPageContentRef}
@@ -401,7 +401,7 @@ export class App extends React.PureComponent<IProps, IState> {
     Logger.log({ event: LogEventName.go_back_to_portal });
     window.location.href = this.portalUrl;
   }
- 
+
   private handleChangePage = (page: number) => {
     const { currentPage, incompleteQuestions, activity } = this.state;
     if (page > currentPage && incompleteQuestions.length > 0) {
