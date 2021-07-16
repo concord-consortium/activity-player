@@ -143,9 +143,11 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
-    "@concord-consortium/lara-interactive-api": "^1.0.3",
+    "@concord-consortium/lara-interactive-api": "^1.1.0",
     "@concord-consortium/text-decorator": "^1.0.2",
+    "@concord-consortium/token-service": "^2.0.0-pre.5",
     "@react-hook/resize-observer": "^1.2.2",
+    "aws-sdk": "^2.947.0",
     "dompurify": "^2.3.0",
     "firebase": "^8.7.0",
     "html-react-parser": "^1.2.7",

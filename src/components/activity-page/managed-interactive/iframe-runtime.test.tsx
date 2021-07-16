@@ -12,6 +12,9 @@ describe("IframeRuntime component", () => {
     const firebaseJWTStub = () => {
       return Promise.resolve("stub");
     };
+    const attachmentUrlStub = () => {
+      return Promise.resolve({ url: "url", requestId: 1 });
+    };
     // @testing-library tests more, including unmount
     const { getByTestId } = render(
       <IframeRuntime
@@ -23,6 +26,7 @@ describe("IframeRuntime component", () => {
         setSupportedFeatures={stubFunction}
         setNewHint={stubFunction}
         getFirebaseJWT={firebaseJWTStub}
+        getAttachmentUrl={attachmentUrlStub}
         showModal={stubFunction}
         closeModal={stubFunction}
         setSendCustomMessage={stubFunction}

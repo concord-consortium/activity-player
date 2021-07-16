@@ -215,6 +215,11 @@ export interface IAnonymousMetadataPartial {
   platform_user_id: string;
 }
 
+export interface IAttachmentsFolder {
+  id: string;
+  readWriteToken?: string;
+}
+
 /**
  * cf. IRunTimeMetadataBase, from
  * https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/interactive-api-client/metadata-types.ts#L47
@@ -222,14 +227,18 @@ export interface IAnonymousMetadataPartial {
  * https://github.com/concord-consortium/lara/blob/c40304a14ef495acdf4f9fd09ea892c7cc98247b/app/models/interactive_run_state.rb#L110
  */
 export interface IExportableAnswerMetadataBase {
-  question_id: string;
+  question_id: string;    // converted from refId (e.g. "managed_interactive_404")
   question_type: string;
-  id: string;
+  id: string;             // randomly generated id (e.g. uuid)
   type: string;
   answer_text?: string;
   answer?: any;
   submitted: boolean | null;
   report_state: string;
+  attachmentsFolder?: IAttachmentsFolder;
+  // TODO: do we want to store the public url? aren't we transitioning to expiring urls?
+  // should this be stored in some non-persistent place so it'll be looked up next time?
+  attachments?: Record<string, string>;  // name/key => url
 }
 
 export interface IExportableInteractiveAnswerMetadata extends IExportableAnswerMetadataBase {

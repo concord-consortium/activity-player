@@ -8,7 +8,7 @@ import {
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
   ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, ILinkedInteractiveStateResponse,
   IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent,
-  ITextDecorationInfo, ITextDecorationHandlerInfo
+  ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
@@ -57,6 +57,7 @@ interface IProps {
   containerWidth?: number;
   setNewHint: (newHint: string) => void;
   getFirebaseJWT: (firebaseApp: string, others: Record<string, any>) => Promise<string>;
+  getAttachmentUrl: (request: IAttachmentUrlRequest) => Promise<IAttachmentUrlResponse>;
   showModal: (options: IShowModal) => void;
   closeModal: (options: ICloseModal) => void;
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
@@ -68,8 +69,10 @@ interface IProps {
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives, report,
-    proposedHeight, containerWidth, setNewHint, getFirebaseJWT, showModal, closeModal, setSupportedFeatures,
-    setSendCustomMessage, setNavigation, iframeTitle, portalData } = props;
+    proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal,
+    setSupportedFeatures, setSendCustomMessage, setNavigation, iframeTitle, portalData } = props;
+  const _idNum = parseInt(id, 10);
+  const idNum = isFinite(_idNum) ? _idNum : 0;
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
@@ -195,6 +198,10 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           });
         }
       });
+      addListener("getAttachmentUrl", async (request: IAttachmentUrlRequest) => {
+        const response = await getAttachmentUrl(request);
+        post("attachmentUrl", response);
+      });
       addListener("showModal", (options: IShowModal) => {
         showModal(options);
       });
@@ -217,7 +224,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       // instead. The problem is that sending this state to interactives that don't
       // expect it, will have JSON parse errors trying to parse "nochange"
       let _initialInteractiveState = initialInteractiveState;
-      if (initialInteractiveState === "nochange"){
+      if (initialInteractiveState === "nochange") {
         _initialInteractiveState = undefined;
       }
 
@@ -225,12 +232,23 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       // consideration to determine whether there are more appropriate values.
       const baseProps: Omit<IReportInitInteractive, "mode"> = {
         version: 1,
+        hostFeatures: {
+          modal: {
+            version: "1.0.0",
+            lightbox: true,
+            dialog: true,
+            alert: false
+          },
+          getFirebaseJwt: {
+            version: "1.0.0"
+          }
+        },
         authoredState,
         interactiveState: _initialInteractiveState,
         themeInfo: {
           colors: {
-              colorA: "",
-              colorB: ""
+            colorA: "",
+            colorB: ""
           }
         }
       };
@@ -243,23 +261,12 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   ...baseProps,
                   error: "",
                   mode: "runtime",
-                  hostFeatures: {
-                    modal: {
-                      version: "1.0.0",
-                      lightbox: true,
-                      dialog: true,
-                      alert: false
-                    },
-                    getFirebaseJwt: {
-                      version: "1.0.0"
-                    }
-                  },
                   globalInteractiveState: null,
                   interactiveStateUrl: "",
                   collaboratorUrls: null,
                   classInfoUrl: portalData?.portalJWT?.class_info_url ?? "",
                   interactive: {
-                    id: 0,
+                    id: idNum,
                     name: ""
                   },
                   authInfo: {

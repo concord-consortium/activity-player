@@ -4,12 +4,13 @@ import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
 import {
   ICloseModal, INavigationOptions,
-  ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures
+  ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures, IAttachmentUrlRequest, IAttachmentUrlResponse
 } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
 import { createOrUpdateAnswer, watchAnswer } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
+import { attachmentsManager } from "../../../utilities/attachments-manager";
 import { getAnswerWithMetadata, isQuestion } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
@@ -59,102 +60,102 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     }
   }, [embeddableRefId, shouldWatchAnswer]);
 
-    const handleNewInteractiveState = (state: any) => {
-      // Keep interactive state in sync if iFrame is opened in modal popup
-      interactiveState.current = state;
+  const handleNewInteractiveState = (state: any) => {
+    // Keep interactive state in sync if iFrame is opened in modal popup
+    interactiveState.current = state;
 
-      const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, answerMeta.current);
-      if (exportableAnswer) {
-        createOrUpdateAnswer(exportableAnswer);
-      }
-      // Custom callback set internally. Used by the modal dialog to close itself after the most recent
-      // interactive state is received.
-      onSetInteractiveStateCallback.current?.();
-      onSetInteractiveStateCallback.current = undefined;
-    };
-
-    const portalData = useContext(PortalDataContext);
-    const getFirebaseJWT = useCallback((firebaseApp: string, others: Record<string, any>) => {
-      return handleGetFirebaseJWT({ firebase_app: firebaseApp, ...others }, portalData);
-    }, [portalData]);
-
-    const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation } = props;
-    const { authored_state } = embeddable;
-    const [ activeDialog, setActiveDialog ] = useState<IShowDialog | null>(null);
-    const [ activeLightbox, setActiveLightbox ] = useState<IShowLightbox | null>(null);
-    const questionName = embeddable.name ? `: ${embeddable.name}` : "";
-    // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
-    // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
-    let embeddableData: IMwInteractive | LibraryInteractiveData | undefined;
-    if (embeddable.type === "ManagedInteractive") {
-      embeddableData = embeddable.library_interactive?.data;
-    } else {
-      embeddableData = embeddable;
+    const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, answerMeta.current);
+    if (exportableAnswer) {
+      createOrUpdateAnswer(exportableAnswer);
     }
-    const url = embeddableData?.base_url || embeddableData?.url || "";
-    const authoredState = useMemo(() => safeJsonParseIfString(authored_state) || {}, [authored_state]);
-    const linkedInteractives = useRef(embeddable.linked_interactives?.length
-                                  ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
-                                  : undefined);
-    // interactiveId value should always match IDs generated above in the `linkedInteractives` array.
-    const interactiveId = embeddable.ref_id;
-    // TODO: handle different aspect ratio methods
-    // const aspectRatioMethod = data.aspect_ratio_method ? data.aspect_ratio_method : "";
-    const nativeHeight = embeddableData?.native_height || 0;
-    const nativeWidth = embeddableData?.native_width || 0;
-    const aspectRatio = nativeHeight && nativeWidth ? nativeWidth / nativeHeight : kDefaultAspectRatio;
+    // Custom callback set internally. Used by the modal dialog to close itself after the most recent
+    // interactive state is received.
+    onSetInteractiveStateCallback.current?.();
+    onSetInteractiveStateCallback.current = undefined;
+  };
 
-    // cf. https://www.npmjs.com/package/@react-hook/resize-observer
-    const useSize = (target: any) => {
-      const [size, setSize] = React.useState();
+  const portalData = useContext(PortalDataContext);
+  const getFirebaseJWT = useCallback((firebaseApp: string, others: Record<string, any>) => {
+    return handleGetFirebaseJWT({ firebase_app: firebaseApp, ...others }, portalData);
+  }, [portalData]);
 
-      React.useLayoutEffect(() => {
-        setSize(target.current.getBoundingClientRect());
-      }, [target]);
+  const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation } = props;
+  const { authored_state } = embeddable;
+  const [ activeDialog, setActiveDialog ] = useState<IShowDialog | null>(null);
+  const [ activeLightbox, setActiveLightbox ] = useState<IShowLightbox | null>(null);
+  const questionName = embeddable.name ? `: ${embeddable.name}` : "";
+  // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
+  // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
+  let embeddableData: IMwInteractive | LibraryInteractiveData | undefined;
+  if (embeddable.type === "ManagedInteractive") {
+    embeddableData = embeddable.library_interactive?.data;
+  } else {
+    embeddableData = embeddable;
+  }
+  const url = embeddableData?.base_url || embeddableData?.url || "";
+  const authoredState = useMemo(() => safeJsonParseIfString(authored_state) || {}, [authored_state]);
+  const linkedInteractives = useRef(embeddable.linked_interactives?.length
+                                ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
+                                : undefined);
+  // interactiveId value should always match IDs generated above in the `linkedInteractives` array.
+  const interactiveId = embeddable.ref_id;
+  // TODO: handle different aspect ratio methods
+  // const aspectRatioMethod = data.aspect_ratio_method ? data.aspect_ratio_method : "";
+  const nativeHeight = embeddableData?.native_height || 0;
+  const nativeWidth = embeddableData?.native_width || 0;
+  const aspectRatio = nativeHeight && nativeWidth ? nativeWidth / nativeHeight : kDefaultAspectRatio;
 
-      useResizeObserver(target, (entry: any) => setSize(entry.contentRect));
-      return size;
-    };
+  // cf. https://www.npmjs.com/package/@react-hook/resize-observer
+  const useSize = (target: any) => {
+    const [size, setSize] = React.useState();
 
-    const divTarget = React.useRef(null);
-    const divSize: any = useSize(divTarget);
-    const proposedHeight: number = divSize?.width / aspectRatio;
-    const containerWidth: number = divSize?.width;
+    React.useLayoutEffect(() => {
+      setSize(target.current.getBoundingClientRect());
+    }, [target]);
 
-    const [ showHint, setShowHint ] = useState(false);
-    const [ hint, setHint ] = useState("");
-    const handleHintClose = () => {
+    useResizeObserver(target, (entry: any) => setSize(entry.contentRect));
+    return size;
+  };
+
+  const divTarget = React.useRef(null);
+  const divSize: any = useSize(divTarget);
+  const proposedHeight: number = divSize?.width / aspectRatio;
+  const containerWidth: number = divSize?.width;
+
+  const [ showHint, setShowHint ] = useState(false);
+  const [ hint, setHint ] = useState("");
+  const handleHintClose = () => {
+    Logger.log({
+      event: LogEventName.toggle_hint,
+      parameters: { show_hint: false, hint }
+    });
+    setShowHint(false);
+  };
+  const handleShowHint = () => {
+    if (accessibilityClick(event)) {
       Logger.log({
         event: LogEventName.toggle_hint,
-        parameters: { show_hint: false, hint }
+        parameters: { show_hint: !showHint, hint }
       });
-      setShowHint(false);
-    };
-    const handleShowHint = () => {
-      if (accessibilityClick(event)) {
-        Logger.log({
-          event: LogEventName.toggle_hint,
-          parameters: { show_hint: !showHint, hint }
-        });
-        setShowHint(!showHint);
-      }
-    };
-    const setNewHint = useCallback((newHint: string) => {
-      setHint(newHint);
-    }, []);
+      setShowHint(!showHint);
+    }
+  };
+  const setNewHint = useCallback((newHint: string) => {
+    setHint(newHint);
+  }, []);
 
-    const showModal = useCallback((options: IShowModal) => {
-      // Difference between dialog and lightbox:
-      // - dialog will assume that the provided URL is an interactive, so it'll use iframe-runtime component to render this URL
-      // - lightbox does not use iframe-runtime. It just displays URL in a generic iframe or uses <img> tag when `options.isImage` === true
-      if (options.type === "dialog") {
-        setActiveDialog(options);
-      } else if (options.type === "lightbox") {
-        setActiveLightbox(options);
-      } else {
-        window.alert(`${options.type} modal type not implemented yet`);
-      }
-    }, []);
+  const showModal = useCallback((options: IShowModal) => {
+    // Difference between dialog and lightbox:
+    // - dialog will assume that the provided URL is an interactive, so it'll use iframe-runtime component to render this URL
+    // - lightbox does not use iframe-runtime. It just displays URL in a generic iframe or uses <img> tag when `options.isImage` === true
+    if (options.type === "dialog") {
+      setActiveDialog(options);
+    } else if (options.type === "lightbox") {
+      setActiveLightbox(options);
+    } else {
+      window.alert(`${options.type} modal type not implemented yet`);
+    }
+  }, []);
 
   const closeModal = useCallback((options: ICloseModal) => {
     // This code should work even if uuid is not provided (undefined).
@@ -173,6 +174,20 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
 
   const handleCloseLightbox = () => {
     setActiveLightbox(null);
+  };
+
+  const handleGetAttachmentUrl = async (request: IAttachmentUrlRequest): Promise<IAttachmentUrlResponse> => {
+    const { name, operation, requestId } = request;
+    if (!answerMeta.current) {
+      return { error: "error getting attachment url: no answer metadata", requestId };
+    }
+    const attachments = await attachmentsManager;
+    let { attachmentsFolder } = answerMeta.current;
+    if (!attachmentsFolder) {
+      attachmentsFolder = answerMeta.current.attachmentsFolder = await attachments.createFolder(interactiveId);
+    }
+    const attachmentUrl = await attachments.getAttachmentUrl(attachmentsFolder, name, operation);
+    return { url: attachmentUrl, requestId };
   };
 
   useImperativeHandle(ref, () => ({
@@ -209,6 +224,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         containerWidth={containerWidth}
         setNewHint={setNewHint}
         getFirebaseJWT={getFirebaseJWT}
+        getAttachmentUrl={handleGetAttachmentUrl}
         showModal={showModal}
         closeModal={closeModal}
         setSendCustomMessage={setSendCustomMessage}

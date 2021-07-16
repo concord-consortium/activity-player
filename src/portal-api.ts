@@ -481,3 +481,12 @@ export const anonymousPortalData = (preview: boolean) => {
   };
   return rawPortalData;
 };
+
+export const isAnonymousPortalData = (portalData: IPortalData | IAnonymousPortalData): portalData is IAnonymousPortalData =>
+              (portalData as any)?.runKey != null;
+
+export const getUniqueLearnerString = (portalData: IPortalData | IAnonymousPortalData) => {
+  return isAnonymousPortalData(portalData)
+          ? portalData.runKey
+          : portalData.runRemoteEndpoint;
+};
