@@ -54,7 +54,7 @@ export class AttachmentsManager {
       tool: kTokenServiceToolName,
       type: "s3Folder",
       name: `${this.learnerId}-${interactiveId}`,
-      description: "",
+      description: "attachment",
       accessRuleType: this.isAnonymous() ? "readWriteToken" : "user"
     });
     this.resources[folderResource.id] = folderResource as S3Resource;
