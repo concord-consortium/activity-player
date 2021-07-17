@@ -177,17 +177,37 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   };
 
   const handleGetAttachmentUrl = async (request: IAttachmentUrlRequest): Promise<IAttachmentUrlResponse> => {
-    const { name, operation, requestId } = request;
+    const { name, operation, expires, requestId } = request;
     if (!answerMeta.current) {
       return { error: "error getting attachment url: no answer metadata", requestId };
     }
-    const attachments = await attachmentsManager;
-    let { attachmentsFolder } = answerMeta.current;
+    const attachmentsMgr = await attachmentsManager;
+    let { attachmentsFolder, attachments } = answerMeta.current;
     if (!attachmentsFolder) {
-      attachmentsFolder = answerMeta.current.attachmentsFolder = await attachments.createFolder(interactiveId);
+      attachmentsFolder = answerMeta.current.attachmentsFolder = await attachmentsMgr.createFolder(interactiveId);
     }
-    const attachmentUrl = await attachments.getAttachmentUrl(attachmentsFolder, name, operation);
-    return { url: attachmentUrl, requestId };
+    if (!attachments) {
+      attachments = answerMeta.current.attachments = {};
+    }
+
+    const response: IAttachmentUrlResponse = { requestId };
+    try {
+      if (operation === "write") {
+        const [writeUrl, attachmentInfo] = await attachmentsMgr.getSignedWriteUrl(attachmentsFolder, name, expires);
+        response.url = writeUrl;
+        attachments[name] = attachmentInfo;
+      }
+      else if (attachments[name]) {
+        response.url = await attachmentsMgr.getSignedReadUrl(attachments[name], expires);
+      }
+      else {
+        response.error = `Error reading attachment: ${name}`;
+      }
+    }
+    catch (e) {
+      response.error = `Error creating url for attachment: ${name}`;
+    }
+    return response;
   };
 
   useImperativeHandle(ref, () => ({

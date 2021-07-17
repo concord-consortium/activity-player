@@ -15,7 +15,8 @@ import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
-import { fetchPortalData, IPortalData, firebaseAppName, getUniqueLearnerString, IAnonymousPortalData } from "../portal-api";
+import { fetchPortalData, firebaseAppName } from "../portal-api";
+import { IPortalData, IPortalDataUnion } from "../portal-types";
 import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
          onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData } from "../firebase-db";
 import { Activity, IEmbeddablePlugin, Sequence } from "../types";
@@ -172,9 +173,7 @@ export class App extends React.PureComponent<IProps, IState> {
         }
       }
 
-      const _portalData = getPortalData() as IPortalData | IAnonymousPortalData;
-      const learnerId = getUniqueLearnerString(_portalData);
-      initializeAttachmentsManager(learnerId, (_portalData as IPortalData).database?.rawFirebaseJWT);
+      initializeAttachmentsManager(getPortalData() as IPortalDataUnion);
 
       if (!preview) {
         // Notify user about network issues. Note that in preview mode Firestore network is disabled, so it doesn't

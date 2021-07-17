@@ -217,7 +217,16 @@ export interface IAnonymousMetadataPartial {
 
 export interface IAttachmentsFolder {
   id: string;
+}
+export interface IWritableAttachmentsFolder extends IAttachmentsFolder {
   readWriteToken?: string;
+}
+export const isWritableAttachmentsFolder = (folder: IAttachmentsFolder): folder is IWritableAttachmentsFolder =>
+              !!(folder as IWritableAttachmentsFolder).readWriteToken;
+
+export interface IReadableAttachmentInfo {
+  folder: IAttachmentsFolder;
+  publicPath: string;
 }
 
 /**
@@ -236,9 +245,8 @@ export interface IExportableAnswerMetadataBase {
   submitted: boolean | null;
   report_state: string;
   attachmentsFolder?: IAttachmentsFolder;
-  // TODO: do we want to store the public url? aren't we transitioning to expiring urls?
-  // should this be stored in some non-persistent place so it'll be looked up next time?
-  attachments?: Record<string, string>;  // name/key => url
+  // tracks the most recently written details for each attachment
+  attachments?: Record<string, IReadableAttachmentInfo>;
 }
 
 export interface IExportableInteractiveAnswerMetadata extends IExportableAnswerMetadataBase {

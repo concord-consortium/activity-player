@@ -14,7 +14,7 @@ import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
-import { IPortalData } from "../../../portal-api";
+import { IPortalData } from "../../../portal-types";
 
 const kDefaultHeight = 300;
 

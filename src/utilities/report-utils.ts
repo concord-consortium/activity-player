@@ -1,6 +1,7 @@
 import { queryValue } from "../utilities/url-query";
 import { getPortalData } from "../firebase-db";
-import { IPortalData, firebaseAppName } from "../portal-api";
+import { firebaseAppName } from "../portal-api";
+import { IPortalData } from "../portal-types";
 import { getCanonicalHostname, isProductionOrigin } from "./host-utils";
 import { getResourceUrl } from "../lara-api";
 

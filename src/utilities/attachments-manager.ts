@@ -1,7 +1,9 @@
 import * as AWS from "aws-sdk";
+import { v4 as uuid } from "uuid";
 import { Credentials, S3Resource, TokenServiceClient } from "@concord-consortium/token-service";
-import { firebaseAppName } from "../portal-api";
-import { IAttachmentsFolder } from "../types";
+import { firebaseAppName, getFirebaseJWT, getUniqueLearnerString } from "../portal-api";
+import { IPortalData, IPortalDataUnion } from "../portal-types";
+import { IAttachmentsFolder, IReadableAttachmentInfo, isWritableAttachmentsFolder, IWritableAttachmentsFolder } from "../types";
 
 const kTokenServiceToolName = "interactive-attachments";
 const kDefaultWriteExpirationSec = 5 * 60;
@@ -12,11 +14,19 @@ export const attachmentsManager = new Promise<AttachmentsManager>((resolve, reje
   resolveAttachmentsManager = resolve;
 });
 
-export const initializeAttachmentsManager = (learnerId: string, firebaseJwt?: string) => {
+export const initializeAttachmentsManager = async (portalData: IPortalDataUnion) => {
+  const learnerId = getUniqueLearnerString(portalData);
+  const { basePortalUrl, rawPortalJWT } = portalData as IPortalData;
+  let firebaseJwt: string | undefined;
+  if (basePortalUrl && rawPortalJWT) {
+    const queryParams = { firebase_app: "token-service" };
+    [firebaseJwt] = await getFirebaseJWT(basePortalUrl, rawPortalJWT, queryParams);
+  }
   resolveAttachmentsManager(new AttachmentsManager(learnerId, firebaseJwt));
 };
 
 export class AttachmentsManager {
+  private sessionId = uuid();
   private learnerId?: string;
   private firebaseJwt?: string;
   private tokenServiceClient: TokenServiceClient;
@@ -35,7 +45,11 @@ export class AttachmentsManager {
     return !this.firebaseJwt;
   }
 
-  public async createFolder(interactiveId: string): Promise<IAttachmentsFolder> {
+  public getSessionId() {
+    return this.sessionId;
+  }
+
+  public async createFolder(interactiveId: string): Promise<IWritableAttachmentsFolder> {
     const folderResource = await this.tokenServiceClient.createResource({
       tool: kTokenServiceToolName,
       type: "s3Folder",
@@ -50,18 +64,19 @@ export class AttachmentsManager {
     };
   }
 
-  public getAttachmentReadUrl(folder: IAttachmentsFolder, name: string) {
-    return this.getSignedUrl(folder, name, "getObject", kDefaultReadExpirationSec);
+  public async getSignedWriteUrl(
+    folder: IAttachmentsFolder, name: string, expires = kDefaultWriteExpirationSec
+  ): Promise<[string, IReadableAttachmentInfo]> {
+    const folderResource = await this.getFolderResource(folder);
+    const publicPath = this.tokenServiceClient.getPublicS3Path(folderResource, `${this.sessionId}/${name}`);
+    const url = await this.getSignedUrlFromPublicPath(folderResource, publicPath, "putObject", expires);
+    return [url, { folder: { id: folder.id }, publicPath }];
   }
 
-  public async getAttachmentWriteUrl(folder: IAttachmentsFolder, name: string) {
-    return this.getSignedUrl(folder, name, "putObject", kDefaultWriteExpirationSec);
-  }
-
-  public async getAttachmentUrl(folder: IAttachmentsFolder, name: string, operation: "read" | "write") {
-    const _operation = operation === "write" ? "putObject" : "getObject";
-    const expires = operation === "read" ? kDefaultReadExpirationSec : kDefaultWriteExpirationSec;
-    return this.getSignedUrl(folder, name, _operation, expires);
+  public async getSignedReadUrl(attachmentInfo: IReadableAttachmentInfo, expires = kDefaultReadExpirationSec) {
+    const { folder, publicPath } = attachmentInfo;
+    const folderResource = await this.getFolderResource(folder);
+    return this.getSignedUrlFromPublicPath(folderResource, publicPath, "getObject", expires);
   }
 
   private async getFolderResource(folder: IAttachmentsFolder): Promise<S3Resource> {
@@ -74,16 +89,15 @@ export class AttachmentsManager {
   }
 
   private getCredentials(folder: IAttachmentsFolder): Promise<Credentials> {
-    return this.tokenServiceClient.getCredentials(folder.id, folder.readWriteToken);
+    const readWriteToken = isWritableAttachmentsFolder(folder) ? folder.readWriteToken : undefined;
+    return this.tokenServiceClient.getCredentials(folder.id, readWriteToken);
   }
 
-  private async getSignedUrl(folder: IAttachmentsFolder, name: string, operation: string, expires: number) {
-    const folderResource = await this.getFolderResource(folder);
+  private async getSignedUrlFromPublicPath(folderResource: S3Resource, publicPath: string, operation: string, expires: number) {
     const credentials = await this.getCredentials(folderResource);
     const { bucket, region } = folderResource;
     const { accessKeyId, secretAccessKey, sessionToken } = credentials;
     const s3 = new AWS.S3({ region, accessKeyId, secretAccessKey, sessionToken });
-    const publicPath = this.tokenServiceClient.getPublicS3Path(folderResource, name);
     // https://zaccharles.medium.com/s3-uploads-proxies-vs-presigned-urls-vs-presigned-posts-9661e2b37932
     const s3UrlParams = { Bucket: bucket, Key: publicPath, Expires: expires };
     return s3.getSignedUrlPromise(operation, s3UrlParams);
