@@ -14,6 +14,7 @@
     "url": ""
   },
   "theme_id": null,
+  "background_image": null,
   "thumbnail_url": "",
   "title": "Sample Sequence Activity Player",
   "activities": [
@@ -41,6 +42,7 @@
       "time_to_complete": null,
       "version": 1,
       "theme_name": null,
+      "background_image": null,
       "pages": [
         {
           "additional_sections": {},
@@ -546,6 +548,7 @@
       "time_to_complete": null,
       "version": 1,
       "theme_name": null,
+      "background_image": null,
       "pages": [
         {
           "additional_sections": null,

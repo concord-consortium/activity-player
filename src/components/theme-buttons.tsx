@@ -48,7 +48,7 @@ const kThemes: ITheme[] = [
   {
     id: "image",
     label: "Image",
-    backgroundImage: `url("https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Hubble%27s_Wide_View_of_%27Mystic_Mountain%27_in_Infrared.jpg/678px-Hubble%27s_Wide_View_of_%27Mystic_Mountain%27_in_Infrared.jpg")`
+    backgroundImage: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Hubble%27s_Wide_View_of_%27Mystic_Mountain%27_in_Infrared.jpg/678px-Hubble%27s_Wide_View_of_%27Mystic_Mountain%27_in_Infrared.jpg"
   }
 ];
 const kThemeMap: Record<string, ITheme> = {};

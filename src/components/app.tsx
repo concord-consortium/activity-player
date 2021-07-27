@@ -8,7 +8,8 @@ import { IntroductionPageContent } from "./activity-introduction/introduction-pa
 import { Footer } from "./activity-introduction/footer";
 import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages,
          enableReportButton, setDocumentTitle, getPagePositionFromQueryValue,
-         getSequenceActivityFromQueryValue, getSequenceActivityId } from "../utilities/activity-utils";
+         getSequenceActivityFromQueryValue, getSequenceActivityId,
+         setAppBackgroundImage } from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
@@ -235,6 +236,15 @@ export class App extends React.PureComponent<IProps, IState> {
                                  ? activityIndex + 1
                                  : undefined;
     sequenceActivity !== undefined && setQueryValue("sequenceActivity", sequenceActivity);
+    const backgroundImage = sequence?.background_image
+                              ? sequence.background_image
+                              : activity.background_image
+                                ? activity.background_image
+                                : undefined;
+    if (backgroundImage !== undefined) {
+      setAppBackgroundImage(backgroundImage);
+    }
+
     return (
       <React.Fragment>
         <Header
