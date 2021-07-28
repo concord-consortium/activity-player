@@ -15,8 +15,8 @@ interface IProps {
 export const SequenceIntroduction: React.FC<IProps> = (props) => {
   const { sequence, username, onSelectActivity } = props;
   setQueryValue("sequenceActivity", "0");
-  const backgroundImage = sequence?.background_image ? sequence.background_image : undefined;
-  if (backgroundImage !== undefined) {
+  const backgroundImage = sequence?.background_image;
+  if (backgroundImage) {
     setAppBackgroundImage(backgroundImage);
   }
   return (

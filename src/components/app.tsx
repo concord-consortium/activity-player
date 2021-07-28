@@ -236,12 +236,8 @@ export class App extends React.PureComponent<IProps, IState> {
                                  ? activityIndex + 1
                                  : undefined;
     sequenceActivity !== undefined && setQueryValue("sequenceActivity", sequenceActivity);
-    const backgroundImage = sequence?.background_image
-                              ? sequence.background_image
-                              : activity.background_image
-                                ? activity.background_image
-                                : undefined;
-    if (backgroundImage !== undefined) {
+    const backgroundImage = sequence?.background_image || activity.background_image;
+    if (backgroundImage) {
       setAppBackgroundImage(backgroundImage);
     }
 
