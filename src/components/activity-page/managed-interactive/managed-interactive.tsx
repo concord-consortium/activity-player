@@ -10,7 +10,7 @@ import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
 import { createOrUpdateAnswer, watchAnswer } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
-import { attachmentsManager } from "../../../utilities/attachments-manager";
+import { attachmentsManager } from "../../../utilities/attachments-manager-global";
 import { getAnswerWithMetadata, isQuestion } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";

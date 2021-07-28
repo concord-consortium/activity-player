@@ -1,4 +1,5 @@
 import React from "react";
+import Modal from "react-modal";
 import { PortalDataContext } from "./portal-data-context";
 import { Header } from "./activity-header/header";
 import { ActivityNav } from "./activity-header/activity-nav";
@@ -29,14 +30,13 @@ import { IdleWarning } from "./error/idle-warning";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
 import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
 import { ModalDialog } from "./modal-dialog";
-import Modal from "react-modal";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
+import { initializeAttachmentsManager } from "../utilities/attachments-manager-global";
 import { IdleDetector } from "../utilities/idle-detector";
 
 import "./app.scss";
-import { initializeAttachmentsManager } from "../utilities/attachments-manager";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "Please submit an answer first.";

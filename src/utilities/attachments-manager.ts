@@ -1,29 +1,12 @@
 import * as AWS from "aws-sdk";
 import { v4 as uuid } from "uuid";
 import { Credentials, S3Resource, TokenServiceClient } from "@concord-consortium/token-service";
-import { firebaseAppName, getFirebaseJWT, getUniqueLearnerString } from "../portal-api";
-import { IPortalData, IPortalDataUnion } from "../portal-types";
+import { firebaseAppName } from "../portal-api";
 import { IAttachmentsFolder, IReadableAttachmentInfo, isWritableAttachmentsFolder, IWritableAttachmentsFolder } from "../types";
 
 const kTokenServiceToolName = "interactive-attachments";
 const kDefaultWriteExpirationSec = 5 * 60;
 const kDefaultReadExpirationSec = 2 * 60 * 60;
-
-let resolveAttachmentsManager: (manager: AttachmentsManager) => void;
-export const attachmentsManager = new Promise<AttachmentsManager>((resolve, reject) => {
-  resolveAttachmentsManager = resolve;
-});
-
-export const initializeAttachmentsManager = async (portalData: IPortalDataUnion) => {
-  const learnerId = getUniqueLearnerString(portalData);
-  const { basePortalUrl, rawPortalJWT } = portalData as IPortalData;
-  let firebaseJwt: string | undefined;
-  if (basePortalUrl && rawPortalJWT) {
-    const queryParams = { firebase_app: "token-service" };
-    [firebaseJwt] = await getFirebaseJWT(basePortalUrl, rawPortalJWT, queryParams);
-  }
-  resolveAttachmentsManager(new AttachmentsManager(learnerId, firebaseJwt));
-};
 
 export class AttachmentsManager {
   private sessionId = uuid();
@@ -69,14 +52,14 @@ export class AttachmentsManager {
   ): Promise<[string, IReadableAttachmentInfo]> {
     const folderResource = await this.getFolderResource(folder);
     const publicPath = this.tokenServiceClient.getPublicS3Path(folderResource, `${this.sessionId}/${name}`);
-    const url = await this.getSignedUrlFromPublicPath(folderResource, publicPath, "putObject", expires);
+    const url = await this.getSignedUrlFromPublicPath(folder, publicPath, "putObject", expires);
+    // returns the writable url and the information required to read it
     return [url, { folder: { id: folder.id }, publicPath }];
   }
 
-  public async getSignedReadUrl(attachmentInfo: IReadableAttachmentInfo, expires = kDefaultReadExpirationSec) {
+  public getSignedReadUrl(attachmentInfo: IReadableAttachmentInfo, expires = kDefaultReadExpirationSec) {
     const { folder, publicPath } = attachmentInfo;
-    const folderResource = await this.getFolderResource(folder);
-    return this.getSignedUrlFromPublicPath(folderResource, publicPath, "getObject", expires);
+    return this.getSignedUrlFromPublicPath(folder, publicPath, "getObject", expires);
   }
 
   private async getFolderResource(folder: IAttachmentsFolder): Promise<S3Resource> {
@@ -93,8 +76,9 @@ export class AttachmentsManager {
     return this.tokenServiceClient.getCredentials(folder.id, readWriteToken);
   }
 
-  private async getSignedUrlFromPublicPath(folderResource: S3Resource, publicPath: string, operation: string, expires: number) {
-    const credentials = await this.getCredentials(folderResource);
+  private async getSignedUrlFromPublicPath(folder: IAttachmentsFolder, publicPath: string, operation: string, expires: number) {
+    const folderResource = await this.getFolderResource(folder);
+    const credentials = await this.getCredentials(folder);
     const { bucket, region } = folderResource;
     const { accessKeyId, secretAccessKey, sessionToken } = credentials;
     const s3 = new AWS.S3({ region, accessKeyId, secretAccessKey, sessionToken });
