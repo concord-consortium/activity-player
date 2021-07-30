@@ -10,6 +10,7 @@ import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
 import { createOrUpdateAnswer, watchAnswer } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
+import { ISignedReadUrlOptions, ISignedWriteUrlOptions } from "../../../utilities/attachments-manager";
 import { attachmentsManager } from "../../../utilities/attachments-manager-global";
 import { getAnswerWithMetadata, isQuestion } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
@@ -177,7 +178,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   };
 
   const handleGetAttachmentUrl = async (request: IAttachmentUrlRequest): Promise<IAttachmentUrlResponse> => {
-    const { name, operation, expires, requestId } = request;
+    const { name, operation, type, expires, requestId } = request as any; // TODO: remove cast once next version of library is published
     if (!answerMeta.current) {
       return { error: "error getting attachment url: no answer metadata", requestId };
     }
@@ -193,12 +194,14 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     const response: IAttachmentUrlResponse = { requestId };
     try {
       if (operation === "write") {
-        const [writeUrl, attachmentInfo] = await attachmentsMgr.getSignedWriteUrl(attachmentsFolder, name, expires);
+        const options: ISignedWriteUrlOptions = { ContentType: type, Expires: expires };
+        const [writeUrl, attachmentInfo] = await attachmentsMgr.getSignedWriteUrl(attachmentsFolder, name, options);
         response.url = writeUrl;
         attachments[name] = attachmentInfo;
       }
       else if (attachments[name]) {
-        response.url = await attachmentsMgr.getSignedReadUrl(attachments[name], expires);
+        const options: ISignedReadUrlOptions = { Expires: expires };
+        response.url = await attachmentsMgr.getSignedReadUrl(attachments[name], options);
       }
       else {
         response.error = `Error reading attachment: ${name}`;

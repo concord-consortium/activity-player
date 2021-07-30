@@ -8,6 +8,21 @@ const kTokenServiceToolName = "interactive-attachments";
 const kDefaultWriteExpirationSec = 5 * 60;
 const kDefaultReadExpirationSec = 2 * 60 * 60;
 
+
+type S3Operation = "getObject" | "putObject";
+
+export interface ISignedReadUrlOptions {
+  Expires?: number;
+}
+
+export interface ISignedWriteUrlOptions extends ISignedReadUrlOptions {
+  ContentType?: string;
+}
+
+export interface IS3SignedUrlOptions extends ISignedWriteUrlOptions {
+  Key: string;
+}
+
 export class AttachmentsManager {
   private sessionId = uuid();
   private learnerId?: string;
@@ -48,18 +63,21 @@ export class AttachmentsManager {
   }
 
   public async getSignedWriteUrl(
-    folder: IAttachmentsFolder, name: string, expires = kDefaultWriteExpirationSec
+    folder: IAttachmentsFolder, name: string, options?: ISignedWriteUrlOptions
   ): Promise<[string, IReadableAttachmentInfo]> {
+    const { ContentType = "text/plain", Expires = kDefaultWriteExpirationSec } = options || {};
+    // TODO: validate the type; cf. https://advancedweb.hu/how-to-use-s3-put-signed-urls/
     const folderResource = await this.getFolderResource(folder);
     const publicPath = this.tokenServiceClient.getPublicS3Path(folderResource, `${this.sessionId}/${name}`);
-    const url = await this.getSignedUrlFromPublicPath(folder, publicPath, "putObject", expires);
+    const url = await this.getSignedUrl(folder, "putObject", { Key: publicPath, ContentType, Expires });
     // returns the writable url and the information required to read it
     return [url, { folder: { id: folder.id }, publicPath }];
   }
 
-  public getSignedReadUrl(attachmentInfo: IReadableAttachmentInfo, expires = kDefaultReadExpirationSec) {
+  public getSignedReadUrl(attachmentInfo: IReadableAttachmentInfo, options?: ISignedReadUrlOptions) {
     const { folder, publicPath } = attachmentInfo;
-    return this.getSignedUrlFromPublicPath(folder, publicPath, "getObject", expires);
+    const { Expires = kDefaultReadExpirationSec } = options || {};
+    return this.getSignedUrl(folder, "getObject", { Key: publicPath, Expires });
   }
 
   private async getFolderResource(folder: IAttachmentsFolder): Promise<S3Resource> {
@@ -76,14 +94,18 @@ export class AttachmentsManager {
     return this.tokenServiceClient.getCredentials(folder.id, readWriteToken);
   }
 
-  private async getSignedUrlFromPublicPath(folder: IAttachmentsFolder, publicPath: string, operation: string, expires: number) {
+  private async getSignedUrl(folder: IAttachmentsFolder, operation: S3Operation, options: IS3SignedUrlOptions) {
     const folderResource = await this.getFolderResource(folder);
     const credentials = await this.getCredentials(folder);
     const { bucket, region } = folderResource;
     const { accessKeyId, secretAccessKey, sessionToken } = credentials;
     const s3 = new AWS.S3({ region, accessKeyId, secretAccessKey, sessionToken });
     // https://zaccharles.medium.com/s3-uploads-proxies-vs-presigned-urls-vs-presigned-posts-9661e2b37932
-    const s3UrlParams = { Bucket: bucket, Key: publicPath, Expires: expires };
+    const s3UrlParams = { ...options, Bucket: bucket };
+    // https://advancedweb.hu/differences-between-put-and-post-s3-signed-urls/
+    if ((operation === "putObject") && !s3UrlParams.ContentType) {
+      s3UrlParams.ContentType = "text/plain";
+    }
     return s3.getSignedUrlPromise(operation, s3UrlParams);
   }
 }
