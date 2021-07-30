@@ -133,7 +133,7 @@ export const getLinkedPluginEmbeddable = (page: Page, id: string) => {
 
 export const setAppBackgroundImage = (backgroundImageUrl?: string) => {
   const gradient = "linear-gradient(to bottom, #fff, rgba(255,255,255,0), rgba(255,255,255,0))";
-  const el = document.querySelector(".app") as HTMLElement;
+  const el = document.querySelector("#app") as HTMLElement;
   el?.style.setProperty("background-image", `url(${backgroundImageUrl})` || gradient);
   el?.style.setProperty("background-size", "cover");
   el?.style.setProperty("background-repeat", "no-repeat");
