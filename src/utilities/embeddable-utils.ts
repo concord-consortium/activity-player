@@ -65,7 +65,7 @@ export const getAnswerWithMetadata = (
       || typeof interactiveState !== "object"
       || Array.isArray(interactiveState)) {
     // If we know the interactiveState won't have any metadata then we just
-    // create a seperate simple metadata object
+    // create a separate simple metadata object
     interactiveStateMetadata = {answerType: "interactive_state"};
   } else {
     // It is common that an interactive will send an interactiveState that is an object

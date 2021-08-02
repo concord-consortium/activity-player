@@ -10,7 +10,7 @@ import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
 import { createOrUpdateAnswer, watchAnswer } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
-import { ISignedReadUrlOptions, ISignedWriteUrlOptions } from "../../../utilities/attachments-manager";
+import { ISignedWriteUrlOptions } from "../../../utilities/attachments-manager";
 import { attachmentsManager } from "../../../utilities/attachments-manager-global";
 import { getAnswerWithMetadata, isQuestion } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
@@ -178,7 +178,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   };
 
   const handleGetAttachmentUrl = async (request: IAttachmentUrlRequest): Promise<IAttachmentUrlResponse> => {
-    const { name, operation, type, expires, requestId } = request as any; // TODO: remove cast once next version of library is published
+    const { name, operation, contentType, expiresIn, requestId } = request;
     if (!answerMeta.current) {
       return { error: "error getting attachment url: no answer metadata", requestId };
     }
@@ -194,21 +194,26 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     const response: IAttachmentUrlResponse = { requestId };
     try {
       if (operation === "write") {
-        const options: ISignedWriteUrlOptions = { ContentType: type, Expires: expires };
+        const options: ISignedWriteUrlOptions = { ContentType: contentType, expiresIn };
         const [writeUrl, attachmentInfo] = await attachmentsMgr.getSignedWriteUrl(attachmentsFolder, name, options);
         response.url = writeUrl;
-        attachments[name] = attachmentInfo;
+        // public path changes with sessionId
+        if (!attachments[name] || (attachmentInfo.publicPath !== attachments[name].publicPath)) {
+          attachments[name] = attachmentInfo;
+          createOrUpdateAnswer(answerMeta.current);
+        }
       }
       else if (attachments[name]) {
-        const options: ISignedReadUrlOptions = { Expires: expires };
-        response.url = await attachmentsMgr.getSignedReadUrl(attachments[name], options);
+        // TODO: this won't work for run-with-others where we won't have a readWriteToken
+        const attachmentInfo = { ...attachments[name], folder: attachmentsFolder };
+        response.url = await attachmentsMgr.getSignedReadUrl(attachmentInfo, { expiresIn });
       }
       else {
-        response.error = `Error reading attachment: ${name}`;
+        response.error = `Error reading attachment: ${name} ["No attachment info in answer metadata"]`;
       }
     }
     catch (e) {
-      response.error = `Error creating url for attachment: ${name}`;
+      response.error = `Error creating url for attachment: "${name}" [s3: "${e}"]`;
     }
     return response;
   };

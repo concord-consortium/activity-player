@@ -1,4 +1,5 @@
-import * as AWS from "aws-sdk";
+import { S3Client, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { v4 as uuid } from "uuid";
 import { Credentials, S3Resource, TokenServiceClient } from "@concord-consortium/token-service";
 import { firebaseAppName } from "../portal-api";
@@ -12,7 +13,7 @@ const kDefaultReadExpirationSec = 2 * 60 * 60;
 type S3Operation = "getObject" | "putObject";
 
 export interface ISignedReadUrlOptions {
-  Expires?: number;
+  expiresIn?: number; // seconds
 }
 
 export interface ISignedWriteUrlOptions extends ISignedReadUrlOptions {
@@ -65,19 +66,19 @@ export class AttachmentsManager {
   public async getSignedWriteUrl(
     folder: IAttachmentsFolder, name: string, options?: ISignedWriteUrlOptions
   ): Promise<[string, IReadableAttachmentInfo]> {
-    const { ContentType = "text/plain", Expires = kDefaultWriteExpirationSec } = options || {};
+    const { ContentType = "text/plain", expiresIn = kDefaultWriteExpirationSec } = options || {};
     // TODO: validate the type; cf. https://advancedweb.hu/how-to-use-s3-put-signed-urls/
     const folderResource = await this.getFolderResource(folder);
     const publicPath = this.tokenServiceClient.getPublicS3Path(folderResource, `${this.sessionId}/${name}`);
-    const url = await this.getSignedUrl(folder, "putObject", { Key: publicPath, ContentType, Expires });
+    const url = await this.getSignedUrl(folder, "putObject", { Key: publicPath, ContentType, expiresIn });
     // returns the writable url and the information required to read it
     return [url, { folder: { id: folder.id }, publicPath }];
   }
 
   public getSignedReadUrl(attachmentInfo: IReadableAttachmentInfo, options?: ISignedReadUrlOptions) {
     const { folder, publicPath } = attachmentInfo;
-    const { Expires = kDefaultReadExpirationSec } = options || {};
-    return this.getSignedUrl(folder, "getObject", { Key: publicPath, Expires });
+    const { expiresIn = kDefaultReadExpirationSec } = options || {};
+    return this.getSignedUrl(folder, "getObject", { Key: publicPath, expiresIn });
   }
 
   private async getFolderResource(folder: IAttachmentsFolder): Promise<S3Resource> {
@@ -95,17 +96,16 @@ export class AttachmentsManager {
   }
 
   private async getSignedUrl(folder: IAttachmentsFolder, operation: S3Operation, options: IS3SignedUrlOptions) {
+    const { Key, ContentType = "text/plain", expiresIn } = options;
     const folderResource = await this.getFolderResource(folder);
     const credentials = await this.getCredentials(folder);
-    const { bucket, region } = folderResource;
+    const { bucket: Bucket, region } = folderResource;
     const { accessKeyId, secretAccessKey, sessionToken } = credentials;
-    const s3 = new AWS.S3({ region, accessKeyId, secretAccessKey, sessionToken });
-    // https://zaccharles.medium.com/s3-uploads-proxies-vs-presigned-urls-vs-presigned-posts-9661e2b37932
-    const s3UrlParams = { ...options, Bucket: bucket };
-    // https://advancedweb.hu/differences-between-put-and-post-s3-signed-urls/
-    if ((operation === "putObject") && !s3UrlParams.ContentType) {
-      s3UrlParams.ContentType = "text/plain";
-    }
-    return s3.getSignedUrlPromise(operation, s3UrlParams);
+    const s3 = new S3Client({ region, credentials: { accessKeyId, secretAccessKey, sessionToken } });
+    // https://aws.amazon.com/blogs/developer/generate-presigned-url-modular-aws-sdk-javascript/
+    const command = operation === "putObject"
+                      ? new PutObjectCommand({ Bucket, Key, ContentType })
+                      : new GetObjectCommand({ Bucket, Key });
+    return getSignedUrl(s3, command, { expiresIn } );
   }
 }
