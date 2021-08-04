@@ -1,4 +1,5 @@
-import { getFirebaseJWT, IPortalData } from "./portal-api";
+import { getFirebaseJWT } from "./portal-api";
+import { IPortalData } from "./portal-types";
 
 export interface IHandleGetFirebaseJWTParams extends Record<string, any> {
   firebase_app: string;

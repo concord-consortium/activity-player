@@ -10,7 +10,8 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal-api";
+import { anonymousPortalData } from "./portal-api";
+import { IAnonymousPortalData, IPortalData } from "./portal-types";
 import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
