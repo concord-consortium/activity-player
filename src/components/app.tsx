@@ -186,8 +186,9 @@ export class App extends React.PureComponent<IProps, IState> {
       this.setState(newState as IState);
 
       this.LARA = initializeLara();
-      loadLearnerPluginState(activity, teacherEditionMode).then(() => {
-        loadPluginScripts(this.LARA, activity, this.handleLoadPlugins, teacherEditionMode);
+      const activities: Activity[] = sequence ? sequence.activities : [activity];
+      loadLearnerPluginState(activities, teacherEditionMode).then(() => {
+        loadPluginScripts(this.LARA, activities, this.handleLoadPlugins, teacherEditionMode);
       });
 
       Modal.setAppElement("#app");
