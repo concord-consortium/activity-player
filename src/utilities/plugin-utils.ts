@@ -32,31 +32,33 @@ export const addUsedPlugin = (plugin: Plugin) => {
   }
 };
 
-export const findUsedPlugins = (activity: Activity, teacherEditionMode: boolean) => {
-  // search each page for teacher edition plugin use
-  for (let page = 0; page < activity.pages.length; page++) {
-    if (!activity.pages[page].is_hidden) {
-      for (let embeddableNum = 0; embeddableNum < activity.pages[page].embeddables.length; embeddableNum++) {
-        const embeddable = activity.pages[page].embeddables[embeddableNum].embeddable;
-        if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.approved_script_label === "teacherEditionTips" && teacherEditionMode) {
-          addUsedPlugin(embeddable.plugin);
+export const findUsedPlugins = (activities: Activity[], teacherEditionMode: boolean) => {
+  // search current activity or all activities in sequence
+  activities.forEach(activity => {
+    // search each page for teacher edition plugin use
+    for (let page = 0; page < activity.pages.length; page++) {
+      if (!activity.pages[page].is_hidden) {
+        for (let embeddableNum = 0; embeddableNum < activity.pages[page].embeddables.length; embeddableNum++) {
+          const embeddable = activity.pages[page].embeddables[embeddableNum].embeddable;
+          if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.approved_script_label === "teacherEditionTips" && teacherEditionMode) {
+            addUsedPlugin(embeddable.plugin);
+          }
         }
       }
     }
-  }
 
-  // search plugin array for glossary plugin use
-  activity.plugins.forEach((activityPlugin: Plugin) => {
-    if (activityPlugin.approved_script_label === "glossary") {
-      addUsedPlugin(activityPlugin);
-    }
+    // search plugin array for glossary plugin use
+    activity.plugins.forEach((activityPlugin: Plugin) => {
+      if (activityPlugin.approved_script_label === "glossary") {
+        addUsedPlugin(activityPlugin);
+      }
+    });
   });
-
   return usedPlugins;
 };
 
-export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, handleLoadPlugins: () => void, teacherEditionMode: boolean) => {
-  const plugins = findUsedPlugins(activity, teacherEditionMode);
+export const loadPluginScripts = (LARA: LaraGlobalType, activities: Activity[], handleLoadPlugins: () => void, teacherEditionMode: boolean) => {
+  const plugins = findUsedPlugins(activities, teacherEditionMode);
   plugins.forEach((usedPlugin) => {
     // set plugin label
     const pluginLabel = "plugin" + usedPlugin.id;
@@ -107,8 +109,8 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 };
 
 // loads the learner plugin state into the firebase write-through cache
-export const loadLearnerPluginState = async (activity: Activity, teacherEditionMode: boolean) => {
-  const plugins = findUsedPlugins(activity, teacherEditionMode);
+export const loadLearnerPluginState = async (activities: Activity[], teacherEditionMode: boolean) => {
+  const plugins = findUsedPlugins(activities, teacherEditionMode);
   return await Promise.all(plugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
 };
 
