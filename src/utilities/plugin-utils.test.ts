@@ -60,12 +60,12 @@ describe("Plugin utility functions", () => {
     });
 
     it("works in teacher edition mode", () => {
-      const usedPlugins = findUsedPlugins(activity, true);
+      const usedPlugins = findUsedPlugins([activity], true);
       expect(usedPlugins.map(p => p.plugin.approved_script_label)).toEqual(["teacherEditionTips", "glossary"]);
     });
 
     it("works in non teacher edition mode", () => {
-      const usedPlugins = findUsedPlugins(activity, false);
+      const usedPlugins = findUsedPlugins([activity], false);
       expect(usedPlugins.map(p => p.plugin.approved_script_label)).toEqual(["glossary"]);
     });
   });
@@ -93,13 +93,13 @@ describe("Plugin utility functions", () => {
     });
 
     it("handles teacher edition mode", () => {
-      loadPluginScripts(MockLARA, activity, handleLoadPlugins, true);
+      loadPluginScripts(MockLARA, [activity], handleLoadPlugins, true);
       expect(MockLARA.Plugins.setNextPluginLabel).toHaveBeenCalledTimes(2);
       expect(handleLoadPlugins).toHaveBeenCalledTimes(1);
     });
 
     it("handles non teacher edition mode", () => {
-      loadPluginScripts(MockLARA, activity, handleLoadPlugins, false);
+      loadPluginScripts(MockLARA, [activity], handleLoadPlugins, false);
       expect(MockLARA.Plugins.setNextPluginLabel).toHaveBeenCalledTimes(1);
       expect(handleLoadPlugins).toHaveBeenCalledTimes(1);
     });
@@ -164,12 +164,12 @@ describe("Plugin utility functions", () => {
     });
 
     it("returns the state for all plugins in teacher mode", async () => {
-      const pluginState = await loadLearnerPluginState(activity, true);
+      const pluginState = await loadLearnerPluginState([activity], true);
       expect(pluginState).toEqual(["test 1", "test 2"]);
     });
 
     it("returns the state for all plugins in non teacher mode", async () => {
-      const pluginState = await loadLearnerPluginState(activity, false);
+      const pluginState = await loadLearnerPluginState([activity], false);
       expect(pluginState).toEqual(["test 1"]);
     });
   });
