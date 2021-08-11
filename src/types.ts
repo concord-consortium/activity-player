@@ -161,6 +161,7 @@ export interface Activity {
   time_to_complete: number | null;
   version: number;
   theme_name?: string | null;
+  background_image?: string | null;
   plugins: Plugin[];
   type: "LightweightActivity";
   export_site?: string | null;
@@ -175,6 +176,7 @@ export interface Sequence {
   logo: string | null;
   project?: Project | null;
   theme_id: number | null;
+  background_image?: string | null;
   thumbnail_url: string | null;
   title: string | null;
   activities: Activity[];

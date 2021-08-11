@@ -4,6 +4,7 @@ import { Footer } from "../activity-introduction/footer";
 import { Header } from "../activity-header/header";
 import { SequencePageContent } from "../sequence-introduction/sequence-page-content";
 import { setQueryValue } from "../../utilities/url-query";
+import { setAppBackgroundImage } from "../../utilities/activity-utils";
 
 interface IProps {
   sequence: Sequence | undefined;
@@ -14,6 +15,10 @@ interface IProps {
 export const SequenceIntroduction: React.FC<IProps> = (props) => {
   const { sequence, username, onSelectActivity } = props;
   setQueryValue("sequenceActivity", "0");
+  const backgroundImage = sequence?.background_image;
+  if (backgroundImage) {
+    setAppBackgroundImage(backgroundImage);
+  }
   return (
     !sequence
     ? <div data-cy="sequence-loading">Loading</div>
