@@ -54,7 +54,7 @@ export class AttachmentsManager {
       type: "s3Folder",
       name: `${this.learnerId}-${interactiveId}`,
       description: "attachment",
-      accessRuleType: this.isAnonymous() ? "readWriteToken" : "user"
+      accessRuleType: this.isAnonymous() ? "readWriteToken" : ["user", "context"]
     });
     this.resources[folderResource.id] = folderResource as S3Resource;
     return {
