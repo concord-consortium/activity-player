@@ -1,16 +1,33 @@
 import { S3Client, GetObjectCommand, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { v4 as uuid } from "uuid";
-import { Credentials, S3Resource, TokenServiceClient } from "@concord-consortium/token-service";
-import { firebaseAppName } from "../portal-api";
-import { IAttachmentsFolder, IReadableAttachmentInfo, isWritableAttachmentsFolder, IWritableAttachmentsFolder } from "../types";
-
-const kTokenServiceToolName = "interactive-attachments";
-const kDefaultWriteExpirationSec = 5 * 60;
-const kDefaultReadExpirationSec = 2 * 60 * 60;
-
+import { Credentials, S3Resource, TokenServiceClient, EnvironmentName } from "@concord-consortium/token-service";
+import { IAttachmentUrlRequest, IAttachmentUrlResponse } from "@concord-consortium/lara-interactive-api";
 
 type S3Operation = "getObject" | "putObject";
+
+export interface IAttachmentsFolder {
+  id: string;
+}
+
+export interface IWritableAttachmentsFolder extends IAttachmentsFolder {
+  readWriteToken?: string;
+}
+
+export interface IReadableAttachmentInfo {
+  folder: IAttachmentsFolder;
+  publicPath: string;
+}
+
+export interface IAttachmentManagerInitOptions {
+  tokenServiceEnv: EnvironmentName;
+  tokenServiceFirestoreJWT?: string;
+  // These options are necessary only when attachment manager is expected to support write operation.
+  writeOptions?: {
+    runKey?: string; // for anonymous users
+    runRemoteEndpoint?: string; // for logged in users
+  };
+}
 
 export interface ISignedReadUrlOptions {
   expiresIn?: number; // seconds
@@ -24,6 +41,13 @@ export interface IS3SignedUrlOptions extends ISignedWriteUrlOptions {
   Key: string;
 }
 
+const kTokenServiceToolName = "interactive-attachments";
+const kDefaultWriteExpirationSec = 5 * 60;
+const kDefaultReadExpirationSec = 2 * 60 * 60;
+
+export const isWritableAttachmentsFolder = (folder: IAttachmentsFolder): folder is IWritableAttachmentsFolder =>
+              !!(folder as IWritableAttachmentsFolder).readWriteToken;
+
 export class AttachmentsManager {
   private sessionId = uuid();
   private learnerId?: string;
@@ -31,17 +55,22 @@ export class AttachmentsManager {
   private tokenServiceClient: TokenServiceClient;
   private resources: Record<string, S3Resource> = {};
 
-  constructor(learnerId: string, firebaseJwt?: string) {
-    this.learnerId = learnerId;
-    this.firebaseJwt = firebaseJwt;
-
-    const env = firebaseAppName() === "report-service-pro" ? "production" : "staging";
-    this.tokenServiceClient = new TokenServiceClient({ env, jwt: firebaseJwt });
+  constructor(options: IAttachmentManagerInitOptions) {
+    this.learnerId = options.writeOptions?.runKey || options.writeOptions?.runRemoteEndpoint;
+    if (options.writeOptions && !this.learnerId) {
+      throw new Error("Attachments Manager requires runKey or runRemoteEndpoint to support write operation");
+    }
+    this.firebaseJwt = options.tokenServiceFirestoreJWT;
+    this.tokenServiceClient = new TokenServiceClient({ env: options.tokenServiceEnv, jwt: this.firebaseJwt });
   }
 
   public isAnonymous() {
     // The client will be anonymous if firebaseJwt undefined
     return !this.firebaseJwt;
+  }
+
+  public isWriteSupported() {
+    return !!this.learnerId;
   }
 
   public getSessionId() {
@@ -109,3 +138,77 @@ export class AttachmentsManager {
     return getSignedUrl(s3, command, { expiresIn } );
   }
 }
+
+let resolveAttachmentsManager: (manager: AttachmentsManager) => void;
+export const attachmentsManager = new Promise<AttachmentsManager>((resolve, reject) => {
+  resolveAttachmentsManager = resolve;
+});
+
+export const initializeAttachmentsManager = async (optionsPromise: Promise<IAttachmentManagerInitOptions>) => {
+  resolveAttachmentsManager(new AttachmentsManager(await optionsPromise));
+};
+
+export interface IAnswerMetadataWithAttachmentsInfo {
+  attachmentsFolder?: IAttachmentsFolder;
+  // tracks the most recently written details for each attachment
+  attachments?: Record<string, IReadableAttachmentInfo>;
+}
+
+export interface IHandleGetAttachmentUrlOptions {
+  request: IAttachmentUrlRequest;
+  answerMeta: IAnswerMetadataWithAttachmentsInfo;
+  writeOptions?: {
+    // This is necessary only for write operation.
+    interactiveId: string;
+    onAnswerMetaUpdate: (newAnswerMeta: IAnswerMetadataWithAttachmentsInfo) => void;
+  }
+}
+
+export const handleGetAttachmentUrl = async (options: IHandleGetAttachmentUrlOptions): Promise<IAttachmentUrlResponse> => {
+  const { name, operation, contentType, expiresIn, requestId } = options.request;
+  const response: IAttachmentUrlResponse = { requestId };
+  const attachmentsMgr = await attachmentsManager;
+  if (!attachmentsMgr) {
+    response.error = "error getting attachment url: the host environment did not initialize the attachment manager";
+    return response;
+  }
+
+  const answerMeta = options.answerMeta;
+  let { attachmentsFolder, attachments } = answerMeta;
+  try {
+    if (operation === "write") {
+      if (!attachmentsMgr.isWriteSupported() || !options.writeOptions) {
+        response.error = "error getting attachment url: the write operation is not supported by the host environment";
+        return response;
+      }
+      if (!attachmentsFolder) {
+        attachmentsFolder = answerMeta.attachmentsFolder = await attachmentsMgr.createFolder(options.writeOptions?.interactiveId);
+      }
+      if (!attachments) {
+        attachments = answerMeta.attachments = {};
+      }
+      const urlOptions: ISignedWriteUrlOptions = { ContentType: contentType, expiresIn };
+      const [writeUrl, attachmentInfo] = await attachmentsMgr.getSignedWriteUrl(attachmentsFolder, name, urlOptions);
+      response.url = writeUrl;
+      // public path changes with sessionId
+      if (!attachments[name] || (attachmentInfo.publicPath !== attachments[name].publicPath)) {
+        attachments[name] = attachmentInfo;
+        options.writeOptions.onAnswerMetaUpdate(answerMeta);
+      }
+    }
+    else if (operation === "read") {
+      if (attachmentsFolder && attachments && attachments[name]) {
+        // TODO: this won't work for run-with-others where we won't have a readWriteToken
+        const attachmentInfo = { ...attachments[name], folder: attachmentsFolder };
+        response.url = await attachmentsMgr.getSignedReadUrl(attachmentInfo, { expiresIn });
+      } else {
+        response.error = `error getting attachment url: ${name} ["No attachment info in answer metadata"]`;
+        return response;
+      }
+    }
+  }
+  catch (e) {
+    response.error = `error creating url for attachment: "${name}" [s3: "${e}"]`;
+  }
+  return response;
+};

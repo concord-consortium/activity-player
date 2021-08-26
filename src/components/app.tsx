@@ -34,10 +34,11 @@ import { ModalDialog } from "./modal-dialog";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
-import { initializeAttachmentsManager } from "../utilities/attachments-manager-global";
+import { getAttachmentsManagerOptions} from "../utilities/get-attachments-manager-options";
 import { IdleDetector } from "../utilities/idle-detector";
 
 import "./app.scss";
+import { initializeAttachmentsManager } from "../utilities/attachments-manager";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "Please submit an answer first.";
@@ -174,7 +175,8 @@ export class App extends React.PureComponent<IProps, IState> {
         }
       }
 
-      initializeAttachmentsManager(getPortalData() as IPortalDataUnion);
+      const attachmentsManagerOptionsPromise = getAttachmentsManagerOptions(getPortalData() as IPortalDataUnion);
+      initializeAttachmentsManager(attachmentsManagerOptionsPromise);
 
       if (!preview) {
         // Notify user about network issues. Note that in preview mode Firestore network is disabled, so it doesn't

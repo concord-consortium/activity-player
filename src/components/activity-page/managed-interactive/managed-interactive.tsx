@@ -10,8 +10,7 @@ import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
 import { createOrUpdateAnswer, watchAnswer } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
-import { ISignedWriteUrlOptions } from "../../../utilities/attachments-manager";
-import { attachmentsManager } from "../../../utilities/attachments-manager-global";
+import { handleGetAttachmentUrl, ISignedWriteUrlOptions } from "../../../utilities/attachments-manager";
 import { getAnswerWithMetadata, isQuestion } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
@@ -177,45 +176,23 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     setActiveLightbox(null);
   };
 
-  const handleGetAttachmentUrl = async (request: IAttachmentUrlRequest): Promise<IAttachmentUrlResponse> => {
-    const { name, operation, contentType, expiresIn, requestId } = request;
+  const handleGetAttachmentUrlRequest = async (request: IAttachmentUrlRequest): Promise<IAttachmentUrlResponse> => {
     if (!answerMeta.current) {
-      return { error: "error getting attachment url: no answer metadata", requestId };
+      return { error: "error getting attachment url: no answer metadata", requestId: request.requestId };
     }
-    const attachmentsMgr = await attachmentsManager;
-    let { attachmentsFolder, attachments } = answerMeta.current;
-    if (!attachmentsFolder) {
-      attachmentsFolder = answerMeta.current.attachmentsFolder = await attachmentsMgr.createFolder(interactiveId);
-    }
-    if (!attachments) {
-      attachments = answerMeta.current.attachments = {};
-    }
-
-    const response: IAttachmentUrlResponse = { requestId };
-    try {
-      if (operation === "write") {
-        const options: ISignedWriteUrlOptions = { ContentType: contentType, expiresIn };
-        const [writeUrl, attachmentInfo] = await attachmentsMgr.getSignedWriteUrl(attachmentsFolder, name, options);
-        response.url = writeUrl;
-        // public path changes with sessionId
-        if (!attachments[name] || (attachmentInfo.publicPath !== attachments[name].publicPath)) {
-          attachments[name] = attachmentInfo;
-          createOrUpdateAnswer(answerMeta.current);
+    return await handleGetAttachmentUrl({
+      request,
+      answerMeta: answerMeta.current,
+      writeOptions: {
+        interactiveId,
+        onAnswerMetaUpdate: newMeta => {
+          if (!answerMeta.current) {
+            return { error: "error getting attachment url: no answer metadata", requestId: request.requestId };
+          }
+          createOrUpdateAnswer({ ...answerMeta.current, ...newMeta });
         }
       }
-      else if (attachments[name]) {
-        // TODO: this won't work for run-with-others where we won't have a readWriteToken
-        const attachmentInfo = { ...attachments[name], folder: attachmentsFolder };
-        response.url = await attachmentsMgr.getSignedReadUrl(attachmentInfo, { expiresIn });
-      }
-      else {
-        response.error = `Error reading attachment: ${name} ["No attachment info in answer metadata"]`;
-      }
-    }
-    catch (e) {
-      response.error = `Error creating url for attachment: "${name}" [s3: "${e}"]`;
-    }
-    return response;
+    });
   };
 
   useImperativeHandle(ref, () => ({
@@ -252,7 +229,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         containerWidth={containerWidth}
         setNewHint={setNewHint}
         getFirebaseJWT={getFirebaseJWT}
-        getAttachmentUrl={handleGetAttachmentUrl}
+        getAttachmentUrl={handleGetAttachmentUrlRequest}
         showModal={showModal}
         closeModal={closeModal}
         setSendCustomMessage={setSendCustomMessage}
