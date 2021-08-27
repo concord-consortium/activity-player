@@ -19,10 +19,10 @@ export interface IReadableAttachmentInfo {
   publicPath: string;
 }
 
-export interface IAttachmentManagerInitOptions {
+export interface IAttachmentsManagerInitOptions {
   tokenServiceEnv: EnvironmentName;
   tokenServiceFirestoreJWT?: string;
-  // These options are necessary only when attachment manager is expected to support write operation.
+  // These options are necessary only when attachments manager is expected to support write operation.
   writeOptions?: {
     runKey?: string; // for anonymous users
     runRemoteEndpoint?: string; // for logged in users
@@ -55,7 +55,7 @@ export class AttachmentsManager {
   private tokenServiceClient: TokenServiceClient;
   private resources: Record<string, S3Resource> = {};
 
-  constructor(options: IAttachmentManagerInitOptions) {
+  constructor(options: IAttachmentsManagerInitOptions) {
     this.learnerId = options.writeOptions?.runKey || options.writeOptions?.runRemoteEndpoint;
     if (options.writeOptions && !this.learnerId) {
       throw new Error("Attachments Manager requires runKey or runRemoteEndpoint to support write operation");
@@ -144,7 +144,7 @@ export const attachmentsManager = new Promise<AttachmentsManager>((resolve, reje
   resolveAttachmentsManager = resolve;
 });
 
-export const initializeAttachmentsManager = async (optionsPromise: Promise<IAttachmentManagerInitOptions>) => {
+export const initializeAttachmentsManager = async (optionsPromise: Promise<IAttachmentsManagerInitOptions>) => {
   resolveAttachmentsManager(new AttachmentsManager(await optionsPromise));
 };
 
@@ -169,7 +169,7 @@ export const handleGetAttachmentUrl = async (options: IHandleGetAttachmentUrlOpt
   const response: IAttachmentUrlResponse = { requestId };
   const attachmentsMgr = await attachmentsManager;
   if (!attachmentsMgr) {
-    response.error = "error getting attachment url: the host environment did not initialize the attachment manager";
+    response.error = "error getting attachment url: the host environment did not initialize the attachments manager";
     return response;
   }
 
