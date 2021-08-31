@@ -36,9 +36,9 @@ import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
 import { getAttachmentsManagerOptions} from "../utilities/get-attachments-manager-options";
 import { IdleDetector } from "../utilities/idle-detector";
+import { initializeAttachmentsManager } from "@concord-consortium/interactive-api-host";
 
 import "./app.scss";
-import { initializeAttachmentsManager } from "../utilities/attachments-manager";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "Please submit an answer first.";
@@ -175,8 +175,9 @@ export class App extends React.PureComponent<IProps, IState> {
         }
       }
 
-      const attachmentsManagerOptionsPromise = getAttachmentsManagerOptions(getPortalData() as IPortalDataUnion);
-      initializeAttachmentsManager(attachmentsManagerOptionsPromise);
+      getAttachmentsManagerOptions(getPortalData() as IPortalDataUnion).then(options => {
+        initializeAttachmentsManager(options);
+      });
 
       if (!preview) {
         // Notify user about network issues. Note that in preview mode Firestore network is disabled, so it doesn't

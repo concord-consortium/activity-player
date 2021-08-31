@@ -2,11 +2,8 @@ import { Credentials, Resource } from "@concord-consortium/token-service";
 import { act, configure, render, screen } from "@testing-library/react";
 import React from "react";
 import { ManagedInteractive } from "./managed-interactive";
-import { IAnonymousPortalData } from "../../../portal-types";
 import { Embeddable } from "../../../types";
-import { AttachmentsManager } from "../../../utilities/attachments-manager";
-import { attachmentsManager, initializeAttachmentsManager } from "../../../utilities/attachments-manager-global";
-import { IAttachmentUrlRequest, IWriteAttachmentRequest } from "@concord-consortium/lara-interactive-api";
+import { IAttachmentUrlRequest } from "@concord-consortium/lara-interactive-api";
 
 configure({ testIdAttribute: "data-cy" });
 
@@ -74,19 +71,9 @@ jest.mock("@concord-consortium/token-service", () => ({
   }))
 }));
 
-const mockCreateFolder = jest.fn(() => Promise.resolve({ id: "folder-id", readWriteToken: "read--write-token" }));
-const mockSignedWriteUrl = "https://concord.org/write/url";
-const mockSignedWriteUrlResponse = [mockSignedWriteUrl, { folder: { id: "folder-id" }, publicPath: "public/path" }];
-const mockGetSignedWriteUrl = jest.fn(() => Promise.resolve(mockSignedWriteUrlResponse));
-const mockSignedReadUrl = "https://concord.org/read/url";
-const mockGetSignedReadUrl = jest.fn(() => Promise.resolve(mockSignedReadUrl));
-jest.mock("../../../utilities/attachments-manager", () => ({
-  ...jest.requireActual("../../../utilities/attachments-manager"),
-  AttachmentsManager: jest.fn(() => ({
-    createFolder: mockCreateFolder,
-    getSignedReadUrl: mockGetSignedReadUrl,
-    getSignedWriteUrl: mockGetSignedWriteUrl
-  }))
+const mockHandleGetAttachmentUrl = jest.fn();
+jest.mock("@concord-consortium/interactive-api-host", () => ({
+  handleGetAttachmentUrl: (...args: any) => mockHandleGetAttachmentUrl(...args)
 }));
 
 const mockWatchAnswer = jest.fn((id: string, callback: (answer: any) => void) => callback({ meta: {} }));
@@ -212,66 +199,14 @@ describe("ManagedInteractive component", () => {
     });
     expect(mockSetNavigation).toHaveBeenCalled();
 
-    const mockRunKey = "anonymous-run-key";
-    const kAnonymousPortalData: IAnonymousPortalData = {
-      type: "anonymous",
-      userType: "learner",
-      runKey: mockRunKey,
-      resourceUrl: "https://concord.org/my/resource",
-      toolId: "my-tool",
-      toolUserId: "anonymous",
-      database: {
-        appName: "report-service-dev",
-        sourceKey: "database-source-key"
-      }
-    };
     await act(async () => {
-      await initializeAttachmentsManager(kAnonymousPortalData);
-      expect(AttachmentsManager).toHaveBeenCalled();
-      const writeAttachmentRequest: IWriteAttachmentRequest = {
+      const writeAttachmentRequest: IAttachmentUrlRequest = {
         requestId: 1,
         name: "attachment-name",
-        operation: "write",
-        content: "foo"
+        operation: "write"
       };
       dispatchMessageFromChild("getAttachmentUrl", writeAttachmentRequest);
     });
-    // wait for promise resolution
-    await attachmentsManager;
-    expect(mockCreateFolder).toHaveBeenCalled();
-    expect(mockGetSignedWriteUrl).toHaveBeenCalled();
-
-    await act(async () => {
-      const readAttachmentRequest: IAttachmentUrlRequest = {
-        requestId: 2,
-        name: "attachment-name",
-        operation: "read"
-      };
-      dispatchMessageFromChild("getAttachmentUrl", readAttachmentRequest);
-    });
-    expect(mockGetSignedReadUrl).toHaveBeenCalled();
-
-    // ignores requests for unknown attachments
-    await act(async () => {
-      const readAttachmentRequest: IAttachmentUrlRequest = {
-        requestId: 3,
-        name: "bogus-name",
-        operation: "read"
-      };
-      dispatchMessageFromChild("getAttachmentUrl", readAttachmentRequest);
-    });
-    expect(mockGetSignedReadUrl).toHaveBeenCalledTimes(1);
-
-    // ignores requests that generate errors
-    mockGetSignedReadUrl.mockImplementation(() => { throw Error("Error!"); });
-    await act(async () => {
-      const readAttachmentRequest: IAttachmentUrlRequest = {
-        requestId: 4,
-        name: "attachment-name",
-        operation: "read"
-      };
-      dispatchMessageFromChild("getAttachmentUrl", readAttachmentRequest);
-    });
-    expect(mockGetSignedReadUrl).toHaveBeenCalledTimes(2);
+    expect(mockHandleGetAttachmentUrl).toHaveBeenCalled();
   });
 });

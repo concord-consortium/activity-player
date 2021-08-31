@@ -10,7 +10,6 @@ import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
 import { createOrUpdateAnswer, watchAnswer } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
-import { handleGetAttachmentUrl, ISignedWriteUrlOptions } from "../../../utilities/attachments-manager";
 import { getAnswerWithMetadata, isQuestion } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
@@ -19,6 +18,7 @@ import { renderHTML } from "../../../utilities/render-html";
 import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 import { Lightbox } from "./lightbox";
 import { Logger, LogEventName } from "../../../lib/logger";
+import { handleGetAttachmentUrl } from "@concord-consortium/interactive-api-host";
 
 import "./managed-interactive.scss";
 
