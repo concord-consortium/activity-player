@@ -49,6 +49,8 @@ const kTimeout = 5 * 60 * 1000; // 5 minutes
 
 const kLearnPortalUrl = "https://learn.concord.org";
 
+const kAnonymousUserName = "Anonymous";
+
 export type ErrorType = "auth" | "network" | "timeout";
 
 interface IncompleteQuestion {
@@ -89,7 +91,7 @@ export class App extends React.PureComponent<IProps, IState> {
       teacherEditionMode: false,
       showThemeButtons: false,
       showWarning: false,
-      username: "Anonymous",
+      username: kAnonymousUserName,
       showModal: false,
       modalLabel: "",
       incompleteQuestions: [],
@@ -194,7 +196,34 @@ export class App extends React.PureComponent<IProps, IState> {
 
       Modal.setAppElement("#app");
 
-      Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint);
+      Logger.initializeLogger({
+        LARA: this.LARA,
+        username: (() => {
+          let username = newState.username || this.state.username;
+          const domain = queryValue("domain");
+          const domainUID = queryValue("domain_uid");
+          // If user is anonymous, but there are domain and domain_uid URL params available, use them to construct an username.
+          // PJ 9/2/2021: This might be replaced by a proper OAuth path in the future. For now, it les us log teacher edition events correctly.
+          if (username === kAnonymousUserName && domain && domainUID) {
+            // Skip protocol, use hostname only to mimic LARA behavior.
+            username = `${domainUID}@${new URL(domain).hostname}`;
+          }
+          return username;
+        })(),
+        role,
+        classHash,
+        teacherEdition: teacherEditionMode,
+        sequence: sequencePath,
+        sequenceActivityIndex: 0,
+        // Note that we're setting activity param to `sequencePath || activityPath`. This is intentional.
+        // When AP is rendering a sequence, the sequence JSON path should be used as an `activity` param value.
+        // That's the most important parameter for log-puller which always checks `activity` and ignores `sequence`.
+        // Other systems like LARA or Portal Report provide `activity` param equal to "sequence: <ID>".
+        activity: sequencePath || activityPath,
+        activityPage: currentPage,
+        runRemoteEndpoint,
+        env: firebaseAppName() === "report-service-pro" ? "production" : "dev"
+      });
 
       const idleDetector = new IdleDetector({ idle: Number(kMaxIdleTime), onIdle: this.handleIdleness });
       idleDetector.start();
