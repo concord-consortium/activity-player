@@ -2,7 +2,12 @@ import { v4 as uuid } from "uuid";
 import { DEBUG_LOGGER } from "../lib/debug";
 import { LaraGlobalType } from "../lara-plugin/index";
 
-const logManagerUrl = "//cc-log-manager.herokuapp.com/api/logs";
+type LoggerEnvironment = "dev" | "production";
+
+const logManagerUrl: Record<LoggerEnvironment, string> = {
+  dev: "//cc-log-manager-dev.herokuapp.com/api/logs",
+  production: "//cc-log-manager.herokuapp.com/api/logs"
+};
 
 export interface LogParams {
   event: string | LogEventName,
@@ -24,6 +29,7 @@ interface LogMessage {
   sequenceActivityIndex: number;
   activity: string | undefined,
   activityPage: number;
+  url: string;
   time: number;
   event: string;
   event_value: any;
@@ -48,21 +54,26 @@ export enum LogEventName {
   session_timeout
 }
 
+export interface ILoggerOptions {
+  LARA: LaraGlobalType;
+  username: string;
+  role: string;
+  classHash: string;
+  teacherEdition: boolean;
+  sequence: string | undefined;
+  sequenceActivityIndex: number;
+  activity: string | undefined;
+  activityPage: number;
+  runRemoteEndpoint: string;
+  env: LoggerEnvironment;
+}
+
 export class Logger {
-  public static initializeLogger(LARA: LaraGlobalType,
-                                 username: string,
-                                 role: string,
-                                 classHash: string,
-                                 teacherEdition: boolean,
-                                 sequence: string | undefined,
-                                 sequenceActivityIndex: number,
-                                 activity: string | undefined,
-                                 activityPage: number,
-                                 runRemoteEndpoint: string) {
+  public static initializeLogger(options: ILoggerOptions) {
     if (DEBUG_LOGGER) {
       console.log("Logger#initializeLogger called.");
     }
-    this._instance = new Logger(LARA, username, role, classHash, teacherEdition, sequence, sequenceActivityIndex, activity, activityPage, runRemoteEndpoint);
+    this._instance = new Logger(options);
   }
 
   public static updateActivity(activity: string) {
@@ -83,7 +94,7 @@ export class Logger {
     const eventString = typeof event === "string" ? event : LogEventName[event];
     const logMessage = Logger.Instance.createLogMessage(eventString, parameters, event_value, interactive_id, interactive_url);
     this._instance.LARA.Events.emitLog(logMessage);
-    sendToLoggingService(logMessage);
+    sendToLoggingService(logMessage, logManagerUrl[Logger.Instance.env]);
   }
 
   private static _instance: Logger;
@@ -94,6 +105,8 @@ export class Logger {
     }
     throw new Error("Logger not initialized yet.");
   }
+
+  public env: LoggerEnvironment;
 
   private LARA: LaraGlobalType;
   private username: string;
@@ -107,16 +120,9 @@ export class Logger {
   private activityPage: number;
   private runRemoteEndpoint: string;
 
-  private constructor(LARA: LaraGlobalType,
-                      username: string,
-                      role: string,
-                      classHash: string,
-                      teacherEdition: boolean,
-                      sequence: string | undefined,
-                      sequenceActivityIndex: number,
-                      activity: string | undefined,
-                      activityPage: number,
-                      runRemoteEndpoint: string) {
+  private constructor(options: ILoggerOptions) {
+    const { LARA, username, role, classHash, teacherEdition, sequence, sequenceActivityIndex,
+      activity, activityPage, runRemoteEndpoint, env } = options;
     this.LARA = LARA;
     this.session = uuid();
     this.username = username;
@@ -128,6 +134,7 @@ export class Logger {
     this.activity = activity;
     this.activityPage = activityPage;
     this.runRemoteEndpoint = runRemoteEndpoint;
+    this.env = env;
   }
 
   private createLogMessage(
@@ -150,6 +157,7 @@ export class Logger {
       activity: this.activity,
       activityPage: this.activityPage,
       time: Date.now(), // eventually we will want server skew (or to add this via FB directly)
+      url: window.location.href,
       event,
       event_value,
       parameters,
@@ -163,12 +171,12 @@ export class Logger {
 
 }
 
-function sendToLoggingService(data: LogMessage) {
+function sendToLoggingService(data: LogMessage, url: string) {
   if (DEBUG_LOGGER) {
-    console.log("Logger#sendToLoggingService sending", JSON.stringify(data), "to", logManagerUrl);
+    console.log("Logger#sendToLoggingService sending", JSON.stringify(data), "to", url);
   }
   const request = new XMLHttpRequest();
-  request.open("POST", logManagerUrl, true);
+  request.open("POST", url, true);
   request.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
   request.send(JSON.stringify(data));
 }
