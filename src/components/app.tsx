@@ -34,8 +34,9 @@ import { ModalDialog } from "./modal-dialog";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
-import { initializeAttachmentsManager } from "../utilities/attachments-manager-global";
+import { getAttachmentsManagerOptions} from "../utilities/get-attachments-manager-options";
 import { IdleDetector } from "../utilities/idle-detector";
+import { initializeAttachmentsManager } from "@concord-consortium/interactive-api-host";
 
 import "./app.scss";
 
@@ -176,7 +177,9 @@ export class App extends React.PureComponent<IProps, IState> {
         }
       }
 
-      initializeAttachmentsManager(getPortalData() as IPortalDataUnion);
+      getAttachmentsManagerOptions(getPortalData() as IPortalDataUnion).then(options => {
+        initializeAttachmentsManager(options);
+      });
 
       if (!preview) {
         // Notify user about network issues. Note that in preview mode Firestore network is disabled, so it doesn't
