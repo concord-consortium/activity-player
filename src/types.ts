@@ -1,3 +1,5 @@
+import { IReadableAttachmentInfo } from "@concord-consortium/interactive-api-host";
+
 export type Mode = "runtime" | "authoring" | "report";
 
 export interface IframePhone {
@@ -217,20 +219,6 @@ export interface IAnonymousMetadataPartial {
   platform_user_id: string;
 }
 
-export interface IAttachmentsFolder {
-  id: string;
-}
-export interface IWritableAttachmentsFolder extends IAttachmentsFolder {
-  readWriteToken?: string;
-}
-export const isWritableAttachmentsFolder = (folder: IAttachmentsFolder): folder is IWritableAttachmentsFolder =>
-              !!(folder as IWritableAttachmentsFolder).readWriteToken;
-
-export interface IReadableAttachmentInfo {
-  folder: IAttachmentsFolder;
-  publicPath: string;
-}
-
 /**
  * cf. IRunTimeMetadataBase, from
  * https://github.com/concord-consortium/lara/blob/master/lara-typescript/src/interactive-api-client/metadata-types.ts#L47
@@ -246,7 +234,6 @@ export interface IExportableAnswerMetadataBase {
   answer?: any;
   submitted: boolean | null;
   report_state: string;
-  attachmentsFolder?: IAttachmentsFolder;
   // tracks the most recently written details for each attachment
   attachments?: Record<string, IReadableAttachmentInfo>;
 }
