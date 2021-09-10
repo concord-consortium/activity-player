@@ -30,13 +30,10 @@ describe("IdleWarning component", () => {
       mount(<IdleWarning {...props} />);
 
       act(() => {
-        jest.runOnlyPendingTimers();
-        jest.runOnlyPendingTimers();
-        jest.runOnlyPendingTimers();
+        jest.advanceTimersByTime(100);
       });
 
       expect(props.onTimeout).toHaveBeenCalled();
-
       jest.useRealTimers();
     });
 
