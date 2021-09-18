@@ -34,12 +34,13 @@ describe("getReportUrl", () => {
 
       expect(reportURL).toEqual(
         kDevPortalReportUrl
-        + "?runKey=" + runKey
-        + "&activity=https://lara.example.com/activities/345"
-        + "&resourceUrl=https://lara.example.com/activities/345"
-        + "&firebase-app=report-service-dev"
+        + "?firebase-app=report-service-dev"
         + "&sourceKey=lara.example.com"
         + "&answersSourceKey=activity-player.unexisting.url.com"
+        + "&runKey=" + runKey
+        + "&activity=https://lara.example.com/activities/345"
+        + "&resourceUrl=https://lara.example.com/activities/345"
+
       );
     });
 
@@ -50,12 +51,12 @@ describe("getReportUrl", () => {
 
       expect(reportURL).toEqual(
         kDevPortalReportUrl
-        + "?runKey=" + runKey
-        + "&activity=https://lara.example.com/activities/345"
-        + "&resourceUrl=https://lara.example.com/activities/345"
-        + "&firebase-app=report-service-dev"
+        + "?firebase-app=report-service-dev"
         + "&sourceKey=lara.example.com"
         + "&answersSourceKey=activity-player.unexisting.url.com"
+        + "&runKey=" + runKey
+        + "&activity=https://lara.example.com/activities/345"
+        + "&resourceUrl=https://lara.example.com/activities/345"
       );
     });
 
@@ -66,18 +67,17 @@ describe("getReportUrl", () => {
 
       expect(reportURL).toEqual(
         kDevPortalReportUrl
-        + "?runKey=" + runKey
-        + "&activity=https://lara.example.com/activities/345"
-        + "&resourceUrl=https://lara.example.com/activities/345"
-        + "&firebase-app=report-service-pro"
+        + "?firebase-app=report-service-pro"
         + "&sourceKey=lara.example.com"
         + "&answersSourceKey=activity-player.unexisting.url.com"
+        + "&runKey=" + runKey
+        + "&activity=https://lara.example.com/activities/345"
+        + "&resourceUrl=https://lara.example.com/activities/345"
       );
     });
   });
 
   describe("without a run key" , () => {
-
     it("returns a valid reportURL", () => {
       window.history.replaceState({}, "Test", basicParams);
 
@@ -85,13 +85,13 @@ describe("getReportUrl", () => {
 
       expect(reportURL).toEqual(
         kDevPortalReportUrl
-        + "?class=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fclasses%2F123"
-        + "&firebase-app=report-service-dev"
+        + "?firebase-app=report-service-dev"
+        + "&sourceKey=lara.example.com"
+        + "&answersSourceKey=activity-player.unexisting.url.com"
+        + "&class=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fclasses%2F123"
         + "&offering=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fofferings%2Foffering-123"
         + "&reportType=offering"
         + "&studentId=abc345"
-        + "&sourceKey=lara.example.com"
-        + "&answersSourceKey=activity-player.unexisting.url.com"
         + "&auth-domain=https://example.com");
     });
 
@@ -101,14 +101,35 @@ describe("getReportUrl", () => {
 
       expect(reportURL).toEqual(
         kDevPortalReportUrl
-        + "?class=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fclasses%2F123"
-        + "&firebase-app=report-service-pro"
+        + "?firebase-app=report-service-pro"
+        + "&sourceKey=lara.example.com"
+        + "&answersSourceKey=activity-player.unexisting.url.com"
+        + "&class=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fclasses%2F123"
         + "&offering=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fofferings%2Foffering-123"
         + "&reportType=offering"
         + "&studentId=abc345"
+        + "&auth-domain=https://example.com");
+    });
+  });
+
+  describe("when iframeQuestionId is provided" , () => {
+
+    it("returns a valid reportURL", () => {
+      window.history.replaceState({}, "Test", basicParams);
+
+      const reportURL = getReportUrl("mw_interactive_123");
+
+      expect(reportURL).toEqual(
+        kDevPortalReportUrl
+        + "?firebase-app=report-service-dev"
         + "&sourceKey=lara.example.com"
         + "&answersSourceKey=activity-player.unexisting.url.com"
-        + "&auth-domain=https://example.com");
+        + "&class=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fclasses%2F123"
+        + "&offering=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fofferings%2Foffering-123"
+        + "&reportType=offering"
+        + "&studentId=abc345"
+        + "&auth-domain=https://example.com"
+        + "&iframeQuestionId=mw_interactive_123");
     });
   });
 });
