@@ -36,11 +36,12 @@ context("Test Opening Portal Reports from various places", () => {
       it("verify correct link is sent to the portal report", () => {
         cy.get("[data-cy=exit-container] > .show-my-work").should("be.visible").click();
         cy.window().its("open").should("be.calledWith",
-          portalReportUrl + "?runKey=" + runKey +
+          portalReportUrl + "?firebase-app=report-service-dev" +
+            "&sourceKey=example.com" +
+            "&answersSourceKey=authoring.staging.concord.org" +
+            "&runKey=" + runKey +
             "&activity=" + activityStructureUrl +
-            "&resourceUrl=" + activityStructureUrl +
-            "&firebase-app=report-service-dev&sourceKey=example.com" +
-            "&answersSourceKey=authoring.staging.concord.org");
+            "&resourceUrl=" + activityStructureUrl);
       });
     });
     // describe("Open report from completion page", () => {
