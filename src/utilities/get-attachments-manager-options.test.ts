@@ -1,3 +1,4 @@
+import { RawClassInfo } from "../portal-api";
 import { IAnonymousPortalData, IPortalData } from "../portal-types";
 import { getAttachmentsManagerOptions } from "./get-attachments-manager-options";
 
@@ -64,7 +65,8 @@ describe("getAttachmentsManagerOptions", () => {
       },
       basePortalUrl: mockBasePortalUrl,
       rawPortalJWT: mockRawPortalJWT,
-      runRemoteEndpoint: mockRunRemoteEndpoint
+      runRemoteEndpoint: mockRunRemoteEndpoint,
+      rawClassInfo: {} as RawClassInfo
     };
 
     it("returns correct options based on Portal data", async () => {

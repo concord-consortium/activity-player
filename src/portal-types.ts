@@ -1,4 +1,5 @@
 import { FirebaseAppName } from "./firebase-db";
+import { RawClassInfo } from "./portal-api";
 
 export interface ILTIPartial {
   platformId: string;      // portal
@@ -49,6 +50,7 @@ export interface IPortalData extends ILTIPartial {
   rawPortalJWT?: string;
   portalJWT?: PortalJWT;
   runRemoteEndpoint: string;
+  rawClassInfo: RawClassInfo;
 }
 
 export interface IAnonymousPortalData {

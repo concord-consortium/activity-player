@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
 import {
-  IExportableAnswerMetadata, IManagedInteractive, IReportState, IExportableMultipleChoiceAnswerMetadata,
+  IExportableAnswerMetadata, IReportState, IExportableMultipleChoiceAnswerMetadata,
   IExportableOpenResponseAnswerMetadata, IExportableInteractiveAnswerMetadata, IExportableImageQuestionAnswerMetadata,
   Embeddable
 } from "../types";
@@ -37,8 +37,8 @@ export const questionType = (rawAuthoredState: string | null | undefined): strin
 
 export const getAnswerWithMetadata = (
     interactiveState: unknown,
-    embeddable: IManagedInteractive,
-    oldAnswerMeta?: IExportableAnswerMetadata): (IExportableAnswerMetadata | void) => {
+    embeddable: {ref_id: string, authored_state?: string | null},
+    oldAnswerMeta?: IExportableAnswerMetadata): IExportableAnswerMetadata => {
 
   const reportState: IReportState = {
     mode: "report",

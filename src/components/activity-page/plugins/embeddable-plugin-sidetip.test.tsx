@@ -7,6 +7,7 @@ describe("Embeddable Sidetip component", () => {
   it("renders component", () => {
     const embeddable: IEmbeddablePlugin = {
       "plugin": {
+        "id": 1,
         "description": null,
         "author_data": "{\"tipType\":\"sideTip\",\"sideTip\":{\"content\":\"this is a sidetip\",\"mediaType\":\"none\",\"mediaURL\":\"\"}}",
         "approved_script_label": "teacherEditionTips",

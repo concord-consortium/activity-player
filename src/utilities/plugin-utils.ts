@@ -1,81 +1,77 @@
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
-import { Optional } from "utility-types";
 import { getCachedLearnerPluginState, getLearnerPluginState, getPortalData } from "../firebase-db";
 import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
-import { Activity, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
+import { Activity, ApprovedScript, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
 import { getResourceUrl } from "../lara-api";
 
-export interface UsedPluginInfo {
+export interface UsedApprovedScriptInfo {
   id: number;
   loaded: boolean;
-  plugin: Plugin;
+  approvedScript: ApprovedScript;
 }
 
-let usedPlugins: UsedPluginInfo[] = [];
+let usedApprovedScripts: UsedApprovedScriptInfo[] = [];
 
-export const getUsedPlugins = () => {
-  return usedPlugins;
+export const getUsedApprovedScripts = () => {
+  return usedApprovedScripts;
 };
 
-export const clearUsedPlugins = () => {
-  usedPlugins = [];
+export const clearUsedApprovedScripts = () => {
+  usedApprovedScripts = [];
 };
 
-export const addUsedPlugin = (plugin: Plugin) => {
-  if (!usedPlugins.find(p => p.plugin.approved_script_label === plugin.approved_script_label)) {
-    usedPlugins.push({
-      id: usedPlugins.length,
+export const addUsedApprovedScript = (plugin: Plugin) => {
+  if (!usedApprovedScripts.find(scriptInfo =>  scriptInfo.approvedScript.label === plugin.approved_script_label)) {
+    usedApprovedScripts.push({
+      id: usedApprovedScripts.length,
       loaded: false,
-      plugin
+      approvedScript: plugin.approved_script
     });
   }
 };
 
-export const findUsedPlugins = (activities: Activity[], teacherEditionMode: boolean) => {
+export const findUsedApprovedScripts = (activities: Activity[]) => {
   // search current activity or all activities in sequence
   activities.forEach(activity => {
-    // search each page for teacher edition plugin use
-    for (let page = 0; page < activity.pages.length; page++) {
-      if (!activity.pages[page].is_hidden) {
-        for (let embeddableNum = 0; embeddableNum < activity.pages[page].embeddables.length; embeddableNum++) {
-          const embeddable = activity.pages[page].embeddables[embeddableNum].embeddable;
-          if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.approved_script_label === "teacherEditionTips" && teacherEditionMode) {
-            addUsedPlugin(embeddable.plugin);
+    // search each page for embeddable plugin instances
+    activity.pages.forEach(page => {
+      if (!page.is_hidden) {
+        page.embeddables.forEach(embeddableDef => {
+          const embeddable = embeddableDef.embeddable;
+          if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin) {
+            addUsedApprovedScript(embeddable.plugin);
           }
-        }
-      }
-    }
-
-    // search plugin array for glossary plugin use
-    activity.plugins.forEach((activityPlugin: Plugin) => {
-      if (activityPlugin.approved_script_label === "glossary") {
-        addUsedPlugin(activityPlugin);
+        });
       }
     });
+    // Add activity-level plugins too
+    activity.plugins.forEach((activityPlugin: Plugin) => {
+      addUsedApprovedScript(activityPlugin);
+    });
   });
-  return usedPlugins;
+  return usedApprovedScripts;
 };
 
-export const loadPluginScripts = (LARA: LaraGlobalType, activities: Activity[], handleLoadPlugins: () => void, teacherEditionMode: boolean) => {
-  const plugins = findUsedPlugins(activities, teacherEditionMode);
-  plugins.forEach((usedPlugin) => {
+export const loadPluginScripts = (LARA: LaraGlobalType, activities: Activity[], handleLoadScripts: () => void) => {
+  const scripts = findUsedApprovedScripts(activities);
+  scripts.forEach((usedScriptInfo) => {
     // set plugin label
-    const pluginLabel = "plugin" + usedPlugin.id;
+    const pluginLabel = "plugin" + usedScriptInfo.id;
     LARA.Plugins.setNextPluginLabel(pluginLabel);
     // load the script
     const script = document.createElement("script");
     script.type = "text/javascript";
-    script.src = usedPlugin.plugin.approved_script.url;
+    script.src = usedScriptInfo.approvedScript.url;
     script.setAttribute("data-id", pluginLabel);
     script.onload = function() {
       if (typeof window.jest === undefined) {
         // eslint-disable-next-line no-console
-        console.log(`plugin${usedPlugin.id} script loaded`);
+        console.log(`plugin${usedScriptInfo.id} script loaded`);
       }
-      usedPlugin.loaded = true;
-      if (plugins.filter((p) => !p.loaded).length === 0) {
-        handleLoadPlugins();
+      usedScriptInfo.loaded = true;
+      if (scripts.filter((p) => !p.loaded).length === 0) {
+        handleLoadScripts();
       }
     };
     document.body.appendChild(script);
@@ -89,7 +85,6 @@ export interface IEmbeddablePluginContext {
   wrappedEmbeddable?: Embeddable;
   wrappedEmbeddableContainer?: HTMLElement;
   sendCustomMessage?: (message: ICustomMessage) => void;
-  approvedScriptLabel?: string;
 }
 export type IPartialEmbeddablePluginContext = Partial<IEmbeddablePluginContext>;
 
@@ -109,34 +104,42 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 };
 
 // loads the learner plugin state into the firebase write-through cache
-export const loadLearnerPluginState = async (activities: Activity[], teacherEditionMode: boolean) => {
-  const plugins = findUsedPlugins(activities, teacherEditionMode);
+export const loadLearnerPluginState = async (activities: Activity[]) => {
+  const plugins = findUsedApprovedScripts(activities);
+  // PJ 09/19/2021: This doesn't seem to make sense. Currently, the state is saved and restored per approved script.
+  // It should be saved and restored per plugin instance. It works with Glossary only because there's one glossary
+  // instance per activity. Fixing this would destroy students data, so I'm not doing this. But it should be handled
+  // if we ever add more plugins that save their state.
   return await Promise.all(plugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
 };
 
 export const initializePlugin = (context: IEmbeddablePluginContext) => {
   const { LARA, embeddable, embeddableContainer,
-          wrappedEmbeddable, wrappedEmbeddableContainer, sendCustomMessage, approvedScriptLabel } = context;
-  const usedPlugin = usedPlugins.find(p => p.plugin.approved_script_label === approvedScriptLabel);
-  if (!usedPlugin) return;
+          wrappedEmbeddable, wrappedEmbeddableContainer, sendCustomMessage } = context;
+  const approvedScriptLabel = embeddable.plugin?.approved_script_label;
+  const usedScript = usedApprovedScripts.find(p => p.approvedScript.label === approvedScriptLabel);
+  if (!usedScript) return;
 
-  const embeddableContext: Optional<IEmbeddableContextOptions, "container"> = {
-    container: wrappedEmbeddableContainer,
-    laraJson: wrappedEmbeddable,
-    interactiveStateUrl: null,
-    interactiveAvailable: true,
-    sendCustomMessage
-  };
-  // cast to any for usage below
-  const embeddableContextAny = embeddableContext as any;
+  let embeddableContext: IEmbeddableContextOptions | null = null;
+  if (wrappedEmbeddable && wrappedEmbeddableContainer) {
+    embeddableContext = {
+      container: wrappedEmbeddableContainer,
+      laraJson: wrappedEmbeddable,
+      interactiveStateUrl: null,
+      interactiveAvailable: true,
+      sendCustomMessage
+    };
+  }
 
-  const pluginId = usedPlugin.id;
+  // PJ 09/19/2021: This doesn't seem to make sense. Plugin ID should be actual plugin ID, not approved script ID.
+  // Not fixing this, as it can break Glossary student data.
+  const pluginId = usedScript.id;
   const portalData = getPortalData();
   const pluginLabel = `plugin${pluginId}`;
   const pluginContext: IPluginRuntimeContextOptions = {
     type: "runtime",
-    name: usedPlugin.plugin.approved_script.name || "",
-    url: usedPlugin.plugin.approved_script.url || "",
+    name: usedScript.approvedScript.name || "",
+    url: usedScript.approvedScript.url || "",
     pluginId,
     embeddablePluginId: null,
     authoredState: embeddable.plugin?.author_data || null,
@@ -149,7 +152,7 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
     userEmail: null,
     classInfoUrl: null,
     firebaseJwtUrl: "",
-    wrappedEmbeddable: wrappedEmbeddable ? embeddableContextAny : null,
+    wrappedEmbeddable: embeddableContext,
     resourceUrl: getResourceUrl()
   };
   LARA.Plugins.initPlugin(pluginLabel, pluginContext);

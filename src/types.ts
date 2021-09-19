@@ -47,6 +47,7 @@ export interface ApprovedScript {
 }
 
 export interface Plugin {
+  id: number;
   description: string | null;
   author_data: string;
   approved_script_label: string;
@@ -236,6 +237,8 @@ export interface IExportableAnswerMetadataBase {
   report_state: string;
   // tracks the most recently written details for each attachment
   attachments?: Record<string, IReadableAttachmentInfo>;
+  // allows sharing answer with other students in the same class
+  shared_with?: "context" | null;
 }
 
 export interface IExportableInteractiveAnswerMetadata extends IExportableAnswerMetadataBase {

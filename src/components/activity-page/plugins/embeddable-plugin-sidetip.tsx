@@ -19,8 +19,7 @@ export const EmbeddablePluginSideTip: React.FC<IProps> = (props) => {
       initializePlugin({
         LARA,
         embeddable,
-        embeddableContainer: embeddableDivTarget.current,
-        approvedScriptLabel: "teacherEditionTips"
+        embeddableContainer: embeddableDivTarget.current
       });
     }
   }, [LARA, embeddable, pluginsLoaded]);

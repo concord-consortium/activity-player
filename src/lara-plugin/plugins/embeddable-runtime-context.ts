@@ -4,6 +4,10 @@ import { onInteractiveAvailable, IInteractiveAvailableEvent, IInteractiveAvailab
         } from "../events";
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { IEmbeddableContextOptions } from "./plugin-context";
+import { getReportUrl } from "../../utilities/report-utils";
+import { createOrUpdateAnswer, getAnswer } from "../../firebase-db";
+import { EmbeddableBase } from "../../types";
+import { getAnswerWithMetadata } from "../../utilities/embeddable-utils";
 
 const getInteractiveState = (interactiveStateUrl: string | null): Promise<IInteractiveState> | null => {
   if (!interactiveStateUrl) {
@@ -12,29 +16,19 @@ const getInteractiveState = (interactiveStateUrl: string | null): Promise<IInter
   return fetch(interactiveStateUrl, {method: "get", credentials: "include"}).then(resp => resp.json());
 };
 
-const getReportingUrl = (
-  interactiveStateUrl: string | null,
-  interactiveStatePromise?: Promise<IInteractiveState>
-): Promise<string | null> | null => {
-  if (!interactiveStateUrl) {
-    return null;
-  }
-  if (!interactiveStatePromise) {
-    interactiveStatePromise = getInteractiveState(interactiveStateUrl)!;
-  }
-  return interactiveStatePromise.then(interactiveState => {
-    try {
-      const rawJSON = JSON.parse(interactiveState.raw_data);
-      if (rawJSON && rawJSON.lara_options && rawJSON.lara_options.reporting_url) {
-        return rawJSON.lara_options.reporting_url;
-      }
-      return null;
+const getReportingUrl = (refId: string): Promise<string | null> | null => {
+  return Promise.resolve(getReportUrl(refId));
+};
+
+const setAnswerSharedWithClass = (shared: boolean, embeddable: EmbeddableBase) => {
+  return getAnswer(embeddable.ref_id).then(wrappedAnswer => {
+    if (wrappedAnswer) {
+      return createOrUpdateAnswer({...wrappedAnswer.meta, shared_with: shared ? "context" : null });
     }
-    catch (error) {
-      // tslint:disable-next-line:no-console
-      console.error(error);
-      return null;
-    }
+    // This will happen when answer doc hasn't been created in the report service Firestore yet.
+    // Usually, it means that user tries to share an interactive before providing any answer.
+    const newAnswer = getAnswerWithMetadata(null, embeddable);
+    return createOrUpdateAnswer({...newAnswer, shared_with: shared ? "context" : null });
   });
 };
 
@@ -43,8 +37,7 @@ export const generateEmbeddableRuntimeContext = (context: IEmbeddableContextOpti
     container: context.container,
     laraJson: context.laraJson,
     getInteractiveState: () => getInteractiveState(context.interactiveStateUrl),
-    getReportingUrl: (getInteractiveStatePromise?: Promise<IInteractiveState>) =>
-      getReportingUrl(context.interactiveStateUrl, getInteractiveStatePromise),
+    getReportingUrl: () => getReportingUrl(context.laraJson.ref_id),
     onInteractiveAvailable: (handler: IInteractiveAvailableEventHandler) => {
       // Add generic listener and filter events to limit them just to this given embeddable.
       onInteractiveAvailable((event: IInteractiveAvailableEvent) => {
@@ -64,6 +57,7 @@ export const generateEmbeddableRuntimeContext = (context: IEmbeddableContextOpti
     interactiveAvailable: context.interactiveAvailable,
     sendCustomMessage: (message: ICustomMessage) => {
       context.sendCustomMessage?.(message);
-    }
+    },
+    setAnswerSharedWithClass: (shared: boolean) => setAnswerSharedWithClass(shared, context.laraJson)
   };
 };

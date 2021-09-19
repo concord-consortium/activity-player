@@ -3,13 +3,18 @@ import { generateRuntimePluginContext,
          IPluginRuntimeContextOptions,
          IPluginAuthoringContextOptions,
          generateAuthoringPluginContext} from "./plugin-context";
-import { IClassInfo } from "../plugin-api";
 // ACTIVITY_PLAYER_CODE:
 import fetch from "jest-fetch-mock";
 import $ from "jquery";
+import { EmbeddableBase } from "../../types";
 // LARA_CODE import * as fetch from "jest-fetch-mock";
 // LARA_CODE import * as $ from "jquery";
 (window as any).fetch = fetch;
+
+let portalDataMock: any = {};
+jest.mock("../../firebase-db", () => ({
+  getPortalData: () => (portalDataMock)
+}));
 
 describe("Plugin runtime context helper", () => {
   beforeEach(() => {
@@ -51,32 +56,27 @@ describe("Plugin runtime context helper", () => {
   });
 
   describe("#getClassInfo", () => {
-    it("returns null when classInfoUrl is not available", () => {
-      const runtimeContext = generateRuntimePluginContext(Object.assign({}, pluginContext, {classInfoUrl: null}));
+    beforeEach(() => {
+      portalDataMock = {};
+    });
+
+    it("returns null when Portal Data is not available / user is not logged in", () => {
+      const runtimeContext = generateRuntimePluginContext(pluginContext);
       const resp = runtimeContext.getClassInfo();
       expect(resp).toBeNull();
     });
 
-    it("provides class information when classInfoUrl is available", done => {
+    it("provides class information when user is logged in", done => {
+      portalDataMock = {
+        type: "authenticated",
+        rawClassInfo: { id: 123 }
+      };
       const runtimeContext = generateRuntimePluginContext(pluginContext);
-      const classInfo: IClassInfo = {id: 123} as IClassInfo;
-      fetch.mockResponse(JSON.stringify(classInfo));
       const resp = runtimeContext.getClassInfo();
-      expect(fetch.mock.calls[0][0]).toEqual(pluginContext.classInfoUrl);
+
       expect(resp).toBeInstanceOf(Promise);
       resp!.then(data => {
-        expect(data).toEqual(classInfo);
-        done();
-      });
-    });
-
-    it("returns error when LARA response is malformed", done => {
-      const runtimeContext = generateRuntimePluginContext(pluginContext);
-      fetch.mockResponse("{malformedJSON:");
-      const resp = runtimeContext.getClassInfo();
-      expect(fetch.mock.calls[0][0]).toEqual(pluginContext.classInfoUrl);
-      expect(resp).toBeInstanceOf(Promise);
-      resp!.catch(err => {
+        expect(data).toEqual({ id: 123 });
         done();
       });
     });
@@ -158,7 +158,7 @@ describe("Plugin runtime context helper", () => {
           name: "Test Interactive",
           type: "MwInteractive",
           ref_id: "86-MwInteractive"
-        },
+        } as EmbeddableBase,
         interactiveStateUrl: "http://interactive.state.url",
         interactiveAvailable: true
       };
@@ -177,7 +177,7 @@ describe("Plugin runtime context helper", () => {
         name: "Test Interactive",
         type: "MwInteractive",
         ref_id: "86-MwInteractive"
-      },
+      } as EmbeddableBase,
       interactiveStateUrl: "http://interactive.state.url",
       interactiveAvailable: true
     };

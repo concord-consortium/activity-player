@@ -20,8 +20,7 @@ export const GlossaryPlugin: React.FC<IProps> = (props) => {
     const pluginContext: IPartialEmbeddablePluginContext = {
       LARA,
       embeddable,
-      embeddableContainer: divTarget.current || undefined,
-      approvedScriptLabel: "glossary"
+      embeddableContainer: divTarget.current || undefined
     };
     const validPluginContext = validateEmbeddablePluginContextForPlugin(pluginContext);
     if (validPluginContext && pluginsLoaded) {

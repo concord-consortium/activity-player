@@ -64,7 +64,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     // Keep interactive state in sync if iFrame is opened in modal popup
     interactiveState.current = state;
 
-    const exportableAnswer = getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, answerMeta.current);
+    const exportableAnswer = getAnswerWithMetadata(state, props.embeddable, answerMeta.current);
     if (exportableAnswer) {
       createOrUpdateAnswer(exportableAnswer);
     }
