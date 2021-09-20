@@ -105,18 +105,19 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 
 // loads the learner plugin state into the firebase write-through cache
 export const loadLearnerPluginState = async (activities: Activity[]) => {
-  const plugins = findUsedApprovedScripts(activities);
+  const approvedScripts = findUsedApprovedScripts(activities);
   // PJ 09/19/2021: This doesn't seem to make sense. Currently, the state is saved and restored per approved script.
   // It should be saved and restored per plugin instance. It works with Glossary only because there's one glossary
   // instance per activity. Fixing this would destroy students data, so I'm not doing this. But it should be handled
   // if we ever add more plugins that save their state.
-  return await Promise.all(plugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
+  return await Promise.all(approvedScripts.map(async (approvedScriptInfo) => await getLearnerPluginState(approvedScriptInfo.id)));
 };
 
 export const initializePlugin = (context: IEmbeddablePluginContext) => {
   const { LARA, embeddable, embeddableContainer,
           wrappedEmbeddable, wrappedEmbeddableContainer, sendCustomMessage } = context;
   const approvedScriptLabel = embeddable.plugin?.approved_script_label;
+
   const usedScript = usedApprovedScripts.find(p => p.approvedScript.label === approvedScriptLabel);
   if (!usedScript) return;
 
@@ -131,11 +132,10 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
     };
   }
 
-  // PJ 09/19/2021: This doesn't seem to make sense. Plugin ID should be actual plugin ID, not approved script ID.
-  // Not fixing this, as it can break Glossary student data.
-  const pluginId = usedScript.id;
+  const approvedScriptId = usedScript.id;
+  const pluginId = embeddable.plugin?.id || 0;
   const portalData = getPortalData();
-  const pluginLabel = `plugin${pluginId}`;
+  const pluginLabel = `plugin${approvedScriptId}`;
   const pluginContext: IPluginRuntimeContextOptions = {
     type: "runtime",
     name: usedScript.approvedScript.name || "",
@@ -143,7 +143,9 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
     pluginId,
     embeddablePluginId: null,
     authoredState: embeddable.plugin?.author_data || null,
-    learnerState: getCachedLearnerPluginState(pluginId),
+    // PJ 09/19/2021: This doesn't seem to make sense. State is restored per approved script, not per plugin instance.
+    // Not fixing this, as it'd break glossary student data. See related comment in loadLearnerPluginState().
+    learnerState: getCachedLearnerPluginState(approvedScriptId),
     learnerStateSaveUrl: "",
     container: embeddableContainer,
     componentLabel: pluginLabel,
