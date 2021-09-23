@@ -10,7 +10,7 @@
   "student_report_enabled": true,
   "thumbnail_url": "https://images.unsplash.com/photo-1583524505974-6facd53f4597?ixlib=rb-1.2.1&w=1000&q=80",
   "time_to_complete": 10,
-  "version": 1,
+  "version": 2,
   "theme_name": null,
   "background_image": null,
   "pages": [
@@ -26,21 +26,18 @@
         {
           "layout": "full-width",
           "is_hidden": false,
-          "_comment": "toggle_info_assessment determines if the small column can be collapsed",
-          "toggle_info_assessment": false,
-          "_comment": "embeddable_display_mode is either stacked or carousel, it determins how to render the small column",
-          "embeddable_display_mode": "stacked",
+          "secondary_column_collapsible": false,
+          "_secondary_column_display_mode": "is either stacked or carousel, it determins how to render the small column",
+          "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
               "column": null,
-              "embeddable": {
-                "content": "<p>This is introduction text for page 1 of the single page test activity.</p>",
-                "is_full_width": true,
-                "is_hidden": false,
-                "name": "",
-                "type": "Embeddable::Xhtml",
-                "ref_id": "271751-Embeddable::Xhtml"
-              }
+              "content": "<p>This is introduction text for page 1 of the single page test activity.</p>",
+              "is_full_width": true,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "271751-Embeddable::Xhtml"
             }
           ]
         },
@@ -48,59 +45,56 @@
           "layout": "l-6040",
           "is_hidden": false,
           "_comment": "toggle_info_assessment determines if the small column can be collapsed",
-          "toggle_info_assessment": false,
-          "_comment": "embeddable_display_mode is either stacked or carousel, it determins how to render the small column",
-          "embeddable_display_mode": "stacked",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
-              "column": "small",
-              "embeddable": {
-                "name": "",
-                "url_fragment": null,
-                "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
-                "is_hidden": false,
-                "is_full_width": true,
-                "show_in_featured_question_report": true,
-                "inherit_aspect_ratio_method": true,
-                "custom_aspect_ratio_method": null,
-                "inherit_native_width": true,
-                "custom_native_width": 576,
-                "inherit_native_height": true,
-                "custom_native_height": 435,
-                "inherit_click_to_play": true,
-                "custom_click_to_play": false,
-                "inherit_full_window": true,
-                "custom_full_window": false,
-                "inherit_click_to_play_prompt": true,
-                "custom_click_to_play_prompt": null,
-                "inherit_image_url": true,
-                "custom_image_url": null,
-                "library_interactive": {
-                  "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
-                  "data": {
-                    "aspect_ratio_method": "DEFAULT",
-                    "authoring_guidance": "",
-                    "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
-                    "click_to_play": false,
-                    "click_to_play_prompt": null,
-                    "description": "This shouldn't be used by any real activities it is still under development.",
-                    "enable_learner_state": true,
-                    "full_window": false,
-                    "has_report_url": false,
-                    "image_url": null,
-                    "name": "Open Response (master)",
-                    "native_height": 435,
-                    "native_width": 576,
-                    "no_snapshots": false,
-                    "show_delete_data_button": false,
-                    "thumbnail_url": "",
-                    "customizable": false,
-                    "authorable": true
-                  }
-                },
-                "type": "ManagedInteractive",
-                "ref_id": "328-ManagedInteractive"
-              }
+              "column": "secondary",
+              "name": "",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
+              "is_hidden": false,
+              "is_full_width": true,
+              "show_in_featured_question_report": true,
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": null,
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "This shouldn't be used by any real activities it is still under development.",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Open Response (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": false,
+                  "authorable": true
+                }
+              },
+              "type": "ManagedInteractive",
+              "ref_id": "328-ManagedInteractive"
             }
           ]
         }
@@ -119,77 +113,73 @@
         {
           "layout": "full-width",
           "is_hidden": false,
-          "toggle_info_assessment": false,
-          "embeddable_display_mode": "stacked",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
               "column": null,
-              "embeddable": {
-                "content": "<p>This is introduction text for page 2 of the single page test activity.</p>",
-                "is_full_width": true,
-                "is_hidden": false,
-                "name": "",
-                "type": "Embeddable::Xhtml",
-                "ref_id": "271752-Embeddable::Xhtml"
-              },
+              "content": "<p>This is introduction text for page 2 of the single page test activity.</p>",
+              "is_full_width": true,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "271752-Embeddable::Xhtml"
             }
           ]
         },
         {
           "layout": "l-6040",
           "is_hidden": false,
-          "toggle_info_assessment": false,
-          "embeddable_display_mode": "stacked",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
-              "column": "small",
-              "embeddable": {
-                "name": "",
-                "url_fragment": null,
-                "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
-                "is_hidden": false,
-                "is_full_width": true,
-                "show_in_featured_question_report": true,
-                "inherit_aspect_ratio_method": true,
-                "custom_aspect_ratio_method": "DEFAULT",
-                "inherit_native_width": true,
-                "custom_native_width": 576,
-                "inherit_native_height": true,
-                "custom_native_height": 435,
-                "inherit_click_to_play": true,
-                "custom_click_to_play": false,
-                "inherit_full_window": true,
-                "custom_full_window": false,
-                "inherit_click_to_play_prompt": true,
-                "custom_click_to_play_prompt": null,
-                "inherit_image_url": true,
-                "custom_image_url": null,
-                "library_interactive": {
-                  "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
-                  "data": {
-                    "aspect_ratio_method": "DEFAULT",
-                    "authoring_guidance": "",
-                    "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
-                    "click_to_play": false,
-                    "click_to_play_prompt": null,
-                    "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
-                    "enable_learner_state": true,
-                    "full_window": false,
-                    "has_report_url": false,
-                    "image_url": null,
-                    "name": "Multiple Choice (master)",
-                    "native_height": 435,
-                    "native_width": 576,
-                    "no_snapshots": false,
-                    "show_delete_data_button": false,
-                    "thumbnail_url": "",
-                    "customizable": true,
-                    "authorable": true
-                  }
-                },
-                "type": "ManagedInteractive",
-                "ref_id": "327-ManagedInteractive"
-              }
+              "column": "secondary",
+              "name": "",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
+              "is_hidden": false,
+              "is_full_width": true,
+              "show_in_featured_question_report": true,
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": "DEFAULT",
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Multiple Choice (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": true,
+                  "authorable": true
+                }
+              },
+              "type": "ManagedInteractive",
+              "ref_id": "327-ManagedInteractive"
             }
           ]
         }
