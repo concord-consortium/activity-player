@@ -1,0 +1,824 @@
+{
+  "background_image":"",
+  "description":"\u003Cp\u003EThis is a sample activity with the current AP JSON schema that will be migrated to the new section schema\u003C/p\u003E",
+  "editor_mode":0,
+  "id":21311,
+  "layout":0,
+  "name":"AP Activity Schema",
+  "notes":"",
+  "related":"",
+  "runtime":"Activity Player",
+  "show_submit_button":true,
+  "student_report_enabled":true,
+  "thumbnail_url":"",
+  "time_to_complete":null,
+  "version":1,
+  "theme_name":"GeoHazard",
+  "project":{
+    "about":"",
+    "footer":"",
+    "help":"",
+    "logo_ap":null,
+    "logo_lara":"",
+    "project_key":"geohazard",
+    "title":"GeoHazard",
+    "url":""
+  },
+  "pages":[
+    {
+      "id":310536,
+      "is_completion":false,
+      "is_hidden":false,
+      "name":"Full Width with header block, MC, OR, and interactive",
+      "position":1,
+      "show_header":true,
+      "show_info_assessment":true,
+      "show_interactive":true,
+      "show_sidebar":false,
+      "sidebar":null,
+      "sidebar_title":"Did you know?",
+      "sections": [
+        {
+          "layout":"l-full-width",
+          "is_hidden":false,
+          "toggle_info_assessment":false,
+          "embeddable_display_mode":"stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "embeddable":{
+                "content":"\u003Cp\u003E\u003Cimg class=\"tinymce-img-float-right\" src=\"https://place-puppy.com/300x300\" alt=\"puppy\" width=\"50\" height=\"50\" /\u003EThis is an text block in the intro. Will also have an image.\u003C/p\u003E",
+                "is_callout":true,
+                "is_full_width":true,
+                "is_hidden":false,
+                "name":"",
+                "type":"Embeddable::Xhtml",
+                "ref_id":"274463-Embeddable::Xhtml"
+              }
+            }
+          ]
+        },
+        {
+          "layout":"l-full-width",
+          "is_hidden":false,
+          "toggle_info_assessment":false,
+          "embeddable_display_mode":"stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "embeddable":{
+                "name":"",
+                "url_fragment":null,
+                "authored_state":"{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EPick one of the answers\u003C/p\u003E\"}",
+                "show_in_featured_question_report":true,
+                "inherit_aspect_ratio_method":true,
+                "custom_aspect_ratio_method":"DEFAULT",
+                "inherit_native_width":true,
+                "custom_native_width":576,
+                "inherit_native_height":true,
+                "custom_native_height":435,
+                "inherit_click_to_play":true,
+                "custom_click_to_play":false,
+                "inherit_full_window":true,
+                "custom_full_window":false,
+                "inherit_click_to_play_prompt":true,
+                "custom_click_to_play_prompt":null,
+                "inherit_image_url":true,
+                "custom_image_url":null,
+                "library_interactive":{
+                  "data":{
+                    "aspect_ratio_method":"DEFAULT",
+                    "authoring_guidance":"",
+                    "base_url":"https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                    "click_to_play":false,
+                    "click_to_play_prompt":null,
+                    "description":"A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                    "enable_learner_state":true,
+                    "full_window":false,
+                    "has_report_url":false,
+                    "image_url":null,
+                    "name":"Multiple Choice (master)",
+                    "native_height":435,
+                    "native_width":576,
+                    "no_snapshots":false,
+                    "show_delete_data_button":false,
+                    "thumbnail_url":"",
+                    "customizable":true,
+                    "authorable":true
+                  }
+                },
+                "type":"ManagedInteractive",
+                "ref_id":"4340-ManagedInteractive",
+                "linked_interactives":[
+                ]
+              }
+            },
+            {
+              "column": null,
+              "embeddable":{
+                "name":"",
+                "url_fragment":null,
+                "authored_state":"{\"version\":1,\"questionType\":\"iframe_interactive\",\"blanks\":[{\"id\":\"[blank-1]\",\"size\":20},{\"id\":\"[blank-2]\",\"size\":20}],\"prompt\":\"\u003Cp\u003EYour name is [blank-1] [blank-2].\u003C/p\u003E\"}",
+                "show_in_featured_question_report":true,
+                "inherit_aspect_ratio_method":true,
+                "custom_aspect_ratio_method":null,
+                "inherit_native_width":true,
+                "custom_native_width":576,
+                "inherit_native_height":true,
+                "custom_native_height":435,
+                "inherit_click_to_play":true,
+                "custom_click_to_play":false,
+                "inherit_full_window":true,
+                "custom_full_window":false,
+                "inherit_click_to_play_prompt":true,
+                "custom_click_to_play_prompt":null,
+                "inherit_image_url":true,
+                "custom_image_url":null,
+                "library_interactive":{
+                  "data":{
+                    "aspect_ratio_method":"DEFAULT",
+                    "authoring_guidance":"",
+                    "base_url":"https://models-resources.concord.org/question-interactives/branch/master/fill-in-the-blank/",
+                    "click_to_play":false,
+                    "click_to_play_prompt":null,
+                    "description":"",
+                    "enable_learner_state":true,
+                    "full_window":false,
+                    "has_report_url":false,
+                    "image_url":null,
+                    "name":"Fill In The Blank (master)",
+                    "native_height":435,
+                    "native_width":576,
+                    "no_snapshots":false,
+                    "show_delete_data_button":false,
+                    "thumbnail_url":"",
+                    "customizable":false,
+                    "authorable":true
+                  }
+                },
+                "type":"ManagedInteractive",
+                "ref_id":"4341-ManagedInteractive",
+                "linked_interactives":[
+                ]
+              }
+            },
+            {
+              "column": null,
+              "embeddable":{
+                "aspect_ratio_method":"DEFAULT",
+                "authored_state":"",
+                "click_to_play":false,
+                "click_to_play_prompt":null,
+                "enable_learner_state":false,
+                "full_window":false,
+                "has_report_url":false,
+                "image_url":null,
+                "is_full_width":true,
+                "is_hidden":false,
+                "model_library_url":null,
+                "name":"",
+                "native_height":435,
+                "native_width":576,
+                "no_snapshots":false,
+                "show_delete_data_button":true,
+                "show_in_featured_question_report":true,
+                "url":"https://codap.concord.org/releases/latest/static/dg/en/cert/index.html?interactiveApi\u0026documentId=https%3A%2F%2Fcfm-shared.concord.org%2FJJCxrfWRU02XLByif6VY%2Ffile.json",
+                "type":"MwInteractive",
+                "ref_id":"211759-MwInteractive",
+                "linked_interactives":[
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id":310537,
+      "is_completion":false,
+      "is_hidden":false,
+      "name":"60-40 stacked header, OR, Sage as library interactive",
+      "position":2,
+      "show_header":true,
+      "show_info_assessment":true,
+      "show_interactive":true,
+      "show_sidebar":false,
+      "sidebar":null,
+      "sidebar_title":"Did you know?",
+      "sections": [
+        {
+          "layout":"l-6040",
+          "is_hidden":false,
+          "toggle_info_assessment":false,
+          "embeddable_display_mode":"stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "embeddable":{
+                "content":"\u003Cp\u003EThis intro will tell you watch the video.\u003C/p\u003E",
+                "is_callout":true,
+                "is_full_width":true,
+                "is_hidden":false,
+                "name":"",
+                "type":"Embeddable::Xhtml",
+                "ref_id":"274464-Embeddable::Xhtml"
+              }
+            },
+            {
+              "column": null,
+              "embeddable":{
+                "name":"",
+                "url_fragment":null,
+                "authored_state":"{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://upload.wikimedia.org/wikipedia/commons/a/a3/National_Puppy_Day_WKC_Dog_Show_moments_to_celebrate_%28FOX_SPORTS%29.ogv\"}",
+                "is_hidden":false,
+                "is_full_width":true,
+                "show_in_featured_question_report":true,
+                "inherit_aspect_ratio_method":true,
+                "custom_aspect_ratio_method":"DEFAULT",
+                "inherit_native_width":true,
+                "custom_native_width":576,
+                "inherit_native_height":true,
+                "custom_native_height":435,
+                "inherit_click_to_play":true,
+                "custom_click_to_play":false,
+                "inherit_full_window":true,
+                "custom_full_window":false,
+                "inherit_click_to_play_prompt":true,
+                "custom_click_to_play_prompt":null,
+                "inherit_image_url":true,
+                "custom_image_url":null,
+                "library_interactive":{
+                  "data":{
+                    "aspect_ratio_method":"DEFAULT",
+                    "authoring_guidance":"",
+                    "base_url":"https://models-resources.concord.org/question-interactives/branch/master/video-player/",
+                    "click_to_play":false,
+                    "click_to_play_prompt":null,
+                    "description":"New video player ",
+                    "enable_learner_state":true,
+                    "full_window":false,
+                    "has_report_url":false,
+                    "image_url":null,
+                    "name":"Video player (master)",
+                    "native_height":435,
+                    "native_width":576,
+                    "no_snapshots":false,
+                    "show_delete_data_button":false,
+                    "thumbnail_url":"",
+                    "customizable":true,
+                    "authorable":true
+                  }
+                },
+                "type":"ManagedInteractive",
+                "ref_id":"4342-ManagedInteractive",
+                "linked_interactives":[
+                ]
+              }
+            },
+            {
+              "column": "small",
+              "embeddable":{
+                "name":"",
+                "url_fragment":null,
+                "authored_state":"{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EWhat did you think of the video?\u003C/p\u003E\"}",
+                "is_hidden":false,
+                "is_full_width":true,
+                "show_in_featured_question_report":true,
+                "inherit_aspect_ratio_method":true,
+                "custom_aspect_ratio_method":null,
+                "inherit_native_width":true,
+                "custom_native_width":576,
+                "inherit_native_height":true,
+                "custom_native_height":435,
+                "inherit_click_to_play":true,
+                "custom_click_to_play":false,
+                "inherit_full_window":true,
+                "custom_full_window":false,
+                "inherit_click_to_play_prompt":true,
+                "custom_click_to_play_prompt":null,
+                "inherit_image_url":true,
+                "custom_image_url":null,
+                "library_interactive":{
+                  "data":{
+                    "aspect_ratio_method":"DEFAULT",
+                    "authoring_guidance":"",
+                    "base_url":"https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                    "click_to_play":false,
+                    "click_to_play_prompt":null,
+                    "description":"This shouldn't be used by any real activities it is still under development.",
+                    "enable_learner_state":true,
+                    "full_window":false,
+                    "has_report_url":false,
+                    "image_url":null,
+                    "name":"Open Response (master)",
+                    "native_height":435,
+                    "native_width":576,
+                    "no_snapshots":false,
+                    "show_delete_data_button":false,
+                    "thumbnail_url":"",
+                    "customizable":false,
+                    "authorable":true
+                  }
+                },
+                "type":"ManagedInteractive",
+                "ref_id":"4343-ManagedInteractive",
+                "linked_interactives":[
+
+                ]
+              }
+            },
+            {
+              "column": "large",
+              "embeddable":{
+                "name":"",
+                "url_fragment":"https://cloud-file-manager.concord.org/autolaunch/autolaunch.html?documentId=https%3A%2F%2Fcfm-shared.concord.org%2FpwMs4s5Doy5ardoX9In6%2Ffile.json\u0026server=https%3A%2F%2Fsagemodeler.concord.org%2Fapp%2F\u0026scaling",
+                "authored_state":"",
+                "is_hidden":false,
+                "is_full_width":true,
+                "show_in_featured_question_report":true,
+                "inherit_aspect_ratio_method":true,
+                "custom_aspect_ratio_method":"DEFAULT",
+                "inherit_native_width":true,
+                "custom_native_width":576,
+                "inherit_native_height":true,
+                "custom_native_height":435,
+                "inherit_click_to_play":true,
+                "custom_click_to_play":false,
+                "inherit_full_window":true,
+                "custom_full_window":false,
+                "inherit_click_to_play_prompt":true,
+                "custom_click_to_play_prompt":null,
+                "inherit_image_url":true,
+                "custom_image_url":null,
+                "library_interactive":{
+                  "data":{
+                    "aspect_ratio_method":"DEFAULT",
+                    "authoring_guidance":"",
+                    "base_url":"https://cloud-file-manager.concord.org/autolaunch/autolaunch.html?documentId=https%3A%2F%2Fcfm-shared.concord.org%2Fj3sQdjMmE9oE752DqVvg%2Ffile.json\u0026server=https%3A%2F%2Fsagemodeler.concord.org%2Fapp%2F%3Fapp%3Dis\u0026scaling",
+                    "click_to_play":true,
+                    "click_to_play_prompt":"",
+                    "description":"Sagemodeler Master Branch with CODAP staging\r\nThis saves state, can be linked, and has a report URL",
+                    "enable_learner_state":true,
+                    "full_window":false,
+                    "has_report_url":true,
+                    "image_url":"https://www.thelabradorsite.com/wp-content/uploads/2016/05/6t.jpg",
+                    "name":"Sagemodeler Master Branch with CODAP staging",
+                    "native_height":435,
+                    "native_width":576,
+                    "no_snapshots":false,
+                    "show_delete_data_button":true,
+                    "thumbnail_url":"",
+                    "customizable":true,
+                    "authorable":false
+                  }
+                },
+                "type":"ManagedInteractive",
+                "ref_id":"4344-ManagedInteractive",
+                "linked_interactives":[
+
+                ]
+              },
+              "section":"interactive_box"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id":310538,
+      "arg_block":true,
+      "is_completion":false,
+      "is_hidden":false,
+      "name":"70-30 left, arg block, wildfire interactive",
+      "position":3,
+      "show_header":false,
+      "show_info_assessment":false,
+      "show_interactive":true,
+      "show_sidebar":false,
+      "sidebar":null,
+      "sidebar_title":"Did you know?",
+      "sections": [
+        {
+          "layout":"r-3070",
+          "is_hidden":false,
+          "toggle_info_assessment":false,
+          "embeddable_display_mode":"stacked",
+          "embeddables": [
+            {
+              "column": "small",
+              "embeddable":{
+                "custom":true,
+                "enable_check_answer":false,
+                "give_prediction_feedback":false,
+                "hint":"\n  \u003Cb\u003EStep 1: Select a claim.\u003C/b\u003E\n  \u003Cul\u003E\n  \u003Cli\u003EA good claim is based on the evidence.\u003C/li\u003E\n  \u003Cli\u003EEvidence may come from graphs and charts.\u003C/li\u003E\n  \u003Cli\u003EEvidence may also come from models that you run.\u003C/li\u003E\n  \u003C/ul\u003E\n  ",
+                "is_full_width":false,
+                "is_hidden":false,
+                "is_prediction":false,
+                "layout":"vertical",
+                "multi_answer":false,
+                "name":"Multiple Choice Question element",
+                "prediction_feedback":null,
+                "prompt":"why does ...",
+                "show_as_menu":false,
+                "show_in_featured_question_report":true,
+                "choices":[
+                  {
+                    "choice":"a",
+                    "is_correct":null,
+                    "prompt":null
+                  },
+                  {
+                    "choice":"b",
+                    "is_correct":null,
+                    "prompt":null
+                  },
+                  {
+                    "choice":"c",
+                    "is_correct":null,
+                    "prompt":null
+                  }
+                ],
+                "type":"Embeddable::MultipleChoice",
+                "ref_id":"13639-Embeddable::MultipleChoice"
+              }
+            },
+            {
+              "column": "small",
+              "embeddable":{
+                "default_text":null,
+                "give_prediction_feedback":false,
+                "hint":"\n  \u003Cb\u003EStep 2: Write an explanation.\u003C/b\u003E\n  \u003Cul\u003E\n  \u003Cli\u003EA good explanation will cite specific evidence that backs up the claim.\u003C/li\u003E\n  \u003Cli\u003EWhen there is a graph or table, you can cite evidence directly from the source.\u003C/li\u003E\n  \u003Cli\u003EWhen there is a model, you can describe what happened in the model.\u003C/li\u003E\n  \u003Cli\u003EA good explanation combines evidence with scientific knowledge.\u003C/li\u003E\n  \u003C/ul\u003E\n  ",
+                "is_full_width":false,
+                "is_hidden":false,
+                "is_prediction":false,
+                "name":null,
+                "prediction_feedback":null,
+                "prompt":"Explain your answer.",
+                "show_in_featured_question_report":true,
+                "item_settings":{
+                  "item_id":"HENRY001",
+                  "score_mapping_id":7
+                },
+                "type":"Embeddable::OpenResponse",
+                "ref_id":"448615-Embeddable::OpenResponse"
+              }
+            },
+            {
+              "column": "small",
+              "embeddable":{
+                "default_text":null,
+                "give_prediction_feedback":false,
+                "hint":"\n  \u003Cb\u003EStep 2: Write an explanation.\u003C/b\u003E\n  \u003Cul\u003E\n  \u003Cli\u003EA good explanation will cite specific evidence that backs up the claim.\u003C/li\u003E\n  \u003Cli\u003EWhen there is a graph or table, you can cite evidence directly from the source.\u003C/li\u003E\n  \u003Cli\u003EWhen there is a model, you can describe what happened in the model.\u003C/li\u003E\n  \u003Cli\u003EA good explanation combines evidence with scientific knowledge.\u003C/li\u003E\n  \u003C/ul\u003E\n  ",
+                "is_full_width":false,
+                "is_hidden":false,
+                "is_prediction":false,
+                "name":null,
+                "prediction_feedback":null,
+                "prompt":"Explain your answer.",
+                "show_in_featured_question_report":true,
+                "item_settings":{
+                  "item_id":"HENRY001",
+                  "score_mapping_id":7
+                },
+                "type":"Embeddable::OpenResponse",
+                "ref_id":"448615-Embeddable::OpenResponse"
+              }
+            },
+            {
+              "column": "small",
+              "embeddable":{
+                "default_text":null,
+                "give_prediction_feedback":false,
+                "hint":"\n  \u003Cb\u003EStep 4: Write a certainty explanation.\u003C/b\u003E\n  \u003Cul\u003E\n  \u003Cli\u003EA good certainty explanation will explain why you are certain or uncertain about your response.\u003C/li\u003E\n  \u003Cli\u003ESome topics are more certain than others.\u003C/li\u003E\n  \u003Cli\u003EConsider the completeness of the evidence, biases in the evidence, and changes that could affect the trends over time.\u003C/li\u003E\n  \u003C/ul\u003E\n  ",
+                "is_full_width":false,
+                "is_hidden":false,
+                "is_prediction":false,
+                "name":null,
+                "prediction_feedback":null,
+                "prompt":"Explain what influenced your certainty rating.",
+                "show_in_featured_question_report":true,
+                "item_settings":{
+                  "item_id":"HENRY001",
+                  "score_mapping_id":8
+                },
+                "type":"Embeddable::OpenResponse",
+                "ref_id":"448616-Embeddable::OpenResponse"
+              }
+            }
+
+          ]
+        },
+        {
+          "layout":"r-3070",
+          "is_hidden":false,
+          "toggle_info_assessment":false,
+          "embeddable_display_mode":"stacked",
+          "embeddables": [
+            {
+              "column": "large",
+              "embeddable":{
+                "aspect_ratio_method":"DEFAULT",
+                "authored_state":"",
+                "click_to_play":false,
+                "click_to_play_prompt":null,
+                "enable_learner_state":false,
+                "full_window":false,
+                "has_report_url":false,
+                "image_url":null,
+                "is_full_width":true,
+                "is_hidden":false,
+                "model_library_url":null,
+                "name":"",
+                "native_height":435,
+                "native_width":576,
+                "no_snapshots":false,
+                "show_delete_data_button":true,
+                "show_in_featured_question_report":true,
+                "url":"https://wildfire.concord.org/index.html?preset=plainsTwoZone\u0026helitackAvailable=false\u0026fireLineAvailable=false\u0026severeDroughtAvailable=false\u0026showBurnIndex=false\u0026forestWithSuppressionAvailable=false",
+                "type":"MwInteractive",
+                "ref_id":"211760-MwInteractive",
+                "linked_interactives":[
+
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id":310540,
+      "is_completion":false,
+      "is_hidden":false,
+      "name":"60-40 left carousel LARA way",
+      "position":4,
+      "show_header":true,
+      "show_info_assessment":true,
+      "show_interactive":false,
+      "show_sidebar":false,
+      "sidebar":null,
+      "sidebar_title":"Did you know?",
+      "sections": [
+        {
+          "layout":"r-4060",
+          "is_hidden":false,
+          "toggle_info_assessment":false,
+          "embeddable_display_mode":"carousel",
+          "embeddables": [
+            {
+              "column": null,
+              "embeddable":{
+                "content":"\u003Cp\u003EThis should be the header in a carousel page\u003C/p\u003E",
+                "is_callout":true,
+                "is_full_width":true,
+                "is_hidden":false,
+                "name":"",
+                "type":"Embeddable::Xhtml",
+                "ref_id":"274465-Embeddable::Xhtml"
+              }
+            }
+          ]
+        },
+        {
+          "layout":"r-4060",
+          "is_hidden":false,
+          "toggle_info_assessment":false,
+          "_comment": "need to convert carousels to library interactive carousel",
+          "embeddable_display_mode":"carousel",
+          "embeddables": [
+            {
+              "column": "small",
+              "embeddable":{
+                "content":"\u003Cp\u003EText box in info/assess carousel page\u003C/p\u003E",
+                "is_callout":true,
+                "is_full_width":false,
+                "is_hidden":false,
+                "name":"",
+                "type":"Embeddable::Xhtml",
+                "ref_id":"274466-Embeddable::Xhtml"
+              }
+            },
+            {
+              "column": "small",
+              "embeddable":{
+                "name":"",
+                "url_fragment":null,
+                "authored_state":"{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://has-production.s3.amazonaws.com/resources/geohazard-wildfire/CampFire.jpg\"}",
+                "is_hidden":false,
+                "is_full_width":true,
+                "show_in_featured_question_report":true,
+                "inherit_aspect_ratio_method":true,
+                "custom_aspect_ratio_method":"DEFAULT",
+                "inherit_native_width":true,
+                "custom_native_width":576,
+                "inherit_native_height":true,
+                "custom_native_height":435,
+                "inherit_click_to_play":true,
+                "custom_click_to_play":false,
+                "inherit_full_window":true,
+                "custom_full_window":false,
+                "inherit_click_to_play_prompt":true,
+                "custom_click_to_play_prompt":null,
+                "inherit_image_url":true,
+                "custom_image_url":null,
+                "library_interactive":{
+                  "data":{
+                    "aspect_ratio_method":"DEFAULT",
+                    "authoring_guidance":"",
+                    "base_url":"https://models-resources.concord.org/question-interactives/branch/master/image/",
+                    "click_to_play":false,
+                    "click_to_play_prompt":null,
+                    "description":"",
+                    "enable_learner_state":false,
+                    "full_window":false,
+                    "has_report_url":false,
+                    "image_url":null,
+                    "name":"Image Interactive (master)",
+                    "native_height":435,
+                    "native_width":576,
+                    "no_snapshots":false,
+                    "show_delete_data_button":false,
+                    "thumbnail_url":"",
+                    "customizable":true,
+                    "authorable":true
+                  }
+                },
+                "type":"ManagedInteractive",
+                "ref_id":"4345-ManagedInteractive",
+                "linked_interactives":[
+
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "layout":"r-4060",
+          "is_hidden":false,
+          "toggle_info_assessment":false,
+          "_comment": "need to convert carousels to library interactive carousel",
+          "embeddable_display_mode":"carousel",
+          "embeddables": [
+            {
+              "column": "large",
+              "embeddable":{
+                "name":"",
+                "url_fragment":null,
+                "authored_state":"{\"version\":1,\"questionType\":\"iframe_interactive\",\"draggingAreaPrompt\":\"Drag following items:\",\"canvasWidth\":330,\"canvasHeight\":300,\"initialState\":{\"itemPositions\":{},\"targetPositions\":{}},\"draggableItems\":[{\"id\":\"de88356d-86c7-4f74-8e26-c26ad64f6f66\",\"label\":\"Rover\",\"imageUrl\":\" https://place-puppy.com/30x30\"},{\"id\":\"dd999ca2-b508-40ce-b73c-301fe21b8b1d\",\"label\":\"Lulu\",\"imageUrl\":\" https://place-puppy.com/50x50\"}]}",
+                "is_hidden":false,
+                "is_full_width":true,
+                "show_in_featured_question_report":true,
+                "inherit_aspect_ratio_method":true,
+                "custom_aspect_ratio_method":"DEFAULT",
+                "inherit_native_width":true,
+                "custom_native_width":576,
+                "inherit_native_height":true,
+                "custom_native_height":435,
+                "inherit_click_to_play":true,
+                "custom_click_to_play":false,
+                "inherit_full_window":true,
+                "custom_full_window":false,
+                "inherit_click_to_play_prompt":true,
+                "custom_click_to_play_prompt":null,
+                "inherit_image_url":true,
+                "custom_image_url":null,
+                "library_interactive":{
+                  "data":{
+                    "aspect_ratio_method":"DEFAULT",
+                    "authoring_guidance":"",
+                    "base_url":"https://models-resources.concord.org/question-interactives/branch/master/drag-and-drop/",
+                    "click_to_play":false,
+                    "click_to_play_prompt":null,
+                    "description":"",
+                    "enable_learner_state":true,
+                    "full_window":false,
+                    "has_report_url":false,
+                    "image_url":null,
+                    "name":"Drag and Drop (Master)",
+                    "native_height":435,
+                    "native_width":576,
+                    "no_snapshots":false,
+                    "show_delete_data_button":true,
+                    "thumbnail_url":"",
+                    "customizable":true,
+                    "authorable":true
+                  }
+                },
+                "type":"ManagedInteractive",
+                "ref_id":"4346-ManagedInteractive",
+                "linked_interactives":[
+
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id":310541,
+      "is_completion":false,
+      "is_hidden":false,
+      "name":"Responsive Carousel interactive way",
+      "position":5,
+      "show_header":false,
+      "show_info_assessment":false,
+      "show_interactive":true,
+      "show_sidebar":false,
+      "sidebar":null,
+      "sidebar_title":"Did you know?",
+      "sections": [
+        {
+          "layout":"l-responsive",
+          "is_hidden":false,
+          "toggle_info_assessment":false,
+          "embeddable_display_mode":"stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "embeddable":{
+                "name":"",
+                "url_fragment":null,
+                "authored_state":"{\"version\":2,\"questionType\":\"iframe_interactive\",\"prompt\":\"\u003Cp\u003EPage through me\u003C/p\u003E\",\"subinteractives\":[{\"libraryInteractiveId\":\"image\",\"authoredState\":{\"version\":1,\"scaling\":\"fitWidth\",\"url\":\"https://has-production.s3.amazonaws.com/resources/geohazard-wildfire/Mariposa_Grove_Sequoia-med.jpeg\"},\"id\":\"abf14882-ade9-4d8c-8788-662daa6a8047\",\"navImageUrl\":\"\",\"navImageAltText\":\"\"},{\"libraryInteractiveId\":\"open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EDo you like trees?\u003C/p\u003E\"},\"id\":\"5359e76e-93ac-4580-81b8-1bfecb9f3e22\",\"navImageUrl\":\"\",\"navImageAltText\":\"\"},{\"libraryInteractiveId\":\"multiple-choice\",\"authoredState\":{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EPick C\u003C/p\u003E\"},\"id\":\"fd894226-ce0d-487a-8d36-c0d2d768f165\",\"navImageUrl\":\"\",\"navImageAltText\":\"\"}]}",
+                "is_hidden":false,
+                "is_full_width":true,
+                "show_in_featured_question_report":true,
+                "inherit_aspect_ratio_method":true,
+                "custom_aspect_ratio_method":"DEFAULT",
+                "inherit_native_width":true,
+                "custom_native_width":576,
+                "inherit_native_height":true,
+                "custom_native_height":435,
+                "inherit_click_to_play":true,
+                "custom_click_to_play":false,
+                "inherit_full_window":true,
+                "custom_full_window":false,
+                "inherit_click_to_play_prompt":true,
+                "custom_click_to_play_prompt":null,
+                "inherit_image_url":true,
+                "custom_image_url":null,
+                "library_interactive":{
+                  "data":{
+                    "aspect_ratio_method":"DEFAULT",
+                    "authoring_guidance":"",
+                    "base_url":"https://models-resources.concord.org/question-interactives/branch/master/carousel/",
+                    "click_to_play":false,
+                    "click_to_play_prompt":null,
+                    "description":"",
+                    "enable_learner_state":true,
+                    "full_window":false,
+                    "has_report_url":false,
+                    "image_url":null,
+                    "name":"Carousel Interactive (Master)",
+                    "native_height":435,
+                    "native_width":576,
+                    "no_snapshots":false,
+                    "show_delete_data_button":true,
+                    "thumbnail_url":"",
+                    "customizable":true,
+                    "authorable":true
+                  }
+                },
+                "type":"ManagedInteractive",
+                "ref_id":"4347-ManagedInteractive",
+                "linked_interactives":[
+
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id":310539,
+      "is_completion":true,
+      "is_hidden":false,
+      "name":"completion page",
+      "position":6,
+      "show_header":false,
+      "show_info_assessment":false,
+      "show_interactive":false,
+      "show_sidebar":false,
+      "sidebar":null,
+      "sidebar_title":"Did you know?",
+      "sections": [
+        {
+          "embeddable_display_mode":"stacked",
+          "is_hidden":false,
+          "layout":"l-responsive",
+          "toggle_info_assessment":false,
+          "embeddables": [
+
+          ]
+        }
+
+      ]
+    }
+  ],
+  "plugins":[
+
+  ],
+  "type":"LightweightActivity",
+  "export_site":"Lightweight Activities Runtime and Authoring"
+}
