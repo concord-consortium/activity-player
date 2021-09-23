@@ -45,11 +45,8 @@
       "background_image": null,
       "pages": [
         {
-          "additional_sections": {},
-          "embeddable_display_mode": "stacked",
           "is_completion": false,
           "is_hidden": false,
-          "layout": "l-6040",
           "name": null,
           "position": 1,
           "show_header": true,
@@ -58,39 +55,37 @@
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "toggle_info_assessment": false,
-          "embeddables": [
+          "sections": [
             {
-              "embeddable": {
-                "content": "<p>Sample activity page</p>",
-                "is_callout": true,
-                "is_full_width": true,
-                "is_hidden": false,
-                "name": "",
-                "type": "Embeddable::Xhtml",
-                "ref_id": "272294-Embeddable::Xhtml"
-              },
-              "section": "header_block"
+              "layout": "l-6040",
+              "is_hidden": false,
+              "secondary_column_collapsibl": false,
+              "secondary_column_display_mode": "stacked",
+              "embeddables": [
+                {
+                  "column": "full-width",
+                  "content": "<p>Sample activity page</p>",
+                  "is_callout": true,
+                  "is_full_width": true,
+                  "is_hidden": false,
+                  "name": "",
+                  "type": "Embeddable::Xhtml",
+                  "ref_id": "272294-Embeddable::Xhtml"
+                }
+              ]
             }
           ],
           "id": 1000
         },
         {
-          "additional_sections": {},
-          "embeddable_display_mode": "stacked",
           "is_completion": true,
           "is_hidden": false,
-          "layout": "l-6040",
           "name": null,
           "position": 3,
-          "show_header": false,
-          "show_info_assessment": false,
-          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "toggle_info_assessment": false,
-          "embeddables": [],
+          "sections": [],
           "id": 3000
         }
       ],
@@ -126,32 +121,31 @@
       "background_image": null,
       "pages": [
         {
-          "additional_sections": {},
-          "embeddable_display_mode": "stacked",
           "is_completion": false,
           "is_hidden": false,
-          "layout": "l-6040",
           "name": null,
           "position": 1,
-          "show_header": true,
-          "show_info_assessment": false,
-          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "toggle_info_assessment": false,
-          "embeddables": [
+          "sections": [
             {
-              "embeddable": {
-                "content": "<p>Sample activity page</p>",
-                "is_callout": true,
-                "is_full_width": true,
-                "is_hidden": false,
-                "name": "",
-                "type": "Embeddable::Xhtml",
-                "ref_id": "272295-Embeddable::Xhtml"
-              },
-              "section": "header_block"
+              "secondary_column_display_mode": "stacked",
+              "is_hidden": false,
+              "layout": "l-6040",
+              "secondary_column_collapsibl": false,
+              "embeddables": [
+                {
+                  "column": null,
+                  "content": "<p>Sample activity page</p>",
+                  "is_callout": true,
+                  "is_full_width": true,
+                  "is_hidden": false,
+                  "name": "",
+                  "type": "Embeddable::Xhtml",
+                  "ref_id": "272295-Embeddable::Xhtml"
+                }
+              ]
             }
           ],
           "id": 1000
@@ -189,32 +183,31 @@
       "background_image": null,
       "pages": [
         {
-          "additional_sections": {},
-          "embeddable_display_mode": "stacked",
           "is_completion": false,
           "is_hidden": false,
-          "layout": "l-6040",
           "name": null,
           "position": 1,
-          "show_header": true,
-          "show_info_assessment": false,
-          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "toggle_info_assessment": false,
-          "embeddables": [
+          "sections": [
             {
-              "embeddable": {
-                "content": "<p>Sample activity page</p>",
-                "is_callout": true,
-                "is_full_width": true,
-                "is_hidden": false,
-                "name": "",
-                "type": "Embeddable::Xhtml",
-                "ref_id": "272296-Embeddable::Xhtml"
-              },
-              "section": "header_block"
+              "secondary_column_display_mode": "stacked",
+              "is_hidden": false,
+              "layout": "l-6040",
+              "secondary_column_collapsibl": false,
+              "embeddables": [
+                {
+                  "column": null,
+                  "content": "<p>Sample activity page</p>",
+                  "is_callout": true,
+                  "is_full_width": true,
+                  "is_hidden": false,
+                  "name": "",
+                  "type": "Embeddable::Xhtml",
+                  "ref_id": "272296-Embeddable::Xhtml"
+                }
+              ]
             }
           ],
           "id": 1000
@@ -252,52 +245,52 @@
       "background_image": null,
       "pages": [
         {
-          "additional_sections": {},
-          "embeddable_display_mode": "stacked",
           "is_completion": false,
           "is_hidden": false,
-          "layout": "l-6040",
           "name": null,
           "position": 1,
-          "show_header": true,
-          "show_info_assessment": false,
-          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "toggle_info_assessment": false,
-          "embeddables": [
+          "sections": [
             {
-              "embeddable": {
-                "content": "<p>Sample activity page</p>",
-                "is_callout": true,
-                "is_full_width": true,
-                "is_hidden": false,
-                "name": "",
-                "type": "Embeddable::Xhtml",
-                "ref_id": "272297-Embeddable::Xhtml"
-              },
-              "section": "header_block"
+              "secondary_column_display_mode": "stacked",
+              "is_hidden": false,
+              "layout": "l-6040",
+              "secondary_column_collapsibl": false,
+              "embeddables": [
+                {
+                  "column": null,
+                  "content": "<p>Sample activity page</p>",
+                  "is_callout": true,
+                  "is_full_width": true,
+                  "is_hidden": false,
+                  "name": "",
+                  "type": "Embeddable::Xhtml",
+                  "ref_id": "272297-Embeddable::Xhtml"
+                }
+              ]
             }
           ],
           "id": 1000
         },
         {
-          "additional_sections": {},
-          "embeddable_display_mode": "stacked",
           "is_completion": true,
           "is_hidden": false,
-          "layout": "l-6040",
           "name": null,
           "position": 3,
-          "show_header": false,
-          "show_info_assessment": false,
-          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "toggle_info_assessment": false,
-          "embeddables": [],
+          "sections": [
+            {
+              "secondary_column_display_mode": "stacked",
+              "is_hidden": false,
+              "layout": "l-6040",
+              "secondary_column_collapsibl": false,
+              "embeddables": []
+            }
+          ],
           "id": 3000
         }
       ],
@@ -333,52 +326,52 @@
       "background_image": null,
       "pages": [
         {
-          "additional_sections": {},
-          "embeddable_display_mode": "stacked",
           "is_completion": false,
           "is_hidden": false,
-          "layout": "l-6040",
           "name": null,
           "position": 1,
-          "show_header": true,
-          "show_info_assessment": false,
-          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "toggle_info_assessment": false,
-          "embeddables": [
+          "sections": [
             {
-              "embeddable": {
-                "content": "<p>Sample activity page</p>",
-                "is_callout": true,
-                "is_full_width": true,
-                "is_hidden": false,
-                "name": "",
-                "type": "Embeddable::Xhtml",
-                "ref_id": "272298-Embeddable::Xhtml"
-              },
-              "section": "header_block"
+              "secondary_column_display_mode": "stacked",
+              "is_hidden": false,
+              "layout": "l-6040",
+              "secondary_column_collapsibl": false,
+              "embeddables": [
+                {
+                  "column": null,
+                  "content": "<p>Sample activity page</p>",
+                  "is_callout": true,
+                  "is_full_width": true,
+                  "is_hidden": false,
+                  "name": "",
+                  "type": "Embeddable::Xhtml",
+                  "ref_id": "272298-Embeddable::Xhtml"
+                }
+              ]
             }
           ],
           "id": 1000
         },
         {
-          "additional_sections": {},
-          "embeddable_display_mode": "stacked",
           "is_completion": true,
           "is_hidden": false,
-          "layout": "l-6040",
           "name": null,
           "position": 3,
-          "show_header": false,
-          "show_info_assessment": false,
-          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "toggle_info_assessment": false,
-          "embeddables": [],
+          "sections": [
+            {
+              "secondary_column_display_mode": "stacked",
+              "is_hidden": false,
+              "layout": "l-6040",
+              "secondary_column_collapsibl": false,
+              "embeddables": []
+            }
+          ],
           "id": 3000
         }
       ],
