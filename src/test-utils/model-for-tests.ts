@@ -1,4 +1,4 @@
-import { Embeddable, EmbeddableWrapper, Page, Activity, LibraryInteractive, IManagedInteractive, IEmbeddableXhtml, IEmbeddablePlugin } from "../types";
+import { Embeddable, Section, Page, Activity, LibraryInteractive, IManagedInteractive, IEmbeddableXhtml, IEmbeddablePlugin } from "../types";
 
 export const DefaultTestEmbeddable: Embeddable = {
   type: "MwInteractive",
@@ -8,25 +8,22 @@ export const DefaultTestEmbeddable: Embeddable = {
   ref_id: "abc",
 };
 
-export const DefaultTestEmbeddableWrapper: EmbeddableWrapper = {
-  section: null,
-  embeddable: DefaultTestEmbeddable,
+export const DefaultTestSection: Section = {
+  secondary_column_display_mode: "stacked",
+  is_hidden: false,
+  secondary_column_collapsible: true,
+  embeddables: [],
+  layout: "l-6040"
 };
 
 export const DefaultTestPage: Page = {
-  embeddable_display_mode: "stacked",
   is_completion: false,
   is_hidden: false,
-  layout: "l-6040",
   position: 0,
-  show_info_assessment: false,
-  show_interactive: true,
   show_sidebar: false,
   sidebar: null,
   sidebar_title: null,
-  toggle_info_assessment: true,
-  additional_sections: {},
-  embeddables: [],
+  sections: [],
   id: 1000
 };
 

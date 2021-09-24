@@ -2,8 +2,9 @@ import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { getCachedLearnerPluginState, getLearnerPluginState, getPortalData } from "../firebase-db";
 import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
-import { Activity, ApprovedScript, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
+import { Activity, Section, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
 import { getResourceUrl } from "../lara-api";
+import { setReactionScheduler } from "mobx/dist/internal";
 
 export interface UsedApprovedScriptInfo {
   id: number;
@@ -34,13 +35,16 @@ export const addUsedApprovedScript = (plugin: Plugin) => {
 export const findUsedApprovedScripts = (activities: Activity[]) => {
   // search current activity or all activities in sequence
   activities.forEach(activity => {
-    // search each page for embeddable plugin instances
-    activity.pages.forEach(page => {
-      if (!page.is_hidden) {
-        page.embeddables.forEach(embeddableDef => {
-          const embeddable = embeddableDef.embeddable;
-          if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin) {
-            addUsedApprovedScript(embeddable.plugin);
+    // search each page for teacher edition plugin use
+    for (let page = 0; page < activity.pages.length; page++) {
+      if (!activity.pages[page].is_hidden) {
+        for (let section = 0; activity.pages[page].sections.length; section++) {
+          for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
+            const embeddable = activity.pages[page].sections[section].embeddables[embeddableNum].embeddable;
+            if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.approved_script_label === "teacherEditionTips" && teacherEditionMode) {
+              addUsedPlugin(embeddable.plugin);
+            }
+          }
           }
         });
       }

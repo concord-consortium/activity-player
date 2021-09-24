@@ -110,13 +110,13 @@ export interface IEmbeddablePlugin extends EmbeddableBase {
   plugin?: Plugin;
 }
 
-export type Embeddable = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin;
+export type EmbeddableType = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin;
 
 export interface Section {
   secondary_column_display_mode: "stacked" | "carousel";
   is_hidden: boolean;
   secondary_column_collapsible: boolean;
-  embeddables: Embeddable[];
+  embeddables: EmbeddableType[];
   layout: string;
   _comment?: string;
 }

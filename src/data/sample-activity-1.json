@@ -27,7 +27,7 @@
           "layout": "full-width",
           "is_hidden": false,
           "_comment": "secondary_column_collapsibl determines if the small column can be collapsed",
-          "secondary_column_collapsibl": false,
+          "secondary_column_collapsible": false,
           "_comment": "secondary_column_display_mode is either stacked or carousel, it determins how to render the small column",
           "secondary_column_display_mode": "stacked",
           "embeddables": [
