@@ -39,10 +39,12 @@ export const findUsedApprovedScripts = (activities: Activity[]) => {
     for (let page = 0; page < activity.pages.length; page++) {
       if (!activity.pages[page].is_hidden) {
         for (let section = 0; activity.pages[page].sections.length; section++) {
-          for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
-            const embeddable = activity.pages[page].sections[section].embeddables[embeddableNum];
-            if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.approved_script_label === "teacherEditionTips" && teacherEditionMode) {
-              addUsedPlugin(embeddable.plugin);
+          if (!activity.pages[page].sections[section].is_hidden) {
+            for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
+              const embeddable = activity.pages[page].sections[section].embeddables[embeddableNum];
+              if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.approved_script_label === "teacherEditionTips" && teacherEditionMode) {
+                addUsedPlugin(embeddable.plugin);
+              }
             }
           }
           }
@@ -108,14 +110,10 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 };
 
 // loads the learner plugin state into the firebase write-through cache
-export const loadLearnerPluginState = async (activities: Activity[]) => {
-  const approvedScripts = findUsedApprovedScripts(activities);
-  // PJ 09/19/2021: This doesn't seem to make sense. Currently, the state is saved and restored per approved script.
-  // It should be saved and restored per plugin instance. It works with Glossary only because there's one glossary
-  // instance per activity. Fixing this would destroy students data, so I'm not doing this. But it should be handled
-  // if we ever add more plugins that save their state.
-  return await Promise.all(approvedScripts.map(async (approvedScriptInfo) => await getLearnerPluginState(approvedScriptInfo.id)));
-};
+// export const loadLearnerPluginState = async (activities: Activity[], teacherEditionMode: boolean) => {
+//   const plugins = findUsedPlugins(activities, teacherEditionMode);
+//   return await Promise.all(plugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
+// };
 
 export const initializePlugin = (context: IEmbeddablePluginContext) => {
   const { LARA, embeddable, embeddableContainer,

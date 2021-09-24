@@ -80,12 +80,16 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     return (
       <div className={"page-content full"} data-cy="page-content">
         <div className="name">{ pageTitle }</div>
-        {sections.map((section) => {
+        {sections.map((section, idx) => {
+          console.log("section:", section);
           const embeddables = section.embeddables;
-          !section.is_hidden &&
-            <div className = {`section ${section.layout === "full-width" ? "full-width" : ""}`}>
-              { this.renderEmbeddables(section, embeddables, numQuestions) }
-            </div>;
+          if (!section.is_hidden) {
+            return (
+              <div key={idx} className = {`section ${section.layout === "full-width" ? "full-width" : ""}`}>
+                { this.renderEmbeddables(section, embeddables, numQuestions) }
+              </div>
+            );
+          }
         })}
         { enableReportButton &&
           <BottomButtons
