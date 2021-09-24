@@ -40,10 +40,12 @@ export const findUsedPlugins = (activities: Activity[], teacherEditionMode: bool
     for (let page = 0; page < activity.pages.length; page++) {
       if (!activity.pages[page].is_hidden) {
         for (let section = 0; activity.pages[page].sections.length; section++) {
-          for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
-            const embeddable = activity.pages[page].sections[section].embeddables[embeddableNum];
-            if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.approved_script_label === "teacherEditionTips" && teacherEditionMode) {
-              addUsedPlugin(embeddable.plugin);
+          if (!activity.pages[page].sections[section].is_hidden) {
+            for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
+              const embeddable = activity.pages[page].sections[section].embeddables[embeddableNum];
+              if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.approved_script_label === "teacherEditionTips" && teacherEditionMode) {
+                addUsedPlugin(embeddable.plugin);
+              }
             }
           }
         }
@@ -112,10 +114,10 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 };
 
 // loads the learner plugin state into the firebase write-through cache
-export const loadLearnerPluginState = async (activities: Activity[], teacherEditionMode: boolean) => {
-  const plugins = findUsedPlugins(activities, teacherEditionMode);
-  return await Promise.all(plugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
-};
+// export const loadLearnerPluginState = async (activities: Activity[], teacherEditionMode: boolean) => {
+//   const plugins = findUsedPlugins(activities, teacherEditionMode);
+//   return await Promise.all(plugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
+// };
 
 export const initializePlugin = (context: IEmbeddablePluginContext) => {
   const { LARA, embeddable, embeddableContainer,
