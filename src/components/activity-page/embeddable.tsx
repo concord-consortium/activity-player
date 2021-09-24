@@ -1,4 +1,5 @@
 import React, { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef }  from "react";
+import classNames from "classnames";
 import { TextBox } from "./text-box/text-box";
 import { LaraGlobalContext } from "../lara-global-context";
 import { ManagedInteractive, ManagedInteractiveImperativeAPI } from "./managed-interactive/managed-interactive";
@@ -102,10 +103,15 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   }
 
   const singlePageLayout = activityLayout === ActivityLayouts.SinglePage;
+  const embeddableClasses = classNames("embeddable", embeddable.column === null || singlePageLayout
+                                                      ? "full-width"
+                                                      : embeddable.column === "secondary"
+                                                        ? "secondary-width"
+                                                        : "primary-width");
 
   return (
     <div
-      className={`embeddable ${embeddable.is_full_width || singlePageLayout ? "full-width" : "reduced-width"}`}
+      className={embeddableClasses}
       data-cy="embeddable"
       key={embeddable.ref_id}
     >

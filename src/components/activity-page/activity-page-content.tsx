@@ -63,15 +63,6 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     // const renderSecondary = this.renderSecondaryEmbeddables(visibleEmbeddables.infoAssessment, questionsBeforeSecondary, page.layout, secondaryIsOnLeft, collapsible);
     const pageTitle = page.name || "";
     const sections = page.sections;
-    let numEmbeddablesInPage = 0;
-    sections.forEach((section)=>{
-      let numEmbeddableInSection = 0;
-      section.embeddables.forEach((embeddable) => {
-        isQuestion(embeddable) && numEmbeddableInSection++;
-      });
-      numEmbeddablesInPage = numEmbeddablesInPage + numEmbeddableInSection;
-    });
-    const numQuestions = totalPreviousQuestions + pageSectionQuestionCount;
 
     // const [first, second] = primaryFirst
     //                         ? [renderPrimary, renderSecondary]
@@ -85,8 +76,8 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
           const embeddables = section.embeddables;
           if (!section.is_hidden) {
             return (
-              <div key={idx} className = {`section ${section.layout === "full-width" ? "full-width" : ""}`}>
-                { this.renderEmbeddables(section, embeddables, numQuestions) }
+              <div key={`section_${idx}`} className = {`section ${section.layout === "full-width" ? "full-width" : ""}`}>
+                { this.renderEmbeddables(section, embeddables, totalPreviousQuestions) }
               </div>
             );
           }
