@@ -27,7 +27,7 @@ interface IProps {
 
 interface IState {
   scrollOffset: number;
-  isSecondaryCollapsed: boolean;
+  // isSecondaryCollapsed: boolean;
 }
 
 export class ActivityPageContent extends React.PureComponent <IProps, IState> {
@@ -39,7 +39,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     super(props);
     this.state = {
       scrollOffset: 0,
-      isSecondaryCollapsed: false,
+      // isSecondaryCollapsed: false,
     };
   }
 
@@ -243,11 +243,23 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
         }
       </div>
     );
-  }
 
-  private renderCollapseArrow = (leftArrow: boolean) => {
-    return (
-      leftArrow
+  // private renderCollapseArrow = (leftArrow: boolean) => {
+  //   return (
+  //     leftArrow
+  //       ? <IconChevronLeft
+  //         width={32}
+  //         height={32}
+  //         fill={"white"}
+  //       />
+  //       : <IconChevronRight
+  //         width={32}
+  //         height={32}
+  //         fill={"white"}
+  //       />
+  //   );
+  // }
+
         ? <IconChevronLeft
           width={32}
           height={32}
