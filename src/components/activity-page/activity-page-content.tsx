@@ -161,6 +161,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                 key={`embeddable-${embeddable.ref_id}`}
                 embeddable={embeddable}
                 sectionLayout={section.layout}
+                displayMode={section.secondary_column_display_mode}
                 questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
                 linkedPluginEmbeddable={linkedPluginEmbeddable}
                 teacherEditionMode={this.props.teacherEditionMode}
