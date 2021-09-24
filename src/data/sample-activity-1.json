@@ -51,12 +51,12 @@
           "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
-              "column": "small",
+              "column": "secondary",
               "name": "",
               "url_fragment": null,
               "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
               "is_hidden": false,
-              "is_full_width": true,
+              "is_full_width": false,
               "show_in_featured_question_report": true,
               "inherit_aspect_ratio_method": true,
               "custom_aspect_ratio_method": null,
@@ -136,12 +136,12 @@
           "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
-              "column": "small",
+              "column": "secondary",
               "name": "",
               "url_fragment": null,
               "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
               "is_hidden": false,
-              "is_full_width": true,
+              "is_full_width": false,
               "show_in_featured_question_report": true,
               "inherit_aspect_ratio_method": true,
               "custom_aspect_ratio_method": "DEFAULT",

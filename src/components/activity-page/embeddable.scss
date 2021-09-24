@@ -6,8 +6,11 @@
   &.full-width {
     width: 100%;
   }
-  &.reduced-width {
+  &.secondary-width {
     width: 440px;
+  }
+  &.primary-width {
+    width: calc(100% - 440px);
   }
 
   .header {

@@ -150,6 +150,7 @@
     "@concord-consortium/text-decorator": "^1.0.2",
     "@concord-consortium/token-service": "^2.1.0",
     "@react-hook/resize-observer": "^1.2.2",
+    "classnames": "^2.3.1",
     "dompurify": "^2.3.0",
     "firebase": "^8.7.0",
     "html-react-parser": "^1.2.7",
