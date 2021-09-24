@@ -1,28 +1,28 @@
 @import "../vars.scss";
 
-.embeddable {
-  margin-bottom: 10px;
+// .embeddable {
+//   // margin-bottom: 10px;
 
-  &.full-width {
-    width: 100%;
-  }
-  &.secondary-width {
-    width: 440px;
-  }
-  &.primary-width {
-    width: calc(100% - 440px);
-  }
+//   // &.full-width {
+//   //   width: 100%;
+//   // }
+//   // &.secondary-width {
+//   //   width: 440px;
+//   // }
+//   // &.primary-width {
+//   //   width: calc(100% - 440px);
+//   // }
 
-  .header {
-    height: fit-content;
-    min-height: 36px;
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 0 0 10px;
-    color: white;
-    background-color: $cc-teal-dark1;
-  }
-}
+//   // .header {
+//   //   height: fit-content;
+//   //   min-height: 36px;
+//   //   width: 100%;
+//   //   box-sizing: border-box;
+//   //   display: flex;
+//   //   justify-content: space-between;
+//   //   align-items: center;
+//   //   padding: 0 0 0 10px;
+//   //   color: white;
+//   //   background-color: $cc-teal-dark1;
+//   // }
+// }

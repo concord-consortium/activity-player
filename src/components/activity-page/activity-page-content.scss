@@ -7,9 +7,9 @@
   padding: 20px;
   margin: 1px 0 1px 0;
 
-  &.full {
-    width: 100%;
-  }
+  // &.full {
+  //   width: 100%;
+  // }
 
   .name {
     font-size: 24px;
@@ -18,8 +18,83 @@
     color: var(--theme-secondary-color);
   }
 
-  .introduction {
-    max-width: 920px;
+  .section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 500px;
+    &.full-width {
+      flex-direction: column;
+      .embeddable.full-width {
+        width: 100%;
+      }
+    }
+    &.l_6040 {
+      height: 100%;
+      position: relative;
+      .embeddable.primary {
+        position: absolute;
+        left: 0;
+        width: calc(100% - 440px);
+      }
+      .embeddable.secondary {
+        position: absolute;
+        right: 0;
+        width: 440px;
+      }
+    }
+    &.r_6040 {
+      .embeddable.primary {
+        position: relative;
+        right: 0;
+        width: calc(100% - 440px);
+      }
+      .embeddable.secondary {
+        position: relative;
+        left: 0;
+        width: 440px;
+      }
+    }
+    &.l_7030 {
+      .embeddable.primary {
+        position: relative;
+        left: 0;
+        width: calc(100% - 330px);
+      }
+      .embeddable.secondary {
+        position: relative;
+        right: 0;
+        width: 330px;
+      }
+    }
+    &.r_7030 {
+      .embeddable.primary {
+        position: relative;
+        right: 0;
+        width: calc(100% - 330px);
+      }
+      .embeddable.secondary {
+        position: relative;
+        left: 0;
+        width: 330px;
+      }
+    }
+  }
+  .embeddable {
+    margin-bottom: 10px;
+    .header {
+      height: fit-content;
+      min-height: 36px;
+      width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 0 0 10px;
+      color: white;
+      background-color: $cc-teal-dark1;
+    }
   }
 
   .embeddables {

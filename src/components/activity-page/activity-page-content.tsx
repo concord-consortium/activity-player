@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classnames";
 import { Embeddable, EmbeddableImperativeAPI } from "./embeddable";
 import { BottomButtons } from "./bottom-buttons";
 // import { PageLayouts, EmbeddableSections, isQuestion, getPageSectionQuestionCount,
@@ -72,11 +73,17 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
       <div className={"page-content full"} data-cy="page-content">
         <div className="name">{ pageTitle }</div>
         {sections.map((section, idx) => {
-          console.log("section:", section);
           const embeddables = section.embeddables;
           if (!section.is_hidden) {
+            const sectionClass = classNames("section",
+                                            {"full-width": section.layout === "full-width" || section.layout === "l-responsive"},
+                                            {"l_6040": section.layout === "l-6040"},
+                                            {"r_6040": section.layout === "r-6040"},
+                                            {"l_7030": section.layout === "l-7030"},
+                                            {"r_3070": section.layout === "r-3070"}
+                                          );
             return (
-              <div key={`section_${idx}`} className = {`section ${section.layout === "full-width" ? "full-width" : ""}`}>
+              <div key={`section_${idx}`} className = {sectionClass}>
                 { this.renderEmbeddables(section, embeddables, totalPreviousQuestions) }
               </div>
             );

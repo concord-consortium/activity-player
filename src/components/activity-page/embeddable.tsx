@@ -12,7 +12,8 @@ import { EmbeddableType, IEmbeddablePlugin } from "../../types";
 import { IInteractiveSupportedFeaturesEvent } from "../../lara-plugin/events";
 import { ICustomMessage, ISupportedFeatures, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
-import "./embeddable.scss";
+// import "./embeddable.scss";
+import "./activity-page-content.scss";
 
 interface IProps {
   embeddable: EmbeddableType;
@@ -105,8 +106,8 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   const embeddableClasses = classNames("embeddable", embeddable.column === null || singlePageLayout
                                                       ? "full-width"
                                                       : embeddable.column === "secondary"
-                                                        ? "secondary-width"
-                                                        : "primary-width");
+                                                        ? "secondary"
+                                                        : "primary");
 
   return (
     <div
