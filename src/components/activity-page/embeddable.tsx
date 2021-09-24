@@ -19,6 +19,7 @@ interface IProps {
   embeddable: EmbeddableType;
   linkedPluginEmbeddable?: IEmbeddablePlugin;
   sectionLayout: string;
+  displayMode?: string;
   activityLayout?: number;
   questionNumber?: number;
   teacherEditionMode?: boolean;
@@ -34,7 +35,7 @@ export interface EmbeddableImperativeAPI {
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { sectionLayout, embeddable, linkedPluginEmbeddable, activityLayout, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded } = props;
+  const { sectionLayout, embeddable, linkedPluginEmbeddable, activityLayout, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded } = props;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
   }, [setNavigation, embeddable.ref_id]);
@@ -105,9 +106,12 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   const singlePageLayout = activityLayout === ActivityLayouts.SinglePage;
   const embeddableClasses = classNames("embeddable", embeddable.column === null || singlePageLayout
                                                       ? "full-width"
-                                                      : embeddable.column === "secondary"
-                                                        ? "secondary"
-                                                        : "primary");
+                                                      : embeddable.column === "primary"
+                                                        ? "primary"
+                                                        : displayMode==="stacked"
+                                                          ? "secondary stacked"
+                                                          : "secondary"
+                                      );
 
   return (
     <div
