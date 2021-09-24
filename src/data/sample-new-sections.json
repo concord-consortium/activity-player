@@ -104,7 +104,15 @@
               "type": "ManagedInteractive",
               "ref_id": "4340-ManagedInteractive",
               "linked_interactives": []
-            },
+            }
+          ]
+        },
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
             {
               "column": null,
               "name": "",
@@ -150,7 +158,15 @@
               "type": "ManagedInteractive",
               "ref_id": "4341-ManagedInteractive",
               "linked_interactives": []
-            },
+            }
+          ]
+        },
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
             {
               "column": null,
               "aspect_ratio_method": "DEFAULT",
@@ -190,7 +206,7 @@
       "sidebar_title": "Did you know?",
       "sections": [
         {
-          "layout": "l-6040",
+          "layout": "full-width",
           "is_hidden": false,
           "secondary_column_collapsible": false,
           "secondary_column_display_mode": "stacked",
@@ -252,7 +268,15 @@
               "type": "ManagedInteractive",
               "ref_id": "4342-ManagedInteractive",
               "linked_interactives": []
-            },
+            }
+          ]
+        },
+        {
+          "layout": "l-6040",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
             {
               "column": "secondary",
               "name": "",
@@ -372,96 +396,195 @@
           "embeddables": [
             {
               "column": "secondary",
-              "custom": true,
-              "enable_check_answer": false,
-              "give_prediction_feedback": false,
-              "hint": "\n  \u003Cb\u003EStep 1: Select a claim.\u003C/b\u003E\n  \u003Cul\u003E\n  \u003Cli\u003EA good claim is based on the evidence.\u003C/li\u003E\n  \u003Cli\u003EEvidence may come from graphs and charts.\u003C/li\u003E\n  \u003Cli\u003EEvidence may also come from models that you run.\u003C/li\u003E\n  \u003C/ul\u003E\n  ",
-              "is_full_width": false,
+              "name": "",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
               "is_hidden": false,
-              "is_prediction": false,
-              "layout": "vertical",
-              "multi_answer": false,
-              "name": "Multiple Choice Question element",
-              "prediction_feedback": null,
-              "prompt": "why does ...",
-              "show_as_menu": false,
+              "is_full_width": false,
               "show_in_featured_question_report": true,
-              "choices": [
-                {
-                  "choice": "a",
-                  "is_correct": null,
-                  "prompt": null
-                },
-                {
-                  "choice": "b",
-                  "is_correct": null,
-                  "prompt": null
-                },
-                {
-                  "choice": "c",
-                  "is_correct": null,
-                  "prompt": null
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": "DEFAULT",
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Multiple Choice (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": true,
+                  "authorable": true
                 }
-              ],
-              "type": "Embeddable::MultipleChoice",
-              "ref_id": "13639-Embeddable::MultipleChoice"
+              },
+              "type": "ManagedInteractive",
+              "ref_id": "327-ManagedInteractive"
             },
             {
               "column": "secondary",
-              "default_text": null,
-              "give_prediction_feedback": false,
-              "hint": "\n  \u003Cb\u003EStep 2: Write an explanation.\u003C/b\u003E\n  \u003Cul\u003E\n  \u003Cli\u003EA good explanation will cite specific evidence that backs up the claim.\u003C/li\u003E\n  \u003Cli\u003EWhen there is a graph or table, you can cite evidence directly from the source.\u003C/li\u003E\n  \u003Cli\u003EWhen there is a model, you can describe what happened in the model.\u003C/li\u003E\n  \u003Cli\u003EA good explanation combines evidence with scientific knowledge.\u003C/li\u003E\n  \u003C/ul\u003E\n  ",
-              "is_full_width": false,
+              "name": "",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
               "is_hidden": false,
-              "is_prediction": false,
-              "name": null,
-              "prediction_feedback": null,
-              "prompt": "Explain your answer.",
+              "is_full_width": false,
               "show_in_featured_question_report": true,
-              "item_settings": {
-                "item_id": "HENRY001",
-                "score_mapping_id": 7
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": null,
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "This shouldn't be used by any real activities it is still under development.",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Open Response (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": false,
+                  "authorable": true
+                }
               },
-              "type": "Embeddable::OpenResponse",
-              "ref_id": "448615-Embeddable::OpenResponse"
+              "type": "ManagedInteractive",
+              "ref_id": "328-ManagedInteractive"
             },
             {
               "column": "secondary",
-              "default_text": null,
-              "give_prediction_feedback": false,
-              "hint": "\n  \u003Cb\u003EStep 2: Write an explanation.\u003C/b\u003E\n  \u003Cul\u003E\n  \u003Cli\u003EA good explanation will cite specific evidence that backs up the claim.\u003C/li\u003E\n  \u003Cli\u003EWhen there is a graph or table, you can cite evidence directly from the source.\u003C/li\u003E\n  \u003Cli\u003EWhen there is a model, you can describe what happened in the model.\u003C/li\u003E\n  \u003Cli\u003EA good explanation combines evidence with scientific knowledge.\u003C/li\u003E\n  \u003C/ul\u003E\n  ",
-              "is_full_width": false,
+              "name": "",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
               "is_hidden": false,
-              "is_prediction": false,
-              "name": null,
-              "prediction_feedback": null,
-              "prompt": "Explain your answer.",
+              "is_full_width": false,
               "show_in_featured_question_report": true,
-              "item_settings": {
-                "item_id": "HENRY001",
-                "score_mapping_id": 7
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": null,
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "This shouldn't be used by any real activities it is still under development.",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Open Response (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": false,
+                  "authorable": true
+                }
               },
-              "type": "Embeddable::OpenResponse",
-              "ref_id": "448615-Embeddable::OpenResponse"
+              "type": "ManagedInteractive",
+              "ref_id": "328-ManagedInteractive"
             },
             {
               "column": "secondary",
-              "default_text": null,
-              "give_prediction_feedback": false,
-              "hint": "\n  \u003Cb\u003EStep 4: Write a certainty explanation.\u003C/b\u003E\n  \u003Cul\u003E\n  \u003Cli\u003EA good certainty explanation will explain why you are certain or uncertain about your response.\u003C/li\u003E\n  \u003Cli\u003ESome topics are more certain than others.\u003C/li\u003E\n  \u003Cli\u003EConsider the completeness of the evidence, biases in the evidence, and changes that could affect the trends over time.\u003C/li\u003E\n  \u003C/ul\u003E\n  ",
-              "is_full_width": false,
+              "name": "",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
               "is_hidden": false,
-              "is_prediction": false,
-              "name": null,
-              "prediction_feedback": null,
-              "prompt": "Explain what influenced your certainty rating.",
+              "is_full_width": false,
               "show_in_featured_question_report": true,
-              "item_settings": {
-                "item_id": "HENRY001",
-                "score_mapping_id": 8
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": null,
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "This shouldn't be used by any real activities it is still under development.",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Open Response (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": false,
+                  "authorable": true
+                }
               },
-              "type": "Embeddable::OpenResponse",
-              "ref_id": "448616-Embeddable::OpenResponse"
+              "type": "ManagedInteractive",
+              "ref_id": "328-ManagedInteractive"
             }
           ]
         },
@@ -472,7 +595,7 @@
           "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
-              "column": "large",
+              "column": "primary",
               "aspect_ratio_method": "DEFAULT",
               "authored_state": "",
               "click_to_play": false,
