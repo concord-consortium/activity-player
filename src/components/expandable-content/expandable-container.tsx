@@ -22,12 +22,13 @@ interface IProps {
 export const ExpandableContainer: React.FC<IProps> = (props) => {
   const { activity, page, pageNumber, teacherEditionMode, pluginsLoaded, glossaryPlugin } = props;
   const sideTips = pluginsLoaded && page ? getPageSideTipEmbeddables(activity, page) : [];
-  const verticalOffset = kExpandableContentTop + (sideTips.length + (glossaryPlugin ? 1 : 0)) * (kExpandableItemHeight + kExpandableContentMargin);
+  const numSideTips = sideTips?.length || 0;
+  const verticalOffset = kExpandableContentTop + (numSideTips + (glossaryPlugin ? 1 : 0)) * (kExpandableItemHeight + kExpandableContentMargin);
   const sidebars = page && getPageSideBars(activity, page);
   return (
     <div className="expandable-container" id="expandable-container" key={pageNumber} data-cy="expandable-container">
-      { teacherEditionMode && sideTips.map((sideTip: any) =>
-          // Technically, the EmbeddablePluginSideTip won't be rendered if the plugins aren't loaded yet, 
+      { teacherEditionMode && sideTips?.map((sideTip: any) =>
+          // Technically, the EmbeddablePluginSideTip won't be rendered if the plugins aren't loaded yet,
           // but passing pluginLoaded into it makes it more consistent with the other plugins components
           <EmbeddablePluginSideTip
             key={sideTip.embeddable.ref_id}

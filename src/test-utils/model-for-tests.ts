@@ -1,6 +1,6 @@
-import { Embeddable, Section, Page, Activity, LibraryInteractive, IManagedInteractive, IEmbeddableXhtml, IEmbeddablePlugin } from "../types";
+import { EmbeddableType, Section, Page, Activity, LibraryInteractive, IManagedInteractive, IEmbeddableXhtml, IEmbeddablePlugin } from "../types";
 
-export const DefaultTestEmbeddable: Embeddable = {
+export const DefaultTestEmbeddable: EmbeddableType = {
   type: "MwInteractive",
   name: "name",
   is_hidden: false,
