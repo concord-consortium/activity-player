@@ -52,8 +52,8 @@ export const getReportUrl = (questionRefId?: string) => {
   const reportFirebaseApp = firebaseAppName();
   const resourceUrl = getResourceUrl();
   const runKey = queryValue("runKey");
-  // Sometimes the location of the answers is overridden with a report-source param
-  const answerSource = queryValue("report-source") || getCanonicalHostname();
+  // Sometimes the location of the answers is overridden with a answersSourceKey param
+  const answerSource = queryValue("answersSourceKey") || getCanonicalHostname();
   // `sourceKey` might be useful to add during local development, usually to point to app.lara.docker.<username>
   // since local LARA instance would be publish resources at this path.
   const sourceKey = queryValue("sourceKey") || (resourceUrl ? makeSourceKey(resourceUrl) : getCanonicalHostname());

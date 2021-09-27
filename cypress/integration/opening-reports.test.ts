@@ -13,7 +13,7 @@ context("Test Opening Portal Reports from various places", () => {
     const activityPlayerUrl = "?" +
       "activity="+activityExportUrl+
       "resourceUrl="+activityExportUrl+
-      "&report-source=authoring.staging.concord.org" +
+      "&answersSourceKey=authoring.staging.concord.org" +
       "&runKey="+runKey;
 
     before(() => {
