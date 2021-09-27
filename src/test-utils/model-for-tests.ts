@@ -97,6 +97,7 @@ export const DefaultTEWindowshadeComponent: IEmbeddablePlugin = {
   is_hidden: false,
   is_full_width: false,
   plugin: {
+    id: 12,
     description: null,
     author_data: "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"this is a windowshade\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
     approved_script_label: "teacherEditionTips",

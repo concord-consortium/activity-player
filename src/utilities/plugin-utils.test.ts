@@ -1,12 +1,18 @@
 import { Activity, Plugin } from "../types";
-import { addUsedPlugin, clearUsedPlugins, findUsedPlugins, getGlossaryEmbeddable, getUsedPlugins, IEmbeddablePluginContext, initializePlugin, IPartialEmbeddablePluginContext, loadLearnerPluginState, loadPluginScripts, validateEmbeddablePluginContextForPlugin, validateEmbeddablePluginContextForWrappedEmbeddable } from "./plugin-utils";
+import {
+  addUsedApprovedScript, clearUsedApprovedScripts, findUsedApprovedScripts, getGlossaryEmbeddable, getUsedApprovedScripts, IEmbeddablePluginContext,
+  initializePlugin, IPartialEmbeddablePluginContext, loadLearnerPluginState, loadPluginScripts,
+  validateEmbeddablePluginContextForPlugin, validateEmbeddablePluginContextForWrappedEmbeddable
+} from "./plugin-utils";
 import sampleActivityGlossaryPlugin from "../data/sample-activity-glossary-plugin.json";
 import { LaraGlobalType } from "../lara-plugin";
 import { clearCachedLearnerPluginState, getCachedLearnerPluginState, setLearnerPluginState, setPortalData } from "../firebase-db";
+import { RawClassInfo } from "../portal-api";
 
 describe("Plugin utility functions", () => {
 
   const plugin: Plugin = {
+    id: 123,
     description: "Test Plugin",
     author_data: "",
     approved_script_label: "test",
@@ -32,41 +38,36 @@ describe("Plugin utility functions", () => {
     wrappedEmbeddableContainer: {} as any
   };
 
-  describe("#addUsedPlugin", () => {
-    beforeEach(() => clearUsedPlugins());
+  describe("#addUsedApprovedScript", () => {
+    beforeEach(() => clearUsedApprovedScripts());
 
     it("adds a used plugin when not already in the list", () => {
-      expect(getUsedPlugins()).toEqual([]);
-      addUsedPlugin(plugin);
-      expect(getUsedPlugins()).toEqual([{
+      expect(getUsedApprovedScripts()).toEqual([]);
+      addUsedApprovedScript(plugin);
+      expect(getUsedApprovedScripts()).toEqual([{
         id: 0,
         loaded: false,
-        plugin
+        approvedScript: plugin.approved_script
       }]);
     });
 
     it("does not add a used plugin when it is already in the list", () => {
-      expect(getUsedPlugins().length).toEqual(0);
-      addUsedPlugin(plugin);
-      expect(getUsedPlugins().length).toEqual(1);
-      addUsedPlugin(plugin);
-      expect(getUsedPlugins().length).toEqual(1);
+      expect(getUsedApprovedScripts().length).toEqual(0);
+      addUsedApprovedScript(plugin);
+      expect(getUsedApprovedScripts().length).toEqual(1);
+      addUsedApprovedScript(plugin);
+      expect(getUsedApprovedScripts().length).toEqual(1);
     });
   });
 
-  describe("#findUsedPlugins", () => {
+  describe("#findUsedApprovedScripts", () => {
     beforeEach(() => {
-      clearUsedPlugins();
+      clearUsedApprovedScripts();
     });
 
-    it("works in teacher edition mode", () => {
-      const usedPlugins = findUsedPlugins([activity], true);
-      expect(usedPlugins.map(p => p.plugin.approved_script_label)).toEqual(["teacherEditionTips", "glossary"]);
-    });
-
-    it("works in non teacher edition mode", () => {
-      const usedPlugins = findUsedPlugins([activity], false);
-      expect(usedPlugins.map(p => p.plugin.approved_script_label)).toEqual(["glossary"]);
+    it("returns all the approved scripts used by plugins", () => {
+      const usedApprovedScripts = findUsedApprovedScripts([activity]);
+      expect(usedApprovedScripts.map(p => p.approvedScript.label)).toEqual(["teacherEditionTips", "glossary"]);
     });
   });
 
@@ -80,7 +81,7 @@ describe("Plugin utility functions", () => {
     let savedAppendChild: any;
 
     beforeEach(() => {
-      clearUsedPlugins();
+      clearUsedApprovedScripts();
       jest.resetAllMocks();
       savedAppendChild = document.body.appendChild;
       document.body.appendChild = jest.fn((script: HTMLScriptElement) => {
@@ -92,18 +93,11 @@ describe("Plugin utility functions", () => {
       document.body.appendChild = savedAppendChild;
     });
 
-    it("handles teacher edition mode", () => {
-      loadPluginScripts(MockLARA, [activity], handleLoadPlugins, true);
+    it("loads all the scripts used by plugins", () => {
+      loadPluginScripts(MockLARA, [activity], handleLoadPlugins);
       expect(MockLARA.Plugins.setNextPluginLabel).toHaveBeenCalledTimes(2);
       expect(handleLoadPlugins).toHaveBeenCalledTimes(1);
     });
-
-    it("handles non teacher edition mode", () => {
-      loadPluginScripts(MockLARA, [activity], handleLoadPlugins, false);
-      expect(MockLARA.Plugins.setNextPluginLabel).toHaveBeenCalledTimes(1);
-      expect(handleLoadPlugins).toHaveBeenCalledTimes(1);
-    });
-
   });
 
   describe("#validateEmbeddablePluginContextForPlugin", () => {
@@ -126,7 +120,7 @@ describe("Plugin utility functions", () => {
 
   describe("#loadLearnerPluginState", () => {
     beforeEach(async () => {
-      clearUsedPlugins();
+      clearUsedApprovedScripts();
       setPortalData({
         type: "authenticated",
         contextId: "context-id",
@@ -146,7 +140,8 @@ describe("Plugin utility functions", () => {
         resourceUrl: "http://example/resource",
         toolId: "activity-player.concord.org",
         userType: "learner",
-        runRemoteEndpoint: ""
+        runRemoteEndpoint: "",
+        rawClassInfo: {} as RawClassInfo
       });
       // these will fail as there is no firebase connection but it will populate the internal cache
       try {
@@ -163,14 +158,9 @@ describe("Plugin utility functions", () => {
       expect(getCachedLearnerPluginState(1)).toBe("test 2");
     });
 
-    it("returns the state for all plugins in teacher mode", async () => {
-      const pluginState = await loadLearnerPluginState([activity], true);
+    it("returns the state for all plugins", async () => {
+      const pluginState = await loadLearnerPluginState([activity]);
       expect(pluginState).toEqual(["test 1", "test 2"]);
-    });
-
-    it("returns the state for all plugins in non teacher mode", async () => {
-      const pluginState = await loadLearnerPluginState([activity], false);
-      expect(pluginState).toEqual(["test 1"]);
     });
   });
 
@@ -182,7 +172,9 @@ describe("Plugin utility functions", () => {
         } as any
       } as any,
       embeddable: {
-        plugin: null
+        plugin: {
+          approved_script_label: "test"
+        }
       },
       wrappedEmbeddable: {} as any,
       wrappedEmbeddableContainer: {} as any,
@@ -192,7 +184,7 @@ describe("Plugin utility functions", () => {
     } as any;
 
     beforeEach(() => {
-      clearUsedPlugins();
+      clearUsedApprovedScripts();
       clearCachedLearnerPluginState();
       jest.resetAllMocks();
     });
@@ -203,7 +195,7 @@ describe("Plugin utility functions", () => {
     });
 
     it("initializes the plugin", () => {
-      addUsedPlugin(plugin);
+      addUsedApprovedScript(plugin);
       initializePlugin(context);
       expect(context.LARA.Plugins.initPlugin).toHaveBeenCalledTimes(1);
       expect(context.LARA.Plugins.initPlugin).toHaveBeenCalledWith("plugin0", {

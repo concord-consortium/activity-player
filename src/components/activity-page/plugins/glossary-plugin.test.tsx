@@ -7,6 +7,7 @@ describe("Glossary Plugin component", () => {
   it("renders component", () => {
     const embeddable: IEmbeddablePlugin = {
       "plugin": {
+        "id": 1,
         "description": null,
         "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"ISnn8j8r2veEFjPCx3XH\",\"s3Url\":\"https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/glossary.json\"}",
         "approved_script_label": "glossary",

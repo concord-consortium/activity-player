@@ -47,13 +47,21 @@ export interface TeacherUser extends User {
 
 export type AuthenticatedUser = StudentUser | TeacherUser;
 
+export interface IOffering {
+  id: number;
+  name: string;
+  url: string;
+}
+
 export interface RawClassInfo {
+  id: number;
   uri: string;
   name: string;
   state: string;
   class_hash: string;
   teachers: RawUser[];
   students: RawUser[];
+  offerings: IOffering[];
 }
 
 interface ClassInfo {
@@ -231,7 +239,7 @@ interface GetClassInfoParams {
 
 const getClassInfo = (params: GetClassInfoParams) => {
   const {classInfoUrl, rawPortalJWT, portal, offeringId} = params;
-  return new Promise<ClassInfo>((resolve, reject) => {
+  return new Promise<{ classInfo: ClassInfo, rawClassInfo: RawClassInfo }>((resolve, reject) => {
     superagent
     .get(classInfoUrl)
     .set("Authorization", `Bearer/JWT ${rawPortalJWT}`)
@@ -281,7 +289,7 @@ const getClassInfo = (params: GetClassInfoParams) => {
           }),
         };
 
-        resolve(classInfo);
+        resolve({ classInfo, rawClassInfo });
       }
     });
   });
@@ -343,7 +351,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     throw new Error("Unable to get classInfoUrl or offeringId");
   }
 
-  const classInfo = await getClassInfo({classInfoUrl, rawPortalJWT, portal, offeringId});
+  const { classInfo, rawClassInfo } = await getClassInfo({classInfoUrl, rawPortalJWT, portal, offeringId});
   const offeringData = await getOfferingData({portalJWT, rawPortalJWT, offeringId});
   const [rawFirebaseJWT, firebaseJWT] = await getActivityPlayerFirebaseJWT(basePortalUrl, rawPortalJWT, classInfo.classHash);
 
@@ -368,6 +376,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     platformId: firebaseJWT.claims.platform_id,
     platformUserId: firebaseJWT.claims.platform_user_id.toString(),
     contextId: classInfo.classHash,
+    rawClassInfo,
     toolId,
     resourceUrl: getResourceUrl(),
     fullName,

@@ -9,6 +9,7 @@ import $ from "jquery";
 import { Logger } from "../../lib/logger";
 import { getPortalData, setLearnerPluginState } from "../../firebase-db";
 import { getFirebaseJWT } from "../../portal-api";
+import { EmbeddableBase } from "../../types";
 
 export type IPluginContextOptions = IPluginRuntimeContextOptions | IPluginAuthoringContextOptions;
 
@@ -84,7 +85,7 @@ export interface IEmbeddableContextOptions {
    }
    ```
    ****************************************************************************/
-  laraJson: any;
+  laraJson: EmbeddableBase;
   /** Interactive state URL, available only when plugin is wrapping an interactive. */
   interactiveStateUrl: string | null;
   /** True if the interactive is immediately available for use */
@@ -152,11 +153,13 @@ const getFirebaseJwtFromPortal = (appName: string): Promise<IJwtResponse> => {
   });
 };
 
-const getClassInfo = (classInfoUrl: string | null): Promise<IClassInfo> | null => {
-  if (!classInfoUrl) {
+const getClassInfo = (): Promise<IClassInfo> | null => {
+  const portalData = getPortalData();
+  if (!portalData || portalData.type !== "authenticated" || !portalData.rawClassInfo) {
     return null;
   }
-  return fetch(classInfoUrl, {method: "get", credentials: "include"}).then(resp => resp.json());
+  // Class info is downloaded from Portal during AP initialization. No need to make another request to Portal.
+  return Promise.resolve(portalData.rawClassInfo);
 };
 
 const log = (context: IPluginRuntimeContextOptions, logData: string | ILogData): void => {
@@ -206,7 +209,7 @@ export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptio
     userEmail: options.userEmail,
     resourceUrl: options.resourceUrl,
     saveLearnerPluginState: (state: string) => setLearnerPluginState(options.pluginId, state),
-    getClassInfo: () => getClassInfo(options.classInfoUrl),
+    getClassInfo: () => getClassInfo(),
     getFirebaseJwt: (appName: string) => getFirebaseJwtFromPortal(appName),
     wrappedEmbeddable: options.wrappedEmbeddable ? generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
     log: (logData: string | ILogData) => log(options, logData)

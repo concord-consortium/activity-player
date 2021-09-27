@@ -1,11 +1,10 @@
 import { generateEmbeddableRuntimeContext } from "./embeddable-runtime-context";
 import { IInteractiveState } from "../plugin-api";
 import { emitInteractiveAvailable, emitInteractiveSupportedFeatures } from "../events";
-// ACTIVITY_PLAYER_CODE:
 import fetch from "jest-fetch-mock";
-// LARA_CODE import * as fetch from "jest-fetch-mock";
-
+import { EmbeddableBase } from "../../types";
 import { IEmbeddableContextOptions } from "./plugin-context";
+
 (window as any).fetch = fetch;
 
 describe("Embeddable runtime context helper", () => {
@@ -19,7 +18,7 @@ describe("Embeddable runtime context helper", () => {
       name: "Test Interactive",
       type: "MwInteractive",
       ref_id: "86-MwInteractive"
-    },
+    } as EmbeddableBase,
     interactiveStateUrl: "http://interactive.state.url",
     interactiveAvailable: true
   };
@@ -65,57 +64,13 @@ describe("Embeddable runtime context helper", () => {
   });
 
   describe("#getReportingUrl", () => {
-    it("returns null when interactiveStateUrl is not available", () => {
+    it("returns link to the Portal Report", async () => {
       const runtimeContext = generateEmbeddableRuntimeContext(
-        Object.assign({}, embeddableContext, {interactiveStateUrl: null})
+        Object.assign({}, embeddableContext)
       );
-      const resp = runtimeContext.getReportingUrl();
-      expect(resp).toBeNull();
-    });
-
-    it("returns null when interactive state doesn't include reporting URL", done => {
-      const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
-      fetch.mockResponse(JSON.stringify({raw_data: '{"lara_options": {"prop": "value" }}'} as IInteractiveState));
-      const resp = runtimeContext.getReportingUrl();
-      expect(fetch.mock.calls[0][0]).toEqual(embeddableContext.interactiveStateUrl);
-      expect(resp).toBeInstanceOf(Promise);
-      resp!.then(data => {
-        expect(data).toBeNull();
-        done();
-      });
-    });
-
-    it("returns reporting URL when it's available", done => {
-      const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
-      fetch.mockResponse(JSON.stringify({
-        raw_data: '{"lara_options": {"reporting_url": "reporting.url" }}'
-      } as IInteractiveState));
-      const resp = runtimeContext.getReportingUrl();
-      expect(fetch.mock.calls[0][0]).toEqual(embeddableContext.interactiveStateUrl);
-      expect(resp).toBeInstanceOf(Promise);
-      resp!.then(data => {
-        expect(data).toEqual("reporting.url");
-        done();
-      });
-    });
-
-    it("accepts interactiveStatePromise as an optional parameter and performs only one network request", done => {
-      const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
-      fetch.mockResponseOnce(JSON.stringify({
-        raw_data: '{"lara_options": {"reporting_url": "reporting.url" }}'
-      } as IInteractiveState));
-      // Note that reporting URL is different here. Test below ensures that only one network request is performed.
-      fetch.mockResponseOnce(JSON.stringify({
-        raw_data: '{"lara_options": {"reporting_url": "WRONG reporting.url" }}'
-      } as IInteractiveState));
-      const interactiveStatePromise = runtimeContext.getInteractiveState();
-      const resp = runtimeContext.getReportingUrl(interactiveStatePromise!);
-      expect(fetch.mock.calls[0][0]).toEqual(embeddableContext.interactiveStateUrl);
-      expect(resp).toBeInstanceOf(Promise);
-      resp!.then(data => {
-        expect(data).toEqual("reporting.url");
-        done();
-      });
+      const resp = await runtimeContext.getReportingUrl();
+      expect(resp).toMatch(/portal-report\.concord\.org/);
+      expect(resp).toMatch(/iframeQuestionId=mw_interactive_86/);
     });
   });
 
