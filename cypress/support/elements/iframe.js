@@ -4,10 +4,10 @@ export const getInIframe = (outerSelector, innerSelector) => {
   return cy.get(outerSelector)
   // First make sure the innerSelector exists by wrapping the whole search
   // for it in a should function. If anything in the should function throws an
-  // exception or failes a test then the should function will automatically re-run
+  // exception or fails a test then the should function will automatically re-run
   .should(($el) => {
     // direct jQuery is used here because the cypress command for wrap, find, and its
-    // run asyncrhously, and create confusing log message.
+    // run asynchronously, and create confusing log message.
 
     // Get the body element of the first iframe
     const $firstIframe = $el.find("iframe")
