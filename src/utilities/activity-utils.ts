@@ -1,4 +1,4 @@
-import { Page, Activity, EmbeddableType, Sequence, Section } from "../types";
+import { Page, Activity, EmbeddableType, Sequence, SectionType } from "../types";
 import { SidebarConfiguration } from "../components/page-sidebar/sidebar-wrapper";
 import { isQuestion as isEmbeddableQuestion } from "./embeddable-utils";
 
@@ -34,7 +34,7 @@ export interface PageSectionQuestionCount {
   InteractiveBlock: number;
 }
 
-export const isSectionHidden = (section: Section) => {
+export const isSectionHidden = (section: SectionType) => {
   return section.is_hidden;
 };
 
@@ -73,7 +73,7 @@ export const getPageSideTipEmbeddables = (activity: Activity, currentPage: Page)
         }
       }
     }
-    return sidetips;
+    return sidetips || [];
   }
   // else {
   //   return currentPage.sections.embeddables.filter((e: any) => isEmbeddableSideTip(e));
@@ -102,6 +102,23 @@ export const getPageSectionQuestionCount = (page: Page) => {
   return pageQuestionCount;
 };
 
+export const numQuestionsOnPreviousSections = (currentSectionIndex: number, sections: SectionType[]) => {
+  let numQuestions = 0;
+  console.log("currentSectionIndex: ", currentSectionIndex);
+  for (let sectionIdx = 0; sectionIdx < currentSectionIndex; sectionIdx++) {
+    sections[sectionIdx].embeddables.forEach((embeddable) => {
+      console.log(embeddable);
+      console.log(isQuestion(embeddable));
+      if (isQuestion(embeddable)) {
+        numQuestions++;
+        console.log("isQuestion: ", numQuestions);
+      }
+    });
+    console.log("in numQuestionsOnPreviousSections: ", numQuestions);
+  }
+  return numQuestions;
+};
+
 export const numQuestionsOnPreviousPages = (currentPage: number, activity: Activity) => {
   let numQuestions = 0;
   for (let page = 0; page < currentPage - 1; page++) {
@@ -126,7 +143,7 @@ export const enableReportButton = (activity: Activity) => {
   return !hasCompletionPage && activity.student_report_enabled;
 };
 
-export const getLinkedPluginEmbeddable = (section: Section, id: string) => {
+export const getLinkedPluginEmbeddable = (section: SectionType, id: string) => {
   const linkedPluginEmbeddable = section.embeddables.find((e: EmbeddableType) => e.embeddable_ref_id === id);
   return linkedPluginEmbeddable?.type === "Embeddable::EmbeddablePlugin" ? linkedPluginEmbeddable : undefined;
 };

@@ -112,7 +112,7 @@ export interface IEmbeddablePlugin extends EmbeddableBase {
 
 export type EmbeddableType = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin;
 
-export interface Section {
+export interface SectionType {
   secondary_column_display_mode: "stacked" | "carousel";
   is_hidden: boolean;
   secondary_column_collapsible: boolean;
@@ -131,7 +131,7 @@ export interface Page {
   show_sidebar: boolean;
   sidebar: string | null;
   sidebar_title: string | null;
-  sections: Section[];
+  sections: SectionType[];
 }
 
 export interface Project {

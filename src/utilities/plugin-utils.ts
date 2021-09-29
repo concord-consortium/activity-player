@@ -2,7 +2,7 @@ import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { getCachedLearnerPluginState, getLearnerPluginState, getPortalData } from "../firebase-db";
 import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
-import { Activity, Section, EmbeddableType, IEmbeddablePlugin, Plugin } from "../types";
+import { Activity, SectionType, EmbeddableType, IEmbeddablePlugin, Plugin } from "../types";
 import { getResourceUrl } from "../lara-api";
 import { setReactionScheduler } from "mobx/dist/internal";
 
