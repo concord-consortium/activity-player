@@ -15,25 +15,34 @@
   }
 
   .section {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
+    display: grid;
+    gap: 10px;
+    grid-auto-rows: minmax(20px, auto);
+    grid-template-columns: repeat(10, 1fr);
+    margin: 10px;
+    // display: flex;
+    // flex-direction: row;
+    // align-items: center;
+    // width: 100%;
     &.full-width {
-      flex-direction: column;
+      // flex-direction: column;
       .embeddable.full-width {
-        width: 100%;
+        grid-column: span 10;
+
+        // width: 100%;
       }
     }
     &.l_6040 {
-      height: 100%;
+      // height: 100%;
       .embeddable.primary {
-        left: 0;
-        width: 66%;
+        // left: 0;
+        // width: 66%;
+        grid-column: span 6;
       }
       .embeddable.secondary {
-        right: 0;
-        width: 44%;
+        // right: 0;
+        // width: 44%;
+        grid-column: span 4;
         &.stacked {
           flex-direction: column;
         }
@@ -41,12 +50,14 @@
     }
     &.r_6040 {
       .embeddable.primary {
-        right: 0;
-        width: 66%;
+        // right: 0;
+        // width: 66%;
+        grid-column: span 6;
       }
       .embeddable.secondary {
-        left: 0;
-        width: 44%;
+        // left: 0;
+        // width: 44%;
+        grid-column: span 4;
         &.stacked {
           flex-direction: column;
         }
@@ -54,12 +65,14 @@
     }
     &.l_7030 {
       .embeddable.primary {
-        left: 0;
-        width: 70%;
+        // left: 0;
+        // width: 70%;
+        grid-column: span 7;
       }
       .embeddable.secondary {
-        right: 0;
-        width: 30%;
+        // right: 0;
+        // width: 30%;
+        grid-column: span 3;
         &.stacked {
           flex-direction: column;
         }

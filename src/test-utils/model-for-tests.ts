@@ -1,4 +1,4 @@
-import { EmbeddableType, Section, Page, Activity, LibraryInteractive, IManagedInteractive, IEmbeddableXhtml, IEmbeddablePlugin } from "../types";
+import { EmbeddableType, SectionType, Page, Activity, LibraryInteractive, IManagedInteractive, IEmbeddableXhtml, IEmbeddablePlugin } from "../types";
 
 export const DefaultTestEmbeddable: EmbeddableType = {
   type: "MwInteractive",
@@ -8,7 +8,7 @@ export const DefaultTestEmbeddable: EmbeddableType = {
   ref_id: "abc",
 };
 
-export const DefaultTestSection: Section = {
+export const DefaultTestSection: SectionType = {
   secondary_column_display_mode: "stacked",
   is_hidden: false,
   secondary_column_collapsible: true,

@@ -4,11 +4,11 @@ import { Embeddable, EmbeddableImperativeAPI } from "./embeddable";
 import { BottomButtons } from "./bottom-buttons";
 // import { PageLayouts, EmbeddableSections, isQuestion, getPageSectionQuestionCount,
 //          VisibleEmbeddables, getVisibleEmbeddablesOnPage, getLinkedPluginEmbeddable } from "../../utilities/activity-utils";
-import { isQuestion, getPageSectionQuestionCount, getLinkedPluginEmbeddable } from "../../utilities/activity-utils";
+import { isQuestion, getPageSectionQuestionCount, getLinkedPluginEmbeddable, numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
 import { accessibilityClick } from "../../utilities/accessibility-helper";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
-import { Page, EmbeddableType, Section } from "../../types";
+import { Page, EmbeddableType, SectionType } from "../../types";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../../lib/logger";
 import { showReport } from "../../utilities/report-utils";
@@ -64,7 +64,6 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     // const renderSecondary = this.renderSecondaryEmbeddables(visibleEmbeddables.infoAssessment, questionsBeforeSecondary, page.layout, secondaryIsOnLeft, collapsible);
     const pageTitle = page.name || "";
     const sections = page.sections;
-
     // const [first, second] = primaryFirst
     //                         ? [renderPrimary, renderSecondary]
     //                         : [renderSecondary, renderPrimary];
@@ -72,23 +71,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     return (
       <div className={"page-content full"} data-cy="page-content">
         <div className="name">{ pageTitle }</div>
-        {sections.map((section, idx) => {
-          const embeddables = section.embeddables;
-          if (!section.is_hidden) {
-            const sectionClass = classNames("section",
-                                            {"full-width": section.layout === "full-width" || section.layout === "l-responsive"},
-                                            {"l_6040": section.layout === "l-6040"},
-                                            {"r_6040": section.layout === "r-6040"},
-                                            {"l_7030": section.layout === "l-7030"},
-                                            {"r_3070": section.layout === "r-3070"}
-                                          );
-            return (
-              <div key={`section_${idx}`} className = {sectionClass}>
-                { this.renderEmbeddables(section, embeddables, totalPreviousQuestions) }
-              </div>
-            );
-          }
-        })}
+        {this.renderSections(sections, totalPreviousQuestions)}
         { enableReportButton &&
           <BottomButtons
             onGenerateReport={this.handleReport}
@@ -114,8 +97,8 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   public requestInteractiveStates() {
-    const promises = this.props.page.sections.forEach((section: Section) =>
-        section.embeddables.map((embeddable) =>
+    const promises = this.props.page.sections.forEach((section: SectionType) =>
+        section.embeddables.map((embeddable: EmbeddableType) =>
           this.embeddableRefs[embeddable.ref_id]?.current?.requestInteractiveState() || Promise.resolve()
       )
     );
@@ -143,37 +126,72 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     });
   }
 
-  private renderEmbeddables = (section: Section, embeddables: EmbeddableType[], totalPreviousQuestions: number) => {
-    let questionNumber = totalPreviousQuestions;
+  private renderSections = (sections: SectionType[], totalPreviousQuestions: number) => {
     return (
-      <React.Fragment>
-        { embeddables.map((embeddable) => {
-            if (isQuestion(embeddable)) {
-              questionNumber++;
-            }
-            const linkedPluginEmbeddable = getLinkedPluginEmbeddable(section, embeddable.ref_id);
-            if (!this.embeddableRefs[embeddable.ref_id]) {
-              this.embeddableRefs[embeddable.ref_id] = React.createRef<EmbeddableImperativeAPI>();
-            }
-            return (
-              <Embeddable
-                ref={this.embeddableRefs[embeddable.ref_id]}
-                key={`embeddable-${embeddable.ref_id}`}
-                embeddable={embeddable}
-                sectionLayout={section.layout}
-                displayMode={section.secondary_column_display_mode}
-                questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
-                linkedPluginEmbeddable={linkedPluginEmbeddable}
-                teacherEditionMode={this.props.teacherEditionMode}
-                setNavigation={this.props.setNavigation}
-                pluginsLoaded={this.props.pluginsLoaded}
-              />
-            );
-          })
+      sections.map((section, idx) => {
+        console.log("section idx:", idx);
+        const questionCount = numQuestionsOnPreviousSections(idx, sections) || 0;
+        const embeddableQuestionNumberStart = questionCount + totalPreviousQuestions;
+        console.log("section start embeddableQuestionNumberStart", embeddableQuestionNumberStart);
+        if (!section.is_hidden) {
+          return this.renderSection(section, embeddableQuestionNumberStart, idx);
         }
-      </React.Fragment>
-    );
-  }
+      })
+  );
+}
+
+private renderSection = (section: SectionType, questionNumberStart: number, idx: number) => {
+  const sectionClass = classNames("section",
+                                  {"full-width": section.layout === "full-width" || section.layout === "l-responsive"},
+                                  {"l_6040": section.layout === "l-6040"},
+                                  {"r_6040": section.layout === "r-6040"},
+                                  {"l_7030": section.layout === "l-7030"},
+                                  {"r_3070": section.layout === "r-3070"}
+                                  );
+  const embeddables = section.embeddables;
+
+  return (
+    <div key={`section_${idx}`} className = {sectionClass}>
+      { this.renderEmbeddables(section, embeddables, questionNumberStart) }
+    </div>
+  );
+}
+
+private renderEmbeddables = (section: SectionType, embeddables: EmbeddableType[], questionNumberStart: number) => {
+  let questionNumber = questionNumberStart;
+  return (
+    <React.Fragment>
+      { embeddables.map((embeddable, embeddableIndex) => {
+        // console.log("embeddable:", embeddable, isQuestion(embeddable));
+          if (isQuestion(embeddable)) {
+            // console.log("questionNumber before add: ", questionNumber);
+            questionNumber++;
+            // console.log("embeddable is a question", questionNumber);
+          }
+          // console.log("questionNumber:", questionNumber);
+          const linkedPluginEmbeddable = getLinkedPluginEmbeddable(section, embeddable.ref_id);
+          if (!this.embeddableRefs[embeddable.ref_id]) {
+            this.embeddableRefs[embeddable.ref_id] = React.createRef<EmbeddableImperativeAPI>();
+          }
+          return (
+            <Embeddable
+              ref={this.embeddableRefs[embeddable.ref_id]}
+              key={`embeddable-${embeddableIndex}-${embeddable.ref_id}`}
+              embeddable={embeddable}
+              sectionLayout={section.layout}
+              displayMode={section.secondary_column_display_mode}
+              questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
+              linkedPluginEmbeddable={linkedPluginEmbeddable}
+              teacherEditionMode={this.props.teacherEditionMode}
+              setNavigation={this.props.setNavigation}
+              pluginsLoaded={this.props.pluginsLoaded}
+            />
+          );
+        })
+      }
+    </React.Fragment>
+  );
+}
 
   // private renderIntroEmbeddables = (embeddables: Embeddable[], totalPreviousQuestions: number) => {
   //   return (
