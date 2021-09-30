@@ -360,7 +360,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
   // This works fine, but for testing the activity player, we may want to load data that was previously
   // saved in a different domain (e.g. authoring.concord.org), so we first check for a "url-source"
   // query parameter.
-  const sourceKey = queryValue("report-source") || parseUrl(offeringData.activityUrl.toLowerCase()).hostname;
+  const sourceKey = queryValue("answersSourceKey") || parseUrl(offeringData.activityUrl.toLowerCase()).hostname;
 
   // for the tool id we want to distinguish activity-player branches, incase this is ever helpful for
   // dealing with mis-matched data when we load data in originally saved on another branch.

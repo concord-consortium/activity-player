@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import ActivityPage from "../support/elements/activity-page";
-import { getIframeBody } from "../support/elements/iframe";
+import { getInIframe } from "../support/elements/iframe";
 
 const activityPage = new ActivityPage;
 
@@ -28,8 +28,7 @@ context("Saving and loading data as an anonymous user", () => {
 
       cy.visit(activityUrlWithRunKey + "&clearFirestorePersistence");
       activityPage.getNavPage(2).click();
-      cy.wait(1000);
-      getIframeBody("body").find("[data-cy=choices-container] input").eq(1).click({force: true});
+      getInIframe("body", "[data-cy=choices-container] input").eq(1).click({force: true});
 
       // unfortunately we have to wait for the data to be posted to firestore, which happens after a
       // delay to prevent spamming the database.
@@ -42,8 +41,7 @@ context("Saving and loading data as an anonymous user", () => {
       // this should force the activity player to load the data back in from the runKey
       cy.visit(activityUrlWithRunKey);
       activityPage.getNavPage(2).click();
-      cy.wait(1000);
-      getIframeBody("body").find("[data-cy=choices-container] input").eq(1).should("be.checked");
+      getInIframe("body", "[data-cy=choices-container] input").eq(1).should("be.checked");
     });
 
     it("we can remove a runKey and we will no longer see our data", () => {
@@ -52,8 +50,7 @@ context("Saving and loading data as an anonymous user", () => {
       // Answer the question
       cy.visit(activityUrlWithRunKey + "&clearFirestorePersistence");
       activityPage.getNavPage(2).click();
-      cy.wait(1000);
-      getIframeBody("body").find("[data-cy=choices-container] input").eq(1).click({force: true});
+      getInIframe("body", "[data-cy=choices-container] input").eq(1).click({force: true});
 
       // unfortunately we have to wait for the data to be posted to firestore, which happens after a
       // delay to prevent spamming the database.
@@ -65,14 +62,12 @@ context("Saving and loading data as an anonymous user", () => {
       // Make sure the answer is actually saved in storage
       cy.visit(activityUrlWithRunKey);
       activityPage.getNavPage(2).click();
-      cy.wait(1000);
-      getIframeBody("body").find("[data-cy=choices-container] input").eq(1).should("be.checked");
+      getInIframe("body", "[data-cy=choices-container] input").eq(1).should("be.checked");
 
       // Look at the page without a runKey
       cy.visit(activityUrl);
       activityPage.getNavPage(2).click();
-      cy.wait(1000);
-      getIframeBody("body").find("[data-cy=choices-container] input").eq(1).should("not.be.checked");
+      getInIframe("body", "[data-cy=choices-container] input").eq(1).should("not.be.checked");
     });
   });
 });

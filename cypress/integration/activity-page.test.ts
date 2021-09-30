@@ -1,5 +1,5 @@
 import ActivityPage from "../support/elements/activity-page";
-import { getIframeBody } from "../support/elements/iframe";
+import { getInIframe } from "../support/elements/iframe";
 
 const activityPage = new ActivityPage;
 
@@ -52,8 +52,7 @@ context("Test the overall app", () => {
     it("verify we can load a managed interactive",()=>{
       cy.visit("?activity=sample-activity-1&preview");
       activityPage.getNavPage(2).click();
-      cy.wait(500);
-      getIframeBody("body").find("[data-cy=choices-container]").should("be.visible");
+      getInIframe("body", "[data-cy=choices-container]").should("be.visible");
     });
   });
   describe("Hidden pages",()=>{

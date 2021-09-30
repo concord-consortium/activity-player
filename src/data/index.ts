@@ -18,6 +18,7 @@ import sampleActivityQISimple from "../data/sample-question-interactive-simple.j
 import sampleActivityQIComplex from "../data/sample-question-interactive-complex.json";
 import sampleActivityLinkedInteractives from "../data/Linked-Interactives-Test_version_1.json";
 import sampleActivityInteractiveSizing from "../data/sample-activity-interactive-sizing.json";
+import sampleActivityInteractiveSharing from "../data/sample-interactive-sharing.json";
 
 const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-1": sampleActivity1 as Activity,
@@ -38,7 +39,8 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-question-interactive-simple": sampleActivityQISimple as Activity,
   "sample-question-interactive-complex": sampleActivityQIComplex as Activity,
   "sample-activity-linked-interactives": sampleActivityLinkedInteractives as Activity,
-  "sample-activity-interactive-sizing": sampleActivityInteractiveSizing as Activity
+  "sample-activity-interactive-sizing": sampleActivityInteractiveSizing as Activity,
+  "sample-interactive-sharing": sampleActivityInteractiveSharing as Activity
 };
 
 import sampleSequence from "../data/sample-sequence.json";
