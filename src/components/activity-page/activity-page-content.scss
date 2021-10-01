@@ -20,28 +20,19 @@
     grid-auto-rows: minmax(20px, auto);
     grid-template-columns: repeat(10, 1fr);
     margin: 10px;
-    // display: flex;
-    // flex-direction: row;
-    // align-items: center;
-    // width: 100%;
+
     &.full-width {
-      // flex-direction: column;
       .embeddable.full-width {
         grid-column: span 10;
-
-        // width: 100%;
       }
     }
     &.l_6040 {
-      // height: 100%;
-      .embeddable.primary {
-        // left: 0;
-        // width: 66%;
+      .column.primary {
+        left: 0;
         grid-column: span 6;
       }
-      .embeddable.secondary {
-        // right: 0;
-        // width: 44%;
+      .column.secondary {
+        right: 0;
         grid-column: span 4;
         &.stacked {
           flex-direction: column;
@@ -49,14 +40,12 @@
       }
     }
     &.r_6040 {
-      .embeddable.primary {
-        // right: 0;
-        // width: 66%;
+      .column.primary {
+        right: 0;
         grid-column: span 6;
       }
-      .embeddable.secondary {
-        // left: 0;
-        // width: 44%;
+      .column.secondary {
+        left: 0;
         grid-column: span 4;
         &.stacked {
           flex-direction: column;
@@ -64,28 +53,27 @@
       }
     }
     &.l_7030 {
-      .embeddable.primary {
-        // left: 0;
-        // width: 70%;
+      .column.primary {
+        left: 0;
         grid-column: span 7;
       }
-      .embeddable.secondary {
-        // right: 0;
-        // width: 30%;
+      .column.secondary {
+        right: 0;
         grid-column: span 3;
         &.stacked {
           flex-direction: column;
         }
       }
     }
-    &.r_7030 {
-      .embeddable.primary {
+    &.r_3070 {
+      .column.primary {
         right: 0;
-        width: 70%;
+        grid-column: span 7;
       }
-      .embeddable.secondary {
+      .column.secondary {
         left: 0;
-        width: 30%;
+        grid-column: span 3;
+
         &.stacked {
           flex-direction: column;
         }
