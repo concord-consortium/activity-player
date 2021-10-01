@@ -129,79 +129,89 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   private renderSections = (sections: SectionType[], totalPreviousQuestions: number) => {
     return (
       sections.map((section, idx) => {
-        console.log("section idx:", idx);
         const questionCount = numQuestionsOnPreviousSections(idx, sections) || 0;
         const embeddableQuestionNumberStart = questionCount + totalPreviousQuestions;
-        console.log("section start embeddableQuestionNumberStart", embeddableQuestionNumberStart);
         if (!section.is_hidden) {
           return this.renderSection(section, embeddableQuestionNumberStart, idx);
         }
       })
-  );
+    );
+  }
+
+  private renderSection = (section: SectionType, questionNumberStart: number, idx: number) => {
+    const layout = section.layout;
+    const display_mode = section.secondary_column_display_mode;
+    const splitLayout = layout === "l-6040" || layout === "r-6040" || layout === "l-7030" || layout === "r-3070";
+    const sectionClass = classNames("section",
+                                    {"full-width": layout === "full-width" || layout === "l-responsive"},
+                                    {"l_6040": layout === "l-6040"},
+                                    {"r_6040": layout === "r-6040"},
+                                    {"l_7030": layout === "l-7030"},
+                                    {"r_3070": layout === "r-3070"},
+                                    {"stacked": display_mode === "stacked"},
+                                    {"carousel": display_mode === "carousel"}
+                                   );
+    const embeddables = section.embeddables;
+
+    if (!splitLayout) {
+      return (
+        <div key={`section_${idx}`} className = {sectionClass}>
+          { this.renderEmbeddables(section, embeddables, questionNumberStart) }
+        </div>
+      );
+    } else {
+      const primaryEmbeddables = embeddables.filter(e => e.column === "primary");
+      const secondaryEmbeddables = embeddables.filter(e => e.column === "secondary");
+      const leftColumn = layout.includes("l") ? primaryEmbeddables : secondaryEmbeddables;
+      const rightColumn = layout.includes("l") ? secondaryEmbeddables : primaryEmbeddables;
+      const numQuestionsLeftColumn = layout.includes("l") ? primaryEmbeddables.length : secondaryEmbeddables.length;
+      return (
+        <div key={`section_${idx}`} className = {sectionClass}>
+          <div className={`column ${layout} ${layout.includes("l") ? "primary" : "secondary"}`}>
+            {this.renderEmbeddables(section, leftColumn, questionNumberStart)}
+          </div>
+          <div className={`column ${layout} ${layout.includes("l") ? "secondary" : "primary"}`}>
+            {this.renderEmbeddables(section, rightColumn, questionNumberStart + numQuestionsLeftColumn)}
+          </div>
+        </div>
+      );
+    }
+  }
+
+  private renderEmbeddables = (section: SectionType, embeddables: EmbeddableType[], questionNumberStart: number) => {
+    let questionNumber = questionNumberStart;
+    return (
+      <React.Fragment>
+        { embeddables.map((embeddable, embeddableIndex) => {
+            if (isQuestion(embeddable)) {
+              questionNumber++;
+            }
+            const linkedPluginEmbeddable = getLinkedPluginEmbeddable(section, embeddable.ref_id);
+            if (!this.embeddableRefs[embeddable.ref_id]) {
+              this.embeddableRefs[embeddable.ref_id] = React.createRef<EmbeddableImperativeAPI>();
+            }
+            return (
+              <Embeddable
+                ref={this.embeddableRefs[embeddable.ref_id]}
+                key={`embeddable-${embeddableIndex}-${embeddable.ref_id}`}
+                embeddable={embeddable}
+                sectionLayout={section.layout}
+                displayMode={section.secondary_column_display_mode}
+                questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
+                linkedPluginEmbeddable={linkedPluginEmbeddable}
+                teacherEditionMode={this.props.teacherEditionMode}
+                setNavigation={this.props.setNavigation}
+                pluginsLoaded={this.props.pluginsLoaded}
+              />
+            );
+          })
+        }
+      </React.Fragment>
+    );
+  }
+
 }
 
-private renderSection = (section: SectionType, questionNumberStart: number, idx: number) => {
-  const sectionClass = classNames("section",
-                                  {"full-width": section.layout === "full-width" || section.layout === "l-responsive"},
-                                  {"l_6040": section.layout === "l-6040"},
-                                  {"r_6040": section.layout === "r-6040"},
-                                  {"l_7030": section.layout === "l-7030"},
-                                  {"r_3070": section.layout === "r-3070"}
-                                  );
-  const embeddables = section.embeddables;
-
-  return (
-    <div key={`section_${idx}`} className = {sectionClass}>
-      { this.renderEmbeddables(section, embeddables, questionNumberStart) }
-    </div>
-  );
-}
-
-private renderEmbeddables = (section: SectionType, embeddables: EmbeddableType[], questionNumberStart: number) => {
-  let questionNumber = questionNumberStart;
-  return (
-    <React.Fragment>
-      { embeddables.map((embeddable, embeddableIndex) => {
-        // console.log("embeddable:", embeddable, isQuestion(embeddable));
-          if (isQuestion(embeddable)) {
-            // console.log("questionNumber before add: ", questionNumber);
-            questionNumber++;
-            // console.log("embeddable is a question", questionNumber);
-          }
-          // console.log("questionNumber:", questionNumber);
-          const linkedPluginEmbeddable = getLinkedPluginEmbeddable(section, embeddable.ref_id);
-          if (!this.embeddableRefs[embeddable.ref_id]) {
-            this.embeddableRefs[embeddable.ref_id] = React.createRef<EmbeddableImperativeAPI>();
-          }
-          return (
-            <Embeddable
-              ref={this.embeddableRefs[embeddable.ref_id]}
-              key={`embeddable-${embeddableIndex}-${embeddable.ref_id}`}
-              embeddable={embeddable}
-              sectionLayout={section.layout}
-              displayMode={section.secondary_column_display_mode}
-              questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
-              linkedPluginEmbeddable={linkedPluginEmbeddable}
-              teacherEditionMode={this.props.teacherEditionMode}
-              setNavigation={this.props.setNavigation}
-              pluginsLoaded={this.props.pluginsLoaded}
-            />
-          );
-        })
-      }
-    </React.Fragment>
-  );
-}
-
-  // private renderIntroEmbeddables = (embeddables: Embeddable[], totalPreviousQuestions: number) => {
-  //   return (
-  //     <div className="embeddables">
-  //       <div className="group fill-remaining responsive">
-  //         {this.renderEmbeddables(embeddables, EmbeddableSections.Introduction, totalPreviousQuestions)}
-  //       </div>
-  //     </div>
-  //   );
-  // }
 
   // private renderPrimaryEmbeddables = (embeddables: EmbeddableWrapper[], totalPreviousQuestions: number, layout: string, isLeft: boolean, pinOffset: number) => {
   //   const position = { top: pinOffset };
@@ -276,4 +286,3 @@ private renderEmbeddables = (section: SectionType, embeddables: EmbeddableType[]
   //   }
   // }
 
-}

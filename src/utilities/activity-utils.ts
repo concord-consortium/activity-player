@@ -104,17 +104,12 @@ export const getPageSectionQuestionCount = (page: Page) => {
 
 export const numQuestionsOnPreviousSections = (currentSectionIndex: number, sections: SectionType[]) => {
   let numQuestions = 0;
-  console.log("currentSectionIndex: ", currentSectionIndex);
   for (let sectionIdx = 0; sectionIdx < currentSectionIndex; sectionIdx++) {
     sections[sectionIdx].embeddables.forEach((embeddable) => {
-      console.log(embeddable);
-      console.log(isQuestion(embeddable));
       if (isQuestion(embeddable)) {
         numQuestions++;
-        console.log("isQuestion: ", numQuestions);
       }
     });
-    console.log("in numQuestionsOnPreviousSections: ", numQuestions);
   }
   return numQuestions;
 };

@@ -109,7 +109,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                                                       ? "full-width"
                                                       : embeddable.column === "primary"
                                                         ? "primary"
-                                                        : displayMode==="stacked"
+                                                        : displayMode === "stacked"
                                                           ? "secondary stacked"
                                                           : "secondary"
                                       );
