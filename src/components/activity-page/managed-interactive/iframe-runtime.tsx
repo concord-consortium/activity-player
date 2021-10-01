@@ -347,6 +347,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
               allowFullScreen={true}
               allow="geolocation *; microphone *; camera *"
               title={iframeTitle}
+              scrolling="no"
       />
     </div>
   );
