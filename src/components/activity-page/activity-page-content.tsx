@@ -29,7 +29,7 @@ interface IProps {
 
 interface IState {
   scrollOffset: number;
-  // isSecondaryCollapsed: boolean;
+  isSecondaryCollapsed: boolean;
 }
 
 export class ActivityPageContent extends React.PureComponent <IProps, IState> {
@@ -41,28 +41,13 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     super(props);
     this.state = {
       scrollOffset: 0,
-      // isSecondaryCollapsed: false,
+      isSecondaryCollapsed: false,
     };
   }
 
   render() {
     const { enableReportButton, page, totalPreviousQuestions } = this.props;
     const { scrollOffset } = this.state;
-    // const primaryFirst = page.layout === PageLayouts.FullWidth || page.layout === PageLayouts.FortySixty;
-    const pageSectionQuestionCount = getPageSectionQuestionCount(page);
-    // const visibleEmbeddables: VisibleEmbeddables = getVisibleEmbeddablesOnPage(page);
-
-    // const questionsBeforePrimary = totalPreviousQuestions + pageSectionQuestionCount.Header
-    //                                + (primaryFirst ? 0 : pageSectionQuestionCount.InfoAssessment);
-    // const primaryIsOnLeft = page.layout === PageLayouts.FortySixty;
-    // const questionsBeforeSecondary = totalPreviousQuestions + pageSectionQuestionCount.Header
-    //                                  + (primaryFirst ? pageSectionQuestionCount.InteractiveBlock : 0);
-    // const secondaryIsOnLeft = page.layout === PageLayouts.Responsive || page.layout === PageLayouts.SixtyForty;
-    // const collapsible = page.toggle_info_assessment && page.layout !== PageLayouts.FullWidth;
-    // const renderSecondary = this.renderSecondaryEmbeddables(visibleEmbeddables.infoAssessment, questionsBeforeSecondary, page.layout, secondaryIsOnLeft, collapsible);
-    // const [first, second] = primaryFirst
-    //                         ? [renderPrimary, renderSecondary]
-    //                         : [renderSecondary, renderPrimary];
     const pageTitle = page.name || "";
     const sections = page.sections;
 
@@ -104,15 +89,18 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   private handleScroll = (e: MouseEvent) => {
+    console.log("in handleScroll");
     if (this.secondaryDivRef) {
       const secondaryHeight = this.secondaryDivRef.getBoundingClientRect().height;
       const primaryHeight = this.primaryDivRef?.getBoundingClientRect().height;
+      console.log("secondaryHeight:", secondaryHeight, "primaryHeight:", primaryHeight);
       const potentialScrollOffset = this.secondaryDivRef.getBoundingClientRect().top < kPinMargin
         ? kPinMargin - this.secondaryDivRef.getBoundingClientRect().top
         : 0;
-      const scrollOffset = primaryHeight && (potentialScrollOffset + primaryHeight) > secondaryHeight
-        ? secondaryHeight - primaryHeight
-        : potentialScrollOffset;
+      const scrollOffset = ((primaryHeight && (potentialScrollOffset + primaryHeight) > secondaryHeight) && potentialScrollOffset) || 0;
+        // ? secondaryHeight - primaryHeight
+        // : potentialScrollOffset;
+        console.log("potentialScrollOffset:", potentialScrollOffset, "scrollOffset:", scrollOffset);
       this.setState({ scrollOffset });
     }
   }
@@ -137,6 +125,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   private renderSection = (section: SectionType, questionNumberStart: number, idx: number) => {
+    const { scrollOffset } = this.state;
     const layout = section.layout;
     const display_mode = section.secondary_column_display_mode;
     const splitLayout = layout === "l-6040" || layout === "r-6040" || layout === "l-7030" || layout === "r-3070";
@@ -150,8 +139,9 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                                     {"carousel": display_mode === "carousel"}
                                    );
     const embeddables = section.embeddables;
-    // const pinOffSet = page.layout !== PageLayouts.FullWidth && visibleEmbeddables.infoAssessment.length ? scrollOffset : 0;
-    // const renderPrimary = this.renderPrimaryEmbeddables(visibleEmbeddables.interactiveBox, questionsBeforePrimary, page.layout, primaryIsOnLeft, pinOffSet);
+    const primaryEmbeddables = embeddables.filter(e => e.column === "primary");
+    const secondaryEmbeddables = embeddables.filter(e => e.column === "secondary");
+    const pinOffSet = layout !== "full-width" && secondaryEmbeddables.length ? scrollOffset : 0;
 
     if (!splitLayout) {
       return (
@@ -160,25 +150,25 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
         </div>
       );
     } else {
-      const primaryEmbeddables = embeddables.filter(e => e.column === "primary");
-      const secondaryEmbeddables = embeddables.filter(e => e.column === "secondary");
-      const leftColumn = layout.includes("l") ? primaryEmbeddables : secondaryEmbeddables;
-      const rightColumn = layout.includes("l") ? secondaryEmbeddables : primaryEmbeddables;
+      const leftColumnEmbeddables = layout.includes("l") ? primaryEmbeddables : secondaryEmbeddables;
+      const rightColumnEmbeddables = layout.includes("l") ? secondaryEmbeddables : primaryEmbeddables;
       const numQuestionsLeftColumn = layout.includes("l") ? primaryEmbeddables.length : secondaryEmbeddables.length;
       return (
         <div key={`section_${idx}`} className = {sectionClass}>
-          <div className={`column ${layout} ${layout.includes("l") ? "primary" : "secondary"}`}>
-            {this.renderEmbeddables(section, leftColumn, questionNumberStart)}
-          </div>
-          <div className={`column ${layout} ${layout.includes("l") ? "secondary" : "primary"}`}>
-            {this.renderEmbeddables(section, rightColumn, questionNumberStart + numQuestionsLeftColumn)}
-          </div>
+          {layout.includes("l")
+            ? this.renderPrimaryEmbeddables(section, leftColumnEmbeddables, questionNumberStart, pinOffSet)
+            : this.renderSecondaryEmbeddables(section, leftColumnEmbeddables, questionNumberStart)
+          }
+          {layout.includes("l")
+            ? this.renderSecondaryEmbeddables(section, rightColumnEmbeddables, numQuestionsLeftColumn)
+            : this.renderPrimaryEmbeddables(section, rightColumnEmbeddables, numQuestionsLeftColumn, pinOffSet)
+          }
         </div>
       );
     }
   }
 
-  private renderEmbeddables = (section: SectionType, embeddables: EmbeddableType[], questionNumberStart: number) => {
+  private renderEmbeddables = (section: SectionType, embeddables: EmbeddableType[], questionNumberStart: number, pinOffSet?: number) => {
     let questionNumber = questionNumberStart;
     return (
       <React.Fragment>
@@ -202,6 +192,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                 teacherEditionMode={this.props.teacherEditionMode}
                 setNavigation={this.props.setNavigation}
                 pluginsLoaded={this.props.pluginsLoaded}
+                pinOffSet={pinOffSet}
               />
             );
           })
@@ -210,79 +201,75 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     );
   }
 
+  private renderPrimaryEmbeddables = (section: SectionType, embeddables: EmbeddableType[], questionNumberStart: number, pinOffset: number) => {
+    const position = { top: pinOffset };
+    const layout = section.layout;
+    const containerClass = classNames("column", layout, "primary");
+    return (
+      <div className={containerClass} style={position} ref={elt => this.primaryDivRef = elt}>
+        {this.renderEmbeddables(section, embeddables, questionNumberStart, pinOffset)}
+      </div>
+    );
+  }
+
+  private renderSecondaryEmbeddables = (section: SectionType, embeddables: EmbeddableType[], questionNumberStart: number) => {
+    const { isSecondaryCollapsed } = this.state;
+    const layout = section.layout;
+    const collapsible = section.secondary_column_collapsible;
+    const containerClass = classNames("column", layout, "secondary");
+    return (
+      <div className={containerClass} ref={elt => this.secondaryDivRef = elt}>
+        {collapsible && this.renderCollapsibleHeader(section)}
+        {!isSecondaryCollapsed && this.renderEmbeddables(section, embeddables, questionNumberStart)}
+      </div>
+    );
+  }
+
+  private renderCollapsibleHeader = (section: SectionType) => {
+    const { isSecondaryCollapsed } = this.state;
+    const rightOrientation = section.layout.includes("l");
+    const headerClass = `collapsible-header ${isSecondaryCollapsed ? "collapsed" : ""} ${rightOrientation ? "right" : ""}`;
+    return (
+      <div className={headerClass} data-cy="collapsible-header" tabIndex={0}
+            onClick={this.handleCollapseHeader} onKeyDown={this.handleCollapseHeader} >
+        {isSecondaryCollapsed
+          ? <React.Fragment>
+              {this.renderCollapseArrow(rightOrientation)}
+              <div>Show</div>
+            </React.Fragment>
+          : <React.Fragment>
+              {rightOrientation && <div>Hide</div>}
+              {this.renderCollapseArrow(!rightOrientation)}
+              {!rightOrientation && <div>Hide</div>}
+            </React.Fragment>
+        }
+      </div>
+    );
+  }
+
+  private renderCollapseArrow = (leftArrow: boolean) => {
+    return (
+      leftArrow
+        ? <IconChevronLeft
+          width={32}
+          height={32}
+          fill={"white"}
+        />
+        : <IconChevronRight
+          width={32}
+          height={32}
+          fill={"white"}
+        />
+    );
+  }
+
+  private handleCollapseHeader = (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
+    if (accessibilityClick(e))  {
+      Logger.log({
+        event: LogEventName.toggle_collapsible_column,
+        parameters:{ hide_column: !this.state.isSecondaryCollapsed }
+      });
+      this.setState(state => ({ isSecondaryCollapsed: !state.isSecondaryCollapsed }));
+    }
+  }
 }
-
-
-  // private renderPrimaryEmbeddables = (embeddables: EmbeddableWrapper[], totalPreviousQuestions: number, layout: string, isLeft: boolean, pinOffset: number) => {
-  //   const position = { top: pinOffset };
-  //   const isFullWidth = layout === PageLayouts.FullWidth;
-  //   const containerClass = `group fill-remaining ${isFullWidth ? "responsive top" : ""} ${isLeft ? "left" : ""}`;
-  //   return (
-  //     <div className={containerClass} style={position} ref={elt => this.primaryDivRef = elt}>
-  //       {this.renderEmbeddables(embeddables, EmbeddableSections.Interactive, totalPreviousQuestions)}
-  //     </div>
-  //   );
-  // }
-
-  // private renderSecondaryEmbeddables = (embeddables: EmbeddableWrapper[], totalPreviousQuestions: number, layout: string, isLeft: boolean, collapsible: boolean) => {
-  //   const { isSecondaryCollapsed } = this.state;
-  //   const isFullWidth = layout === PageLayouts.FullWidth;
-  //   const staticWidth = layout === PageLayouts.FortySixty || layout === PageLayouts.SixtyForty || layout === PageLayouts.Responsive;
-  //   const containerClass = `group ${isFullWidth ? "responsive" : ""} ${isLeft ? "left" : ""} ${staticWidth ? "static-width" : ""} ${isSecondaryCollapsed ? "collapsed" : ""}`;
-  //   return (
-  //     <div className={containerClass} ref={elt => this.secondaryDivRef = elt}>
-  //       {collapsible && this.renderCollapsibleHeader()}
-  //       {!isSecondaryCollapsed && this.renderEmbeddables(embeddables, EmbeddableSections.InfoAssessment, totalPreviousQuestions)}
-  //     </div>
-  //   );
-  // }
-
-  // private renderCollapsibleHeader = () => {
-  //   const { isSecondaryCollapsed } = this.state;
-  //   const { page } = this.props;
-  //   const rightOrientation = page.layout === PageLayouts.FortySixty;
-  //   const headerClass = `collapsible-header ${isSecondaryCollapsed ? "collapsed" : ""} ${rightOrientation ? "right" : ""}`;
-  //   return (
-  //     <div className={headerClass} data-cy="collapsible-header" tabIndex={0}
-  //           onClick={this.handleCollapseHeader} onKeyDown={this.handleCollapseHeader} >
-  //       {isSecondaryCollapsed
-  //         ? <React.Fragment>
-  //             {this.renderCollapseArrow(rightOrientation)}
-  //             <div>Show</div>
-  //           </React.Fragment>
-  //         : <React.Fragment>
-  //             {rightOrientation && <div>Hide</div>}
-  //             {this.renderCollapseArrow(!rightOrientation)}
-  //             {!rightOrientation && <div>Hide</div>}
-  //           </React.Fragment>
-  //       }
-  //     </div>
-  //   );
-  // }
-
-  // private renderCollapseArrow = (leftArrow: boolean) => {
-  //   return (
-  //     leftArrow
-  //       ? <IconChevronLeft
-  //         width={32}
-  //         height={32}
-  //         fill={"white"}
-  //       />
-  //       : <IconChevronRight
-  //         width={32}
-  //         height={32}
-  //         fill={"white"}
-  //       />
-  //   );
-  // }
-
-  // private handleCollapseHeader = (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
-  //   if (accessibilityClick(e))  {
-  //     Logger.log({
-  //       event: LogEventName.toggle_collapsible_column,
-  //       parameters:{ hide_column: !this.state.isSecondaryCollapsed }
-  //     });
-  //     this.setState(state => ({ isSecondaryCollapsed: !state.isSecondaryCollapsed }));
-  //   }
-  // }
-
