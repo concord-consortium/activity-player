@@ -4,7 +4,7 @@ export const DefaultTestEmbeddable: EmbeddableType = {
   type: "MwInteractive",
   name: "name",
   is_hidden: false,
-  is_full_width: true,
+  is_half_width: true,
   ref_id: "abc",
 };
 
@@ -75,7 +75,7 @@ export const DefaultManagedInteractive: IManagedInteractive = {
   ref_id: "",
   name: "",
   is_hidden: false,
-  is_full_width: false
+  is_half_width: false
 };
 
 export const DefaultXhtmlComponent: IEmbeddableXhtml = {
@@ -84,7 +84,7 @@ export const DefaultXhtmlComponent: IEmbeddableXhtml = {
   type: "Embeddable::Xhtml",
   ref_id: "123-Embeddable::Xhtml",
   is_hidden: false,
-  is_full_width: false,
+  is_half_width: false,
   is_callout: true
 };
 
@@ -92,7 +92,7 @@ export const DefaultTEWindowshadeComponent: IEmbeddablePlugin = {
   type: "Embeddable::EmbeddablePlugin",
   ref_id: "123-Embeddable::EmbeddablePlugin",
   is_hidden: false,
-  is_full_width: false,
+  is_half_width: false,
   plugin: {
     id: 12,
     description: null,

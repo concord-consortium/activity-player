@@ -104,13 +104,16 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   }
 
   const singlePageLayout = activityLayout === ActivityLayouts.SinglePage;
-  const embeddableClasses = classNames("embeddable", embeddable.column === null || singlePageLayout
-                                                      ? "full-width"
-                                                      : embeddable.column === "primary"
-                                                        ? "primary"
-                                                        : displayMode === "stacked"
-                                                          ? "secondary stacked"
-                                                          : "secondary"
+  const isFullWidthLayout = embeddable.column === null || singlePageLayout;
+  const embeddableClasses = classNames("embeddable",
+                                        isFullWidthLayout
+                                          ? "full-width"
+                                          : embeddable.column === "primary"
+                                            ? "primary"
+                                            : displayMode === "stacked"
+                                              ? "secondary stacked"
+                                              : "secondary",
+                                        {"half-width":  embeddable.is_half_width}
                                       );
 
   return (
