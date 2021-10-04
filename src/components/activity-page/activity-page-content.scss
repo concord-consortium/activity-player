@@ -24,6 +24,9 @@
     &.full-width {
       .embeddable.full-width {
         grid-column: span 10;
+        &.half-width {
+          grid-column: span 5;
+        }
       }
     }
     &.l_6040 {

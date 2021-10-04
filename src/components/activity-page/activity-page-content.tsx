@@ -55,18 +55,16 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     // const questionsBeforePrimary = totalPreviousQuestions + pageSectionQuestionCount.Header
     //                                + (primaryFirst ? 0 : pageSectionQuestionCount.InfoAssessment);
     // const primaryIsOnLeft = page.layout === PageLayouts.FortySixty;
-    // const pinOffSet = page.layout !== PageLayouts.FullWidth && visibleEmbeddables.infoAssessment.length ? scrollOffset : 0;
-    // const renderPrimary = this.renderPrimaryEmbeddables(visibleEmbeddables.interactiveBox, questionsBeforePrimary, page.layout, primaryIsOnLeft, pinOffSet);
     // const questionsBeforeSecondary = totalPreviousQuestions + pageSectionQuestionCount.Header
     //                                  + (primaryFirst ? pageSectionQuestionCount.InteractiveBlock : 0);
     // const secondaryIsOnLeft = page.layout === PageLayouts.Responsive || page.layout === PageLayouts.SixtyForty;
     // const collapsible = page.toggle_info_assessment && page.layout !== PageLayouts.FullWidth;
     // const renderSecondary = this.renderSecondaryEmbeddables(visibleEmbeddables.infoAssessment, questionsBeforeSecondary, page.layout, secondaryIsOnLeft, collapsible);
-    const pageTitle = page.name || "";
-    const sections = page.sections;
     // const [first, second] = primaryFirst
     //                         ? [renderPrimary, renderSecondary]
     //                         : [renderSecondary, renderPrimary];
+    const pageTitle = page.name || "";
+    const sections = page.sections;
 
     return (
       <div className={"page-content full"} data-cy="page-content">
@@ -152,6 +150,8 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                                     {"carousel": display_mode === "carousel"}
                                    );
     const embeddables = section.embeddables;
+    // const pinOffSet = page.layout !== PageLayouts.FullWidth && visibleEmbeddables.infoAssessment.length ? scrollOffset : 0;
+    // const renderPrimary = this.renderPrimaryEmbeddables(visibleEmbeddables.interactiveBox, questionsBeforePrimary, page.layout, primaryIsOnLeft, pinOffSet);
 
     if (!splitLayout) {
       return (

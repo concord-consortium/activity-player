@@ -166,7 +166,7 @@ export const getGlossaryEmbeddable = (activity: Activity) => {
     ? { type: "Embeddable::EmbeddablePlugin",
         plugin: glossaryPlugin,
         is_hidden: false,
-        is_full_width: false,
+        is_half_width: false,
         ref_id: "" // no ref_id on the glossary plugin
       }
     : undefined;

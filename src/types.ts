@@ -61,7 +61,7 @@ export interface EmbeddableBase {
   interactiveState?: any | null;
   url_fragment?: string | null,
   is_hidden: boolean;
-  is_full_width: boolean;
+  is_half_width: boolean;
   ref_id: string;
   embeddable_ref_id?: string;
   column?: "primary" | "secondary" | null;

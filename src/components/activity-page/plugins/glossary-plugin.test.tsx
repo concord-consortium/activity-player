@@ -22,7 +22,7 @@ describe("Glossary Plugin component", () => {
         }
       },
       "is_hidden": false,
-      "is_full_width": false,
+      "is_half_width": false,
       "type": "Embeddable::EmbeddablePlugin",
       "ref_id": ""
     };

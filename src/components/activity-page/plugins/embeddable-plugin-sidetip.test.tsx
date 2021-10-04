@@ -22,7 +22,7 @@ describe("Embeddable Sidetip component", () => {
         }
       },
       "is_hidden": false,
-      "is_full_width": false,
+      "is_half_width": false,
       "type": "Embeddable::EmbeddablePlugin",
       "ref_id": "2991-Embeddable::EmbeddablePlugin"
     };
