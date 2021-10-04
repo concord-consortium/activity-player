@@ -208,7 +208,7 @@
         {
           "layout": "full-width",
           "is_hidden": false,
-          "secondary_column_collapsible": false,
+          "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
@@ -274,7 +274,7 @@
         {
           "layout": "l-6040",
           "is_hidden": false,
-          "secondary_column_collapsible": false,
+          "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
@@ -439,7 +439,7 @@
         {
           "layout": "r-3070",
           "is_hidden": false,
-          "secondary_column_collapsible": false,
+          "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
           "embeddables": [
             {

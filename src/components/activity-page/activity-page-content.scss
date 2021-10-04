@@ -82,9 +82,54 @@
         }
       }
     }
+    .collapsible-header {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      box-sizing: border-box;
+      padding: 20px;
+      margin-bottom: 10px;
+      height: 35px;
+      background-color: $cc-charcoal;
+      color: $cc-charcoal-light2;
+      transition-duration: .25s;
+      cursor: pointer;
+
+      &.right {
+        justify-content: flex-start;
+      }
+
+      &.collapsed {
+        height: 350px;
+        width: 45px;
+        padding: 5px;
+        flex-direction: column;
+        justify-content: flex-start;
+      }
+
+      div {
+        position: relative;
+        top: 2px;
+        left: 0px;
+        width: 30px;
+        white-space: nowrap;
+      }
+
+      &.collapsed {
+        height: 350px;
+        width: 45px;
+        padding: 5px;
+
+        div {
+          transform: rotate(-90deg);
+          top: 20px;
+        }
+      }
+    }
   }
   .embeddable {
     margin-bottom: 10px;
+    position: relative;
     .header {
       height: fit-content;
       min-height: 36px;

@@ -26,6 +26,7 @@ interface IProps {
   setNavigation?: (id: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
   ref?: React.Ref<EmbeddableImperativeAPI>;
+  pinOffSet?: number;
 }
 
 export interface EmbeddableImperativeAPI {
@@ -35,7 +36,7 @@ export interface EmbeddableImperativeAPI {
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { sectionLayout, embeddable, linkedPluginEmbeddable, activityLayout, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded } = props;
+  const { sectionLayout, embeddable, linkedPluginEmbeddable, activityLayout, displayMode, questionNumber, pinOffSet, setNavigation, teacherEditionMode, pluginsLoaded } = props;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
   }, [setNavigation, embeddable.ref_id]);
@@ -103,7 +104,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   if (qComponent === undefined) {
     return null;
   }
-
+  const position = { top: pinOffSet };
   const singlePageLayout = activityLayout === ActivityLayouts.SinglePage;
   const isFullWidthLayout = embeddable.column === null || singlePageLayout;
   const embeddableClasses = classNames("embeddable",
@@ -120,6 +121,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   return (
     <div
       className={embeddableClasses}
+      style={position}
       data-cy="embeddable"
       key={embeddable.ref_id}
     >
