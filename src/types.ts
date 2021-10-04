@@ -170,7 +170,7 @@ export interface Activity {
   export_site?: string | null;
   pages: Page[];
   position?: number | null;
-  fixed_width_layout?: "not_enabled" | "ipad_friendly" | "1100px"
+  fixed_width_layout?: "ipad_friendly" | "1100px"
 }
 
 export interface Sequence {
@@ -186,7 +186,7 @@ export interface Sequence {
   activities: Activity[];
   type: string;
   export_site: string | null;
-  fixed_width_layout?: "not_enabled" | "ipad_friendly" | "1100px"
+  fixed_width_layout?: "ipad_friendly" | "1100px"
 }
 
 export interface IReportState {

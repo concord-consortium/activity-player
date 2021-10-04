@@ -280,7 +280,7 @@ export class App extends React.PureComponent<IProps, IState> {
     }
 
     // convert option with Ruby snake case to kebab case for css
-    const fixedWidthClassName = `fixed-width-${activity.fixed_width_layout || "not_enabled"}`.replace(/_/g, "-");
+    const fixedWidthClassName = `fixed-width-${activity.fixed_width_layout || "1100px"}`.replace(/_/g, "-");
 
     return (
       <div className={`activity ${fixedWidthClassName}`}>

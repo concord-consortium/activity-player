@@ -22,7 +22,7 @@
   "version": 1,
   "theme_name": null,
   "background_image": null,
-  "fixed_width_layout": "not_enabled",
+  "fixed_width_layout": "1100px",
   "pages": [
     {
       "additional_sections": {},
