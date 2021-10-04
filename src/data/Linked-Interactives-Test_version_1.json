@@ -22,6 +22,7 @@
   "version": 1,
   "theme_name": "WATERS 2",
   "background_image": null,
+  "fixed_width_layout": "not_enabled",
   "pages": [
     {
       "additional_sections": {},

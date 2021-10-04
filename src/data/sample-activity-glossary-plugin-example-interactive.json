@@ -14,6 +14,7 @@
   "version": 1,
   "theme_name": "HAS National Geographic: Water",
   "background_image": "https://authoring.concord.org/assets/has-bg/water_background.jpg",
+  "fixed_width_layout": "not_enabled",
   "pages": [
     {
       "additional_sections": {},

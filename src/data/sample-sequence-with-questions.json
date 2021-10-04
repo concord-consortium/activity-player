@@ -15,6 +15,7 @@
   },
   "theme_id": null,
   "background_image": null,
+  "fixed_width_layout": "not_enabled",
   "thumbnail_url": "",
   "title": "Sample Sequence Activity Player",
   "activities": [
@@ -43,6 +44,7 @@
       "version": 1,
       "theme_name": null,
       "background_image": null,
+      "fixed_width_layout": "not_enabled",
       "pages": [
         {
           "additional_sections": {},
@@ -549,6 +551,7 @@
       "version": 1,
       "theme_name": null,
       "background_image": null,
+      "fixed_width_layout": "not_enabled",
       "pages": [
         {
           "additional_sections": null,

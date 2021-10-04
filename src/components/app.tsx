@@ -279,8 +279,11 @@ export class App extends React.PureComponent<IProps, IState> {
       setAppBackgroundImage(backgroundImage);
     }
 
+    // convert option with Ruby snake case to kebab case for css
+    const fixedWidthClassName = `fixed-width-${activity.fixed_width_layout || "not_enabled"}`.replace(/_/g, "-");
+
     return (
-      <React.Fragment>
+      <div className={`activity ${fixedWidthClassName}`}>
         <Header
           fullWidth={fullWidth}
           project={project}
@@ -323,7 +326,7 @@ export class App extends React.PureComponent<IProps, IState> {
         { glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
           <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} pluginsLoaded={pluginsLoaded} />
         }
-      </React.Fragment>
+      </div>
     );
   }
 

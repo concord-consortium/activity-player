@@ -15,6 +15,7 @@
   },
   "theme_id": 4,
   "background_image": "https://authoring.concord.org/assets/has-bg/water_background.jpg",
+  "fixed_width_layout": "not_enabled",
   "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Small_pincertail_%28Onychogomphus_forcipatus%29_male_Bulgaria.jpg/640px-Small_pincertail_%28Onychogomphus_forcipatus%29_male_Bulgaria.jpg",
   "title": "Test Sequence",
   "activities": [
@@ -43,6 +44,7 @@
       "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
+      "fixed_width_layout": "not_enabled",
       "pages": [
         {
           "additional_sections": {},
@@ -124,6 +126,7 @@
       "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
+      "fixed_width_layout": "not_enabled",
       "pages": [
         {
           "additional_sections": {},
@@ -187,6 +190,7 @@
       "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
+      "fixed_width_layout": "not_enabled",
       "pages": [
         {
           "additional_sections": {},
@@ -250,6 +254,7 @@
       "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
+      "fixed_width_layout": "not_enabled",
       "pages": [
         {
           "additional_sections": {},
@@ -331,6 +336,7 @@
       "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
+      "fixed_width_layout": "not_enabled",
       "pages": [
         {
           "additional_sections": {},
