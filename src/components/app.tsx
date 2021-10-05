@@ -285,7 +285,7 @@ export class App extends React.PureComponent<IProps, IState> {
     const fixedWidthLayout = (sequence?.fixed_width_layout || activity.fixed_width_layout || kDefaultFixedWidthLayout).replace(/_/g, "-");
 
     return (
-      <div className={`activity fixed-width-${fixedWidthLayout}`}>
+      <div className={`activity fixed-width-${fixedWidthLayout}`} data-cy="activity">
         <Header
           fullWidth={fullWidth}
           project={project}

@@ -13,6 +13,19 @@ context("Test the overall app", () => {
       cy.url().should("not.contain", "sequenceActivity");
     });
   });
+  describe("Activity",() => {
+    it("verify 1100px fixed width class is set and activity has a width of 1100px",()=>{
+      activityPage.getActivity()
+        .should("be.visible")
+        .and("have.length", 1)
+        .and("have.class", "fixed-width-1100px")
+      activityPage.getActivity()
+        .first()
+        .invoke("css", "width")
+        .then(str => parseInt(str as unknown as string))
+        .should("eq", 1100)
+    });
+  });
   describe("Sidebar",() => {
     it("verify sidebar opens",()=>{
       const content="Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
