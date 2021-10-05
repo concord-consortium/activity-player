@@ -13,19 +13,6 @@ context("Test the overall app", () => {
       cy.url().should("not.contain", "sequenceActivity");
     });
   });
-  describe("Activity",() => {
-    it("verify 1100px fixed width class is set and activity has a width of 1100px",()=>{
-      activityPage.getActivity()
-        .should("be.visible")
-        .and("have.length", 1)
-        .and("have.class", "fixed-width-1100px")
-      activityPage.getActivity()
-        .first()
-        .invoke("css", "width")
-        .then(str => parseInt(str as unknown as string))
-        .should("eq", 1100)
-    });
-  });
   describe("Sidebar",() => {
     it("verify sidebar opens",()=>{
       const content="Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
@@ -107,3 +94,33 @@ context("Test the teacher edition plugin", () => {
     });
   });
 });
+
+context("Test fixed width settings", () => {
+  it("defaults to 1100px", () => {
+    cy.visit("?activity=sample-activity-multiple-layout-types&preview");
+    activityPage.getPage(2).click();
+    activityPage.getActivity()
+      .should("be.visible")
+      .and("have.length", 1)
+      .and("have.class", "fixed-width-1100px")
+    activityPage.getActivity()
+      .first()
+      .invoke("css", "width")
+      .then(str => parseInt(str as unknown as string))
+      .should("eq", 1100)
+  });
+
+  it("uses 960px for iPad friendly activities", () => {
+    cy.visit("?activity=sample-activity-ipad-friendly&preview");
+    activityPage.getPage(2).click();
+    activityPage.getActivity()
+      .should("be.visible")
+      .and("have.length", 1)
+      .and("have.class", "fixed-width-ipad-friendly")
+    activityPage.getActivity()
+      .first()
+      .invoke("css", "width")
+      .then(str => parseInt(str as unknown as string))
+      .should("eq", 960)
+  });
+})
