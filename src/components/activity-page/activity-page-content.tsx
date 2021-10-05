@@ -47,9 +47,11 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const { enableReportButton, page, totalPreviousQuestions } = this.props;
     const pageTitle = page.name || "";
     const sections = page.sections;
+    const responsiveLayoutSections = sections.filter(s => s.layout === "responsive");
+    const isResponsiveLayout = responsiveLayoutSections.length > 0;
 
     return (
-      <div className={"page-content full"} data-cy="page-content">
+      <div className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
         <div className="name">{ pageTitle }</div>
         {this.renderSections(sections, totalPreviousQuestions)}
         { enableReportButton &&
@@ -124,7 +126,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const display_mode = section.secondary_column_display_mode;
     const splitLayout = layout === "l-6040" || layout === "r-6040" || layout === "l-7030" || layout === "r-3070";
     const sectionClass = classNames("section",
-                                    {"full-width": layout === "full-width" || layout === "l-responsive"},
+                                    {"full-width": layout === "full-width" || layout === "responsive"},
                                     {"l_6040": layout === "l-6040"},
                                     {"r_6040": layout === "r-6040"},
                                     {"l_7030": layout === "l-7030"},

@@ -958,7 +958,25 @@
       "sidebar_title": "Did you know?",
       "sections": [
         {
-          "layout": "l-responsive",
+          "layout": "responsive",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "content": "\u003Cp\u003E\u003Cimg class=\"tinymce-img-float-right\" src=\"https://place-puppy.com/300x300\" alt=\"puppy\" width=\"50\" height=\"50\" /\u003EThis is an text block in the intro. Will also have an image.\u003C/p\u003E",
+              "is_callout": false,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "274463-Embeddable::Xhtml"
+            }
+          ]
+        },
+        {
+          "layout": "responsive",
           "is_hidden": false,
           "secondary_column_collapsible": false,
           "secondary_column_display_mode": "stacked",
