@@ -52,6 +52,8 @@ const kLearnPortalUrl = "https://learn.concord.org";
 
 const kAnonymousUserName = "Anonymous";
 
+const kDefaultFixedWidthLayout = "1100px";
+
 export type ErrorType = "auth" | "network" | "timeout";
 
 interface IncompleteQuestion {
@@ -280,10 +282,10 @@ export class App extends React.PureComponent<IProps, IState> {
     }
 
     // convert option with Ruby snake case to kebab case for css
-    const fixedWidthClassName = `fixed-width-${activity.fixed_width_layout || "1100px"}`.replace(/_/g, "-");
+    const fixedWidthLayout = (sequence?.fixed_width_layout || activity.fixed_width_layout || kDefaultFixedWidthLayout).replace(/_/g, "-");
 
     return (
-      <div className={`activity ${fixedWidthClassName}`}>
+      <div className={`activity fixed-width-${fixedWidthLayout}`}>
         <Header
           fullWidth={fullWidth}
           project={project}
