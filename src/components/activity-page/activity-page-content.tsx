@@ -197,9 +197,10 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   private renderPrimaryEmbeddables = (section: SectionType, embeddables: EmbeddableType[], questionNumberStart: number, pinOffset: number) => {
+    const { isSecondaryCollapsed } = this.state;
     const position = { top: pinOffset };
     const layout = section.layout;
-    const containerClass = classNames("column", layout, "primary");
+    const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed});
     return (
       <div className={containerClass} style={position} ref={elt => this.primaryDivRef = elt}>
         {this.renderEmbeddables(section, embeddables, questionNumberStart, pinOffset)}
@@ -211,7 +212,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const { isSecondaryCollapsed } = this.state;
     const layout = section.layout;
     const collapsible = section.secondary_column_collapsible;
-    const containerClass = classNames("column", layout, "secondary");
+    const containerClass = classNames("column", layout, "secondary", {"collapsed": isSecondaryCollapsed});
     return (
       <div className={containerClass} ref={elt => this.secondaryDivRef = elt}>
         {collapsible && this.renderCollapsibleHeader(section)}
