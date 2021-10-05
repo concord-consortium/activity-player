@@ -102,12 +102,12 @@ context("Test fixed width settings", () => {
     activityPage.getActivity()
       .should("be.visible")
       .and("have.length", 1)
-      .and("have.class", "fixed-width-1100px")
+      .and("have.class", "fixed-width-1100px");
     activityPage.getActivity()
       .first()
       .invoke("css", "width")
-      .then(str => parseInt(str as unknown as string))
-      .should("eq", 1100)
+      .then(str => parseInt(str as unknown as string, 10))
+      .should("eq", 1100);
   });
 
   it("uses 960px for iPad friendly activities", () => {
@@ -116,11 +116,11 @@ context("Test fixed width settings", () => {
     activityPage.getActivity()
       .should("be.visible")
       .and("have.length", 1)
-      .and("have.class", "fixed-width-ipad-friendly")
+      .and("have.class", "fixed-width-ipad-friendly");
     activityPage.getActivity()
       .first()
       .invoke("css", "width")
-      .then(str => parseInt(str as unknown as string))
-      .should("eq", 960)
+      .then(str => parseInt(str as unknown as string, 10))
+      .should("eq", 960);
   });
-})
+});
