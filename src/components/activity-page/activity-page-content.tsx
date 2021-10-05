@@ -2,9 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import { Embeddable, EmbeddableImperativeAPI } from "./embeddable";
 import { BottomButtons } from "./bottom-buttons";
-// import { PageLayouts, EmbeddableSections, isQuestion, getPageSectionQuestionCount,
-//          VisibleEmbeddables, getVisibleEmbeddablesOnPage, getLinkedPluginEmbeddable } from "../../utilities/activity-utils";
-import { isQuestion, getPageSectionQuestionCount, getLinkedPluginEmbeddable, numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
+import { isQuestion,  getLinkedPluginEmbeddable, numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
 import { accessibilityClick } from "../../utilities/accessibility-helper";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
@@ -47,7 +45,6 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
   render() {
     const { enableReportButton, page, totalPreviousQuestions } = this.props;
-    const { scrollOffset } = this.state;
     const pageTitle = page.name || "";
     const sections = page.sections;
 
@@ -89,18 +86,15 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
   }
 
   private handleScroll = (e: MouseEvent) => {
-    console.log("in handleScroll");
     if (this.secondaryDivRef) {
       const secondaryHeight = this.secondaryDivRef.getBoundingClientRect().height;
       const primaryHeight = this.primaryDivRef?.getBoundingClientRect().height;
-      console.log("secondaryHeight:", secondaryHeight, "primaryHeight:", primaryHeight);
       const potentialScrollOffset = this.secondaryDivRef.getBoundingClientRect().top < kPinMargin
         ? kPinMargin - this.secondaryDivRef.getBoundingClientRect().top
         : 0;
-      const scrollOffset = ((primaryHeight && (potentialScrollOffset + primaryHeight) > secondaryHeight) && potentialScrollOffset) || 0;
-        // ? secondaryHeight - primaryHeight
-        // : potentialScrollOffset;
-        console.log("potentialScrollOffset:", potentialScrollOffset, "scrollOffset:", scrollOffset);
+      const scrollOffset = primaryHeight && (potentialScrollOffset + primaryHeight) > secondaryHeight
+                            ? potentialScrollOffset
+                            : 0;
       this.setState({ scrollOffset });
     }
   }
@@ -139,8 +133,8 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
                                     {"carousel": display_mode === "carousel"}
                                    );
     const embeddables = section.embeddables;
-    const primaryEmbeddables = embeddables.filter(e => e.column === "primary");
-    const secondaryEmbeddables = embeddables.filter(e => e.column === "secondary");
+    const primaryEmbeddables = embeddables.filter(e => e.column === "primary" && !e.is_hidden);
+    const secondaryEmbeddables = embeddables.filter(e => e.column === "secondary" && !e.is_hidden);
     const pinOffSet = layout !== "full-width" && secondaryEmbeddables.length ? scrollOffset : 0;
 
     if (!splitLayout) {
@@ -153,6 +147,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
       const leftColumnEmbeddables = layout.includes("l") ? primaryEmbeddables : secondaryEmbeddables;
       const rightColumnEmbeddables = layout.includes("l") ? secondaryEmbeddables : primaryEmbeddables;
       const numQuestionsLeftColumn = layout.includes("l") ? primaryEmbeddables.length : secondaryEmbeddables.length;
+      const rightColumnQuestionNumberStart = questionNumberStart + numQuestionsLeftColumn;
       return (
         <div key={`section_${idx}`} className = {sectionClass}>
           {layout.includes("l")
@@ -160,8 +155,8 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
             : this.renderSecondaryEmbeddables(section, leftColumnEmbeddables, questionNumberStart)
           }
           {layout.includes("l")
-            ? this.renderSecondaryEmbeddables(section, rightColumnEmbeddables, numQuestionsLeftColumn)
-            : this.renderPrimaryEmbeddables(section, rightColumnEmbeddables, numQuestionsLeftColumn, pinOffSet)
+            ? this.renderSecondaryEmbeddables(section, rightColumnEmbeddables, rightColumnQuestionNumberStart)
+            : this.renderPrimaryEmbeddables(section, rightColumnEmbeddables, rightColumnQuestionNumberStart, pinOffSet)
           }
         </div>
       );
