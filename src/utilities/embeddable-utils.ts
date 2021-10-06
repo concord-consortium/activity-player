@@ -10,6 +10,10 @@ export const isQuestion = (embeddable: Embeddable) =>
   (embeddable.type === "ManagedInteractive" && embeddable.library_interactive?.data?.enable_learner_state) ||
   (embeddable.type === "MwInteractive" && embeddable.enable_learner_state);
 
+export const hasLegacyLinkedInteractive = (embeddable: Embeddable) => true;
+  // (embeddable.type === "ManagedInteractive" && embeddable.library_interactive?.data?.) ||
+  // (embeddable.type === "MwInteractive" && embeddable.enable_learner_state);
+
 // LARA uses a map from the answer type to a question type.
 // Instead of using this map, we look directly at the authoredState this ought to give us more
 // flexibility to support more special types in the report without needing to update

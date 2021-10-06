@@ -37,6 +37,7 @@ import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plu
 import { getAttachmentsManagerOptions} from "../utilities/get-attachments-manager-options";
 import { IdleDetector } from "../utilities/idle-detector";
 import { initializeAttachmentsManager } from "@concord-consortium/interactive-api-host";
+import { LaraDataContext } from "./lara-data-context";
 
 import "./app.scss";
 
@@ -242,20 +243,22 @@ export class App extends React.PureComponent<IProps, IState> {
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
-          <div className="app" data-cy="app">
-            { this.state.showWarning && <WarningBanner/> }
-            { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-            { this.state.showSequenceIntro
-              ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
-              : this.renderActivity() }
-            { this.state.showThemeButtons && <ThemeButtons/>}
-            <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
-            <ModalDialog
-              label={this.state.modalLabel}
-              onClose={() => {this.setShowModal(false);}}
-              showModal={this.state.showModal}
-            />
-          </div>
+          <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
+            <div className="app" data-cy="app">
+              { this.state.showWarning && <WarningBanner/> }
+              { this.state.teacherEditionMode && <TeacherEditionBanner/>}
+              { this.state.showSequenceIntro
+                ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
+                : this.renderActivity() }
+              { this.state.showThemeButtons && <ThemeButtons/>}
+              <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
+              <ModalDialog
+                label={this.state.modalLabel}
+                onClose={() => {this.setShowModal(false);}}
+                showModal={this.state.showModal}
+              />
+            </div>
+          </LaraDataContext.Provider>
         </PortalDataContext.Provider>
       </LaraGlobalContext.Provider>
     );

@@ -13,9 +13,10 @@ import "firebase/firestore";
 import { anonymousPortalData } from "./portal-api";
 import { IAnonymousPortalData, IPortalData } from "./portal-types";
 import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
-import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "./types";
+import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, Activity, ILegacyInteractiveState, Page } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
+import { ILaraData } from "./components/lara-data-context";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
@@ -227,6 +228,10 @@ export const getAnswer = (embeddableRefId: string): Promise<WrappedDBAnswer | nu
     });
 };
 
+export const getAllAnswersInList = (embeddableRefIds: string[]): Promise<Array<WrappedDBAnswer | null>> => {
+  return Promise.all([...embeddableRefIds.map(getAnswer)]);
+};
+
 export const getAllAnswers = (): Promise<WrappedDBAnswer[]>  => {
   return getAnswerDocs()
     .then((answers: firebase.firestore.DocumentData[]) =>
@@ -408,4 +413,73 @@ export const setLearnerPluginState = async (pluginId: number, state: string): Pr
   cachedLearnerPluginState[pluginId] = state;
 
   return state;
+};
+
+export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData: ILaraData, callback: (info: ILegacyInteractiveState) => void) => {
+  // get a map of embeddable refs to linked refs
+  const linkedRefMap: Record<string, {activity: Activity, page: Page, linkedRefId: string|undefined} | undefined> = {};
+  const gatherLinkedRefs = (activity: Activity) => {
+    activity.pages.forEach(page => {
+      page.embeddables.forEach(item => {
+        const {embeddable} = item;
+        if ((embeddable.type === "ManagedInteractive") || (embeddable.type === "MwInteractive")) {
+          linkedRefMap[embeddable.ref_id] = {
+            activity,
+            page,
+            linkedRefId: embeddable.linked_interactive?.ref_id
+          };
+        }
+      });
+    });
+  };
+
+  if (laraData.sequence) {
+    laraData.sequence.activities.forEach(gatherLinkedRefs);
+  } else if (laraData.activity) {
+    gatherLinkedRefs(laraData.activity);
+  }
+
+  if (!linkedRefMap[embeddableRefId]) {
+    callback({
+      hasLinkedInteractive: false,
+      linkedState: null,
+      allLinkedStates: []
+    });
+    return;
+  }
+
+  // get all the linked ref states in ancestry order with a guard against a loop in the graph
+  const linkedRefIds: string[] = [];
+  let refId: string | undefined = embeddableRefId;
+  do {
+    if (refId !== embeddableRefId) {
+      linkedRefIds.push(refId);
+    }
+    refId = linkedRefMap[refId]?.linkedRefId;
+  } while (refId && (refId !== embeddableRefId));
+
+  getAllAnswersInList(linkedRefIds)
+    .then(answers => {
+      const allLinkedStates = linkedRefIds.map((linkedRefId, index) => {
+        const linkedRef = linkedRefMap[linkedRefId];
+
+        /*
+          NOTE: Lara also returns the following which we don't have access to or don't make sense in AP
+          createdAt, updatedAt, interactiveStateUrl, interactive: {id, name}
+        */
+        return {
+          pageNumber: linkedRef?.page.position,
+          pageName: linkedRef?.page.name,
+          activityName: linkedRef?.activity.name,
+          interactiveState: answers[index]?.interactiveState || null,
+        };
+      });
+      const linkedState = allLinkedStates.find(ls => ls.interactiveState)?.interactiveState || null;
+
+      callback({
+        hasLinkedInteractive: true,
+        linkedState,
+        allLinkedStates: allLinkedStates as any  // any here as we are missing things Lara sets
+      });
+    });
 };

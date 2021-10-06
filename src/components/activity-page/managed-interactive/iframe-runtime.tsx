@@ -1,7 +1,7 @@
 // cf. https://github.com/concord-consortium/question-interactives/blob/master/src/scaffolded-question/components/iframe-runtime.tsx
 import { autorun } from "mobx";
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { IframePhone } from "../../../types";
+import { IframePhone, ILegacyInteractiveState } from "../../../types";
 import iframePhone from "iframe-phone";
 import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
@@ -49,6 +49,7 @@ interface IProps {
   id: string;
   authoredState: any;
   initialInteractiveState: any;
+  legacyLinkedInteractiveState: ILegacyInteractiveState | null;
   setInteractiveState: (state: any) => void;
   setSupportedFeatures: (container: HTMLElement, features: ISupportedFeatures) => void;
   linkedInteractives?: ILinkedInteractive[];
@@ -68,7 +69,7 @@ interface IProps {
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives, report,
+  const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal,
     setSupportedFeatures, setSendCustomMessage, setNavigation, iframeTitle, portalData } = props;
   const _idNum = parseInt(id, 10);
@@ -275,7 +276,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                     email: ""
                   },
                   runRemoteEndpoint: portalData?.runRemoteEndpoint,
-                  ...linkedInteractivesRef.current
+                  ...linkedInteractivesRef.current,
+                  ...(legacyLinkedInteractiveState || {})
                 };
       phone.post("initInteractive", initInteractiveMsg);
     };
