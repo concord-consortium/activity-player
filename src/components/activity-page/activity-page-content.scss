@@ -23,16 +23,22 @@
     grid-auto-rows: minmax(20px, auto);
     grid-template-columns: repeat(10, 1fr);
     margin: 10px;
+    &.respomsive {
+      width: 100%;
+    }
 
     &.full-width {
       .embeddable.full-width {
+        width: 900px;
         grid-column: span 10;
         &.half-width {
           grid-column: span 5;
         }
       }
     }
+
     &.l_6040 {
+      width: 900px;
       .column.primary {
         left: 0;
         grid-column: span 6;
@@ -51,7 +57,9 @@
         }
       }
     }
+
     &.r_6040 {
+      width: 900px;
       .column.primary {
         right: 0;
         grid-column: span 6;
@@ -70,7 +78,9 @@
         }
       }
     }
+
     &.l_7030 {
+      width: 900px;
       .column.primary {
         left: 0;
         grid-column: span 7;
@@ -89,7 +99,9 @@
         }
       }
     }
+
     &.r_3070 {
+      width: 900px;
       .column.primary {
         right: 0;
         grid-column: span 7;
@@ -108,6 +120,33 @@
         }
       }
     }
+
+    &.responsive {
+      display: flex;
+      flex-direction: row;
+      .embeddable.full-width {
+        width: 100%;
+        &.half-width {
+          width: 50%;
+        }
+      }
+
+      .column.primary {
+        right: 0;
+        width: 100%;
+      }
+      .column.secondary {
+        min-width: 365px;
+        left: 0;
+        &.stacked {
+          flex-direction: column;
+        }
+        &.collapsed {
+          min-width: 45px;
+        }
+      }
+    }
+
     .collapsible-header {
       display: flex;
       justify-content: flex-end;
@@ -153,6 +192,7 @@
       }
     }
   }
+
   .embeddable {
     margin-bottom: 10px;
     position: relative;
