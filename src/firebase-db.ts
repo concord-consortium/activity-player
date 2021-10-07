@@ -12,7 +12,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import { anonymousPortalData } from "./portal-api";
 import { IAnonymousPortalData, IPortalData } from "./portal-types";
-import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
+import { getLegacyLinkedRefMap, refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, Activity, ILegacyInteractiveState, Page } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
@@ -417,28 +417,9 @@ export const setLearnerPluginState = async (pluginId: number, state: string): Pr
 
 export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData: ILaraData, callback: (info: ILegacyInteractiveState) => void) => {
   // get a map of embeddable refs to linked refs
-  const linkedRefMap: Record<string, {activity: Activity, page: Page, linkedRefId: string|undefined} | undefined> = {};
-  const gatherLinkedRefs = (activity: Activity) => {
-    activity.pages.forEach(page => {
-      page.embeddables.forEach(item => {
-        const {embeddable} = item;
-        if ((embeddable.type === "ManagedInteractive") || (embeddable.type === "MwInteractive")) {
-          linkedRefMap[embeddable.ref_id] = {
-            activity,
-            page,
-            linkedRefId: embeddable.linked_interactive?.ref_id
-          };
-        }
-      });
-    });
-  };
+  const linkedRefMap = getLegacyLinkedRefMap(laraData);
 
-  if (laraData.sequence) {
-    laraData.sequence.activities.forEach(gatherLinkedRefs);
-  } else if (laraData.activity) {
-    gatherLinkedRefs(laraData.activity);
-  }
-
+  // if this ref isn't in the map it doesn't have linked interactives so we are done
   if (!linkedRefMap[embeddableRefId]) {
     callback({
       hasLinkedInteractive: false,

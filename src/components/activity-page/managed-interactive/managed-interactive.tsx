@@ -49,7 +49,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const legacyInteractiveState = useRef<ILegacyInteractiveState | null>(null);
   const answerMeta = useRef<IExportableAnswerMetadata>();
   const shouldWatchAnswer = isQuestion(props.embeddable);
-  const shouldLoadLegacyLinkedInteractiveState = hasLegacyLinkedInteractive(props.embeddable);
+  const laraData = useContext(LaraDataContext);
+  const shouldLoadLegacyLinkedInteractiveState = hasLegacyLinkedInteractive(props.embeddable, laraData);
   const [loadingAnswer, setLoadingAnswer] = useState(shouldWatchAnswer);
   const [loadingLegacyLinkedInteractiveState, setLoadingLegacyLinkedInteractiveState] = useState(shouldLoadLegacyLinkedInteractiveState);
 
@@ -64,7 +65,6 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     }
   }, [embeddableRefId, shouldWatchAnswer]);
 
-  const laraData = useContext(LaraDataContext);
   useEffect(() => {
     if (shouldLoadLegacyLinkedInteractiveState && (laraData.activity || laraData.sequence)) {
       return getLegacyLinkedInteractiveInfo(embeddableRefId, laraData, (info) => {
