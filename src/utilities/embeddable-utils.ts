@@ -14,10 +14,10 @@ export const isQuestion = (embeddable: Embeddable) =>
 export const hasLegacyLinkedInteractive = (embeddable: Embeddable, laraData: ILaraData) => {
   let result = false;
   if ((embeddable.type === "ManagedInteractive") || (embeddable.type === "MwInteractive")) {
-    result = !!getLegacyLinkedRefMap(laraData)[embeddable.ref_id];
+    result = !!getLegacyLinkedRefMap(laraData)[embeddable.ref_id]?.linkedRefId;
   }
-  return result
-}
+  return result;
+};
 
 // LARA uses a map from the answer type to a question type.
 // Instead of using this map, we look directly at the authoredState this ought to give us more
@@ -197,4 +197,4 @@ export const getLegacyLinkedRefMap = (laraData: ILaraData) => {
   }
 
   return linkedRefMap;
-}
+};
