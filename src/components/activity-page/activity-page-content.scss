@@ -23,13 +23,13 @@
     grid-auto-rows: minmax(20px, auto);
     grid-template-columns: repeat(10, 1fr);
     margin: 10px;
-    &.respomsive {
+    &.responsive {
       width: 100%;
     }
 
     &.full-width {
+      width: 900px;
       .embeddable.full-width {
-        width: 900px;
         grid-column: span 10;
         &.half-width {
           grid-column: span 5;
