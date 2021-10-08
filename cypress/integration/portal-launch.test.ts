@@ -53,9 +53,9 @@ context("Launch AP From the Portal", () => {
     })
     .then((resp) => {
       expect(resp.status).to.eq(302);
-      expect(resp.redirectedToUrl).to.match(/^https:\/\/activity-player\.concord\.org/)
+      expect(resp.redirectedToUrl).to.match(/^https:\/\/activity-player\.concord\.org/);
       const url = new URL(resp.redirectedToUrl);
-      var params = new URLSearchParams(url.search);
+      const params = new URLSearchParams(url.search);
       return params.get("token");
     })
     .as("portalToken");
@@ -99,13 +99,13 @@ context("Launch AP From the Portal", () => {
     cy.get('[data-tip="Stop sharing"]').click();
 
     cy.get('[data-tip="Share this"]').click();
-    cy.get('body').should("contain", "Your work  has been shared with your class.");
+    cy.get("body").should("contain", "Your work  has been shared with your class.");
     // click the close button
-    cy.get('.share-modal--titleBarContents--SharingPluginV1>svg').eq(1).click();
+    cy.get(".share-modal--titleBarContents--SharingPluginV1>svg").eq(1).click();
 
     cy.get('[data-tip="View class work"]').click();
-    cy.get('.left-nav--students--SharingPluginV1').eq(0).click();
-    cy.get('iframe[src^="https://portal-report.concord.org"]')
+    cy.get(".left-nav--students--SharingPluginV1").eq(0).click();
+    cy.get('iframe[src^="https://portal-report.concord.org"]');
 
   });
 });

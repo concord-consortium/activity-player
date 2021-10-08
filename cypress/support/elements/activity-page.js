@@ -1,4 +1,7 @@
 class ActivityPage {
+  getActivity() {
+    return cy.get("[data-cy=activity]");
+  }
   getPage(num) {
     return cy.get("[data-cy=activity-page-links]").contains(num);
   }

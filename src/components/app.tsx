@@ -52,6 +52,8 @@ const kLearnPortalUrl = "https://learn.concord.org";
 
 const kAnonymousUserName = "Anonymous";
 
+const kDefaultFixedWidthLayout = "1100px";
+
 export type ErrorType = "auth" | "network" | "timeout";
 
 interface IncompleteQuestion {
@@ -279,8 +281,11 @@ export class App extends React.PureComponent<IProps, IState> {
       setAppBackgroundImage(backgroundImage);
     }
 
+    // convert option with Ruby snake case to kebab case for css
+    const fixedWidthLayout = (sequence?.fixed_width_layout || activity.fixed_width_layout || kDefaultFixedWidthLayout).replace(/_/g, "-");
+
     return (
-      <React.Fragment>
+      <div className={`activity fixed-width-${fixedWidthLayout}`} data-cy="activity">
         <Header
           fullWidth={fullWidth}
           project={project}
@@ -323,7 +328,7 @@ export class App extends React.PureComponent<IProps, IState> {
         { glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
           <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} pluginsLoaded={pluginsLoaded} />
         }
-      </React.Fragment>
+      </div>
     );
   }
 

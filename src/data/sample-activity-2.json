@@ -22,6 +22,7 @@
   "version": 1,
   "theme_name": "Interactions",
   "background_image": null,
+  "fixed_width_layout": "1100px",
   "pages": [
     {
       "additional_sections": {},

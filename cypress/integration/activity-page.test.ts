@@ -94,3 +94,33 @@ context("Test the teacher edition plugin", () => {
     });
   });
 });
+
+context("Test fixed width settings", () => {
+  it("defaults to 1100px", () => {
+    cy.visit("?activity=sample-activity-multiple-layout-types&preview");
+    activityPage.getPage(2).click();
+    activityPage.getActivity()
+      .should("be.visible")
+      .and("have.length", 1)
+      .and("have.class", "fixed-width-1100px");
+    activityPage.getActivity()
+      .first()
+      .invoke("css", "width")
+      .then(str => parseInt(str as unknown as string, 10))
+      .should("eq", 1100);
+  });
+
+  it("uses 960px for iPad friendly activities", () => {
+    cy.visit("?activity=sample-activity-ipad-friendly&preview");
+    activityPage.getPage(2).click();
+    activityPage.getActivity()
+      .should("be.visible")
+      .and("have.length", 1)
+      .and("have.class", "fixed-width-ipad-friendly");
+    activityPage.getActivity()
+      .first()
+      .invoke("css", "width")
+      .then(str => parseInt(str as unknown as string, 10))
+      .should("eq", 960);
+  });
+});
