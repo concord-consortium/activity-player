@@ -23,6 +23,7 @@
     grid-auto-rows: minmax(20px, auto);
     grid-template-columns: repeat(10, 1fr);
     margin: 10px;
+    position: relative;
     &.responsive {
       width: 100%;
     }
@@ -40,8 +41,11 @@
     &.l_6040 {
       width: 900px;
       .column.primary {
+        position: sticky;
         left: 0;
         grid-column: span 6;
+        overflow: hidden;
+        top: 0;
         &.expand {
           grid-column: span 9;
         }
@@ -61,8 +65,11 @@
     &.r_6040 {
       width: 900px;
       .column.primary {
+        position: sticky;
         right: 0;
         grid-column: span 6;
+        overflow: hidden;
+        top: 0;
         &.expand {
           grid-column: span 9;
         }
@@ -82,8 +89,11 @@
     &.l_7030 {
       width: 900px;
       .column.primary {
+        position: sticky;
         left: 0;
         grid-column: span 7;
+        overflow: hidden;
+        top: 0;
         &.expand {
           grid-column: span 9;
         }
@@ -103,8 +113,11 @@
     &.r_3070 {
       width: 900px;
       .column.primary {
+        position: sticky;
         right: 0;
         grid-column: span 7;
+        overflow: hidden;
+        top: 0;
         &.expand {
           grid-column: span 9;
         }
@@ -132,8 +145,10 @@
       }
 
       .column.primary {
+        position: sticky;
         right: 0;
         width: 100%;
+        overflow: hidden;
       }
       .column.secondary {
         min-width: 365px;

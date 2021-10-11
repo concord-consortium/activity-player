@@ -64,21 +64,6 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     );
   }
 
-  // public componentDidMount() {
-  //   const el = document.querySelector("#app");
-  //   if (el) {
-  //     el.addEventListener("scroll", this.handleScroll, false);
-  //     el.scrollTo(0, 0);
-  //   }
-  // }
-
-  // public componentWillUnmount() {
-  //   const el = document.querySelector("#app");
-  //   if (el) {
-  //     el.removeEventListener("scroll", this.handleScroll, false);
-  //   }
-  // }
-
   public requestInteractiveStates() {
     const promises = this.props.page.sections.forEach((section: SectionType) =>
         section.embeddables.map((embeddable: EmbeddableType) =>
@@ -87,20 +72,6 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     );
     return promises;
   }
-
-  // private handleScroll = (e: MouseEvent) => {
-  //   if (this.secondaryDivRef) {
-  //     const secondaryHeight = this.secondaryDivRef.getBoundingClientRect().height;
-  //     const primaryHeight = this.primaryDivRef?.getBoundingClientRect().height;
-  //     const potentialScrollOffset = this.secondaryDivRef.getBoundingClientRect().top < kPinMargin
-  //       ? kPinMargin - this.secondaryDivRef.getBoundingClientRect().top
-  //       : 0;
-  //     const scrollOffset = primaryHeight && (potentialScrollOffset + primaryHeight) > secondaryHeight
-  //                           ? potentialScrollOffset
-  //                           : 0;
-  //     this.setState({ scrollOffset });
-  //   }
-  // }
 
   private handleReport = () => {
     showReport();
@@ -111,7 +82,6 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
 
   private renderSections = (sections: SectionType[], totalPreviousQuestions: number) => {
     const {teacherEditionMode, setNavigation, pluginsLoaded} = this.props;
-    console.log("in renderSections");
     return (
       sections.map((section, idx) => {
         const questionCount = numQuestionsOnPreviousSections(idx, sections) || 0;
@@ -120,7 +90,7 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
           // return this.renderSection(section, embeddableQuestionNumberStart, idx);
           return (
             <Section section={section}
-                    index={idx}
+                    key={`section-${idx}`}
                     questionNumberStart={embeddableQuestionNumberStart}
                     teacherEditionMode={teacherEditionMode}
                     setNavigation={setNavigation}

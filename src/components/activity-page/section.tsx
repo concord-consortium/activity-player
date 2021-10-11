@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { Embeddable, EmbeddableImperativeAPI } from "./embeddable";
-import { isQuestion,  getLinkedPluginEmbeddable, numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
+import { isQuestion,  getLinkedPluginEmbeddable } from "../../utilities/activity-utils";
 import { accessibilityClick } from "../../utilities/accessibility-helper";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
@@ -10,52 +10,53 @@ import { Logger, LogEventName } from "../../lib/logger";
 import { showReport } from "../../utilities/report-utils";
 
 import "./activity-page-content.scss";
-import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
+import { INavigationOptions, setHeight } from "@concord-consortium/lara-interactive-api";
 
 interface IProps {
   section: SectionType;
-  index: number;
   questionNumberStart: number;
   teacherEditionMode?: boolean;
   setNavigation: (refId: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
 }
 
-const kPinMargin = 20;
-
+let primaryDivRefChild:HTMLDivElement;
 export const Section: React.FC<IProps> = (props) => {
-  console.log("in Section");
-
-  const { section, index, questionNumberStart } = props;
+  const { section, questionNumberStart } = props;
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
-  const [scrollOffset, setScrollOffset] = useState(0);
-  let primaryDivRef: HTMLDivElement | null;
-  let secondaryDivRef: HTMLDivElement | null;
+  // const [scrollOffset, setScrollOffset] = useState(0);
+  const [primaryEmbeddableTotalHeight, setPrimaryEmbeddableTotalHeight] = useState(0);
+  const sectionDivRef = useRef<HTMLDivElement>(null);
+  const primaryDivRef = useRef<HTMLDivElement>(null);
+  const secondaryDivRef = useRef<HTMLDivElement>(null);
   const embeddableRefs: Record<string, React.RefObject<EmbeddableImperativeAPI>> = {};
+  console.log("in before section useEffect");
+
   useEffect(()=>{
-    const el = document.querySelector(".section");
-    if (el) {
-      el.addEventListener("scroll", handleScroll, false);
-      el.scrollTo(0, 0);
+      console.log("in section useEffect");
+    if (primaryDivRef.current !== null) {
+      primaryDivRefChild = primaryDivRef.current.children[0] as HTMLDivElement;
+      console.log("primaryDivRef.current:", primaryDivRef.current);
+      console.log("primaryDivRef.current.children:", primaryDivRef.current.children);
+      console.log("getBoundingClientRect.height:", primaryDivRef.current.getBoundingClientRect());
+      console.log("clientHeight:", primaryDivRef.current.clientHeight);
+      console.log("child getBoundingClientRect.height:", primaryDivRef.current.children[0].getBoundingClientRect());
+      console.log("clientHeight primaryDivRef.current.children:", primaryDivRef.current.children[0].clientHeight);
+      console.log("className primaryDivRef.current:", primaryDivRef.current.className);
+      console.log("className primaryDivRef.current.children:", primaryDivRef.current.children[0].className);
+
+      let totalHeight=0;
+      for (let i=0; i<primaryDivRef.current.children.length; i++) {
+        console.log("children clientHeight:", primaryDivRef.current.children[i].clientHeight);
+        totalHeight = totalHeight + primaryDivRef.current.children[i].clientHeight;
+      }
+      setPrimaryEmbeddableTotalHeight(totalHeight);
     }
   });
 
-  const handleScroll = (e: MouseEvent) => {
-    if (secondaryDivRef) {
-      const secondaryHeight = secondaryDivRef.getBoundingClientRect().height;
-      const primaryHeight = primaryDivRef?.getBoundingClientRect().height;
-      const potentialScrollOffset = secondaryDivRef.getBoundingClientRect().top < kPinMargin
-        ? kPinMargin - secondaryDivRef.getBoundingClientRect().top
-        : 0;
-      const scrollOffsetCalc = primaryHeight && (potentialScrollOffset + primaryHeight) > secondaryHeight
-                            ? potentialScrollOffset
-                            : 0;
-      setScrollOffset(scrollOffsetCalc);
-    }
-  };
-
   const renderEmbeddables = (embeddablesToRender: EmbeddableType[], questionNumStart: number, offSet?: number) => {
     let questionNumber = questionNumStart;
+    console.log("in renderEmbeddables");
     return (
       <React.Fragment>
         { embeddablesToRender.map((embeddable, embeddableIndex) => {
@@ -87,25 +88,27 @@ export const Section: React.FC<IProps> = (props) => {
     );
   };
 
-  const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number, pinOffset: number) => {
-    // const { isSecondaryCollapsed } = state;
-    const position = { top: pinOffset };
-    // const layout = section.layout;
+  const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
+    // const position = { maxHeight: 516, top: 0 };
+    console.log("in primarydiv");
+    console.log("primaryDivRefChild", primaryDivRefChild?.getBoundingClientRect());
+    console.log("getBoundingClientRect.height:", primaryDivRef.current?.children[0].getBoundingClientRect());
+    const position = { top: 0 };
     const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed});
     return (
-      <div className={containerClass} style={position} ref={elt => primaryDivRef = elt}>
-        {renderEmbeddables(primaryEmbeddablesToRender, questionNumStart, pinOffset)}
-      </div>
+        <div className={containerClass} style={position} ref={primaryDivRef}>
+          {renderEmbeddables(primaryEmbeddablesToRender, questionNumStart)}
+        </div>
     );
   };
 
   const renderSecondaryEmbeddables = (secondaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
-    // const { isSecondaryCollapsed } = state;
-    // const layout = section.layout;
+    console.log("in secondarydiv");
+
     const collapsible = section.secondary_column_collapsible;
     const containerClass = classNames("column", layout, "secondary", {"collapsed": isSecondaryCollapsed});
     return (
-      <div className={containerClass} ref={elt => secondaryDivRef = elt}>
+      <div className={containerClass} ref={secondaryDivRef}>
         {collapsible && renderCollapsibleHeader()}
         {!isSecondaryCollapsed && renderEmbeddables(secondaryEmbeddablesToRender, questionNumStart)}
       </div>
@@ -113,7 +116,6 @@ export const Section: React.FC<IProps> = (props) => {
   };
 
   const renderCollapsibleHeader = () => {
-    // const { isSecondaryCollapsed } = state;
     const rightOrientation = section.layout.includes("l");
     const headerClass = `collapsible-header ${isSecondaryCollapsed ? "collapsed" : ""} ${rightOrientation ? "right" : ""}`;
     return (
@@ -177,11 +179,10 @@ export const Section: React.FC<IProps> = (props) => {
   const secondaryEmbeddables = embeddables.filter(e => e.column === "secondary" && !e.is_hidden);
   const singleColumn = layout === "full-width" ||
                         (layout === "responsive" && primaryEmbeddables.length === 0 && secondaryEmbeddables.length === 0);
-  const pinOffSet = layout !== "full-width" && secondaryEmbeddables.length ? scrollOffset : 0;
-  console.log("in Section");
+
   if (singleColumn) {
     return (
-      <div key={`section_${index}`} className = {sectionClass}>
+      <div className = {sectionClass} ref={sectionDivRef}>
         { renderEmbeddables(embeddables, questionNumberStart) }
       </div>
     );
@@ -191,17 +192,16 @@ export const Section: React.FC<IProps> = (props) => {
     const numQuestionsLeftColumn = layout.includes("l") ? primaryEmbeddables.length : secondaryEmbeddables.length;
     const rightColumnQuestionNumberStart = questionNumberStart + numQuestionsLeftColumn;
     return (
-      <div key={`section_${index}`} className = {sectionClass}>
+      <div className = {sectionClass} ref={sectionDivRef}>
         {layout.includes("l")
-          ? renderPrimaryEmbeddables(leftColumnEmbeddables, questionNumberStart, pinOffSet)
+          ? renderPrimaryEmbeddables(leftColumnEmbeddables, questionNumberStart)
           : renderSecondaryEmbeddables(leftColumnEmbeddables, questionNumberStart)
         }
         {layout.includes("l")
           ? renderSecondaryEmbeddables(rightColumnEmbeddables, rightColumnQuestionNumberStart)
-          : renderPrimaryEmbeddables(rightColumnEmbeddables, rightColumnQuestionNumberStart, pinOffSet)
+          : renderPrimaryEmbeddables(rightColumnEmbeddables, rightColumnQuestionNumberStart)
         }
       </div>
     );
   }
-
 };
