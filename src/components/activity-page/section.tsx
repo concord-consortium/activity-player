@@ -7,11 +7,11 @@ import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
 import { EmbeddableType, SectionType } from "../../types";
 import { Logger, LogEventName } from "../../lib/logger";
-import { showReport } from "../../utilities/report-utils";
+import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
 import "./activity-page-content.scss";
-import { INavigationOptions, setHeight } from "@concord-consortium/lara-interactive-api";
 
+const kEmbeddableMargin = 10;
 interface IProps {
   section: SectionType;
   questionNumberStart: number;
@@ -20,43 +20,38 @@ interface IProps {
   pluginsLoaded: boolean;
 }
 
-let primaryDivRefChild:HTMLDivElement;
 export const Section: React.FC<IProps> = (props) => {
   const { section, questionNumberStart } = props;
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
-  // const [scrollOffset, setScrollOffset] = useState(0);
+  const [resizeCounter, setResizeCounter] = useState(0);
   const [primaryEmbeddableTotalHeight, setPrimaryEmbeddableTotalHeight] = useState(0);
   const sectionDivRef = useRef<HTMLDivElement>(null);
   const primaryDivRef = useRef<HTMLDivElement>(null);
   const secondaryDivRef = useRef<HTMLDivElement>(null);
   const embeddableRefs: Record<string, React.RefObject<EmbeddableImperativeAPI>> = {};
-  console.log("in before section useEffect");
+  // used to trigger the useEffect so section can find out the height of the embeddables after they have been rendered
+  // without it, the useEffect was firing before the render was done.
+  let counter = 0;
+  const onSizeChange = useCallback(() => {
+    setResizeCounter(counter++);
+  },[counter]);
 
   useEffect(()=>{
-      console.log("in section useEffect");
     if (primaryDivRef.current !== null) {
-      primaryDivRefChild = primaryDivRef.current.children[0] as HTMLDivElement;
-      console.log("primaryDivRef.current:", primaryDivRef.current);
-      console.log("primaryDivRef.current.children:", primaryDivRef.current.children);
-      console.log("getBoundingClientRect.height:", primaryDivRef.current.getBoundingClientRect());
-      console.log("clientHeight:", primaryDivRef.current.clientHeight);
-      console.log("child getBoundingClientRect.height:", primaryDivRef.current.children[0].getBoundingClientRect());
-      console.log("clientHeight primaryDivRef.current.children:", primaryDivRef.current.children[0].clientHeight);
-      console.log("className primaryDivRef.current:", primaryDivRef.current.className);
-      console.log("className primaryDivRef.current.children:", primaryDivRef.current.children[0].className);
-
-      let totalHeight=0;
-      for (let i=0; i<primaryDivRef.current.children.length; i++) {
-        console.log("children clientHeight:", primaryDivRef.current.children[i].clientHeight);
-        totalHeight = totalHeight + primaryDivRef.current.children[i].clientHeight;
+        if (primaryDivRef.current !== null) {
+          let totalHeight=0;
+          for (let i=0; i<primaryDivRef.current.children.length; i++) {
+            totalHeight = totalHeight + primaryDivRef.current?.children[i].clientHeight + kEmbeddableMargin;
+          }
+          setPrimaryEmbeddableTotalHeight(totalHeight);
       }
-      setPrimaryEmbeddableTotalHeight(totalHeight);
     }
-  });
+  },[resizeCounter]);
+
+
 
   const renderEmbeddables = (embeddablesToRender: EmbeddableType[], questionNumStart: number, offSet?: number) => {
     let questionNumber = questionNumStart;
-    console.log("in renderEmbeddables");
     return (
       <React.Fragment>
         { embeddablesToRender.map((embeddable, embeddableIndex) => {
@@ -67,9 +62,10 @@ export const Section: React.FC<IProps> = (props) => {
             if (!embeddableRefs[embeddable.ref_id]) {
               embeddableRefs[embeddable.ref_id] = React.createRef<EmbeddableImperativeAPI>();
             }
+
             return (
               <Embeddable
-                ref={embeddableRefs[embeddable.ref_id]}
+                embeddableRef={embeddableRefs[embeddable.ref_id]}
                 key={`embeddable-${embeddableIndex}-${embeddable.ref_id}`}
                 embeddable={embeddable}
                 sectionLayout={section.layout}
@@ -79,7 +75,7 @@ export const Section: React.FC<IProps> = (props) => {
                 teacherEditionMode={props.teacherEditionMode}
                 setNavigation={props.setNavigation}
                 pluginsLoaded={props.pluginsLoaded}
-                pinOffSet={offSet}
+                onSizeChange={onSizeChange}
               />
             );
           })
@@ -89,11 +85,7 @@ export const Section: React.FC<IProps> = (props) => {
   };
 
   const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
-    // const position = { maxHeight: 516, top: 0 };
-    console.log("in primarydiv");
-    console.log("primaryDivRefChild", primaryDivRefChild?.getBoundingClientRect());
-    console.log("getBoundingClientRect.height:", primaryDivRef.current?.children[0].getBoundingClientRect());
-    const position = { top: 0 };
+    const position = { height:primaryEmbeddableTotalHeight, top: 0 };
     const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed});
     return (
         <div className={containerClass} style={position} ref={primaryDivRef}>
@@ -103,8 +95,6 @@ export const Section: React.FC<IProps> = (props) => {
   };
 
   const renderSecondaryEmbeddables = (secondaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
-    console.log("in secondarydiv");
-
     const collapsible = section.secondary_column_collapsible;
     const containerClass = classNames("column", layout, "secondary", {"collapsed": isSecondaryCollapsed});
     return (
