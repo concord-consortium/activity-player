@@ -39,7 +39,7 @@ export const Section: React.FC<IProps> = (props) => {
   useEffect(()=>{
     if (primaryDivRef.current !== null) {
         if (primaryDivRef.current !== null) {
-          let totalHeight=0;
+          let totalHeight = 0;
           for (let i=0; i<primaryDivRef.current.children.length; i++) {
             totalHeight = totalHeight + primaryDivRef.current?.children[i].clientHeight + kEmbeddableMargin;
           }
@@ -85,7 +85,7 @@ export const Section: React.FC<IProps> = (props) => {
   };
 
   const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
-    const position = { height:primaryEmbeddableTotalHeight, top: 0 };
+    const position = { height: primaryEmbeddableTotalHeight, top: 0 };
     const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed});
     return (
         <div className={containerClass} style={position} ref={primaryDivRef}>

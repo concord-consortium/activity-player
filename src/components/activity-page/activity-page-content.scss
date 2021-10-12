@@ -1,4 +1,5 @@
 @import "../vars.scss";
+$content-inner-width: 900px;
 
 .page-content {
   width: $content-width;
@@ -29,7 +30,7 @@
     }
 
     &.full-width {
-      width: 900px;
+      width: $content-inner-width;
       .embeddable.full-width {
         grid-column: span 10;
         &.half-width {
@@ -39,10 +40,9 @@
     }
 
     &.l_6040 {
-      width: 900px;
+      width: $content-inner-width;
       .column.primary {
         position: sticky;
-        left: 0;
         grid-column: span 6;
         overflow: hidden;
         top: 0;
@@ -63,10 +63,9 @@
     }
 
     &.r_6040 {
-      width: 900px;
+      width: $content-inner-width;
       .column.primary {
         position: sticky;
-        right: 0;
         grid-column: span 6;
         overflow: hidden;
         top: 0;
@@ -87,10 +86,9 @@
     }
 
     &.l_7030 {
-      width: 900px;
+      width: $content-inner-width;
       .column.primary {
         position: sticky;
-        left: 0;
         grid-column: span 7;
         overflow: hidden;
         top: 0;
@@ -111,10 +109,9 @@
     }
 
     &.r_3070 {
-      width: 900px;
+      width: $content-inner-width;
       .column.primary {
         position: sticky;
-        right: 0;
         grid-column: span 7;
         overflow: hidden;
         top: 0;
