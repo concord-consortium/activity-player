@@ -1,7 +1,7 @@
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
-import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState } from "./firebase-db";
+import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState, getLegacyLinkedRefIds } from "./firebase-db";
 import { DefaultManagedInteractive } from "./test-utils/model-for-tests";
-import { getAnswerWithMetadata } from "./utilities/embeddable-utils";
+import { getAnswerWithMetadata, LegacyLinkedRefMap } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata } from "./types";
 import firebase from "firebase/app";
 import { RawClassInfo } from "./portal-api";
@@ -287,6 +287,22 @@ describe("Firestore", () => {
       });
 
       // the rest of the code is handled with other tests
+    });
+  });
+
+  describe("#getLegacyLinkedRefIds", () => {
+    it("handles cycles", () => {
+      // not needed in function but necessary in passed in map
+      const activity: any = null;
+      const page: any = null;
+      const linkedRefMap: LegacyLinkedRefMap = {
+        "a": {activity, page, linkedRefId: "d"},
+        "b": {activity, page, linkedRefId: "a"},
+        "c": {activity, page, linkedRefId: "b"},
+        "d": {activity, page, linkedRefId: "c"}
+      };
+      const ids = getLegacyLinkedRefIds("d", linkedRefMap);
+      expect(ids).toEqual(["c", "b", "a"]);
     });
   });
 

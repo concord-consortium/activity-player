@@ -12,7 +12,7 @@ import "firebase/auth";
 import "firebase/firestore";
 import { anonymousPortalData } from "./portal-api";
 import { IAnonymousPortalData, IPortalData } from "./portal-types";
-import { getLegacyLinkedRefMap, refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
+import { getLegacyLinkedRefMap, LegacyLinkedRefMap, refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, ILegacyInteractiveState } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
@@ -415,6 +415,23 @@ export const setLearnerPluginState = async (pluginId: number, state: string): Pr
   return state;
 };
 
+export const getLegacyLinkedRefIds = (embeddableRefId: string, linkedRefMap: LegacyLinkedRefMap) => {
+  const linkedRefIds: string[] = [];
+  let refId: string | undefined = embeddableRefId;
+  do {
+    // break out if a cycle is found
+    if (linkedRefIds.indexOf(refId) !== -1) {
+      break;
+    }
+    if (refId !== embeddableRefId) {
+      linkedRefIds.push(refId);
+    }
+    refId = linkedRefMap[refId]?.linkedRefId;
+  } while (refId);
+
+  return linkedRefIds;
+};
+
 export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData: ILaraData, callback: (info: ILegacyInteractiveState) => void) => {
   // get a map of embeddable refs to linked refs
   const linkedRefMap = getLegacyLinkedRefMap(laraData);
@@ -430,14 +447,7 @@ export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData
   }
 
   // get all the linked ref states in ancestry order with a guard against a loop in the graph
-  const linkedRefIds: string[] = [];
-  let refId: string | undefined = embeddableRefId;
-  do {
-    if (refId !== embeddableRefId) {
-      linkedRefIds.push(refId);
-    }
-    refId = linkedRefMap[refId]?.linkedRefId;
-  } while (refId && (refId !== embeddableRefId));
+  const linkedRefIds = getLegacyLinkedRefIds(embeddableRefId, linkedRefMap);
 
   getAllAnswersInList(linkedRefIds)
     .then(answers => {
@@ -447,6 +457,8 @@ export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData
         /*
           NOTE: Lara also returns the following which we don't have access to or don't make sense in AP
           createdAt, updatedAt, interactiveStateUrl, interactive: {id, name}
+
+          TODO: add at least createdAt when implementing linked interactive UI
         */
         return {
           pageNumber: linkedRef?.page.position,

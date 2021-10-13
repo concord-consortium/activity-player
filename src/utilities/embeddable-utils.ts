@@ -7,6 +7,12 @@ import {
 } from "../types";
 import { ILaraData } from "../components/lara-data-context";
 
+export type LegacyLinkedRefMap = Record<string, {
+  activity: Activity;
+  page: Page;
+  linkedRefId: string | undefined;
+} | undefined>;
+
 export const isQuestion = (embeddable: Embeddable) =>
   (embeddable.type === "ManagedInteractive" && embeddable.library_interactive?.data?.enable_learner_state) ||
   (embeddable.type === "MwInteractive" && embeddable.enable_learner_state);
@@ -173,7 +179,7 @@ export const refIdToAnswersQuestionId = (refId: string) => {
   return refId;
 };
 
-export const getLegacyLinkedRefMap = (laraData: ILaraData) => {
+export const getLegacyLinkedRefMap = (laraData: ILaraData): LegacyLinkedRefMap => {
   const linkedRefMap: Record<string, {activity: Activity, page: Page, linkedRefId: string|undefined} | undefined> = {};
   const gatherLinkedRefs = (activity: Activity) => {
     activity.pages.forEach(page => {
