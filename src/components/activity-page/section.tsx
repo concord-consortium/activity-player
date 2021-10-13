@@ -16,7 +16,7 @@ interface IProps {
   section: SectionType;
   questionNumberStart: number;
   teacherEditionMode?: boolean;
-  setNavigation: (refId: string, options: INavigationOptions) => void;
+  setNavigation?: (refId: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
 }
 

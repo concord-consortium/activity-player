@@ -1,13 +1,11 @@
 import React from "react";
-// import { ActivityLayouts, PageLayouts, isQuestion, VisibleEmbeddables, getVisibleEmbeddablesOnPage,
-//          EmbeddableSections, getLinkedPluginEmbeddable } from "../../utilities/activity-utils";
-import { ActivityLayouts, isQuestion, getLinkedPluginEmbeddable } from "../../utilities/activity-utils";
-import { Embeddable } from "../activity-page/embeddable";
+import { ActivityLayouts, isQuestion, getLinkedPluginEmbeddable, numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
 import { RelatedContent } from "./related-content";
 import { SubmitButton } from "./submit-button";
 
 import "./single-page-content.scss";
 import { Activity, Page } from "../../types";
+import { Section } from "../activity-page/section";
 
 interface IProps {
   activity: Activity;
@@ -17,39 +15,22 @@ interface IProps {
 
 export const SinglePageContent: React.FC<IProps> = (props) => {
   const { activity, teacherEditionMode, pluginsLoaded } = props;
-  let questionNumber = 0;
-  let embeddableNumber = 0;
-
+  const questionNumber = 0;
   const renderPageContent = (page: Page, index: number) => {
-    // const visibleEmbeddables: VisibleEmbeddables = getVisibleEmbeddablesOnPage(page);
-    // const embeddables = [...visibleEmbeddables.headerBlock, ...visibleEmbeddables.interactiveBox, ...visibleEmbeddables.infoAssessment];
-    const onSizeChange = () => {
-      // setResizeCounter(counter++);
-      console.log("in single-page-content:");
-    };
+
     return (
       <React.Fragment key={index}>
-        { page.sections.map((section) => {
-            section.embeddables.map((embeddable, i: number) => {
-              if (isQuestion(embeddable)) {
-                questionNumber++;
-              }
-              embeddableNumber++;
-              const linkedPluginEmbeddable = getLinkedPluginEmbeddable(section, embeddable.ref_id);
-              return (
-                <Embeddable
-                  activityLayout={ActivityLayouts.SinglePage}
-                  key={`embeddable ${embeddableNumber}`}
-                  embeddable={embeddable}
-                  sectionLayout={section.layout}
-                  questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
-                  linkedPluginEmbeddable={linkedPluginEmbeddable}
-                  teacherEditionMode={teacherEditionMode}
-                  pluginsLoaded={pluginsLoaded}
-                  onSizeChange={onSizeChange}
-                />
-              );
-            });
+        { page.sections.map((section, idx) => {
+            const questionCount = numQuestionsOnPreviousSections(idx, page.sections) || 0;
+            const embeddableQuestionNumberStart = questionCount + questionNumber;
+            return (
+              <Section
+                key={idx}
+                section={section}
+                questionNumberStart={embeddableQuestionNumberStart}
+                pluginsLoaded={false}
+              />
+            );
           })
         }
       </React.Fragment>
