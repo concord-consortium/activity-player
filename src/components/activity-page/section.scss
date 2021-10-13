@@ -1,0 +1,189 @@
+@import "../vars.scss";
+$content-inner-width: 900px;
+
+.section {
+  display: grid;
+  gap: 10px;
+  grid-auto-rows: minmax(20px, auto);
+  grid-template-columns: repeat(10, 1fr);
+  margin: 10px;
+  position: relative;
+  &.responsive {
+    width: 100%;
+  }
+
+  &.full-width {
+    width: $content-inner-width;
+    .embeddable.full-width {
+      grid-column: span 10;
+      &.half-width {
+        grid-column: span 5;
+      }
+    }
+  }
+
+  &.l_6040 {
+    width: $content-inner-width;
+    .column.primary {
+      position: sticky;
+      grid-column: span 6;
+      overflow: hidden;
+      top: 0;
+      &.expand {
+        grid-column: span 9;
+      }
+    }
+    .column.secondary {
+      right: 0;
+      grid-column: span 4;
+      &.stacked {
+        flex-direction: column;
+      }
+      &.collapsed {
+        grid-column: span 1;
+      }
+    }
+  }
+
+  &.r_6040 {
+    width: $content-inner-width;
+    .column.primary {
+      position: sticky;
+      grid-column: span 6;
+      overflow: hidden;
+      top: 0;
+      &.expand {
+        grid-column: span 9;
+      }
+    }
+    .column.secondary {
+      left: 0;
+      grid-column: span 4;
+      &.stacked {
+        flex-direction: column;
+      }
+      &.collapsed {
+        grid-column: span 1;
+      }
+    }
+  }
+
+  &.l_7030 {
+    width: $content-inner-width;
+    .column.primary {
+      position: sticky;
+      grid-column: span 7;
+      overflow: hidden;
+      top: 0;
+      &.expand {
+        grid-column: span 9;
+      }
+    }
+    .column.secondary {
+      right: 0;
+      grid-column: span 3;
+      &.stacked {
+        flex-direction: column;
+      }
+      &.collapsed {
+        grid-column: span 1;
+      }
+    }
+  }
+
+  &.r_3070 {
+    width: $content-inner-width;
+    .column.primary {
+      position: sticky;
+      grid-column: span 7;
+      overflow: hidden;
+      top: 0;
+      &.expand {
+        grid-column: span 9;
+      }
+    }
+    .column.secondary {
+      left: 0;
+      grid-column: span 3;
+      &.stacked {
+        flex-direction: column;
+      }
+      &.collapsed {
+        grid-column: span 1;
+      }
+    }
+  }
+
+  &.responsive {
+    display: flex;
+    flex-direction: row;
+    .embeddable.full-width {
+      width: 100%;
+      &.half-width {
+        width: 50%;
+      }
+    }
+
+    .column.primary {
+      position: sticky;
+      right: 0;
+      width: 100%;
+      overflow: hidden;
+    }
+    .column.secondary {
+      min-width: 365px;
+      left: 0;
+      &.stacked {
+        flex-direction: column;
+      }
+      &.collapsed {
+        min-width: 45px;
+      }
+    }
+  }
+
+  .collapsible-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 20px;
+    margin-bottom: 10px;
+    height: 35px;
+    background-color: $cc-charcoal;
+    color: $cc-charcoal-light2;
+    transition-duration: .25s;
+    cursor: pointer;
+
+    &.right {
+      justify-content: flex-start;
+    }
+
+    &.collapsed {
+      height: 350px;
+      width: 45px;
+      padding: 5px;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+
+    div {
+      position: relative;
+      top: 2px;
+      left: 0px;
+      width: 30px;
+      white-space: nowrap;
+    }
+
+    &.collapsed {
+      height: 350px;
+      width: 45px;
+      padding: 5px;
+
+      div {
+        transform: rotate(-90deg);
+        top: 20px;
+      }
+    }
+  }
+}

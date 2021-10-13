@@ -12,7 +12,7 @@ import { EmbeddableType, IEmbeddablePlugin } from "../../types";
 import { IInteractiveSupportedFeaturesEvent } from "../../lara-plugin/events";
 import { ICustomMessage, ISupportedFeatures, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
-import "./activity-page-content.scss";
+import "./embeddable.scss";
 
 interface IProps {
   embeddable: EmbeddableType;

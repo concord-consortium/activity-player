@@ -9,7 +9,7 @@ import { EmbeddableType, SectionType } from "../../types";
 import { Logger, LogEventName } from "../../lib/logger";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
-import "./activity-page-content.scss";
+import "./section.scss";
 
 const kEmbeddableMargin = 10;
 interface IProps {
