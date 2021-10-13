@@ -7,7 +7,7 @@ import {
   ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures, IAttachmentUrlRequest, IAttachmentUrlResponse
 } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
-import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, ILegacyInteractiveState } from "../../../types";
+import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, ILegacyLinkedInteractiveState } from "../../../types";
 import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata, hasLegacyLinkedInteractive, isQuestion } from "../../../utilities/embeddable-utils";
@@ -46,7 +46,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const iframeRuntimeRef = useRef<IframeRuntimeImperativeAPI>(null);
   const onSetInteractiveStateCallback = useRef<() => void>();
   const interactiveState = useRef<any>();
-  const legacyInteractiveState = useRef<ILegacyInteractiveState | null>(null);
+  const legacyLinkedInteractiveState = useRef<ILegacyLinkedInteractiveState | null>(null);
   const answerMeta = useRef<IExportableAnswerMetadata>();
   const shouldWatchAnswer = isQuestion(props.embeddable);
   const laraData = useContext(LaraDataContext);
@@ -68,7 +68,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   useEffect(() => {
     if (shouldLoadLegacyLinkedInteractiveState && (laraData.activity || laraData.sequence)) {
       return getLegacyLinkedInteractiveInfo(embeddableRefId, laraData, (info) => {
-        legacyInteractiveState.current = info;
+        legacyLinkedInteractiveState.current = info;
         setLoadingLegacyLinkedInteractiveState(false);
       });
     }
@@ -236,7 +236,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         id={interactiveId}
         authoredState={authoredState}
         initialInteractiveState={interactiveState.current}
-        legacyLinkedInteractiveState={legacyInteractiveState.current}
+        legacyLinkedInteractiveState={legacyLinkedInteractiveState.current}
         setInteractiveState={handleNewInteractiveState}
         setSupportedFeatures={setSupportedFeatures}
         linkedInteractives={linkedInteractives.current}

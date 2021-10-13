@@ -1,7 +1,7 @@
 // cf. https://github.com/concord-consortium/question-interactives/blob/master/src/scaffolded-question/components/iframe-runtime.tsx
 import { autorun } from "mobx";
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { IframePhone, ILegacyInteractiveState } from "../../../types";
+import { IframePhone, ILegacyLinkedInteractiveState } from "../../../types";
 import iframePhone from "iframe-phone";
 import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
@@ -49,7 +49,7 @@ interface IProps {
   id: string;
   authoredState: any;
   initialInteractiveState: any;
-  legacyLinkedInteractiveState: ILegacyInteractiveState | null;
+  legacyLinkedInteractiveState: ILegacyLinkedInteractiveState | null;
   setInteractiveState: (state: any) => void;
   setSupportedFeatures: (container: HTMLElement, features: ISupportedFeatures) => void;
   linkedInteractives?: ILinkedInteractive[];

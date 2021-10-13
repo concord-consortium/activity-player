@@ -291,7 +291,7 @@ export interface IAnonymousLearnerPluginState extends IAnonymousMetadataPartial 
   state: string;
 }
 
-export interface ILegacyInteractiveState {
+export interface ILegacyLinkedInteractiveState {
   hasLinkedInteractive?: boolean;
   linkedState?: any;
   allLinkedStates?: IInteractiveStateProps[];
