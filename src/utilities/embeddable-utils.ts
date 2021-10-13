@@ -179,8 +179,16 @@ export const refIdToAnswersQuestionId = (refId: string) => {
   return refId;
 };
 
+// cache exported so it can be checked in tests
+export const legacyLinkedRefMapCache = new WeakMap<ILaraData, LegacyLinkedRefMap>();
+
 export const getLegacyLinkedRefMap = (laraData: ILaraData): LegacyLinkedRefMap => {
-  const linkedRefMap: Record<string, {activity: Activity, page: Page, linkedRefId: string|undefined} | undefined> = {};
+  // cache this as it is called on each render
+  const cachedLinkedRefMap = legacyLinkedRefMapCache.get(laraData);
+  if (cachedLinkedRefMap) {
+    return cachedLinkedRefMap;
+  }
+
   const gatherLinkedRefs = (activity: Activity) => {
     activity.pages.forEach(page => {
       page.embeddables.forEach(item => {
@@ -196,11 +204,15 @@ export const getLegacyLinkedRefMap = (laraData: ILaraData): LegacyLinkedRefMap =
     });
   };
 
+  const linkedRefMap: LegacyLinkedRefMap = {};
+
   if (laraData.sequence) {
     laraData.sequence.activities.forEach(gatherLinkedRefs);
   } else if (laraData.activity) {
     gatherLinkedRefs(laraData.activity);
   }
+
+  legacyLinkedRefMapCache.set(laraData, linkedRefMap);
 
   return linkedRefMap;
 };

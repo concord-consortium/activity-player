@@ -1,5 +1,5 @@
 import { IRuntimeMetadata, IRuntimeMultipleChoiceMetadata } from "@concord-consortium/lara-interactive-api";
-import { answersQuestionIdToRefId, refIdToAnswersQuestionId, getAnswerWithMetadata, getLegacyLinkedRefMap, hasLegacyLinkedInteractive } from "./embeddable-utils";
+import { answersQuestionIdToRefId, refIdToAnswersQuestionId, getAnswerWithMetadata, getLegacyLinkedRefMap, hasLegacyLinkedInteractive, legacyLinkedRefMapCache } from "./embeddable-utils";
 import { DefaultManagedInteractive } from "../test-utils/model-for-tests";
 import {
   IManagedInteractive,
@@ -332,12 +332,16 @@ describe("Embeddable utility functions", () => {
   });
 
   describe("#getLegacyLinkedRefMap", () => {
-    it("can generate an empty legacy linked ref map without data", () => {
-      expect(getLegacyLinkedRefMap({})).toEqual({});
+    it("can generate and cache an empty legacy linked ref map without data", () => {
+      const laraData = {};
+      expect(getLegacyLinkedRefMap(laraData)).toEqual({});
+      expect(legacyLinkedRefMapCache.get(laraData)).toEqual({});
     });
 
-    it("can generate a legacy linked ref map with an activity with no linked refs", () => {
-      const map = getLegacyLinkedRefMap({activity: activity1});
+    it("can generate and cache a legacy linked ref map with an activity with no linked refs", () => {
+      const laraData = {activity: activity1};
+      const map = getLegacyLinkedRefMap(laraData);
+      expect(legacyLinkedRefMapCache.get(laraData)).toEqual(map);
       expect(Object.keys(map)).toEqual(["328-ManagedInteractive", "327-ManagedInteractive"]);
       expect(map["328-ManagedInteractive"]).not.toBeUndefined();
       expect(map["327-ManagedInteractive"]).not.toBeUndefined();
@@ -345,8 +349,10 @@ describe("Embeddable utility functions", () => {
       expect(map["327-ManagedInteractive"]?.linkedRefId).toBeUndefined();
     });
 
-    it("can generate a legacy linked ref map with an activity with linked refs", () => {
-      const map = getLegacyLinkedRefMap({activity: legacyLinkedInteractiveActivity});
+    it("can generate and cache a legacy linked ref map with an activity with linked refs", () => {
+      const laraData = {activity: legacyLinkedInteractiveActivity};
+      const map = getLegacyLinkedRefMap(laraData);
+      expect(legacyLinkedRefMapCache.get(laraData)).toEqual(map);
       expect(Object.keys(map)).toEqual([
         "312-ManagedInteractive","313-ManagedInteractive","352-ManagedInteractive","319-ManagedInteractive",
         "210507-MwInteractive","314-ManagedInteractive","315-ManagedInteractive","331-ManagedInteractive",
