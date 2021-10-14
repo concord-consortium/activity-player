@@ -228,6 +228,7 @@ export const getAnswer = (embeddableRefId: string): Promise<WrappedDBAnswer | nu
     });
 };
 
+// TODO: this could be optimized to a single "in" query.  For now it is a set of queries, one per answer.
 export const getAllAnswersInList = (embeddableRefIds: string[]): Promise<Array<WrappedDBAnswer | null>> => {
   return Promise.all([...embeddableRefIds.map(getAnswer)]);
 };
@@ -458,7 +459,7 @@ export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData
           NOTE: Lara also returns the following which we don't have access to or don't make sense in AP
           createdAt, updatedAt, interactiveStateUrl, interactive: {id, name}
 
-          TODO: add at least createdAt when implementing linked interactive UI
+          TODO: add at least updatedAt when implementing linked interactive UI
         */
         return {
           pageNumber: linkedRef?.page.position,
