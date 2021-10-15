@@ -24,8 +24,7 @@ import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
 import { Activity, IEmbeddablePlugin, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
-// import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
-import { getGlossaryEmbeddable } from "../utilities/plugin-utils";
+import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
 import { Error }  from "./error/error";
 import { IdleWarning } from "./error/idle-warning";
@@ -193,10 +192,10 @@ export class App extends React.PureComponent<IProps, IState> {
       this.setState(newState as IState);
 
       this.LARA = initializeLara();
-      // const activities: Activity[] = sequence ? sequence.activities : [activity];
-      // loadLearnerPluginState(activities, teacherEditionMode).then(() => {
-      //   loadPluginScripts(this.LARA, activities, this.handleLoadPlugins, teacherEditionMode);
-      // });
+      const activities: Activity[] = sequence ? sequence.activities : [activity];
+      loadLearnerPluginState(activities).then(() => {
+        loadPluginScripts(this.LARA, activities, this.handleLoadPlugins);
+      });
 
       Modal.setAppElement("#app");
 
@@ -308,7 +307,7 @@ export class App extends React.PureComponent<IProps, IState> {
         }
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
           <Footer
-            // fullWidth={fullWidth}
+            fullWidth={fullWidth}
             project={project}
           />
         }

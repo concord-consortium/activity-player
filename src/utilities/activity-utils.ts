@@ -12,19 +12,9 @@ export enum SectionLayouts {
   Responsive = "l-responsive",
   SixtyForty = "l-6040",
   FortySixty = "r-4060",
+  SeventyThirty = "l-7030",
+  ThirtySeventy = "r-3070"
 }
-
-// export enum EmbeddableSections {
-//   Interactive = "interactive_box",
-//   Introduction = "header_block",
-//   InfoAssessment = "", // stored as null in JSON
-// }
-
-// export interface VisibleEmbeddables {
-//   interactiveBox: EmbeddableWrapper[],
-//   headerBlock: EmbeddableWrapper[],
-//   infoAssessment: EmbeddableWrapper[],
-// }
 
 export const isQuestion = (embeddable: EmbeddableType) => isEmbeddableQuestion(embeddable);
 
@@ -75,9 +65,21 @@ export const getPageSideTipEmbeddables = (activity: Activity, currentPage: Page)
     }
     return sidetips || [];
   }
-  // else {
-  //   return currentPage.sections.embeddables.filter((e: any) => isEmbeddableSideTip(e));
-  // }
+  else {
+    const sidetips: EmbeddableType[] = [];
+    const sectionsInPage = currentPage?.sections;
+    if (currentPage) {
+      for (let section = 0; section < sectionsInPage.length; section ++) {
+        for (let embeddableNum = 0; embeddableNum < sectionsInPage[section].embeddables.length; embeddableNum++) {
+          const embeddableWrapper = sectionsInPage[section].embeddables[embeddableNum];
+          if (isEmbeddableSideTip(embeddableWrapper)) {
+            sidetips.push(embeddableWrapper);
+          }
+        }
+      }
+    }
+    return sidetips || [];
+  }
 };
 
 export const getPageSideBars = (activity: Activity, currentPage: Page) => {

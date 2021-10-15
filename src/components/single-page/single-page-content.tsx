@@ -28,7 +28,8 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
                 key={idx}
                 section={section}
                 questionNumberStart={embeddableQuestionNumberStart}
-                pluginsLoaded={false}
+                teacherEditionMode={teacherEditionMode}
+                pluginsLoaded={pluginsLoaded}
               />
             );
           })

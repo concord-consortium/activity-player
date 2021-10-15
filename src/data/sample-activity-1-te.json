@@ -1,0 +1,621 @@
+{
+  "description": "<p>This is a sample activity used to test the LARA single page application.&nbsp;</p>",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Teacher Edition Test Activity",
+  "notes": "",
+  "project": null,
+  "related": "<p>Related content for the&nbsp;sample activity used to test the LARA single page application.</p>",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "https://images.unsplash.com/photo-1583524505974-6facd53f4597?ixlib=rb-1.2.1&w=1000&q=80",
+  "time_to_complete": 10,
+  "version": 2,
+  "theme_name": null,
+  "background_image": null,
+  "pages": [
+    {
+      "is_completion": false,
+      "is_hidden": false,
+      "name": null,
+      "position": 1,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "sections": [
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "_comment": "secondary_column_collapsibl determines if the small column can be collapsed, and secondary_column_display_mode is either stacked or carousel, it determins how to render the small column",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "content": "<p>This is introduction text for page 1 of the single page test activity.</p>",
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "271751-Embeddable::Xhtml"
+            }
+          ]
+        },
+        {
+          "layout": "l-6040",
+          "is_hidden": false,
+          "_comment": "secondary_column_collapsibl determines if the small column can be collapsed, secondary_column_display_mode is either stacked or carousel, it determins how to render the small column",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": "primary",
+              "name": "",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
+              "is_hidden": false,
+              "is_half_width": false,
+              "show_in_featured_question_report": true,
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": null,
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "This shouldn't be used by any real activities it is still under development.",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Open Response (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": false,
+                  "authorable": true
+                }
+              },
+              "type": "ManagedInteractive",
+              "ref_id": "318-ManagedInteractive"
+            },
+            {
+              "column": "primary",
+              "plugin": {
+                "id": 5153,
+                "description": null,
+                "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"hi\",\"distractorsExplanation\":\"hello\",\"exemplar\":\"great\",\"teacherTip\":\"teacher\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "questionWrapper",
+                "approved_script": {
+                  "name": "Teacher Edition (master)",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "is_full_width": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4833-Embeddable::EmbeddablePlugin",
+              "embeddable_ref_id": "318-ManagedInteractive"
+            },
+            {
+              "column": "secondary",
+              "name": "",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
+              "is_hidden": false,
+              "is_half_width": false,
+              "show_in_featured_question_report": true,
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": null,
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "This shouldn't be used by any real activities it is still under development.",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Open Response (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": false,
+                  "authorable": true
+                }
+              },
+              "type": "ManagedInteractive",
+              "ref_id": "358-ManagedInteractive"
+            },
+            {
+              "column": "secondary",
+              "plugin": {
+                "id": 5153,
+                "description": null,
+                "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"exemplar\":\"great\",\"teacherTip\":\"teacher\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "questionWrapper",
+                "approved_script": {
+                  "name": "Teacher Edition (master)",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "is_full_width": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4834-Embeddable::EmbeddablePlugin",
+              "embeddable_ref_id": "358-ManagedInteractive"
+            }
+          ]
+        },
+        {
+          "layout": "l-6040",
+          "is_hidden": false,
+          "_comment": "secondary_column_collapsibl determines if the small column can be collapsed, secondary_column_display_mode is either stacked or carousel, it determins how to render the small column",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": "secondary",
+              "plugin": {
+                "id": 5153,
+                "description": null,
+                "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"hi\",\"distractorsExplanation\":\"hello\",\"location\":\"bottom\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "questionWrapper",
+                "approved_script": {
+                  "name": "Teacher Edition (master)",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "is_full_width": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4835-Embeddable::EmbeddablePlugin",
+              "embeddable_ref_id": "328-ManagedInteractive"
+            },
+            {
+              "column": "secondary",
+              "name": "",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
+              "is_hidden": false,
+              "is_half_width": false,
+              "show_in_featured_question_report": true,
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": null,
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "This shouldn't be used by any real activities it is still under development.",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Open Response (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": false,
+                  "authorable": true
+                }
+              },
+              "type": "ManagedInteractive",
+              "ref_id": "328-ManagedInteractive"
+            }
+          ]
+        }
+      ],
+      "id": 1000
+    },
+    {
+      "is_completion": false,
+      "is_hidden": false,
+      "name": null,
+      "position": 2,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "sections": [
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsibl": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "content": "<p>This is introduction text for page 2 of the single page test activity.</p>",
+              "is_half_width": true,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "271752-Embeddable::Xhtml"
+            },
+            {
+              "column": null,
+              "plugin": {
+                "id": 4613,
+                "description": null,
+                "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"**Welcome to the Wildfire Module Teacher Edition!  You can open and close this tip, and other teacher tips in this module by clicking on the orange \\\"Framing the Activity\\\" button above.**\\n\\nFires have been raging around the world, destroying homes and burning up millions of acres. \\nAs the world experiences extreme heat waves and droughts with more frequency due to climate change, firefighters will continue to struggle to bring these fires under control. These fires sharpen the call to take climate change more seriously and explore the role it plays in the development of these natural hazards. Climate change plays an important role; warmer temperatures means drier vegetation, which acts as perfect kindling for fires. Hot, dry winds also help spread wildfire. \\n\\nIt is the goal of this module to help students explore how the different components in the fire triangle-- oxygen, heat, fuel --are amplified as a result of a changing climate. In addition, we will provide students with the opportunity to consider the factors that transform a natural phenomenon into a natural hazard. Students will explore the risks, hazards, and impacts of wildfires on people and their communities. They will also consider environmental impacts to important ecosystems.\\n\\nIn line with the NGSS (see \u003Ca href=\\\"https://docs.google.com/document/d/1evvprkL3XbujTLo0JEuP2KvcVF_NvM_yCOWP2tsFthQ/edit?usp=sharing\\\" target=\\\"_blank\\\"\u003E Wildfire Module Standards Alignment\u003C/a\u003E), this module engages students in the use of evidence gathered from exploration with the Wildfire Explorer, a model we developed to investigate variables that influence the spread and impacts of a wildfire on communities and environments in its path. \\n\\nStudent work throughout the module is driven by the guiding question: **How will wildfire risks and impacts change over the next 100 years?** \\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "windowShade",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "is_full_width": true,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4469-Embeddable::EmbeddablePlugin"
+            }
+          ]
+        },
+        {
+          "layout": "l-6040",
+          "is_hidden": false,
+          "secondary_column_collapsibl": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": "primary",
+              "name": "",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
+              "is_hidden": false,
+              "is_half_width": false,
+              "show_in_featured_question_report": true,
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": "DEFAULT",
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Multiple Choice (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": true,
+                  "authorable": true
+                }
+              },
+              "type": "ManagedInteractive",
+              "ref_id": "327-ManagedInteractive"
+            }
+          ]
+        },
+        {
+          "layout": "l-6040",
+          "is_hidden": false,
+          "secondary_column_collapsibl": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": "secondary",
+              "name": "",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
+              "is_hidden": false,
+              "is_half_width": false,
+              "show_in_featured_question_report": true,
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": "DEFAULT",
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Multiple Choice (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": true,
+                  "authorable": true
+                }
+              },
+              "type": "ManagedInteractive",
+              "ref_id": "327-ManagedInteractive"
+            }
+          ]
+        }
+      ],
+      "id": 2000
+    },
+    {
+      "id": 310536,
+      "is_completion": false,
+      "is_hidden": false,
+      "name": "Full Width with header block, MC, OR, and side Tip",
+      "position": 1,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "sections": [
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "content": "\u003Cp\u003E\u003Cimg class=\"tinymce-img-float-right\" src=\"https://place-puppy.com/300x300\" alt=\"puppy\" width=\"50\" height=\"50\" /\u003EThis is an text block in the intro. Will also have an image.\u003C/p\u003E",
+              "is_callout": true,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "274463-Embeddable::Xhtml"
+            },
+            {
+              "column": null,
+              "plugin": {
+                "id": 5228,
+                "description": null,
+                "author_data": "{\"tipType\":\"sideTip\",\"sideTip\":{\"content\":\"This is a sidetip\",\"mediaType\":\"none\",\"mediaURL\":\"\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "sideTip",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "is_full_width": true,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4902-Embeddable::EmbeddablePlugin"
+            }
+          ]
+        },
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "name": "",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}],\"prompt\":\"\u003Cp\u003EPick one of the answers\u003C/p\u003E\"}",
+              "show_in_featured_question_report": true,
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": "DEFAULT",
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Multiple Choice (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": true,
+                  "authorable": true
+                }
+              },
+              "type": "ManagedInteractive",
+              "ref_id": "4340-ManagedInteractive",
+              "linked_interactives": []
+            }
+          ]
+        },
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "name": "",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"blanks\":[{\"id\":\"[blank-1]\",\"size\":20},{\"id\":\"[blank-2]\",\"size\":20}],\"prompt\":\"\u003Cp\u003EYour name is [blank-1] [blank-2].\u003C/p\u003E\"}",
+              "show_in_featured_question_report": true,
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": null,
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/fill-in-the-blank/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Fill In The Blank (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": false,
+                  "authorable": true
+                }
+              },
+              "type": "ManagedInteractive",
+              "ref_id": "4341-ManagedInteractive",
+              "linked_interactives": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "is_completion": true,
+      "is_hidden": false,
+      "name": null,
+      "position": 3,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "sections": [],
+      "id": 3000
+    }
+  ],
+  "plugins": [],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}
