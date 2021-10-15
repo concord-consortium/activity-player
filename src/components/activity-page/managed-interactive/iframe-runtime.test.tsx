@@ -75,6 +75,7 @@ describe("IframeRuntime component", () => {
         id={"123-Interactive"}
         authoredState={null}
         initialInteractiveState={null}
+        legacyLinkedInteractiveState={null}
         setInteractiveState={mockSetInteractiveState}
         setSupportedFeatures={mockSetSupportedFeatures}
         setNewHint={mockSetNewHint}

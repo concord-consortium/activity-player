@@ -1,4 +1,5 @@
 import { IReadableAttachmentInfo } from "@concord-consortium/interactive-api-host";
+import { IInteractiveStateProps } from "@concord-consortium/lara-interactive-api";
 
 export type Mode = "runtime" | "authoring" | "report";
 
@@ -86,6 +87,7 @@ export interface IManagedInteractive extends EmbeddableBase {
   inherit_image_url?: boolean;
   custom_image_url?: string | null;
   linked_interactives?: { ref_id: string, label: string }[];
+  linked_interactive?: { ref_id: string };
 }
 
 export interface IMwInteractive extends EmbeddableBase {
@@ -96,6 +98,7 @@ export interface IMwInteractive extends EmbeddableBase {
   native_width?: number;
   enable_learner_state?: boolean;
   linked_interactives?: { ref_id: string, label: string }[];
+  linked_interactive?: { ref_id: string };
 }
 
 export interface IEmbeddableXhtml extends EmbeddableBase {
@@ -286,4 +289,10 @@ export interface IAuthenticatedLearnerPluginState extends ILTIPartial {
 export interface IAnonymousLearnerPluginState extends IAnonymousMetadataPartial {
   pluginId: number;
   state: string;
+}
+
+export interface ILegacyLinkedInteractiveState {
+  hasLinkedInteractive?: boolean;
+  linkedState?: any;
+  allLinkedStates?: IInteractiveStateProps[];
 }

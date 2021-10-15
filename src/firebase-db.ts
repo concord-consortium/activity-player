@@ -12,10 +12,11 @@ import "firebase/auth";
 import "firebase/firestore";
 import { anonymousPortalData } from "./portal-api";
 import { IAnonymousPortalData, IPortalData } from "./portal-types";
-import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
-import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "./types";
+import { getLegacyLinkedRefMap, LegacyLinkedRefMap, refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
+import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, ILegacyLinkedInteractiveState } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
+import { ILaraData } from "./components/lara-data-context";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
@@ -227,6 +228,11 @@ export const getAnswer = (embeddableRefId: string): Promise<WrappedDBAnswer | nu
     });
 };
 
+// TODO: this could be optimized to a single "in" query.  For now it is a set of queries, one per answer.
+export const getAllAnswersInList = (embeddableRefIds: string[]): Promise<Array<WrappedDBAnswer | null>> => {
+  return Promise.all([...embeddableRefIds.map(getAnswer)]);
+};
+
 export const getAllAnswers = (): Promise<WrappedDBAnswer[]>  => {
   return getAnswerDocs()
     .then((answers: firebase.firestore.DocumentData[]) =>
@@ -408,4 +414,66 @@ export const setLearnerPluginState = async (pluginId: number, state: string): Pr
   cachedLearnerPluginState[pluginId] = state;
 
   return state;
+};
+
+export const getLegacyLinkedRefIds = (embeddableRefId: string, linkedRefMap: LegacyLinkedRefMap) => {
+  const linkedRefIds: string[] = [];
+  let refId: string | undefined = embeddableRefId;
+  do {
+    // break out if a cycle is found
+    if (linkedRefIds.indexOf(refId) !== -1) {
+      break;
+    }
+    if (refId !== embeddableRefId) {
+      linkedRefIds.push(refId);
+    }
+    refId = linkedRefMap[refId]?.linkedRefId;
+  } while (refId);
+
+  return linkedRefIds;
+};
+
+export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData: ILaraData, callback: (info: ILegacyLinkedInteractiveState) => void) => {
+  // get a map of embeddable refs to linked refs
+  const linkedRefMap = getLegacyLinkedRefMap(laraData);
+
+  // if this ref isn't in the map it doesn't have linked interactives so we are done
+  if (!linkedRefMap[embeddableRefId]) {
+    callback({
+      hasLinkedInteractive: false,
+      linkedState: null,
+      allLinkedStates: []
+    });
+    return;
+  }
+
+  // get all the linked ref states in ancestry order with a guard against a loop in the graph
+  const linkedRefIds = getLegacyLinkedRefIds(embeddableRefId, linkedRefMap);
+
+  getAllAnswersInList(linkedRefIds)
+    .then(answers => {
+      const allLinkedStates = linkedRefIds.map((linkedRefId, index) => {
+        const linkedRef = linkedRefMap[linkedRefId];
+
+        /*
+          NOTE: Lara also returns the following which we don't have access to or don't make sense in AP
+          createdAt, updatedAt, interactiveStateUrl, interactive: {id, name}
+
+          TODO: add at least updatedAt when implementing linked interactive UI
+        */
+        return {
+          pageNumber: linkedRef?.page.position,
+          pageName: linkedRef?.page.name,
+          activityName: linkedRef?.activity.name,
+          interactiveState: answers[index]?.interactiveState || null,
+        };
+      });
+      const linkedState = allLinkedStates.find(ls => ls.interactiveState)?.interactiveState || null;
+
+      callback({
+        hasLinkedInteractive: true,
+        linkedState,
+        allLinkedStates: allLinkedStates as any  // any here as we are missing things Lara sets
+      });
+    });
 };

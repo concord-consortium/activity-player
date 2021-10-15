@@ -3,12 +3,27 @@ import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
 import {
   IExportableAnswerMetadata, IReportState, IExportableMultipleChoiceAnswerMetadata,
   IExportableOpenResponseAnswerMetadata, IExportableInteractiveAnswerMetadata, IExportableImageQuestionAnswerMetadata,
-  Embeddable
+  Embeddable, Activity, Page
 } from "../types";
+import { ILaraData } from "../components/lara-data-context";
+
+export type LegacyLinkedRefMap = Record<string, {
+  activity: Activity;
+  page: Page;
+  linkedRefId: string | undefined;
+} | undefined>;
 
 export const isQuestion = (embeddable: Embeddable) =>
   (embeddable.type === "ManagedInteractive" && embeddable.library_interactive?.data?.enable_learner_state) ||
   (embeddable.type === "MwInteractive" && embeddable.enable_learner_state);
+
+export const hasLegacyLinkedInteractive = (embeddable: Embeddable, laraData: ILaraData) => {
+  let result = false;
+  if ((embeddable.type === "ManagedInteractive") || (embeddable.type === "MwInteractive")) {
+    result = !!getLegacyLinkedRefMap(laraData)[embeddable.ref_id]?.linkedRefId;
+  }
+  return result;
+};
 
 // LARA uses a map from the answer type to a question type.
 // Instead of using this map, we look directly at the authoredState this ought to give us more
@@ -162,4 +177,42 @@ export const refIdToAnswersQuestionId = (refId: string) => {
     return `${snakeCased}_${embeddableId}`;
   }
   return refId;
+};
+
+// cache exported so it can be checked in tests
+export const legacyLinkedRefMapCache = new WeakMap<ILaraData, LegacyLinkedRefMap>();
+
+export const getLegacyLinkedRefMap = (laraData: ILaraData): LegacyLinkedRefMap => {
+  // cache this as it is called on each render
+  const cachedLinkedRefMap = legacyLinkedRefMapCache.get(laraData);
+  if (cachedLinkedRefMap) {
+    return cachedLinkedRefMap;
+  }
+
+  const gatherLinkedRefs = (activity: Activity) => {
+    activity.pages.forEach(page => {
+      page.embeddables.forEach(item => {
+        const {embeddable} = item;
+        if ((embeddable.type === "ManagedInteractive") || (embeddable.type === "MwInteractive")) {
+          linkedRefMap[embeddable.ref_id] = {
+            activity,
+            page,
+            linkedRefId: embeddable.linked_interactive?.ref_id
+          };
+        }
+      });
+    });
+  };
+
+  const linkedRefMap: LegacyLinkedRefMap = {};
+
+  if (laraData.sequence) {
+    laraData.sequence.activities.forEach(gatherLinkedRefs);
+  } else if (laraData.activity) {
+    gatherLinkedRefs(laraData.activity);
+  }
+
+  legacyLinkedRefMapCache.set(laraData, linkedRefMap);
+
+  return linkedRefMap;
 };
