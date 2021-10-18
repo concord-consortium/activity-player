@@ -41,6 +41,15 @@ export const findUsedApprovedScripts = (activities: Activity[]) => {
           if (!activity.pages[page].sections[section].is_hidden) {
             for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
               const embeddable = activity.pages[page].sections[section].embeddables[embeddableNum];
+              // NOTE: TODO this needs to be fixed.
+              //This change might cause there to be extra space when running in non teacher edition mode and viewing a page with
+              // with teacher edition items on it.
+              //The issue is that the teacher edition item wrapper will be added to the page, and then the teacher edition plugin inside
+              //of it will decide not render anything because the app isn't in teacher edition mode.
+              //That behavior by itself is correct because we are trying to not have these "modes" be explicitly part of the
+              //activity player (or lara runtime). But the problem is that the item wrapper usually has some padding or margins.
+              //So even though it has no real content, the padding will still show up in the runtime.
+              //This change was from master when new-sections was rebased on it.
               if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin) {
                 addUsedPlugin(embeddable.plugin);
               }
