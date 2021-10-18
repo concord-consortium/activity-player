@@ -267,8 +267,9 @@ export class App extends React.PureComponent<IProps, IState> {
     const { activity, activityIndex, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
-    const fullWidth =true;
-    // const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
+    const hasResponsiveSection = activity.pages[currentPage - 1]?.sections.filter(s => s.layout === "responsive");
+
+    const fullWidth = (currentPage !== 0) && (hasResponsiveSection.length > 0);
     const project = activity.project ? activity.project : null;
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;

@@ -124,22 +124,24 @@ export class ActivityPageContent extends React.PureComponent <IProps, IState> {
     const { scrollOffset } = this.state;
     const layout = section.layout;
     const display_mode = section.secondary_column_display_mode;
-    const splitLayout = layout === "l-6040" || layout === "r-6040" || layout === "l-7030" || layout === "r-3070";
     const sectionClass = classNames("section",
-                                    {"full-width": layout === "full-width" || layout === "responsive"},
+                                    {"full-width": layout === "full-width"},
                                     {"l_6040": layout === "l-6040"},
                                     {"r_6040": layout === "r-6040"},
                                     {"l_7030": layout === "l-7030"},
                                     {"r_3070": layout === "r-3070"},
+                                    {"responsive": layout === "responsive"},
                                     {"stacked": display_mode === "stacked"},
                                     {"carousel": display_mode === "carousel"}
                                    );
     const embeddables = section.embeddables;
     const primaryEmbeddables = embeddables.filter(e => e.column === "primary" && !e.is_hidden);
     const secondaryEmbeddables = embeddables.filter(e => e.column === "secondary" && !e.is_hidden);
+    const singleColumn = layout === "full-width" ||
+                          (layout === "responsive" && primaryEmbeddables.length === 0 && secondaryEmbeddables.length === 0);
     const pinOffSet = layout !== "full-width" && secondaryEmbeddables.length ? scrollOffset : 0;
 
-    if (!splitLayout) {
+    if (singleColumn) {
       return (
         <div key={`section_${idx}`} className = {sectionClass}>
           { this.renderEmbeddables(section, embeddables, questionNumberStart) }

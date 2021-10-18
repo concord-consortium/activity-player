@@ -2,9 +2,8 @@ import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { getCachedLearnerPluginState, getLearnerPluginState, getPortalData } from "../firebase-db";
 import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
-import { Activity, SectionType, EmbeddableType, IEmbeddablePlugin, Plugin } from "../types";
+import { Activity, EmbeddableType, IEmbeddablePlugin, Plugin, ApprovedScript } from "../types";
 import { getResourceUrl } from "../lara-api";
-import { setReactionScheduler } from "mobx/dist/internal";
 
 export interface UsedApprovedScriptInfo {
   id: number;
@@ -42,15 +41,23 @@ export const findUsedApprovedScripts = (activities: Activity[]) => {
           if (!activity.pages[page].sections[section].is_hidden) {
             for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
               const embeddable = activity.pages[page].sections[section].embeddables[embeddableNum];
-              if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.approved_script_label === "teacherEditionTips" && teacherEditionMode) {
+              // NOTE: TODO this needs to be fixed.
+              //This change might cause there to be extra space when running in non teacher edition mode and viewing a page with
+              // with teacher edition items on it.
+              //The issue is that the teacher edition item wrapper will be added to the page, and then the teacher edition plugin inside
+              //of it will decide not render anything because the app isn't in teacher edition mode.
+              //That behavior by itself is correct because we are trying to not have these "modes" be explicitly part of the
+              //activity player (or lara runtime). But the problem is that the item wrapper usually has some padding or margins.
+              //So even though it has no real content, the padding will still show up in the runtime.
+              //This change was from master when new-sections was rebased on it.
+              if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin) {
                 addUsedPlugin(embeddable.plugin);
               }
             }
           }
-          }
-        });
+        }
       }
-    });
+    }
     // Add activity-level plugins too
     activity.plugins.forEach((activityPlugin: Plugin) => {
       addUsedApprovedScript(activityPlugin);
@@ -110,10 +117,14 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 };
 
 // loads the learner plugin state into the firebase write-through cache
-// export const loadLearnerPluginState = async (activities: Activity[], teacherEditionMode: boolean) => {
-//   const plugins = findUsedPlugins(activities, teacherEditionMode);
-//   return await Promise.all(plugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
-// };
+export const loadLearnerPluginState = async (activities: Activity[], teacherEditionMode: boolean) => {
+  const approvedScripts = findUsedApprovedScripts(activities);
+  // PJ 09/19/2021: This doesn't seem to make sense. Currently, the state is saved and restored per approved script.
+  // It should be saved and restored per plugin instance. It works with Glossary only because there's one glossary
+  // instance per activity. Fixing this would destroy students data, so I'm not doing this. But it should be handled
+  // if we ever add more plugins that save their state.
+  return await Promise.all(approvedScripts.map(async (approvedScriptInfo) => await getLearnerPluginState(approvedScriptInfo.id)));
+};
 
 export const initializePlugin = (context: IEmbeddablePluginContext) => {
   const { LARA, embeddable, embeddableContainer,
@@ -174,3 +185,7 @@ export const getGlossaryEmbeddable = (activity: Activity) => {
     : undefined;
   return embeddablePlugin;
 };
+function addUsedPlugin(plugin: Plugin) {
+  throw new Error("Function not implemented.");
+}
+
