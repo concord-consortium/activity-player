@@ -287,6 +287,12 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
       run_key: "",
       remote_endpoint: portalData.runRemoteEndpoint
     };
+
+    // only add collaborators data url if present as it is rarely used
+    if (portalData.collaboratorsDataUrl) {
+      ltiAnswer.collaborators_data_url = portalData.collaboratorsDataUrl;
+    }
+
     answerDocData = ltiAnswer;
   } else {
     const anonymousAnswer: AnonymousRuntimeAnswerMetadata = {
