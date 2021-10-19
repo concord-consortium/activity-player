@@ -168,11 +168,10 @@ $content-inner-width: 900px;
     }
 
     div {
+      align-self: center;
       position: relative;
-      top: 2px;
-      left: 0px;
-      width: 30px;
       white-space: nowrap;
+      width: 30px;
     }
 
     &.collapsed {

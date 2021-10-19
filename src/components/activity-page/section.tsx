@@ -168,11 +168,11 @@ export const Section: React.FC<IProps> = (props) => {
   const primaryEmbeddables = embeddables.filter(e => e.column === "primary" && !e.is_hidden);
   const secondaryEmbeddables = embeddables.filter(e => e.column === "secondary" && !e.is_hidden);
   const singleColumn = layout === "full-width" ||
-                        (layout === "responsive" && primaryEmbeddables.length === 0 && secondaryEmbeddables.length === 0);
+                        (layout === "responsive" && (primaryEmbeddables.length === 0 || secondaryEmbeddables.length === 0));
 
   if (singleColumn) {
     return (
-      <div className = {sectionClass} ref={sectionDivRef}>
+      <div className={sectionClass} ref={sectionDivRef}>
         { renderEmbeddables(embeddables, questionNumberStart) }
       </div>
     );
@@ -182,7 +182,7 @@ export const Section: React.FC<IProps> = (props) => {
     const numQuestionsLeftColumn = layout.includes("l") ? primaryEmbeddables.length : secondaryEmbeddables.length;
     const rightColumnQuestionNumberStart = questionNumberStart + numQuestionsLeftColumn;
     return (
-      <div className = {sectionClass} ref={sectionDivRef}>
+      <div className={sectionClass} ref={sectionDivRef}>
         {layout.includes("l")
           ? renderPrimaryEmbeddables(leftColumnEmbeddables, questionNumberStart)
           : renderSecondaryEmbeddables(leftColumnEmbeddables, questionNumberStart)
