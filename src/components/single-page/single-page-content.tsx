@@ -23,6 +23,10 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
   const renderPageContent = (page: Page, index: number) => {
     // const visibleEmbeddables: VisibleEmbeddables = getVisibleEmbeddablesOnPage(page);
     // const embeddables = [...visibleEmbeddables.headerBlock, ...visibleEmbeddables.interactiveBox, ...visibleEmbeddables.infoAssessment];
+    const onSizeChange = () => {
+      // setResizeCounter(counter++);
+      console.log("in single-page-content:");
+    };
     return (
       <React.Fragment key={index}>
         { page.sections.map((section) => {
@@ -42,6 +46,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
                   linkedPluginEmbeddable={linkedPluginEmbeddable}
                   teacherEditionMode={teacherEditionMode}
                   pluginsLoaded={pluginsLoaded}
+                  onSizeChange={onSizeChange}
                 />
               );
             });
