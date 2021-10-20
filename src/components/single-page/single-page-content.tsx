@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityLayouts, isQuestion, getLinkedPluginEmbeddable, numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
+import { numQuestionsOnPreviousSections, numQuestionsOnPreviousPages } from "../../utilities/activity-utils";
 import { RelatedContent } from "./related-content";
 import { SubmitButton } from "./submit-button";
 
@@ -14,15 +14,15 @@ interface IProps {
 }
 
 export const SinglePageContent: React.FC<IProps> = (props) => {
-  const { activity, teacherEditionMode, pluginsLoaded } = props;
-  const questionNumber = 0;
+  const { activity } = props;
   const renderPageContent = (page: Page, index: number) => {
-
+    // Even though this renders as a single page, the authored JSON still has pages
+    const totalPreviousQuestions = numQuestionsOnPreviousPages(page.position, activity);
     return (
       <React.Fragment key={index}>
         { page.sections.map((section, idx) => {
             const questionCount = numQuestionsOnPreviousSections(idx, page.sections) || 0;
-            const embeddableQuestionNumberStart = questionCount + questionNumber;
+            const embeddableQuestionNumberStart = questionCount + totalPreviousQuestions;
             return (
               <Section
                 key={idx}
