@@ -16,7 +16,7 @@ interface IProps {
   section: SectionType;
   questionNumberStart: number;
   teacherEditionMode?: boolean;
-  setNavigation: (refId: string, options: INavigationOptions) => void;
+  setNavigation?: (refId: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
 }
 
@@ -48,8 +48,6 @@ export const Section: React.FC<IProps> = (props) => {
     }
   },[resizeCounter]);
 
-
-
   const renderEmbeddables = (embeddablesToRender: EmbeddableType[], questionNumStart: number, offSet?: number) => {
     let questionNumber = questionNumStart;
     return (
@@ -62,7 +60,6 @@ export const Section: React.FC<IProps> = (props) => {
             if (!embeddableRefs[embeddable.ref_id]) {
               embeddableRefs[embeddable.ref_id] = React.createRef<EmbeddableImperativeAPI>();
             }
-
             return (
               <Embeddable
                 embeddableRef={embeddableRefs[embeddable.ref_id]}
