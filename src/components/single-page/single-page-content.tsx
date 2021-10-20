@@ -14,7 +14,7 @@ interface IProps {
 }
 
 export const SinglePageContent: React.FC<IProps> = (props) => {
-  const { activity } = props;
+  const { activity, teacherEditionMode, pluginsLoaded } = props;
   const renderPageContent = (page: Page, index: number) => {
     // Even though this renders as a single page, the authored JSON still has pages
     const totalPreviousQuestions = numQuestionsOnPreviousPages(page.position, activity);
