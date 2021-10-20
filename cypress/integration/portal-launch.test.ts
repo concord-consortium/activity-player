@@ -73,6 +73,53 @@ context("Launch AP From the Portal", () => {
     cy.get("[data-cy=activity-summary]").should("contain", "Single Page Test Activity");
   });
 
+  it("can be launched collaboratively", () => {
+    const portalDomain = Cypress.env("portal_domain");
+
+    // load the portal homepage to set the csrf token
+    cy.request({
+      url: `${portalDomain}/`,
+      method: "GET"
+    })
+    .its('body')
+    .then((body) => {
+      const $html = Cypress.$(body)
+      // this doesn't work: $html.find('meta[name=csrf-token]').val() so do it manually
+      let csrfToken = null
+      $html.each((i, el) => {
+        if ((el.tagName === "META") && (el.name === "csrf-token")) {
+          csrfToken = el.content
+        }
+      })
+      return csrfToken
+    })
+    .then((csrfToken) => {
+      cy.request({
+        url: `${portalDomain}/api/v1/collaborations`,
+        method: "POST",
+        headers: {
+          "x-csrf-token": csrfToken
+        },
+        body: {
+          offering_id: Cypress.env("portal_collaborator_offering"),
+          students: [
+            {id: Cypress.env("portal_collaborator_1_student_id")},
+            {id: Cypress.env("portal_collaborator_2_student_id")}
+          ]
+        }
+      })
+      .then((resp) => {
+        expect(resp.status).to.eq(201);
+        const url = new URL(resp.body.external_activity_url);
+
+        // strip the hostname and path
+        return cy.visit(url.search).then(() => {
+          return cy.get("[data-cy=activity-summary]").should("contain", "Cypress Collaborative AP Test Activity");
+        })
+      })
+    })
+  })
+
   // A regular 'function' syntax is used instead '=>' so cypress can control what
   // 'this' is
   it("can work with the interactive sharing plugin", function () {
