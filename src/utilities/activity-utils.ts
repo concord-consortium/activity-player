@@ -53,30 +53,28 @@ export const isEmbeddableSideTip = (e: EmbeddableType) => {
 export const getPageSideTipEmbeddables = (activity: Activity, currentPage: Page) => {
   if (activity.layout === ActivityLayouts.SinglePage) {
     const sidetips: EmbeddableType[] = [];
-    for (let page = 0; page < activity.pages.length - 1; page++) {
-      for (let section = 0; section < activity.pages[page].sections.length; section ++) {
-        for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
-          const embeddableWrapper = activity.pages[page].sections[section].embeddables[embeddableNum];
-          if (isEmbeddableSideTip(embeddableWrapper)) {
-            sidetips.push(embeddableWrapper);
+    activity.pages.forEach ((page) => {
+      page.sections.forEach((section) => {
+        section.embeddables.forEach((embeddable) => {
+          if (isEmbeddableSideTip(embeddable)) {
+            sidetips.push(embeddable);
           }
-        }
-      }
-    }
+        });
+      });
+    });
     return sidetips || [];
   }
   else {
     const sidetips: EmbeddableType[] = [];
     const sectionsInPage = currentPage?.sections;
     if (currentPage) {
-      for (let section = 0; section < sectionsInPage.length; section ++) {
-        for (let embeddableNum = 0; embeddableNum < sectionsInPage[section].embeddables.length; embeddableNum++) {
-          const embeddableWrapper = sectionsInPage[section].embeddables[embeddableNum];
-          if (isEmbeddableSideTip(embeddableWrapper)) {
-            sidetips.push(embeddableWrapper);
+      sectionsInPage.forEach((section) => {
+        section.embeddables.forEach((embeddable) => {
+          if (isEmbeddableSideTip(embeddable)) {
+            sidetips.push(embeddable);
           }
-        }
-      }
+        });
+      });
     }
     return sidetips || [];
   }

@@ -185,6 +185,4 @@ export const getGlossaryEmbeddable = (activity: Activity) => {
     : undefined;
   return embeddablePlugin;
 };
-// function addUsedPlugin(plugin: Plugin) {
-//   throw new Error("Function not implemented.");
-// }
+
