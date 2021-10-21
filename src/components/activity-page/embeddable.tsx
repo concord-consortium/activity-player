@@ -91,7 +91,8 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                     setSupportedFeatures={handleSetSupportedFeatures}
                     setSendCustomMessage={setSendCustomMessage}
                     setNavigation={handleSetNavigation} />;
-  } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {
+  } else if (embeddable.type === "Embeddable::EmbeddablePlugin"
+              && (embeddable.plugin?.component_label === "questionWrapper" || embeddable.plugin?.component_label === "windowShade")) {
     qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} pluginsLoaded={pluginsLoaded} /> : undefined;
   } else if (embeddable.type === "Embeddable::Xhtml") {
     qComponent = <TextBox embeddable={embeddable} />;

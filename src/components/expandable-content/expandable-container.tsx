@@ -31,8 +31,8 @@ export const ExpandableContainer: React.FC<IProps> = (props) => {
           // Technically, the EmbeddablePluginSideTip won't be rendered if the plugins aren't loaded yet,
           // but passing pluginLoaded into it makes it more consistent with the other plugins components
           <EmbeddablePluginSideTip
-            key={sideTip.embeddable.ref_id}
-            embeddable={sideTip.embeddable}
+            key={sideTip.ref_id}
+            embeddable={sideTip}
             pluginsLoaded={pluginsLoaded}
           />)
       }

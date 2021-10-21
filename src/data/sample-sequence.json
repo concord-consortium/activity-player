@@ -40,7 +40,7 @@
       "student_report_enabled": true,
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Pieris_rapae_-_Small_white_12.jpg/640px-Pieris_rapae_-_Small_white_12.jpg",
       "time_to_complete": 10,
-      "version": 1,
+      "version": 2,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
       "pages": [
@@ -49,9 +49,6 @@
           "is_hidden": false,
           "name": null,
           "position": 1,
-          "show_header": true,
-          "show_info_assessment": false,
-          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
@@ -59,14 +56,14 @@
             {
               "layout": "l-6040",
               "is_hidden": false,
-              "secondary_column_collapsibl": false,
+              "secondary_column_collapsible": false,
               "secondary_column_display_mode": "stacked",
               "embeddables": [
                 {
                   "column": "full-width",
                   "content": "<p>Sample activity page</p>",
                   "is_callout": true,
-                  "is_full_width": true,
+                  "is_half_width": false,
                   "is_hidden": false,
                   "name": "",
                   "type": "Embeddable::Xhtml",
@@ -116,7 +113,7 @@
       "student_report_enabled": true,
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Small_pearl-bordered_fritillary_%28Boloria_selene%29.jpg/640px-Small_pearl-bordered_fritillary_%28Boloria_selene%29.jpg",
       "time_to_complete": 10,
-      "version": 1,
+      "version": 2,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
       "pages": [
@@ -133,13 +130,13 @@
               "secondary_column_display_mode": "stacked",
               "is_hidden": false,
               "layout": "l-6040",
-              "secondary_column_collapsibl": false,
+              "secondary_column_collapsible": false,
               "embeddables": [
                 {
                   "column": null,
                   "content": "<p>Sample activity page</p>",
                   "is_callout": true,
-                  "is_full_width": true,
+                  "is_half_width": true,
                   "is_hidden": false,
                   "name": "",
                   "type": "Embeddable::Xhtml",
@@ -178,7 +175,7 @@
       "student_report_enabled": true,
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Small_heath_%28Coenonympha_pamphilus%29_P.jpg/480px-Small_heath_%28Coenonympha_pamphilus%29_P.jpg",
       "time_to_complete": 10,
-      "version": 1,
+      "version": 2,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
       "pages": [
@@ -195,13 +192,13 @@
               "secondary_column_display_mode": "stacked",
               "is_hidden": false,
               "layout": "l-6040",
-              "secondary_column_collapsibl": false,
+              "secondary_column_collapsible": false,
               "embeddables": [
                 {
                   "column": null,
                   "content": "<p>Sample activity page</p>",
                   "is_callout": true,
-                  "is_full_width": true,
+                  "is_half_width": true,
                   "is_hidden": false,
                   "name": "",
                   "type": "Embeddable::Xhtml",
@@ -240,7 +237,7 @@
       "student_report_enabled": true,
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Spider_with_prey_%288404951545%29.jpg/319px-Spider_with_prey_%288404951545%29.jpg",
       "time_to_complete": 10,
-      "version": 1,
+      "version": 2,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
       "pages": [
@@ -257,13 +254,13 @@
               "secondary_column_display_mode": "stacked",
               "is_hidden": false,
               "layout": "l-6040",
-              "secondary_column_collapsibl": false,
+              "secondary_column_collapsible": false,
               "embeddables": [
                 {
                   "column": null,
                   "content": "<p>Sample activity page</p>",
                   "is_callout": true,
-                  "is_full_width": true,
+                  "is_half_width": true,
                   "is_hidden": false,
                   "name": "",
                   "type": "Embeddable::Xhtml",
@@ -321,7 +318,7 @@
       "student_report_enabled": true,
       "thumbnail_url": "",
       "time_to_complete": 10,
-      "version": 1,
+      "version": 2,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
       "pages": [
@@ -344,7 +341,7 @@
                   "column": null,
                   "content": "<p>Sample activity page</p>",
                   "is_callout": true,
-                  "is_full_width": true,
+                  "is_half_width": true,
                   "is_hidden": false,
                   "name": "",
                   "type": "Embeddable::Xhtml",

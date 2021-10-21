@@ -37,7 +37,7 @@ export const findUsedApprovedScripts = (activities: Activity[]) => {
     // search each page for teacher edition plugin use
     for (let page = 0; page < activity.pages.length; page++) {
       if (!activity.pages[page].is_hidden) {
-        for (let section = 0; activity.pages[page].sections.length; section++) {
+        for (let section = 0; section < activity.pages[page].sections.length; section++) {
           if (!activity.pages[page].sections[section].is_hidden) {
             for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
               const embeddable = activity.pages[page].sections[section].embeddables[embeddableNum];
@@ -51,7 +51,7 @@ export const findUsedApprovedScripts = (activities: Activity[]) => {
               //So even though it has no real content, the padding will still show up in the runtime.
               //This change was from master when new-sections was rebased on it.
               if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin) {
-                addUsedPlugin(embeddable.plugin);
+                addUsedApprovedScript(embeddable.plugin);
               }
             }
           }
@@ -117,7 +117,7 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 };
 
 // loads the learner plugin state into the firebase write-through cache
-export const loadLearnerPluginState = async (activities: Activity[], teacherEditionMode: boolean) => {
+export const loadLearnerPluginState = async (activities: Activity[]) => {
   const approvedScripts = findUsedApprovedScripts(activities);
   // PJ 09/19/2021: This doesn't seem to make sense. Currently, the state is saved and restored per approved script.
   // It should be saved and restored per plugin instance. It works with Glossary only because there's one glossary
@@ -185,7 +185,4 @@ export const getGlossaryEmbeddable = (activity: Activity) => {
     : undefined;
   return embeddablePlugin;
 };
-function addUsedPlugin(plugin: Plugin) {
-  throw new Error("Function not implemented.");
-}
 

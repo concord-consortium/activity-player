@@ -1,8 +1,10 @@
 
 import { Activity, Sequence } from "../types";
 import sampleActivity1 from "../data/sample-activity-1.json";
+import sampleActivity1TE from "../data/sample-activity-1-te.json";
 import sampleNewSections from "../data/sample-new-sections.json";
 import sampleNewSectionsSinglePageLayout from "../data/sample-new-sections-single-page-layout.json";
+import sampleNewSectionsSequenceTE from "../data/sample-new-sections-sequence-te.json";
 
 // import sampleActivity2 from "../data/sample-activity-2.json";
 // import sampleActivityCbio from "../data/sample-activity-CBIO.json";
@@ -24,6 +26,7 @@ import sampleNewSectionsSinglePageLayout from "../data/sample-new-sections-singl
 
 const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-1": sampleActivity1 as Activity,
+  "sample-activity-1-te": sampleActivity1TE as Activity,
   "sample-new-sections": sampleNewSections as Activity,
   "sample-new-sections-single-page-layout": sampleNewSectionsSinglePageLayout as Activity,
   // "sample-activity-2": sampleActivity2 as Activity,
@@ -53,6 +56,7 @@ import sampleSequence from "../data/sample-sequence.json";
 
 const sampleSequences: {[name: string]: Sequence} = {
   "sample-sequence": sampleSequence as Sequence,
+  "sample-new-sections-sequence-te": sampleNewSectionsSequenceTE as Sequence
   // "sample-sequence-empty-fields": sampleSequenceEmptyFields as Sequence,
   // "sample-sequence-with-questions": sampleSequenceWithQuestions as Sequence,
   // "sample-sequence-te": sampleSequenceTE as Sequence,

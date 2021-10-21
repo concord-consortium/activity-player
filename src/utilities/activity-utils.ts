@@ -12,19 +12,9 @@ export enum SectionLayouts {
   Responsive = "l-responsive",
   SixtyForty = "l-6040",
   FortySixty = "r-4060",
+  SeventyThirty = "l-7030",
+  ThirtySeventy = "r-3070"
 }
-
-// export enum EmbeddableSections {
-//   Interactive = "interactive_box",
-//   Introduction = "header_block",
-//   InfoAssessment = "", // stored as null in JSON
-// }
-
-// export interface VisibleEmbeddables {
-//   interactiveBox: EmbeddableWrapper[],
-//   headerBlock: EmbeddableWrapper[],
-//   infoAssessment: EmbeddableWrapper[],
-// }
 
 export const isQuestion = (embeddable: EmbeddableType) => isEmbeddableQuestion(embeddable);
 
@@ -63,21 +53,31 @@ export const isEmbeddableSideTip = (e: EmbeddableType) => {
 export const getPageSideTipEmbeddables = (activity: Activity, currentPage: Page) => {
   if (activity.layout === ActivityLayouts.SinglePage) {
     const sidetips: EmbeddableType[] = [];
-    for (let page = 0; page < activity.pages.length - 1; page++) {
-      for (let section = 0; section < activity.pages[page].sections.length; section ++) {
-        for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
-          const embeddableWrapper = activity.pages[page].sections[section].embeddables[embeddableNum];
-          if (isEmbeddableSideTip(embeddableWrapper)) {
-            sidetips.push(embeddableWrapper);
+    activity.pages.forEach ((page) => {
+      page.sections.forEach((section) => {
+        section.embeddables.forEach((embeddable) => {
+          if (isEmbeddableSideTip(embeddable)) {
+            sidetips.push(embeddable);
           }
-        }
-      }
+        });
+      });
+    });
+    return sidetips || [];
+  }
+  else {
+    const sidetips: EmbeddableType[] = [];
+    const sectionsInPage = currentPage?.sections;
+    if (currentPage) {
+      sectionsInPage.forEach((section) => {
+        section.embeddables.forEach((embeddable) => {
+          if (isEmbeddableSideTip(embeddable)) {
+            sidetips.push(embeddable);
+          }
+        });
+      });
     }
     return sidetips || [];
   }
-  // else {
-  //   return currentPage.sections.embeddables.filter((e: any) => isEmbeddableSideTip(e));
-  // }
 };
 
 export const getPageSideBars = (activity: Activity, currentPage: Page) => {
