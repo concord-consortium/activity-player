@@ -284,7 +284,7 @@
               "secondary_column_display_mode": "stacked",
               "is_hidden": false,
               "layout": "l-6040",
-              "secondary_column_collapsibl": false,
+              "secondary_column_collapsible": false,
               "embeddables": []
             }
           ],
@@ -335,7 +335,7 @@
               "secondary_column_display_mode": "stacked",
               "is_hidden": false,
               "layout": "l-6040",
-              "secondary_column_collapsibl": false,
+              "secondary_column_collapsible": false,
               "embeddables": [
                 {
                   "column": null,
@@ -365,7 +365,7 @@
               "secondary_column_display_mode": "stacked",
               "is_hidden": false,
               "layout": "l-6040",
-              "secondary_column_collapsibl": false,
+              "secondary_column_collapsible": false,
               "embeddables": []
             }
           ],
