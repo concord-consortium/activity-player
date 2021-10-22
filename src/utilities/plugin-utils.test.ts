@@ -141,7 +141,8 @@ describe("Plugin utility functions", () => {
         toolId: "activity-player.concord.org",
         userType: "learner",
         runRemoteEndpoint: "",
-        rawClassInfo: {} as RawClassInfo
+        rawClassInfo: {} as RawClassInfo,
+        collaboratorsDataUrl: "https://example.com/collaborations/1234",
       });
       // these will fail as there is no firebase connection but it will populate the internal cache
       try {

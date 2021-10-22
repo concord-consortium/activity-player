@@ -90,7 +90,8 @@ describe("Firestore", () => {
       toolId: "activity-player.concord.org",
       userType: "learner",
       runRemoteEndpoint: "https://example.com/learner/1234",
-      rawClassInfo: {} as RawClassInfo
+      rawClassInfo: {} as RawClassInfo,
+      collaboratorsDataUrl: "https://example.com/collaborations/1234",
     });
 
     const embeddable = {
@@ -128,6 +129,7 @@ describe("Firestore", () => {
       submitted: null,
       tool_id: "activity-player.concord.org",
       type: "open_response_answer",
+      collaborators_data_url: "https://example.com/collaborations/1234"
     }, {merge: true});
   });
 
@@ -253,7 +255,8 @@ describe("Firestore", () => {
             offering_id: 8
           },
           runRemoteEndpoint: "http://example.com/5",
-          rawClassInfo: {} as RawClassInfo
+          rawClassInfo: {} as RawClassInfo,
+          collaboratorsDataUrl: "https://example.com/collaborations/1234",
         });
       });
 

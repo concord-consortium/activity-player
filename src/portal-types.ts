@@ -51,6 +51,7 @@ export interface IPortalData extends ILTIPartial {
   portalJWT?: PortalJWT;
   runRemoteEndpoint: string;
   rawClassInfo: RawClassInfo;
+  collaboratorsDataUrl?: string;
 }
 
 export interface IAnonymousPortalData {
