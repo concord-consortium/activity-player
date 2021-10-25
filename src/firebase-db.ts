@@ -267,6 +267,9 @@ export const watchAllAnswers = (callback: (wrappedAnswer: WrappedDBAnswer[]) => 
   });
 };
 
+// use same universal timezone (UTC) as Lara uses for writing created
+export const createdString = () => (new Date()).toUTCString().replace("GMT", "UTC");
+
 export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   if (!portalData) {
     return;
@@ -277,6 +280,7 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   if (portalData.type === "authenticated") {
     const ltiAnswer: LTIRuntimeAnswerMetadata = {
       ...answer,
+      created: createdString(),
       source_key: portalData.database.sourceKey,
       resource_url: portalData.resourceUrl,
       tool_id: portalData.toolId,
@@ -461,17 +465,12 @@ export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData
       const allLinkedStates = linkedRefIds.map((linkedRefId, index) => {
         const linkedRef = linkedRefMap[linkedRefId];
 
-        /*
-          NOTE: Lara also returns the following which we don't have access to or don't make sense in AP
-          createdAt, updatedAt, interactiveStateUrl, interactive: {id, name}
-
-          TODO: add at least updatedAt when implementing linked interactive UI
-        */
         return {
           pageNumber: linkedRef?.page.position,
           pageName: linkedRef?.page.name,
           activityName: linkedRef?.activity.name,
           interactiveState: answers[index]?.interactiveState || null,
+          updatedAt: answers[index]?.meta.created  // created is same as updated as it is set on each write
         };
       });
       const linkedState = allLinkedStates.find(ls => ls.interactiveState)?.interactiveState || null;

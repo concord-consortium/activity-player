@@ -1,7 +1,7 @@
 // cf. https://github.com/concord-consortium/question-interactives/blob/master/src/scaffolded-question/components/iframe-runtime.tsx
 import { autorun } from "mobx";
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { IframePhone, ILegacyLinkedInteractiveState } from "../../../types";
+import { IExportableAnswerMetadata, IframePhone, ILegacyLinkedInteractiveState } from "../../../types";
 import iframePhone from "iframe-phone";
 import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
@@ -66,12 +66,13 @@ interface IProps {
   ref?: React.Ref<IframeRuntimeImperativeAPI>;
   iframeTitle: string;
   portalData?: IPortalData;
+  answerMetadata?: IExportableAnswerMetadata;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal,
-    setSupportedFeatures, setSendCustomMessage, setNavigation, iframeTitle, portalData } = props;
+    setSupportedFeatures, setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata } = props;
   const _idNum = parseInt(id, 10);
   const idNum = isFinite(_idNum) ? _idNum : 0;
 
@@ -231,8 +232,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
       // note: many of the values here are placeholders that require further
       // consideration to determine whether there are more appropriate values.
-      const baseProps: Omit<IReportInitInteractive, "mode"> = {
+      const baseProps: Omit<IReportInitInteractive, "mode"> & {updatedAt?: string} = {
         version: 1,
+        updatedAt: answerMetadata?.created,
         hostFeatures: {
           modal: {
             version: "1.0.0",

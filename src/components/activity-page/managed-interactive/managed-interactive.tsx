@@ -253,6 +253,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
                      ? `Question ${questionNumber} ${questionName} content`
                      : embeddable.name || "Interactive content"}
         portalData={portalData}
+        answerMetadata={answerMeta.current}
       />;
 
     return (
