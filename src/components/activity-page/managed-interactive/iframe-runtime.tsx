@@ -15,6 +15,7 @@ import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
 import { IPortalData } from "../../../portal-types";
+import { IInteractiveInfo } from "../../../utilities/embeddable-utils";
 
 const kDefaultHeight = 300;
 
@@ -67,12 +68,13 @@ interface IProps {
   iframeTitle: string;
   portalData?: IPortalData;
   answerMetadata?: IExportableAnswerMetadata;
+  interactiveInfo?: IInteractiveInfo;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal,
-    setSupportedFeatures, setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata } = props;
+    setSupportedFeatures, setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo } = props;
   const _idNum = parseInt(id, 10);
   const idNum = isFinite(_idNum) ? _idNum : 0;
 
@@ -87,6 +89,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     promise: useRef<Promise<void>>(),
     resolveAndCleanup: useRef<() => void>(),
   };
+  const currentInteractiveState = useRef<any>(initialInteractiveState);
 
   useEffect(() => {
     const initInteractive = () => {
@@ -99,10 +102,15 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       const addListener = (type: ClientMessage, handler: any) => phone.addListener(type, handler);
 
       addListener("interactiveState", (newInteractiveState: any) => {
-        // "nochange" is a special message supported by LARA. We don't want to save it.
+        // "nochange" and "touch" are special messages supported by LARA. We don't want to save them.
         // newInteractiveState might be undefined if interactive state is requested before any state update.
-        if (newInteractiveState !== undefined && newInteractiveState !== "nochange") {
+        if (newInteractiveState !== undefined && newInteractiveState !== "nochange" && newInteractiveState !== "touch") {
+          currentInteractiveState.current = newInteractiveState;
           setInteractiveStateRef.current(newInteractiveState);
+        }
+        if (currentInteractiveState.current !== undefined && newInteractiveState === "touch") {
+          // save the current interactive state with a new timestamp
+          setInteractiveStateRef.current(currentInteractiveState.current);
         }
         if (interactiveStateRequest.promise.current) {
           interactiveStateRequest.resolveAndCleanup.current?.();
@@ -279,7 +287,10 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   },
                   runRemoteEndpoint: portalData?.runRemoteEndpoint,
                   ...linkedInteractivesRef.current,
-                  ...(legacyLinkedInteractiveState || {})
+                  ...(legacyLinkedInteractiveState || {}),
+                  pageName:  interactiveInfo?.pageName,
+                  pageNumber: interactiveInfo?.pageNumber,
+                  activityName: interactiveInfo?.activityName
                 };
       phone.post("initInteractive", initInteractiveMsg);
     };

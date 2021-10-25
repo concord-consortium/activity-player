@@ -10,7 +10,7 @@ import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, ILegacyLinkedInteractiveState } from "../../../types";
 import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
-import { getAnswerWithMetadata, hasLegacyLinkedInteractive, isQuestion } from "../../../utilities/embeddable-utils";
+import { getAnswerWithMetadata, getInteractiveInfo, hasLegacyLinkedInteractive, IInteractiveInfo, isQuestion } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
@@ -53,6 +53,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const shouldLoadLegacyLinkedInteractiveState = hasLegacyLinkedInteractive(props.embeddable, laraData);
   const [loadingAnswer, setLoadingAnswer] = useState(shouldWatchAnswer);
   const [loadingLegacyLinkedInteractiveState, setLoadingLegacyLinkedInteractiveState] = useState(shouldLoadLegacyLinkedInteractiveState);
+  const interactiveInfo = useRef<IInteractiveInfo | undefined>(undefined);
 
   const embeddableRefId = props.embeddable.ref_id;
   useEffect(() => {
@@ -73,6 +74,10 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       });
     }
   }, [embeddableRefId, laraData, shouldLoadLegacyLinkedInteractiveState]);
+
+  useEffect(() => {
+    interactiveInfo.current = getInteractiveInfo(laraData, embeddableRefId);
+  }, [embeddableRefId, laraData]);
 
   const handleNewInteractiveState = (state: any) => {
     // Keep interactive state in sync if iFrame is opened in modal popup
@@ -254,6 +259,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
                      : embeddable.name || "Interactive content"}
         portalData={portalData}
         answerMetadata={answerMeta.current}
+        interactiveInfo={interactiveInfo.current}
       />;
 
     return (
