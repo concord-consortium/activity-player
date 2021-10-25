@@ -240,9 +240,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
       // note: many of the values here are placeholders that require further
       // consideration to determine whether there are more appropriate values.
-      const baseProps: Omit<IReportInitInteractive, "mode"> & {updatedAt?: string} = {
+      // NOTE: updatedAt is directly added here instead of in the exported lara types
+      const baseProps: Omit<IReportInitInteractive, "mode"> = {
         version: 1,
-        updatedAt: answerMetadata?.created,
         hostFeatures: {
           modal: {
             version: "1.0.0",
@@ -290,7 +290,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   ...(legacyLinkedInteractiveState || {}),
                   pageName:  interactiveInfo?.pageName,
                   pageNumber: interactiveInfo?.pageNumber,
-                  activityName: interactiveInfo?.activityName
+                  activityName: interactiveInfo?.activityName,
+                  updatedAt: answerMetadata?.created
                 };
       phone.post("initInteractive", initInteractiveMsg);
     };
