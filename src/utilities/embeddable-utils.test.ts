@@ -1,5 +1,5 @@
 import { IRuntimeMetadata, IRuntimeMultipleChoiceMetadata } from "@concord-consortium/lara-interactive-api";
-import { answersQuestionIdToRefId, refIdToAnswersQuestionId, getAnswerWithMetadata, getLegacyLinkedRefMap, hasLegacyLinkedInteractive, legacyLinkedRefMapCache } from "./embeddable-utils";
+import { answersQuestionIdToRefId, refIdToAnswersQuestionId, getAnswerWithMetadata, getLegacyLinkedRefMap, hasLegacyLinkedInteractive, legacyLinkedRefMapCache, getInteractiveInfo } from "./embeddable-utils";
 import { DefaultManagedInteractive } from "../test-utils/model-for-tests";
 import {
   IManagedInteractive,
@@ -7,13 +7,16 @@ import {
   IExportableInteractiveAnswerMetadata,
   IExportableAnswerMetadata,
   IExportableImageQuestionAnswerMetadata,
-  Activity
+  Activity,
+  Sequence
 } from "../types";
 
 import _activity1 from "../data/sample-activity-1.json";
 import _legacyLinkedInteractiveActivity from "../data/sample-activity-legacy-linked-interactives.json";
+import _sequenceWithQuestions from "../data/sample-sequence-with-questions.json";
 const activity1 = _activity1 as Activity;
 const legacyLinkedInteractiveActivity = _legacyLinkedInteractiveActivity as Activity;
+const sequenceWithQuestions = _sequenceWithQuestions as Sequence;
 
 describe("Embeddable utility functions", () => {
   it("correctly converts from answer's question-id to ref_id", () => {
@@ -384,4 +387,39 @@ describe("Embeddable utility functions", () => {
       expect(hasLegacyLinkedInteractive(embeddable, {activity})).toEqual(true);
     });
   });
+
+  describe("#getInteractiveInfo", () => {
+    it("returns undefined when the embeddableRefId isn't found", () => {
+      const laraData = {activity: activity1};
+      expect(getInteractiveInfo(laraData, "nonExistantEmbeddableRefId")).toBeUndefined();
+    });
+
+    it("returns the correct info for any embeddableRefId in a sequence", () => {
+      const laraData = {sequence: sequenceWithQuestions};
+      expect(getInteractiveInfo(laraData, "650-ManagedInteractive")).toEqual({
+        activityName: "Question-Interactives Activity Player",
+        pageName: "Header block text and interactives",
+        pageNumber: 1,
+          });
+    });
+
+    it("returns the correct info for any embeddableRefId without a page name in an activity", () => {
+      const laraData = {activity: activity1};
+      expect(getInteractiveInfo(laraData, "328-ManagedInteractive")).toEqual({
+        activityName: "Single Page Test Activity",
+        pageName: undefined,
+        pageNumber: 1,
+      });
+    });
+
+    it("returns the correct info for any embeddableRefId with a page name in an activity", () => {
+      const laraData = {activity: legacyLinkedInteractiveActivity};
+      expect(getInteractiveInfo(laraData, "312-ManagedInteractive")).toEqual({
+        activityName: "Sample Layout Types",
+        pageName: "Full Width",
+        pageNumber: 1,
+      });
+    });
+  });
+
 });
