@@ -17,6 +17,7 @@ import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAn
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
 import { ILaraData } from "./components/lara-data-context";
+import { getReportUrl } from "./utilities/report-utils";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
@@ -470,7 +471,8 @@ export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData
           pageName: linkedRef?.page.name,
           activityName: linkedRef?.activity.name,
           interactiveState: answers[index]?.interactiveState || null,
-          updatedAt: answers[index]?.meta.created  // created is same as updated as it is set on each write
+          updatedAt: answers[index]?.meta.created,  // created is same as updated as it is set on each write
+          externalReportUrl: getReportUrl(linkedRefId)
         };
       });
       const linkedState = allLinkedStates.find(ls => ls.interactiveState)?.interactiveState || null;
@@ -478,7 +480,8 @@ export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData
       callback({
         hasLinkedInteractive: true,
         linkedState,
-        allLinkedStates: allLinkedStates as any  // any here as we are missing things Lara sets
+        allLinkedStates: allLinkedStates as any,  // any here as we are missing things Lara sets
+        externalReportUrl: getReportUrl(embeddableRefId)
       });
     });
 };

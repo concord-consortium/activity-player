@@ -16,6 +16,7 @@ import { watchAnswer } from "../../../firebase-db";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
 import { IPortalData } from "../../../portal-types";
 import { IInteractiveInfo } from "../../../utilities/embeddable-utils";
+import { getReportUrl } from "../../../utilities/report-utils";
 
 const kDefaultHeight = 300;
 
@@ -291,7 +292,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   pageName:  interactiveInfo?.pageName,
                   pageNumber: interactiveInfo?.pageNumber,
                   activityName: interactiveInfo?.activityName,
-                  updatedAt: answerMetadata?.created
+                  updatedAt: answerMetadata?.created,
+                  externalReportUrl: getReportUrl(id)
                 };
       phone.post("initInteractive", initInteractiveMsg);
     };

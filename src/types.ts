@@ -299,4 +299,5 @@ export interface ILegacyLinkedInteractiveState {
   hasLinkedInteractive?: boolean;
   linkedState?: any;
   allLinkedStates?: IInteractiveStateProps[];
+  externalReportUrl?: string;
 }
