@@ -65,7 +65,6 @@ export interface EmbeddableBase {
   is_half_width: boolean;
   ref_id: string;
   embeddable_ref_id?: string;
-  column?: "primary" | "secondary" | null;
 }
 
 export interface IManagedInteractive extends EmbeddableBase {
@@ -112,11 +111,15 @@ export interface IEmbeddablePlugin extends EmbeddableBase {
 
 export type EmbeddableType = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin;
 
+export interface EmbeddableWrapper {
+  column?: "primary" | "secondary" | null;
+  embeddable: EmbeddableType;
+}
 export interface SectionType {
   secondary_column_display_mode: "stacked" | "carousel";
   is_hidden: boolean;
   secondary_column_collapsible: boolean;
-  embeddables: EmbeddableType[];
+  embeddables: EmbeddableWrapper[];
   layout: string;
   _comment?: string;
 }

@@ -1,4 +1,4 @@
-import { Page, Activity, EmbeddableType, Sequence, SectionType } from "../types";
+import { Page, Activity, EmbeddableType, Sequence, SectionType, EmbeddableWrapper } from "../types";
 import { SidebarConfiguration } from "../components/page-sidebar/sidebar-wrapper";
 import { isQuestion as isEmbeddableQuestion } from "./embeddable-utils";
 
@@ -28,24 +28,6 @@ export const isSectionHidden = (section: SectionType) => {
   return section.is_hidden;
 };
 
-// export const getVisibleEmbeddablesOnPage = (page: Page) => {
-//   const headerEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Introduction)
-//     ? []
-//     : page.sections.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction && isVisibleEmbeddable(e));
-//   const interactiveEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Interactive)
-//     ? []
-//     : page.sections.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive && isVisibleEmbeddable(e));
-//   const infoAssessEmbeddables = isEmbeddableSectionHidden(page, null)
-//     ? []
-//     : page.sections.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction && isVisibleEmbeddable(e)));
-
-//   return { interactiveBox: interactiveEmbeddables, headerBlock: headerEmbeddables, infoAssessment: infoAssessEmbeddables };
-// };
-
-// function isVisibleEmbeddable(e: EmbeddableType) {
-//   return !embeddable.is_hidden && !e.embeddable.embeddable_ref_id && !isEmbeddableSideTip(e);
-// }
-
 export const isEmbeddableSideTip = (e: EmbeddableType) => {
   return (e.type === "Embeddable::EmbeddablePlugin" && e.plugin?.component_label === "sideTip");
 };
@@ -55,9 +37,9 @@ export const getPageSideTipEmbeddables = (activity: Activity, currentPage: Page)
     const sidetips: EmbeddableType[] = [];
     activity.pages.forEach ((page) => {
       page.sections.forEach((section) => {
-        section.embeddables.forEach((embeddable) => {
-          if (isEmbeddableSideTip(embeddable)) {
-            sidetips.push(embeddable);
+        section.embeddables.forEach((embeddableWrapper) => {
+          if (isEmbeddableSideTip(embeddableWrapper.embeddable)) {
+            sidetips.push(embeddableWrapper.embeddable);
           }
         });
       });
@@ -69,9 +51,9 @@ export const getPageSideTipEmbeddables = (activity: Activity, currentPage: Page)
     const sectionsInPage = currentPage?.sections;
     if (currentPage) {
       sectionsInPage.forEach((section) => {
-        section.embeddables.forEach((embeddable) => {
-          if (isEmbeddableSideTip(embeddable)) {
-            sidetips.push(embeddable);
+        section.embeddables.forEach((embeddableWrapper) => {
+          if (isEmbeddableSideTip(embeddableWrapper.embeddable)) {
+            sidetips.push(embeddableWrapper.embeddable);
           }
         });
       });
@@ -94,8 +76,8 @@ export const getPageSectionQuestionCount = (page: Page) => {
   let pageQuestionCount = 0;
   sections.forEach((section)=>{
     let sectionQuestionCount = 0;
-    section.embeddables.forEach((embeddable) => {
-      isQuestion(embeddable) && sectionQuestionCount++;
+    section.embeddables.forEach((embeddableWrapper) => {
+      isQuestion(embeddableWrapper.embeddable) && sectionQuestionCount++;
     });
     pageQuestionCount = pageQuestionCount + sectionQuestionCount;
   });
@@ -105,8 +87,8 @@ export const getPageSectionQuestionCount = (page: Page) => {
 export const numQuestionsOnPreviousSections = (currentSectionIndex: number, sections: SectionType[]) => {
   let numQuestions = 0;
   for (let sectionIdx = 0; sectionIdx < currentSectionIndex; sectionIdx++) {
-    sections[sectionIdx].embeddables.forEach((embeddable) => {
-      if (isQuestion(embeddable)) {
+    sections[sectionIdx].embeddables.forEach((embeddableWrapper) => {
+      if (isQuestion(embeddableWrapper.embeddable)) {
         numQuestions++;
       }
     });
@@ -122,7 +104,7 @@ export const numQuestionsOnPreviousPages = (currentPage: number, activity: Activ
         if(!activity.pages[page].sections[section].is_hidden) {
           for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
             const embeddableWrapper = activity.pages[page].sections[section].embeddables[embeddableNum];
-            if (isQuestion(embeddableWrapper) && !embeddableWrapper.is_hidden) {
+            if (isQuestion(embeddableWrapper.embeddable) && !embeddableWrapper.embeddable.is_hidden) {
               numQuestions++;
             }
           }
@@ -139,8 +121,8 @@ export const enableReportButton = (activity: Activity) => {
 };
 
 export const getLinkedPluginEmbeddable = (section: SectionType, id: string) => {
-  const linkedPluginEmbeddable = section.embeddables.find((e: EmbeddableType) => e.embeddable_ref_id === id);
-  return linkedPluginEmbeddable?.type === "Embeddable::EmbeddablePlugin" ? linkedPluginEmbeddable : undefined;
+  const linkedPluginEmbeddable = section.embeddables.find((eWrapper: EmbeddableWrapper) => eWrapper.embeddable.embeddable_ref_id === id);
+  return linkedPluginEmbeddable?.embeddable.type === "Embeddable::EmbeddablePlugin" ? linkedPluginEmbeddable.embeddable : undefined;
 };
 
 export const setAppBackgroundImage = (backgroundImageUrl?: string) => {

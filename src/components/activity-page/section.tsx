@@ -5,7 +5,7 @@ import { isQuestion,  getLinkedPluginEmbeddable } from "../../utilities/activity
 import { accessibilityClick } from "../../utilities/accessibility-helper";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
-import { EmbeddableType, SectionType } from "../../types";
+import { EmbeddableWrapper, SectionType } from "../../types";
 import { Logger, LogEventName } from "../../lib/logger";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
@@ -48,26 +48,26 @@ export const Section: React.FC<IProps> = (props) => {
     }
   },[resizeCounter]);
 
-  const renderEmbeddables = (embeddablesToRender: EmbeddableType[], questionNumStart: number, offSet?: number) => {
+  const renderEmbeddables = (embeddablesToRender: EmbeddableWrapper[], questionNumStart: number, offSet?: number) => {
     let questionNumber = questionNumStart;
     return (
       <React.Fragment>
-        { embeddablesToRender.map((embeddable, embeddableIndex) => {
-            if (isQuestion(embeddable)) {
+        { embeddablesToRender.map((embeddableWrapper, embeddableIndex) => {
+            if (isQuestion(embeddableWrapper.embeddable)) {
               questionNumber++;
             }
-            const linkedPluginEmbeddable = getLinkedPluginEmbeddable(section, embeddable.ref_id);
-            if (!embeddableRefs[embeddable.ref_id]) {
-              embeddableRefs[embeddable.ref_id] = React.createRef<EmbeddableImperativeAPI>();
+            const linkedPluginEmbeddable = getLinkedPluginEmbeddable(section, embeddableWrapper.embeddable.ref_id);
+            if (!embeddableRefs[embeddableWrapper.embeddable.ref_id]) {
+              embeddableRefs[embeddableWrapper.embeddable.ref_id] = React.createRef<EmbeddableImperativeAPI>();
             }
             return (
               <Embeddable
-                embeddableRef={embeddableRefs[embeddable.ref_id]}
-                key={`embeddable-${embeddableIndex}-${embeddable.ref_id}`}
-                embeddable={embeddable}
+                embeddableRef={embeddableRefs[embeddableWrapper.embeddable.ref_id]}
+                key={`embeddable-${embeddableIndex}-${embeddableWrapper.embeddable.ref_id}`}
+                embeddableWrapper={embeddableWrapper}
                 sectionLayout={section.layout}
                 displayMode={section.secondary_column_display_mode}
-                questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
+                questionNumber={isQuestion(embeddableWrapper.embeddable) ? questionNumber : undefined}
                 linkedPluginEmbeddable={linkedPluginEmbeddable}
                 teacherEditionMode={props.teacherEditionMode}
                 setNavigation={props.setNavigation}
@@ -81,7 +81,7 @@ export const Section: React.FC<IProps> = (props) => {
     );
   };
 
-  const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
+  const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableWrapper[], questionNumStart: number) => {
     const position = { height: primaryEmbeddableTotalHeight, top: 0 };
     const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed});
     return (
@@ -91,7 +91,7 @@ export const Section: React.FC<IProps> = (props) => {
     );
   };
 
-  const renderSecondaryEmbeddables = (secondaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
+  const renderSecondaryEmbeddables = (secondaryEmbeddablesToRender: EmbeddableWrapper[], questionNumStart: number) => {
     const collapsible = section.secondary_column_collapsible;
     const containerClass = classNames("column", layout, "secondary", {"collapsed": isSecondaryCollapsed});
     return (
@@ -162,8 +162,8 @@ export const Section: React.FC<IProps> = (props) => {
                                   {"carousel": display_mode === "carousel"}
                                 );
   const embeddables = section.embeddables;
-  const primaryEmbeddables = embeddables.filter(e => e.column === "primary" && !e.is_hidden);
-  const secondaryEmbeddables = embeddables.filter(e => e.column === "secondary" && !e.is_hidden);
+  const primaryEmbeddables = embeddables.filter(eWrapper => eWrapper.column === "primary" && !eWrapper.embeddable.is_hidden);
+  const secondaryEmbeddables = embeddables.filter(eWrapper => eWrapper.column === "secondary" && !eWrapper.embeddable.is_hidden);
   const singleColumn = layout === "full-width" ||
                         (layout === "responsive" && (primaryEmbeddables.length === 0 || secondaryEmbeddables.length === 0));
 

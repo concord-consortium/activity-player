@@ -40,7 +40,7 @@ export const findUsedApprovedScripts = (activities: Activity[]) => {
         for (let section = 0; section < activity.pages[page].sections.length; section++) {
           if (!activity.pages[page].sections[section].is_hidden) {
             for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
-              const embeddable = activity.pages[page].sections[section].embeddables[embeddableNum];
+              const embeddable = activity.pages[page].sections[section].embeddables[embeddableNum].embeddable;
               // NOTE: TODO this needs to be fixed.
               //This change might cause there to be extra space when running in non teacher edition mode and viewing a page with
               // with teacher edition items on it.

@@ -49,14 +49,14 @@ const sampleActivities: {[name: string]: Activity} = {
   // "sample-activity-interactive-sizing": sampleActivityInteractiveSizing as Activity
 };
 
-import sampleSequence from "../data/sample-sequence.json";
+// import sampleSequence from "../data/sample-sequence.json";
 import sampleNewSectionsSequence from "../data/sample-new-sections-sequence.json";
 // import sampleSequenceEmptyFields from "../data/sample-sequence-empty-fields.json";
 // import sampleSequenceWithQuestions from "../data/sample-sequence-with-questions.json";
 // import sampleSequenceTE from "../data/sample-sequence-te.json";
 
 const sampleSequences: {[name: string]: Sequence} = {
-  "sample-sequence": sampleSequence as Sequence,
+  // "sample-sequence": sampleSequence as Sequence,
   "sample-new-sections-sequence": sampleNewSectionsSequence as Sequence,
   // "sample-sequence-empty-fields": sampleSequenceEmptyFields as Sequence,
   // "sample-sequence-with-questions": sampleSequenceWithQuestions as Sequence,

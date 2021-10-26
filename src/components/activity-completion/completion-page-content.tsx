@@ -3,7 +3,7 @@ import IconCheck from "../../assets/svg-icons/icon-check-circle.svg";
 import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
 import { showReport } from "../../utilities/report-utils";
-import { Sequence, Activity, EmbeddableType, Page } from "../../types";
+import { Sequence, Activity, Page, EmbeddableWrapper } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
@@ -63,12 +63,12 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     currentActivity.pages.forEach((page: Page, index) => {
       const pageNum = index + 1;
       page.sections.forEach((section) => {
-        section.embeddables.forEach((embeddable: EmbeddableType) => {
-          if (isQuestion(embeddable)) {
+        section.embeddables.forEach((embeddableWrapper: EmbeddableWrapper) => {
+          if (isQuestion(embeddableWrapper.embeddable)) {
             numQuestions++;
-            const questionId = refIdToAnswersQuestionId(embeddable.ref_id);
-            const authored_state = embeddable.authored_state
-                                    ? JSON.parse(embeddable.authored_state)
+            const questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
+            const authored_state = embeddableWrapper.embeddable.authored_state
+                                    ? JSON.parse(embeddableWrapper.embeddable.authored_state)
                                     : {};
             let questionAnswered = false;
             if (answers?.find((answer: any) => answer.meta.question_id === questionId)) {

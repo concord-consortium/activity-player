@@ -3,7 +3,7 @@ import { EmbeddableImperativeAPI } from "./embeddable";
 import { Section } from "./section";
 import { BottomButtons } from "./bottom-buttons";
 import { numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
-import { Page, EmbeddableType, SectionType } from "../../types";
+import { Page, SectionType, EmbeddableWrapper } from "../../types";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../../lib/logger";
 import { showReport } from "../../utilities/report-utils";
@@ -51,8 +51,8 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
 
   public requestInteractiveStates() {
     const promises = this.props.page.sections.forEach((section: SectionType) =>
-        section.embeddables.map((embeddable: EmbeddableType) =>
-          this.embeddableRefs[embeddable.ref_id]?.current?.requestInteractiveState() || Promise.resolve()
+        section.embeddables.map((embeddableWrapper: EmbeddableWrapper) =>
+          this.embeddableRefs[embeddableWrapper.embeddable.ref_id]?.current?.requestInteractiveState() || Promise.resolve()
       )
     );
     return promises;

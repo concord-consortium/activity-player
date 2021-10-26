@@ -8,14 +8,14 @@ import { ActivityLayouts } from "../../utilities/activity-utils";
 import { EmbeddablePlugin } from "./plugins/embeddable-plugin";
 import { initializePlugin, IPartialEmbeddablePluginContext, validateEmbeddablePluginContextForWrappedEmbeddable
         } from "../../utilities/plugin-utils";
-import { EmbeddableType, IEmbeddablePlugin } from "../../types";
+import { EmbeddableWrapper, IEmbeddablePlugin } from "../../types";
 import { IInteractiveSupportedFeaturesEvent } from "../../lara-plugin/events";
 import { ICustomMessage, ISupportedFeatures, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
 import "./embeddable.scss";
 
 interface IProps {
-  embeddable: EmbeddableType;
+  embeddableWrapper: EmbeddableWrapper;
   linkedPluginEmbeddable?: IEmbeddablePlugin;
   sectionLayout: string;
   displayMode?: string;
@@ -35,10 +35,10 @@ export interface EmbeddableImperativeAPI {
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, embeddableRef) => {
-  const { embeddable, linkedPluginEmbeddable, activityLayout, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded, onSizeChange } = props;
+  const { embeddableWrapper, linkedPluginEmbeddable, activityLayout, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded, onSizeChange } = props;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
-    setNavigation?.(embeddable.ref_id, options);
-  }, [setNavigation, embeddable.ref_id]);
+    setNavigation?.(embeddableWrapper.embeddable.ref_id, options);
+  }, [setNavigation, embeddableWrapper.embeddable.ref_id]);
   const managedInteractiveRef = useRef<ManagedInteractiveImperativeAPI>(null);
   const embeddableWrapperDivTarget = useRef<HTMLInputElement>(null);
   const embeddableDivTarget = useRef<HTMLInputElement>(null);
@@ -58,7 +58,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
       LARA,
       embeddable: linkedPluginEmbeddable,
       embeddableContainer: embeddableWrapperDivTarget.current || undefined,
-      wrappedEmbeddable: embeddable,
+      wrappedEmbeddable: embeddableWrapper.embeddable,
       wrappedEmbeddableContainer: embeddableDivTarget.current || undefined,
       sendCustomMessage
     };
@@ -66,7 +66,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     if (validPluginContext && pluginsLoaded) {
       initializePlugin(validPluginContext);
     }
-  }, [LARA, linkedPluginEmbeddable, embeddable, pluginsLoaded]);
+  }, [LARA, linkedPluginEmbeddable, embeddableWrapper.embeddable, pluginsLoaded]);
 
   useImperativeHandle(embeddableRef, () => ({
     requestInteractiveState: () => {
@@ -83,19 +83,19 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   }, [LARA?.Events]);
 
   let qComponent;
-  if (embeddable.type === "MwInteractive" || (embeddable.type === "ManagedInteractive" && embeddable.library_interactive)) {
+  if (embeddableWrapper.embeddable.type === "MwInteractive" || (embeddableWrapper.embeddable.type === "ManagedInteractive" && embeddableWrapper.embeddable.library_interactive)) {
     qComponent = <ManagedInteractive
                     ref={managedInteractiveRef}
-                    embeddable={embeddable}
+                    embeddable={embeddableWrapper.embeddable}
                     questionNumber={questionNumber}
                     setSupportedFeatures={handleSetSupportedFeatures}
                     setSendCustomMessage={setSendCustomMessage}
                     setNavigation={handleSetNavigation} />;
-  } else if (embeddable.type === "Embeddable::EmbeddablePlugin"
-              && (embeddable.plugin?.component_label === "questionWrapper" || embeddable.plugin?.component_label === "windowShade")) {
-    qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} pluginsLoaded={pluginsLoaded} /> : undefined;
-  } else if (embeddable.type === "Embeddable::Xhtml") {
-    qComponent = <TextBox embeddable={embeddable} />;
+  } else if (embeddableWrapper.embeddable.type === "Embeddable::EmbeddablePlugin"
+              && (embeddableWrapper.embeddable.plugin?.component_label === "questionWrapper" || embeddableWrapper.embeddable.plugin?.component_label === "windowShade")) {
+    qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddableWrapper.embeddable} pluginsLoaded={pluginsLoaded} /> : undefined;
+  } else if (embeddableWrapper.embeddable.type === "Embeddable::Xhtml") {
+    qComponent = <TextBox embeddable={embeddableWrapper.embeddable} />;
   } else {
     qComponent = <div>Content type not supported</div>;
   }
@@ -109,23 +109,23 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     return null;
   }
   const singlePageLayout = activityLayout === ActivityLayouts.SinglePage;
-  const isFullWidthLayout = embeddable.column === null || singlePageLayout;
+  const isFullWidthLayout = embeddableWrapper.column === null || singlePageLayout;
   const embeddableClasses = classNames("embeddable",
                                         isFullWidthLayout
                                           ? "full-width"
-                                          : embeddable.column === "primary"
+                                          : embeddableWrapper.column === "primary"
                                             ? "primary"
                                             : displayMode === "stacked"
                                               ? "secondary stacked"
                                               : "secondary",
-                                        {"half-width":  embeddable.is_half_width}
+                                        {"half-width":  embeddableWrapper.embeddable.is_half_width}
                                       );
 
   return (
     <div
       className={embeddableClasses}
       data-cy="embeddable"
-      key={embeddable.ref_id}
+      key={embeddableWrapper.embeddable.ref_id}
       ref={ref}
     >
       { linkedPluginEmbeddable && <div ref={embeddableWrapperDivTarget}></div> }
