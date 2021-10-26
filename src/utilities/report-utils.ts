@@ -74,7 +74,7 @@ export const getReportUrl = (questionRefId?: string) => {
     const classInfoUrl = portalData?.portalJWT?.class_info_url;
     const authDomainUrl = classInfoUrl?.split("/api")[0];
     const offeringBaseUrl = classInfoUrl?.split("/classes")[0]+"/offerings/";
-    const offeringId = portalData?.offering.id;
+    const offeringId = portalData?.offering?.id;
     const offeringUrl = encodeURIComponent(offeringBaseUrl + offeringId);
     const studentId = portalData?.platformUserId;
 
