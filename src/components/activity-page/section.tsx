@@ -162,8 +162,8 @@ export const Section: React.FC<IProps> = (props) => {
                                   {"carousel": display_mode === "carousel"}
                                 );
   const embeddables = section.embeddables;
-  const primaryEmbeddables = embeddables.filter(e => e.column === "primary" && !e.is_hidden);
-  const secondaryEmbeddables = embeddables.filter(e => e.column === "secondary" && !e.is_hidden);
+  const primaryEmbeddables = layout !== "full-width" ? embeddables.filter(e => e.column === "primary" && !e.is_hidden) : [];
+  const secondaryEmbeddables = layout !== "full-width" ? embeddables.filter(e => e.column === "secondary" && !e.is_hidden) : [];
   const singleColumn = layout === "full-width" ||
                         (layout === "responsive" && (primaryEmbeddables.length === 0 || secondaryEmbeddables.length === 0));
 
