@@ -1,5 +1,5 @@
 import React from "react";
-import { queryValue, queryValueBoolean } from "../../utilities/url-query";
+import { isValidReportLink } from "../../utilities/report-utils";
 
 import "./bottom-buttons.scss";
 
@@ -8,11 +8,9 @@ interface IProps {
 }
 
 export const BottomButtons: React.FC<IProps> = (props) => {
-  const disableShowMyWorkButton = queryValueBoolean("preview") || queryValue("mode") === "teacher-edition";
-
   return (
     <div className="bottom-buttons">
-      <button className={`button ${disableShowMyWorkButton ? "disabled" : ""}`}
+      <button className={`button ${isValidReportLink ? "" : "disabled"}`}
               onClick={props.onGenerateReport}
               data-cy="bottom-button-report"
               tabIndex={1}>
