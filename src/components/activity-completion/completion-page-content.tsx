@@ -5,6 +5,7 @@ import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-ci
 import { showReport } from "../../utilities/report-utils";
 import { Sequence, Activity, EmbeddableWrapper, Page } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
+import { queryValue, queryValueBoolean } from "../../utilities/url-query";
 import { watchAllAnswers } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
 import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
@@ -66,7 +67,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
         if (isQuestion(embeddableWrapper)) {
           numQuestions++;
           const questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
-          const authored_state = embeddableWrapper.embeddable.authored_state 
+          const authored_state = embeddableWrapper.embeddable.authored_state
                                    ? JSON.parse(embeddableWrapper.embeddable.authored_state)
                                    : {};
           let questionAnswered = false;
@@ -101,6 +102,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const nextActivityThumbnailURL = !isLastActivityInSequence && sequence?.activities[activityNum + 1].thumbnail_url;
   const nextActivityDescription = !isLastActivityInSequence &&
                                   renderHTML(sequence?.activities[activityNum + 1].description || "");
+  const disableShowMyWorkButton = queryValueBoolean("preview") || queryValue("mode") === "teacher-edition";
   let progressText = "";
 
   if (sequence) {
@@ -161,8 +163,11 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           <div className="exit-container" data-cy="exit-container">
             <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
             <SummaryTable questionsStatus={progress.questionsStatus} />
-            {showStudentReport && <button className="button show-my-work" onClick={handleShowAnswers}><IconCompletion width={24} height={24} />Show My Work</button>}
-            {(!sequence || isLastActivityInSequence) && 
+            {showStudentReport && <button className={`button show-my-work ${disableShowMyWorkButton ? "disabled" : ""}`}
+                                          onClick={handleShowAnswers}><IconCompletion width={24} height={24} />
+                                    Show My Work
+                                  </button>}
+            {(!sequence || isLastActivityInSequence) &&
               <div className="exit-button">
                 <span>or</span>
                 <button className="textButton" onClick={handleExit}>Exit</button>

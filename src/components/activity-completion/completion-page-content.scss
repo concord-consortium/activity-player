@@ -79,6 +79,11 @@
         fill: $cc-orange-dark1;
         margin-right: 5px;
       }
+      &.disabled {
+        cursor: none;
+        opacity: .35;
+        pointer-events: none;
+      }
     }
     h1 {
       flex-basis: 100%;
