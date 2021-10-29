@@ -99,7 +99,7 @@ export const getReportUrl = (questionRefId?: string) => {
   }
 };
 
-export const isValidReportLink = getReportUrl() !== null || getReportUrl() !== undefined;
+export const isValidReportLink = getReportUrl() !== null;
 
 export const showReport = () => {
   // Handles not being able to send a null link to window.open
