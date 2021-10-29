@@ -94,18 +94,17 @@ export const getReportUrl = (questionRefId?: string) => {
         // Limit report to a single question.
         result += "&iframeQuestionId=" + refIdToAnswersQuestionId(questionRefId);
       }
-      
       return result;
     }
   }
 };
 
 export const isValidReportLink = getReportUrl() !== null;
-// Handles not being able to send a null link to window.open
-const validReportLink = isValidReportLink ? getReportUrl() : undefined;
 
 export const showReport = () => {
-  if (isValidReportLink) {
-    validReportLink && window.open(validReportLink);
+  // Handles not being able to send a null link to window.open
+  const validReportLink = getReportUrl();
+  if (validReportLink) {
+    window.open(validReportLink);
   }
 };
