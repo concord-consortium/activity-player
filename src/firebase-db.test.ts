@@ -131,7 +131,8 @@ describe("Firestore", () => {
       submitted: null,
       tool_id: "activity-player.concord.org",
       type: "open_response_answer",
-      collaborators_data_url: "https://example.com/collaborations/1234"
+      collaborators_data_url: "https://example.com/collaborations/1234",
+      collaboration_owner_id: "1"
     }, {merge: true});
   });
 
