@@ -204,6 +204,7 @@ export interface IReportState {
  * keeps no user ids of its own.
  */
 export interface ILTIPartial {
+  created?: string;
   platform_id: string;      // portal
   platform_user_id: string;
   context_id: string;       // class hash
@@ -214,8 +215,9 @@ export interface ILTIPartial {
   tool_id: string;
    // This is not an LTI property but it is required in our authenticated answers
   remote_endpoint: string;
-  // This is not an LTI property but it is required to track collaborations
+  // These are not LTI properties but are required to track collaborations
   collaborators_data_url?: string;
+  collaboration_owner_id?: string;
 }
 
 export interface IAnonymousMetadataPartial {
@@ -234,6 +236,7 @@ export interface IAnonymousMetadataPartial {
  * https://github.com/concord-consortium/lara/blob/c40304a14ef495acdf4f9fd09ea892c7cc98247b/app/models/interactive_run_state.rb#L110
  */
 export interface IExportableAnswerMetadataBase {
+  created?: string;
   question_id: string;    // converted from refId (e.g. "managed_interactive_404")
   question_type: string;
   id: string;             // randomly generated id (e.g. uuid)
@@ -297,4 +300,5 @@ export interface ILegacyLinkedInteractiveState {
   hasLinkedInteractive?: boolean;
   linkedState?: any;
   allLinkedStates?: IInteractiveStateProps[];
+  externalReportUrl?: string;
 }

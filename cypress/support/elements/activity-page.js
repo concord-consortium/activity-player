@@ -26,10 +26,10 @@ class ActivityPage {
     return cy.get("[data-cy="+type+"]");
   }
   getModalDialogMessage() {
-    return cy.get("[data-cy=modal-dialog-label");
+    return cy.get("[data-cy=modal-dialog-label]");
   }
   getModalDialogClose() {
-    return cy.get("[data-cy=modal-dialog-close");
+    return cy.get("[data-cy=modal-dialog-close]");
   }
 }
 export default ActivityPage;
