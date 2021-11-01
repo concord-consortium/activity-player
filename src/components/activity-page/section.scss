@@ -45,7 +45,7 @@ $content-inner-width: 900px;
     }
   }
 
-  &.r_6040 {
+  &.r_4060 {
     width: $content-inner-width;
     .column.primary {
       position: sticky;
@@ -132,6 +132,7 @@ $content-inner-width: 900px;
     }
     .column.secondary {
       min-width: 365px;
+      max-width: 365px;
       left: 0;
       &.stacked {
         flex-direction: column;

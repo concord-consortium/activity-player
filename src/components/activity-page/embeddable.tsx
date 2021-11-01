@@ -35,7 +35,7 @@ export interface EmbeddableImperativeAPI {
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, embeddableRef) => {
-  const { embeddable, linkedPluginEmbeddable, activityLayout, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded, onSizeChange } = props;
+  const { embeddable, sectionLayout, linkedPluginEmbeddable, activityLayout, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded, onSizeChange } = props;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
   }, [setNavigation, embeddable.ref_id]);
@@ -109,7 +109,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     return null;
   }
   const singlePageLayout = activityLayout === ActivityLayouts.SinglePage;
-  const isFullWidthLayout = embeddable.column === null || singlePageLayout;
+  const isFullWidthLayout = sectionLayout === "full-width" || singlePageLayout;
   const embeddableClasses = classNames("embeddable",
                                         isFullWidthLayout
                                           ? "full-width"

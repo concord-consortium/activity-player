@@ -48,7 +48,7 @@ export const Section: React.FC<IProps> = (props) => {
     }
   },[resizeCounter]);
 
-  const renderEmbeddables = (embeddablesToRender: EmbeddableType[], questionNumStart: number, offSet?: number) => {
+  const renderEmbeddables = (embeddablesToRender: EmbeddableType[], questionNumStart: number, isSingleColumn?: boolean) => {
     let questionNumber = questionNumStart;
     return (
       <React.Fragment>
@@ -65,7 +65,7 @@ export const Section: React.FC<IProps> = (props) => {
                 embeddableRef={embeddableRefs[embeddable.ref_id]}
                 key={`embeddable-${embeddableIndex}-${embeddable.ref_id}`}
                 embeddable={embeddable}
-                sectionLayout={section.layout}
+                sectionLayout={isSingleColumn? "full-width" : section.layout}
                 displayMode={section.secondary_column_display_mode}
                 questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
                 linkedPluginEmbeddable={linkedPluginEmbeddable}
@@ -154,7 +154,7 @@ export const Section: React.FC<IProps> = (props) => {
   const sectionClass = classNames("section",
                                   {"full-width": layout === "full-width"},
                                   {"l_6040": layout === "l-6040"},
-                                  {"r_6040": layout === "r-6040"},
+                                  {"r_4060": layout === "r-4060"},
                                   {"l_7030": layout === "l-7030"},
                                   {"r_3070": layout === "r-3070"},
                                   {"responsive": layout === "responsive"},
@@ -164,13 +164,15 @@ export const Section: React.FC<IProps> = (props) => {
   const embeddables = section.embeddables;
   const primaryEmbeddables = layout !== "full-width" ? embeddables.filter(e => e.column === "primary" && !e.is_hidden) : [];
   const secondaryEmbeddables = layout !== "full-width" ? embeddables.filter(e => e.column === "secondary" && !e.is_hidden) : [];
-  const singleColumn = layout === "full-width" ||
-                        (layout === "responsive" && (primaryEmbeddables.length === 0 || secondaryEmbeddables.length === 0));
-
+  const singleColumn = layout === "full-width"
+                        || (layout === "responsive" && (primaryEmbeddables.length === 0 || secondaryEmbeddables.length === 0))
+                        || secondaryEmbeddables.length === 0
+                        || primaryEmbeddables.length === 0 ;
+  layout === "responsive" && console.log(primaryEmbeddables.length, secondaryEmbeddables.length, singleColumn);
   if (singleColumn) {
     return (
       <div className={sectionClass} ref={sectionDivRef}>
-        { renderEmbeddables(embeddables, questionNumberStart) }
+        { renderEmbeddables(embeddables, questionNumberStart, singleColumn) }
       </div>
     );
   } else {

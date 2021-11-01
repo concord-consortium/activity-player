@@ -1,7 +1,5 @@
 import legacyResource from "../data/sample-activity-multiple-layout-types.json";
 import { Page, SectionType, LibraryInteractive, Plugin, EmbeddableType } from "../types";
-import { queryValue } from "../utilities/url-query";
-
 
 interface legacyEmbeddableBase {
   type: string;
@@ -98,7 +96,11 @@ const getEmbeddablesArray = (embeddables: legacyEmbeddableType[], column: "prima
 
 const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => { //have to use type any because of the change in type definition
   const pageLayout = resourcePage.layout;
-  const sectionLayout = pageLayout === "l-full-width" ? "full-width" : pageLayout;
+  const sectionLayout = pageLayout === "l-full-width"
+                          ? "full-width"
+                          : pageLayout === "l-responsive"
+                            ? "responsive"
+                            : pageLayout;
   const headerBlockEmbeddables: legacyEmbeddableType[] = [];
   const primaryBlockEmbeddables: legacyEmbeddableType[] = [];
   const secondaryBlockEmbeddables: legacyEmbeddableType[] = [];
@@ -119,31 +121,23 @@ const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => { /
     }
   });
 
-
   const headerBlockSection = {
-    "layout": sectionLayout,
+    "layout": "full-width",
     "is_hidden": false,
     "secondary_column_collapsible": false,
     "secondary_column_display_mode": resourcePage.embeddable_display_mode,
     "embeddables": getEmbeddablesArray(headerBlockEmbeddables, null)
   };
-  const primaryBlockSection = {
+  const splitBlockSection = {
     "layout": sectionLayout,
     "is_hidden": false,
     "secondary_column_collapsible": false,
     "secondary_column_display_mode": resourcePage.embeddable_display_mode,
-    "embeddables": getEmbeddablesArray(primaryBlockEmbeddables, "primary")
+    "embeddables": getEmbeddablesArray(primaryBlockEmbeddables, "primary").concat(getEmbeddablesArray(secondaryBlockEmbeddables, "secondary"))
   };
-  const secondaryBlockSection = {
-    "layout": sectionLayout,
-    "is_hidden": false,
-    "secondary_column_collapsible": false,
-    "secondary_column_display_mode": resourcePage.embeddable_display_mode,
-    "embeddables": getEmbeddablesArray(secondaryBlockEmbeddables, "secondary")
-  };
+
   headerBlockEmbeddables && newSections.push(headerBlockSection);
-  primaryBlockEmbeddables && newSections.push(primaryBlockSection);
-  secondaryBlockEmbeddables && newSections.push(secondaryBlockSection);
+  primaryBlockEmbeddables && newSections.push(splitBlockSection);
 
   return newSections;
 };
