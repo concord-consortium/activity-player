@@ -215,8 +215,9 @@ export interface ILTIPartial {
   tool_id: string;
    // This is not an LTI property but it is required in our authenticated answers
   remote_endpoint: string;
-  // This is not an LTI property but it is required to track collaborations
+  // These are not LTI properties but are required to track collaborations
   collaborators_data_url?: string;
+  collaboration_owner_id?: string;
 }
 
 export interface IAnonymousMetadataPartial {

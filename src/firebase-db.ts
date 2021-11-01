@@ -293,9 +293,14 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
       remote_endpoint: portalData.runRemoteEndpoint
     };
 
-    // only add collaborators data url if present as it is rarely used
+    // remove any existing collaboration data cached in the answer
+    delete ltiAnswer.collaborators_data_url;
+    delete ltiAnswer.collaboration_owner_id;
+
+    // only add collaboration data if present as it is rarely used
     if (portalData.collaboratorsDataUrl) {
       ltiAnswer.collaborators_data_url = portalData.collaboratorsDataUrl;
+      ltiAnswer.collaboration_owner_id = ltiAnswer.platform_user_id;
     }
 
     answerDocData = ltiAnswer;
