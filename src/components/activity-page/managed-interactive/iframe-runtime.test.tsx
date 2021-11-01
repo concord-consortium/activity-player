@@ -110,6 +110,12 @@ describe("IframeRuntime component", () => {
     expect(mockSetInteractiveState).toHaveBeenCalledTimes(1);
 
     act(() => {
+      dispatchMessageFromChild("interactiveState", "touch");
+    });
+    // "touch" message results in another call
+    expect(mockSetInteractiveState).toHaveBeenCalledTimes(2);
+
+    act(() => {
       dispatchMessageFromChild("height", 960);
     });
     // TODO: verify that height was handled properly

@@ -17,6 +17,7 @@ import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAn
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
 import { ILaraData } from "./components/lara-data-context";
+import { getReportUrl } from "./utilities/report-utils";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
@@ -267,6 +268,9 @@ export const watchAllAnswers = (callback: (wrappedAnswer: WrappedDBAnswer[]) => 
   });
 };
 
+// use same universal timezone (UTC) as Lara uses for writing created
+export const createdString = () => (new Date()).toUTCString().replace("GMT", "UTC");
+
 export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   if (!portalData) {
     return;
@@ -277,6 +281,7 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   if (portalData.type === "authenticated") {
     const ltiAnswer: LTIRuntimeAnswerMetadata = {
       ...answer,
+      created: createdString(),
       source_key: portalData.database.sourceKey,
       resource_url: portalData.resourceUrl,
       tool_id: portalData.toolId,
@@ -288,9 +293,14 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
       remote_endpoint: portalData.runRemoteEndpoint
     };
 
-    // only add collaborators data url if present as it is rarely used
+    // remove any existing collaboration data cached in the answer
+    delete ltiAnswer.collaborators_data_url;
+    delete ltiAnswer.collaboration_owner_id;
+
+    // only add collaboration data if present as it is rarely used
     if (portalData.collaboratorsDataUrl) {
       ltiAnswer.collaborators_data_url = portalData.collaboratorsDataUrl;
+      ltiAnswer.collaboration_owner_id = ltiAnswer.platform_user_id;
     }
 
     answerDocData = ltiAnswer;
@@ -461,17 +471,13 @@ export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData
       const allLinkedStates = linkedRefIds.map((linkedRefId, index) => {
         const linkedRef = linkedRefMap[linkedRefId];
 
-        /*
-          NOTE: Lara also returns the following which we don't have access to or don't make sense in AP
-          createdAt, updatedAt, interactiveStateUrl, interactive: {id, name}
-
-          TODO: add at least updatedAt when implementing linked interactive UI
-        */
         return {
           pageNumber: linkedRef?.page.position,
           pageName: linkedRef?.page.name,
           activityName: linkedRef?.activity.name,
           interactiveState: answers[index]?.interactiveState || null,
+          updatedAt: answers[index]?.meta.created,  // created is same as updated as it is set on each write
+          externalReportUrl: getReportUrl(linkedRefId)
         };
       });
       const linkedState = allLinkedStates.find(ls => ls.interactiveState)?.interactiveState || null;
@@ -479,7 +485,8 @@ export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData
       callback({
         hasLinkedInteractive: true,
         linkedState,
-        allLinkedStates: allLinkedStates as any  // any here as we are missing things Lara sets
+        allLinkedStates: allLinkedStates as any,  // any here as we are missing things Lara sets
+        externalReportUrl: getReportUrl(embeddableRefId)
       });
     });
 };

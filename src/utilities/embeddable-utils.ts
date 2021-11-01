@@ -13,6 +13,12 @@ export type LegacyLinkedRefMap = Record<string, {
   linkedRefId: string | undefined;
 } | undefined>;
 
+export interface IInteractiveInfo {
+  activityName: string;
+  pageNumber: number;
+  pageName?: string;
+}
+
 export const isQuestion = (embeddable: Embeddable) =>
   (embeddable.type === "ManagedInteractive" && embeddable.library_interactive?.data?.enable_learner_state) ||
   (embeddable.type === "MwInteractive" && embeddable.enable_learner_state);
@@ -215,4 +221,31 @@ export const getLegacyLinkedRefMap = (laraData: ILaraData): LegacyLinkedRefMap =
   legacyLinkedRefMapCache.set(laraData, linkedRefMap);
 
   return linkedRefMap;
+};
+
+export const getInteractiveInfo = (laraData: ILaraData, embeddableRefId: string): IInteractiveInfo | undefined => {
+  let interactiveInfo: IInteractiveInfo | undefined = undefined;
+
+  const findInteractiveInfo = (activity: Activity) => {
+    activity.pages.forEach(page => {
+      page.embeddables.forEach(item => {
+        const {embeddable} = item;
+        if (embeddable.ref_id === embeddableRefId) {
+          interactiveInfo = {
+            activityName: activity.name,
+            pageName: page.name === null ? undefined : page.name,
+            pageNumber: page.position
+          };
+        }
+      });
+    });
+  };
+
+  if (laraData.sequence) {
+    laraData.sequence.activities.forEach(findInteractiveInfo);
+  } else if (laraData.activity) {
+    findInteractiveInfo(laraData.activity);
+  }
+
+  return interactiveInfo;
 };

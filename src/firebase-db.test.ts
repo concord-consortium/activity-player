@@ -1,5 +1,5 @@
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
-import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState, getLegacyLinkedRefIds } from "./firebase-db";
+import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState, getLegacyLinkedRefIds, createdString } from "./firebase-db";
 import { DefaultManagedInteractive } from "./test-utils/model-for-tests";
 import { getAnswerWithMetadata, LegacyLinkedRefMap } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata } from "./types";
@@ -107,11 +107,13 @@ describe("Firestore", () => {
 
     const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableAnswerMetadata;
 
+    const created = createdString();
     createOrUpdateAnswer(exportableAnswer);
 
     expect(appMock.firestore().doc).toHaveBeenCalledWith(`sources/localhost/answers/${exportableAnswer.id}`);
     expect(appMock.firestore().doc().set).toHaveBeenCalledWith({
-      version:1,
+      version: 1,
+      created,
       answer: "test",
       answer_text: "test",
       context_id: "context-id",
@@ -129,7 +131,8 @@ describe("Firestore", () => {
       submitted: null,
       tool_id: "activity-player.concord.org",
       type: "open_response_answer",
-      collaborators_data_url: "https://example.com/collaborations/1234"
+      collaborators_data_url: "https://example.com/collaborations/1234",
+      collaboration_owner_id: "1"
     }, {merge: true});
   });
 

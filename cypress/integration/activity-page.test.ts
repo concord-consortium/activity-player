@@ -43,6 +43,7 @@ context("Test the overall app", () => {
       cy.wait(1000);
       activityPage.getNavPage(6).should("have.class", "disabled");
       activityPage.getNavPage(6).click();
+      cy.wait(1000);
       activityPage.getModalDialogMessage().should("have.length", 1);
       activityPage.getModalDialogClose().click();
       activityPage.getModalDialogMessage().should("have.length", 0);
