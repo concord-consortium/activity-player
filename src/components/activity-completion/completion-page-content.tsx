@@ -161,7 +161,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           <div className="exit-container" data-cy="exit-container">
             <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
             <SummaryTable questionsStatus={progress.questionsStatus} />
-            {showStudentReport && <button className={`button show-my-work ${isValidReportLink ? "" : "disabled"}`}
+            {showStudentReport && <button className={`button show-my-work ${isValidReportLink() ? "" : "disabled"}`}
                                           onClick={handleShowAnswers}><IconCompletion width={24} height={24} />
                                     Show My Work
                                   </button>}

@@ -2,14 +2,12 @@ import { getReportUrl, portalReportBaseUrl,
          kProductionPortalReportUrl, kDevPortalReportUrl} from "./report-utils";
 import { clearFirebaseAppName } from "../portal-api";
 
-let offeringId: string | null = null;
+let offering: {id: string} | null = null;
 jest.mock("../firebase-db", () => (
   {
     getPortalData: () => (
       {
-        offering: {
-          id: offeringId
-        },
+        offering,
         portalJWT: {
           class_info_url: "https://example.com/api/v1/classes/123"
         },
@@ -81,7 +79,7 @@ describe("getReportUrl", () => {
   describe("without a run key" , () => {
     it("returns a valid reportURL", () => {
       window.history.replaceState({}, "Test", basicParams);
-      offeringId = "offering-123";
+      offering = {id:"offering-123"};
       const reportURL = getReportUrl();
 
       expect(reportURL).toEqual(
@@ -112,7 +110,7 @@ describe("getReportUrl", () => {
         + "&auth-domain=https://example.com");
     });
     it("returns null when no offering id is present", () => {
-      offeringId = null;
+      offering = null;
       const reportUrl = getReportUrl();
       expect(reportUrl).toBe(null);
     });
@@ -122,7 +120,7 @@ describe("getReportUrl", () => {
 
     it("returns a valid reportURL", () => {
       window.history.replaceState({}, "Test", basicParams);
-      offeringId = "offering-123";
+      offering = {id:"offering-123"};
       const reportURL = getReportUrl("mw_interactive_123");
 
       expect(reportURL).toEqual(

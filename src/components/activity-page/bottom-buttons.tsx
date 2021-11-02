@@ -8,9 +8,10 @@ interface IProps {
 }
 
 export const BottomButtons: React.FC<IProps> = (props) => {
+  const hasValidReportLink = isValidReportLink();
   return (
     <div className="bottom-buttons">
-      <button className={`button ${isValidReportLink ? "" : "disabled"}`}
+      <button className={`button ${hasValidReportLink ? "" : "disabled"}`}
               onClick={props.onGenerateReport}
               data-cy="bottom-button-report"
               tabIndex={1}>

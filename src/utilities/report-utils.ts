@@ -72,7 +72,7 @@ export const getReportUrl = (questionRefId?: string) => {
     // We know this is a IPortalData because there is no runKey
     const portalData = getPortalData() as IPortalData;
     // Handles logged in teachers that are previewing a non-assigned resource or are in teacher-edition mode
-    if (!portalData?.offering.id) {
+    if (!portalData?.offering) {
       return null;
     } else {
       const classInfoUrl = portalData?.portalJWT?.class_info_url;
@@ -99,7 +99,9 @@ export const getReportUrl = (questionRefId?: string) => {
   }
 };
 
-export const isValidReportLink = getReportUrl() != null;
+export const isValidReportLink = () => {
+  return getReportUrl() != null;
+};
 
 export const showReport = () => {
   // Handles not being able to send a null link to window.open
