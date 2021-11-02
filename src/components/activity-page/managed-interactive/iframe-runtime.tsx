@@ -293,7 +293,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   pageNumber: interactiveInfo?.pageNumber,
                   activityName: interactiveInfo?.activityName,
                   updatedAt: answerMetadata?.created,
-                  externalReportUrl: getReportUrl(id)
+                  externalReportUrl: getReportUrl(id) || undefined
                 };
       phone.post("initInteractive", initInteractiveMsg);
     };
