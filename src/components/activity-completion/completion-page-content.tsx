@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import IconCheck from "../../assets/svg-icons/icon-check-circle.svg";
 import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
-import { showReport } from "../../utilities/report-utils";
+import { isValidReportLink, showReport } from "../../utilities/report-utils";
 import { Sequence, Activity, EmbeddableWrapper, Page } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers } from "../../firebase-db";
@@ -66,7 +66,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
         if (isQuestion(embeddableWrapper)) {
           numQuestions++;
           const questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
-          const authored_state = embeddableWrapper.embeddable.authored_state 
+          const authored_state = embeddableWrapper.embeddable.authored_state
                                    ? JSON.parse(embeddableWrapper.embeddable.authored_state)
                                    : {};
           let questionAnswered = false;
@@ -161,8 +161,11 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           <div className="exit-container" data-cy="exit-container">
             <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
             <SummaryTable questionsStatus={progress.questionsStatus} />
-            {showStudentReport && <button className="button show-my-work" onClick={handleShowAnswers}><IconCompletion width={24} height={24} />Show My Work</button>}
-            {(!sequence || isLastActivityInSequence) && 
+            {showStudentReport && <button className={`button show-my-work ${isValidReportLink() ? "" : "disabled"}`}
+                                          onClick={handleShowAnswers}><IconCompletion width={24} height={24} />
+                                    Show My Work
+                                  </button>}
+            {(!sequence || isLastActivityInSequence) &&
               <div className="exit-button">
                 <span>or</span>
                 <button className="textButton" onClick={handleExit}>Exit</button>

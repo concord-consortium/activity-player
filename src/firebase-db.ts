@@ -477,7 +477,7 @@ export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData
           activityName: linkedRef?.activity.name,
           interactiveState: answers[index]?.interactiveState || null,
           updatedAt: answers[index]?.meta.created,  // created is same as updated as it is set on each write
-          externalReportUrl: getReportUrl(linkedRefId)
+          externalReportUrl: getReportUrl(linkedRefId) || undefined
         };
       });
       const linkedState = allLinkedStates.find(ls => ls.interactiveState)?.interactiveState || null;
@@ -486,7 +486,7 @@ export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData
         hasLinkedInteractive: true,
         linkedState,
         allLinkedStates: allLinkedStates as any,  // any here as we are missing things Lara sets
-        externalReportUrl: getReportUrl(embeddableRefId)
+        externalReportUrl: getReportUrl(embeddableRefId) || undefined
       });
     });
 };

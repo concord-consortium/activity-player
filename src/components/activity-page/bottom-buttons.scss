@@ -12,6 +12,7 @@
   button:disabled, button.disabled {
     opacity: 0.35;
     cursor: auto;
+    pointer-events: none;
     &:hover {
       opacity: 0.35;
       background-color: var(--theme-primary-color);
