@@ -1,4 +1,4 @@
-import legacyResource from "../data/sample-activity-multiple-layout-types.json";
+import fs from "fs";
 import { Page, SectionType, LibraryInteractive, Plugin, EmbeddableType } from "../types";
 
 interface legacyEmbeddableBase {
@@ -136,8 +136,8 @@ const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => { /
     "embeddables": getEmbeddablesArray(primaryBlockEmbeddables, "primary").concat(getEmbeddablesArray(secondaryBlockEmbeddables, "secondary"))
   };
 
-  headerBlockEmbeddables && newSections.push(headerBlockSection);
-  primaryBlockEmbeddables && newSections.push(splitBlockSection);
+  headerBlockSection.embeddables.length > 0 && newSections.push(headerBlockSection);
+  splitBlockSection.embeddables.length > 0 && newSections.push(splitBlockSection);
 
   return newSections;
 };
@@ -161,8 +161,7 @@ const newPagesResource = (resourcePages: any):Page[] => {
   );
 };
 
-function convertResource () {
-
+function convertResource (legacyResource: any) {
   const newActivityResource = {
     "background_image": legacyResource.background_image,
     "description": legacyResource.description,
@@ -187,13 +186,21 @@ function convertResource () {
   return newActivityResource;
 }
 
-// const resourceToConvert = queryValue("activity");
-// const resourceToConvert = "sample-activity-multiple-layout-types";
-// const localPath = "../data/";
-// const resourcePath = localPath + resourceToConvert + ".json";
-// const legacyResource = import(resourcePath);
-const r = convertResource();
-console.log(JSON.stringify(r));
+(async function() {
+  // const resourceToConvert = queryValue("activity");
+  const resourceToConvert = process.argv.slice(2);
+  const newResourceName = resourceToConvert[0].split("activity-")[1];
+  const localPath = "../data/";
+  const resourcePath = localPath + resourceToConvert + ".json";
+  const legacyRes = await import(resourcePath);
+  const r = convertResource(legacyRes);
+  console.log(JSON.stringify(r));
+  fs.writeFile (localPath+"sample-new-sections-"+newResourceName+".json", JSON.stringify(r), function(err) {
+    if (err) throw err;
+    console.log("complete");
+    }
+);
+})();
 
 // function download(filename: string, text: any) {
 //   const element = document.createElement("a");

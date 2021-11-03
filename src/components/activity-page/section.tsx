@@ -166,9 +166,7 @@ export const Section: React.FC<IProps> = (props) => {
   const secondaryEmbeddables = layout !== "full-width" ? embeddables.filter(e => e.column === "secondary" && !e.is_hidden) : [];
   const singleColumn = layout === "full-width"
                         || (layout === "responsive" && (primaryEmbeddables.length === 0 || secondaryEmbeddables.length === 0))
-                        || secondaryEmbeddables.length === 0
-                        || primaryEmbeddables.length === 0 ;
-  layout === "responsive" && console.log(primaryEmbeddables.length, secondaryEmbeddables.length, singleColumn);
+                        || secondaryEmbeddables.length === 0;
   if (singleColumn) {
     return (
       <div className={sectionClass} ref={sectionDivRef}>
