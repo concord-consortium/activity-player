@@ -19,6 +19,9 @@ $content-inner-width: 900px;
       &.half-width {
         grid-column: span 5;
       }
+      &.hidden {
+        display: none;
+      }
     }
   }
 
@@ -121,6 +124,9 @@ $content-inner-width: 900px;
       width: 100%;
       &.half-width {
         width: 50%;
+      }
+      &.hidden {
+        display: none;
       }
     }
 

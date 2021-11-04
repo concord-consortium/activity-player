@@ -118,7 +118,8 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                                             : displayMode === "stacked"
                                               ? "secondary stacked"
                                               : "secondary",
-                                        {"half-width":  embeddable.is_half_width}
+                                        {"half-width":  embeddable.is_half_width},
+                                        {"hidden": embeddable.is_hidden}
                                       );
 
   return (

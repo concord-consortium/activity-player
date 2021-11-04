@@ -1,5 +1,5 @@
 import fs from "fs";
-import { Page, SectionType, LibraryInteractive, Plugin, EmbeddableType } from "../types";
+import { Activity, Page, SectionType, LibraryInteractive, Plugin, EmbeddableType } from "../types";
 
 interface legacyEmbeddableBase {
   type: string;
@@ -161,7 +161,7 @@ const newPagesResource = (resourcePages: any):Page[] => {
   );
 };
 
-function convertResource (legacyResource: any) {
+function convertActivityResource (legacyResource: any) {
   const newActivityResource = {
     "background_image": legacyResource.background_image,
     "description": legacyResource.description,
@@ -185,15 +185,48 @@ function convertResource (legacyResource: any) {
   };
   return newActivityResource;
 }
+const getSequenceActivities = (seqActivities: any) => {
+  console.log("in getSequenceActivities", seqActivities.length);
+  const activityArr: any[] = [];
+  seqActivities.forEach((seqActivity:any) => {
+    const act:any = convertActivityResource(seqActivity);
+    activityArr.push(act);
+  });
+  return activityArr;
+};
+
+const newSequenceResource = (sequenceResource: any) => {
+  return (
+    {
+      "abstract": sequenceResource.abstract,
+      "description": sequenceResource.description,
+      "display_title": sequenceResource.display_title,
+      "logo": sequenceResource.logo,
+      "project": sequenceResource.project,
+      "theme_id": sequenceResource.theme_id,
+      "background_image": sequenceResource.background_image,
+      "thumbnail_url": sequenceResource.thumbnail_url,
+      "title": sequenceResource.title,
+      "type": sequenceResource.type,
+      "export_site": sequenceResource.export_site,
+      "activities": getSequenceActivities(sequenceResource.activities)
+    }
+  );
+};
 
 (async function() {
-  // const resourceToConvert = queryValue("activity");
+  let r = {};
   const resourceToConvert = process.argv.slice(2);
-  const newResourceName = resourceToConvert[0].split("activity-")[1];
+  const newResourceName = resourceToConvert[0].split("sample-")[1];
   const localPath = "../data/";
   const resourcePath = localPath + resourceToConvert + ".json";
   const legacyRes = await import(resourcePath);
-  const r = convertResource(legacyRes);
+  console.log(legacyRes);
+  if (legacyRes.activities) {
+    r = newSequenceResource(legacyRes);
+  } else {
+    r = convertActivityResource(legacyRes);
+  }
   console.log(JSON.stringify(r));
   fs.writeFile (localPath+"sample-new-sections-"+newResourceName+".json", JSON.stringify(r), function(err) {
     if (err) throw err;
@@ -201,19 +234,3 @@ function convertResource (legacyResource: any) {
     }
 );
 })();
-
-// function download(filename: string, text: any) {
-//   const element = document.createElement("a");
-//   element.setAttribute("href", "data:text/json;charset=utf-8," + encodeURIComponent(text));
-//   element.setAttribute("download", filename);
-
-//   element.style.display = "none";
-//   document.body.appendChild(element);
-
-//   element.click();
-
-//   document.body.removeChild(element);
-// }
-
-// // Start file download.
-// download("../data/converted-multiple-layouts.json", JSON.stringify(r));
