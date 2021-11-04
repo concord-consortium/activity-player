@@ -1,5 +1,4 @@
-import fs from "fs";
-import { Activity, Page, SectionType, LibraryInteractive, Plugin, EmbeddableType } from "../types";
+import { Page, SectionType, LibraryInteractive, Plugin, EmbeddableType } from "../types";
 
 interface legacyEmbeddableBase {
   type: string;
@@ -84,11 +83,12 @@ interface legacyPageType {
   embeddables: legacyEmbeddableWrapper[];
 }
 
-const getEmbeddablesArray = (embeddables: legacyEmbeddableType[], column: "primary" | "secondary" | null): EmbeddableType[] => {
+const getEmbeddablesArray = (embeddables: legacyEmbeddableType[], column: "primary" | "secondary" | null, embeddablesAreHidden: boolean): EmbeddableType[] => {
   const embeddableArr:EmbeddableType[] = [];
   embeddables.forEach((legacyEmbeddable: legacyEmbeddableType) => {
     const isHalfWidth = !legacyEmbeddable.is_full_width;
     delete legacyEmbeddable.is_full_width;
+    legacyEmbeddable.is_hidden = embeddablesAreHidden || legacyEmbeddable.is_hidden;
     embeddableArr.push({column, is_half_width: isHalfWidth, ...legacyEmbeddable});
   });
   return embeddableArr;
@@ -105,6 +105,9 @@ const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => { /
   const primaryBlockEmbeddables: legacyEmbeddableType[] = [];
   const secondaryBlockEmbeddables: legacyEmbeddableType[] = [];
   const newSections: SectionType[] = [];
+  const headerBlockHidden = !resourcePage.show_header || false;
+  const primaryBlockHidden = !resourcePage.show_interactive;
+  const secondaryBlockHidden = !resourcePage.show_info_assessment;
 
   resourcePage.embeddables.forEach((embeddableWrapper: any) => {
     const section = embeddableWrapper.section;
@@ -126,14 +129,14 @@ const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => { /
     "is_hidden": false,
     "secondary_column_collapsible": false,
     "secondary_column_display_mode": resourcePage.embeddable_display_mode,
-    "embeddables": getEmbeddablesArray(headerBlockEmbeddables, null)
+    "embeddables": getEmbeddablesArray(headerBlockEmbeddables, null, headerBlockHidden)
   };
   const splitBlockSection = {
     "layout": sectionLayout,
     "is_hidden": false,
     "secondary_column_collapsible": false,
     "secondary_column_display_mode": resourcePage.embeddable_display_mode,
-    "embeddables": getEmbeddablesArray(primaryBlockEmbeddables, "primary").concat(getEmbeddablesArray(secondaryBlockEmbeddables, "secondary"))
+    "embeddables": getEmbeddablesArray(primaryBlockEmbeddables, "primary", primaryBlockHidden).concat(getEmbeddablesArray(secondaryBlockEmbeddables, "secondary", secondaryBlockHidden))
   };
 
   headerBlockSection.embeddables.length > 0 && newSections.push(headerBlockSection);
@@ -166,7 +169,6 @@ function convertActivityResource (legacyResource: any) {
     "background_image": legacyResource.background_image,
     "description": legacyResource.description,
     "editor_mode": legacyResource.editor_mode,
-    // id: ??,
     "layout": legacyResource.layout,
     "name": legacyResource.name,
     "notes": legacyResource.notes,
@@ -214,23 +216,12 @@ const newSequenceResource = (sequenceResource: any) => {
   );
 };
 
-(async function() {
+export const convertLegacyResource = (legacyRes: any) => {
   let r = {};
-  const resourceToConvert = process.argv.slice(2);
-  const newResourceName = resourceToConvert[0].split("sample-")[1];
-  const localPath = "../data/";
-  const resourcePath = localPath + resourceToConvert + ".json";
-  const legacyRes = await import(resourcePath);
-  console.log(legacyRes);
   if (legacyRes.activities) {
     r = newSequenceResource(legacyRes);
   } else {
     r = convertActivityResource(legacyRes);
   }
-  console.log(JSON.stringify(r));
-  fs.writeFile (localPath+"sample-new-sections-"+newResourceName+".json", JSON.stringify(r), function(err) {
-    if (err) throw err;
-    console.log("complete");
-    }
-);
-})();
+  return r;
+};

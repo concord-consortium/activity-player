@@ -1,3 +1,4 @@
+import { convertLegacyResource } from "./convert-old-lara/convert";
 import { sampleActivities, sampleSequences } from "./data";
 import { Activity, Sequence } from "./types";
 import { queryValue } from "./utilities/url-query";
@@ -18,10 +19,23 @@ export const getActivityDefinition = (activity: string): Promise<Activity> => {
   return new Promise((resolve, reject) => {
     const urlRegex = /^(https:|http:)\/\/\S+/;
     if (activity.match(urlRegex)) {
-      getActivityDefinitionFromLara(activity).then(resolve);
+      getActivityDefinitionFromLara(activity)
+      .then((resource)=>{
+        if (resource.version === 1) {
+          return convertLegacyResource(resource);
+        } else {
+          return resource;
+        }
+      })
+      .then(resolve);
     } else {
       if (sampleActivities[activity]) {
-        setTimeout(() => resolve(sampleActivities[activity]), 250);
+        if (sampleActivities[activity].version === 1) {
+          const convertedActivityResource = convertLegacyResource(sampleActivities[activity]) as Activity;
+          setTimeout(() => resolve(convertedActivityResource), 250);
+        } else {
+          setTimeout(() => resolve(sampleActivities[activity]), 250);
+        }
       } else {
         reject(`No sample activity matches ${activity}`);
       }
@@ -52,10 +66,22 @@ export const getSequenceDefinition = (sequence: string): Promise<Sequence> => {
   return new Promise((resolve, reject) => {
     const urlRegex = /^(https:|http:)\/\/\S+/;
     if (sequence.match(urlRegex)) {
-      getSequenceDefinitionFromLara(sequence).then(resolve);
+      getSequenceDefinitionFromLara(sequence)
+      .then((resource)=>{
+        if (resource.activities[0].version === 1) {
+          return convertLegacyResource(resource);
+        } else {
+          return resource;
+        }
+      }).then(resolve);
     } else {
       if (sampleSequences[sequence]) {
-        setTimeout(() => resolve(sampleSequences[sequence]), 250);
+        if (sampleSequences[sequence].activities[0].version === 1) {
+          const convertedSequenceResource = convertLegacyResource(sampleSequences[sequence]) as Sequence;
+          setTimeout(() => resolve(convertedSequenceResource), 250);
+        } else {
+          setTimeout(() => resolve(sampleSequences[sequence]), 250);
+        }
       } else {
         reject(`No sample sequence matches ${sequence}`);
       }
