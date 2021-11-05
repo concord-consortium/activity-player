@@ -187,7 +187,6 @@ function convertActivityResource (legacyResource: any) {
   return newActivityResource;
 }
 const getSequenceActivities = (seqActivities: any) => {
-  console.log("in getSequenceActivities", seqActivities.length);
   const activityArr: any[] = [];
   seqActivities.forEach((seqActivity:any) => {
     const act:any = convertActivityResource(seqActivity);
