@@ -62,6 +62,7 @@ interface legacyEmbeddableWrapper {
   embeddable: legacyEmbeddableType;
 }
 
+interface legacySection {}
 interface legacyPageType {
   embeddable_display_mode: "stacked" | "carousel" | string;
   text?: string;
