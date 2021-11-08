@@ -1,1 +1,195 @@
-{"background_image":"https://authoring.concord.org/assets/has-bg/water_background.jpg","description":"<p>A simple test activity that contains a glossary and several pages.</p>","editor_mode":0,"layout":0,"name":"glossary test","notes":"","related":"","show_submit_button":false,"student_report_enabled":true,"thumbnail_url":"","time_to_complete":null,"version":2,"theme_name":"HAS National Geographic: Water","project":null,"plugins":[{"description":null,"author_data":"{\"version\":\"1.0\",\"glossaryResourceId\":\"ISnn8j8r2veEFjPCx3XH\",\"s3Url\":\"https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/glossary.json\"}","approved_script_label":"glossary","component_label":"glossary","approved_script":{"name":"Glossary Plugin","url":"https://glossary-plugin.concord.org/plugin.js","label":"glossary","description":"The glossary plugin","version":"1.0.0","json_url":"https://glossary-plugin.concord.org/manifest.json","authoring_metadata":"{}"}}],"type":"LightweightActivity","export_site":"Lightweight Activities Runtime and Authoring","pages":[{"id":1000,"is_completion":false,"is_hidden":false,"name":"","position":1,"show_sidebar":true,"sidebar":"<p>This is a test page.</p>","sidebar_title":"Did you know?","sections":[{"layout":"full-width","is_hidden":false,"secondary_column_collapsible":false,"secondary_column_display_mode":"stacked","embeddables":[{"column":null,"is_half_width":false,"content":"<p>This is a test page.&nbsp; It contains text including the word TEST.</p>","is_callout":true,"is_hidden":false,"name":"","type":"Embeddable::Xhtml","ref_id":"272335-Embeddable::Xhtml"}]},{"layout":"l-6040","is_hidden":false,"secondary_column_collapsible":false,"secondary_column_display_mode":"stacked","embeddables":[{"column":"secondary","is_half_width":false,"name":"test open response","url_fragment":null,"authored_state":"{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>this is a test</p>\",\"hint\":\"<p>This is a hint that includes the words test and page.</p>\"}","is_hidden":false,"show_in_featured_question_report":true,"inherit_aspect_ratio_method":true,"custom_aspect_ratio_method":null,"inherit_native_width":true,"custom_native_width":576,"inherit_native_height":true,"custom_native_height":435,"inherit_click_to_play":true,"custom_click_to_play":false,"inherit_full_window":true,"custom_full_window":false,"inherit_click_to_play_prompt":true,"custom_click_to_play_prompt":null,"inherit_image_url":true,"custom_image_url":null,"library_interactive":{"hash":"da655ced823a0246a5f8c5c46c90345f28f53efe","data":{"aspect_ratio_method":"DEFAULT","authoring_guidance":"","base_url":"https://models-resources.concord.org/question-interactives/branch/master/open-response/","click_to_play":false,"click_to_play_prompt":null,"description":"This shouldn't be used by any real activities it is still under development.","enable_learner_state":true,"full_window":false,"has_report_url":false,"image_url":null,"name":"Open Response (master)","native_height":435,"native_width":576,"no_snapshots":false,"show_delete_data_button":false,"thumbnail_url":"","customizable":false,"authorable":true}},"type":"ManagedInteractive","ref_id":"735-ManagedInteractive","linked_interactives":[]}]}]},{"id":2000,"is_completion":false,"is_hidden":false,"name":null,"position":2,"show_sidebar":true,"sidebar":"<p>test page</p>","sidebar_title":"Did you know?","sections":[{"layout":"full-width","is_hidden":false,"secondary_column_collapsible":false,"secondary_column_display_mode":"stacked","embeddables":[{"column":null,"is_half_width":false,"content":"<p>This ia a test page that contains a header and some content including a TE window shade.</p>","is_callout":true,"is_hidden":false,"name":"","type":"Embeddable::Xhtml","ref_id":"272339-Embeddable::Xhtml"}]},{"layout":"l-6040","is_hidden":false,"secondary_column_collapsible":false,"secondary_column_display_mode":"stacked","embeddables":[{"column":"secondary","is_half_width":true,"plugin":{"description":null,"author_data":"{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"This is test content\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"none\",\"mediaURL\":\"\"}}","approved_script_label":"teacherEditionTips","component_label":"windowShade","approved_script":{"name":"Teacher Edition","url":"https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js","label":"teacherEditionTips","description":"Teacher Edition Plugin","version":"1.0.0","json_url":"https://example.com/manifest.json","authoring_metadata":"{}"}},"is_hidden":false,"type":"Embeddable::EmbeddablePlugin","ref_id":"3279-Embeddable::EmbeddablePlugin"}]}]},{"id":3000,"is_completion":true,"is_hidden":false,"name":null,"position":3,"show_sidebar":false,"sidebar":null,"sidebar_title":"Did you know?","sections":[]}]}
+{
+  "background_image": "https://authoring.concord.org/assets/has-bg/water_background.jpg",
+  "description": "<p>A simple test activity that contains a glossary and several pages.</p>",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "glossary test",
+  "notes": "",
+  "related": "",
+  "show_submit_button": false,
+  "student_report_enabled": true,
+  "thumbnail_url": "",
+  "time_to_complete": null,
+  "version": 2,
+  "theme_name": "HAS National Geographic: Water",
+  "project": null,
+  "plugins": [
+    {
+      "description": null,
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"ISnn8j8r2veEFjPCx3XH\",\"s3Url\":\"https://token-service-files.s3.amazonaws.com/glossary-plugin/ISnn8j8r2veEFjPCx3XH/glossary.json\"}",
+      "approved_script_label": "glossary",
+      "component_label": "glossary",
+      "approved_script": {
+        "name": "Glossary Plugin",
+        "url": "https://glossary-plugin.concord.org/plugin.js",
+        "label": "glossary",
+        "description": "The glossary plugin",
+        "version": "1.0.0",
+        "json_url": "https://glossary-plugin.concord.org/manifest.json",
+        "authoring_metadata": "{}"
+      }
+    }
+  ],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring",
+  "pages": [
+    {
+      "id": 1000,
+      "is_completion": false,
+      "is_hidden": false,
+      "name": "",
+      "position": 1,
+      "show_sidebar": true,
+      "sidebar": "<p>This is a test page.</p>",
+      "sidebar_title": "Did you know?",
+      "sections": [
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "is_half_width": false,
+              "content": "<p>This is a test page.&nbsp; It contains text including the word TEST.</p>",
+              "is_callout": true,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "272335-Embeddable::Xhtml"
+            }
+          ]
+        },
+        {
+          "layout": "l-6040",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": "secondary",
+              "is_half_width": false,
+              "name": "test open response",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>this is a test</p>\",\"hint\":\"<p>This is a hint that includes the words test and page.</p>\"}",
+              "is_hidden": false,
+              "show_in_featured_question_report": true,
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": null,
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "This shouldn't be used by any real activities it is still under development.",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Open Response (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": false,
+                  "authorable": true
+                }
+              },
+              "type": "ManagedInteractive",
+              "ref_id": "735-ManagedInteractive",
+              "linked_interactives": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2000,
+      "is_completion": false,
+      "is_hidden": false,
+      "name": null,
+      "position": 2,
+      "show_sidebar": true,
+      "sidebar": "<p>test page</p>",
+      "sidebar_title": "Did you know?",
+      "sections": [
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "is_half_width": false,
+              "content": "<p>This ia a test page that contains a header and some content including a TE window shade.</p>",
+              "is_callout": true,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "272339-Embeddable::Xhtml"
+            }
+          ]
+        },
+        {
+          "layout": "l-6040",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "description": null,
+                "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"This is test content\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"none\",\"mediaURL\":\"\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "windowShade",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.5.6/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "Teacher Edition Plugin",
+                  "version": "1.0.0",
+                  "json_url": "https://example.com/manifest.json",
+                  "authoring_metadata": "{}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "3279-Embeddable::EmbeddablePlugin"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 3000,
+      "is_completion": true,
+      "is_hidden": false,
+      "name": null,
+      "position": 3,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "sections": []
+    }
+  ]
+}

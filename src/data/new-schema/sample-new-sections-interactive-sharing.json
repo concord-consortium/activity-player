@@ -1,1 +1,121 @@
-{"background_image":null,"description":"","editor_mode":0,"layout":0,"name":"Test Interactive Sharing Plugin","notes":"","related":"","show_submit_button":true,"student_report_enabled":true,"thumbnail_url":"","time_to_complete":null,"version":2,"theme_name":null,"project":null,"plugins":[],"type":"LightweightActivity","export_site":"Lightweight Activities Runtime and Authoring","pages":[{"id":310563,"is_completion":false,"is_hidden":false,"name":null,"position":1,"show_sidebar":false,"sidebar":null,"sidebar_title":"Did you know?","sections":[{"layout":"full-width","is_hidden":false,"secondary_column_collapsible":false,"secondary_column_display_mode":"stacked","embeddables":[{"column":null,"is_half_width":false,"name":"","url_fragment":null,"authored_state":"{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>A simple open response question</p>\"}","is_hidden":false,"show_in_featured_question_report":true,"inherit_aspect_ratio_method":true,"custom_aspect_ratio_method":null,"inherit_native_width":true,"custom_native_width":576,"inherit_native_height":true,"custom_native_height":435,"inherit_click_to_play":true,"custom_click_to_play":false,"inherit_full_window":true,"custom_full_window":false,"inherit_click_to_play_prompt":true,"custom_click_to_play_prompt":null,"inherit_image_url":true,"custom_image_url":null,"library_interactive":{"data":{"aspect_ratio_method":"DEFAULT","authoring_guidance":"","base_url":"https://models-resources.concord.org/question-interactives/branch/master/open-response/","click_to_play":false,"click_to_play_prompt":null,"description":"This shouldn't be used by any real activities it is still under development.","enable_learner_state":true,"full_window":false,"has_report_url":false,"image_url":null,"name":"Open Response (master)","native_height":435,"native_width":576,"no_snapshots":false,"show_delete_data_button":false,"thumbnail_url":"","customizable":false,"authorable":true}},"type":"ManagedInteractive","ref_id":"4362-ManagedInteractive","linked_interactives":[]}]},{"layout":"l-6040","is_hidden":false,"secondary_column_collapsible":false,"secondary_column_display_mode":"stacked","embeddables":[{"column":"secondary","is_half_width":true,"plugin":{"id":6724,"description":null,"author_data":"{}","approved_script_label":"laraSharing","component_label":"interactives","approved_script":{"name":"Sharing","url":"https://lara-sharing-plugin.concord.org/plugin.js","label":"laraSharing","description":"This plugin provides the sharing component","version":3,"json_url":"https://lara-sharing-plugin.concord.org/manifest.json","authoring_metadata":"{\"components\":[{\"label\":\"interactives\",\"name\":\"Interactives\",\"scope\":\"embeddable-decoration\",\"guiAuthoring\":true,\"decorates\":[\"MwInteractive\",\"ManagedInteractive\"]}]}"}},"is_hidden":false,"type":"Embeddable::EmbeddablePlugin","ref_id":"6373-Embeddable::EmbeddablePlugin","embeddable_ref_id":"4362-ManagedInteractive"}]}]}]}
+{
+  "background_image": null,
+  "description": "",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Test Interactive Sharing Plugin",
+  "notes": "",
+  "related": "",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "",
+  "time_to_complete": null,
+  "version": 2,
+  "theme_name": null,
+  "project": null,
+  "plugins": [],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring",
+  "pages": [
+    {
+      "id": 310563,
+      "is_completion": false,
+      "is_hidden": false,
+      "name": null,
+      "position": 1,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "sections": [
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "is_half_width": false,
+              "name": "",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>A simple open response question</p>\"}",
+              "is_hidden": false,
+              "show_in_featured_question_report": true,
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": null,
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "This shouldn't be used by any real activities it is still under development.",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Open Response (master)",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": false,
+                  "authorable": true
+                }
+              },
+              "type": "ManagedInteractive",
+              "ref_id": "4362-ManagedInteractive",
+              "linked_interactives": []
+            }
+          ]
+        },
+        {
+          "layout": "l-6040",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 6724,
+                "description": null,
+                "author_data": "{}",
+                "approved_script_label": "laraSharing",
+                "component_label": "interactives",
+                "approved_script": {
+                  "name": "Sharing",
+                  "url": "https://lara-sharing-plugin.concord.org/plugin.js",
+                  "label": "laraSharing",
+                  "description": "This plugin provides the sharing component",
+                  "version": 3,
+                  "json_url": "https://lara-sharing-plugin.concord.org/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"interactives\",\"name\":\"Interactives\",\"scope\":\"embeddable-decoration\",\"guiAuthoring\":true,\"decorates\":[\"MwInteractive\",\"ManagedInteractive\"]}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "6373-Embeddable::EmbeddablePlugin",
+              "embeddable_ref_id": "4362-ManagedInteractive"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
