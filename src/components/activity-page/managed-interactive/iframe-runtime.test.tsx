@@ -86,6 +86,7 @@ describe("IframeRuntime component", () => {
         setSendCustomMessage={mockSetSendCustomMessage}
         setNavigation={mockSetNavigation}
         iframeTitle="Interactive content"
+        questionId={"mw_interactive_100"}
       />);
     expect(getByTestId("iframe-runtime")).toBeDefined();
     // allow initialization to complete

@@ -477,7 +477,10 @@ export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData
           activityName: linkedRef?.activity.name,
           interactiveState: answers[index]?.interactiveState || null,
           updatedAt: answers[index]?.meta.created,  // created is same as updated as it is set on each write
-          externalReportUrl: getReportUrl(linkedRefId) || undefined
+          externalReportUrl: getReportUrl(linkedRefId) || undefined,
+          interactive: {
+            questionId: linkedRefId
+          }
         };
       });
       const linkedState = allLinkedStates.find(ls => ls.interactiveState)?.interactiveState || null;
