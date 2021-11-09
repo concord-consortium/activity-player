@@ -1,6 +1,6 @@
 import React from "react";
 import { ActivityPageContent } from "./activity-page-content";
-import { configure, fireEvent, render } from "@testing-library/react";
+import { configure, render } from "@testing-library/react";
 import { DefaultTestPage } from "../../test-utils/model-for-tests";
 
 describe("Activity Page Content component", () => {
@@ -10,7 +10,7 @@ describe("Activity Page Content component", () => {
     };
     const page = { ...DefaultTestPage, layout: "l-responsive" };
     configure({ testIdAttribute: "data-cy" });
-    const { getByTestId, getByText } = render(<ActivityPageContent
+    const { getByTestId } = render(<ActivityPageContent
       enableReportButton={false}
       activityLayout={0}
       page={page}
@@ -20,8 +20,5 @@ describe("Activity Page Content component", () => {
       pluginsLoaded={true}
     />);
     expect(getByTestId("page-content")).toBeDefined();
-    expect(getByText("Hide")).toBeEnabled();
-    fireEvent.click(getByText("Hide"));
-    expect(getByText("Show")).toBeEnabled();
   });
 });

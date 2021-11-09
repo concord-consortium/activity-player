@@ -1,6 +1,6 @@
 
 import { Activity, Sequence } from "../types";
-import sampleActivity1 from "../data/sample-activity-1.json";
+import sampleNewSectionsActivity1 from "../data/new-schema/sample-new-sections-activity-1.json";
 import sampleActivity1TE from "../data/sample-activity-1-te.json";
 import sampleNewSections from "../data/version-2/sample-new-sections.json";
 import sampleNewSectionsMultipleLayoutTypes from "../data/version-2/sample-new-sections-multiple-layout-types.json";
@@ -18,13 +18,13 @@ import sampleActivityResponsive from "../data/sample-activity-responsive-layout.
 import sampleActivitySinglePageLayout from "../data/sample-activity-single-page-layout.json";
 import sampleActivityFullWidthOff from "../data/LARA-page-elements-full-width-off.json";
 import sampleActivityFullWidthOn from "../data/LARA-page-elements-full-width-on.json";
-import sampleActivityQISimple from "../data/sample-question-interactive-simple.json";
-import sampleActivityQIComplex from "../data/sample-question-interactive-complex.json";
+import sampleActivityQISimple from "../data/sample-activity-question-interactive-simple.json";
+import sampleActivityQIComplex from "../data/sample-activity-question-interactive-complex.json";
 import sampleActivityLinkedInteractives from "../data/Linked-Interactives-Test_version_1.json";
 import sampleActivityInteractiveSizing from "../data/sample-activity-interactive-sizing.json";
 
 const sampleActivities: {[name: string]: Activity} = {
-  "sample-activity-1": sampleActivity1 as Activity,
+  "sample-new-sections-activity-1": sampleNewSectionsActivity1 as Activity,
   "sample-activity-1-te": sampleActivity1TE as Activity,
   "sample-new-sections": sampleNewSections as Activity,
   "sample-new-sections-multiple-layout-types": sampleNewSectionsMultipleLayoutTypes as Activity,
