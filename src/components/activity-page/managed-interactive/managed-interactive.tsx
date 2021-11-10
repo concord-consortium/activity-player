@@ -8,7 +8,7 @@ import {
 } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, ILegacyLinkedInteractiveState } from "../../../types";
-import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo } from "../../../firebase-db";
+import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata, getInteractiveInfo, hasLegacyLinkedInteractive, IInteractiveInfo, isQuestion } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
@@ -195,16 +195,28 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     setActiveLightbox(null);
   };
 
+  const getAnswerMetadata = async (answerInteractiveId?: string) => {
+    if (answerInteractiveId) {
+      const wrappedAnswer = await getAnswer(answerInteractiveId);
+      if (wrappedAnswer) {
+        return wrappedAnswer.meta;
+      }
+    }
+    return answerMeta.current;
+  };
+
   const handleGetAttachmentUrlRequest = async (request: IAttachmentUrlRequest): Promise<IAttachmentUrlResponse> => {
-    if (!answerMeta.current) {
+    const answerMetadata = await getAnswerMetadata(request.interactiveId);
+    if (!answerMetadata) {
       return { error: "error getting attachment url: no answer metadata", requestId: request.requestId };
     }
     return await handleGetAttachmentUrl({
       request,
-      answerMeta: answerMeta.current,
+      answerMeta: answerMetadata,
       writeOptions: {
         interactiveId,
         onAnswerMetaUpdate: newMeta => {
+          // don't allow writes over passed in interactiveId (for now, until it is needed and thought through...)
           if (!answerMeta.current) {
             return { error: "error getting attachment url: no answer metadata", requestId: request.requestId };
           }

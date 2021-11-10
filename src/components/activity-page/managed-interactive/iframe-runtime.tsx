@@ -76,8 +76,6 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal,
     setSupportedFeatures, setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo } = props;
-  const _idNum = parseInt(id, 10);
-  const idNum = isFinite(_idNum) ? _idNum : 0;
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
@@ -278,7 +276,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   collaboratorUrls: null,
                   classInfoUrl: portalData?.portalJWT?.class_info_url ?? "",
                   interactive: {
-                    id: idNum,
+                    id,
                     name: ""
                   },
                   authInfo: {
