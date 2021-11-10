@@ -70,15 +70,12 @@ interface IProps {
   portalData?: IPortalData;
   answerMetadata?: IExportableAnswerMetadata;
   interactiveInfo?: IInteractiveInfo;
-  questionId: string;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal,
-    setSupportedFeatures, setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo, questionId } = props;
-  const _idNum = parseInt(id, 10);
-  const idNum = isFinite(_idNum) ? _idNum : 0;
+    setSupportedFeatures, setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo } = props;
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
@@ -279,9 +276,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   collaboratorUrls: null,
                   classInfoUrl: portalData?.portalJWT?.class_info_url ?? "",
                   interactive: {
-                    id: idNum,
-                    name: "",
-                    questionId
+                    id,
+                    name: ""
                   },
                   authInfo: {
                     provider: "",

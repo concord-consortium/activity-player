@@ -302,8 +302,7 @@ export interface ILegacyLinkedInteractiveState {
   allLinkedStates?: IInteractiveStateProps[];
   externalReportUrl?: string;
   interactive?: {
-    id: number;
+    id: string;
     name: string;
-    questionId: string;
   }
 }

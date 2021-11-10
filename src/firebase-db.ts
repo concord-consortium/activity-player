@@ -479,7 +479,7 @@ export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData
           updatedAt: answers[index]?.meta.created,  // created is same as updated as it is set on each write
           externalReportUrl: getReportUrl(linkedRefId) || undefined,
           interactive: {
-            questionId: linkedRefId
+            id: linkedRefId
           }
         };
       });

@@ -195,9 +195,9 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     setActiveLightbox(null);
   };
 
-  const getAnswerMetadata = async (questionId?: string) => {
-    if (questionId) {
-      const wrappedAnswer = await getAnswer(questionId);
+  const getAnswerMetadata = async (answerInteractiveId?: string) => {
+    if (answerInteractiveId) {
+      const wrappedAnswer = await getAnswer(answerInteractiveId);
       if (wrappedAnswer) {
         return wrappedAnswer.meta;
       }
@@ -206,7 +206,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   };
 
   const handleGetAttachmentUrlRequest = async (request: IAttachmentUrlRequest): Promise<IAttachmentUrlResponse> => {
-    const answerMetadata = await getAnswerMetadata(request.questionId);
+    const answerMetadata = await getAnswerMetadata(request.interactiveId);
     if (!answerMetadata) {
       return { error: "error getting attachment url: no answer metadata", requestId: request.requestId };
     }
@@ -216,7 +216,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       writeOptions: {
         interactiveId,
         onAnswerMetaUpdate: newMeta => {
-          // don't allow writes over passed in questionId (for now, until it is needed and thought through...)
+          // don't allow writes over passed in interactiveId (for now, until it is needed and thought through...)
           if (!answerMeta.current) {
             return { error: "error getting attachment url: no answer metadata", requestId: request.requestId };
           }
@@ -272,7 +272,6 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         portalData={portalData}
         answerMetadata={answerMeta.current}
         interactiveInfo={interactiveInfo.current}
-        questionId={embeddable.ref_id}
       />;
 
     return (
