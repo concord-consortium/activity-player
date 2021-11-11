@@ -112,7 +112,7 @@ export interface IEmbeddablePlugin extends EmbeddableBase {
 
 export type EmbeddableType = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin;
 export interface SectionType {
-  secondary_column_display_mode: "stacked" | "carousel" | string;
+  secondary_column_display_mode: "stacked" | "carousel";
   is_hidden: boolean;
   secondary_column_collapsible: boolean;
   embeddables: EmbeddableType[];

@@ -35,7 +35,7 @@ export interface EmbeddableImperativeAPI {
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, embeddableRef) => {
-  const { embeddable, sectionLayout, linkedPluginEmbeddable, activityLayout, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded, onSizeChange } = props;
+  const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded, onSizeChange } = props;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
   }, [setNavigation, embeddable.ref_id]);
@@ -118,7 +118,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                                             : displayMode === "stacked"
                                               ? "secondary stacked"
                                               : "secondary",
-                                        {"half-width":  embeddable.is_half_width && singlePageLayout},
+                                        {"half-width":  embeddable.is_half_width && !singlePageLayout},
                                         {"hidden": embeddable.is_hidden}
                                       );
 

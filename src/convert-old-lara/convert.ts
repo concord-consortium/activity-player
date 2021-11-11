@@ -64,7 +64,7 @@ interface legacyEmbeddableWrapper {
 
 interface legacySection {}
 interface legacyPageType {
-  embeddable_display_mode: "stacked" | "carousel" | string;
+  embeddable_display_mode: "stacked" | "carousel";
   text?: string;
   is_completion: boolean;
   is_hidden: boolean;
@@ -94,7 +94,7 @@ const getEmbeddablesArray = (embeddables: legacyEmbeddableType[], column: "prima
   return embeddableArr;
 };
 
-const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => { //have to use type any because of the change in type definition
+const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => {
   const pageLayout = resourcePage.layout;
   const sectionLayout = pageLayout === "l-full-width"
                           ? "full-width"
@@ -126,15 +126,15 @@ const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => { /
 
   const headerBlockSection = {
     "layout": "full-width",
-    "is_hidden": false,
-    "secondary_column_collapsible": false,
+    "is_hidden": headerBlockHidden,
+    "secondary_column_collapsible": resourcePage.toggle_info_assessment,
     "secondary_column_display_mode": resourcePage.embeddable_display_mode,
     "embeddables": getEmbeddablesArray(headerBlockEmbeddables, null, headerBlockHidden)
   };
   const splitBlockSection = {
     "layout": sectionLayout,
-    "is_hidden": false,
-    "secondary_column_collapsible": false,
+    "is_hidden": primaryBlockHidden && secondaryBlockHidden,
+    "secondary_column_collapsible": resourcePage.toggle_info_assessment,
     "secondary_column_display_mode": resourcePage.embeddable_display_mode,
     "embeddables": getEmbeddablesArray(primaryBlockEmbeddables, "primary", primaryBlockHidden).concat(getEmbeddablesArray(secondaryBlockEmbeddables, "secondary", secondaryBlockHidden))
   };

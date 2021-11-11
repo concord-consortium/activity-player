@@ -32,9 +32,9 @@ export const getActivityDefinition = (activity: string): Promise<Activity> => {
       if (sampleActivities[activity]) {
         if (sampleActivities[activity].version === 1) {
           const convertedActivityResource = convertLegacyResource(sampleActivities[activity]) as Activity;
-          setTimeout(() => resolve(convertedActivityResource), 250);
+          resolve(convertedActivityResource);
         } else {
-          setTimeout(() => resolve(sampleActivities[activity]), 250);
+          resolve(sampleActivities[activity]);
         }
       } else {
         reject(`No sample activity matches ${activity}`);

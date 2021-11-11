@@ -12,6 +12,7 @@ import "./activity-page-content.scss";
 
 interface IProps {
   enableReportButton: boolean;
+  activityLayout: number;
   page: Page;
   pageNumber: number;
   teacherEditionMode?: boolean;
@@ -66,7 +67,7 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
   }
 
   private renderSections = (sections: SectionType[], totalPreviousQuestions: number) => {
-    const {teacherEditionMode, setNavigation, pluginsLoaded} = this.props;
+    const {activityLayout, teacherEditionMode, setNavigation, pluginsLoaded} = this.props;
     return (
       sections.map((section, idx) => {
         const questionCount = numQuestionsOnPreviousSections(idx, sections) || 0;
@@ -75,6 +76,7 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
           return (
             <Section section={section}
                     key={`section-${idx}`}
+                    activityLayout={activityLayout}
                     questionNumberStart={embeddableQuestionNumberStart}
                     teacherEditionMode={teacherEditionMode}
                     setNavigation={setNavigation}

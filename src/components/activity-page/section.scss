@@ -119,7 +119,6 @@ $content-inner-width: 900px;
 
   &.responsive {
     display: flex;
-    flex-direction: row;
     .embeddable.full-width {
       width: 100%;
       &.half-width {

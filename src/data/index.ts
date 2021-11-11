@@ -2,8 +2,9 @@
 import { Activity, Sequence } from "../types";
 import sampleActivity1 from "../data/sample-activity-1.json";
 import sampleActivity1TE from "../data/sample-activity-1-te.json";
-import sampleNewSections from "../data/new-schema/sample-new-sections.json";
-import sampleNewSectionsSinglePageLayout from "../data/new-schema/sample-new-sections-single-page-layout.json";
+import sampleNewSections from "../data/version-2/sample-new-sections.json";
+import sampleNewSectionsMultipleLayoutTypes from "../data/version-2/sample-new-sections-multiple-layout-types.json";
+import sampleNewSectionsSinglePageLayout from "../data/version-2/sample-new-sections-single-page-layout.json";
 import sampleActivity2 from "../data/sample-activity-2.json";
 import sampleActivityCbio from "../data/sample-activity-CBIO.json";
 import sampleActivityHas from "../data/sample-activity-HAS.json";
@@ -26,6 +27,7 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-1": sampleActivity1 as Activity,
   "sample-activity-1-te": sampleActivity1TE as Activity,
   "sample-new-sections": sampleNewSections as Activity,
+  "sample-new-sections-multiple-layout-types": sampleNewSectionsMultipleLayoutTypes as Activity,
   "sample-new-sections-single-page-layout": sampleNewSectionsSinglePageLayout as Activity,
   "sample-activity-2": sampleActivity2 as unknown as Activity,
   "sample-activity-cbio": sampleActivityCbio as unknown as Activity,
@@ -43,11 +45,11 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-question-interactive-simple": sampleActivityQISimple as unknown as Activity,
   "sample-question-interactive-complex": sampleActivityQIComplex as unknown as Activity,
   "sample-activity-linked-interactives": sampleActivityLinkedInteractives as unknown as Activity,
-  "sample-activity-interactive-sizing": sampleActivityInteractiveSizing as unknown as Activity
+  "sample-activity-interactive-sizing": sampleActivityInteractiveSizing as unknown as Activity,
 };
 
 import sampleSequence from "../data/sample-sequence.json";
-import sampleNewSectionsSequence from "../data/new-schema/sample-new-sections-sequence.json";
+import sampleNewSectionsSequence from "../data/version-2/sample-new-sections-sequence.json";
 import sampleSequenceEmptyFields from "../data/sample-sequence-empty-fields.json";
 import sampleSequenceWithQuestions from "../data/sample-sequence-with-questions.json";
 import sampleSequenceTE from "../data/sample-sequence-te.json";

@@ -2036,22 +2036,7 @@
       "show_sidebar": false,
       "sidebar": null,
       "sidebar_title": "Did you know?",
-      "sections": [
-        {
-          "layout": "full-width",
-          "is_hidden": false,
-          "secondary_column_collapsible": false,
-          "secondary_column_display_mode": "stacked",
-          "embeddables": []
-        },
-        {
-          "layout": "l-6040",
-          "is_hidden": false,
-          "secondary_column_collapsible": false,
-          "secondary_column_display_mode": "stacked",
-          "embeddables": []
-        }
-      ]
+      "sections": []
     }
   ]
 }

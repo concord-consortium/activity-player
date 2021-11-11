@@ -26,6 +26,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
             return (
               <Section
                 key={idx}
+                activityLayout={activity.layout}
                 section={section}
                 questionNumberStart={embeddableQuestionNumberStart}
                 teacherEditionMode={teacherEditionMode}
