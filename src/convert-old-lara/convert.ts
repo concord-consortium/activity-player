@@ -109,7 +109,7 @@ const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => {
   const primaryBlockHidden = !resourcePage.show_interactive;
   const secondaryBlockHidden = !resourcePage.show_info_assessment;
 
-  resourcePage.embeddables.forEach((embeddableWrapper: any) => {
+  resourcePage.embeddables?.forEach((embeddableWrapper: any) => {
     const section = embeddableWrapper.section;
     switch (section) {
       case "header_block":
