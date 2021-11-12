@@ -2,9 +2,9 @@ import React from "react";
 import { CompletionPageContent } from "./completion-page-content";
 import { shallow } from "enzyme";
 import { Activity } from "../../types";
-import _activityPlugins from "../../data/sample-activity-multiple-layout-types.json";
+import _activityPlugins from "../../data/version-2/sample-new-sections-multiple-layout-types.json";
 
-const activityPlugins = _activityPlugins as Activity;
+const activityPlugins = _activityPlugins as unknown as Activity;
 
 describe("Completion Page Content component", () => {
   it("renders component", () => {
@@ -12,9 +12,9 @@ describe("Completion Page Content component", () => {
       // do nothing.
     };
     const wrapperComplete = shallow(
-                              <CompletionPageContent activity={activityPlugins} 
-                                                     activityName={"test"} 
-                                                     onPageChange={stubFunction} 
+                              <CompletionPageContent activity={activityPlugins}
+                                                     activityName={"test"}
+                                                     onPageChange={stubFunction}
                                                      showStudentReport={true}/>
                             );
     expect(wrapperComplete.find('[data-cy="completion-page-content"]').length).toBe(1);

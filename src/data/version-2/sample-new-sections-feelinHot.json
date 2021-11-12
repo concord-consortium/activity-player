@@ -1,0 +1,969 @@
+{
+  "background_image": null,
+  "description": "<p>In this introductory activity, students investigate the phenomena of wildfires in the western part of the United States. They explore real-world data on the frequency of wildfires and the number of acres burned over time. Students connect their ideas about the trends in the data to what might be causing the fluctuations. Students also begin to consider what makes wildfires hazardous and how they impact people and their communities.</p>\r\n<p>&nbsp;</p>",
+  "editor_mode": 0,
+  "layout": 0,
+  "name": "Feelin' Hot, Hot, Hot!",
+  "notes": "",
+  "related": "",
+  "show_submit_button": true,
+  "student_report_enabled": true,
+  "thumbnail_url": "https://has-production.s3.amazonaws.com/resources/geohazard-wildfire/ThumbnailActivity1.jpg",
+  "time_to_complete": 45,
+  "version": 2,
+  "theme_name": "GeoHazard Wildfire",
+  "project": {
+    "about": "",
+    "footer": "",
+    "help": "",
+    "logo_ap": "",
+    "logo_lara": "",
+    "project_key": "geohazard",
+    "title": "GeoHazard",
+    "url": ""
+  },
+  "plugins": [],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring",
+  "pages": [
+    {
+      "id": 131326,
+      "is_completion": false,
+      "is_hidden": false,
+      "name": "Wildfires around the world",
+      "position": 1,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "sections": [
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "is_half_width": false,
+              "content": "<p>Wildfires are a natural phenomenon that happen every year all around the world.&nbsp;Sometimes wildfires can grow very large and out of control. They can spread close to places where people work and live. As a wildfire burns and spreads, the skies turn red and are filled with smoke. Wildfires can be deadly to the people, ecosystems, and animals in their path.&nbsp;</p>\r\n<p>Scientists use models to study wildfires. In this module, you will use a wildfire model to investigate the factors that affect wildfires in order to answer the framing question:</p>\r\n<p><strong>How will wildfire risks and impacts change over the next 100 years?&nbsp;</strong></p>\r\n<p>To answer this question, you first need to learn about where wildfires start and how they spread, what hazards wildfires bring, who is at risk from wildfire, and how these hazards impact people and their communities.&nbsp;</p>",
+              "is_callout": false,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "135500-Embeddable::Xhtml"
+            }
+          ]
+        },
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": "secondary",
+              "is_half_width": false,
+              "plugin": {
+                "id": 4613,
+                "description": null,
+                "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"framing\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"**Welcome to the Wildfire Module Teacher Edition!  You can open and close this tip, and other teacher tips in this module by clicking on the orange \\\"Framing the Activity\\\" button above.**\\n\\nFires have been raging around the world, destroying homes and burning up millions of acres. \\nAs the world experiences extreme heat waves and droughts with more frequency due to climate change, firefighters will continue to struggle to bring these fires under control. These fires sharpen the call to take climate change more seriously and explore the role it plays in the development of these natural hazards. Climate change plays an important role; warmer temperatures means drier vegetation, which acts as perfect kindling for fires. Hot, dry winds also help spread wildfire. \\n\\nIt is the goal of this module to help students explore how the different components in the fire triangle-- oxygen, heat, fuel --are amplified as a result of a changing climate. In addition, we will provide students with the opportunity to consider the factors that transform a natural phenomenon into a natural hazard. Students will explore the risks, hazards, and impacts of wildfires on people and their communities. They will also consider environmental impacts to important ecosystems.\\n\\nIn line with the NGSS (see <a href=\\\"https://docs.google.com/document/d/1evvprkL3XbujTLo0JEuP2KvcVF_NvM_yCOWP2tsFthQ/edit?usp=sharing\\\" target=\\\"_blank\\\"> Wildfire Module Standards Alignment</a>), this module engages students in the use of evidence gathered from exploration with the Wildfire Explorer, a model we developed to investigate variables that influence the spread and impacts of a wildfire on communities and environments in its path. \\n\\nStudent work throughout the module is driven by the guiding question: **How will wildfire risks and impacts change over the next 100 years?** \\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "windowShade",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4469-Embeddable::EmbeddablePlugin"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": false,
+              "caption": "Wildfires endanger homes on the side of a mountain. (Table Mountain, Cape Town, South Africa)",
+              "credit": "MartinHarvey, 2015, iStock video ID: 478017946",
+              "height": 240,
+              "is_hidden": false,
+              "poster_url": "",
+              "width": 556,
+              "sources": [
+                {
+                  "format": "video/mp4",
+                  "url": "https://has-production.s3.amazonaws.com/resources/geohazard-wildfire/wildfire-1.mp4"
+                }
+              ],
+              "type": "VideoInteractive",
+              "ref_id": "790-VideoInteractive"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "default_text": "",
+              "give_prediction_feedback": false,
+              "hint": "",
+              "is_hidden": false,
+              "is_prediction": false,
+              "name": "",
+              "prediction_feedback": "",
+              "prompt": "<p><strong>Watch the video.</strong></p>\r\n<p>What are some ways that the people living in this town may be impacted by the wildfire?</p>",
+              "show_in_featured_question_report": true,
+              "type": "Embeddable::OpenResponse",
+              "ref_id": "193541-Embeddable::OpenResponse"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 4620,
+                "description": null,
+                "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"Answers will vary.\\n\\nThe people living in this town may have their houses burned down, their roads destroyed, and their trees and other vegetation demolished. Their air is now clouded with smoke, which can cause respiratory problems, eye irritation, and reduce visibility. Some people may be out of a home permanently if it burns down. \\n\",\"teacherTip\":\"The goal of this question is to have students write down their initial thoughts about the impacts of wildfires. \\n\\nMany will say that wildfires can burn down homes, but there are many other impacts. For example, schools may shut down for many months and people may lose their jobs if their place of employment burns down.\\n\\nIf you live in an area where there has been a wildfire recently or in the past, ask students to describe their experiences and the impacts they observed. \",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "questionWrapper",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4476-Embeddable::EmbeddablePlugin",
+              "embeddable_ref_id": "193541-Embeddable::OpenResponse"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 4732,
+                "description": null,
+                "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"**The Wildfire module includes a real-time Teacher Dashboard, which you can launch from the STEM Resource Finder.** \\n\\nYou can use the Teacher Dashboard (<a href=\\\"https://docs.google.com/document/d/1wW8DGBa-s3kW6KPiqMlxzIQnfAa9r1prWXRP4SdRrI0/edit?usp=sharing\\\" target=\\\"_blank\\\">dashboard instructions</a>) to quickly assess students' understanding. \\n\\nWhile this first activity introduces wildfires, it is important to realize that we do not expect students to know all the answers at this early stage. The questions in this activity elicit a base understanding and should provide you with insight into what students know about wildfires at the beginning of the module.\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "windowShade",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4588-Embeddable::EmbeddablePlugin"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 131327,
+      "is_completion": false,
+      "is_hidden": false,
+      "name": "Are wildfires burning more now than in the past?",
+      "position": 2,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "sections": [
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "is_half_width": false,
+              "content": "<p>Wildfires occur all over the world. <strong>Recently,</strong> <strong>in the United States, there have been some of the most intense and damaging wildfires of all time.</strong> Are these large fires the new normal? Will we continue to see wildfires like this over the next few decades? Scientists are thinking about these questions and this module will help you think about these questions, too.</p>\r\n<p>Some areas are more prone to wildfire than others. In the United States, they occur most frequently in the western states like California, Montana, and Idaho. The map below highlights the states that are considered part of the western U.S. The graph shows the number of acres that wildfires have burned in this region.&nbsp;<strong>Examine the graph and answer the questions below.&nbsp;</strong></p>\r\n<p>&nbsp;</p>",
+              "is_callout": false,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "135501-Embeddable::Xhtml"
+            }
+          ]
+        },
+        {
+          "layout": "l-6040",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": "primary",
+              "is_half_width": false,
+              "caption": "The western United States",
+              "credit": "NASA RECOVER/Keith Weber",
+              "credit_url": "http://giscenter.isu.edu/research/Techpg/nasa_RECOVER/pdf/GeographyWildfires.pdf",
+              "is_hidden": false,
+              "url": "https://has-production.s3.amazonaws.com/resources/geohazard-wildfire/westernUS.png",
+              "type": "ImageInteractive",
+              "ref_id": "4842-ImageInteractive"
+            },
+            {
+              "column": "primary",
+              "is_half_width": false,
+              "caption": "The number of acres burned by wildfires in the western United States every year from 1915-2015.",
+              "credit": "National Interagency Fire Center",
+              "credit_url": "https://idahoforests.org/content-item/fire/",
+              "is_hidden": false,
+              "url": "https://has-production.s3.amazonaws.com/resources/geohazard-wildfire/numberofwesternwildfires.png",
+              "type": "ImageInteractive",
+              "ref_id": "4652-ImageInteractive"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 4621,
+                "description": null,
+                "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"\",\"teacherTip\":\"\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "questionWrapper",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4477-Embeddable::EmbeddablePlugin",
+              "embeddable_ref_id": "14908-Embeddable::MultipleChoice"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 4622,
+                "description": null,
+                "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"The general trend of wildfire frequency in the western U.S. is that it is increasing with time. From the 1950s to 1980, there were only around 1 million acres of burned area a year. Since then, the trend has steadily increased, and almost exponentially so. There are some years that are lower than others, but many recent years have seen multimillions of acres burned.\",\"teacherTip\":\"In general, there has been an increasing amount of acres burned per year from 1970 to 2015. All of the years with the highest number of acres burned have been in the 21st century. \\n\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "questionWrapper",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4478-Embeddable::EmbeddablePlugin",
+              "embeddable_ref_id": "191440-Embeddable::OpenResponse"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 4623,
+                "description": null,
+                "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"\",\"teacherTip\":\"\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "questionWrapper",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4479-Embeddable::EmbeddablePlugin",
+              "embeddable_ref_id": "14907-Embeddable::MultipleChoice"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 4624,
+                "description": null,
+                "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"Answers will vary.\\n\\nSome years may have more acres burned because there is higher drought, which is a main factor in whether or not a wildfire will start. There may have been a greater effort to stop fires in some years compared to others as well. More precautions against fires may have been taken after a really bad fire season the year before.\\n\",\"teacherTip\":\"If students are struggling with this question, help them realize that even though the trend in acres burned is increasing, there are some years that are lower than others. There are even consecutive years where the burned area has decreased every year. But overall, the burnt area is still much higher than it used to be.\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "questionWrapper",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4480-Embeddable::EmbeddablePlugin",
+              "embeddable_ref_id": "191442-Embeddable::OpenResponse"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 4614,
+                "description": null,
+                "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"The goal of this first activity is to have students investigate the phenomena of wildfires in the western part of the United States. **Students explore real-world data on the frequency of wildfires and the acres burned to come up with their own ideas about both the trends in the data and what might be causing the fluctuations.** Students will also begin to consider what makes wildfires hazardous and impact people and their communities. \\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "windowShade",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4470-Embeddable::EmbeddablePlugin"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "custom": false,
+              "enable_check_answer": false,
+              "give_prediction_feedback": false,
+              "hint": "",
+              "is_hidden": false,
+              "is_prediction": false,
+              "layout": "vertical",
+              "multi_answer": false,
+              "name": "Multiple Choice Question element",
+              "prediction_feedback": "",
+              "prompt": "<p><strong>Examine the graph.</strong></p>\r\n<p>Which of the following time periods had the largest number of acres burned?</p>",
+              "show_as_menu": false,
+              "show_in_featured_question_report": true,
+              "choices": [
+                {
+                  "choice": "1915 - 1935",
+                  "is_correct": false,
+                  "prompt": ""
+                },
+                {
+                  "choice": "1950 - 1970",
+                  "is_correct": false,
+                  "prompt": ""
+                },
+                {
+                  "choice": "1995 - 2015",
+                  "is_correct": true,
+                  "prompt": ""
+                }
+              ],
+              "type": "Embeddable::MultipleChoice",
+              "ref_id": "14908-Embeddable::MultipleChoice"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "custom": false,
+              "enable_check_answer": false,
+              "give_prediction_feedback": false,
+              "hint": "",
+              "is_hidden": false,
+              "is_prediction": false,
+              "layout": "vertical",
+              "multi_answer": false,
+              "name": "Multiple Choice Question element",
+              "prediction_feedback": "",
+              "prompt": "<p>Do you see a general trend in how much area wildfires have burned?</p>",
+              "show_as_menu": false,
+              "show_in_featured_question_report": true,
+              "choices": [
+                {
+                  "choice": "Yes",
+                  "is_correct": false,
+                  "prompt": ""
+                },
+                {
+                  "choice": "No",
+                  "is_correct": false,
+                  "prompt": ""
+                }
+              ],
+              "type": "Embeddable::MultipleChoice",
+              "ref_id": "16284-Embeddable::MultipleChoice"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "default_text": "",
+              "give_prediction_feedback": false,
+              "hint": "",
+              "is_hidden": false,
+              "is_prediction": false,
+              "name": "",
+              "prediction_feedback": "",
+              "prompt": "<p>Explain what you see.&nbsp;</p>",
+              "show_in_featured_question_report": true,
+              "type": "Embeddable::OpenResponse",
+              "ref_id": "191440-Embeddable::OpenResponse"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "custom": false,
+              "enable_check_answer": false,
+              "give_prediction_feedback": false,
+              "hint": "",
+              "is_hidden": false,
+              "is_prediction": false,
+              "layout": "vertical",
+              "multi_answer": false,
+              "name": "Multiple Choice Question element",
+              "prediction_feedback": "",
+              "prompt": "<p>Are there years that don't fit the trend?</p>",
+              "show_as_menu": false,
+              "show_in_featured_question_report": true,
+              "choices": [
+                {
+                  "choice": "Yes",
+                  "is_correct": true,
+                  "prompt": ""
+                },
+                {
+                  "choice": "No",
+                  "is_correct": false,
+                  "prompt": ""
+                }
+              ],
+              "type": "Embeddable::MultipleChoice",
+              "ref_id": "14907-Embeddable::MultipleChoice"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "default_text": "",
+              "give_prediction_feedback": false,
+              "hint": "",
+              "is_hidden": false,
+              "is_prediction": false,
+              "name": "",
+              "prediction_feedback": "",
+              "prompt": "<p>What ideas do you have about why some years may have more acres burned than others?</p>",
+              "show_in_featured_question_report": true,
+              "type": "Embeddable::OpenResponse",
+              "ref_id": "191442-Embeddable::OpenResponse"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 4733,
+                "description": null,
+                "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"*You can open and close this tip, and other teacher tips in this module, by clicking on the blue Teacher Tip button above.*\\n\\nThis module has been designed to use research-based practices in science education, particularly **Ambitious Science Teaching**. Questions on this page may appear to ask students about things with which they are unfamiliar or have had no prior experience as part of a science class. It is okay if students' explanations are incomplete or incorrect. The goal is to set the foundation upon which students can build their ideas.\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "windowShade",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4589-Embeddable::EmbeddablePlugin"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 131330,
+      "is_completion": false,
+      "is_hidden": false,
+      "name": "Are wildfires staying wild?",
+      "position": 3,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "sections": [
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "is_half_width": false,
+              "content": "<p>Wildfires can start naturally by lightning. However, about 85% of wildfires are accidentally started by people! Faulty electrical wires, campfires, and cigarettes often provide the spark that starts a fire. Below is a map of wildfires that were burning in December 2017 in Southern California.</p>\n<p><strong>One reason why these fires were so dangerous was because they were close to major cities.</strong> Below is a map of Los Angeles County. Around 10 million people live in this part of California and were at risk when the fires approached. Los Angeles County is very diverse, with people of many different backgrounds, ages, and income levels.&nbsp;</p>",
+              "is_callout": false,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "135504-Embeddable::Xhtml"
+            }
+          ]
+        },
+        {
+          "layout": "l-6040",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": "primary",
+              "is_half_width": false,
+              "caption": "Location of Southern California wildfires in December of 2017.",
+              "credit": "Wikipedia",
+              "credit_url": "https://en.wikipedia.org/wiki/2017_California_wildfires",
+              "is_hidden": false,
+              "url": "https://has-production.s3.amazonaws.com/resources/geohazard-wildfire/SoCalFires.png",
+              "type": "ImageInteractive",
+              "ref_id": "4655-ImageInteractive"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 4629,
+                "description": null,
+                "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"Answers will vary.\\n\\nYes, there are groups of people that are more at risk when wildfires grow close to a city. Those with breathing issues will be impacted by the smoke in the air. Those who are too sick and immoble to move are also at higher risk because it is much harder for them to evacuate. Also, people who live on the outskirts of the city, surrounded by trees and vegetation are more vulnerable to wildfires than people in the middle of the city. Lastly, emergency workers who are necessary to fight the fire and take care of people injured in the fire cannot leave.\",\"teacherTip\":\"\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "questionWrapper",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4485-Embeddable::EmbeddablePlugin",
+              "embeddable_ref_id": "191476-Embeddable::OpenResponse"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 4630,
+                "description": null,
+                "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"\",\"teacherTip\":\"This page touches on the socio-economic issues that arise when communities prepare for wildfires and other natural disasters. This topic will be visited again later in the module. However, because of the complexity of the issue the module will only address a few of these issues. \",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "questionWrapper",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4486-Embeddable::EmbeddablePlugin",
+              "embeddable_ref_id": "14909-Embeddable::MultipleChoice"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 4974,
+                "description": null,
+                "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"Smoke is one of the main hazards of wildfires. It can travel hundreds of miles through the air and impact people in communities very far away. Smoke causes breathing issues. Smoke can block the sun, impacting crops, air travel, and many other things.\",\"teacherTip\":\"\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "questionWrapper",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4830-Embeddable::EmbeddablePlugin",
+              "embeddable_ref_id": "191477-Embeddable::OpenResponse"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "content": "<p>Scientists use many different tools and models to monitor wildfires as they form and spread. Predicting where and when a wildfire could reach a city can help people and communities prepare for the hazards that wildfires bring.</p>\r\n<p><strong>When a wildfire comes near an area where people work or live, that area is considered at risk of the damage that wildfire can bring.</strong></p>\r\n<p>&nbsp;</p>",
+              "is_callout": true,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "10361-Embeddable::Xhtml"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 4615,
+                "description": null,
+                "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"teacherTip\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"There is an important distinction between a wildfire as a natural phenomena and a wildfire as a natural hazard. It is important to help your students understand the distinction.\\n\\nA **wildfire is a natural phenomenon**. It is an unplanned fire.\\nA **wildfire becomes a natural hazard when it occurs near people and causes damage to property and human life**. \\n\\nIt is important to note that naturally occurring wildfires benefit native vegetation, animals and ecosystems that have evolved with fires. The module will address this concept in later activities.\\n\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "windowShade",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4471-Embeddable::EmbeddablePlugin"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "custom": false,
+              "enable_check_answer": false,
+              "give_prediction_feedback": false,
+              "hint": "",
+              "is_hidden": false,
+              "is_prediction": false,
+              "layout": "vertical",
+              "multi_answer": false,
+              "name": "Multiple Choice Question element",
+              "prediction_feedback": "",
+              "prompt": "<p>Are there certain groups of people that you think would be more vulnerable when wildfires move close to the city?</p>",
+              "show_as_menu": false,
+              "show_in_featured_question_report": true,
+              "choices": [
+                {
+                  "choice": "Yes",
+                  "is_correct": false,
+                  "prompt": ""
+                },
+                {
+                  "choice": "No",
+                  "is_correct": false,
+                  "prompt": ""
+                }
+              ],
+              "type": "Embeddable::MultipleChoice",
+              "ref_id": "16285-Embeddable::MultipleChoice"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "default_text": "",
+              "give_prediction_feedback": false,
+              "hint": "",
+              "is_hidden": false,
+              "is_prediction": false,
+              "name": "",
+              "prediction_feedback": "",
+              "prompt": "<p>Explain your answer.</p>",
+              "show_in_featured_question_report": true,
+              "type": "Embeddable::OpenResponse",
+              "ref_id": "191476-Embeddable::OpenResponse"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "custom": false,
+              "enable_check_answer": false,
+              "give_prediction_feedback": false,
+              "hint": "",
+              "is_hidden": false,
+              "is_prediction": false,
+              "layout": "vertical",
+              "multi_answer": false,
+              "name": "Multiple Choice Question element",
+              "prediction_feedback": "",
+              "prompt": "<p>Can people be affected by wildfires even if they are not near them?&nbsp;</p>",
+              "show_as_menu": false,
+              "show_in_featured_question_report": true,
+              "choices": [
+                {
+                  "choice": "Yes",
+                  "is_correct": true,
+                  "prompt": ""
+                },
+                {
+                  "choice": "No",
+                  "is_correct": false,
+                  "prompt": ""
+                }
+              ],
+              "type": "Embeddable::MultipleChoice",
+              "ref_id": "14909-Embeddable::MultipleChoice"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "default_text": "",
+              "give_prediction_feedback": false,
+              "hint": "",
+              "is_hidden": false,
+              "is_prediction": false,
+              "name": "",
+              "prediction_feedback": "",
+              "prompt": "<p>Explain your answer.</p>",
+              "show_in_featured_question_report": true,
+              "type": "Embeddable::OpenResponse",
+              "ref_id": "191477-Embeddable::OpenResponse"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 131329,
+      "is_completion": false,
+      "is_hidden": false,
+      "name": "What happens when wildfires come too close?",
+      "position": 4,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "sections": [
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "is_half_width": false,
+              "content": "<p style=\"text-align: left;\">You have now seen that <strong>there is an upward trend in the number of acres wildfires burn</strong>. Scientists agree! They have&nbsp;noticed this trend and are studying the wildfires of the past in order to help predict wildfires in the future.</p>\r\n<p>In this module, you will learn more about the scientific factors that influence wildfires and consider the risks and impacts of wildfires to people and their communities both now and in the years to come.</p>",
+              "is_callout": false,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "135503-Embeddable::Xhtml"
+            }
+          ]
+        },
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 4632,
+                "description": null,
+                "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"\",\"teacherTip\":\"This question was designed to elicit students' initial thoughts on wildfire hazards. The two primary hazards of wildfire are fire and smoke. An intense wildfire can burn down almost any structure or object in its path. Smoke is the other hazard. It can travel hundreds of miles through the air. \\n\\nMudslides are a secondary hazard of wildfires. Prompt them to think about that hazard by asking, **What happens after everything is burned?** or **What is a mudslide? How might fires help cause them?** After wildfires have burned vegetation, soil is loosened. Wildfires are definitely hot and can even create their own strong winds. In addition, heavy rains after wildfires can bring mudslides--a dangerous possibility.\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "questionWrapper",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4488-Embeddable::EmbeddablePlugin",
+              "embeddable_ref_id": "15204-Embeddable::MultipleChoice"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "plugin": {
+                "id": 4634,
+                "description": null,
+                "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"Answers will vary.\\n\\nWildfire can cause some positive impacts, especially for ecosystems. For example, fire can rejuvenate old forests by opening space for new saplings to grow. It can convert organic matter to ash and increase the level of important nutrients such as phosphorus, potassium, calcium, and magnesium in the soil. Some trees, such as the lodgepole pine, require fire for their seed to open and begin to sprout.\\n\",\"teacherTip\":\"Wildfires are a natural part of many ecosystems. Many forests and grasslands need fire to initiate new growth cycles of young vegetation. Indigenous people around the world are experts when it comes to fire management. They expertly use fire to control the amount of burnable vegetation on the ground so the risk of a massive wildfire is reduced (see \\u003Ca href=\\\"https://www.klc.org.au/indigenous-fire-management\\\" target=\\\"_blank\\\"\\u003EAustralian Indigenous Fire Management\\u003C/a\\u003E). The U.S. has recently adopted the idea of prescribed burns for these very reasons. \",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "questionWrapper",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4490-Embeddable::EmbeddablePlugin",
+              "embeddable_ref_id": "191473-Embeddable::OpenResponse"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": false,
+              "plugin": {
+                "id": 4633,
+                "description": null,
+                "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"An important concept that forms the basis and motivation for this module is the understanding of hazards, impacts, and risk. These three words will be repeated throughout the module. Students should practice using these terms and distinguish between them. \\n\\n**A hazard is anything that has the potential to harm people or the environment.** The two hazards of wildfires are smoke and fire.\\n\\n**An impact is an outcome of a hazard.** Impacts can be positive or negative. Negative impacts of fire are buildings burning down, ecosystems being destroyed, and many others. Positive impacts include new vegetation growth and elimination of invasive species.\\n\\n**Risk is the likelihood of a hazard to cause a specific impact.** For example, southern California is at a high risk (degree of likelihood) of fire (the hazard) burning down homes (impact) when there is severe drought in the area. Risk involves some level of uncertainty with prediction because we can never exactly know what is going to happen.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "windowShade",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4489-Embeddable::EmbeddablePlugin"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": false,
+              "caption": "A wildfire burns on the side of a freeway running through Los Angeles.",
+              "credit": "Forrestbro, 2016, iStock Video ID: 578510658",
+              "height": 240,
+              "is_hidden": false,
+              "poster_url": "",
+              "width": 556,
+              "sources": [
+                {
+                  "format": "video/mp4",
+                  "url": "https://has-production.s3.amazonaws.com/resources/geohazard-wildfire/wildfire-2.mp4"
+                }
+              ],
+              "type": "VideoInteractive",
+              "ref_id": "793-VideoInteractive"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "custom": false,
+              "enable_check_answer": false,
+              "give_prediction_feedback": false,
+              "hint": "",
+              "is_hidden": false,
+              "is_prediction": false,
+              "layout": "vertical",
+              "multi_answer": true,
+              "name": "Multiple Choice Question element",
+              "prediction_feedback": "",
+              "prompt": "<p>Wildfires can occur in areas where millions of people live and work. These people and their communities are at risk from the hazards that wildfires bring.</p>\r\n<p><strong>What kinds of immediate hazards do you think wildfires pose to people and communities?</strong></p>",
+              "show_as_menu": false,
+              "show_in_featured_question_report": true,
+              "choices": [
+                {
+                  "choice": "Heavy rains",
+                  "is_correct": false,
+                  "prompt": ""
+                },
+                {
+                  "choice": "Fire",
+                  "is_correct": true,
+                  "prompt": ""
+                },
+                {
+                  "choice": "Mudslides",
+                  "is_correct": false,
+                  "prompt": ""
+                },
+                {
+                  "choice": "Strong winds",
+                  "is_correct": false,
+                  "prompt": ""
+                },
+                {
+                  "choice": "Smoke",
+                  "is_correct": true,
+                  "prompt": ""
+                }
+              ],
+              "type": "Embeddable::MultipleChoice",
+              "ref_id": "15204-Embeddable::MultipleChoice"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": true,
+              "default_text": "",
+              "give_prediction_feedback": false,
+              "hint": "",
+              "is_hidden": false,
+              "is_prediction": false,
+              "name": "",
+              "prediction_feedback": "",
+              "prompt": "<p>Describe one or two ways you think wildfires could be beneficial.</p>",
+              "show_in_featured_question_report": true,
+              "type": "Embeddable::OpenResponse",
+              "ref_id": "191473-Embeddable::OpenResponse"
+            },
+            {
+              "column": "secondary",
+              "is_half_width": false,
+              "plugin": {
+                "id": 4735,
+                "description": null,
+                "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"discussionPoints\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"*This is a great place to stop and elicit students’ initial ideas about the hazards and risks of wildfires.*\\n\\nThis activity has introduced the socio-economic issues that arise when communities prepare for wildfires and other natural disasters. This topic will be visited again later in the module. However, because of the complexity of this issue the module will only address a few of these issues.\\n\\nAt this point, eliciting students’ initial ideas about risks to different populations is important. Both preparing for wildfires (buying supplies and staying put) and evacuating (access to reliable transportation and having a safe place to go) can be expensive. Asking questions like, “Why is it more difficult for older people or sick people to prepare for a wildfire?” and \\\"Why is it more difficult for people from low socioeconomic communities to evacuate during a wildfire?\\\" will generate rich class discussions.\\n\\nWe suggest you use an off-line tool called a Summary Table to record student ideas. Summary Tables can be used individually by students to track their thinking as they progress toward an explanatory model of the phenomenon and guiding question: **How will wildfire risks and impacts change over the next 100 years? **\\n\\nA Summary Table can also be used to record student ideas in a public place, such as a poster or a projected online document shared at the front of the room. (Please read these brief <a href=\\\"https://docs.google.com/document/d/18L6beaYeOa9kaX7xMuvsjFnXpi-106S_qUy7kfqafU8/edit?usp=sharing?usp=sharing\\\" target=\\\"_blank\\\">instructions on how to use Summary Tables</a>.)\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+                "approved_script_label": "teacherEditionTips",
+                "component_label": "windowShade",
+                "approved_script": {
+                  "name": "Teacher Edition",
+                  "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                  "label": "teacherEditionTips",
+                  "description": "This plugin provides Teacher Edition components",
+                  "version": 3,
+                  "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                  "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                }
+              },
+              "is_hidden": false,
+              "type": "Embeddable::EmbeddablePlugin",
+              "ref_id": "4591-Embeddable::EmbeddablePlugin"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 131332,
+      "is_completion": true,
+      "is_hidden": false,
+      "name": "Summary Page",
+      "position": 5,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "sections": []
+    }
+  ]
+}

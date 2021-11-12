@@ -92,7 +92,7 @@
         },
         {
           "embeddable": {
-            "name": "",
+            "name": "should be hidden",
             "url_fragment": null,
             "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
             "is_hidden": true,
@@ -441,7 +441,7 @@
         },
         {
           "embeddable": {
-            "name": "",
+            "name": "Should be hidden",
             "url_fragment": null,
             "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
             "is_hidden": true,

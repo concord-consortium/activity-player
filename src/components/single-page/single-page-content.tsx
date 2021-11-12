@@ -1,12 +1,11 @@
 import React from "react";
-import { ActivityLayouts, PageLayouts, isQuestion, VisibleEmbeddables, getVisibleEmbeddablesOnPage,
-         EmbeddableSections, getLinkedPluginEmbeddable } from "../../utilities/activity-utils";
-import { Embeddable } from "../activity-page/embeddable";
+import { numQuestionsOnPreviousSections, numQuestionsOnPreviousPages } from "../../utilities/activity-utils";
 import { RelatedContent } from "./related-content";
 import { SubmitButton } from "./submit-button";
 
 import "./single-page-content.scss";
 import { Activity, Page } from "../../types";
+import { Section } from "../activity-page/section";
 
 interface IProps {
   activity: Activity;
@@ -16,29 +15,20 @@ interface IProps {
 
 export const SinglePageContent: React.FC<IProps> = (props) => {
   const { activity, teacherEditionMode, pluginsLoaded } = props;
-  let questionNumber = 0;
-  let embeddableNumber = 0;
-
   const renderPageContent = (page: Page, index: number) => {
-    const visibleEmbeddables: VisibleEmbeddables = getVisibleEmbeddablesOnPage(page);
-    const embeddables = [...visibleEmbeddables.headerBlock, ...visibleEmbeddables.interactiveBox, ...visibleEmbeddables.infoAssessment];
+    // Even though this renders as a single page, the authored JSON still has pages
+    const totalPreviousQuestions = numQuestionsOnPreviousPages(page.position, activity);
     return (
       <React.Fragment key={index}>
-        { embeddables.map((embeddableWrapper, i: number) => {
-            if (isQuestion(embeddableWrapper)) {
-              questionNumber++;
-            }
-            embeddableNumber++;
-            const linkedPluginEmbeddable = getLinkedPluginEmbeddable(page, embeddableWrapper.embeddable.ref_id);
+        { page.sections.map((section, idx) => {
+            const questionCount = numQuestionsOnPreviousSections(idx, page.sections) || 0;
+            const embeddableQuestionNumberStart = questionCount + totalPreviousQuestions;
             return (
-              <Embeddable
-                activityLayout={ActivityLayouts.SinglePage}
-                key={`embeddable ${embeddableNumber}`}
-                embeddableWrapper={embeddableWrapper}
-                pageLayout={PageLayouts.FullWidth}
-                pageSection={EmbeddableSections.InfoAssessment}
-                questionNumber={isQuestion(embeddableWrapper) ? questionNumber : undefined}
-                linkedPluginEmbeddable={linkedPluginEmbeddable}
+              <Section
+                key={idx}
+                activityLayout={activity.layout}
+                section={section}
+                questionNumberStart={embeddableQuestionNumberStart}
                 teacherEditionMode={teacherEditionMode}
                 pluginsLoaded={pluginsLoaded}
               />

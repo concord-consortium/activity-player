@@ -7,10 +7,10 @@ import { SequenceNav } from "./activity-header/sequence-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages,
-         enableReportButton, setDocumentTitle, getPagePositionFromQueryValue,
-         getSequenceActivityFromQueryValue, getSequenceActivityId,
-         setAppBackgroundImage } from "../utilities/activity-utils";
+import { ActivityLayouts, numQuestionsOnPreviousPages,
+  enableReportButton, setDocumentTitle, getPagePositionFromQueryValue,
+  getSequenceActivityFromQueryValue, getSequenceActivityId,
+  setAppBackgroundImage } from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
@@ -196,7 +196,6 @@ export class App extends React.PureComponent<IProps, IState> {
 
       this.LARA = initializeLara();
       const activities: Activity[] = sequence ? sequence.activities : [activity];
-
       loadLearnerPluginState(activities).then(() => {
         loadPluginScripts(this.LARA, activities, this.handleLoadPlugins);
       });
@@ -268,7 +267,9 @@ export class App extends React.PureComponent<IProps, IState> {
     const { activity, activityIndex, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
-    const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
+    const hasResponsiveSection = activity.pages[currentPage - 1]?.sections.filter(s => s.layout === "responsive");
+
+    const fullWidth = (currentPage !== 0) && (hasResponsiveSection.length > 0);
     const project = activity.project ? activity.project : null;
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
@@ -350,6 +351,7 @@ export class App extends React.PureComponent<IProps, IState> {
               ? this.renderCompletionContent(activity)
               : <ActivityPageContent
                   ref={this.activityPageContentRef}
+                  activityLayout={activity.layout}
                   enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
                   pageNumber={currentPage}
                   page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
