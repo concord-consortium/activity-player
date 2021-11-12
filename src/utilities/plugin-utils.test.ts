@@ -4,7 +4,7 @@ import {
   initializePlugin, IPartialEmbeddablePluginContext, loadLearnerPluginState, loadPluginScripts,
   validateEmbeddablePluginContextForPlugin, validateEmbeddablePluginContextForWrappedEmbeddable
 } from "./plugin-utils";
-import sampleActivityGlossaryPlugin from "../data/new-schema/sample-new-sections-glossary-plugin.json";
+import sampleActivityGlossaryPlugin from "../data/version-2/sample-new-sections-glossary-plugin.json";
 import { LaraGlobalType } from "../lara-plugin";
 import { clearCachedLearnerPluginState, getCachedLearnerPluginState, setLearnerPluginState, setPortalData } from "../firebase-db";
 import { RawClassInfo } from "../portal-api";

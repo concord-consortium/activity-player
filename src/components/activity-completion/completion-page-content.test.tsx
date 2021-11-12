@@ -2,7 +2,7 @@ import React from "react";
 import { CompletionPageContent } from "./completion-page-content";
 import { shallow } from "enzyme";
 import { Activity } from "../../types";
-import _activityPlugins from "../../data/new-schema/sample-new-sections-multiple-layout-types.json";
+import _activityPlugins from "../../data/version-2/sample-new-sections-multiple-layout-types.json";
 
 const activityPlugins = _activityPlugins as unknown as Activity;
 

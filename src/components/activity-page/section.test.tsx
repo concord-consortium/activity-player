@@ -12,11 +12,12 @@ describe("Section component", () => {
     configure({ testIdAttribute: "data-cy" });
     const { getByTestId, getByText } = render(<Section
       section={section}
+      activityLayout={0}
       questionNumberStart={5}
       setNavigation={stubFunction}
       pluginsLoaded={true}
     />);
-    expect(getByTestId("section-single-column-layout")).toBeDefined();
+    expect(getByTestId("section-split-layout")).toBeDefined();
     // expect(getByText("Hide")).toBeEnabled();
     // fireEvent.click(getByText("Hide"));
     // expect(getByText("Show")).toBeEnabled();

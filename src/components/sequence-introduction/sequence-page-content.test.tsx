@@ -2,7 +2,7 @@ import React from "react";
 import { shallow } from "enzyme";
 import { SequencePageContent } from "./sequence-page-content";
 import { Sequence } from "../../types";
-import _sequence from "../../data/new-schema/sample-new-sections-sequence.json";
+import _sequence from "../../data/version-2/sample-new-sections-sequence.json";
 
 const sequence = _sequence as Sequence;
 

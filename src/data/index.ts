@@ -1,6 +1,6 @@
 
 import { Activity, Sequence } from "../types";
-import sampleNewSectionsActivity1 from "../data/new-schema/sample-new-sections-activity-1.json";
+import sampleNewSectionsActivity1 from "../data/version-2/sample-new-sections-activity-1.json";
 import sampleActivity1TE from "../data/sample-activity-1-te.json";
 import sampleNewSections from "../data/version-2/sample-new-sections.json";
 import sampleNewSectionsMultipleLayoutTypes from "../data/version-2/sample-new-sections-multiple-layout-types.json";

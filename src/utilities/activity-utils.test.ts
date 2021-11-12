@@ -1,7 +1,7 @@
 import { Activity } from "../types";
 import { isQuestion, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isSectionHidden, numQuestionsOnPreviousSections } from "./activity-utils";
-import _activityHidden from "../data/new-schema/sample-new-sections-hidden-content.json";
-import _activity from "../data/new-schema/sample-new-sections-activity-1.json";
+import _activityHidden from "../data/version-2/sample-new-sections-hidden-content.json";
+import _activity from "../data/version-2/sample-new-sections-activity-1.json";
 import { DefaultTestActivity } from "../test-utils/model-for-tests";
 
 const activityHidden = _activityHidden as unknown as Activity;
