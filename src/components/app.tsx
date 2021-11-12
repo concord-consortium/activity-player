@@ -40,7 +40,7 @@ import { initializeAttachmentsManager } from "@concord-consortium/interactive-ap
 
 import "./app.scss";
 
-const kDefaultActivity = "sample-new-sections";   // may eventually want to get rid of this
+const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "Please submit an answer first.";
 
 // User will see the idle warning after kMaxIdleTime

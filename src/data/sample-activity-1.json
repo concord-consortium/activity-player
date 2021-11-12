@@ -4,7 +4,16 @@
   "layout": 0,
   "name": "Single Page Test Activity",
   "notes": "",
-  "project": null,
+  "project": {
+    "about": "",
+    "footer": "",
+    "help": "",
+    "logo_ap": "",
+    "logo_lara": "",
+    "project_key": "default",
+    "title": "Default",
+    "url": ""
+  },
   "related": "<p>Related content for the&nbsp;sample activity used to test the LARA single page application.</p>",
   "show_submit_button": true,
   "student_report_enabled": true,
@@ -12,8 +21,6 @@
   "time_to_complete": 10,
   "version": 1,
   "theme_name": null,
-  "background_image": null,
-  "fixed_width_layout": "1100px",
   "pages": [
     {
       "additional_sections": {},
@@ -92,8 +99,7 @@
           },
           "section": "header_block"
         }
-      ],
-      "id": 1000
+      ]
     },
     {
       "additional_sections": {},
@@ -172,8 +178,7 @@
           },
           "section": "header_block"
         }
-      ],
-      "id": 2000
+      ]
     },
     {
       "additional_sections": {},
@@ -190,8 +195,7 @@
       "sidebar": null,
       "sidebar_title": "Did you know?",
       "toggle_info_assessment": false,
-      "embeddables": [],
-      "id": 3000
+      "embeddables": []
     }
   ],
   "plugins": [],

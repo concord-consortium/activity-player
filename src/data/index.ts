@@ -2,6 +2,7 @@
 import { Activity, Sequence } from "../types";
 import sampleNewSectionsActivity1 from "../data/version-2/sample-new-sections-activity-1.json";
 import sampleActivity1TE from "../data/sample-activity-1-te.json";
+import sampleActivity1 from "../data/sample-activity-1.json";
 import sampleNewSections from "../data/version-2/sample-new-sections.json";
 import sampleNewSectionsMultipleLayoutTypes from "../data/version-2/sample-new-sections-multiple-layout-types.json";
 import sampleNewSectionsSinglePageLayout from "../data/version-2/sample-new-sections-single-page-layout.json";
@@ -22,10 +23,12 @@ import sampleActivityQISimple from "../data/sample-activity-question-interactive
 import sampleActivityQIComplex from "../data/sample-activity-question-interactive-complex.json";
 import sampleActivityLinkedInteractives from "../data/Linked-Interactives-Test_version_1.json";
 import sampleActivityInteractiveSizing from "../data/sample-activity-interactive-sizing.json";
+import sampleActivityInteractiveSharing from "../data/sample-activity-interactive-sharing.json";
 
 const sampleActivities: {[name: string]: Activity} = {
   "sample-new-sections-activity-1": sampleNewSectionsActivity1 as Activity,
   "sample-activity-1-te": sampleActivity1TE as Activity,
+  "sample-activity-1": sampleActivity1 as unknown as Activity,
   "sample-new-sections": sampleNewSections as Activity,
   "sample-new-sections-multiple-layout-types": sampleNewSectionsMultipleLayoutTypes as Activity,
   "sample-new-sections-single-page-layout": sampleNewSectionsSinglePageLayout as Activity,
@@ -46,6 +49,7 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-question-interactive-complex": sampleActivityQIComplex as unknown as Activity,
   "sample-activity-linked-interactives": sampleActivityLinkedInteractives as unknown as Activity,
   "sample-activity-interactive-sizing": sampleActivityInteractiveSizing as unknown as Activity,
+  "sample-activity-interactive-sharing": sampleActivityInteractiveSharing as unknown as Activity,
 };
 
 import sampleSequence from "../data/sample-sequence.json";
