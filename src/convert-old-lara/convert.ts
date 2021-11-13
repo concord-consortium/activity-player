@@ -1,4 +1,4 @@
-import { Page, SectionType, LibraryInteractive, Plugin, EmbeddableType } from "../types";
+import { Page, SectionType, LibraryInteractive, Plugin, EmbeddableType, Activity } from "../types";
 
 interface legacyEmbeddableBase {
   type: string;
@@ -165,7 +165,7 @@ const newPagesResource = (resourcePages: any):Page[] => {
 };
 
 function convertActivityResource (legacyResource: any) {
-  const newActivityResource = {
+  const newActivityResource: Activity = {
     "background_image": legacyResource.background_image,
     "description": legacyResource.description,
     "editor_mode": legacyResource.editor_mode,
@@ -185,6 +185,12 @@ function convertActivityResource (legacyResource: any) {
     "export_site": legacyResource.export_site,
     "pages": newPagesResource(legacyResource.pages)
   };
+  if (legacyResource.fixed_width_layout) {
+    newActivityResource.fixed_width_layout = legacyResource.fixed_width_layout;
+  }
+  if (legacyResource.position) {
+    newActivityResource.position = legacyResource.position;
+  }
   return newActivityResource;
 }
 const getSequenceActivities = (seqActivities: any) => {

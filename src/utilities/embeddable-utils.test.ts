@@ -11,12 +11,12 @@ import {
   Sequence
 } from "../types";
 
-import _activity1 from "../data/sample-activity-1.json";
-import _legacyLinkedInteractiveActivity from "../data/sample-activity-legacy-linked-interactives.json";
-import _sequenceWithQuestions from "../data/sample-sequence-with-questions.json";
-const activity1 = _activity1 as Activity;
-const legacyLinkedInteractiveActivity = _legacyLinkedInteractiveActivity as Activity;
-const sequenceWithQuestions = _sequenceWithQuestions as Sequence;
+import _activity1 from "../data/version-2/sample-new-sections-activity-1.json";
+import _legacyLinkedInteractiveActivity from "../data/version-2/sample-new-sections-legacy-linked-interactives.json";
+import _sequenceWithQuestions from "../data/version-2/sample-new-sections-sequence-with-questions.json";
+const activity1 = _activity1 as unknown as Activity;
+const legacyLinkedInteractiveActivity = _legacyLinkedInteractiveActivity as unknown as Activity;
+const sequenceWithQuestions = _sequenceWithQuestions as unknown as Sequence;
 
 describe("Embeddable utility functions", () => {
   it("correctly converts from answer's question-id to ref_id", () => {
@@ -355,17 +355,18 @@ describe("Embeddable utility functions", () => {
     it("can generate and cache a legacy linked ref map with an activity with linked refs", () => {
       const laraData = {activity: legacyLinkedInteractiveActivity};
       const map = getLegacyLinkedRefMap(laraData);
+      console.log(map);
       expect(legacyLinkedRefMapCache.get(laraData)).toEqual(map);
       expect(Object.keys(map)).toEqual([
-        "312-ManagedInteractive","313-ManagedInteractive","352-ManagedInteractive","319-ManagedInteractive",
-        "210507-MwInteractive","314-ManagedInteractive","315-ManagedInteractive","331-ManagedInteractive",
-        "210508-MwInteractive","340-ManagedInteractive","341-ManagedInteractive","342-ManagedInteractive",
-        "344-ManagedInteractive","316-ManagedInteractive","339-ManagedInteractive","336-ManagedInteractive",
-        "337-ManagedInteractive","609-ManagedInteractive","640-ManagedInteractive","210510-MwInteractive",
-        "367-ManagedInteractive","368-ManagedInteractive","369-ManagedInteractive","370-ManagedInteractive",
-        "382-ManagedInteractive","383-ManagedInteractive","366-ManagedInteractive","384-ManagedInteractive",
-        "372-ManagedInteractive","373-ManagedInteractive","374-ManagedInteractive","375-ManagedInteractive",
-        "385-ManagedInteractive","386-ManagedInteractive","371-ManagedInteractive","387-ManagedInteractive"
+        "319-ManagedInteractive","210507-MwInteractive","312-ManagedInteractive","313-ManagedInteractive",
+        "352-ManagedInteractive","210508-MwInteractive","314-ManagedInteractive","315-ManagedInteractive",
+        "331-ManagedInteractive","344-ManagedInteractive","340-ManagedInteractive","341-ManagedInteractive",
+        "342-ManagedInteractive","339-ManagedInteractive","336-ManagedInteractive","337-ManagedInteractive",
+        "316-ManagedInteractive","210510-MwInteractive","609-ManagedInteractive","640-ManagedInteractive",
+        "366-ManagedInteractive","384-ManagedInteractive","367-ManagedInteractive","368-ManagedInteractive",
+        "369-ManagedInteractive","370-ManagedInteractive","382-ManagedInteractive","383-ManagedInteractive",
+        "371-ManagedInteractive","387-ManagedInteractive","372-ManagedInteractive","373-ManagedInteractive",
+        "374-ManagedInteractive","375-ManagedInteractive","385-ManagedInteractive","386-ManagedInteractive"
       ]);
       expect(map["313-ManagedInteractive"]?.linkedRefId).toEqual("312-ManagedInteractive");
       expect(map["352-ManagedInteractive"]?.linkedRefId).toEqual("313-ManagedInteractive");
@@ -374,14 +375,14 @@ describe("Embeddable utility functions", () => {
 
   describe("#hasLegacyLinkedInteractive", () => {
     it("returns false when an embeddable doesn't have a legacy linked interactive", () => {
-      const embeddable = legacyLinkedInteractiveActivity.pages[0].embeddables[0].embeddable;
+      const embeddable = legacyLinkedInteractiveActivity.pages[0].sections[1].embeddables[1];
       const activity = legacyLinkedInteractiveActivity;
       expect(embeddable.ref_id).toEqual("312-ManagedInteractive");
       expect(hasLegacyLinkedInteractive(embeddable, {activity})).toEqual(false);
     });
 
     it("returns true when an embeddable has a legacy linked interactive", () => {
-      const embeddable = legacyLinkedInteractiveActivity.pages[0].embeddables[1].embeddable;
+      const embeddable = legacyLinkedInteractiveActivity.pages[0].sections[1].embeddables[2];
       const activity = legacyLinkedInteractiveActivity;
       expect(embeddable.ref_id).toEqual("313-ManagedInteractive");
       expect(hasLegacyLinkedInteractive(embeddable, {activity})).toEqual(true);
