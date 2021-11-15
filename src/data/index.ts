@@ -52,8 +52,8 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-linked-interactives": sampleActivityLinkedInteractives as unknown as Activity,
   "sample-activity-interactive-sizing": sampleActivityInteractiveSizing as unknown as Activity,
   "sample-activity-interactive-sharing": sampleActivityInteractiveSharing as unknown as Activity,
-  "sample-activity-1100px": sampleActivity1100px as Activity,
-  "sample-activity-ipad-friendly": sampleActivityIPadFriendly as Activity,
+  "sample-activity-1100px": sampleActivity1100px as unknown as Activity,
+  "sample-activity-ipad-friendly": sampleActivityIPadFriendly as unknown as Activity,
 };
 
 import sampleSequence from "../data/sample-sequence.json";
