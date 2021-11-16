@@ -156,10 +156,10 @@ export const Section: React.FC<IProps> = (props) => {
   const singlePage = activityLayout === ActivityLayouts.SinglePage;
   const sectionClass = classNames("section",
                                   {"full-width": layout === "full-width" || singlePage},
-                                  {"l_6040": layout === "l-6040"},
-                                  {"r_4060": layout === "r-4060"},
-                                  {"l_7030": layout === "l-7030"},
-                                  {"r_3070": layout === "r-3070"},
+                                  {"l_6040": layout === "60-40"},
+                                  {"r_4060": layout === "40-60"},
+                                  {"l_7030": layout === "70-30"},
+                                  {"r_3070": layout === "30-70"},
                                   {"responsive": layout === "responsive" && !singlePage},
                                   {"stacked": display_mode === "stacked"},
                                   {"carousel": display_mode === "carousel"}
