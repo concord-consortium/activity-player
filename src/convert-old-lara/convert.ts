@@ -142,8 +142,8 @@ const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => {
   const headerBlockSection = {
     "layout": "full-width",
     "is_hidden": headerBlockHidden,
-    "secondary_column_collapsible": resourcePage.toggle_info_assessment,
-    "secondary_column_display_mode": resourcePage.embeddable_display_mode,
+    "secondary_column_collapsible": false,
+    "secondary_column_display_mode": false,
     "embeddables": getEmbeddablesArray(headerBlockEmbeddables, null, headerBlockHidden)
   };
   const splitBlockSection = {
