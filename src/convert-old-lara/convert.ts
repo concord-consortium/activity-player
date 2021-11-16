@@ -96,11 +96,26 @@ const getEmbeddablesArray = (embeddables: legacyEmbeddableType[], column: "prima
 
 const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => {
   const pageLayout = resourcePage.layout;
-  const sectionLayout = pageLayout === "l-full-width"
-                          ? "full-width"
-                          : pageLayout === "l-responsive"
-                            ? "responsive"
-                            : pageLayout;
+  let sectionLayout = "";
+  switch (pageLayout) {
+    case "l-full-width":
+      sectionLayout = "full-width";
+      break;
+    case "l-responsive":
+      sectionLayout  = "responsive";
+      break;
+    case "l-6040":
+      sectionLayout = "40-60";
+      break;
+    case "r-4060":
+      sectionLayout = "60-40";
+      break;
+    case "l-3070":
+      sectionLayout = "70-30";
+      break;
+    case "r-7030":
+      sectionLayout = "30-70";
+  }
   const headerBlockEmbeddables: legacyEmbeddableType[] = [];
   const primaryBlockEmbeddables: legacyEmbeddableType[] = [];
   const secondaryBlockEmbeddables: legacyEmbeddableType[] = [];
