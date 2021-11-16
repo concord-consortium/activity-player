@@ -355,7 +355,6 @@ describe("Embeddable utility functions", () => {
     it("can generate and cache a legacy linked ref map with an activity with linked refs", () => {
       const laraData = {activity: legacyLinkedInteractiveActivity};
       const map = getLegacyLinkedRefMap(laraData);
-      console.log(map);
       expect(legacyLinkedRefMapCache.get(laraData)).toEqual(map);
       expect(Object.keys(map)).toEqual([
         "319-ManagedInteractive","210507-MwInteractive","312-ManagedInteractive","313-ManagedInteractive",
