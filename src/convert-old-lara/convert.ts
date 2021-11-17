@@ -143,7 +143,7 @@ const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => {
     "layout": "full-width",
     "is_hidden": headerBlockHidden,
     "secondary_column_collapsible": false,
-    "secondary_column_display_mode": false,
+    "secondary_column_display_mode": "stacked",
     "embeddables": getEmbeddablesArray(headerBlockEmbeddables, null, headerBlockHidden)
   };
   const splitBlockSection = {
