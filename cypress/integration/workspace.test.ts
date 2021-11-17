@@ -49,7 +49,7 @@ describe("accessibility",()=>{
     it("go to correct page when tabbed and keydown enter from page list",()=>{
       cy.get("[data-cy=nav-pages] button").eq(1).type("{enter}");
       cy.get("[data-cy=intro-page-content]").should("be.visible");
-      cy.get(".page-item").eq(2).focus();
+      cy.get(".page-item").eq(1).focus();
       cy.focused().type("{enter}");
       activityPage.getSidebarTab().should("be.visible");
     });
