@@ -12,6 +12,7 @@ describe("Activity Page Content component", () => {
     configure({ testIdAttribute: "data-cy" });
     const { getByTestId, getByText } = render(<ActivityPageContent
       enableReportButton={false}
+      activityLayout={0}
       page={page}
       pageNumber={5}
       totalPreviousQuestions={5}

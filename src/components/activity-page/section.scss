@@ -19,6 +19,9 @@ $content-inner-width: 900px;
       &.half-width {
         grid-column: span 5;
       }
+      &.hidden {
+        display: none;
+      }
     }
   }
 
@@ -45,7 +48,7 @@ $content-inner-width: 900px;
     }
   }
 
-  &.r_6040 {
+  &.r_4060 {
     width: $content-inner-width;
     .column.primary {
       position: sticky;
@@ -116,11 +119,13 @@ $content-inner-width: 900px;
 
   &.responsive {
     display: flex;
-    flex-direction: row;
     .embeddable.full-width {
       width: 100%;
       &.half-width {
         width: 50%;
+      }
+      &.hidden {
+        display: none;
       }
     }
 
@@ -132,6 +137,7 @@ $content-inner-width: 900px;
     }
     .column.secondary {
       min-width: 365px;
+      max-width: 365px;
       left: 0;
       &.stacked {
         flex-direction: column;

@@ -62,7 +62,7 @@ export interface EmbeddableBase {
   interactiveState?: any | null;
   url_fragment?: string | null,
   is_hidden: boolean;
-  is_half_width: boolean;
+  is_half_width?: boolean;
   ref_id: string;
   embeddable_ref_id?: string;
   column?: "primary" | "secondary" | null;
@@ -111,7 +111,6 @@ export interface IEmbeddablePlugin extends EmbeddableBase {
 }
 
 export type EmbeddableType = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin;
-
 export interface SectionType {
   secondary_column_display_mode: "stacked" | "carousel";
   is_hidden: boolean;

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { Embeddable, EmbeddableImperativeAPI } from "./embeddable";
-import { isQuestion,  getLinkedPluginEmbeddable } from "../../utilities/activity-utils";
+import { isQuestion,  getLinkedPluginEmbeddable, ActivityLayouts } from "../../utilities/activity-utils";
 import { accessibilityClick } from "../../utilities/accessibility-helper";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
@@ -14,6 +14,7 @@ import "./section.scss";
 const kEmbeddableMargin = 10;
 interface IProps {
   section: SectionType;
+  activityLayout: number;
   questionNumberStart: number;
   teacherEditionMode?: boolean;
   setNavigation?: (refId: string, options: INavigationOptions) => void;
@@ -21,7 +22,7 @@ interface IProps {
 }
 
 export const Section: React.FC<IProps> = (props) => {
-  const { section, questionNumberStart } = props;
+  const { activityLayout, section, questionNumberStart } = props;
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
   const [resizeCounter, setResizeCounter] = useState(0);
   const [primaryEmbeddableTotalHeight, setPrimaryEmbeddableTotalHeight] = useState(0);
@@ -48,7 +49,7 @@ export const Section: React.FC<IProps> = (props) => {
     }
   },[resizeCounter]);
 
-  const renderEmbeddables = (embeddablesToRender: EmbeddableType[], questionNumStart: number, offSet?: number) => {
+  const renderEmbeddables = (embeddablesToRender: EmbeddableType[], questionNumStart: number, isSingleColumn?: boolean) => {
     let questionNumber = questionNumStart;
     return (
       <React.Fragment>
@@ -65,7 +66,8 @@ export const Section: React.FC<IProps> = (props) => {
                 embeddableRef={embeddableRefs[embeddable.ref_id]}
                 key={`embeddable-${embeddableIndex}-${embeddable.ref_id}`}
                 embeddable={embeddable}
-                sectionLayout={section.layout}
+                sectionLayout={isSingleColumn ? "full-width" : section.layout}
+                activityLayout={activityLayout}
                 displayMode={section.secondary_column_display_mode}
                 questionNumber={isQuestion(embeddable) ? questionNumber : undefined}
                 linkedPluginEmbeddable={linkedPluginEmbeddable}
@@ -96,7 +98,7 @@ export const Section: React.FC<IProps> = (props) => {
     const containerClass = classNames("column", layout, "secondary", {"collapsed": isSecondaryCollapsed});
     return (
       <div className={containerClass} ref={secondaryDivRef}>
-        {collapsible && renderCollapsibleHeader()}
+        {secondaryEmbeddablesToRender.length > 0 && collapsible && renderCollapsibleHeader()}
         {!isSecondaryCollapsed && renderEmbeddables(secondaryEmbeddablesToRender, questionNumStart)}
       </div>
     );
@@ -151,26 +153,28 @@ export const Section: React.FC<IProps> = (props) => {
 
   const layout = section.layout;
   const display_mode = section.secondary_column_display_mode;
+  const singlePage = activityLayout === ActivityLayouts.SinglePage;
   const sectionClass = classNames("section",
-                                  {"full-width": layout === "full-width"},
-                                  {"l_6040": layout === "l-6040"},
-                                  {"r_6040": layout === "r-6040"},
-                                  {"l_7030": layout === "l-7030"},
-                                  {"r_3070": layout === "r-3070"},
-                                  {"responsive": layout === "responsive"},
+                                  {"full-width": layout === "full-width" || singlePage},
+                                  {"l_6040": layout === "60-40"},
+                                  {"r_4060": layout === "40-60"},
+                                  {"l_7030": layout === "70-30"},
+                                  {"r_3070": layout === "30-70"},
+                                  {"responsive": layout === "responsive" && !singlePage},
                                   {"stacked": display_mode === "stacked"},
                                   {"carousel": display_mode === "carousel"}
                                 );
   const embeddables = section.embeddables;
-  const primaryEmbeddables = embeddables.filter(e => e.column === "primary" && !e.is_hidden);
-  const secondaryEmbeddables = embeddables.filter(e => e.column === "secondary" && !e.is_hidden);
-  const singleColumn = layout === "full-width" ||
-                        (layout === "responsive" && (primaryEmbeddables.length === 0 || secondaryEmbeddables.length === 0));
-
-  if (singleColumn) {
+  const primaryEmbeddables = layout !== "full-width" ? embeddables.filter(e => e.column === "primary" && !e.is_hidden) : [];
+  const secondaryEmbeddables = layout !== "full-width" ? embeddables.filter(e => e.column === "secondary" && !e.is_hidden) : [];
+  const responsiveIsSingleColumn = (layout === "responsive" && (embeddables.length > 0 && primaryEmbeddables.length === 0 && secondaryEmbeddables.length === 0));
+  const singleColumn = layout === "full-width" || responsiveIsSingleColumn;
+  const responsiveDirection  = singleColumn ? "column" : "row";
+  const responsiveDirectionStyle = { flexDirection: responsiveDirection } as React.CSSProperties;
+  if (singleColumn || singlePage) {
     return (
-      <div className={sectionClass} ref={sectionDivRef}>
-        { renderEmbeddables(embeddables, questionNumberStart) }
+      <div className={sectionClass} ref={sectionDivRef} style={responsiveDirectionStyle}>
+        { renderEmbeddables(embeddables, questionNumberStart, singleColumn) }
       </div>
     );
   } else {

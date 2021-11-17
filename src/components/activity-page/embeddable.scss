@@ -15,4 +15,7 @@
     color: white;
     background-color: $cc-teal-dark1;
   }
+  &.hidden {
+    display: none;
+  }
 }

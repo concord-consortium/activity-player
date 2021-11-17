@@ -343,6 +343,7 @@ export class App extends React.PureComponent<IProps, IState> {
               ? this.renderCompletionContent(activity)
               : <ActivityPageContent
                   ref={this.activityPageContentRef}
+                  activityLayout={activity.layout}
                   enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
                   pageNumber={currentPage}
                   page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
