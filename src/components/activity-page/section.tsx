@@ -87,7 +87,7 @@ export const Section: React.FC<IProps> = (props) => {
     const position = { height: primaryEmbeddableTotalHeight, top: 0 };
     const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed});
     return (
-        <div className={containerClass} style={position} ref={primaryDivRef}>
+        <div className={containerClass} style={position} ref={primaryDivRef} data-cy="section-column-primary">
           {renderEmbeddables(primaryEmbeddablesToRender, questionNumStart)}
         </div>
     );
@@ -97,7 +97,7 @@ export const Section: React.FC<IProps> = (props) => {
     const collapsible = section.secondary_column_collapsible;
     const containerClass = classNames("column", layout, "secondary", {"collapsed": isSecondaryCollapsed});
     return (
-      <div className={containerClass} ref={secondaryDivRef}>
+      <div className={containerClass} ref={secondaryDivRef} data-cy="section-column-secondary">
         {secondaryEmbeddablesToRender.length > 0 && collapsible && renderCollapsibleHeader()}
         {!isSecondaryCollapsed && renderEmbeddables(secondaryEmbeddablesToRender, questionNumStart)}
       </div>
