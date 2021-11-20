@@ -28,5 +28,8 @@ class ActivityPage {
   getModalDialogClose() {
     return cy.get("[data-cy=modal-dialog-close");
   }
+  getCollapsibleHeader() {
+    return cy.get("[data-cy=collapsible-header]");
+  }
 }
 export default ActivityPage;

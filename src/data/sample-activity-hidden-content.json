@@ -22,6 +22,7 @@
   "version": 1,
   "theme_name": "HAS National Geographic: Water",
   "background_image": "https://authoring.concord.org/assets/has-bg/water_background.jpg",
+  "fixed_width_layout": "1100px",
   "pages": [
     {
       "additional_sections": {},
@@ -91,7 +92,7 @@
         },
         {
           "embeddable": {
-            "name": "",
+            "name": "should be hidden",
             "url_fragment": null,
             "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
             "is_hidden": true,
@@ -440,7 +441,7 @@
         },
         {
           "embeddable": {
-            "name": "",
+            "name": "Should be hidden",
             "url_fragment": null,
             "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
             "is_hidden": true,

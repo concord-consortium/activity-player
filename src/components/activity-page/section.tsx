@@ -87,7 +87,7 @@ export const Section: React.FC<IProps> = (props) => {
     const position = { height: primaryEmbeddableTotalHeight, top: 0 };
     const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed});
     return (
-        <div className={containerClass} style={position} ref={primaryDivRef}>
+        <div className={containerClass} style={position} ref={primaryDivRef} data-cy="section-column-primary">
           {renderEmbeddables(primaryEmbeddablesToRender, questionNumStart)}
         </div>
     );
@@ -97,7 +97,7 @@ export const Section: React.FC<IProps> = (props) => {
     const collapsible = section.secondary_column_collapsible;
     const containerClass = classNames("column", layout, "secondary", {"collapsed": isSecondaryCollapsed});
     return (
-      <div className={containerClass} ref={secondaryDivRef}>
+      <div className={containerClass} ref={secondaryDivRef} data-cy="section-column-secondary">
         {secondaryEmbeddablesToRender.length > 0 && collapsible && renderCollapsibleHeader()}
         {!isSecondaryCollapsed && renderEmbeddables(secondaryEmbeddablesToRender, questionNumStart)}
       </div>
@@ -173,7 +173,7 @@ export const Section: React.FC<IProps> = (props) => {
   const responsiveDirectionStyle = { flexDirection: responsiveDirection } as React.CSSProperties;
   if (singleColumn || singlePage) {
     return (
-      <div className={sectionClass} ref={sectionDivRef} style={responsiveDirectionStyle}>
+      <div className={sectionClass} ref={sectionDivRef} style={responsiveDirectionStyle} data-cy="section-single-column-layout">
         { renderEmbeddables(embeddables, questionNumberStart, singleColumn) }
       </div>
     );
@@ -183,7 +183,7 @@ export const Section: React.FC<IProps> = (props) => {
     const numQuestionsLeftColumn = layout.includes("l") ? primaryEmbeddables.length : secondaryEmbeddables.length;
     const rightColumnQuestionNumberStart = questionNumberStart + numQuestionsLeftColumn;
     return (
-      <div className={sectionClass} ref={sectionDivRef}>
+      <div className={sectionClass} ref={sectionDivRef} data-cy="section-split-layout">
         {layout.includes("l")
           ? renderPrimaryEmbeddables(leftColumnEmbeddables, questionNumberStart)
           : renderSecondaryEmbeddables(leftColumnEmbeddables, questionNumberStart)
