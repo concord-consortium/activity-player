@@ -171,6 +171,7 @@ export const Section: React.FC<IProps> = (props) => {
   const singleColumn = layout === "full-width" || responsiveIsSingleColumn;
   const responsiveDirection  = singleColumn ? "column" : "row";
   const responsiveDirectionStyle = { flexDirection: responsiveDirection } as React.CSSProperties;
+  const leftPrimary = layout === "60-40" || layout === "70-30";
   if (singleColumn || singlePage) {
     return (
       <div className={sectionClass} ref={sectionDivRef} style={responsiveDirectionStyle} data-cy="section-single-column-layout">
@@ -178,17 +179,17 @@ export const Section: React.FC<IProps> = (props) => {
       </div>
     );
   } else {
-    const leftColumnEmbeddables = layout.includes("l") ? primaryEmbeddables : secondaryEmbeddables;
-    const rightColumnEmbeddables = layout.includes("l") ? secondaryEmbeddables : primaryEmbeddables;
-    const numQuestionsLeftColumn = layout.includes("l") ? primaryEmbeddables.length : secondaryEmbeddables.length;
+    const leftColumnEmbeddables = leftPrimary ? primaryEmbeddables : secondaryEmbeddables;
+    const rightColumnEmbeddables = leftPrimary ? secondaryEmbeddables : primaryEmbeddables;
+    const numQuestionsLeftColumn = leftPrimary ? primaryEmbeddables.length : secondaryEmbeddables.length;
     const rightColumnQuestionNumberStart = questionNumberStart + numQuestionsLeftColumn;
     return (
       <div className={sectionClass} ref={sectionDivRef} data-cy="section-split-layout">
-        {layout.includes("l")
+        {leftPrimary
           ? renderPrimaryEmbeddables(leftColumnEmbeddables, questionNumberStart)
           : renderSecondaryEmbeddables(leftColumnEmbeddables, questionNumberStart)
         }
-        {layout.includes("l")
+        {leftPrimary
           ? renderSecondaryEmbeddables(rightColumnEmbeddables, rightColumnQuestionNumberStart)
           : renderPrimaryEmbeddables(rightColumnEmbeddables, rightColumnQuestionNumberStart)
         }
