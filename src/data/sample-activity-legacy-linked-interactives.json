@@ -137,7 +137,8 @@
               }
             },
             "type": "ManagedInteractive",
-            "ref_id": "313-ManagedInteractive"
+            "ref_id": "313-ManagedInteractive",
+            "linked_interactive": {"ref_id": "312-ManagedInteractive"}
           },
           "section": null
         },
@@ -187,7 +188,8 @@
               }
             },
             "type": "ManagedInteractive",
-            "ref_id": "352-ManagedInteractive"
+            "ref_id": "352-ManagedInteractive",
+            "linked_interactive": {"ref_id": "313-ManagedInteractive"}
           },
           "section": null
         },

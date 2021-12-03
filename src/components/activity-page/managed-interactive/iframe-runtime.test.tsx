@@ -75,6 +75,7 @@ describe("IframeRuntime component", () => {
         id={"123-Interactive"}
         authoredState={null}
         initialInteractiveState={null}
+        legacyLinkedInteractiveState={null}
         setInteractiveState={mockSetInteractiveState}
         setSupportedFeatures={mockSetSupportedFeatures}
         setNewHint={mockSetNewHint}
@@ -107,6 +108,12 @@ describe("IframeRuntime component", () => {
     });
     // "nochange" message doesn't result in another call
     expect(mockSetInteractiveState).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      dispatchMessageFromChild("interactiveState", "touch");
+    });
+    // "touch" message results in another call
+    expect(mockSetInteractiveState).toHaveBeenCalledTimes(2);
 
     act(() => {
       dispatchMessageFromChild("height", 960);

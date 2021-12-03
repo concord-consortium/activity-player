@@ -17,6 +17,7 @@ import _activityWithGlossary from "../data/version-2/sample-new-sections-glossar
 const activity = _activity as Activity;
 const activityWithGlossary = _activityWithGlossary as Activity;
 const activitySinglePage = _activitySinglePage as Activity;
+const activityOnIpad = _activityOnIpad as Activity;
 
 describe("App component", () => {
   it("renders component", () => {
@@ -27,12 +28,21 @@ describe("App component", () => {
     expect(wrapper.find(Header).length).toBe(1);
     expect(wrapper.find(Footer).length).toBe(1);
   });
-  it("renders single page activity", () => {
+  it("renders single page activity at the default fixed width", () => {
     const wrapper = shallow(<App />);
     wrapper.setState({ activity: activitySinglePage });
     expect(wrapper.find(ActivityNav).length).toBe(0);
     expect(wrapper.find(Header).length).toBe(1);
     expect(wrapper.find(Footer).length).toBe(1);
+    expect(wrapper.find(".activity").length).toBe(1);
+    expect(wrapper.find(".fixed-width-1100px").length).toBe(1);
+    expect(wrapper.find(".fixed-width-ipad-friendly").length).toBe(0);
+  });
+  it("renders an ipad activity at the ipad friendly fixed width", () => {
+    const wrapper = shallow(<App />);
+    wrapper.setState({ activity: activityOnIpad });
+    expect(wrapper.find(".fixed-width-1100px").length).toBe(0);
+    expect(wrapper.find(".fixed-width-ipad-friendly").length).toBe(1);
   });
   it("loads plugin scripts", () => {
     const wrapper = shallow(<App />);

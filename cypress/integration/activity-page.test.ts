@@ -50,6 +50,7 @@ context("Test the overall app", () => {
       cy.wait(1000);
       activityPage.getNavPage(6).should("have.class", "disabled");
       activityPage.getNavPage(6).click();
+      cy.wait(1000);
       activityPage.getModalDialogMessage().should("have.length", 1);
       activityPage.getModalDialogClose().click();
       activityPage.getModalDialogMessage().should("have.length", 0);
@@ -99,5 +100,35 @@ context("Test the teacher edition plugin", () => {
     it("should have the right number of window shades", () => {
       cy.get(".window-shade--windowShade--TETipsPluginV1").should("have.length", 4);
     });
+  });
+});
+
+context("Test fixed width settings", () => {
+  it("defaults to 1100px", () => {
+    cy.visit("?activity=sample-activity-multiple-layout-types&preview");
+    activityPage.getPage(2).click();
+    activityPage.getActivity()
+      .should("be.visible")
+      .and("have.length", 1)
+      .and("have.class", "fixed-width-1100px");
+    activityPage.getActivity()
+      .first()
+      .invoke("css", "width")
+      .then(str => parseInt(str as unknown as string, 10))
+      .should("eq", 1100);
+  });
+
+  it("uses 960px for iPad friendly activities", () => {
+    cy.visit("?activity=sample-activity-ipad-friendly&preview");
+    activityPage.getPage(2).click();
+    activityPage.getActivity()
+      .should("be.visible")
+      .and("have.length", 1)
+      .and("have.class", "fixed-width-ipad-friendly");
+    activityPage.getActivity()
+      .first()
+      .invoke("css", "width")
+      .then(str => parseInt(str as unknown as string, 10))
+      .should("eq", 960);
   });
 });

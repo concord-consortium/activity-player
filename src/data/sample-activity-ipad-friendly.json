@@ -1,28 +1,19 @@
 {
-  "description": "",
+  "description": "<p>This is a sample activity used to test the iPad friendly fixed width layout.&nbsp;</p>",
   "editor_mode": 0,
   "layout": 0,
-  "name": "Linked Interactives Test",
+  "name": "iPad Friendly Fixed Width Test Activity",
   "notes": "",
-  "project": {
-    "about": "",
-    "footer": "<p>Copyright &copy; 2018 The Concord Consortium. This open educational resource is free for use under the Creative Commons Attribution International license (<a href=\"https://creativecommons.org/licenses/by/4.0/\" target=\"_blank\" rel=\"noopener\">CC BY 4.0</a>) and powered by open source software packages. When sharing this resource, please include attribution to the Concord Consortium and the URL <a href=\"http://concord.org\" target=\"_blank\" rel=\"noopener\">http://concord.org</a> and the CC-BY-4.0 license.</p>",
-    "help": "",
-    "logo_ap": "https://static.concord.org/projects/logos/ap/geni-logo.png",
-    "logo_lara": "https://static.concord.org/projects/logos/lara/geni-logo.png",
-    "project_key": "geniventure",
-    "title": "Geniventure",
-    "url": ""
-  },
-  "related": "",
+  "project": null,
+  "related": "<p>Related content for the&nbsp;sample activity used to test the LARA single page application.</p>",
   "show_submit_button": true,
   "student_report_enabled": true,
-  "thumbnail_url": "",
-  "time_to_complete": null,
+  "thumbnail_url": "https://images.unsplash.com/photo-1583524505974-6facd53f4597?ixlib=rb-1.2.1&w=1000&q=80",
+  "time_to_complete": 10,
   "version": 1,
-  "theme_name": "WATERS 2",
+  "theme_name": null,
   "background_image": null,
-  "fixed_width_layout": "1100px",
+  "fixed_width_layout": "ipad_friendly",
   "pages": [
     {
       "additional_sections": {},
@@ -34,7 +25,7 @@
       "position": 1,
       "show_header": true,
       "show_info_assessment": true,
-      "show_interactive": true,
+      "show_interactive": false,
       "show_sidebar": false,
       "sidebar": null,
       "sidebar_title": "Did you know?",
@@ -42,20 +33,9 @@
       "embeddables": [
         {
           "embeddable": {
-            "content": "<p>A demo of interactive linking.</p>",
-            "is_full_width": true,
-            "is_hidden": false,
-            "name": "",
-            "type": "Embeddable::Xhtml",
-            "ref_id": "226525-Embeddable::Xhtml"
-          },
-          "section": "header_block"
-        },
-        {
-          "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -74,44 +54,68 @@
             "inherit_image_url": true,
             "custom_image_url": null,
             "library_interactive": {
-              "hash": "944a5003181ebb8d8a5b9084aa8dd4bc88ce9d3f",
+              "hash": "da655ced823a0246a5f8c5c46c90345f28f53efe",
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://lara-master.concordqa.org/example-interactive/index.html",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
-                "description": "",
+                "description": "This shouldn't be used by any real activities it is still under development.",
                 "enable_learner_state": true,
                 "full_window": false,
                 "has_report_url": false,
                 "image_url": null,
-                "name": "Example Interactive",
+                "name": "Open Response (master)",
                 "native_height": 435,
                 "native_width": 576,
                 "no_snapshots": false,
-                "show_delete_data_button": true,
+                "show_delete_data_button": false,
                 "thumbnail_url": "",
                 "customizable": false,
                 "authorable": true
               }
             },
             "type": "ManagedInteractive",
-            "ref_id": "133-ManagedInteractive",
-            "linked_interactives": [
-              {
-                "ref_id": "134-ManagedInteractive",
-                "label": "video"
-              }
-            ]
+            "ref_id": "328-ManagedInteractive"
           },
           "section": null
         },
         {
           "embeddable": {
+            "content": "<p>This is introduction text for page 1 of the single page test activity.</p>",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "271751-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        }
+      ],
+      "id": 1000
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 2,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"https://models-resources.s3.amazonaws.com/geniblocks/resources/fablevision/video/charcoal.mp4\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -130,36 +134,64 @@
             "inherit_image_url": true,
             "custom_image_url": null,
             "library_interactive": {
-              "hash": "198d7d24388db87023133901b5a8fcab1ebb6446",
+              "hash": "af5d1860b2d4a037ae01e3d86931a30886fcb42d",
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/video-player/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
-                "description": "",
+                "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
                 "enable_learner_state": true,
                 "full_window": false,
                 "has_report_url": false,
                 "image_url": null,
-                "name": "Video Player (master)",
+                "name": "Multiple Choice (master)",
                 "native_height": 435,
                 "native_width": 576,
                 "no_snapshots": false,
-                "show_delete_data_button": true,
+                "show_delete_data_button": false,
                 "thumbnail_url": "",
                 "customizable": true,
                 "authorable": true
               }
             },
             "type": "ManagedInteractive",
-            "ref_id": "134-ManagedInteractive",
-            "linked_interactives": []
+            "ref_id": "327-ManagedInteractive"
           },
-          "section": "interactive_box"
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "<p>This is introduction text for page 2 of the single page test activity.</p>",
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "271752-Embeddable::Xhtml"
+          },
+          "section": "header_block"
         }
       ],
-      "id": 1000
+      "id": 2000
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "is_completion": true,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": null,
+      "position": 3,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [],
+      "id": 3000
     }
   ],
   "plugins": [],

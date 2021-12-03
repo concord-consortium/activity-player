@@ -23,7 +23,9 @@ import sampleActivityQISimple from "../data/sample-activity-question-interactive
 import sampleActivityQIComplex from "../data/sample-activity-question-interactive-complex.json";
 import sampleActivityLinkedInteractives from "../data/Linked-Interactives-Test_version_1.json";
 import sampleActivityInteractiveSizing from "../data/sample-activity-interactive-sizing.json";
-import sampleActivityInteractiveSharing from "../data/sample-activity-interactive-sharing.json";
+import sampleActivityInteractiveSharing from "../data/sample-interactive-sharing.json";
+import sampleActivity1100px from "../data/sample-activity-1100px.json";
+import sampleActivityIPadFriendly from "../data/sample-activity-ipad-friendly.json";
 
 const sampleActivities: {[name: string]: Activity} = {
   "sample-new-sections-activity-1": sampleNewSectionsActivity1 as Activity,
@@ -49,8 +51,8 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-question-interactive-complex": sampleActivityQIComplex as unknown as Activity,
   "sample-activity-linked-interactives": sampleActivityLinkedInteractives as unknown as Activity,
   "sample-activity-interactive-sizing": sampleActivityInteractiveSizing as unknown as Activity,
-  "sample-activity-interactive-sharing": sampleActivityInteractiveSharing as unknown as Activity,
-};
+  "sample-activity-1100px": sampleActivity1100px as Activity,
+  "sample-activity-ipad-friendly": sampleActivityIPadFriendly as Activity,
 
 import sampleSequence from "../data/sample-sequence.json";
 import sampleNewSectionsSequence from "../data/version-2/sample-new-sections-sequence.json";

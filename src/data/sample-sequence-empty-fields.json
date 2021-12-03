@@ -15,6 +15,7 @@
   },
   "theme_id": null,
   "background_image": null,
+  "fixed_width_layout": "1100px",
   "thumbnail_url": null,
   "title": null,
   "activities": [
@@ -42,6 +43,7 @@
       "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": "https://authoring.concord.org/assets/has-bg/water_background.jpg",
+      "fixed_width_layout": "1100px",
       "pages": [
         {
           "additional_sections": {},
@@ -104,6 +106,7 @@
       "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": "https://authoring.concord.org/assets/has-bg/water_background.jpg",
+      "fixed_width_layout": "1100px",
       "pages": [
         {
           "additional_sections": {},
@@ -166,6 +169,7 @@
       "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": "https://authoring.concord.org/assets/has-bg/water_background.jpg",
+      "fixed_width_layout": "1100px",
       "pages": [
         {
           "additional_sections": {},
@@ -228,6 +232,7 @@
       "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": "https://authoring.concord.org/assets/has-bg/water_background.jpg",
+      "fixed_width_layout": "1100px",
       "pages": [
         {
           "additional_sections": {},
@@ -290,6 +295,7 @@
       "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": "https://authoring.concord.org/assets/has-bg/water_background.jpg",
+      "fixed_width_layout": "1100px",
       "pages": [
         {
           "additional_sections": {},

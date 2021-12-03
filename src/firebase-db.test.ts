@@ -1,7 +1,7 @@
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
-import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState } from "./firebase-db";
+import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState, getLegacyLinkedRefIds, createdString } from "./firebase-db";
 import { DefaultManagedInteractive } from "./test-utils/model-for-tests";
-import { getAnswerWithMetadata } from "./utilities/embeddable-utils";
+import { getAnswerWithMetadata, LegacyLinkedRefMap } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata } from "./types";
 import firebase from "firebase/app";
 import { RawClassInfo } from "./portal-api";
@@ -90,7 +90,8 @@ describe("Firestore", () => {
       toolId: "activity-player.concord.org",
       userType: "learner",
       runRemoteEndpoint: "https://example.com/learner/1234",
-      rawClassInfo: {} as RawClassInfo
+      rawClassInfo: {} as RawClassInfo,
+      collaboratorsDataUrl: "https://example.com/collaborations/1234",
     });
 
     const embeddable = {
@@ -106,11 +107,13 @@ describe("Firestore", () => {
 
     const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableAnswerMetadata;
 
+    const created = createdString();
     createOrUpdateAnswer(exportableAnswer);
 
     expect(appMock.firestore().doc).toHaveBeenCalledWith(`sources/localhost/answers/${exportableAnswer.id}`);
     expect(appMock.firestore().doc().set).toHaveBeenCalledWith({
-      version:1,
+      version: 1,
+      created,
       answer: "test",
       answer_text: "test",
       context_id: "context-id",
@@ -128,6 +131,8 @@ describe("Firestore", () => {
       submitted: null,
       tool_id: "activity-player.concord.org",
       type: "open_response_answer",
+      collaborators_data_url: "https://example.com/collaborations/1234",
+      collaboration_owner_id: "1"
     }, {merge: true});
   });
 
@@ -253,7 +258,8 @@ describe("Firestore", () => {
             offering_id: 8
           },
           runRemoteEndpoint: "http://example.com/5",
-          rawClassInfo: {} as RawClassInfo
+          rawClassInfo: {} as RawClassInfo,
+          collaboratorsDataUrl: "https://example.com/collaborations/1234",
         });
       });
 
@@ -287,6 +293,22 @@ describe("Firestore", () => {
       });
 
       // the rest of the code is handled with other tests
+    });
+  });
+
+  describe("#getLegacyLinkedRefIds", () => {
+    it("handles cycles", () => {
+      // not needed in function but necessary in passed in map
+      const activity: any = null;
+      const page: any = null;
+      const linkedRefMap: LegacyLinkedRefMap = {
+        "a": {activity, page, linkedRefId: "d"},
+        "b": {activity, page, linkedRefId: "a"},
+        "c": {activity, page, linkedRefId: "b"},
+        "d": {activity, page, linkedRefId: "c"}
+      };
+      const ids = getLegacyLinkedRefIds("d", linkedRefMap);
+      expect(ids).toEqual(["c", "b", "a"]);
     });
   });
 

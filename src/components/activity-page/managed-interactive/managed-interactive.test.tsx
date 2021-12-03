@@ -78,7 +78,8 @@ jest.mock("@concord-consortium/interactive-api-host", () => ({
 
 const mockWatchAnswer = jest.fn((id: string, callback: (answer: any) => void) => callback({ meta: {} }));
 jest.mock("../../../firebase-db", () => ({
-  watchAnswer: (id: string, callback: (answer: any) => void) => mockWatchAnswer(id, callback)
+  watchAnswer: (id: string, callback: (answer: any) => void) => mockWatchAnswer(id, callback),
+  getPortalData: () => undefined
 }));
 
 const mockHandleGetFirebaseJWT = jest.fn();

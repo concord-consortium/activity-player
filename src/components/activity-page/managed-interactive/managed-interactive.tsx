@@ -7,10 +7,10 @@ import {
   ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures, IAttachmentUrlRequest, IAttachmentUrlResponse
 } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
-import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
-import { createOrUpdateAnswer, watchAnswer } from "../../../firebase-db";
+import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, ILegacyLinkedInteractiveState } from "../../../types";
+import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
-import { getAnswerWithMetadata, isQuestion } from "../../../utilities/embeddable-utils";
+import { getAnswerWithMetadata, getInteractiveInfo, hasLegacyLinkedInteractive, IInteractiveInfo, isQuestion } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
@@ -19,6 +19,7 @@ import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 import { Lightbox } from "./lightbox";
 import { Logger, LogEventName } from "../../../lib/logger";
 import { handleGetAttachmentUrl } from "@concord-consortium/interactive-api-host";
+import { LaraDataContext } from "../../lara-data-context";
 
 import "./managed-interactive.scss";
 
@@ -45,9 +46,14 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const iframeRuntimeRef = useRef<IframeRuntimeImperativeAPI>(null);
   const onSetInteractiveStateCallback = useRef<() => void>();
   const interactiveState = useRef<any>();
+  const legacyLinkedInteractiveState = useRef<ILegacyLinkedInteractiveState | null>(null);
   const answerMeta = useRef<IExportableAnswerMetadata>();
   const shouldWatchAnswer = isQuestion(props.embeddable);
-  const [loading, setLoading] = useState(shouldWatchAnswer);
+  const laraData = useContext(LaraDataContext);
+  const shouldLoadLegacyLinkedInteractiveState = hasLegacyLinkedInteractive(props.embeddable, laraData);
+  const [loadingAnswer, setLoadingAnswer] = useState(shouldWatchAnswer);
+  const [loadingLegacyLinkedInteractiveState, setLoadingLegacyLinkedInteractiveState] = useState(shouldLoadLegacyLinkedInteractiveState);
+  const interactiveInfo = useRef<IInteractiveInfo | undefined>(undefined);
 
   const embeddableRefId = props.embeddable.ref_id;
   useEffect(() => {
@@ -55,10 +61,23 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       return watchAnswer(embeddableRefId, (wrappedAnswer) => {
         answerMeta.current = wrappedAnswer?.meta;
         interactiveState.current = wrappedAnswer?.interactiveState;
-        setLoading(false);
+        setLoadingAnswer(false);
       });
     }
   }, [embeddableRefId, shouldWatchAnswer]);
+
+  useEffect(() => {
+    if (shouldLoadLegacyLinkedInteractiveState && (laraData.activity || laraData.sequence)) {
+      return getLegacyLinkedInteractiveInfo(embeddableRefId, laraData, (info) => {
+        legacyLinkedInteractiveState.current = info;
+        setLoadingLegacyLinkedInteractiveState(false);
+      });
+    }
+  }, [embeddableRefId, laraData, shouldLoadLegacyLinkedInteractiveState]);
+
+  useEffect(() => {
+    interactiveInfo.current = getInteractiveInfo(laraData, embeddableRefId);
+  }, [embeddableRefId, laraData]);
 
   const handleNewInteractiveState = (state: any) => {
     // Keep interactive state in sync if iFrame is opened in modal popup
@@ -176,16 +195,28 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     setActiveLightbox(null);
   };
 
+  const getAnswerMetadata = async (answerInteractiveId?: string) => {
+    if (answerInteractiveId) {
+      const wrappedAnswer = await getAnswer(answerInteractiveId);
+      if (wrappedAnswer) {
+        return wrappedAnswer.meta;
+      }
+    }
+    return answerMeta.current;
+  };
+
   const handleGetAttachmentUrlRequest = async (request: IAttachmentUrlRequest): Promise<IAttachmentUrlResponse> => {
-    if (!answerMeta.current) {
+    const answerMetadata = await getAnswerMetadata(request.interactiveId);
+    if (!answerMetadata) {
       return { error: "error getting attachment url: no answer metadata", requestId: request.requestId };
     }
     return await handleGetAttachmentUrl({
       request,
-      answerMeta: answerMeta.current,
+      answerMeta: answerMetadata,
       writeOptions: {
         interactiveId,
         onAnswerMetaUpdate: newMeta => {
+          // don't allow writes over passed in interactiveId (for now, until it is needed and thought through...)
           if (!answerMeta.current) {
             return { error: "error getting attachment url: no answer metadata", requestId: request.requestId };
           }
@@ -214,7 +245,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
   const miContainerClass = questionNumber ? "managed-interactive has-question-number" : "managed-interactive";
   const interactiveIframeRuntime =
-    loading ?
+    loadingAnswer || loadingLegacyLinkedInteractiveState ?
       "Loading..." :
       <IframeRuntime
         ref={iframeRuntimeRef}
@@ -222,6 +253,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         id={interactiveId}
         authoredState={authoredState}
         initialInteractiveState={interactiveState.current}
+        legacyLinkedInteractiveState={legacyLinkedInteractiveState.current}
         setInteractiveState={handleNewInteractiveState}
         setSupportedFeatures={setSupportedFeatures}
         linkedInteractives={linkedInteractives.current}
@@ -238,6 +270,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
                      ? `Question ${questionNumber} ${questionName} content`
                      : embeddable.name || "Interactive content"}
         portalData={portalData}
+        answerMetadata={answerMeta.current}
+        interactiveInfo={interactiveInfo.current}
       />;
 
     return (

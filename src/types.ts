@@ -1,4 +1,5 @@
 import { IReadableAttachmentInfo } from "@concord-consortium/interactive-api-host";
+import { IInteractiveStateProps } from "@concord-consortium/lara-interactive-api";
 
 export type Mode = "runtime" | "authoring" | "report";
 
@@ -87,6 +88,7 @@ export interface IManagedInteractive extends EmbeddableBase {
   inherit_image_url?: boolean;
   custom_image_url?: string | null;
   linked_interactives?: { ref_id: string, label: string }[];
+  linked_interactive?: { ref_id: string };
 }
 
 export interface IMwInteractive extends EmbeddableBase {
@@ -97,6 +99,7 @@ export interface IMwInteractive extends EmbeddableBase {
   native_width?: number;
   enable_learner_state?: boolean;
   linked_interactives?: { ref_id: string, label: string }[];
+  linked_interactive?: { ref_id: string };
 }
 
 export interface IEmbeddableXhtml extends EmbeddableBase {
@@ -165,6 +168,7 @@ export interface Activity {
   export_site?: string | null;
   pages: Page[];
   position?: number | null;
+  fixed_width_layout?: "ipad_friendly" | "1100px"
 }
 
 export interface Sequence {
@@ -180,6 +184,7 @@ export interface Sequence {
   activities: Activity[];
   type: string;
   export_site: string | null;
+  fixed_width_layout?: "ipad_friendly" | "1100px"
 }
 
 export interface IReportState {
@@ -194,6 +199,7 @@ export interface IReportState {
  * keeps no user ids of its own.
  */
 export interface ILTIPartial {
+  created?: string;
   platform_id: string;      // portal
   platform_user_id: string;
   context_id: string;       // class hash
@@ -204,6 +210,9 @@ export interface ILTIPartial {
   tool_id: string;
    // This is not an LTI property but it is required in our authenticated answers
   remote_endpoint: string;
+  // These are not LTI properties but are required to track collaborations
+  collaborators_data_url?: string;
+  collaboration_owner_id?: string;
 }
 
 export interface IAnonymousMetadataPartial {
@@ -222,6 +231,7 @@ export interface IAnonymousMetadataPartial {
  * https://github.com/concord-consortium/lara/blob/c40304a14ef495acdf4f9fd09ea892c7cc98247b/app/models/interactive_run_state.rb#L110
  */
 export interface IExportableAnswerMetadataBase {
+  created?: string;
   question_id: string;    // converted from refId (e.g. "managed_interactive_404")
   question_type: string;
   id: string;             // randomly generated id (e.g. uuid)
@@ -279,4 +289,15 @@ export interface IAuthenticatedLearnerPluginState extends ILTIPartial {
 export interface IAnonymousLearnerPluginState extends IAnonymousMetadataPartial {
   pluginId: number;
   state: string;
+}
+
+export interface ILegacyLinkedInteractiveState {
+  hasLinkedInteractive?: boolean;
+  linkedState?: any;
+  allLinkedStates?: IInteractiveStateProps[];
+  externalReportUrl?: string;
+  interactive?: {
+    id: string;
+    name: string;
+  }
 }

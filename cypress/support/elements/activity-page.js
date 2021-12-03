@@ -1,4 +1,7 @@
 class ActivityPage {
+  getActivity() {
+    return cy.get("[data-cy=activity]");
+  }
   getPage(num) {
     return cy.get("[data-cy=activity-page-links]").contains(num);
   }
@@ -23,10 +26,10 @@ class ActivityPage {
     return cy.get("[data-cy="+type+"]");
   }
   getModalDialogMessage() {
-    return cy.get("[data-cy=modal-dialog-label");
+    return cy.get("[data-cy=modal-dialog-label]");
   }
   getModalDialogClose() {
-    return cy.get("[data-cy=modal-dialog-close");
+    return cy.get("[data-cy=modal-dialog-close]");
   }
   getCollapsibleHeader() {
     return cy.get("[data-cy=collapsible-header]");

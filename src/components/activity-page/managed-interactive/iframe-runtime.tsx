@@ -1,7 +1,7 @@
 // cf. https://github.com/concord-consortium/question-interactives/blob/master/src/scaffolded-question/components/iframe-runtime.tsx
 import { autorun } from "mobx";
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { IframePhone } from "../../../types";
+import { IExportableAnswerMetadata, IframePhone, ILegacyLinkedInteractiveState } from "../../../types";
 import iframePhone from "iframe-phone";
 import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
@@ -15,6 +15,8 @@ import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
 import { IPortalData } from "../../../portal-types";
+import { IInteractiveInfo } from "../../../utilities/embeddable-utils";
+import { getReportUrl } from "../../../utilities/report-utils";
 
 const kDefaultHeight = 300;
 
@@ -49,6 +51,7 @@ interface IProps {
   id: string;
   authoredState: any;
   initialInteractiveState: any;
+  legacyLinkedInteractiveState: ILegacyLinkedInteractiveState | null;
   setInteractiveState: (state: any) => void;
   setSupportedFeatures: (container: HTMLElement, features: ISupportedFeatures) => void;
   linkedInteractives?: ILinkedInteractive[];
@@ -65,14 +68,14 @@ interface IProps {
   ref?: React.Ref<IframeRuntimeImperativeAPI>;
   iframeTitle: string;
   portalData?: IPortalData;
+  answerMetadata?: IExportableAnswerMetadata;
+  interactiveInfo?: IInteractiveInfo;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives, report,
+  const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal,
-    setSupportedFeatures, setSendCustomMessage, setNavigation, iframeTitle, portalData } = props;
-  const _idNum = parseInt(id, 10);
-  const idNum = isFinite(_idNum) ? _idNum : 0;
+    setSupportedFeatures, setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo } = props;
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
@@ -85,6 +88,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     promise: useRef<Promise<void>>(),
     resolveAndCleanup: useRef<() => void>(),
   };
+  const currentInteractiveState = useRef<any>(initialInteractiveState);
 
   useEffect(() => {
     const initInteractive = () => {
@@ -97,10 +101,15 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       const addListener = (type: ClientMessage, handler: any) => phone.addListener(type, handler);
 
       addListener("interactiveState", (newInteractiveState: any) => {
-        // "nochange" is a special message supported by LARA. We don't want to save it.
+        // "nochange" and "touch" are special messages supported by LARA. We don't want to save them.
         // newInteractiveState might be undefined if interactive state is requested before any state update.
-        if (newInteractiveState !== undefined && newInteractiveState !== "nochange") {
+        if (newInteractiveState !== undefined && newInteractiveState !== "nochange" && newInteractiveState !== "touch") {
+          currentInteractiveState.current = newInteractiveState;
           setInteractiveStateRef.current(newInteractiveState);
+        }
+        if (currentInteractiveState.current !== undefined && newInteractiveState === "touch") {
+          // save the current interactive state with a new timestamp
+          setInteractiveStateRef.current(currentInteractiveState.current);
         }
         if (interactiveStateRequest.promise.current) {
           interactiveStateRequest.resolveAndCleanup.current?.();
@@ -230,6 +239,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
       // note: many of the values here are placeholders that require further
       // consideration to determine whether there are more appropriate values.
+      // NOTE: updatedAt is directly added here instead of in the exported lara types
       const baseProps: Omit<IReportInitInteractive, "mode"> = {
         version: 1,
         hostFeatures: {
@@ -266,7 +276,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   collaboratorUrls: null,
                   classInfoUrl: portalData?.portalJWT?.class_info_url ?? "",
                   interactive: {
-                    id: idNum,
+                    id,
                     name: ""
                   },
                   authInfo: {
@@ -275,7 +285,13 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                     email: ""
                   },
                   runRemoteEndpoint: portalData?.runRemoteEndpoint,
-                  ...linkedInteractivesRef.current
+                  ...linkedInteractivesRef.current,
+                  ...(legacyLinkedInteractiveState || {}),
+                  pageName:  interactiveInfo?.pageName,
+                  pageNumber: interactiveInfo?.pageNumber,
+                  activityName: interactiveInfo?.activityName,
+                  updatedAt: answerMetadata?.created,
+                  externalReportUrl: getReportUrl(id) || undefined
                 };
       phone.post("initInteractive", initInteractiveMsg);
     };

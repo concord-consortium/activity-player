@@ -391,8 +391,10 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
       sourceKey,
       rawFirebaseJWT,
     },
-    runRemoteEndpoint: firebaseJWT.returnUrl
+    runRemoteEndpoint: firebaseJWT.returnUrl,
+    collaboratorsDataUrl: queryValue("collaborators_data_url")
   };
+
   return rawPortalData;
 };
 

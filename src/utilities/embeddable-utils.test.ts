@@ -1,13 +1,22 @@
 import { IRuntimeMetadata, IRuntimeMultipleChoiceMetadata } from "@concord-consortium/lara-interactive-api";
-import { answersQuestionIdToRefId, refIdToAnswersQuestionId, getAnswerWithMetadata } from "./embeddable-utils";
+import { answersQuestionIdToRefId, refIdToAnswersQuestionId, getAnswerWithMetadata, getLegacyLinkedRefMap, hasLegacyLinkedInteractive, legacyLinkedRefMapCache, getInteractiveInfo } from "./embeddable-utils";
 import { DefaultManagedInteractive } from "../test-utils/model-for-tests";
 import {
   IManagedInteractive,
   IExportableOpenResponseAnswerMetadata,
   IExportableInteractiveAnswerMetadata,
   IExportableAnswerMetadata,
-  IExportableImageQuestionAnswerMetadata
+  IExportableImageQuestionAnswerMetadata,
+  Activity,
+  Sequence
 } from "../types";
+
+import _activity1 from "../data/sample-activity-1.json";
+import _legacyLinkedInteractiveActivity from "../data/sample-activity-legacy-linked-interactives.json";
+import _sequenceWithQuestions from "../data/sample-sequence-with-questions.json";
+const activity1 = _activity1 as Activity;
+const legacyLinkedInteractiveActivity = _legacyLinkedInteractiveActivity as Activity;
+const sequenceWithQuestions = _sequenceWithQuestions as Sequence;
 
 describe("Embeddable utility functions", () => {
   it("correctly converts from answer's question-id to ref_id", () => {
@@ -324,4 +333,93 @@ describe("Embeddable utility functions", () => {
 
     expect(exportableAnswer.id).toBe("open_response_answer_123");
   });
+
+  describe("#getLegacyLinkedRefMap", () => {
+    it("can generate and cache an empty legacy linked ref map without data", () => {
+      const laraData = {};
+      expect(getLegacyLinkedRefMap(laraData)).toEqual({});
+      expect(legacyLinkedRefMapCache.get(laraData)).toEqual({});
+    });
+
+    it("can generate and cache a legacy linked ref map with an activity with no linked refs", () => {
+      const laraData = {activity: activity1};
+      const map = getLegacyLinkedRefMap(laraData);
+      expect(legacyLinkedRefMapCache.get(laraData)).toEqual(map);
+      expect(Object.keys(map)).toEqual(["328-ManagedInteractive", "327-ManagedInteractive"]);
+      expect(map["328-ManagedInteractive"]).not.toBeUndefined();
+      expect(map["327-ManagedInteractive"]).not.toBeUndefined();
+      expect(map["328-ManagedInteractive"]?.linkedRefId).toBeUndefined();
+      expect(map["327-ManagedInteractive"]?.linkedRefId).toBeUndefined();
+    });
+
+    it("can generate and cache a legacy linked ref map with an activity with linked refs", () => {
+      const laraData = {activity: legacyLinkedInteractiveActivity};
+      const map = getLegacyLinkedRefMap(laraData);
+      expect(legacyLinkedRefMapCache.get(laraData)).toEqual(map);
+      expect(Object.keys(map)).toEqual([
+        "312-ManagedInteractive","313-ManagedInteractive","352-ManagedInteractive","319-ManagedInteractive",
+        "210507-MwInteractive","314-ManagedInteractive","315-ManagedInteractive","331-ManagedInteractive",
+        "210508-MwInteractive","340-ManagedInteractive","341-ManagedInteractive","342-ManagedInteractive",
+        "344-ManagedInteractive","316-ManagedInteractive","339-ManagedInteractive","336-ManagedInteractive",
+        "337-ManagedInteractive","609-ManagedInteractive","640-ManagedInteractive","210510-MwInteractive",
+        "367-ManagedInteractive","368-ManagedInteractive","369-ManagedInteractive","370-ManagedInteractive",
+        "382-ManagedInteractive","383-ManagedInteractive","366-ManagedInteractive","384-ManagedInteractive",
+        "372-ManagedInteractive","373-ManagedInteractive","374-ManagedInteractive","375-ManagedInteractive",
+        "385-ManagedInteractive","386-ManagedInteractive","371-ManagedInteractive","387-ManagedInteractive"
+      ]);
+      expect(map["313-ManagedInteractive"]?.linkedRefId).toEqual("312-ManagedInteractive");
+      expect(map["352-ManagedInteractive"]?.linkedRefId).toEqual("313-ManagedInteractive");
+    });
+  });
+
+  describe("#hasLegacyLinkedInteractive", () => {
+    it("returns false when an embeddable doesn't have a legacy linked interactive", () => {
+      const embeddable = legacyLinkedInteractiveActivity.pages[0].embeddables[0].embeddable;
+      const activity = legacyLinkedInteractiveActivity;
+      expect(embeddable.ref_id).toEqual("312-ManagedInteractive");
+      expect(hasLegacyLinkedInteractive(embeddable, {activity})).toEqual(false);
+    });
+
+    it("returns true when an embeddable has a legacy linked interactive", () => {
+      const embeddable = legacyLinkedInteractiveActivity.pages[0].embeddables[1].embeddable;
+      const activity = legacyLinkedInteractiveActivity;
+      expect(embeddable.ref_id).toEqual("313-ManagedInteractive");
+      expect(hasLegacyLinkedInteractive(embeddable, {activity})).toEqual(true);
+    });
+  });
+
+  describe("#getInteractiveInfo", () => {
+    it("returns undefined when the embeddableRefId isn't found", () => {
+      const laraData = {activity: activity1};
+      expect(getInteractiveInfo(laraData, "nonExistantEmbeddableRefId")).toBeUndefined();
+    });
+
+    it("returns the correct info for any embeddableRefId in a sequence", () => {
+      const laraData = {sequence: sequenceWithQuestions};
+      expect(getInteractiveInfo(laraData, "650-ManagedInteractive")).toEqual({
+        activityName: "Question-Interactives Activity Player",
+        pageName: "Header block text and interactives",
+        pageNumber: 1,
+          });
+    });
+
+    it("returns the correct info for any embeddableRefId without a page name in an activity", () => {
+      const laraData = {activity: activity1};
+      expect(getInteractiveInfo(laraData, "328-ManagedInteractive")).toEqual({
+        activityName: "Single Page Test Activity",
+        pageName: undefined,
+        pageNumber: 1,
+      });
+    });
+
+    it("returns the correct info for any embeddableRefId with a page name in an activity", () => {
+      const laraData = {activity: legacyLinkedInteractiveActivity};
+      expect(getInteractiveInfo(laraData, "312-ManagedInteractive")).toEqual({
+        activityName: "Sample Layout Types",
+        pageName: "Full Width",
+        pageNumber: 1,
+      });
+    });
+  });
+
 });

@@ -9,7 +9,7 @@ import { refIdToAnswersQuestionId } from "./embeddable-utils";
 // *** IMPORTANT NOTE ***
 // When you change these URLs you need to edit the portal-report Auth Client in
 // the portals to allow redirects back to the the updated URLs.
-export const kProductionPortalReportUrl = "https://portal-report.concord.org/version/v4.1.0/index.html";
+export const kProductionPortalReportUrl = "https://portal-report.concord.org/version/v4.5.0/index.html";
 export const kDevPortalReportUrl = "https://portal-report.concord.org/branch/master/index.html";
 
 // The default portal report URL is based on the URL:
@@ -67,34 +67,46 @@ export const getReportUrl = (questionRefId?: string) => {
     result += "&runKey=" + runKey
             + "&activity=" + resourceUrl
             + "&resourceUrl=" + resourceUrl;
-  }
-  else {
+    return result;
+  } else {
     // We know this is a IPortalData because there is no runKey
     const portalData = getPortalData() as IPortalData;
-    const classInfoUrl = portalData?.portalJWT?.class_info_url;
-    const authDomainUrl = classInfoUrl?.split("/api")[0];
-    const offeringBaseUrl = classInfoUrl?.split("/classes")[0]+"/offerings/";
-    const offeringId = portalData?.offering.id;
-    const offeringUrl = encodeURIComponent(offeringBaseUrl + offeringId);
-    const studentId = portalData?.platformUserId;
+    // Handles logged in teachers that are previewing a non-assigned resource or are in teacher-edition mode
+    if (!portalData?.offering) {
+      return null;
+    } else {
+      const classInfoUrl = portalData?.portalJWT?.class_info_url;
+      const authDomainUrl = classInfoUrl?.split("/api")[0];
+      const offeringBaseUrl = classInfoUrl?.split("/classes")[0]+"/offerings/";
+      const offeringId = portalData?.offering.id;
+      const offeringUrl = encodeURIComponent(offeringBaseUrl + offeringId);
+      const studentId = portalData?.platformUserId;
 
-    // In the future we should be able to drop this because the portal
-    // report should be able to get all the info it needs from the
-    // offering url
-    result += "&class=" + encodeURIComponent(classInfoUrl || "")
-            + "&offering=" + offeringUrl
-            + "&reportType=offering&studentId="+studentId
-            + "&auth-domain="+authDomainUrl;
+      // In the future we should be able to drop this because the portal
+      // report should be able to get all the info it needs from the
+      // offering url
+      result += "&class=" + encodeURIComponent(classInfoUrl || "")
+              + "&offering=" + offeringUrl
+              + "&reportType=offering&studentId="+studentId
+              + "&auth-domain="+authDomainUrl;
+
+      if (questionRefId) {
+        // Limit report to a single question.
+        result += "&iframeQuestionId=" + refIdToAnswersQuestionId(questionRefId);
+      }
+      return result;
+    }
   }
+};
 
-  if (questionRefId) {
-    // Limit report to a single question.
-    result += "&iframeQuestionId=" + refIdToAnswersQuestionId(questionRefId);
-  }
-
-  return result;
+export const isValidReportLink = () => {
+  return getReportUrl() != null;
 };
 
 export const showReport = () => {
-  window.open(getReportUrl());
+  // Handles not being able to send a null link to window.open
+  const validReportLink = getReportUrl();
+  if (validReportLink) {
+    window.open(validReportLink);
+  }
 };

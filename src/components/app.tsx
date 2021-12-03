@@ -37,6 +37,7 @@ import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plu
 import { getAttachmentsManagerOptions} from "../utilities/get-attachments-manager-options";
 import { IdleDetector } from "../utilities/idle-detector";
 import { initializeAttachmentsManager } from "@concord-consortium/interactive-api-host";
+import { LaraDataContext } from "./lara-data-context";
 
 import "./app.scss";
 
@@ -51,6 +52,8 @@ const kTimeout = 5 * 60 * 1000; // 5 minutes
 const kLearnPortalUrl = "https://learn.concord.org";
 
 const kAnonymousUserName = "Anonymous";
+
+const kDefaultFixedWidthLayout = "1100px";
 
 export type ErrorType = "auth" | "network" | "timeout";
 
@@ -239,20 +242,22 @@ export class App extends React.PureComponent<IProps, IState> {
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
-          <div className="app" data-cy="app">
-            { this.state.showWarning && <WarningBanner/> }
-            { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-            { this.state.showSequenceIntro
-              ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
-              : this.renderActivity() }
-            { this.state.showThemeButtons && <ThemeButtons/>}
-            <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
-            <ModalDialog
-              label={this.state.modalLabel}
-              onClose={() => {this.setShowModal(false);}}
-              showModal={this.state.showModal}
-            />
-          </div>
+          <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
+            <div className="app" data-cy="app">
+              { this.state.showWarning && <WarningBanner/> }
+              { this.state.teacherEditionMode && <TeacherEditionBanner/>}
+              { this.state.showSequenceIntro
+                ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
+                : this.renderActivity() }
+              { this.state.showThemeButtons && <ThemeButtons/>}
+              <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
+              <ModalDialog
+                label={this.state.modalLabel}
+                onClose={() => {this.setShowModal(false);}}
+                showModal={this.state.showModal}
+              />
+            </div>
+          </LaraDataContext.Provider>
         </PortalDataContext.Provider>
       </LaraGlobalContext.Provider>
     );
@@ -280,8 +285,11 @@ export class App extends React.PureComponent<IProps, IState> {
       setAppBackgroundImage(backgroundImage);
     }
 
+    // convert option with Ruby snake case to kebab case for css
+    const fixedWidthLayout = (sequence?.fixed_width_layout || activity.fixed_width_layout || kDefaultFixedWidthLayout).replace(/_/g, "-");
+
     return (
-      <React.Fragment>
+      <div className={`activity fixed-width-${fixedWidthLayout}`} data-cy="activity">
         <Header
           fullWidth={fullWidth}
           project={project}
@@ -324,7 +332,7 @@ export class App extends React.PureComponent<IProps, IState> {
         { glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
           <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} pluginsLoaded={pluginsLoaded} />
         }
-      </React.Fragment>
+      </div>
     );
   }
 
