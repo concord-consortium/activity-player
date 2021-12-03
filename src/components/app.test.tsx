@@ -13,6 +13,7 @@ import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plu
 import _activitySinglePage from "../data/version-2/sample-new-sections-single-page-layout.json";
 import _activity from "../data/version-2/sample-new-sections-multiple-layout-types.json";
 import _activityWithGlossary from "../data/version-2/sample-new-sections-glossary-plugin.json";
+import _activityOnIpad from "../data/version-2/sample-new-sections-ipad-friendly.json";
 
 const activity = _activity as Activity;
 const activityWithGlossary = _activityWithGlossary as Activity;

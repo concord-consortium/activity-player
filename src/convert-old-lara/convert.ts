@@ -182,6 +182,7 @@ const newPagesResource = (resourcePages: any):Page[] => {
 function convertActivityResource (legacyResource: any) {
   const newActivityResource = {
     "background_image": legacyResource.background_image,
+    "fixed_width_layout": legacyResource.fixed_width_layout,
     "description": legacyResource.description,
     "editor_mode": legacyResource.editor_mode,
     "layout": legacyResource.layout,
