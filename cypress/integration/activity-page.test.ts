@@ -31,6 +31,13 @@ context("Test the overall app", () => {
     });
   });
   describe("Info/Assess (secondary embeddables)",()=>{
+    it("verify collapsible column",()=>{
+      activityPage.getCollapsibleHeader().should("contain", "Hide");
+      activityPage.getCollapsibleHeader().click();
+      activityPage.getCollapsibleHeader().should("have.class", "collapsed").and("contain", "Show");
+      activityPage.getCollapsibleHeader().click();
+      activityPage.getCollapsibleHeader().should("have.not.class", "collapsed").and("contain", "Hide");
+    });
     it("verify textbox",()=>{
       activityPage.getNavPage(3).click();
       activityPage.getSecondaryEmbeddable("text-box").eq(1).scrollIntoView()

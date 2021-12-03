@@ -2,7 +2,7 @@ import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { getCachedLearnerPluginState, getLearnerPluginState, getPortalData } from "../firebase-db";
 import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
-import { Activity, ApprovedScript, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
+import { Activity, EmbeddableType, IEmbeddablePlugin, Plugin, ApprovedScript } from "../types";
 import { getResourceUrl } from "../lara-api";
 
 export interface UsedApprovedScriptInfo {
@@ -34,17 +34,30 @@ export const addUsedApprovedScript = (plugin: Plugin) => {
 export const findUsedApprovedScripts = (activities: Activity[]) => {
   // search current activity or all activities in sequence
   activities.forEach(activity => {
-    // search each page for embeddable plugin instances
-    activity.pages.forEach(page => {
-      if (!page.is_hidden) {
-        page.embeddables.forEach(embeddableDef => {
-          const embeddable = embeddableDef.embeddable;
-          if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin) {
-            addUsedApprovedScript(embeddable.plugin);
+    // search each page for teacher edition plugin use
+    for (let page = 0; page < activity.pages.length; page++) {
+      if (!activity.pages[page].is_hidden) {
+        for (let section = 0; section < activity.pages[page].sections.length; section++) {
+          if (!activity.pages[page].sections[section].is_hidden) {
+            for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
+              const embeddable = activity.pages[page].sections[section].embeddables[embeddableNum];
+              // NOTE: TODO this needs to be fixed.
+              //This change might cause there to be extra space when running in non teacher edition mode and viewing a page with
+              // with teacher edition items on it.
+              //The issue is that the teacher edition item wrapper will be added to the page, and then the teacher edition plugin inside
+              //of it will decide not render anything because the app isn't in teacher edition mode.
+              //That behavior by itself is correct because we are trying to not have these "modes" be explicitly part of the
+              //activity player (or lara runtime). But the problem is that the item wrapper usually has some padding or margins.
+              //So even though it has no real content, the padding will still show up in the runtime.
+              //This change was from master when new-sections was rebased on it.
+              if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin) {
+                addUsedApprovedScript(embeddable.plugin);
+              }
+            }
           }
-        });
+        }
       }
-    });
+    }
     // Add activity-level plugins too
     activity.plugins.forEach((activityPlugin: Plugin) => {
       addUsedApprovedScript(activityPlugin);
@@ -82,7 +95,7 @@ export interface IEmbeddablePluginContext {
   LARA: LaraGlobalType;
   embeddable: IEmbeddablePlugin;
   embeddableContainer: HTMLElement;
-  wrappedEmbeddable?: Embeddable;
+  wrappedEmbeddable?: EmbeddableType;
   wrappedEmbeddableContainer?: HTMLElement;
   sendCustomMessage?: (message: ICustomMessage) => void;
 }
@@ -166,9 +179,10 @@ export const getGlossaryEmbeddable = (activity: Activity) => {
     ? { type: "Embeddable::EmbeddablePlugin",
         plugin: glossaryPlugin,
         is_hidden: false,
-        is_full_width: false,
+        is_half_width: false,
         ref_id: "" // no ref_id on the glossary plugin
       }
     : undefined;
   return embeddablePlugin;
 };
+

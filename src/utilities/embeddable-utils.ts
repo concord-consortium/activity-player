@@ -3,7 +3,7 @@ import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
 import {
   IExportableAnswerMetadata, IReportState, IExportableMultipleChoiceAnswerMetadata,
   IExportableOpenResponseAnswerMetadata, IExportableInteractiveAnswerMetadata, IExportableImageQuestionAnswerMetadata,
-  Embeddable, Activity, Page
+  EmbeddableType, Activity, Page
 } from "../types";
 import { ILaraData } from "../components/lara-data-context";
 
@@ -19,7 +19,7 @@ export interface IInteractiveInfo {
   pageName?: string;
 }
 
-export const isQuestion = (embeddable: Embeddable) =>
+export const isQuestion = (embeddable: EmbeddableType) =>
   (embeddable.type === "ManagedInteractive" && embeddable.library_interactive?.data?.enable_learner_state) ||
   (embeddable.type === "MwInteractive" && embeddable.enable_learner_state);
 

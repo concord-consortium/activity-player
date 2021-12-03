@@ -4,9 +4,9 @@ import { shallow } from "enzyme";
 import { Activity } from "../../types";
 import { SidebarWrapper } from "../page-sidebar/sidebar-wrapper";
 import { EmbeddablePluginSideTip } from "../activity-page/plugins/embeddable-plugin-sidetip";
-import _activityPlugins from "../../data/sample-activity-plugins.json";
+import _activityPlugins from "../../data/version-2/sample-new-sections-plugins.json";
 
-const activityPlugins = _activityPlugins as Activity;
+const activityPlugins = _activityPlugins as unknown as Activity;
 
 describe("Expandable container component", () => {
   it("renders component", () => {
