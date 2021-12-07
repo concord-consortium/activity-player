@@ -1,5 +1,6 @@
 {
   "background_image": null,
+  "fixed_width_layout": "1100px",
   "description": "",
   "editor_mode": 0,
   "layout": 0,
@@ -34,7 +35,7 @@
           "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
-              "column": null,
+              "column": "secondary",
               "is_half_width": false,
               "name": "",
               "url_fragment": null,
@@ -80,15 +81,7 @@
               "type": "ManagedInteractive",
               "ref_id": "4362-ManagedInteractive",
               "linked_interactives": []
-            }
-          ]
-        },
-        {
-          "layout": "l-6040",
-          "is_hidden": false,
-          "secondary_column_collapsible": false,
-          "secondary_column_display_mode": "stacked",
-          "embeddables": [
+            },
             {
               "column": "secondary",
               "is_half_width": true,

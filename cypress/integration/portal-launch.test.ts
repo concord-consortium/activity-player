@@ -74,7 +74,7 @@ context("Launch AP From the Portal", () => {
 
     // A regular 'function' syntax is used instead '=>' so cypress can control what 'this' is
     it("can work with the interactive sharing plugin", function () {
-      cy.visit(`?activity=sample-interactive-sharing&token=${this.portalToken}` +
+      cy.visit(`?activity=sample-activity-interactive-sharing&token=${this.portalToken}` +
         `&domain=${portalDomain}/&answersSourceKey=${answersSourceKey}`);
       cy.get("[data-cy=activity-summary]").should("contain", "Test Interactive Sharing");
       activityPage.getNavPage(1).click();
@@ -87,13 +87,13 @@ context("Launch AP From the Portal", () => {
       // then you need to share something first by uncommenting the following 3 lines and
       // running the test:
       // cy.get('[data-tip="Share this"]').click();
-      // cy.get('body').should("contain", "Your work  has been shared with your class.");
-      // cy.get('.share-modal--titleBarContents--SharingPluginV1>svg').eq(1).click();  // click the close button
+      // cy.get("body").should("contain", "Your work  has been shared with your class.");
+      // cy.get(".share-modal--titleBarContents--SharingPluginV1>svg").eq(1).click();  // click the close button
 
 
-      cy.get('[data-tip="Stop sharing"]').click();
+      cy.get('[data-tip="Stop sharing"] > svg').click();
 
-      cy.get('[data-tip="Share this"]').click();
+      cy.get('[data-tip="Share this"] > svg').click();
       cy.get("body").should("contain", "Your work  has been shared with your class.");
       // click the close button
       cy.get(".share-modal--titleBarContents--SharingPluginV1>svg").eq(1).click();
@@ -103,38 +103,6 @@ context("Launch AP From the Portal", () => {
       cy.get('iframe[src^="https://portal-report.concord.org"]');
 
     });
-  });
-
-  // A regular 'function' syntax is used instead '=>' so cypress can control what
-  // 'this' is
-  it.skip("can work with the interactive sharing plugin", function () {
-    cy.visit(`?activity=sample-activity-interactive-sharing&token=${this.portalToken}` +
-      `&domain=${portalDomain}/&answersSourceKey=${answersSourceKey}`);
-    cy.get("[data-cy=activity-summary]").should("contain", "Test Interactive Sharing");
-    activityPage.getNavPage(1).click();
-
-    getInIframe("body", "textarea").clear().type("hello world");
-
-    // HACK: This test assumes the interactive has already been shared
-    // because this AP is "launched" from the portal it will restore its state each time
-    // it is launched. If you are using this with a new portal, class, assignment, or student
-    // then you need to share something first by uncommenting the following 3 lines and
-    // running the test:
-    // cy.get('[data-tip="Share this"]').click();
-    // cy.get('body').should("contain", "Your work  has been shared with your class.");
-    // cy.get('.share-modal--titleBarContents--SharingPluginV1>svg').eq(1).click();  // click the close button
-
-
-    cy.get('[data-tip="Stop sharing"]').click();
-
-    cy.get('[data-tip="Share this"]').click();
-    cy.get("body").should("contain", "Your work  has been shared with your class.");
-    // click the close button
-    cy.get(".share-modal--titleBarContents--SharingPluginV1>svg").eq(1).click();
-
-    cy.get('[data-tip="View class work"]').click();
-    cy.get(".left-nav--students--SharingPluginV1").eq(0).click();
-    cy.get('iframe[src^="https://portal-report.concord.org"]');
   });
 
   context("collaboratively", () => {

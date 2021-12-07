@@ -81,7 +81,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     };
     LARA?.Events.emitInteractiveSupportedFeatures(event);
   }, [LARA?.Events]);
-
+  
   let qComponent;
   if (embeddable.type === "MwInteractive" || (embeddable.type === "ManagedInteractive" && embeddable.library_interactive)) {
     qComponent = <ManagedInteractive
@@ -94,9 +94,12 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   } else if (embeddable.type === "Embeddable::EmbeddablePlugin"
               && (embeddable.plugin?.component_label === "questionWrapper" || embeddable.plugin?.component_label === "windowShade")) {
     qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} pluginsLoaded={pluginsLoaded} /> : undefined;
+  } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "interactives") {
+    qComponent = undefined;
   } else if (embeddable.type === "Embeddable::Xhtml") {
     qComponent = <TextBox embeddable={embeddable} />;
-  } else {
+  }
+  else {
     qComponent = <div>Content type not supported</div>;
   }
 
