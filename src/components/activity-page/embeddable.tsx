@@ -91,6 +91,8 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                     setSupportedFeatures={handleSetSupportedFeatures}
                     setSendCustomMessage={setSendCustomMessage}
                     setNavigation={handleSetNavigation} />;
+  } else if (embeddable.type === "ManagedInteractive" && !embeddable.library_interactive) {
+    qComponent = <div>Content type not supported</div>;
   } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {
     qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} pluginsLoaded={pluginsLoaded} /> : undefined;
   } else if (embeddable.type === "Embeddable::Xhtml") {

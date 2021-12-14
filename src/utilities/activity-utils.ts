@@ -32,12 +32,8 @@ export const isEmbeddableSideTip = (e: EmbeddableType) => {
   return (e.type === "Embeddable::EmbeddablePlugin" && e.plugin?.component_label === "sideTip");
 };
 
-export const isEmbeddableQuestionWrapper = (e: EmbeddableType) => {
-  return (e.type === "Embeddable::EmbeddablePlugin" && e.plugin?.component_label === "questionWrapper");
-};
-
 export const isNotVisibleEmbeddable =(e: EmbeddableType) => {
-  return isEmbeddableSideTip || isEmbeddableQuestionWrapper;
+  return e.is_hidden || e.embeddable_ref_id || isEmbeddableSideTip;
 };
 
 export const getPageSideTipEmbeddables = (activity: Activity, currentPage: Page) => {
