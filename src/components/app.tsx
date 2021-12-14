@@ -10,7 +10,7 @@ import { Footer } from "./activity-introduction/footer";
 import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages,
          enableReportButton, setDocumentTitle, getPagePositionFromQueryValue,
          getSequenceActivityFromQueryValue, getSequenceActivityId,
-         setAppBackgroundImage } from "../utilities/activity-utils";
+         setAppBackgroundImage, getPageIDFromPosition } from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
@@ -456,6 +456,10 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleChangePage = (page: number) => {
     const { currentPage, incompleteQuestions, activity } = this.state;
+    const pageID = activity ? getPageIDFromPosition(activity, page) : undefined;
+    if (pageID) {
+      setQueryValue("page", `page_${pageID}`);
+    }
     if (page > currentPage && incompleteQuestions.length > 0) {
       const label = incompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage;
       this.setShowModal(true, label);
