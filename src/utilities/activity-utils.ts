@@ -166,6 +166,15 @@ export const getPagePositionFromQueryValue = (activity: Activity, pageQueryValue
   return Math.max(0, Math.min((parseInt(pageQueryValue, 10) || 0), activity.pages.length));
 };
 
+export const getPageIDFromPosition = (activity: Activity, currentPosition: number): number | null => {
+  for (const page of activity.pages) {
+    if (page.position === currentPosition) {
+      return page.id;
+    }
+  }
+  return null;
+};
+
 export const getSequenceActivityFromQueryValue = (sequence: Sequence, sequenceActivityQueryValue = "0"): number => {
   const activityId = sequenceActivityQueryValue.startsWith("activity_") ? parseInt(sequenceActivityQueryValue.split("_")[1], 10) : NaN;
 
