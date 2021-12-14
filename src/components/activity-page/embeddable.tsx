@@ -4,7 +4,7 @@ import useResizeObserver from "use-resize-observer";
 import { TextBox } from "./text-box/text-box";
 import { LaraGlobalContext } from "../lara-global-context";
 import { ManagedInteractive, ManagedInteractiveImperativeAPI } from "./managed-interactive/managed-interactive";
-import { ActivityLayouts } from "../../utilities/activity-utils";
+import { ActivityLayouts, isNotVisibleEmbeddable } from "../../utilities/activity-utils";
 import { EmbeddablePlugin } from "./plugins/embeddable-plugin";
 import { initializePlugin, IPartialEmbeddablePluginContext, validateEmbeddablePluginContextForWrappedEmbeddable
         } from "../../utilities/plugin-utils";
@@ -91,15 +91,13 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                     setSupportedFeatures={handleSetSupportedFeatures}
                     setSendCustomMessage={setSendCustomMessage}
                     setNavigation={handleSetNavigation} />;
-  } else if (embeddable.type === "Embeddable::EmbeddablePlugin"
-              && (embeddable.plugin?.component_label === "questionWrapper" || embeddable.plugin?.component_label === "windowShade")) {
+  } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {
     qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} pluginsLoaded={pluginsLoaded} /> : undefined;
-  } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "interactives") {
-    qComponent = undefined;
   } else if (embeddable.type === "Embeddable::Xhtml") {
     qComponent = <TextBox embeddable={embeddable} />;
-  }
-  else {
+  } else if (isNotVisibleEmbeddable(embeddable)) {
+    qComponent = undefined;
+  } else {
     qComponent = <div>Content type not supported</div>;
   }
 

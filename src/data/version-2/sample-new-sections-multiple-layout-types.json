@@ -1,5 +1,6 @@
 {
   "background_image": null,
+  "fixed_width_layout": "1100px",
   "description": "<p>This is a sample activity that contains the four primary layout types.</p>",
   "editor_mode": 0,
   "layout": 0,
@@ -145,7 +146,7 @@
         {
           "layout": "full-width",
           "is_hidden": false,
-          "secondary_column_collapsible": false,
+          "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
@@ -350,7 +351,7 @@
         {
           "layout": "responsive",
           "is_hidden": false,
-          "secondary_column_collapsible": false,
+          "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
@@ -803,9 +804,9 @@
           ]
         },
         {
-          "layout": "l-6040",
+          "layout": "40-60",
           "is_hidden": false,
-          "secondary_column_collapsible": false,
+          "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
@@ -1043,9 +1044,9 @@
           ]
         },
         {
-          "layout": "r-4060",
+          "layout": "60-40",
           "is_hidden": false,
-          "secondary_column_collapsible": false,
+          "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
@@ -1212,7 +1213,7 @@
           ]
         },
         {
-          "layout": "l-6040",
+          "layout": "40-60",
           "is_hidden": false,
           "secondary_column_collapsible": false,
           "secondary_column_display_mode": "stacked",
@@ -1634,7 +1635,7 @@
           ]
         },
         {
-          "layout": "r-4060",
+          "layout": "60-40",
           "is_hidden": false,
           "secondary_column_collapsible": false,
           "secondary_column_display_mode": "stacked",

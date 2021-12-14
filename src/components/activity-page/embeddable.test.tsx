@@ -1,7 +1,6 @@
 import React from "react";
 import iframePhone from "iframe-phone";
 import { Embeddable } from "./embeddable";
-// import { PageLayouts, EmbeddableSections } from "../../utilities/activity-utils";
 import { mount } from "enzyme";
 import { EmbeddableType, IManagedInteractive } from "../../types";
 import { DefaultManagedInteractive, DefaultXhtmlComponent, DefaultTEWindowshadeComponent } from "../../test-utils/model-for-tests";

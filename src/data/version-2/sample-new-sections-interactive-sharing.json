@@ -84,7 +84,7 @@
             },
             {
               "column": "secondary",
-              "is_half_width": true,
+              "is_half_width": false,
               "plugin": {
                 "id": 6724,
                 "description": null,

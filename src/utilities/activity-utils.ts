@@ -28,26 +28,16 @@ export const isSectionHidden = (section: SectionType) => {
   return section.is_hidden;
 };
 
-// export const getVisibleEmbeddablesOnPage = (page: Page) => {
-//   const headerEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Introduction)
-//     ? []
-//     : page.sections.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction && isVisibleEmbeddable(e));
-//   const interactiveEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Interactive)
-//     ? []
-//     : page.sections.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive && isVisibleEmbeddable(e));
-//   const infoAssessEmbeddables = isEmbeddableSectionHidden(page, null)
-//     ? []
-//     : page.sections.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction && isVisibleEmbeddable(e)));
-
-//   return { interactiveBox: interactiveEmbeddables, headerBlock: headerEmbeddables, infoAssessment: infoAssessEmbeddables };
-// };
-
-// function isVisibleEmbeddable(e: EmbeddableType) {
-//   return !embeddable.is_hidden && !e.embeddable.embeddable_ref_id && !isEmbeddableSideTip(e);
-// }
-
 export const isEmbeddableSideTip = (e: EmbeddableType) => {
   return (e.type === "Embeddable::EmbeddablePlugin" && e.plugin?.component_label === "sideTip");
+};
+
+export const isEmbeddableQuestionWrapper = (e: EmbeddableType) => {
+  return (e.type === "Embeddable::EmbeddablePlugin" && e.plugin?.component_label === "questionWrapper");
+};
+
+export const isNotVisibleEmbeddable =(e: EmbeddableType) => {
+  return isEmbeddableSideTip || isEmbeddableQuestionWrapper;
 };
 
 export const getPageSideTipEmbeddables = (activity: Activity, currentPage: Page) => {

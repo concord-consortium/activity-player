@@ -94,6 +94,14 @@ const getEmbeddablesArray = (embeddables: legacyEmbeddableType[], column: "prima
   return embeddableArr;
 };
 
+const getPluginSection = (resourcePage: legacyPageType, embeddableWrapper: any): string | null | undefined => {
+  if (embeddableWrapper.section === null && embeddableWrapper.embeddable.type === "Embeddable::EmbeddablePlugin") {
+    const embeddableRefId = embeddableWrapper.embeddable.embeddable_ref_id;
+    const foundEmbeddable =  resourcePage.embeddables.find(e => e.embeddable.ref_id === embeddableRefId);
+    return foundEmbeddable?.section;
+  }
+};
+
 const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => {
   const pageLayout = resourcePage.layout;
   let sectionLayout = "";
@@ -126,16 +134,14 @@ const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => {
 
   resourcePage.embeddables?.forEach((embeddableWrapper: any) => {
     const section = embeddableWrapper.section;
-    switch (section) {
-      case "header_block":
+    const pluginSection = getPluginSection(resourcePage, embeddableWrapper);
+
+    if (section === "header_block" || pluginSection === "header_block") {
         headerBlockEmbeddables.push(embeddableWrapper.embeddable);
-        break;
-      case "interactive_box":
+    } else if (section === "interactive_box" || pluginSection === "interactive_box") {
         primaryBlockEmbeddables.push(embeddableWrapper.embeddable);
-        break;
-      case null:
-        secondaryBlockEmbeddables.push(embeddableWrapper.embeddable);
-        break;
+    } else {
+      secondaryBlockEmbeddables.push(embeddableWrapper.embeddable);
     }
   });
 

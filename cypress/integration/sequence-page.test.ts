@@ -17,7 +17,7 @@ context("Test sequences", () => {
       activityPage.getHeader().should("contain", "Sequence");
       sequencePage.getThumbnails().eq(0).click();
       activityPage.getHeader().should("contain", "Sequence");
-      cy.url().should("contain", "sequenceActivity=1");
+      cy.url().should("contain", "sequenceActivity=activity_1");
     });
   });
   describe("test sequence nav", () => {

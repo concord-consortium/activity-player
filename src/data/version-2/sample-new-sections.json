@@ -272,7 +272,7 @@
           ]
         },
         {
-          "layout": "l-6040",
+          "layout": "40-60",
           "is_hidden": false,
           "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
@@ -495,7 +495,7 @@
       "sidebar_title": "Did you know?",
       "sections": [
         {
-          "layout": "r-3070",
+          "layout": "30-70",
           "is_hidden": false,
           "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
@@ -1794,7 +1794,7 @@
           ]
         },
         {
-          "layout": "r-3070",
+          "layout": "30-70",
           "is_hidden": false,
           "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
@@ -2066,7 +2066,7 @@
           ]
         },
         {
-          "layout": "l-6040",
+          "layout": "60-40",
           "is_hidden": false,
           "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",

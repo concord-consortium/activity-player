@@ -60,6 +60,7 @@ const sampleActivities: {[name: string]: Activity} = {
 
 import sampleSequence from "../data/sample-sequence.json";
 import sampleNewSectionsSequence from "../data/version-2/sample-new-sections-sequence.json";
+import sampleNewSectionsSequenceTE from "../data/version-2/sample-new-sections-sequence-te.json";
 import sampleSequenceEmptyFields from "../data/sample-sequence-empty-fields.json";
 import sampleSequenceWithQuestions from "../data/sample-sequence-with-questions.json";
 import sampleSequenceTE from "../data/sample-sequence-te.json";
@@ -67,6 +68,7 @@ import sampleSequenceTE from "../data/sample-sequence-te.json";
 const sampleSequences: {[name: string]: Sequence} = {
   "sample-sequence": sampleSequence as unknown as Sequence,
   "sample-new-sections-sequence": sampleNewSectionsSequence as Sequence,
+  "sample-new-sections-sequence-te": sampleNewSectionsSequenceTE as Sequence,
   "sample-sequence-empty-fields": sampleSequenceEmptyFields as unknown as Sequence,
   "sample-sequence-with-questions": sampleSequenceWithQuestions as unknown as Sequence,
   "sample-sequence-te": sampleSequenceTE as unknown as Sequence,
