@@ -51,10 +51,10 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
   }
 
   public requestInteractiveStates() {
-    let promises;
+    const promises: Promise<void>[] = [];
     this.props.page.sections.forEach((section: SectionType) =>
-      promises = section.embeddables.map((embeddable: EmbeddableType) =>
-        this.embeddableRefs[embeddable.ref_id]?.current?.requestInteractiveState() || Promise.resolve()
+      section.embeddables.map((embeddable: EmbeddableType) =>
+        promises.push(this.embeddableRefs[embeddable.ref_id]?.current?.requestInteractiveState() || Promise.resolve())
   )
 );
     return promises;
