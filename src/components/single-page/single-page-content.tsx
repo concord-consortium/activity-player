@@ -31,6 +31,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
                 questionNumberStart={embeddableQuestionNumberStart}
                 teacherEditionMode={teacherEditionMode}
                 pluginsLoaded={pluginsLoaded}
+                page={page}
               />
             );
           })

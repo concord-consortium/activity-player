@@ -5,13 +5,14 @@ import { isQuestion,  getLinkedPluginEmbeddable, ActivityLayouts } from "../../u
 import { accessibilityClick } from "../../utilities/accessibility-helper";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
-import { EmbeddableType, SectionType } from "../../types";
+import { EmbeddableType, Page, SectionType } from "../../types";
 import { Logger, LogEventName } from "../../lib/logger";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
 import "./section.scss";
 
 interface IProps {
+  page: Page;
   section: SectionType;
   activityLayout: number;
   questionNumberStart: number;
@@ -21,7 +22,7 @@ interface IProps {
 }
 
 export const Section: React.FC<IProps> = (props) => {
-  const { activityLayout, section, questionNumberStart } = props;
+  const { activityLayout, page, section, questionNumberStart } = props;
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
 
   const sectionDivRef = useRef<HTMLDivElement>(null);
@@ -37,7 +38,7 @@ export const Section: React.FC<IProps> = (props) => {
             if (isQuestion(embeddable)) {
               questionNumber++;
             }
-            const linkedPluginEmbeddable = getLinkedPluginEmbeddable(section, embeddable.ref_id);
+            const linkedPluginEmbeddable = getLinkedPluginEmbeddable(page, embeddable.ref_id);
             if (!embeddableRefs[embeddable.ref_id]) {
               embeddableRefs[embeddable.ref_id] = React.createRef<EmbeddableImperativeAPI>();
             }

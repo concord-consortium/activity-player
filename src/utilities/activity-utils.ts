@@ -124,9 +124,14 @@ export const enableReportButton = (activity: Activity) => {
   return !hasCompletionPage && activity.student_report_enabled;
 };
 
-export const getLinkedPluginEmbeddable = (section: SectionType, id: string) => {
-  const linkedPluginEmbeddable = section.embeddables.find((e: EmbeddableType) => e.embeddable_ref_id === id);
-  return linkedPluginEmbeddable?.type === "Embeddable::EmbeddablePlugin" ? linkedPluginEmbeddable : undefined;
+export const getLinkedPluginEmbeddable = (page: Page, id: string) => {
+  for (let i = 0; i < page.sections.length; i++) {
+    const linkedPluginEmbeddable = page.sections[i].embeddables.find((e: EmbeddableType) => e.embeddable_ref_id === id);
+    if (linkedPluginEmbeddable?.type === "Embeddable::EmbeddablePlugin") {
+      return linkedPluginEmbeddable;
+    }
+  }
+  return undefined;
 };
 
 export const setAppBackgroundImage = (backgroundImageUrl?: string) => {

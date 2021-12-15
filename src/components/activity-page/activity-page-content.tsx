@@ -68,14 +68,15 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
   }
 
   private renderSections = (sections: SectionType[], totalPreviousQuestions: number) => {
-    const {activityLayout, teacherEditionMode, setNavigation, pluginsLoaded} = this.props;
+    const {page, activityLayout, teacherEditionMode, setNavigation, pluginsLoaded} = this.props;
     return (
       sections.map((section, idx) => {
         const questionCount = numQuestionsOnPreviousSections(idx, sections) || 0;
         const embeddableQuestionNumberStart = questionCount + totalPreviousQuestions;
         if (!section.is_hidden) {
           return (
-            <Section section={section}
+            <Section page = {page}
+                    section={section}
                     key={`section-${idx}`}
                     activityLayout={activityLayout}
                     questionNumberStart={embeddableQuestionNumberStart}
