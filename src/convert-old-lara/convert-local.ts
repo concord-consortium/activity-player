@@ -4,7 +4,8 @@ import { convertLegacyResource } from "./convert";
 // for debugging use
 (async function() {
   const resourceToConvert = process.argv.slice(2);
-  const newResourceName = resourceToConvert[0].split("activity-")[1];
+  const resourceType = resourceToConvert[0].includes("activity") ? "activity-" : "sequence-";
+  const newResourceName = resourceToConvert[0].split(resourceType)[1];
   const localDir = "../data/";
   const legacyResourcePath = localDir + resourceToConvert + ".json";
   const legacyRes = await import(legacyResourcePath);

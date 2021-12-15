@@ -28,6 +28,7 @@
   "export_site": "Lightweight Activities Runtime and Authoring",
   "pages": [
     {
+      "id": 1000,
       "is_completion": false,
       "is_hidden": false,
       "name": null,
@@ -112,6 +113,7 @@
       ]
     },
     {
+      "id": 2000,
       "is_completion": false,
       "is_hidden": false,
       "name": null,
@@ -174,7 +176,7 @@
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
-                  "enable_learner_state": true,
+                  "enable_learner_state": false,
                   "full_window": false,
                   "has_report_url": false,
                   "image_url": null,
@@ -196,6 +198,7 @@
       ]
     },
     {
+      "id": 3000,
       "is_completion": true,
       "is_hidden": false,
       "name": null,

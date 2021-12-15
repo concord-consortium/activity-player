@@ -5,15 +5,6 @@ import { mount } from "enzyme";
 import { EmbeddableType, IManagedInteractive } from "../../types";
 import { DefaultManagedInteractive, DefaultXhtmlComponent, DefaultTEWindowshadeComponent } from "../../test-utils/model-for-tests";
 
-jest.mock("use-resize-observer", () => ({
-  __esModule: true,
-  default: jest.fn().mockImplementation(() => ({
-    observe: jest.fn(),
-    unobserve: jest.fn(),
-    disconnect: jest.fn(),
-  })),
-}));
-
 describe("Embeddable component", () => {
   it("renders a non-callout text component", () => {
     const embeddable: EmbeddableType = {
