@@ -1,6 +1,6 @@
 import React, { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef }  from "react";
 import classNames from "classnames";
-import useResizeObserver from "use-resize-observer";
+import useResizeObserver from "@react-hook/resize-observer";
 import { TextBox } from "./text-box/text-box";
 import { LaraGlobalContext } from "../lara-global-context";
 import { ManagedInteractive, ManagedInteractiveImperativeAPI } from "./managed-interactive/managed-interactive";
@@ -42,16 +42,14 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   const managedInteractiveRef = useRef<ManagedInteractiveImperativeAPI>(null);
   const embeddableWrapperDivTarget = useRef<HTMLInputElement>(null);
   const embeddableDivTarget = useRef<HTMLInputElement>(null);
+  const targetDiv = useRef<HTMLDivElement>(null);
   const sendCustomMessageRef = useRef<ISendCustomMessage | undefined>(undefined);
   const setSendCustomMessage = useCallback((sender: ISendCustomMessage) => {
     sendCustomMessageRef.current = sender;
   }, []);
   const LARA = useContext(LaraGlobalContext);
-  const { ref } = useResizeObserver({
-    onResize: () => {
-      onSizeChange();
-    }
-  });
+  useResizeObserver(targetDiv, () => onSizeChange());
+
   useEffect(() => {
     const sendCustomMessage = (message: ICustomMessage) => sendCustomMessageRef.current?.(message);
     const pluginContext: IPartialEmbeddablePluginContext = {
@@ -81,7 +79,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     };
     LARA?.Events.emitInteractiveSupportedFeatures(event);
   }, [LARA?.Events]);
-  
+
   let qComponent;
   if (embeddable.type === "MwInteractive" || (embeddable.type === "ManagedInteractive" && embeddable.library_interactive)) {
     qComponent = <ManagedInteractive
@@ -130,7 +128,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
       className={embeddableClasses}
       data-cy="embeddable"
       key={embeddable.ref_id}
-      ref={ref}
+      ref={targetDiv}
     >
       { linkedPluginEmbeddable && <div ref={embeddableWrapperDivTarget}></div> }
       <div ref={embeddableDivTarget}>
