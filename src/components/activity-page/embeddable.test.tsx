@@ -15,7 +15,6 @@ jest.mock("use-resize-observer", () => ({
 }));
 
 describe("Embeddable component", () => {
-  const onSizeChange = jest.fn();
   it("renders a non-callout text component", () => {
     const embeddable: EmbeddableType = {
       ...DefaultXhtmlComponent,
@@ -25,7 +24,7 @@ describe("Embeddable component", () => {
       "column": null
     };
 
-    const wrapper = mount(<Embeddable embeddable={embeddable} questionNumber={1} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} onSizeChange={onSizeChange}/>);
+    const wrapper = mount(<Embeddable embeddable={embeddable} questionNumber={1} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} />);
     expect(wrapper.find(".textbox").hasClass("callout")).toBe(false);
     expect(wrapper.text()).toContain("This is a page");
   });
@@ -38,7 +37,7 @@ describe("Embeddable component", () => {
       "column": null
     };
 
-    const wrapper = mount(<Embeddable embeddable={embeddable} questionNumber={1} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} onSizeChange={onSizeChange}/>);
+    const wrapper = mount(<Embeddable embeddable={embeddable} questionNumber={1} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} />);
     expect(wrapper.find(".textbox").hasClass("callout")).toBe(true);
     expect(wrapper.text()).toContain("This is a callout text box");
   });
@@ -50,7 +49,7 @@ describe("Embeddable component", () => {
       column: "primary"
     };
 
-    const wrapper = mount(<Embeddable embeddable={embeddable} questionNumber={1} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} onSizeChange={onSizeChange} />);
+    const wrapper = mount(<Embeddable embeddable={embeddable} questionNumber={1} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} />);
     expect(wrapper.text()).toContain("Content type not supported");
   });
 
@@ -68,7 +67,7 @@ describe("Embeddable component", () => {
     // Disable interactive state observing for this test.
     (embeddable as IManagedInteractive).library_interactive!.data!.enable_learner_state = false;
 
-    const wrapper = mount(<Embeddable embeddable={embeddable} questionNumber={1} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} onSizeChange={onSizeChange} />);
+    const wrapper = mount(<Embeddable embeddable={embeddable} questionNumber={1} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} />);
     expect(wrapper.find("ManagedInteractive").length).toBe(1);
     expect(wrapper.find("iframe").length).toBe(1);
     expect(wrapper.find('[data-cy="iframe-runtime"]').length).toBe(1);
@@ -81,7 +80,7 @@ describe("Embeddable component", () => {
       column: null
     };
 
-    const wrapper = mount(<Embeddable embeddable={embeddable} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} onSizeChange={onSizeChange} />);
+    const wrapper = mount(<Embeddable embeddable={embeddable} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} />);
     expect(wrapper.html()).toBe(null);
   });
 
@@ -91,7 +90,7 @@ describe("Embeddable component", () => {
       column: null
     };
 
-    const wrapper = mount(<Embeddable embeddable={embeddable} teacherEditionMode={true} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} onSizeChange={onSizeChange} />);
+    const wrapper = mount(<Embeddable embeddable={embeddable} teacherEditionMode={true} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} />);
     expect(wrapper.html()).not.toBe(null);
     expect(wrapper.html()).toContain("embeddable");
     expect(wrapper.html()).toContain("plugin-container");

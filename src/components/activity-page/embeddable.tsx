@@ -1,6 +1,5 @@
 import React, { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef }  from "react";
 import classNames from "classnames";
-import useResizeObserver from "@react-hook/resize-observer";
 import { TextBox } from "./text-box/text-box";
 import { LaraGlobalContext } from "../lara-global-context";
 import { ManagedInteractive, ManagedInteractiveImperativeAPI } from "./managed-interactive/managed-interactive";
@@ -25,7 +24,6 @@ interface IProps {
   setNavigation?: (id: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
   embeddableRef?: React.Ref<EmbeddableImperativeAPI>;
-  onSizeChange: () => void;
 }
 
 export interface EmbeddableImperativeAPI {
@@ -35,7 +33,7 @@ export interface EmbeddableImperativeAPI {
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, embeddableRef) => {
-  const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded, onSizeChange } = props;
+  const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded } = props;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
   }, [setNavigation, embeddable.ref_id]);
@@ -48,7 +46,6 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     sendCustomMessageRef.current = sender;
   }, []);
   const LARA = useContext(LaraGlobalContext);
-  useResizeObserver(targetDiv, () => onSizeChange());
 
   useEffect(() => {
     const sendCustomMessage = (message: ICustomMessage) => sendCustomMessageRef.current?.(message);

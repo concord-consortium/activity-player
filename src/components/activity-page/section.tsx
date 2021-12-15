@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import classNames from "classnames";
 import { Embeddable, EmbeddableImperativeAPI } from "./embeddable";
 import { isQuestion,  getLinkedPluginEmbeddable, ActivityLayouts } from "../../utilities/activity-utils";
@@ -11,7 +11,6 @@ import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
 import "./section.scss";
 
-const kEmbeddableMargin = 10;
 interface IProps {
   section: SectionType;
   activityLayout: number;
@@ -24,30 +23,11 @@ interface IProps {
 export const Section: React.FC<IProps> = (props) => {
   const { activityLayout, section, questionNumberStart } = props;
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
-  const [resizeCounter, setResizeCounter] = useState(0);
-  const [primaryEmbeddableTotalHeight, setPrimaryEmbeddableTotalHeight] = useState(0);
+
   const sectionDivRef = useRef<HTMLDivElement>(null);
   const primaryDivRef = useRef<HTMLDivElement>(null);
   const secondaryDivRef = useRef<HTMLDivElement>(null);
   const embeddableRefs: Record<string, React.RefObject<EmbeddableImperativeAPI>> = {};
-  // used to trigger the useEffect so section can find out the height of the embeddables after they have been rendered
-  // without it, the useEffect was firing before the render was done.
-  let counter = 0;
-  const onSizeChange = useCallback(() => {
-    setResizeCounter(counter++);
-  },[counter]);
-
-  useEffect(()=>{
-    if (primaryDivRef.current !== null) {
-        if (primaryDivRef.current !== null) {
-          let totalHeight = 0;
-          for (let i=0; i<primaryDivRef.current.children.length; i++) {
-            totalHeight = totalHeight + primaryDivRef.current?.children[i].clientHeight + kEmbeddableMargin;
-          }
-          setPrimaryEmbeddableTotalHeight(totalHeight);
-      }
-    }
-  },[resizeCounter]);
 
   const renderEmbeddables = (embeddablesToRender: EmbeddableType[], questionNumStart: number, isSingleColumn?: boolean) => {
     let questionNumber = questionNumStart;
@@ -74,7 +54,6 @@ export const Section: React.FC<IProps> = (props) => {
                 teacherEditionMode={props.teacherEditionMode}
                 setNavigation={props.setNavigation}
                 pluginsLoaded={props.pluginsLoaded}
-                onSizeChange={onSizeChange}
               />
             );
           })
@@ -84,11 +63,12 @@ export const Section: React.FC<IProps> = (props) => {
   };
 
   const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
-    const position = { height: primaryEmbeddableTotalHeight, top: 0 };
     const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed});
     return (
-        <div className={containerClass} style={position} ref={primaryDivRef} data-cy="section-column-primary">
-          {renderEmbeddables(primaryEmbeddablesToRender, questionNumStart)}
+        <div className={containerClass} ref={primaryDivRef} data-cy="section-column-primary">
+          <div className="embeddableWrapper">
+            {renderEmbeddables(primaryEmbeddablesToRender, questionNumStart)}
+          </div>
         </div>
     );
   };

@@ -28,10 +28,7 @@ $content-inner-width: 900px;
   &.l_6040 {
     width: $content-inner-width;
     .column.primary {
-      position: sticky;
       grid-column: span 6;
-      overflow: hidden;
-      top: 0;
       &.expand {
         grid-column: span 9;
       }
@@ -51,10 +48,7 @@ $content-inner-width: 900px;
   &.r_4060 {
     width: $content-inner-width;
     .column.primary {
-      position: sticky;
       grid-column: span 6;
-      overflow: hidden;
-      top: 0;
       &.expand {
         grid-column: span 9;
       }
@@ -74,10 +68,7 @@ $content-inner-width: 900px;
   &.l_7030 {
     width: $content-inner-width;
     .column.primary {
-      position: sticky;
       grid-column: span 7;
-      overflow: hidden;
-      top: 0;
       &.expand {
         grid-column: span 9;
       }
@@ -97,10 +88,7 @@ $content-inner-width: 900px;
   &.r_3070 {
     width: $content-inner-width;
     .column.primary {
-      position: sticky;
       grid-column: span 7;
-      overflow: hidden;
-      top: 0;
       &.expand {
         grid-column: span 9;
       }
@@ -130,10 +118,8 @@ $content-inner-width: 900px;
     }
 
     .column.primary {
-      position: sticky;
       right: 0;
       width: 100%;
-      overflow: hidden;
     }
     .column.secondary {
       min-width: 365px;
@@ -145,6 +131,16 @@ $content-inner-width: 900px;
       &.collapsed {
         min-width: 45px;
       }
+    }
+  }
+
+  .column.primary {
+    position: relative;
+    height: auto;
+    .embeddableWrapper {
+      position: sticky;
+      top: 10px;
+      align-self: flex-start;
     }
   }
 
