@@ -1,5 +1,5 @@
 import { Activity } from "../types";
-import { isQuestion, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isSectionHidden, numQuestionsOnPreviousSections } from "./activity-utils";
+import { isQuestion, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isSectionHidden, numQuestionsOnPreviousSections, getPageIDFromPosition } from "./activity-utils";
 import _activityHidden from "../data/version-2/sample-new-sections-hidden-content.json";
 import _activity from "../data/version-2/sample-new-sections-activity-1.json";
 import { DefaultTestActivity } from "../test-utils/model-for-tests";
@@ -62,5 +62,10 @@ describe("Activity utility functions", () => {
     expect(getPagePositionFromQueryValue(activity, "page_1001")).toBe(0);
     expect(getPagePositionFromQueryValue(activity, "page_2000")).toBe(2);
     expect(getPagePositionFromQueryValue(activity, "page_3000")).toBe(3);
+  });
+  it("determines the page ID from the page's position value", () => {
+    expect(getPageIDFromPosition(activity, 1)).toBe(1000);
+    expect(getPageIDFromPosition(activity, 2)).toBe(2000);
+    expect(getPageIDFromPosition(activity, 3)).toBe(3000);
   });
 });

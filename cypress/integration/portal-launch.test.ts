@@ -105,7 +105,7 @@ context("Launch AP From the Portal", () => {
     });
   });
 
-  context("collaboratively", () => {
+  context.skip("collaboratively", () => {
     beforeEach(() => {
       // load the portal homepage to set the csrf token
       cy.request({
