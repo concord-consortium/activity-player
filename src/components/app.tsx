@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
+import classNames from "classnames";
 import { PortalDataContext } from "./portal-data-context";
 import { Header } from "./activity-header/header";
 import { ActivityNav } from "./activity-header/activity-nav";
@@ -287,9 +288,9 @@ export class App extends React.PureComponent<IProps, IState> {
 
     // convert option with Ruby snake case to kebab case for css
     const fixedWidthLayout = (sequence?.fixed_width_layout || activity.fixed_width_layout || kDefaultFixedWidthLayout).replace(/_/g, "-");
-
+    const activityClasses = classNames("activity", fullWidth ? "responsive" : `fixed-width-${fixedWidthLayout}`);
     return (
-      <div className={`activity fixed-width-${fixedWidthLayout}`} data-cy="activity">
+      <div className={activityClasses} data-cy="activity">
         <Header
           fullWidth={fullWidth}
           project={project}

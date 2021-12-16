@@ -79,6 +79,9 @@ body {
     &.fixed-width-ipad-friendly {
       width: 960px;
     }
+    &.responsive {
+      width: 100%
+    }
   }
 
 }
