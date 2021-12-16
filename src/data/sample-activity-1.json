@@ -151,7 +151,7 @@
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
-                "enable_learner_state": false,
+                "enable_learner_state": true,
                 "full_window": false,
                 "has_report_url": false,
                 "image_url": null,

@@ -16,7 +16,7 @@ describe("Activity utility functions", () => {
     expect(isE0Question).toBe(false); // text block
     expect(isE1Question).toBe(true);
     expect(isE2Question).toBe(false); // text block
-    expect(isE3Question).toBe(false);// enable_learner_state false
+    expect(isE3Question).toBe(true);// enable_learner_state true
   });
   it("determines if section is hidden", () => {
     const hiddenActivityHeaderHiddenCount = isSectionHidden(activityHidden.pages[0].sections[0]);
