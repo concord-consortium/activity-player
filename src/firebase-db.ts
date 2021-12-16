@@ -307,6 +307,7 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   } else {
     const anonymousAnswer: AnonymousRuntimeAnswerMetadata = {
       ...answer,
+      created: createdString(),
       source_key: portalData.database.sourceKey,
       resource_url: portalData.resourceUrl,
       tool_id: portalData.toolId,

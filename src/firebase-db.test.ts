@@ -163,11 +163,13 @@ describe("Firestore", () => {
 
     const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableAnswerMetadata;
 
+    const created = createdString();
     createOrUpdateAnswer(exportableAnswer);
 
     expect(appMock.firestore().doc).toHaveBeenCalledWith(`sources/localhost/answers/${exportableAnswer.id}`);
     expect(appMock.firestore().doc().set).toHaveBeenCalledWith({
       version: 1,
+      created,
       answer: "anonymous test",
       answer_text: "anonymous test",
       id: exportableAnswer.id,
