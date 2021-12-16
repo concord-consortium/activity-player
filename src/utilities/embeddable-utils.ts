@@ -3,7 +3,7 @@ import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
 import {
   IExportableAnswerMetadata, IReportState, IExportableMultipleChoiceAnswerMetadata,
   IExportableOpenResponseAnswerMetadata, IExportableInteractiveAnswerMetadata, IExportableImageQuestionAnswerMetadata,
-  Embeddable, Activity, Page
+  EmbeddableType, Activity, Page
 } from "../types";
 import { ILaraData } from "../components/lara-data-context";
 
@@ -19,11 +19,11 @@ export interface IInteractiveInfo {
   pageName?: string;
 }
 
-export const isQuestion = (embeddable: Embeddable) =>
+export const isQuestion = (embeddable: EmbeddableType) =>
   (embeddable.type === "ManagedInteractive" && embeddable.library_interactive?.data?.enable_learner_state) ||
   (embeddable.type === "MwInteractive" && embeddable.enable_learner_state);
 
-export const hasLegacyLinkedInteractive = (embeddable: Embeddable, laraData: ILaraData) => {
+export const hasLegacyLinkedInteractive = (embeddable: EmbeddableType, laraData: ILaraData) => {
   let result = false;
   if ((embeddable.type === "ManagedInteractive") || (embeddable.type === "MwInteractive")) {
     result = !!getLegacyLinkedRefMap(laraData)[embeddable.ref_id]?.linkedRefId;
@@ -197,15 +197,16 @@ export const getLegacyLinkedRefMap = (laraData: ILaraData): LegacyLinkedRefMap =
 
   const gatherLinkedRefs = (activity: Activity) => {
     activity.pages.forEach(page => {
-      page.embeddables.forEach(item => {
-        const {embeddable} = item;
-        if ((embeddable.type === "ManagedInteractive") || (embeddable.type === "MwInteractive")) {
-          linkedRefMap[embeddable.ref_id] = {
-            activity,
-            page,
-            linkedRefId: embeddable.linked_interactive?.ref_id
-          };
-        }
+      page.sections.forEach(section => {
+        section.embeddables.forEach(embeddable => {
+          if ((embeddable.type === "ManagedInteractive") || (embeddable.type === "MwInteractive")) {
+            linkedRefMap[embeddable.ref_id] = {
+              activity,
+              page,
+              linkedRefId: embeddable.linked_interactive?.ref_id
+            };
+          }
+        });
       });
     });
   };
@@ -228,15 +229,16 @@ export const getInteractiveInfo = (laraData: ILaraData, embeddableRefId: string)
 
   const findInteractiveInfo = (activity: Activity) => {
     activity.pages.forEach(page => {
-      page.embeddables.forEach(item => {
-        const {embeddable} = item;
-        if (embeddable.ref_id === embeddableRefId) {
-          interactiveInfo = {
-            activityName: activity.name,
-            pageName: page.name === null ? undefined : page.name,
-            pageNumber: page.position
-          };
-        }
+      page.sections.forEach(section => {
+        section.embeddables.forEach(embeddable => {
+          if (embeddable.ref_id === embeddableRefId) {
+            interactiveInfo = {
+              activityName: activity.name,
+              pageName: page.name === null ? undefined : page.name,
+              pageNumber: page.position
+            };
+          }
+        });
       });
     });
   };

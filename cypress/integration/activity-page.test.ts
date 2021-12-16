@@ -31,6 +31,13 @@ context("Test the overall app", () => {
     });
   });
   describe("Info/Assess (secondary embeddables)",()=>{
+    it("verify collapsible column",()=>{
+      activityPage.getCollapsibleHeader().should("contain", "Hide");
+      activityPage.getCollapsibleHeader().click();
+      activityPage.getCollapsibleHeader().should("have.class", "collapsed").and("contain", "Show");
+      activityPage.getCollapsibleHeader().click();
+      activityPage.getCollapsibleHeader().should("have.not.class", "collapsed").and("contain", "Hide");
+    });
     it("verify textbox",()=>{
       activityPage.getNavPage(3).click();
       activityPage.getSecondaryEmbeddable("text-box").eq(1).scrollIntoView()
@@ -99,7 +106,7 @@ context("Test the teacher edition plugin", () => {
 context("Test fixed width settings", () => {
   it("defaults to 1100px", () => {
     cy.visit("?activity=sample-activity-multiple-layout-types&preview");
-    activityPage.getPage(2).click();
+    activityPage.getPage(5).click();
     activityPage.getActivity()
       .should("be.visible")
       .and("have.length", 1)
@@ -109,6 +116,16 @@ context("Test fixed width settings", () => {
       .invoke("css", "width")
       .then(str => parseInt(str as unknown as string, 10))
       .should("eq", 1100);
+  });
+
+  it("shows responsive if a section in the page is responsive", () => {
+    cy.visit("?activity=sample-activity-multiple-layout-types&preview");
+    activityPage.getPage(2).click();
+    activityPage.getActivity()
+      .should("be.visible")
+      .and("have.length", 1)
+      .and("have.class", "responsive")
+      .and("have.not.class", "fixed-width-1100px");
   });
 
   it("uses 960px for iPad friendly activities", () => {

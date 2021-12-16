@@ -3,7 +3,7 @@ import IconCheck from "../../assets/svg-icons/icon-check-circle.svg";
 import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
 import { isValidReportLink, showReport } from "../../utilities/report-utils";
-import { Sequence, Activity, EmbeddableWrapper, Page } from "../../types";
+import { Sequence, Activity, EmbeddableType, Page } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
@@ -62,21 +62,23 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     const questionsStatus = Array<IQuestionStatus>();
     currentActivity.pages.forEach((page: Page, index) => {
       const pageNum = index + 1;
-      page.embeddables.forEach((embeddableWrapper: EmbeddableWrapper) => {
-        if (isQuestion(embeddableWrapper)) {
-          numQuestions++;
-          const questionId = refIdToAnswersQuestionId(embeddableWrapper.embeddable.ref_id);
-          const authored_state = embeddableWrapper.embeddable.authored_state
-                                   ? JSON.parse(embeddableWrapper.embeddable.authored_state)
-                                   : {};
-          let questionAnswered = false;
-          if (answers?.find((answer: any) => answer.meta.question_id === questionId)) {
-            numAnswers++; //Does't take into account if user erases response after saving
-            questionAnswered = true;
+      page.sections.forEach((section) => {
+        section.embeddables.forEach((embeddable: EmbeddableType) => {
+          if (isQuestion(embeddable)) {
+            numQuestions++;
+            const questionId = refIdToAnswersQuestionId(embeddable.ref_id);
+            const authored_state = embeddable.authored_state
+                                    ? JSON.parse(embeddable.authored_state)
+                                    : {};
+            let questionAnswered = false;
+            if (answers?.find((answer: any) => answer.meta.question_id === questionId)) {
+              numAnswers++; //Does't take into account if user erases response after saving
+              questionAnswered = true;
+            }
+            const questionStatus = { number: numQuestions, page: pageNum, prompt: authored_state.prompt, answered: questionAnswered };
+            questionsStatus.push(questionStatus);
           }
-          const questionStatus = { number: numQuestions, page: pageNum, prompt: authored_state.prompt, answered: questionAnswered };
-          questionsStatus.push(questionStatus);
-        }
+        });
       });
     });
     return ({ numAnswers, numQuestions, questionsStatus });
@@ -106,7 +108,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   if (sequence) {
     const sequenceComplete = sequenceProgress(sequence);
     if (isLastActivityInSequence) {
-      progressText = sequenceComplete && isActivityComplete 
+      progressText = sequenceComplete && isActivityComplete
                        ? completedActivityProgressText + ` You have completed all your work for this module!`
                        : isActivityComplete
                            ? completedActivityProgressText

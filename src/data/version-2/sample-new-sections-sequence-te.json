@@ -1,0 +1,266 @@
+{
+  "abstract": "",
+  "description": "",
+  "display_title": "",
+  "logo": "",
+  "project": null,
+  "theme_id": null,
+  "thumbnail_url": "",
+  "title": "TE Test Sequence",
+  "type": "Sequence",
+  "export_site": "Lightweight Activities Runtime and Authoring",
+  "activities": [
+    {
+      "description": "<p>This is a test activity which is contained within a sequence and uses the teacher edition plugin.</p>",
+      "editor_mode": 0,
+      "layout": 0,
+      "name": "TE Test 1",
+      "notes": "",
+      "related": "",
+      "show_submit_button": true,
+      "student_report_enabled": true,
+      "thumbnail_url": "",
+      "time_to_complete": null,
+      "version": 2,
+      "theme_name": null,
+      "project": null,
+      "plugins": [],
+      "type": "LightweightActivity",
+      "export_site": "Lightweight Activities Runtime and Authoring",
+      "pages": [
+        {
+          "id": 309275,
+          "is_completion": false,
+          "is_hidden": false,
+          "name": null,
+          "position": 1,
+          "show_sidebar": false,
+          "sidebar": null,
+          "sidebar_title": "Did you know?",
+          "sections": [
+            {
+              "layout": "full-width",
+              "is_hidden": false,
+              "secondary_column_collapsible": false,
+              "secondary_column_display_mode": "stacked",
+              "embeddables": [
+                {
+                  "column": null,
+                  "is_half_width": false,
+                  "content": "<p>This page contains a TE windowshade.</p>",
+                  "is_callout": true,
+                  "is_hidden": false,
+                  "name": "",
+                  "type": "Embeddable::Xhtml",
+                  "ref_id": "273341-Embeddable::Xhtml"
+                },
+                {
+                  "column": null,
+                  "is_half_width": false,
+                  "plugin": {
+                    "id": 5225,
+                    "description": null,
+                    "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"This is a windowshade\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+                    "approved_script_label": "teacherEditionTips",
+                    "component_label": "windowShade",
+                    "approved_script": {
+                      "name": "Teacher Edition (master)",
+                      "url": "https://teacher-edition-tips-plugin.concord.org/plugin.js",
+                      "label": "teacherEditionTips",
+                      "description": "This plugin provides Teacher Edition components",
+                      "version": 3,
+                      "json_url": "https://teacher-edition-tips-plugin.concord.org/manifest.json",
+                      "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                    }
+                  },
+                  "is_hidden": false,
+                  "type": "Embeddable::EmbeddablePlugin",
+                  "ref_id": "4899-Embeddable::EmbeddablePlugin"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 309278,
+          "is_completion": false,
+          "is_hidden": false,
+          "name": null,
+          "position": 2,
+          "show_sidebar": false,
+          "sidebar": null,
+          "sidebar_title": "Did you know?",
+          "sections": [
+            {
+              "layout": "full-width",
+              "is_hidden": false,
+              "secondary_column_collapsible": false,
+              "secondary_column_display_mode": "stacked",
+              "embeddables": [
+                {
+                  "column": null,
+                  "is_half_width": false,
+                  "content": "<p>This page contains a TE sidetip.</p>",
+                  "is_callout": true,
+                  "is_hidden": false,
+                  "name": "",
+                  "type": "Embeddable::Xhtml",
+                  "ref_id": "273342-Embeddable::Xhtml"
+                },
+                {
+                  "column": null,
+                  "is_half_width": false,
+                  "plugin": {
+                    "id": 5228,
+                    "description": null,
+                    "author_data": "{\"tipType\":\"sideTip\",\"sideTip\":{\"content\":\"This is a sidetip\",\"mediaType\":\"none\",\"mediaURL\":\"\"}}",
+                    "approved_script_label": "teacherEditionTips",
+                    "component_label": "sideTip",
+                    "approved_script": {
+                      "name": "Teacher Edition (master)",
+                      "url": "https://teacher-edition-tips-plugin.concord.org/plugin.js",
+                      "label": "teacherEditionTips",
+                      "description": "This plugin provides Teacher Edition components",
+                      "version": 3,
+                      "json_url": "https://teacher-edition-tips-plugin.concord.org/manifest.json",
+                      "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                    }
+                  },
+                  "is_hidden": false,
+                  "type": "Embeddable::EmbeddablePlugin",
+                  "ref_id": "4902-Embeddable::EmbeddablePlugin"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": "<p>This is a test activity which is contained within a sequence and uses the teacher edition plugin.</p>",
+      "editor_mode": 0,
+      "layout": 0,
+      "name": "TE Test 2",
+      "notes": "",
+      "related": "",
+      "show_submit_button": true,
+      "student_report_enabled": true,
+      "thumbnail_url": "",
+      "time_to_complete": null,
+      "version": 2,
+      "theme_name": null,
+      "project": null,
+      "plugins": [],
+      "type": "LightweightActivity",
+      "export_site": "Lightweight Activities Runtime and Authoring",
+      "pages": [
+        {
+          "id": 309276,
+          "is_completion": false,
+          "is_hidden": false,
+          "name": null,
+          "position": 1,
+          "show_sidebar": false,
+          "sidebar": null,
+          "sidebar_title": "Did you know?",
+          "sections": [
+            {
+              "layout": "full-width",
+              "is_hidden": false,
+              "secondary_column_collapsible": false,
+              "secondary_column_display_mode": "stacked",
+              "embeddables": [
+                {
+                  "column": null,
+                  "is_half_width": false,
+                  "content": "<p>This page contains a TE windowshade</p>",
+                  "is_callout": true,
+                  "is_hidden": false,
+                  "name": "",
+                  "type": "Embeddable::Xhtml",
+                  "ref_id": "273339-Embeddable::Xhtml"
+                },
+                {
+                  "column": null,
+                  "is_half_width": false,
+                  "plugin": {
+                    "id": 5226,
+                    "description": null,
+                    "author_data": "{\"tipType\":\"windowShade\",\"windowShade\":{\"windowShadeType\":\"theoryAndBackground\",\"layout\":\"mediaLeft\",\"initialOpenState\":true,\"content\":\"This is a window shade.\",\"content2\":\"\",\"mediaType\":\"none\",\"mediaCaption\":\"Last, First. \\\"Title of Work.\\\" Year created. Site Title [OR] Publisher. Gallery [OR] Location. http://www.url.com.\",\"mediaURL\":\"\"}}",
+                    "approved_script_label": "teacherEditionTips",
+                    "component_label": "windowShade",
+                    "approved_script": {
+                      "name": "Teacher Edition (master)",
+                      "url": "https://teacher-edition-tips-plugin.concord.org/plugin.js",
+                      "label": "teacherEditionTips",
+                      "description": "This plugin provides Teacher Edition components",
+                      "version": 3,
+                      "json_url": "https://teacher-edition-tips-plugin.concord.org/manifest.json",
+                      "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                    }
+                  },
+                  "is_hidden": false,
+                  "type": "Embeddable::EmbeddablePlugin",
+                  "ref_id": "4900-Embeddable::EmbeddablePlugin"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": 309277,
+          "is_completion": false,
+          "is_hidden": false,
+          "name": null,
+          "position": 2,
+          "show_sidebar": false,
+          "sidebar": null,
+          "sidebar_title": "Did you know?",
+          "sections": [
+            {
+              "layout": "full-width",
+              "is_hidden": false,
+              "secondary_column_collapsible": false,
+              "secondary_column_display_mode": "stacked",
+              "embeddables": [
+                {
+                  "column": null,
+                  "is_half_width": false,
+                  "content": "<p>This page contains a TE sidetip.</p>",
+                  "is_callout": true,
+                  "is_hidden": false,
+                  "name": "",
+                  "type": "Embeddable::Xhtml",
+                  "ref_id": "273340-Embeddable::Xhtml"
+                },
+                {
+                  "column": null,
+                  "is_half_width": false,
+                  "plugin": {
+                    "id": 5227,
+                    "description": null,
+                    "author_data": "{\"tipType\":\"sideTip\",\"sideTip\":{\"content\":\"This is a sidetip\",\"mediaType\":\"none\",\"mediaURL\":\"\"}}",
+                    "approved_script_label": "teacherEditionTips",
+                    "component_label": "sideTip",
+                    "approved_script": {
+                      "name": "Teacher Edition (master)",
+                      "url": "https://teacher-edition-tips-plugin.concord.org/plugin.js",
+                      "label": "teacherEditionTips",
+                      "description": "This plugin provides Teacher Edition components",
+                      "version": 3,
+                      "json_url": "https://teacher-edition-tips-plugin.concord.org/manifest.json",
+                      "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+                    }
+                  },
+                  "is_hidden": false,
+                  "type": "Embeddable::EmbeddablePlugin",
+                  "ref_id": "4901-Embeddable::EmbeddablePlugin"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

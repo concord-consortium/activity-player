@@ -2,14 +2,7 @@
 
 .embeddable {
   margin-bottom: 10px;
-
-  &.full-width {
-    width: 100%;
-  }
-  &.reduced-width {
-    width: 440px;
-  }
-
+  position: relative;
   .header {
     height: fit-content;
     min-height: 36px;
@@ -21,5 +14,8 @@
     padding: 0 0 0 10px;
     color: white;
     background-color: $cc-teal-dark1;
+  }
+  &.hidden {
+    display: none;
   }
 }
