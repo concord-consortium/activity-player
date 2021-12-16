@@ -8,7 +8,7 @@ import { SequenceNav } from "./activity-header/sequence-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages,
+import { ActivityLayouts, numQuestionsOnPreviousPages,
          enableReportButton, setDocumentTitle, getPagePositionFromQueryValue,
          getSequenceActivityFromQueryValue, getSequenceActivityId,
          setAppBackgroundImage, getPageIDFromPosition } from "../utilities/activity-utils";
