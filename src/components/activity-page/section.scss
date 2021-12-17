@@ -1,5 +1,4 @@
 @import "../vars.scss";
-$content-inner-width: 900px;
 
 .section {
   display: grid;
@@ -13,7 +12,6 @@ $content-inner-width: 900px;
   }
 
   &.full-width {
-    width: $content-inner-width;
     .embeddable.full-width {
       grid-column: span 10;
       &.half-width {
@@ -26,7 +24,6 @@ $content-inner-width: 900px;
   }
 
   &.l_6040 {
-    width: $content-inner-width;
     .column.primary {
       grid-column: span 6;
       &.expand {
@@ -46,7 +43,6 @@ $content-inner-width: 900px;
   }
 
   &.r_4060 {
-    width: $content-inner-width;
     .column.primary {
       grid-column: span 6;
       &.expand {
@@ -66,7 +62,7 @@ $content-inner-width: 900px;
   }
 
   &.l_7030 {
-    width: $content-inner-width;
+    // width: $content-inner-width;
     .column.primary {
       grid-column: span 7;
       &.expand {
@@ -86,7 +82,7 @@ $content-inner-width: 900px;
   }
 
   &.r_3070 {
-    width: $content-inner-width;
+    // width: $content-inner-width;
     .column.primary {
       grid-column: span 7;
       &.expand {
