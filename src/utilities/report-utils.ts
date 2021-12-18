@@ -67,7 +67,6 @@ export const getReportUrl = (questionRefId?: string) => {
     result += "&runKey=" + runKey
             + "&activity=" + resourceUrl
             + "&resourceUrl=" + resourceUrl;
-    return result;
   } else {
     // We know this is a IPortalData because there is no runKey
     const portalData = getPortalData() as IPortalData;
@@ -89,14 +88,15 @@ export const getReportUrl = (questionRefId?: string) => {
               + "&offering=" + offeringUrl
               + "&reportType=offering&studentId="+studentId
               + "&auth-domain="+authDomainUrl;
-
-      if (questionRefId) {
-        // Limit report to a single question.
-        result += "&iframeQuestionId=" + refIdToAnswersQuestionId(questionRefId);
-      }
-      return result;
     }
   }
+
+  if (questionRefId) {
+    // Limit report to a single question.
+    result += "&iframeQuestionId=" + refIdToAnswersQuestionId(questionRefId);
+  }
+
+  return result;
 };
 
 export const isValidReportLink = () => {

@@ -19,13 +19,13 @@ jest.mock("../firebase-db", () => (
 
 describe("getReportUrl", () => {
   const basicParams = "/?activity=https://lara.example.com/api/v1/activities/345.json";
+  const runKey = "b948ae4f-83e4-4448-a500-b6564bda3a08";
+  const paramsWithRunKey = basicParams + "&runKey=" + runKey;
 
   beforeEach(() => {
     clearFirebaseAppName();
   });
   describe("with a run key", () => {
-    const runKey = "b948ae4f-83e4-4448-a500-b6564bda3a08";
-    const paramsWithRunKey = basicParams + "&runKey=" + runKey;
     it("returns valid report URL", () => {
       window.history.replaceState({}, "Test", paramsWithRunKey);
 
@@ -118,23 +118,44 @@ describe("getReportUrl", () => {
 
   describe("when iframeQuestionId is provided" , () => {
 
-    it("returns a valid reportURL", () => {
-      window.history.replaceState({}, "Test", basicParams);
-      offering = {id:"offering-123"};
-      const reportURL = getReportUrl("mw_interactive_123");
+    describe("without a run key", () => {
+      it("returns a valid reportURL", () => {
+        window.history.replaceState({}, "Test", basicParams);
+        offering = {id:"offering-123"};
+        const reportURL = getReportUrl("mw_interactive_123");
 
-      expect(reportURL).toEqual(
-        kDevPortalReportUrl
-        + "?firebase-app=report-service-dev"
-        + "&sourceKey=lara.example.com"
-        + "&answersSourceKey=activity-player.unexisting.url.com"
-        + "&class=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fclasses%2F123"
-        + "&offering=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fofferings%2Foffering-123"
-        + "&reportType=offering"
-        + "&studentId=abc345"
-        + "&auth-domain=https://example.com"
-        + "&iframeQuestionId=mw_interactive_123");
+        expect(reportURL).toEqual(
+          kDevPortalReportUrl
+          + "?firebase-app=report-service-dev"
+          + "&sourceKey=lara.example.com"
+          + "&answersSourceKey=activity-player.unexisting.url.com"
+          + "&class=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fclasses%2F123"
+          + "&offering=https%3A%2F%2Fexample.com%2Fapi%2Fv1%2Fofferings%2Foffering-123"
+          + "&reportType=offering"
+          + "&studentId=abc345"
+          + "&auth-domain=https://example.com"
+          + "&iframeQuestionId=mw_interactive_123");
+      });
     });
+
+    describe("with a run key", () => {
+      it("returns a valid reportURL", () => {
+        window.history.replaceState({}, "Test", paramsWithRunKey);
+        offering = {id:"offering-123"};
+        const reportURL = getReportUrl("mw_interactive_123");
+
+        expect(reportURL).toEqual(
+          kDevPortalReportUrl
+          + "?firebase-app=report-service-dev"
+          + "&sourceKey=lara.example.com"
+          + "&answersSourceKey=activity-player.unexisting.url.com"
+          + "&runKey=" + runKey
+          + "&activity=https://lara.example.com/activities/345"
+          + "&resourceUrl=https://lara.example.com/activities/345"
+          + "&iframeQuestionId=mw_interactive_123");
+      });
+    });
+
   });
 });
 
