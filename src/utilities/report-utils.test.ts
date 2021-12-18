@@ -136,7 +136,7 @@ describe("getReportUrl", () => {
           + "&auth-domain=https://example.com"
           + "&iframeQuestionId=mw_interactive_123");
       });
-    })
+    });
 
     describe("with a run key", () => {
       it("returns a valid reportURL", () => {
@@ -154,7 +154,7 @@ describe("getReportUrl", () => {
           + "&resourceUrl=https://lara.example.com/activities/345"
           + "&iframeQuestionId=mw_interactive_123");
       });
-    })
+    });
 
   });
 });
