@@ -34,7 +34,7 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
     const { enableReportButton, page, totalPreviousQuestions } = this.props;
     const pageTitle = page.name || "";
     const sections = page.sections;
-    const responsiveLayoutSections = sections.filter(s => s.layout === "responsive");
+    const responsiveLayoutSections = sections.filter(s => s.layout.includes("responsive"));
     const isResponsiveLayout = responsiveLayoutSections.length > 0;
 
     return (

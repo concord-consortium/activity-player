@@ -968,7 +968,7 @@
       "sidebar_title": "Did you know?",
       "sections": [
         {
-          "layout": "responsive",
+          "layout": "responsive-full-width",
           "is_hidden": false,
           "secondary_column_collapsible": false,
           "secondary_column_display_mode": "stacked",
@@ -986,7 +986,7 @@
           ]
         },
         {
-          "layout": "responsive",
+          "layout": "responsive-full-width",
           "is_hidden": false,
           "secondary_column_collapsible": false,
           "secondary_column_display_mode": "stacked",
@@ -1096,7 +1096,7 @@
           ]
         },
         {
-          "layout": "responsive",
+          "layout": "responsive-2-columns",
           "is_hidden": false,
           "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
@@ -1398,7 +1398,7 @@
           ]
         },
         {
-          "layout": "responsive",
+          "layout": "responsive-2-columns",
           "is_hidden": false,
           "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
@@ -1508,7 +1508,7 @@
           ]
         },
         {
-          "layout": "responsive",
+          "layout": "responsive-2-columns",
           "is_hidden": false,
           "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
@@ -1738,7 +1738,7 @@
           ]
         },
         {
-          "layout": "responsive",
+          "layout": "responsive-full-width",
           "is_hidden": false,
           "secondary_column_collapsible": false,
           "secondary_column_display_mode": "stacked",
@@ -2324,7 +2324,7 @@
           ]
         },
         {
-          "layout": "responsive",
+          "layout": "responsive-2-columns",
           "is_hidden": false,
           "secondary_column_collapsible": false,
           "secondary_column_display_mode": "stacked",

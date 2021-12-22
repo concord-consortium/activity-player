@@ -135,21 +135,30 @@ export const Section: React.FC<IProps> = (props) => {
   const layout = section.layout;
   const display_mode = section.secondary_column_display_mode;
   const singlePage = activityLayout === ActivityLayouts.SinglePage;
+  const responsiveFullWidth = layout === "responsive-full-width";
+  const responsive2Column = layout === "responsive-2-columns";
+  const splitLayout = layout === "60-40" ||
+                      layout === "40-60" ||
+                      layout === "70-30" ||
+                      layout === "30-70" ||
+                      responsive2Column;
+  const responsiveSection = responsive2Column || responsiveFullWidth || layout === "responsive";
   const sectionClass = classNames("section",
                                   {"full-width": layout === "full-width" || singlePage},
                                   {"l_6040": layout === "60-40"},
                                   {"r_4060": layout === "40-60"},
                                   {"l_7030": layout === "70-30"},
                                   {"r_3070": layout === "30-70"},
-                                  {"responsive": layout === "responsive" && !singlePage},
+                                  {"responsive": responsiveSection && !singlePage},
                                   {"stacked": display_mode === "stacked"},
                                   {"carousel": display_mode === "carousel"}
                                 );
   const embeddables = section.embeddables;
-  const primaryEmbeddables = layout !== "full-width" ? embeddables.filter(e => e.column === "primary" && !e.is_hidden) : [];
-  const secondaryEmbeddables = layout !== "full-width" ? embeddables.filter(e => e.column === "secondary" && !e.is_hidden) : [];
-  const responsiveIsSingleColumn = (layout === "responsive" && (embeddables.length > 0 && primaryEmbeddables.length === 0 && secondaryEmbeddables.length === 0));
-  const singleColumn = layout === "full-width" || responsiveIsSingleColumn;
+
+  const primaryEmbeddables = splitLayout || layout === "responsive" ? embeddables.filter(e => e.column === "primary" && !e.is_hidden) : [];
+  const secondaryEmbeddables = splitLayout || layout === "responsive" ? embeddables.filter(e => e.column === "secondary" && !e.is_hidden) : [];
+  const responsiveIsSingleColumn = (responsiveFullWidth && (embeddables.length > 0 && primaryEmbeddables.length === 0 && secondaryEmbeddables.length === 0));
+  const singleColumn = layout === "full-width" || responsiveFullWidth || responsiveIsSingleColumn;
   const responsiveDirection  = singleColumn ? "column" : "row";
   const responsiveDirectionStyle = { flexDirection: responsiveDirection } as React.CSSProperties;
   const leftPrimary = layout === "60-40" || layout === "70-30";
