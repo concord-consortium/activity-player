@@ -338,6 +338,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
+    const visiblePages = activity.pages.filter((page) => !page.is_hidden);
     return (
       <>
         { this.state.sequence && this.renderSequenceNav(fullWidth) }
@@ -353,7 +354,7 @@ export class App extends React.PureComponent<IProps, IState> {
               : <ActivityPageContent
                   ref={this.activityPageContentRef}
                   activityLayout={activity.layout}
-                  enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
+                  enableReportButton={currentPage === visiblePages.length && enableReportButton(activity)}
                   pageNumber={currentPage}
                   page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
                   totalPreviousQuestions={totalPreviousQuestions}
