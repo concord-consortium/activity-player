@@ -62,7 +62,8 @@ export class NavPages extends React.Component <IProps, IState> {
   private renderNextButton = () => {
     const { currentPage, pages, lockForwardNav } = this.props;
     const { pageChangeInProgress } = this.state;
-    const totalPages = pages.length;
+    const visiblePages = pages.filter((page) => !page.is_hidden);
+    const totalPages = visiblePages.length;
     return (
       <button
         className={`page-button ${pageChangeInProgress || currentPage === totalPages || lockForwardNav ? "disabled" : ""}`}
