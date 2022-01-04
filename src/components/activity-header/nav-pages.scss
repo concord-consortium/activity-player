@@ -73,7 +73,10 @@
       outline: none;
       cursor: auto;
       opacity: .35;
-      pointer-events: none;
+      &.arrow-button {
+        pointer-events: none;
+      }
     }
+
   }
 }
