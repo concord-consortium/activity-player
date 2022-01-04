@@ -111,9 +111,14 @@
       }
     }
 
+    .embeddable.full-width > div {
+      margin-right: 20px;
+    }
+
     .column.primary {
       right: 0;
       width: 100%;
+      margin-right: 20px;
     }
     .column.secondary {
       min-width: 365px;
