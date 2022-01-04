@@ -162,6 +162,14 @@ export const Section: React.FC<IProps> = (props) => {
   const responsiveDirection  = singleColumn ? "column" : "row";
   const responsiveDirectionStyle = { flexDirection: responsiveDirection } as React.CSSProperties;
   const leftPrimary = layout === "60-40" || layout === "70-30";
+  const getNumQuestionsLeftColumn = () => {
+    const column = leftPrimary ? primaryEmbeddables : secondaryEmbeddables;
+    let numQuestions = 0;
+      column.forEach(embeddable => {
+         isQuestion(embeddable) && numQuestions++;
+      });
+    return numQuestions;
+  };
   if (singleColumn || singlePage) {
     return (
       <div className={sectionClass} ref={sectionDivRef} style={responsiveDirectionStyle} data-cy="section-single-column-layout">
@@ -171,7 +179,7 @@ export const Section: React.FC<IProps> = (props) => {
   } else {
     const leftColumnEmbeddables = leftPrimary ? primaryEmbeddables : secondaryEmbeddables;
     const rightColumnEmbeddables = leftPrimary ? secondaryEmbeddables : primaryEmbeddables;
-    const numQuestionsLeftColumn = leftPrimary ? primaryEmbeddables.length : secondaryEmbeddables.length;
+    const numQuestionsLeftColumn = getNumQuestionsLeftColumn();
     const rightColumnQuestionNumberStart = questionNumberStart + numQuestionsLeftColumn;
     return (
       <div className={sectionClass} ref={sectionDivRef} data-cy="section-split-layout">
