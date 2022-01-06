@@ -355,7 +355,7 @@ export class App extends React.PureComponent<IProps, IState> {
               : <ActivityPageContent
                   ref={this.activityPageContentRef}
                   activityLayout={activity.layout}
-                  enableReportButton={currentPage === visiblePages.length && enableReportButton(activity)}
+                  enableReportButton={currentPage === pagesVisible.length && enableReportButton(activity)}
                   pageNumber={currentPage}
                   page={pagesVisible[currentPage - 1]}
                   totalPreviousQuestions={totalPreviousQuestions}
