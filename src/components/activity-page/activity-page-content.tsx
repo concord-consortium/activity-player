@@ -38,15 +38,18 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
     const isResponsiveLayout = responsiveLayoutSections.length > 0;
 
     return (
-      <div className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
-        <div className="name">{ pageTitle }</div>
-        {this.renderSections(sections, totalPreviousQuestions)}
-        { enableReportButton &&
-          <BottomButtons
-            onGenerateReport={this.handleReport}
-          />
-        }
-      </div>
+      <>
+        {page.is_hidden && this.renderHiddenWarningBanner()}
+        <div className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
+          <div className="name">{ pageTitle }</div>
+          {this.renderSections(sections, totalPreviousQuestions)}
+          { enableReportButton &&
+            <BottomButtons
+              onGenerateReport={this.handleReport}
+            />
+          }
+        </div>
+      </>
     );
   }
 
@@ -87,6 +90,14 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
           );
         }
       })
+    );
+  }
+
+  private renderHiddenWarningBanner = () =>{
+    return (
+      <div className="hidden-page-warning">
+        NOTE: This page is hidden from users
+      </div>
     );
   }
 }

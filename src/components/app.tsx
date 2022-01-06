@@ -289,6 +289,7 @@ export class App extends React.PureComponent<IProps, IState> {
     // convert option with Ruby snake case to kebab case for css
     const fixedWidthLayout = (sequence?.fixed_width_layout || activity.fixed_width_layout || kDefaultFixedWidthLayout).replace(/_/g, "-");
     const activityClasses = classNames("activity", fullWidth ? "responsive" : `fixed-width-${fixedWidthLayout}`);
+    const pagesVisible = queryValue("author-preview") ? activity.pages : activity.pages.filter((page) => !page.is_hidden);
     return (
       <div className={activityClasses} data-cy="activity">
         <Header
@@ -324,7 +325,7 @@ export class App extends React.PureComponent<IProps, IState> {
           <ExpandableContainer
             activity={activity}
             pageNumber={currentPage}
-            page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
+            page={pagesVisible[currentPage - 1]}
             teacherEditionMode={teacherEditionMode}
             pluginsLoaded={pluginsLoaded}
             glossaryPlugin={glossaryEmbeddable !== null}
@@ -338,7 +339,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
-    const visiblePages = activity.pages.filter((page) => !page.is_hidden);
+    const pagesVisible = queryValue("author-preview") ? activity.pages : activity.pages.filter((page) => !page.is_hidden);
     return (
       <>
         { this.state.sequence && this.renderSequenceNav(fullWidth) }
@@ -349,14 +350,14 @@ export class App extends React.PureComponent<IProps, IState> {
           ? this.renderSinglePageContent(activity)
           : currentPage === 0
             ? this.renderIntroductionContent(activity)
-            : activity.pages.filter((page) => !page.is_hidden)[currentPage - 1].is_completion
+            : pagesVisible[currentPage - 1].is_completion
               ? this.renderCompletionContent(activity)
               : <ActivityPageContent
                   ref={this.activityPageContentRef}
                   activityLayout={activity.layout}
-                  enableReportButton={currentPage === visiblePages.length && enableReportButton(activity)}
+                  enableReportButton={currentPage === pagesVisible.length && enableReportButton(activity)}
                   pageNumber={currentPage}
-                  page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
+                  page={pagesVisible[currentPage - 1]}
                   totalPreviousQuestions={totalPreviousQuestions}
                   teacherEditionMode={this.state.teacherEditionMode}
                   setNavigation={this.handleSetNavigation}
