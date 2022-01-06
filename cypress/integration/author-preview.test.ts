@@ -28,7 +28,9 @@ context("Non-Author preview activity pages", () => {
     activityPage.getNavPage(3).should("not.exist");
   });
   it("verify pages do not have warning banner", () => {
-    activityPage.getNavPage(3).click();
+    activityPage.getNavPage(1).click();
+    cy.get(".hidden-page-warning").should("not.exist");
+    activityPage.getNavPage(2).click();
     cy.get(".hidden-page-warning").should("not.exist");
   });
 });
