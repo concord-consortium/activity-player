@@ -5,6 +5,7 @@ import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 import { Page } from "../../types";
 import ArrowPrevious from "../../assets/svg-icons/arrow-previous-icon.svg";
 import ArrowNext from "../../assets/svg-icons/arrow-next-icon.svg";
+import HiddenIcon from "../../assets/svg-icons/hidden-icon.svg";
 
 import "./nav-pages.scss";
 
@@ -101,9 +102,11 @@ export class NavPages extends React.Component <IProps, IState> {
         const currentClass = currentPage === pageNum ? "current" : "";
         const completionClass = page.is_completion ? "completion-page-button" : "";
         const disabledClass = (pageChangeInProgress || lockForwardNav && currentPage < pageNum) ? "disabled" : "";
-        const buttonContent = page.is_completion
-                              ? <IconCompletion className={`icon ${currentClass}`} width={28} height={28} />
-                              : pageNum;
+        const buttonContent = page.is_hidden
+                                ? <HiddenIcon className={`icon ${currentClass}`} width={28} height={28}/>
+                                : page.is_completion
+                                    ? <IconCompletion className={`icon ${currentClass}`} width={28} height={28} />
+                                    : pageNum;
 
         return (
           pageNum >= minPage && pageNum <= maxPage

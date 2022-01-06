@@ -39,7 +39,7 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
 
     return (
       <>
-      { page.is_hidden && this.renderHiddenWarningBanner()}
+        {page.is_hidden && this.renderHiddenWarningBanner()}
         <div className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
           <div className="name">{ pageTitle }</div>
           {this.renderSections(sections, totalPreviousQuestions)}
