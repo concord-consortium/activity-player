@@ -1,4 +1,5 @@
 import React from "react";
+import { queryValue } from "../../utilities/url-query";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
 import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 import { Page } from "../../types";
@@ -78,7 +79,7 @@ export class NavPages extends React.Component <IProps, IState> {
   private renderButtons = () => {
     const { currentPage, pages, lockForwardNav } = this.props;
     const { pageChangeInProgress } = this.state;
-    const visiblePages = pages.filter((page) => !page.is_hidden);
+    const visiblePages = queryValue("author-preview") ? pages : pages.filter((page) => !page.is_hidden);
     const totalPages = visiblePages.length;
     const maxPagesLeftOfCurrent = currentPage - 1;
     const maxPagesRightOfCurrent = totalPages - currentPage;
