@@ -4,6 +4,7 @@ import sampleNewSectionsActivity1 from "../data/version-2/sample-new-sections-ac
 import sampleActivity1TE from "../data/sample-activity-1-te.json";
 import sampleActivity1 from "../data/sample-activity-1.json";
 import sampleNewSections from "../data/version-2/sample-new-sections.json";
+import sampleNewSectionsHiddenContent from "../data/version-2/sample-new-sections-hidden-content.json";
 import sampleNewSectionsMultipleLayoutTypes from "../data/version-2/sample-new-sections-multiple-layout-types.json";
 import sampleNewSectionsSinglePageLayout from "../data/version-2/sample-new-sections-single-page-layout.json";
 import sampleNewSectionsInteractiveSharing from "../data/version-2/sample-new-sections-interactive-sharing.json";
@@ -33,6 +34,7 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-1-te": sampleActivity1TE as Activity,
   "sample-activity-1": sampleActivity1 as unknown as Activity,
   "sample-new-sections": sampleNewSections as Activity,
+  "sample-new-sections-hidden-content":sampleNewSectionsHiddenContent as Activity,
   "sample-new-sections-multiple-layout-types": sampleNewSectionsMultipleLayoutTypes as Activity,
   "sample-new-sections-single-page-layout": sampleNewSectionsSinglePageLayout as Activity,
   "sample-new-sections-interactive-sharing": sampleNewSectionsInteractiveSharing as Activity,
