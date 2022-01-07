@@ -97,8 +97,10 @@ export class NavPages extends React.Component <IProps, IState> {
     }
 
     return (
-      visiblePages.map((page: any, pageIndex: number) => {
+      visiblePages.map((page: Page, pageIndex: number, pageArray: Page[]) => {
+        const hiddenPagesBefore = pageArray.filter((p, index) => p.is_hidden && index < pageIndex ).length;
         const pageNum = pageIndex + 1;
+        const pageLabel = pageNum - hiddenPagesBefore;
         const currentClass = currentPage === pageNum ? "current" : "";
         const completionClass = page.is_completion ? "completion-page-button" : "";
         const disabledClass = (pageChangeInProgress || lockForwardNav && currentPage < pageNum) ? "disabled" : "";
@@ -106,7 +108,7 @@ export class NavPages extends React.Component <IProps, IState> {
                                 ? <HiddenIcon className={`icon ${currentClass}`} width={28} height={28}/>
                                 : page.is_completion
                                     ? <IconCompletion className={`icon ${currentClass}`} width={28} height={28} />
-                                    : pageNum;
+                                    : pageLabel;
 
         return (
           pageNum >= minPage && pageNum <= maxPage
