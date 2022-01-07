@@ -20,7 +20,7 @@ describe("Activity utility functions", () => {
   });
   it("determines if section is hidden", () => {
     const hiddenActivityHeaderHidden = isSectionHidden(activityHidden.pages[0].sections[0]);
-    const hiddenActivitySectionHidden = isSectionHidden(activityHidden.pages[2].sections[1]);
+    const hiddenActivitySectionHidden = isSectionHidden(activityHidden.pages[1].sections[0]);
     expect(hiddenActivityHeaderHidden).toBe(false);
     expect(hiddenActivitySectionHidden).toBe(true);
   });
