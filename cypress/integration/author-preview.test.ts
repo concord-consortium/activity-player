@@ -10,11 +10,11 @@ context("Author preview activity pages", () => {
     cy.get(".nav-pages .page-button").should("have.length", 14);
   });
   it("verify hidden page includes warning banner", () => {
-    activityPage.getPage(2).click();
+    cy.get("[data-cy=nav-pages-button]").eq(1).click();
     cy.get(".hidden-page-warning").should("be.visible");
   });
   it("verify page not hidden does not have warning banner", () => {
-    activityPage.getNavPage(3).click();
+    activityPage.getNavPage(2).click();
     cy.get(".hidden-page-warning").should("not.exist");
   });
 });
