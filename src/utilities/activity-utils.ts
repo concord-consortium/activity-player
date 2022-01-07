@@ -1,6 +1,7 @@
 import { Page, Activity, EmbeddableType, Sequence, SectionType } from "../types";
 import { SidebarConfiguration } from "../components/page-sidebar/sidebar-wrapper";
 import { isQuestion as isEmbeddableQuestion } from "./embeddable-utils";
+import { queryValue } from "./url-query";
 
 export enum ActivityLayouts {
   MultiplePages = 0,
@@ -102,12 +103,30 @@ export const numQuestionsOnPreviousSections = (currentSectionIndex: number, sect
 
 export const numQuestionsOnPreviousPages = (currentPage: number, activity: Activity) => {
   let numQuestions = 0;
-  for (let page = 0; page < currentPage - 1; page++) {
-    if (!activity.pages[page].is_hidden) {
-      for (let section = 0; section < activity.pages[page].sections.length; section++) {
-        if(!activity.pages[page].sections[section].is_hidden) {
-          for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
-            const embeddableWrapper = activity.pages[page].sections[section].embeddables[embeddableNum];
+  const visiblePages = activity.pages.filter(p => !p.is_hidden);
+
+  if (queryValue("author-preview")) {
+    for (let page = 0; page < currentPage - 1; page++) {
+      if (!activity.pages[page].is_hidden) {
+        for (let section = 0; section < activity.pages[page].sections.length; section++) {
+          if(!activity.pages[page].sections[section].is_hidden) {
+            for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
+              const embeddableWrapper = activity.pages[page].sections[section].embeddables[embeddableNum];
+              if (isQuestion(embeddableWrapper) && !embeddableWrapper.is_hidden) {
+                numQuestions++;
+              }
+            }
+          }
+        }
+      }
+    }
+    return numQuestions;
+  } else {
+    for (let page = 0; page < currentPage - 1; page++) {
+      for (let section = 0; section < visiblePages[page].sections.length; section++) {
+        if(!visiblePages[page].sections[section].is_hidden) {
+          for (let embeddableNum = 0; embeddableNum < visiblePages[page].sections[section].embeddables.length; embeddableNum++) {
+            const embeddableWrapper = visiblePages[page].sections[section].embeddables[embeddableNum];
             if (isQuestion(embeddableWrapper) && !embeddableWrapper.is_hidden) {
               numQuestions++;
             }
@@ -115,8 +134,8 @@ export const numQuestionsOnPreviousPages = (currentPage: number, activity: Activ
         }
       }
     }
+    return numQuestions;
   }
-  return numQuestions;
 };
 
 export const enableReportButton = (activity: Activity) => {

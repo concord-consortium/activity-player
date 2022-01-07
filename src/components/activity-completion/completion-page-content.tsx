@@ -59,11 +59,14 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const activityProgress = (currentActivity: Activity) => {
     let numAnswers = 0;
     let numQuestions = 0;
+    const visiblePages = currentActivity.pages.filter(page => !page.is_hidden);
     const questionsStatus = Array<IQuestionStatus>();
-    currentActivity.pages.forEach((page: Page, index) => {
+    visiblePages.forEach((page: Page, index) => {
       const pageNum = index + 1;
-      page.sections.forEach((section) => {
-        section.embeddables.forEach((embeddable: EmbeddableType) => {
+      const visibleSections = page.sections.filter(section => !section.is_hidden);
+      visibleSections.forEach((section) => {
+        const visibleEmbeddables = section.embeddables.filter(embeddable => !embeddable.is_hidden);
+        visibleEmbeddables.forEach((embeddable: EmbeddableType) => {
           if (isQuestion(embeddable)) {
             numQuestions++;
             const questionId = refIdToAnswersQuestionId(embeddable.ref_id);

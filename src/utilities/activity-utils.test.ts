@@ -19,12 +19,10 @@ describe("Activity utility functions", () => {
     expect(isE3Question).toBe(true);// enable_learner_state true
   });
   it("determines if section is hidden", () => {
-    const hiddenActivityHeaderHiddenCount = isSectionHidden(activityHidden.pages[0].sections[0]);
-    const hiddenActivityInfoAssessHiddenCount = isSectionHidden(activityHidden.pages[1].sections[0]);
-    const hiddenActivityInteractiveHiddenCount = isSectionHidden(activityHidden.pages[3].sections[0]);
-    expect(hiddenActivityHeaderHiddenCount).toBe(false);
-    expect(hiddenActivityInfoAssessHiddenCount).toBe(false);
-    expect(hiddenActivityInteractiveHiddenCount).toBe(true);
+    const hiddenActivityHeaderHidden = isSectionHidden(activityHidden.pages[0].sections[0]);
+    const hiddenActivitySectionHidden = isSectionHidden(activityHidden.pages[1].sections[0]);
+    expect(hiddenActivityHeaderHidden).toBe(false);
+    expect(hiddenActivitySectionHidden).toBe(true);
   });
   it("gets the number of questions in previous sections", () => {
     const pageSectionQuestionCountDefaultActivity = numQuestionsOnPreviousSections(1, activity.pages[0].sections);
@@ -39,8 +37,8 @@ describe("Activity utility functions", () => {
     const numQuestionBeforePage3 = numQuestionsOnPreviousPages(3, activityHidden);
     expect(numQuestionBeforePage0).toBe(0); // should never be questions before intro
     expect(numQuestionBeforePage1).toBe(0); // should never be questions before page 1
-    expect(numQuestionBeforePage2).toBe(3); // should never be questions before page 1, 1 question should be hidden
-    expect(numQuestionBeforePage3).toBe(3); // hidden page should not be counted
+    expect(numQuestionBeforePage2).toBe(2); // hidden page should not be counted
+    expect(numQuestionBeforePage3).toBe(4); // this is the completion page
   });
   it("determines if report button is enabled", () => {
     const defaultActivityReportEnabled = enableReportButton(DefaultTestActivity);
