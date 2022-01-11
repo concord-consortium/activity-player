@@ -162,16 +162,18 @@ export const setAppBackgroundImage = (backgroundImageUrl?: string) => {
 };
 
 export const setDocumentTitle = (activity: Activity | undefined, pageNumber: number) => {
+
   if (activity) {
-    if(queryValue("author-preview")) {
+    const setTabTitle = (pages: Page[]) => {
       document.title = pageNumber === 0
       ? activity.name
-      : `Page ${pageNumber} ${activity.pages[pageNumber - 1].name || activity.name}`;
+      : `Page ${pageNumber} ${pages[pageNumber - 1].name || activity.name}`;
+    };
+    const visiblePages = activity.pages.filter(p => !p.is_hidden);
+    if (queryValue("author-preview")) {
+      setTabTitle(activity.pages);
     } else {
-      const visiblePages = activity.pages.filter(p => !p.is_hidden);
-      document.title = pageNumber === 0
-        ? activity.name
-        : `Page ${pageNumber} ${visiblePages[pageNumber - 1].name || activity.name}`;
+      setTabTitle(visiblePages);
     }
   }
 };
