@@ -112,14 +112,15 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     embeddableData = embeddable;
   }
   const url = embeddableData?.base_url || embeddableData?.url || "";
+  const aspectRatioMethod = embeddableData?.aspect_ratio_method || "DEFAULT";
   const authoredState = useMemo(() => safeJsonParseIfString(authored_state) || {}, [authored_state]);
   const linkedInteractives = useRef(embeddable.linked_interactives?.length
                                 ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
                                 : undefined);
   // interactiveId value should always match IDs generated above in the `linkedInteractives` array.
   const interactiveId = embeddable.ref_id;
-  // TODO: handle different aspect ratio methods
-  // const aspectRatioMethod = data.aspect_ratio_method ? data.aspect_ratio_method : "";
+
+  let proposedHeight: number;
   const nativeHeight = embeddableData?.native_height || 0;
   const nativeWidth = embeddableData?.native_width || 0;
   const aspectRatio = nativeHeight && nativeWidth ? nativeWidth / nativeHeight : kDefaultAspectRatio;
@@ -127,19 +128,43 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   // cf. https://www.npmjs.com/package/@react-hook/resize-observer
   const useSize = (target: any) => {
     const [size, setSize] = React.useState();
-
     React.useLayoutEffect(() => {
       setSize(target.current.getBoundingClientRect());
     }, [target]);
-
     useResizeObserver(target, (entry: any) => setSize(entry.contentRect));
     return size;
   };
 
+  // use this to get height when aspect ratio method is "MAX"
+  const [screenHeight, getDimension] = useState({
+    dynamicHeight: window.innerHeight
+  });
+  const setDimension = () => {
+    getDimension({
+      dynamicHeight: window.innerHeight
+    });
+  };
+  useEffect(() => {
+    window.addEventListener("resize", setDimension);
+    return(() => {
+        window.removeEventListener("resize", setDimension);
+    });
+  }, [screenHeight]);
+
   const divTarget = React.useRef(null);
   const divSize: any = useSize(divTarget);
-  const proposedHeight: number = divSize?.width / aspectRatio;
   const containerWidth: number = divSize?.width;
+  switch (aspectRatioMethod) {
+    case "MAX":
+      proposedHeight = screenHeight.dynamicHeight;
+      break;
+    case "MANUAL":
+      proposedHeight = divSize?.width / aspectRatio;
+      break;
+    default:
+      proposedHeight = divSize?.width / aspectRatio;
+      break;
+  }
 
   const [ showHint, setShowHint ] = useState(false);
   const [ hint, setHint ] = useState("");
