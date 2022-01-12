@@ -297,6 +297,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         portalData={portalData}
         answerMetadata={answerMeta.current}
         interactiveInfo={interactiveInfo.current}
+        aspectRatioMethod={aspectRatioMethod}
       />;
 
     return (
