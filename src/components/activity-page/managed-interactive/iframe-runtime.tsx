@@ -70,12 +70,13 @@ interface IProps {
   portalData?: IPortalData;
   answerMetadata?: IExportableAnswerMetadata;
   interactiveInfo?: IInteractiveInfo;
+  aspectRatioMethod?: "MAX" | "MANUAL" | "DEFAULT"
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
-    proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal,
-    setSupportedFeatures, setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo } = props;
+    proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
+    setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo, aspectRatioMethod } = props;
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
@@ -351,7 +352,12 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     }
   }));
 
-  const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;
+  const heightFromSupportedFeatures = aspectRatioMethod === "MAX"
+                                        ? proposedHeight
+                                        : ARFromSupportedFeatures && containerWidth
+                                            ? containerWidth / ARFromSupportedFeatures
+                                            : 0;
+
   // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone
   // "height" listener), height based on aspect ratio specified by interactive (from IframePhone "supportedFeatures" listener),
   // or height from container dimensions and embeddable specifications.

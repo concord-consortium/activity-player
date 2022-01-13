@@ -28,7 +28,7 @@ import sampleActivityInteractiveSizing from "../data/sample-activity-interactive
 import sampleActivityInteractiveSharing from "../data/sample-activity-interactive-sharing.json";
 import sampleActivity1100px from "../data/sample-activity-1100px.json";
 import sampleActivityIPadFriendly from "../data/sample-activity-ipad-friendly.json";
-
+import interactiveSizingDemoQI from "../data/Interactive-Sizing-Demo-Question-Interactives.json";
 const sampleActivities: {[name: string]: Activity} = {
   "sample-new-sections-activity-1": sampleNewSectionsActivity1 as Activity,
   "sample-activity-1-te": sampleActivity1TE as Activity,
@@ -58,6 +58,7 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-interactive-sharing": sampleActivityInteractiveSharing as unknown as Activity,
   "sample-activity-1100px": sampleActivity1100px as unknown as Activity,
   "sample-activity-ipad-friendly": sampleActivityIPadFriendly as unknown as Activity,
+  "interactive-sizing-demo-question-interactive": interactiveSizingDemoQI as unknown as Activity,
 };
 
 import sampleSequence from "../data/sample-sequence.json";
