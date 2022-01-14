@@ -37,6 +37,7 @@
         flex-direction: column;
       }
       &.collapsed {
+        min-width: 45px;
         grid-column: span 1;
       }
     }
@@ -48,6 +49,10 @@
       &.expand {
         grid-column: span 9;
       }
+      &.max-aspect-ratio {
+        display: flex;
+        width: 100%;
+      }
     }
     .column.secondary {
       left: 0;
@@ -56,7 +61,9 @@
         flex-direction: column;
       }
       &.collapsed {
-        grid-column: span 1;
+        min-width: 45px;
+        max-width: 45px;
+        // grid-column: span 1;
       }
     }
   }
@@ -75,7 +82,8 @@
         flex-direction: column;
       }
       &.collapsed {
-        grid-column: span 1;
+        min-width: 45px;
+        // grid-column: span 1;
       }
     }
   }
@@ -94,7 +102,8 @@
         flex-direction: column;
       }
       &.collapsed {
-        grid-column: span 1;
+        min-width: 45px;
+        // grid-column: span 1;
       }
     }
   }

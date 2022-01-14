@@ -67,6 +67,7 @@ export interface EmbeddableBase {
   ref_id: string;
   embeddable_ref_id?: string;
   column?: "primary" | "secondary" | null;
+  aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX";
 }
 
 export interface IManagedInteractive extends EmbeddableBase {
@@ -100,7 +101,7 @@ export interface IMwInteractive extends EmbeddableBase {
   enable_learner_state?: boolean;
   linked_interactives?: { ref_id: string, label: string }[];
   linked_interactive?: { ref_id: string };
-  aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX";
+  // aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX";
 }
 
 export interface IEmbeddableXhtml extends EmbeddableBase {
