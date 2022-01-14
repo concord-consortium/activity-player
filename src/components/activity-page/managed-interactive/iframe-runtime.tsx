@@ -57,7 +57,7 @@ interface IProps {
   linkedInteractives?: ILinkedInteractive[];
   report?: boolean;
   proposedHeight?: number;
-  containerWidth?: number;
+  containerWidth?: number | string;
   setNewHint: (newHint: string) => void;
   getFirebaseJWT: (firebaseApp: string, others: Record<string, any>) => Promise<string>;
   getAttachmentUrl: (request: IAttachmentUrlRequest) => Promise<IAttachmentUrlResponse>;
@@ -354,7 +354,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   const heightFromSupportedFeatures = aspectRatioMethod === "MAX"
                                         ? proposedHeight
-                                        : ARFromSupportedFeatures && containerWidth
+                                        : ARFromSupportedFeatures && containerWidth && typeof(containerWidth) === "number"
                                             ? containerWidth / ARFromSupportedFeatures
                                             : 0;
 
@@ -365,7 +365,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   return (
     <div data-cy="iframe-runtime">
-      <iframe ref={iframeRef} src={url} id={id} width="100%" height={height} frameBorder={0}
+      <iframe ref={iframeRef} src={url} id={id} width={containerWidth} height={height} frameBorder={0}
               allowFullScreen={true}
               allow="geolocation *; microphone *; camera *"
               title={iframeTitle}
