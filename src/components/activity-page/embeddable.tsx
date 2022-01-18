@@ -24,6 +24,7 @@ interface IProps {
   setNavigation?: (id: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
   embeddableRef?: React.Ref<EmbeddableImperativeAPI>;
+  parentHeight?: number;
 }
 
 export interface EmbeddableImperativeAPI {
@@ -33,7 +34,7 @@ export interface EmbeddableImperativeAPI {
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, embeddableRef) => {
-  const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded } = props;
+  const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded, parentHeight } = props;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
   }, [setNavigation, embeddable.ref_id]);
@@ -85,7 +86,8 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                     questionNumber={questionNumber}
                     setSupportedFeatures={handleSetSupportedFeatures}
                     setSendCustomMessage={setSendCustomMessage}
-                    setNavigation={handleSetNavigation} />;
+                    setNavigation={handleSetNavigation}
+                    parentHeight={parentHeight || 0} />;
   } else if (embeddable.type === "ManagedInteractive" && !embeddable.library_interactive) {
     qComponent = <div>Content type not supported</div>;
   } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {

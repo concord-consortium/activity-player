@@ -10,6 +10,7 @@ import { Logger, LogEventName } from "../../lib/logger";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 
 import "./section.scss";
+import useResizeObserver from "@react-hook/resize-observer";
 
 interface IProps {
   page: Page;
@@ -29,9 +30,18 @@ export const Section: React.FC<IProps> = (props) => {
   const primaryDivRef = useRef<HTMLDivElement>(null);
   const secondaryDivRef = useRef<HTMLDivElement>(null);
   const embeddableRefs: Record<string, React.RefObject<EmbeddableImperativeAPI>> = {};
+  const useSize = (target: any) => {
+    const [size, setSize] = React.useState();
+    React.useLayoutEffect(() => {
+      setSize(target.current.getBoundingClientRect());
+    }, [target]);
+    useResizeObserver(target, (entry: any) => setSize(entry.contentRect));
+    return size;
+  };
 
-  const renderEmbeddables = (embeddablesToRender: EmbeddableType[], questionNumStart: number, isSingleColumn?: boolean) => {
+  const renderEmbeddables = (embeddablesToRender: EmbeddableType[], questionNumStart: number, parentHeight?: number, isSingleColumn?: boolean) => {
     let questionNumber = questionNumStart;
+
     return (
       <React.Fragment>
         { embeddablesToRender.map((embeddable, embeddableIndex) => {
@@ -55,6 +65,7 @@ export const Section: React.FC<IProps> = (props) => {
                 teacherEditionMode={props.teacherEditionMode}
                 setNavigation={props.setNavigation}
                 pluginsLoaded={props.pluginsLoaded}
+                parentHeight={parentHeight || 0}
               />
             );
           })
@@ -62,27 +73,27 @@ export const Section: React.FC<IProps> = (props) => {
       </React.Fragment>
     );
   };
-  const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
+  const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number, secHeight?: number) => {
     const maxAspectRatioEmbeddables = primaryEmbeddablesToRender.filter(e => e.aspect_ratio_method === "MAX");
     const hasMaxAspectRatio = maxAspectRatioEmbeddables.length > 0;
-    const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed && !hasMaxAspectRatio},
+    const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed},
                                       {"max-aspect-ratio": hasMaxAspectRatio});
     return (
         <div className={containerClass} ref={primaryDivRef} data-cy="section-column-primary">
           <div className="embeddableWrapper">
-            {renderEmbeddables(primaryEmbeddablesToRender, questionNumStart)}
+            {renderEmbeddables(primaryEmbeddablesToRender, questionNumStart, secHeight)}
           </div>
         </div>
     );
   };
 
-  const renderSecondaryEmbeddables = (secondaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
+  const renderSecondaryEmbeddables = (secondaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number, secHeight?: number) => {
     const collapsible = section.secondary_column_collapsible;
     const containerClass = classNames("column", layout, "secondary", {"collapsed": isSecondaryCollapsed});
     return (
       <div className={containerClass} ref={secondaryDivRef} data-cy="section-column-secondary">
         {secondaryEmbeddablesToRender.length > 0 && collapsible && renderCollapsibleHeader()}
-        {!isSecondaryCollapsed && renderEmbeddables(secondaryEmbeddablesToRender, questionNumStart)}
+        {!isSecondaryCollapsed && renderEmbeddables(secondaryEmbeddablesToRender, questionNumStart, secHeight)}
       </div>
     );
   };
@@ -156,7 +167,6 @@ export const Section: React.FC<IProps> = (props) => {
                                   {"carousel": display_mode === "carousel"}
                                 );
   const embeddables = section.embeddables;
-
   const primaryEmbeddables = splitLayout || layout === "responsive" ? embeddables.filter(e => e.column === "primary" && !e.is_hidden) : [];
   const secondaryEmbeddables = splitLayout || layout === "responsive" ? embeddables.filter(e => e.column === "secondary" && !e.is_hidden) : [];
   const responsiveIsSingleColumn = (responsiveFullWidth && (embeddables.length > 0 && primaryEmbeddables.length === 0 && secondaryEmbeddables.length === 0));
@@ -164,6 +174,10 @@ export const Section: React.FC<IProps> = (props) => {
   const responsiveDirection  = singleColumn ? "column" : "row";
   const responsiveDirectionStyle = { flexDirection: responsiveDirection } as React.CSSProperties;
   const leftPrimary = layout === "60-40" || layout === "70-30";
+  const sectionHeight = sectionDivRef.current?.clientHeight;
+
+  // const sectionHeight = (sectionSize && sectionSize?.height) || 0;
+  sectionDivRef.current && console.log(sectionDivRef.current?.clientHeight);
   const getNumQuestionsLeftColumn = () => {
     const column = leftPrimary ? primaryEmbeddables : secondaryEmbeddables;
     let numQuestions = 0;
@@ -175,7 +189,7 @@ export const Section: React.FC<IProps> = (props) => {
   if (singleColumn || singlePage) {
     return (
       <div className={sectionClass} ref={sectionDivRef} style={responsiveDirectionStyle} data-cy="section-single-column-layout">
-        { renderEmbeddables(embeddables, questionNumberStart, singleColumn) }
+        { renderEmbeddables(embeddables, questionNumberStart, sectionHeight, singleColumn) }
       </div>
     );
   } else {
@@ -186,12 +200,12 @@ export const Section: React.FC<IProps> = (props) => {
     return (
       <div className={sectionClass} ref={sectionDivRef} data-cy="section-split-layout">
         {leftPrimary
-          ? renderPrimaryEmbeddables(leftColumnEmbeddables, questionNumberStart)
-          : renderSecondaryEmbeddables(leftColumnEmbeddables, questionNumberStart)
+          ? renderPrimaryEmbeddables(leftColumnEmbeddables, questionNumberStart, sectionHeight)
+          : renderSecondaryEmbeddables(leftColumnEmbeddables, questionNumberStart, sectionHeight)
         }
         {leftPrimary
-          ? renderSecondaryEmbeddables(rightColumnEmbeddables, rightColumnQuestionNumberStart)
-          : renderPrimaryEmbeddables(rightColumnEmbeddables, rightColumnQuestionNumberStart)
+          ? renderSecondaryEmbeddables(rightColumnEmbeddables, rightColumnQuestionNumberStart, sectionHeight)
+          : renderPrimaryEmbeddables(rightColumnEmbeddables, rightColumnQuestionNumberStart, sectionHeight)
         }
       </div>
     );

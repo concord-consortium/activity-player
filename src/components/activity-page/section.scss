@@ -48,10 +48,11 @@
       grid-column: span 6;
       &.expand {
         grid-column: span 9;
-      }
-      &.max-aspect-ratio {
-        display: flex;
-        width: 100%;
+        &.max-aspect-ratio {
+          position: absolute;
+          width: 95%;
+          left: 55px;
+        }
       }
     }
     .column.secondary {

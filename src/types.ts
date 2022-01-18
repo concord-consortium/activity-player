@@ -68,6 +68,7 @@ export interface EmbeddableBase {
   embeddable_ref_id?: string;
   column?: "primary" | "secondary" | null;
   aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX";
+  parentHeight?: number;
 }
 
 export interface IManagedInteractive extends EmbeddableBase {

@@ -30,6 +30,7 @@ interface IProps {
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
   setNavigation?: (options: INavigationOptions) => void;
   ref?: React.Ref<ManagedInteractiveImperativeAPI>;
+  parentHeight?: number;
 }
 
 export interface ManagedInteractiveImperativeAPI {
@@ -98,7 +99,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     return handleGetFirebaseJWT({ firebase_app: firebaseApp, ...others }, portalData);
   }, [portalData]);
 
-  const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation } = props;
+  const { embeddable, questionNumber, parentHeight, setSupportedFeatures, setSendCustomMessage, setNavigation } = props;
   const { authored_state } = embeddable;
   const [ activeDialog, setActiveDialog ] = useState<IShowDialog | null>(null);
   const [ activeLightbox, setActiveLightbox ] = useState<IShowLightbox | null>(null);
@@ -156,9 +157,14 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   let containerWidth: number | string;
   containerWidth = "100%";
 
+  console.log("parentHeight:", parentHeight, "screenHeight:", screenHeight.dynamicHeight);
   switch (aspectRatioMethod) {
     case "MAX":
-      proposedHeight = screenHeight.dynamicHeight;
+      if (parentHeight && (screenHeight.dynamicHeight  > parentHeight)) {
+        proposedHeight = parentHeight;
+      } else {
+        proposedHeight = screenHeight.dynamicHeight;
+      }
       break;
     case "MANUAL":
       proposedHeight = divSize?.width / aspectRatio;
