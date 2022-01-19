@@ -153,7 +153,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
 
   const divTarget = React.useRef(null);
   const divSize: any = useSize(divTarget);
-  const containerWidth: number = divSize?.width;
+  let containerWidth: number | string;
+  containerWidth = "100%";
   switch (aspectRatioMethod) {
     case "MAX":
       proposedHeight = screenHeight.dynamicHeight;
@@ -162,8 +163,12 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       proposedHeight = divSize?.width / aspectRatio;
       break;
     default:
-      proposedHeight = divSize?.width / aspectRatio;
-      break;
+      if (divSize?.width / aspectRatio > screenHeight.dynamicHeight) {
+        proposedHeight = screenHeight.dynamicHeight - 15;
+        containerWidth = (proposedHeight * aspectRatio);
+      } else {
+        proposedHeight = divSize?.width / kDefaultAspectRatio;
+      }      break;
   }
 
   const [ showHint, setShowHint ] = useState(false);
