@@ -166,6 +166,12 @@
       padding: 5px;
       flex-direction: column;
       justify-content: flex-start;
+      position: sticky;
+      top: 0;
+      div {
+        transform: rotate(-90deg);
+        top: 20px;
+      }
     }
 
     div {
@@ -173,17 +179,6 @@
       position: relative;
       white-space: nowrap;
       width: 30px;
-    }
-
-    &.collapsed {
-      height: 350px;
-      width: 45px;
-      padding: 5px;
-
-      div {
-        transform: rotate(-90deg);
-        top: 20px;
-      }
     }
   }
 }
