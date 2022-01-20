@@ -14,8 +14,7 @@ body {
   display: flex;
   justify-content: center;
   background-color: var(--theme-primary-color);
-  overflow-y: auto;
-  overflow-x: auto;
+  overflow: auto;
 }
 
 .app {
