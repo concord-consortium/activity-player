@@ -37,7 +37,7 @@ export interface ManagedInteractiveImperativeAPI {
 }
 
 const kDefaultAspectRatio = 4 / 3;
-
+const kBottomMargin = 15;
 const getModalContainer = (): HTMLElement => {
   return document.getElementById("app") || document.body;
 };
@@ -153,7 +153,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
 
   const divTarget = React.useRef(null);
   const divSize: any = useSize(divTarget);
-  const containerWidth: number = divSize?.width;
+  let containerWidth: number | string = "100%";
   switch (aspectRatioMethod) {
     case "MAX":
       proposedHeight = screenHeight.dynamicHeight;
@@ -162,7 +162,12 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       proposedHeight = divSize?.width / aspectRatio;
       break;
     default:
-      proposedHeight = divSize?.width / aspectRatio;
+      if (divSize?.width / aspectRatio > screenHeight.dynamicHeight) {
+        proposedHeight = screenHeight.dynamicHeight - kBottomMargin;
+        containerWidth = (proposedHeight * aspectRatio);
+      } else {
+        proposedHeight = divSize?.width / kDefaultAspectRatio;
+      }
       break;
   }
 
