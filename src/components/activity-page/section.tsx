@@ -64,7 +64,10 @@ export const Section: React.FC<IProps> = (props) => {
   };
 
   const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
-    const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed});
+    const maxAspectRatioEmbeddables = primaryEmbeddablesToRender.filter(e => e.aspect_ratio_method === "MAX");
+    const hasMaxAspectRatio = maxAspectRatioEmbeddables.length > 0;
+    const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed && hasMaxAspectRatio},
+                                      {"max-aspect-ratio": hasMaxAspectRatio});
     return (
         <div className={containerClass} ref={primaryDivRef} data-cy="section-column-primary">
           <div className="embeddableWrapper">
