@@ -28,10 +28,6 @@
       grid-column: span 6;
       &.expand {
         grid-column: span 9;
-        &.max-aspect-ratio {
-          width: 105%;
-          left: -50px;
-        }
       }
     }
     .column.secondary {
@@ -51,8 +47,9 @@
       grid-column: span 6;
       &.expand {
         grid-column: span 9;
+        width: 105%;
+        left: -50px;
         &.max-aspect-ratio {
-          width: 105%;
           left: -50px;
         }
       }
@@ -74,10 +71,6 @@
       grid-column: span 7;
       &.expand {
         grid-column: span 9;
-        &.max-aspect-ratio {
-          width: 105%;
-          left: -50px;
-        }
       }
     }
     .column.secondary {
