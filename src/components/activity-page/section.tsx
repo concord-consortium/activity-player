@@ -30,27 +30,27 @@ export const Section: React.FC<IProps> = (props) => {
   const primaryDivRef = useRef<HTMLDivElement>(null);
   const secondaryDivRef = useRef<HTMLDivElement>(null);
   const embeddableRefs: Record<string, React.RefObject<EmbeddableImperativeAPI>> = {};
- // cf. https://www.npmjs.com/package/@react-hook/resize-observer
+  // cf. https://www.npmjs.com/package/@react-hook/resize-observer
   const useSize = (target: any) => {
     const [size, setSize] = React.useState();
     useResizeObserver(target, (entry: any) => setSize(entry.contentRect));
     return size;
   };
-    // use this to get browser height fwhen deiciding to pin or not
-    const [screenHeight, getDimension] = useState({
+  // use this to get browser height when deiciding to pin or not
+  const [screenHeight, getDimension] = useState({
+    dynamicHeight: window.innerHeight
+  });
+  const setDimension = () => {
+    getDimension({
       dynamicHeight: window.innerHeight
     });
-    const setDimension = () => {
-      getDimension({
-        dynamicHeight: window.innerHeight
-      });
-    };
-    useEffect(() => {
-      window.addEventListener("resize", setDimension);
-      return(() => {
-          window.removeEventListener("resize", setDimension);
-      });
-    }, [screenHeight]);
+  };
+  useEffect(() => {
+    window.addEventListener("resize", setDimension);
+    return(() => {
+      window.removeEventListener("resize", setDimension);
+    });
+  }, [screenHeight]);
 
   const renderEmbeddables = (embeddablesToRender: EmbeddableType[], questionNumStart: number, isSingleColumn?: boolean) => {
     let questionNumber = questionNumStart;
