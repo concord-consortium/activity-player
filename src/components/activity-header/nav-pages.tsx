@@ -54,7 +54,7 @@ export class NavPages extends React.Component <IProps, IState> {
     return (
       <button
         className={`page-button arrow-button ${pageChangeInProgress || currentPage === 0 ? "disabled" : ""}`}
-        onClick={this.handleChangePage(currentPage - 1)}
+        onClick={this.handlePageChangeRequest(currentPage - 1)}
         aria-label="Previous page"
       >
         <ArrowPrevious className="icon"/>
@@ -69,7 +69,7 @@ export class NavPages extends React.Component <IProps, IState> {
     return (
       <button
         className={`page-button arrow-button ${pageChangeInProgress || currentPage === totalPages || lockForwardNav ? "disabled" : ""}`}
-        onClick={this.handleChangePage(currentPage + 1)}
+        onClick={this.handlePageChangeRequest(currentPage + 1)}
         aria-label="Next page"
       >
         <ArrowNext className="icon"/>
@@ -114,7 +114,7 @@ export class NavPages extends React.Component <IProps, IState> {
           pageNum >= minPage && pageNum <= maxPage
             ? <button
                 className={`page-button ${currentClass} ${completionClass} ${disabledClass}`}
-                onClick={this.handleChangePage(pageNum)}
+                onClick={this.handlePageChangeRequest(pageNum)}
                 key={`page ${pageNum}`}
                 data-cy={`${page.is_completion ? "nav-pages-completion-page-button" : "nav-pages-button"}`}
                 aria-label={`Page ${pageNum}`}
@@ -131,7 +131,7 @@ export class NavPages extends React.Component <IProps, IState> {
     const currentClass = this.props.currentPage === 0 ? "current" : "";
     const { pageChangeInProgress } = this.state;
     return (
-      <button className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`} onClick={this.handleChangePage(0)} aria-label="Home">
+      <button className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`} onClick={this.handlePageChangeRequest(0)} aria-label="Home">
         <IconHome
           className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
           width={28}
@@ -141,9 +141,12 @@ export class NavPages extends React.Component <IProps, IState> {
     );
   }
 
-  private handleChangePage = (page: number) => () => {
-    if (!this.state.pageChangeInProgress) {
-      this.setState({ pageChangeInProgress: true }, () => {
+  private handlePageChangeRequest = (page: number) => () => {
+    const { currentPage, lockForwardNav } = this.props;
+    const { pageChangeInProgress } = this.state;
+    if (!pageChangeInProgress) {
+      const allowPageChange = page < currentPage || !lockForwardNav;
+      this.setState({ pageChangeInProgress: allowPageChange }, () => {
         this.props.onPageChange(page);
       });
     }
