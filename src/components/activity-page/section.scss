@@ -137,9 +137,11 @@
     position: relative;
     height: auto;
     .embeddableWrapper {
-      position: sticky;
       top: 10px;
       align-self: flex-start;
+      &.pinned {
+        position: sticky;
+      }
     }
   }
 

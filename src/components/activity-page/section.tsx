@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import classNames from "classnames";
 import { Embeddable, EmbeddableImperativeAPI } from "./embeddable";
 import { isQuestion,  getLinkedPluginEmbeddable, ActivityLayouts } from "../../utilities/activity-utils";
@@ -8,6 +8,7 @@ import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
 import { EmbeddableType, Page, SectionType } from "../../types";
 import { Logger, LogEventName } from "../../lib/logger";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
+import useResizeObserver from "@react-hook/resize-observer";
 
 import "./section.scss";
 
@@ -29,6 +30,27 @@ export const Section: React.FC<IProps> = (props) => {
   const primaryDivRef = useRef<HTMLDivElement>(null);
   const secondaryDivRef = useRef<HTMLDivElement>(null);
   const embeddableRefs: Record<string, React.RefObject<EmbeddableImperativeAPI>> = {};
+ // cf. https://www.npmjs.com/package/@react-hook/resize-observer
+  const useSize = (target: any) => {
+    const [size, setSize] = React.useState();
+    useResizeObserver(target, (entry: any) => setSize(entry.contentRect));
+    return size;
+  };
+    // use this to get browser height fwhen deiciding to pin or not
+    const [screenHeight, getDimension] = useState({
+      dynamicHeight: window.innerHeight
+    });
+    const setDimension = () => {
+      getDimension({
+        dynamicHeight: window.innerHeight
+      });
+    };
+    useEffect(() => {
+      window.addEventListener("resize", setDimension);
+      return(() => {
+          window.removeEventListener("resize", setDimension);
+      });
+    }, [screenHeight]);
 
   const renderEmbeddables = (embeddablesToRender: EmbeddableType[], questionNumStart: number, isSingleColumn?: boolean) => {
     let questionNumber = questionNumStart;
@@ -62,12 +84,15 @@ export const Section: React.FC<IProps> = (props) => {
       </React.Fragment>
     );
   };
-
+  const embeddableWrapperDivRef = React.useRef(null);
+  const wrapperSize: any = useSize(embeddableWrapperDivRef);
   const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
+    const isPinned = wrapperSize?.height < screenHeight.dynamicHeight;
     const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed});
+    const wrapperClass = classNames ("embeddableWrapper", {"pinned": isPinned});
     return (
         <div className={containerClass} ref={primaryDivRef} data-cy="section-column-primary">
-          <div className="embeddableWrapper">
+          <div className={wrapperClass} ref={embeddableWrapperDivRef}>
             {renderEmbeddables(primaryEmbeddablesToRender, questionNumStart)}
           </div>
         </div>
