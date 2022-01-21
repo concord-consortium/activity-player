@@ -43,12 +43,11 @@
   }
 
   &.r_4060 {
+    grid-template-columns: minmax(45px, auto) repeat(9, 1fr);
     .column.primary {
       grid-column: span 6;
       &.expand {
         grid-column: span 9;
-        width: 105%;
-        left: -50px;
       }
     }
     .column.secondary {
@@ -83,12 +82,11 @@
   }
 
   &.r_3070 {
+    grid-template-columns: minmax(45px, auto) repeat(9, 1fr);
     .column.primary {
       grid-column: span 7;
       &.expand {
         grid-column: span 9;
-        width: 105%;
-        left: -50px;
       }
     }
     .column.secondary {
