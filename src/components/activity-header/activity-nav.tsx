@@ -16,9 +16,8 @@ interface IProps {
 export class ActivityNav extends React.PureComponent <IProps> {
   render() {
     const { activityPages, currentPage, fullWidth, lockForwardNav, onPageChange, singlePage } = this.props;
-    const uniqueKey = `activity-nav-${new Date().getTime()}`;
     return (
-      <div key={uniqueKey} className={`activity-nav ${fullWidth ? "full" : ""}`} data-cy="activity-nav-header">
+      <div className={`activity-nav ${fullWidth ? "full" : ""}`} data-cy="activity-nav-header">
         { !singlePage &&
           <NavPages
             pages={activityPages}

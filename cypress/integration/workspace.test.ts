@@ -42,12 +42,12 @@ context("Test the overall app", () => {
   });
   describe("accessibility",()=>{
     it("go to correct page when tabbed and keydown enter from page navigation header",()=>{
-      activityPage.getNavPage(2).type("{enter}", { force: true });
+      activityPage.getNavPage(2).type("{enter}");
       activityPage.getSidebarTab().should("be.visible");
     });
 
     it("go to correct page when tabbed and keydown enter from page list",()=>{
-      cy.get("[data-cy=nav-pages] button").eq(1).type("{enter}", { force: true });
+      cy.get("[data-cy=nav-pages] button").eq(1).type("{enter}");
       cy.get("[data-cy=intro-page-content]").should("be.visible");
       cy.get(".page-item").eq(1).focus();
       cy.focused().type("{enter}");

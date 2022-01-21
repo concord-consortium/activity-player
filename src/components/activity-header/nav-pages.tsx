@@ -143,7 +143,8 @@ export class NavPages extends React.Component <IProps, IState> {
 
   private handleChangePage = (page: number) => () => {
     if (!this.state.pageChangeInProgress) {
-      this.setState({ pageChangeInProgress: true }, () => {
+      const allowPageChange = !this.props.lockForwardNav;
+      this.setState({ pageChangeInProgress: allowPageChange }, () => {
         this.props.onPageChange(page);
       });
     }
