@@ -5,12 +5,18 @@
 
   .activity-title {
     display: flex;
+    height: 80px;
+    align-items: center;
 
     img {
-      height: 80px;
       border-radius: 8px;
       border: solid 1px $cc-teal;
       margin-right: 20px;
+      height: inherit;
+    }
+
+    h1 {
+      line-height: 1.25em;
     }
   }
 }

@@ -134,8 +134,8 @@ export class NavPages extends React.Component <IProps, IState> {
       <button className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`} onClick={this.handleChangePage(0)} aria-label="Home">
         <IconHome
           className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
-          width={28}
-          height={28}
+          width={24}
+          height={24}
         />
       </button>
     );
