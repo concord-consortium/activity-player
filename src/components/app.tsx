@@ -43,7 +43,7 @@ import { LaraDataContext } from "./lara-data-context";
 import "./app.scss";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
-const kDefaultIncompleteMessage = "Please submit an answer first.";
+const kDefaultIncompleteMessage = "You must submit an answer for all required questions before advancing to another page.";
 
 // User will see the idle warning after kMaxIdleTime
 const kMaxIdleTime = 20 * 60 * 1000; // 20 minutes
