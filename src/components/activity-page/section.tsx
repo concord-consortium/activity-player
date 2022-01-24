@@ -84,18 +84,21 @@ export const Section: React.FC<IProps> = (props) => {
       </React.Fragment>
     );
   };
-  const embeddableWrapperDivRef = React.useRef(null);
-  const wrapperSize: any = useSize(embeddableWrapperDivRef);
-  const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
+    const embeddableWrapperDivRef = React.useRef(null);
+    const wrapperSize: any = useSize(embeddableWrapperDivRef);
+    const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
+    const maxAspectRatioEmbeddables = primaryEmbeddablesToRender.filter(e => e.aspect_ratio_method === "MAX");
+    const hasMaxAspectRatio = maxAspectRatioEmbeddables.length > 0;
+    const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed},
+                                      {"max-aspect-ratio": hasMaxAspectRatio});
     const isPinned = wrapperSize?.height < screenHeight.dynamicHeight;
-    const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed});
     const wrapperClass = classNames ("embeddableWrapper", {"pinned": isPinned});
     return (
-        <div className={containerClass} ref={primaryDivRef} data-cy="section-column-primary">
-          <div className={wrapperClass} ref={embeddableWrapperDivRef}>
-            {renderEmbeddables(primaryEmbeddablesToRender, questionNumStart)}
-          </div>
+      <div className={containerClass} ref={primaryDivRef} data-cy="section-column-primary">
+        <div className={wrapperClass} ref={embeddableWrapperDivRef}>
+          {renderEmbeddables(primaryEmbeddablesToRender, questionNumStart)}
         </div>
+      </div>
     );
   };
 

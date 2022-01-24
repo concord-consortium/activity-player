@@ -118,11 +118,11 @@ const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => {
     case "r-4060":
       sectionLayout = "60-40";
       break;
-    case "l-3070":
-      sectionLayout = "70-30";
-      break;
-    case "r-7030":
+    case "l-7030":
       sectionLayout = "30-70";
+      break;
+    case "r-3070":
+      sectionLayout = "70-30";
   }
   const headerBlockEmbeddables: legacyEmbeddableType[] = [];
   const primaryBlockEmbeddables: legacyEmbeddableType[] = [];
