@@ -33,7 +33,7 @@ describe("Nav Pages component", () => {
       currentPage={0}
       onPageChange={stubFunction}
     />);
-    expect(wrapper.containsMatchingElement(<IconHome width={28} height={28}/>)).toEqual(true);
+    expect(wrapper.containsMatchingElement(<IconHome width={24} height={24}/>)).toEqual(true);
     expect(wrapper.find('[data-cy="nav-pages-button"]').length).toBe(11);
   });
   it("renders nav pages with disabled buttons", () => {
