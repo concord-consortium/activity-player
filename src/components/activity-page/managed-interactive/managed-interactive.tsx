@@ -238,6 +238,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const handleGetAttachmentUrlRequest = async (request: IAttachmentUrlRequest): Promise<IAttachmentUrlResponse> => {
     // the answerMetadata does not exist for interactives that have never been saved before now
     let answerMetadata: IExportableAnswerMetadata = answerMeta.current || {} as any;
+    // the interactiveId is only present when requesting data for a linked interactive
     if (request.interactiveId) {
       answerMetadata = (await getAnswerMetadata(request.interactiveId)) || ({} as any);
     }
