@@ -61,7 +61,7 @@ To deploy a production release:
 2. Compute asset sizes.
     1. Run `npm install`
     2. Run `npm run build`
-    3. Look at file sizes with `ls -a dist/assets`
+    3. Look at file sizes with `ls -la dist/assets`
     4. Add file sizes to CHANGES.md
     5. Look at previous version file sizes listed in the previous release notes in GitHub. Compute the percent change `(new - prev) / prev * 100`
 3. Update package, commit, and tag
