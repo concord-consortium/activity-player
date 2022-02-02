@@ -57,6 +57,7 @@ export class NavPages extends React.Component <IProps, IState> {
         className={`page-button arrow-button ${pageChangeInProgress || currentPage === 0 ? "last-page" : ""}`}
         onClick={this.handlePageChangeRequest(currentPage - 1)}
         aria-label="Previous page"
+        data-cy="previous-page-button"
       >
         <ArrowPrevious className="icon"/>
       </button>
@@ -77,6 +78,7 @@ export class NavPages extends React.Component <IProps, IState> {
         className={nextButtonClass}
         onClick={this.handlePageChangeRequest(currentPage + 1)}
         aria-label="Next page"
+        data-cy="next-page-button"
       >
         <ArrowNext className="icon"/>
       </button>
@@ -137,7 +139,11 @@ export class NavPages extends React.Component <IProps, IState> {
     const currentClass = this.props.currentPage === 0 ? "current" : "";
     const { pageChangeInProgress } = this.state;
     return (
-      <button className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`} onClick={this.handlePageChangeRequest(0)} aria-label="Home">
+      <button className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`}
+              onClick={this.handlePageChangeRequest(0)}
+              aria-label="Home"
+              data-cy="home-button"
+      >
         <IconHome
           className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
           width={28}
