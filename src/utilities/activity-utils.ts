@@ -25,6 +25,13 @@ export interface PageSectionQuestionCount {
   InteractiveBlock: number;
 }
 
+interface ISetDocumentTitleParams {
+  activity: Activity | undefined;
+  pageNumber: number;
+  sequence?: Sequence;
+  sequenceActivityNum?: number;
+}
+
 export const isSectionHidden = (section: SectionType) => {
   return section.is_hidden;
 };
@@ -161,19 +168,23 @@ export const setAppBackgroundImage = (backgroundImageUrl?: string) => {
   el?.style.setProperty("background-repeat", "no-repeat");
 };
 
-export const setDocumentTitle = (activity: Activity | undefined, pageNumber: number) => {
+export const setDocumentTitle = (params: ISetDocumentTitleParams) => {
+  const { activity, pageNumber, sequence, sequenceActivityNum } = params;
+  const setTabTitle = (title: string, pages: Page[]) => {
+    document.title = pageNumber === 0
+      ? title
+      : `Page ${pageNumber} ${pages[pageNumber - 1].name || title}`;
+  };
 
-  if (activity) {
-    const setTabTitle = (pages: Page[]) => {
-      document.title = pageNumber === 0
-      ? activity.name
-      : `Page ${pageNumber} ${pages[pageNumber - 1].name || activity.name}`;
-    };
+  if (sequence && sequenceActivityNum === 0) {
+    const sequenceTitle = sequence.display_title || sequence.title || "Sequence";
+    setTabTitle(sequenceTitle, []);
+  } else if (activity) {
     const visiblePages = activity.pages.filter(p => !p.is_hidden);
     if (queryValue("author-preview")) {
-      setTabTitle(activity.pages);
+      setTabTitle(activity.name, activity.pages);
     } else {
-      setTabTitle(visiblePages);
+      setTabTitle(activity.name, visiblePages);
     }
   }
 };
