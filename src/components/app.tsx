@@ -463,7 +463,7 @@ export class App extends React.PureComponent<IProps, IState> {
     const app = document.getElementById("app");
     app?.style.setProperty("position", "relative");
     window.scroll(0,0);
-    if(app?.clientTop === 0) {
+    if (app?.scrollTop === 0) { // Make sure the page has scrolled before changing it back to 'fix' poisiton
       app?.style.setProperty("position", "fixed");
     }
   }
