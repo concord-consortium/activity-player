@@ -11,6 +11,9 @@ class ActivityPage {
   getNavPage(num) {
     return cy.get("[data-cy=nav-pages]").contains(num);
   }
+  getCompletionPage() {
+    return cy.get("[data-cy=nav-pages-completion-page-button]");
+  }
   getPreviousPageButton() {
     return cy.get("[data-cy=previous-page-button");
   }

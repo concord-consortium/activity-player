@@ -61,7 +61,7 @@ context("Test the overall app", () => {
       activityPage.getHomeButton().eq(1).click();
       cy.wait(1000);
       activityPage.getPreviousPageButton().should("have.class", "last-page");
-      activityPage.getNavPage(7).click();
+      activityPage.getCompletionPage().eq(0).click();
       cy.wait(1000);
       activityPage.getNextPageButton().should("have.class", "last-page");
 
