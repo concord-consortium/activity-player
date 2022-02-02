@@ -459,6 +459,15 @@ export class App extends React.PureComponent<IProps, IState> {
     window.location.href = this.portalUrl;
   }
 
+  private scrollToTop = () => {
+    const app = document.getElementById("app");
+    app?.style.setProperty("position", "relative");
+    window.scroll(0,0);
+    if (window.scrollY === 0) { // Make sure the page has scrolled before changing it back to 'fix' poisiton
+      app?.style.setProperty("position", "fixed");
+    }
+  }
+
   private handleChangePage = (page: number) => {
     const { currentPage, incompleteQuestions, activity } = this.state;
     const pageID = activity ? getPageIDFromPosition(activity, page) : undefined;
@@ -472,6 +481,7 @@ export class App extends React.PureComponent<IProps, IState> {
       const navigateAway = () => {
         this.setState({ currentPage: page, incompleteQuestions: [] });
         setDocumentTitle({activity, pageNumber: page});
+        this.scrollToTop();
         Logger.updateActivityPage(page);
         Logger.log({
           event: LogEventName.change_activity_page,
