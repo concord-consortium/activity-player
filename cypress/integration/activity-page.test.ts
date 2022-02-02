@@ -56,6 +56,17 @@ context("Test the overall app", () => {
       activityPage.getModalDialogMessage().should("have.length", 0);
     });
   });
+  describe("First and last page",()=>{
+    it("verify arrow navigation is disabled when on the first or last page",()=>{
+      activityPage.getHomeButton().eq(1).click();
+      cy.wait(1000);
+      activityPage.getPreviousPageButton().should("have.class", "last-page");
+      activityPage.getCompletionPage().eq(0).click();
+      cy.wait(1000);
+      activityPage.getNextPageButton().should("have.class", "last-page");
+
+    });
+  });
   describe("Question Interactives",()=>{
     it("verify we can load a managed interactive",()=>{
       cy.visit("?activity=sample-activity-1&preview");

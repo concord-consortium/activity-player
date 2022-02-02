@@ -75,5 +75,12 @@
       opacity: .35;
     }
 
+    &.last-page {
+      pointer-events: none;
+      outline: none;
+      cursor: auto;
+      opacity: .35;
+    }
+
   }
 }

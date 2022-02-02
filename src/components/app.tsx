@@ -144,7 +144,7 @@ export class App extends React.PureComponent<IProps, IState> {
       const preview = queryValueBoolean("preview") || teacherEditionMode;
 
       const newState: Partial<IState> = {activity, activityIndex, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode};
-      setDocumentTitle(activity, currentPage);
+      setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       let classHash = "";
       let role = "unknown";
@@ -480,7 +480,7 @@ export class App extends React.PureComponent<IProps, IState> {
     } else if (page >= 0 && (activity && page <= activity.pages.length)) {
       const navigateAway = () => {
         this.setState({ currentPage: page, incompleteQuestions: [] });
-        setDocumentTitle(activity, page);
+        setDocumentTitle({activity, pageNumber: page});
         this.scrollToTop();
         Logger.updateActivityPage(page);
         Logger.log({
