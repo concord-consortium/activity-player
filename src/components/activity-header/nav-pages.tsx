@@ -1,4 +1,5 @@
 import React from "react";
+import classNames from "classnames";
 import { queryValue } from "../../utilities/url-query";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
 import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
@@ -53,7 +54,7 @@ export class NavPages extends React.Component <IProps, IState> {
     const { pageChangeInProgress } = this.state;
     return (
       <button
-        className={`page-button arrow-button ${pageChangeInProgress || currentPage === 0 ? "disabled" : ""}`}
+        className={`page-button arrow-button ${pageChangeInProgress || currentPage === 0 ? "last-page" : ""}`}
         onClick={this.handlePageChangeRequest(currentPage - 1)}
         aria-label="Previous page"
       >
@@ -66,9 +67,14 @@ export class NavPages extends React.Component <IProps, IState> {
     const { pageChangeInProgress } = this.state;
     const visiblePages = queryValue("author-preview") ? pages : pages.filter((page) => !page.is_hidden);
     const totalPages = visiblePages.length;
+    // 'disabled' class disables navigation but still allows user to click on arrows or page numbers for warning modal to come up
+    // 'last-page' class disables pointer events.
+    const nextButtonClass = classNames("page-button", "arrow-button",
+                                        {"disabled": pageChangeInProgress || lockForwardNav || currentPage === totalPages},
+                                        {"last-page": currentPage === totalPages});
     return (
       <button
-        className={`page-button arrow-button ${pageChangeInProgress || currentPage === totalPages || lockForwardNav ? "disabled" : ""}`}
+        className={nextButtonClass}
         onClick={this.handlePageChangeRequest(currentPage + 1)}
         aria-label="Next page"
       >
