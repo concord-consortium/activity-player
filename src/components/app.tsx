@@ -472,6 +472,7 @@ export class App extends React.PureComponent<IProps, IState> {
       const navigateAway = () => {
         this.setState({ currentPage: page, incompleteQuestions: [] });
         setDocumentTitle({activity, pageNumber: page});
+        document.getElementsByClassName("app")[0]?.scrollIntoView(); //scroll to the top on page change
         Logger.updateActivityPage(page);
         Logger.log({
           event: LogEventName.change_activity_page,
