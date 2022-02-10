@@ -7,8 +7,13 @@ import { Logo } from "./logo";
 describe("Header component", () => {
   const project1 = {
     about: null,
+    collaborators: null,
+    collaborators_image_url: null,
+    contact_email: null,
+    copyright: null,
+    copyright_image_url: "",
     footer: null,
-    help: null,
+    funders_image_url: null,
     logo_ap: "https://static.concord.org/projects/logos/ap/mw-logo.png",
     logo_lara: "https://static.concord.org/projects/logos/lara/mw-logo.png",
     project_key: "molecular-workbench",
@@ -18,8 +23,13 @@ describe("Header component", () => {
 
   const project2 = {
     about: null,
+    collaborators: null,
+    collaborators_image_url: null,
+    contact_email: null,
+    copyright: null,
+    copyright_image_url: "",
     footer: null,
-    help: null,
+    funders_image_url: null,
     logo_ap: null,
     logo_lara: null,
     project_key: "default",
