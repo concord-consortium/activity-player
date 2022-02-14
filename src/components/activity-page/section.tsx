@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import classNames from "classnames";
 import { Embeddable, EmbeddableImperativeAPI } from "./embeddable";
 import { isQuestion,  getLinkedPluginEmbeddable, ActivityLayouts } from "../../utilities/activity-utils";
@@ -20,16 +20,22 @@ interface IProps {
   teacherEditionMode?: boolean;
   setNavigation?: (refId: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
+  ref?: React.Ref<SectionImperativeAPI>;
 }
 
-export const Section: React.FC<IProps> = (props) => {
+export interface SectionImperativeAPI {
+  requestInteractiveStates: () => Promise<void>[];
+}
+
+export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { activityLayout, page, section, questionNumberStart } = props;
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
 
   const sectionDivRef = useRef<HTMLDivElement>(null);
   const primaryDivRef = useRef<HTMLDivElement>(null);
   const secondaryDivRef = useRef<HTMLDivElement>(null);
-  const embeddableRefs: Record<string, React.RefObject<EmbeddableImperativeAPI>> = {};
+  const embeddableRefs = useRef<Record<string, React.RefObject<EmbeddableImperativeAPI>>>({});
+
   // cf. https://www.npmjs.com/package/@react-hook/resize-observer
   const useSize = (target: any) => {
     const [size, setSize] = React.useState();
@@ -52,6 +58,13 @@ export const Section: React.FC<IProps> = (props) => {
     });
   }, [screenHeight]);
 
+  useImperativeHandle(ref, () => ({
+    requestInteractiveStates: () =>
+      section.embeddables.map((embeddable: EmbeddableType) =>
+        embeddableRefs.current[embeddable.ref_id]?.current?.requestInteractiveState() || Promise.resolve()
+      )
+  }));
+
   const renderEmbeddables = (embeddablesToRender: EmbeddableType[], questionNumStart: number, isSingleColumn?: boolean) => {
     let questionNumber = questionNumStart;
     return (
@@ -61,12 +74,12 @@ export const Section: React.FC<IProps> = (props) => {
               questionNumber++;
             }
             const linkedPluginEmbeddable = getLinkedPluginEmbeddable(page, embeddable.ref_id);
-            if (!embeddableRefs[embeddable.ref_id]) {
-              embeddableRefs[embeddable.ref_id] = React.createRef<EmbeddableImperativeAPI>();
+            if (!embeddableRefs.current[embeddable.ref_id]) {
+              embeddableRefs.current[embeddable.ref_id] = React.createRef<EmbeddableImperativeAPI>();
             }
             return (
               <Embeddable
-                embeddableRef={embeddableRefs[embeddable.ref_id]}
+                ref={embeddableRefs.current[embeddable.ref_id]}
                 key={`embeddable-${embeddableIndex}-${embeddable.ref_id}`}
                 embeddable={embeddable}
                 sectionLayout={isSingleColumn ? "full-width" : section.layout}
@@ -84,8 +97,10 @@ export const Section: React.FC<IProps> = (props) => {
       </React.Fragment>
     );
   };
+
     const embeddableWrapperDivRef = React.useRef(null);
     const wrapperSize: any = useSize(embeddableWrapperDivRef);
+
     const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
     const maxAspectRatioEmbeddables = primaryEmbeddablesToRender.filter(e => e.aspect_ratio_method === "MAX");
     const hasMaxAspectRatio = maxAspectRatioEmbeddables.length > 0;
@@ -222,4 +237,5 @@ export const Section: React.FC<IProps> = (props) => {
       </div>
     );
   }
-};
+});
+Section.displayName = "Section";

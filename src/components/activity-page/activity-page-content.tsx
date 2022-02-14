@@ -1,9 +1,8 @@
 import React from "react";
-import { EmbeddableImperativeAPI } from "./embeddable";
-import { Section } from "./section";
+import { Section, SectionImperativeAPI } from "./section";
 import { BottomButtons } from "./bottom-buttons";
 import { numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
-import { Page, EmbeddableType, SectionType } from "../../types";
+import { Page, SectionType } from "../../types";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../../lib/logger";
 import { showReport } from "../../utilities/report-utils";
@@ -22,9 +21,7 @@ interface IProps {
 }
 
 export class ActivityPageContent extends React.PureComponent <IProps> {
-  private primaryDivRef: HTMLDivElement | null;
-  private secondaryDivRef: HTMLDivElement | null;
-  private embeddableRefs: Record<string, React.RefObject<EmbeddableImperativeAPI>> = {};
+  private sectionRefs: Record<string, React.RefObject<SectionImperativeAPI>> = {};
 
   public constructor(props: IProps) {
     super(props);
@@ -55,11 +52,9 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
 
   public requestInteractiveStates() {
     const promises: Promise<void>[] = [];
-    this.props.page.sections.forEach((section: SectionType) =>
-      section.embeddables.map((embeddable: EmbeddableType) =>
-        promises.push(this.embeddableRefs[embeddable.ref_id]?.current?.requestInteractiveState() || Promise.resolve())
-  )
-);
+    this.props.page.sections.forEach((section: SectionType, idx: number) =>
+      promises.push(...(this.sectionRefs[idx]?.current?.requestInteractiveStates() || [Promise.resolve()]))
+    );
     return promises;
   }
 
@@ -77,8 +72,14 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
         const questionCount = numQuestionsOnPreviousSections(idx, sections) || 0;
         const embeddableQuestionNumberStart = questionCount + totalPreviousQuestions;
         if (!section.is_hidden) {
+          // `idx` is not the best key, but it doesn't seem it could cause any problems here. Even if refs
+          // are recreated, updated, or pointing to different sections over time, it shouldn't matter.
+          if (!this.sectionRefs[idx]) {
+            this.sectionRefs[idx] = React.createRef<SectionImperativeAPI>();
+          }
           return (
             <Section page = {page}
+                    ref={this.sectionRefs[idx]}
                     section={section}
                     key={`section-${idx}`}
                     activityLayout={activityLayout}
