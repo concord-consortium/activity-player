@@ -140,8 +140,13 @@ export interface Page {
 
 export interface Project {
   about: string | null;
+  collaborators: string | null;
+  collaborators_image_url: string | null;
+  contact_email: string | null;
+  copyright: string | null;
+  copyright_image_url: string | null;
   footer: string | null;
-  help: string | null;
+  funders_image_url: string | null;
   logo_ap: string | null;
   logo_lara: string | null;
   project_key: string;
