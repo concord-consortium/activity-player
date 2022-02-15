@@ -23,7 +23,7 @@ interface IProps {
   teacherEditionMode?: boolean;
   setNavigation?: (id: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
-  embeddableRef?: React.Ref<EmbeddableImperativeAPI>;
+  ref?: React.Ref<EmbeddableImperativeAPI>;
 }
 
 export interface EmbeddableImperativeAPI {
@@ -32,7 +32,7 @@ export interface EmbeddableImperativeAPI {
 
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
-export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, embeddableRef) => {
+export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded } = props;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
@@ -63,10 +63,8 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     }
   }, [LARA, linkedPluginEmbeddable, embeddable, pluginsLoaded]);
 
-  useImperativeHandle(embeddableRef, () => ({
-    requestInteractiveState: () => {
-      return managedInteractiveRef.current?.requestInteractiveState() || Promise.resolve();
-    }
+  useImperativeHandle(ref, () => ({
+    requestInteractiveState: () => managedInteractiveRef.current?.requestInteractiveState() || Promise.resolve()
   }));
 
   const handleSetSupportedFeatures = useCallback((container: HTMLElement, features: ISupportedFeatures) => {
