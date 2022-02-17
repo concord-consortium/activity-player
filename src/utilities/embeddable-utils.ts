@@ -74,6 +74,9 @@ export const getAnswerWithMetadata = (
     // LARA also seems to be storing the interactiveState as a JSON string and that
     // JSON string is what is used in the reportState
     interactiveState: JSON.stringify(interactiveState),
+    interactive: {
+      id: embeddable.ref_id
+    },
     version: 1
   };
 

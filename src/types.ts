@@ -199,6 +199,9 @@ export interface IReportState {
   mode: "report";
   authoredState: string;
   interactiveState: string;
+  interactive: {
+    id: string;
+  }
 }
 
 /**

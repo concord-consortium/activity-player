@@ -62,6 +62,7 @@ describe("Embeddable utility functions", () => {
         mode: "report",
         authoredState: `{"version":1,"questionType":"open_response","prompt":"<p>Write something:</p>"}`,
         interactiveState: `{"answerType":"open_response_answer","answerText":"test"}`,
+        interactive: {id: "123-ManagedInteractive"},
         version: 1
       })
     });
@@ -102,6 +103,7 @@ describe("Embeddable utility functions", () => {
         mode: "report",
         authoredState: `{"version":1,"questionType":"image_question","prompt":"<p>Write something:</p>"}`,
         interactiveState: `{"answerType":"image_question_answer","answerText":"test","answerImageUrl":"http://test.snapshot.com"}`,
+        interactive: {id: "123-ManagedInteractive"},
         version: 1
       })
     });
@@ -137,6 +139,7 @@ describe("Embeddable utility functions", () => {
         mode: "report",
         authoredState,
         interactiveState: `{"answerType":"multiple_choice_answer","selectedChoiceIds":["1"]}`,
+        interactive: {id: "123-ManagedInteractive"},
         version: 1
       }),
       answer: {"choice_ids": ["1"]},
@@ -161,6 +164,7 @@ describe("Embeddable utility functions", () => {
       mode: "report",
       authoredState: "",
       interactiveState: JSON.stringify(interactiveState),
+      interactive: {id: "123-ManagedInteractive"},
       version: 1
     });
 
@@ -226,6 +230,7 @@ describe("Embeddable utility functions", () => {
       mode: "report",
       authoredState: `{"myConfiguration": "something"}`,
       interactiveState: `{"myState":"<state />"}`,
+      interactive: {id: "123-ManagedInteractive"},
       version: 1
     });
 
@@ -264,6 +269,7 @@ describe("Embeddable utility functions", () => {
       mode: "report",
       authoredState: `{"version":1,"questionType":"my_question_type"}`,
       interactiveState: `{"answerType":"my_question_type_answer","myState":"<state />"}`,
+      interactive: {id: "123-ManagedInteractive"},
       version: 1
     });
 
