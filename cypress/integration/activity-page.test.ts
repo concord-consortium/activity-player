@@ -74,6 +74,18 @@ context("Test the overall app", () => {
       getInIframe("body", "[data-cy=choices-container]").should("be.visible");
     });
   });
+  describe("Reset buttons",()=>{
+    it("verify we can load an iFrame interactive that has a reset button",()=>{
+      cy.visit("?activity=sample-activity-1100px&preview");
+      activityPage.getNavPage(1).click();
+      cy.get("[data-cy=reset-button]").scrollIntoView().should("be.visible");
+    });
+    it("verify some iFrame interactives may not have a reset button",()=>{
+      cy.visit("?activity=sample-activity-1100px&preview");
+      activityPage.getNavPage(2).click();
+      cy.get("[data-cy=reset-button]").should("not.exist");
+    });
+  });
   describe("Hidden pages",()=>{
     it("verify hidden content",()=>{
       cy.visit("?activity=sample-activity-hidden-content&preview");

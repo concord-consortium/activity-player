@@ -1,6 +1,6 @@
 import React from "react";
 import { IframeRuntime } from "./iframe-runtime";
-import { act, configure, render } from "@testing-library/react";
+import { act, configure, fireEvent, render } from "@testing-library/react";
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 
 configure({ testIdAttribute: "data-cy" });
@@ -48,10 +48,12 @@ describe("IframeRuntime component", () => {
 
   beforeEach(() => {
     jest.useFakeTimers();
+    global.confirm = jest.fn(() => true) as jest.Mock<any>;
   });
 
   afterEach(() => {
     jest.useRealTimers();
+    jest.restoreAllMocks();
   });
 
   it("renders component", async () => {
@@ -69,7 +71,7 @@ describe("IframeRuntime component", () => {
     const mockSetSendCustomMessage = jest.fn((sendMsg: CustomMsgSender) => {
       mockSendCustomMessage = sendMsg;
     });
-    const { getByTestId } = render(
+    const testIframe = render(
       <IframeRuntime
         url={"https://concord.org/"}
         id={"123-Interactive"}
@@ -86,8 +88,9 @@ describe("IframeRuntime component", () => {
         setSendCustomMessage={mockSetSendCustomMessage}
         setNavigation={mockSetNavigation}
         iframeTitle="Interactive content"
+        showDeleteDataButton={true}
       />);
-    expect(getByTestId("iframe-runtime")).toBeDefined();
+    expect(testIframe.getByTestId("iframe-runtime")).toBeDefined();
     // allow initialization to complete
     jest.runAllTimers();
     expect(lastPost()).toBe("initInteractive");
@@ -204,5 +207,10 @@ describe("IframeRuntime component", () => {
       dispatchMessageFromChild("log", {});
     });
     expect(mockLog).toHaveBeenCalledTimes(1);
+
+    const resetButton = testIframe.getByTestId("reset-button");
+    expect(resetButton).toBeDefined();
+    fireEvent.click(resetButton);
+    expect(global.confirm).toHaveBeenCalledTimes(1);
   });
 });

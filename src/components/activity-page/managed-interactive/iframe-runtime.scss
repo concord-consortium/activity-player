@@ -1,0 +1,19 @@
+@import "../../vars.scss";
+
+.iframe-runtime {
+  button.button {
+    align-items: center;
+    display: flex;
+    line-height: 1.6;
+    margin: 0 auto 5px;
+
+    &:active {
+      svg {
+        fill: white;
+      }
+    }
+    svg {
+      fill: $cc-charcoal;
+    }
+  }
+}

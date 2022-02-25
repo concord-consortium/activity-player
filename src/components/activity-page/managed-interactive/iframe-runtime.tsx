@@ -17,6 +17,9 @@ import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/deco
 import { IPortalData } from "../../../portal-types";
 import { IInteractiveInfo } from "../../../utilities/embeddable-utils";
 import { getReportUrl } from "../../../utilities/report-utils";
+import ReloadIcon from "../../../assets/svg-icons/icon-reload.svg";
+
+import "./iframe-runtime.scss";
 
 const kDefaultHeight = 300;
 
@@ -70,16 +73,20 @@ interface IProps {
   portalData?: IPortalData;
   answerMetadata?: IExportableAnswerMetadata;
   interactiveInfo?: IInteractiveInfo;
-  aspectRatioMethod?: "MAX" | "MANUAL" | "DEFAULT"
+  aspectRatioMethod?: "MAX" | "MANUAL" | "DEFAULT";
+  showDeleteDataButton?: boolean;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
-    setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo, aspectRatioMethod } = props;
+    setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo, aspectRatioMethod,
+    showDeleteDataButton } = props;
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
+  const [resetInteractive, setResetInteractive] = useState(false);
+  const [reloadCount, setReloadCount] = useState<number>(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const phoneRef = useRef<IframePhone>();
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
@@ -306,6 +313,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         phoneRef.current?.post("customMessage", message);
       });
     }
+
+    setResetInteractive(false);
+
     // Cleanup.
     return () => {
       if (phoneRef.current) {
@@ -314,7 +324,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     };
     // Re-running the effect reloads the iframe.
     // The _only_ time that's ever appropriate is when the url has changed.
-  }, [url]);  // eslint-disable-line react-hooks/exhaustive-deps
+  }, [resetInteractive, url]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     return autorun(() => {
@@ -352,6 +362,14 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     }
   }));
 
+  const handleResetButtonClick = () => {
+    if (confirm("Are you sure you want to clear your work and start over on this item?")) {
+      // incrementing reloadCount modifies the iframe's key, causing the iframe to reload.
+      setReloadCount(reloadCount + 1);
+      setResetInteractive(true);
+    }
+  };
+
   const heightFromSupportedFeatures = aspectRatioMethod === "MAX"
                                         ? proposedHeight
                                         : ARFromSupportedFeatures && containerWidth && typeof(containerWidth) === "number"
@@ -364,13 +382,19 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const height = heightFromInteractive || heightFromSupportedFeatures || proposedHeight || kDefaultHeight;
 
   return (
-    <div data-cy="iframe-runtime">
-      <iframe ref={iframeRef} src={url} id={id} width={containerWidth} height={height} frameBorder={0}
+    <div className="iframe-runtime" data-cy="iframe-runtime">
+      <iframe key={`${id}-${reloadCount}`} ref={iframeRef} src={url} id={id} width={containerWidth} height={height} frameBorder={0}
               allowFullScreen={true}
               allow="geolocation *; microphone *; camera *"
               title={iframeTitle}
               scrolling="no"
       />
+      {showDeleteDataButton && 
+        <button className="button reset" data-cy="reset-button" onClick={handleResetButtonClick} onKeyDown={handleResetButtonClick}>
+          Clear &amp; reset data
+          <ReloadIcon />
+        </button>
+      }
     </div>
   );
 });
