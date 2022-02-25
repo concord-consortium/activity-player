@@ -276,6 +276,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   // to perform this merge automatically.
   const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
   const miContainerClass = questionNumber ? "managed-interactive has-question-number" : "managed-interactive";
+  const showDeleteDataButton = embeddable.type === "MwInteractive" && embeddable.show_delete_data_button
+                               || embeddable.type === "ManagedInteractive" && embeddable?.library_interactive?.data.show_delete_data_button;
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
       "Loading..." :
@@ -305,6 +307,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         answerMetadata={answerMeta.current}
         interactiveInfo={interactiveInfo.current}
         aspectRatioMethod={aspectRatioMethod}
+        showDeleteDataButton={showDeleteDataButton}
       />;
 
     return (
