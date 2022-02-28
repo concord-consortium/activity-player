@@ -201,6 +201,7 @@ export interface IReportState {
   interactiveState: string;
   interactive: {
     id: string;
+    name: string;
   }
 }
 

@@ -75,7 +75,8 @@ export const getAnswerWithMetadata = (
     // JSON string is what is used in the reportState
     interactiveState: JSON.stringify(interactiveState),
     interactive: {
-      id: embeddable.ref_id
+      id: embeddable.ref_id,
+      name: "",
     },
     version: 1
   };
