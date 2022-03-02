@@ -41,6 +41,7 @@ interface IManagedInteractive extends legacyEmbeddableBase {
   native_height?: number;
   native_width?: number;
   enable_learner_state?: boolean;
+  show_delete_data_button?: boolean;
   linked_interactives?: { ref_id: string, label: string }[];
   linked_interactive?: { ref_id: string };
 }

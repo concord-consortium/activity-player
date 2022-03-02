@@ -102,6 +102,7 @@ export interface IMwInteractive extends EmbeddableBase {
   linked_interactives?: { ref_id: string, label: string }[];
   linked_interactive?: { ref_id: string };
   aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX";
+  show_delete_data_button?: boolean;
 }
 
 export interface IEmbeddableXhtml extends EmbeddableBase {

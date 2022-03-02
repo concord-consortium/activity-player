@@ -160,7 +160,7 @@
             "native_height": 435,
             "native_width": 576,
             "no_snapshots": false,
-            "show_delete_data_button": true,
+            "show_delete_data_button": false,
             "show_in_featured_question_report": true,
             "url": "https://hurricane.concord.org/branch/master/index.html",
             "type": "MwInteractive",
