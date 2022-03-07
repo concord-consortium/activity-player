@@ -3,7 +3,7 @@ import { Section, SectionImperativeAPI } from "./section";
 import { BottomButtons } from "./bottom-buttons";
 import { numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
 import { Page, SectionType } from "../../types";
-import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
+import { IGetInteractiveState, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../../lib/logger";
 import { showReport } from "../../utilities/report-utils";
 
@@ -50,10 +50,10 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
     );
   }
 
-  public requestInteractiveStates() {
+  public requestInteractiveStates(options?: IGetInteractiveState) {
     const promises: Promise<void>[] = [];
     this.props.page.sections.forEach((section: SectionType, idx: number) =>
-      promises.push(...(this.sectionRefs[idx]?.current?.requestInteractiveStates() || [Promise.resolve()]))
+      promises.push(...(this.sectionRefs[idx]?.current?.requestInteractiveStates(options) || [Promise.resolve()]))
     );
     return promises;
   }

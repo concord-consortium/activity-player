@@ -7,7 +7,7 @@ import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
 import { EmbeddableType, Page, SectionType } from "../../types";
 import { Logger, LogEventName } from "../../lib/logger";
-import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
+import { IGetInteractiveState, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import useResizeObserver from "@react-hook/resize-observer";
 
 import "./section.scss";
@@ -24,7 +24,7 @@ interface IProps {
 }
 
 export interface SectionImperativeAPI {
-  requestInteractiveStates: () => Promise<void>[];
+  requestInteractiveStates: (options?: IGetInteractiveState) => Promise<void>[];
 }
 
 export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
@@ -59,9 +59,9 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   }, [screenHeight]);
 
   useImperativeHandle(ref, () => ({
-    requestInteractiveStates: () =>
+    requestInteractiveStates: (options?: IGetInteractiveState) =>
       section.embeddables.map((embeddable: EmbeddableType) =>
-        embeddableRefs.current[embeddable.ref_id]?.current?.requestInteractiveState() || Promise.resolve()
+        embeddableRefs.current[embeddable.ref_id]?.current?.requestInteractiveState(options) || Promise.resolve()
       )
   }));
 

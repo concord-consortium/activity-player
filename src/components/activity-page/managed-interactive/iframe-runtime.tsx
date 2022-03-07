@@ -8,7 +8,7 @@ import {
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
   ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, ILinkedInteractiveStateResponse,
   IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent,
-  ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse
+  ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
@@ -20,7 +20,7 @@ import { getReportUrl } from "../../../utilities/report-utils";
 
 const kDefaultHeight = 300;
 
-const kInteractiveStateRequestTimeout = 2000; // ms
+const kInteractiveStateRequestTimeout = 20000; // ms
 
 const getListenerTypes = (textDecorationHandlerInfo: ITextDecorationHandlerInfo): Array<{type: string}> => {
   const { eventListeners } = textDecorationHandlerInfo;
@@ -43,7 +43,7 @@ const createTextDecorationInfo = () => {
 };
 
 export interface IframeRuntimeImperativeAPI {
-  requestInteractiveState: () => Promise<void>;
+  requestInteractiveState: (options?: IGetInteractiveState) => Promise<void>;
 }
 
 interface IProps {
@@ -326,9 +326,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   }, []);
 
   useImperativeHandle(ref, () => ({
-    requestInteractiveState: () => {
+    requestInteractiveState: (options?: IGetInteractiveState) => {
       if (!interactiveStateRequest.promise.current) {
-        phoneRef.current?.post("getInteractiveState");
+        phoneRef.current?.post("getInteractiveState", options);
         interactiveStateRequest.promise.current = new Promise<void>((resolve, reject) => {
           const cleanup = () => {
             interactiveStateRequest.promise.current = undefined;

@@ -480,7 +480,7 @@ export class App extends React.PureComponent<IProps, IState> {
         });
       };
       // Make sure that interactive state is saved before user can navigate away.
-      const promises = this.activityPageContentRef.current?.requestInteractiveStates() || [Promise.resolve()];
+      const promises = this.activityPageContentRef.current?.requestInteractiveStates({unloading: true}) || [Promise.resolve()];
       Promise.all(promises)
         .then(navigateAway)
         .catch(error => {

@@ -9,7 +9,7 @@ import { initializePlugin, IPartialEmbeddablePluginContext, validateEmbeddablePl
         } from "../../utilities/plugin-utils";
 import { EmbeddableType, IEmbeddablePlugin } from "../../types";
 import { IInteractiveSupportedFeaturesEvent } from "../../lara-plugin/events";
-import { ICustomMessage, ISupportedFeatures, INavigationOptions } from "@concord-consortium/lara-interactive-api";
+import { ICustomMessage, ISupportedFeatures, INavigationOptions, IGetInteractiveState } from "@concord-consortium/lara-interactive-api";
 
 import "./embeddable.scss";
 
@@ -27,7 +27,7 @@ interface IProps {
 }
 
 export interface EmbeddableImperativeAPI {
-  requestInteractiveState: () => Promise<void>;
+  requestInteractiveState: (options?: IGetInteractiveState) => Promise<void>;
 }
 
 type ISendCustomMessage = (message: ICustomMessage) => void;
@@ -64,7 +64,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   }, [LARA, linkedPluginEmbeddable, embeddable, pluginsLoaded]);
 
   useImperativeHandle(ref, () => ({
-    requestInteractiveState: () => managedInteractiveRef.current?.requestInteractiveState() || Promise.resolve()
+    requestInteractiveState: (options?: IGetInteractiveState) => managedInteractiveRef.current?.requestInteractiveState(options) || Promise.resolve()
   }));
 
   const handleSetSupportedFeatures = useCallback((container: HTMLElement, features: ISupportedFeatures) => {
