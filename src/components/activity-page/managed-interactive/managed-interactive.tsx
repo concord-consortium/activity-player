@@ -4,7 +4,7 @@ import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
 import {
   ICloseModal, INavigationOptions,
-  ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures, IAttachmentUrlRequest, IAttachmentUrlResponse
+  ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState
 } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, ILegacyLinkedInteractiveState } from "../../../types";
@@ -33,7 +33,7 @@ interface IProps {
 }
 
 export interface ManagedInteractiveImperativeAPI {
-  requestInteractiveState: () => Promise<void>;
+  requestInteractiveState: (options?: IGetInteractiveState) => Promise<void>;
 }
 
 const kDefaultAspectRatio = 4 / 3;
@@ -259,9 +259,9 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   };
 
   useImperativeHandle(ref, () => ({
-    requestInteractiveState: () => {
+    requestInteractiveState: (options?: IGetInteractiveState) => {
       if (shouldWatchAnswer && iframeRuntimeRef.current) {
-        return iframeRuntimeRef.current.requestInteractiveState();
+        return iframeRuntimeRef.current.requestInteractiveState(options);
       } else {
         // Interactive doesn't save state, so return resolved promise immediately.
         return Promise.resolve();
