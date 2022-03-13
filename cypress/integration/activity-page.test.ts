@@ -40,6 +40,7 @@ context("Test the overall app", () => {
     });
     it("verify textbox",()=>{
       activityPage.getNavPage(3).click();
+      cy.wait(1);
       activityPage.getSecondaryEmbeddable("text-box").eq(1).scrollIntoView()
         .should("be.visible").and("contain","Duis vitae ultrices augue, eu fermentum elit.");
     });
