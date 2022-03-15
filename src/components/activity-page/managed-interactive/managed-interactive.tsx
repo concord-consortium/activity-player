@@ -248,11 +248,16 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       writeOptions: {
         interactiveId,
         onAnswerMetaUpdate: newMeta => {
-          // don't allow writes over passed in interactiveId (for now, until it is needed and thought through...)
           if (!answerMeta.current) {
-            return { error: "error getting attachment url: no answer metadata", requestId: request.requestId };
+            // don't allow writes over passed in interactiveId (for now, until it is needed and thought through...)
+            if (request.interactiveId) {
+              return { error: "error getting attachment url: no answer metadata", requestId: request.requestId };
+            }
+            const exportableAnswer = getAnswerWithMetadata({}, props.embeddable);
+            createOrUpdateAnswer({ ...exportableAnswer, ...newMeta });
+          } else {
+            createOrUpdateAnswer({ ...answerMeta.current, ...newMeta });
           }
-          createOrUpdateAnswer({ ...answerMeta.current, ...newMeta });
         }
       }
     });
