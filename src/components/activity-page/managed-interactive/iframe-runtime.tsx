@@ -85,12 +85,13 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
-  const [resetInteractive, setResetInteractive] = useState(false);
   const [reloadCount, setReloadCount] = useState<number>(0);
+  const iframePhoneTimeout = useRef<number|undefined>(undefined);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const phoneRef = useRef<IframePhone>();
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
+  const interactiveStateRef = useRef(initialInteractiveState);
   const linkedInteractivesRef = useRef(linkedInteractives?.length ? { linkedInteractives } : { linkedInteractives: [] });
   const interactiveStateRequest = {
     promise: useRef<Promise<void>>(),
@@ -237,12 +238,11 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
       // Legacy bug fix: In the 1.0.0 release of the AP the special 'nochange'
       // message wasn't handled correctly and it was saved as the interactive state
-      // If we see that here in the initialInteractiveState we just use undefined
-      // instead. The problem is that sending this state to interactives that don't
-      // expect it, will have JSON parse errors trying to parse "nochange"
-      let _initialInteractiveState = initialInteractiveState;
-      if (initialInteractiveState === "nochange") {
-        _initialInteractiveState = undefined;
+      // If we see that here we just use undefined instead. The problem is that 
+      // sending this state to interactives that don't expect it, will have JSON 
+      // parse errors trying to parse "nochange"
+      if (interactiveStateRef.current === "nochange") {
+        interactiveStateRef.current = undefined;
       }
 
       // note: many of the values here are placeholders that require further
@@ -262,7 +262,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           }
         },
         authoredState,
-        interactiveState: _initialInteractiveState,
+        interactiveState: interactiveStateRef.current,
         themeInfo: {
           colors: {
             colorA: "",
@@ -314,8 +314,6 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       });
     }
 
-    setResetInteractive(false);
-
     // Cleanup.
     return () => {
       if (phoneRef.current) {
@@ -324,7 +322,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     };
     // Re-running the effect reloads the iframe.
     // The _only_ time that's ever appropriate is when the url has changed.
-  }, [resetInteractive, url]);  // eslint-disable-line react-hooks/exhaustive-deps
+  }, [reloadCount, url]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     return autorun(() => {
@@ -348,15 +346,15 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
             resolve();
             cleanup();
           };
-          setTimeout(() => {
-            if (interactiveStateRequest.promise.current) {
-              const msg = `Sorry. Some items on this page did not save (${iframeTitle}).`;
-              console.error(msg);
-              reject(msg);
-              cleanup();
-            }
-          }, kInteractiveStateRequestTimeout);
-        });
+          iframePhoneTimeout.current = window.setTimeout(() => {
+              if (interactiveStateRequest.promise.current) {
+                const msg = `Sorry. Some items on this page did not save (${iframeTitle}).`;
+                console.error(msg);
+                reject(msg);
+                cleanup();
+              }
+            }, kInteractiveStateRequestTimeout);
+          });
       }
       return interactiveStateRequest.promise.current;
     }
@@ -364,9 +362,16 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   const handleResetButtonClick = () => {
     if (confirm("Are you sure you want to clear your work and start over on this item?")) {
+      if (iframePhoneTimeout.current) {
+        clearTimeout(iframePhoneTimeout.current);
+        iframePhoneTimeout.current = undefined;
+      }
+      phoneRef.current?.disconnect();
+      setInteractiveStateRef.current(null);
+      setInteractiveState(null);
+      interactiveStateRef.current = undefined;
       // incrementing reloadCount modifies the iframe's key, causing the iframe to reload.
       setReloadCount(reloadCount + 1);
-      setResetInteractive(true);
     }
   };
 

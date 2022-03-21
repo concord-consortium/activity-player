@@ -83,11 +83,11 @@ export const Lightbox: React.FC<IProps> = (props) => {
   return (
     <ReactModal isOpen={true} appElement={getModalContainer()} onRequestClose={onClose} style={customStyles} >
       <div className="lightbox-content">
-      <div className="lightbox-close-icon" onClick={onClose}>✖</div>
+      <div className="lightbox-close-icon" onClick={onClose} data-testid="lightbox-close">✖</div>
       {
         isImage ?
-        <img ref={imgRef} src={url} onLoad={imgLoaded} style={{ width: imgWidth, height: imgHeight, visibility: imgWidth === undefined ? "hidden" : "visible" }} /> :
-        <iframe src={url} width={iframeSizeOpts.width} height={iframeSizeOpts.height} title="Image lightbox" />
+        <img ref={imgRef} src={url} onLoad={imgLoaded} style={{ width: imgWidth, height: imgHeight, visibility: imgWidth === undefined ? "hidden" : "visible" }} data-testid="lightbox-image" /> :
+        <iframe src={url} width={iframeSizeOpts.width} height={iframeSizeOpts.height} title="Image lightbox" data-testid="lightbox-iframe" />
       }
       </div>
     </ReactModal>

@@ -210,7 +210,11 @@ describe("IframeRuntime component", () => {
 
     const resetButton = testIframe.getByTestId("reset-button");
     expect(resetButton).toBeDefined();
-    fireEvent.click(resetButton);
+    expect(mockSetInteractiveState).toHaveBeenCalledTimes(2);
+    act(() => {
+      fireEvent.click(resetButton);
+    });
     expect(global.confirm).toHaveBeenCalledTimes(1);
+    expect(mockSetInteractiveState).toHaveBeenCalledTimes(4);
   });
 });
