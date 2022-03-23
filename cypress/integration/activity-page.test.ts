@@ -31,18 +31,19 @@ context("Test the overall app", () => {
     });
   });
   describe("Info/Assess (secondary embeddables)",()=>{
-    it("verify collapsible column",()=>{
-      activityPage.getCollapsibleHeader().should("contain", "Hide");
-      activityPage.getCollapsibleHeader().click();
-      activityPage.getCollapsibleHeader().should("have.class", "collapsed").and("contain", "Show");
-      activityPage.getCollapsibleHeader().click();
-      activityPage.getCollapsibleHeader().should("have.not.class", "collapsed").and("contain", "Hide");
-    });
     it("verify textbox",()=>{
       activityPage.getNavPage(3).click();
       cy.wait(1);
       activityPage.getSecondaryEmbeddable("text-box").eq(1).scrollIntoView()
         .should("be.visible").and("contain","Duis vitae ultrices augue, eu fermentum elit.");
+    });
+    it("verify collapsible column",()=>{
+      activityPage.getNavPage(2).click();
+      activityPage.getCollapsibleHeader().should("contain", "Hide");
+      activityPage.getCollapsibleHeader().click();
+      activityPage.getCollapsibleHeader().should("have.class", "collapsed").and("contain", "Show");
+      activityPage.getCollapsibleHeader().click();
+      activityPage.getCollapsibleHeader().should("have.not.class", "collapsed").and("contain", "Hide");
     });
   });
   describe("Required questions",()=>{
@@ -65,7 +66,6 @@ context("Test the overall app", () => {
       activityPage.getCompletionPage().eq(0).click();
       cy.wait(1000);
       activityPage.getNextPageButton().should("have.class", "last-page");
-
     });
   });
   describe("Question Interactives",()=>{
