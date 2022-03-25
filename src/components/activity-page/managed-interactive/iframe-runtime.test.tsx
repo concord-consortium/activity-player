@@ -101,6 +101,8 @@ describe("IframeRuntime component", () => {
     });
     expect(lastPost()).toBe("customMessage");
 
+    expect(mockSetInteractiveState).not.toHaveBeenCalled();
+
     act(() => {
       dispatchMessageFromChild("interactiveState", {});
     });
@@ -117,6 +119,18 @@ describe("IframeRuntime component", () => {
     });
     // "touch" message results in another call
     expect(mockSetInteractiveState).toHaveBeenCalledTimes(2);
+
+    act(() => {
+      dispatchMessageFromChild("interactiveState", {});
+    });
+    // saving the same interactive state doesn't result in another call
+    expect(mockSetInteractiveState).toHaveBeenCalledTimes(2);
+
+    act(() => {
+      dispatchMessageFromChild("interactiveState", {foo: "bar"});
+    });
+    // saving a different interactive state results in another call
+    expect(mockSetInteractiveState).toHaveBeenCalledTimes(3);
 
     act(() => {
       dispatchMessageFromChild("height", 960);
@@ -210,11 +224,11 @@ describe("IframeRuntime component", () => {
 
     const resetButton = testIframe.getByTestId("reset-button");
     expect(resetButton).toBeDefined();
-    expect(mockSetInteractiveState).toHaveBeenCalledTimes(2);
+    expect(mockSetInteractiveState).toHaveBeenCalledTimes(3);
     act(() => {
       fireEvent.click(resetButton);
     });
     expect(global.confirm).toHaveBeenCalledTimes(1);
-    expect(mockSetInteractiveState).toHaveBeenCalledTimes(4);
+    expect(mockSetInteractiveState).toHaveBeenCalledTimes(5);
   });
 });

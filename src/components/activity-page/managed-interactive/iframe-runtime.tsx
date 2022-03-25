@@ -113,8 +113,13 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         // "nochange" and "touch" are special messages supported by LARA. We don't want to save them.
         // newInteractiveState might be undefined if interactive state is requested before any state update.
         if (newInteractiveState !== undefined && newInteractiveState !== "nochange" && newInteractiveState !== "touch") {
-          currentInteractiveState.current = newInteractiveState;
-          setInteractiveStateRef.current(newInteractiveState);
+          // only update interactive state if it's different from the current one to avoid updating the timestamp
+          // used when comparing linked interactive states
+          const interactiveStateChanged = JSON.stringify(currentInteractiveState.current) !== JSON.stringify(newInteractiveState);
+          if (interactiveStateChanged) {
+            currentInteractiveState.current = newInteractiveState;
+            setInteractiveStateRef.current(newInteractiveState);
+          }
         }
         if (currentInteractiveState.current !== undefined && newInteractiveState === "touch") {
           // save the current interactive state with a new timestamp
@@ -394,7 +399,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
               title={iframeTitle}
               scrolling="no"
       />
-      {showDeleteDataButton && 
+      {showDeleteDataButton &&
         <button className="button reset" data-cy="reset-button" onClick={handleResetButtonClick} onKeyDown={handleResetButtonClick}>
           Clear &amp; start over
           <ReloadIcon />
