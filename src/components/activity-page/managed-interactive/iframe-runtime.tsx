@@ -116,6 +116,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           // only update interactive state if it's different from the current one to avoid updating the timestamp
           // used when comparing linked interactive states
           const interactiveStateChanged = JSON.stringify(currentInteractiveState.current) !== JSON.stringify(newInteractiveState);
+          // tslint:disable-next-line:no-console
+          console.log("*** DEBUG SAVE INTERACTIVE STATE:", {interactiveStateChanged, current: currentInteractiveState.current, new: newInteractiveState });
           if (interactiveStateChanged) {
             currentInteractiveState.current = newInteractiveState;
             setInteractiveStateRef.current(newInteractiveState);
@@ -243,8 +245,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
       // Legacy bug fix: In the 1.0.0 release of the AP the special 'nochange'
       // message wasn't handled correctly and it was saved as the interactive state
-      // If we see that here we just use undefined instead. The problem is that 
-      // sending this state to interactives that don't expect it, will have JSON 
+      // If we see that here we just use undefined instead. The problem is that
+      // sending this state to interactives that don't expect it, will have JSON
       // parse errors trying to parse "nochange"
       if (interactiveStateRef.current === "nochange") {
         interactiveStateRef.current = undefined;
