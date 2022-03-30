@@ -238,7 +238,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const handleGetAttachmentUrlRequest = async (request: IAttachmentUrlRequest): Promise<IAttachmentUrlResponse> => {
     // the answerMetadata does not exist for interactives that have never been saved before now
     let answerMetadata: IExportableAnswerMetadata = answerMeta.current || {} as any;
-    // the interactiveId is only present when requesting data for a linked interactive
+    // normally, the interactiveId is only present when requesting data for a linked interactive, but it's
+    // possible an interactive will set interactiveId to be its own ID
     if (request.interactiveId) {
       answerMetadata = (await getAnswerMetadata(request.interactiveId)) || ({} as any);
     }
@@ -249,8 +250,12 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         interactiveId,
         onAnswerMetaUpdate: newMeta => {
           // don't allow writes over passed in interactiveId (for now, until it is needed and thought through...)
+          if (!answerMeta.current && request.interactiveId && request.interactiveId !== interactiveId) {
+            return { error: "writing to another interactive is not allowed", requestId: request.requestId };
+          }
           if (!answerMeta.current) {
-            return { error: "error getting attachment url: no answer metadata", requestId: request.requestId };
+            // allow answers that are only attachments (e.g., a recorded audio response)
+            answerMeta.current = getAnswerWithMetadata({}, props.embeddable);
           }
           createOrUpdateAnswer({ ...answerMeta.current, ...newMeta });
         }
