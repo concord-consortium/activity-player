@@ -9,7 +9,7 @@ import { refIdToAnswersQuestionId } from "./embeddable-utils";
 // *** IMPORTANT NOTE ***
 // When you change these URLs you need to edit the portal-report Auth Client in
 // the portals to allow redirects back to the the updated URLs.
-export const kProductionPortalReportUrl = "https://portal-report.concord.org/version/v4.9.0/index.html";
+export const kProductionPortalReportUrl = "https://portal-report.concord.org/version/v4.10.0/index.html";
 export const kDevPortalReportUrl = "https://portal-report.concord.org/branch/master/index.html";
 
 // The default portal report URL is based on the URL:
@@ -18,7 +18,7 @@ export const kDevPortalReportUrl = "https://portal-report.concord.org/branch/mas
 // - everything else defaults to kDevPortalReportUrl which is should be master
 //
 // The default can be overridden with a portalReport URL param
-export const portalReportBaseUrl= ():string => {
+export const portalReportBaseUrl = (): string => {
   const portalReportUrlParam = queryValue("portalReport");
   if (portalReportUrlParam) {
     return portalReportUrlParam;
@@ -28,8 +28,8 @@ export const portalReportBaseUrl= ():string => {
   // According to the spec an empty path like https://activity-player.concord.org
   // will still have a pathname of "/", but just to be safe this checks for the
   // falsey pathname
-  if(isProductionOrigin(origin) &&
-     (!pathname || pathname === "/"
+  if (isProductionOrigin(origin) &&
+    (!pathname || pathname === "/"
       || pathname.indexOf("/version/") === 0)) {
     return kProductionPortalReportUrl;
   } else {
@@ -59,14 +59,14 @@ export const getReportUrl = (questionRefId?: string) => {
   const sourceKey = queryValue("sourceKey") || (resourceUrl ? makeSourceKey(resourceUrl) : getCanonicalHostname());
 
   let result = reportLink
-    + "?firebase-app="+reportFirebaseApp
-    + "&sourceKey="+sourceKey
-    + "&answersSourceKey="+answerSource;
+    + "?firebase-app=" + reportFirebaseApp
+    + "&sourceKey=" + sourceKey
+    + "&answersSourceKey=" + answerSource;
 
   if (runKey) {
     result += "&runKey=" + runKey
-            + "&activity=" + resourceUrl
-            + "&resourceUrl=" + resourceUrl;
+      + "&activity=" + resourceUrl
+      + "&resourceUrl=" + resourceUrl;
   } else {
     // We know this is a IPortalData because there is no runKey
     const portalData = getPortalData() as IPortalData;
@@ -76,7 +76,7 @@ export const getReportUrl = (questionRefId?: string) => {
     } else {
       const classInfoUrl = portalData?.portalJWT?.class_info_url;
       const authDomainUrl = classInfoUrl?.split("/api")[0];
-      const offeringBaseUrl = classInfoUrl?.split("/classes")[0]+"/offerings/";
+      const offeringBaseUrl = classInfoUrl?.split("/classes")[0] + "/offerings/";
       const offeringId = portalData?.offering.id;
       const offeringUrl = encodeURIComponent(offeringBaseUrl + offeringId);
       const studentId = portalData?.platformUserId;
@@ -85,9 +85,9 @@ export const getReportUrl = (questionRefId?: string) => {
       // report should be able to get all the info it needs from the
       // offering url
       result += "&class=" + encodeURIComponent(classInfoUrl || "")
-              + "&offering=" + offeringUrl
-              + "&reportType=offering&studentId="+studentId
-              + "&auth-domain="+authDomainUrl;
+        + "&offering=" + offeringUrl
+        + "&reportType=offering&studentId=" + studentId
+        + "&auth-domain=" + authDomainUrl;
     }
   }
 
