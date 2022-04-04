@@ -279,8 +279,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
              && embeddable.enable_learner_state
              && embeddable.show_delete_data_button
            || embeddable.type === "ManagedInteractive"
-             && embeddable?.library_interactive?.data.enable_learner_state
-             && embeddable?.library_interactive?.data.show_delete_data_button;
+             && embeddable.library_interactive?.data.enable_learner_state
+             && embeddable.library_interactive.data.show_delete_data_button;
   };
 
   // embeddable.url_fragment is an optional string (path, query params, hash) that can be defined by author.
