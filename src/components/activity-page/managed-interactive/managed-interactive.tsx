@@ -274,6 +274,15 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     }
   }));
 
+  const setShowDeleteDataButton = () => {
+    return embeddable.type === "MwInteractive"
+             && embeddable.enable_learner_state
+             && embeddable.show_delete_data_button
+           || embeddable.type === "ManagedInteractive"
+             && embeddable?.library_interactive?.data.enable_learner_state
+             && embeddable?.library_interactive?.data.show_delete_data_button;
+  };
+
   // embeddable.url_fragment is an optional string (path, query params, hash) that can be defined by author.
   // Some interactives are authored that way. Note that url_fragment is not merged with the dialog URL.
   // Each interactive will be first loaded inline with the url_fragment appended. So it can merge its custom dialog URL
@@ -281,8 +290,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   // to perform this merge automatically.
   const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
   const miContainerClass = questionNumber ? "managed-interactive has-question-number" : "managed-interactive";
-  const showDeleteDataButton = embeddable.type === "MwInteractive" && embeddable.show_delete_data_button
-                               || embeddable.type === "ManagedInteractive" && embeddable?.library_interactive?.data.show_delete_data_button;
+  const showDeleteDataButton = setShowDeleteDataButton();
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
       "Loading..." :
