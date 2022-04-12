@@ -73,7 +73,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -123,7 +123,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This shouldn't be used by any real activities it is still under development.",
@@ -173,7 +173,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -235,7 +235,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -389,7 +389,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -439,7 +439,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This shouldn't be used by any real activities it is still under development.",
@@ -607,7 +607,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -657,7 +657,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This shouldn't be used by any real activities it is still under development.",
@@ -850,7 +850,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -962,7 +962,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1012,7 +1012,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This shouldn't be used by any real activities it is still under development.",
@@ -1093,7 +1093,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1144,7 +1144,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1251,7 +1251,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1301,7 +1301,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1351,7 +1351,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1401,7 +1401,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1451,7 +1451,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1501,7 +1501,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1613,7 +1613,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1682,7 +1682,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1732,7 +1732,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1782,7 +1782,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1832,7 +1832,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1882,7 +1882,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -1932,7 +1932,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
@@ -2044,7 +2044,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
+                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.7.0/multiple-choice/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "A basic multiple choice interactive. This is pointing to the master branch and is in development so it shouldn't be used by real activities. \r\n",
