@@ -243,8 +243,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
       // Legacy bug fix: In the 1.0.0 release of the AP the special 'nochange'
       // message wasn't handled correctly and it was saved as the interactive state
-      // If we see that here we just use undefined instead. The problem is that 
-      // sending this state to interactives that don't expect it, will have JSON 
+      // If we see that here we just use undefined instead. The problem is that
+      // sending this state to interactives that don't expect it, will have JSON
       // parse errors trying to parse "nochange"
       if (interactiveStateRef.current === "nochange") {
         interactiveStateRef.current = undefined;
@@ -273,7 +273,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
             colorA: "",
             colorB: ""
           }
-        }
+        },
+        ...linkedInteractivesRef.current,
       };
       const initInteractiveMsg: IInitInteractive = report
               ? {
