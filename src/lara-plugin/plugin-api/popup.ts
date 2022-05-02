@@ -77,6 +77,8 @@ export const ADD_POPUP_DEFAULT_OPTIONS = {
   onDragStop: undefined
 };
 
+const removeList: (() => void)[] = [];
+
 /****************************************************************************
  Ask LARA to add a new popup window.
 
@@ -110,6 +112,7 @@ export const addPopup = (_options: IPopupOptions): IPopupController => {
     }
     $dialog.remove();
   };
+  removeList.push(remove);
   $content.dialog({
     title: options.title,
     autoOpen: options.autoOpen,
@@ -165,4 +168,8 @@ export const addPopup = (_options: IPopupOptions): IPopupController => {
     },
     remove
   };
+};
+
+export const __closeAllPopUps = () => {
+  removeList.forEach(remove => remove());
 };
