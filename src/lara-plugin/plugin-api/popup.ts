@@ -112,10 +112,10 @@ export const addPopup = (_options: IPopupOptions): IPopupController => {
       options.onRemove();
     }
     $dialog.remove();
+    removeList = removeList.filter((fn) => fn !== remove);
   };
 
   removeList.push(remove);
-  removeList = removeList.filter((fn) => fn === remove);
 
   $content.dialog({
     title: options.title,
