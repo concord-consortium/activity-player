@@ -23,7 +23,7 @@ import { IPortalData, IPortalDataUnion } from "../portal-types";
 import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
          onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData } from "../firebase-db";
 import { Activity, IEmbeddablePlugin, Sequence } from "../types";
-import { initializeLara, LaraGlobalType, PluginAPI_V3 } from "../lara-plugin/index";
+import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
@@ -39,6 +39,7 @@ import { getAttachmentsManagerOptions} from "../utilities/get-attachments-manage
 import { IdleDetector } from "../utilities/idle-detector";
 import { initializeAttachmentsManager } from "@concord-consortium/interactive-api-host";
 import { LaraDataContext } from "./lara-data-context";
+import { __closeAllPopUps } from "../lara-plugin/plugin-api/popup";
 
 import "./app.scss";
 
@@ -46,7 +47,7 @@ const kDefaultActivity = "sample-activity-multiple-layout-types";   // may event
 const kDefaultIncompleteMessage = "You must submit an answer for all required questions before advancing to another page.";
 
 // User will see the idle warning after kMaxIdleTime
-const kMaxIdleTime = 20 * 60 * 1000; // 20 minutes
+const kMaxIdleTime = 20 * 60 * 50; // 20 minutes
 // User session will timeout after kMaxIdleTime + kTimeout
 const kTimeout = 5 * 60 * 1000; // 5 minutes
 
@@ -438,7 +439,7 @@ export class App extends React.PureComponent<IProps, IState> {
       // Check current idle value to avoid logging unnecessary "show_idle_warning" events.
       // Idle detector will keep working even after session timeout.
       Logger.log({ event: LogEventName.show_idle_warning });
-      PluginAPI_V3.__closeAllPopUps();
+      __closeAllPopUps();
       this.setState({ idle: true });
     }
   }
@@ -471,7 +472,7 @@ export class App extends React.PureComponent<IProps, IState> {
       this.setShowModal(true, label);
     } else if (page >= 0 && (activity && page <= activity.pages.length)) {
       const navigateAway = () => {
-        PluginAPI_V3.__closeAllPopUps(); // close any open pop ups
+        __closeAllPopUps(); // close any open pop ups
         this.setState({ currentPage: page, incompleteQuestions: [] });
         setDocumentTitle({activity, pageNumber: page});
         document.getElementsByClassName("app")[0]?.scrollIntoView(); //scroll to the top on page change

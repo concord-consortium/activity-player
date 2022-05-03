@@ -77,7 +77,7 @@ export const ADD_POPUP_DEFAULT_OPTIONS = {
   onDragStop: undefined
 };
 
-const removeList: (() => void)[] = [];
+let removeList: (() => void)[] = [];
 
 /****************************************************************************
  Ask LARA to add a new popup window.
@@ -106,13 +106,17 @@ export const addPopup = (_options: IPopupOptions): IPopupController => {
   // ACTIVITY_PLAYER_CODE:
   // eslint-disable-next-line prefer-const
   let $dialog: JQuery;
+
   const remove = () => {
     if (options.onRemove) {
       options.onRemove();
     }
     $dialog.remove();
   };
+
   removeList.push(remove);
+  removeList = removeList.filter((fn) => fn === remove);
+
   $content.dialog({
     title: options.title,
     autoOpen: options.autoOpen,
