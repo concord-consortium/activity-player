@@ -47,7 +47,7 @@ const kDefaultActivity = "sample-activity-multiple-layout-types";   // may event
 const kDefaultIncompleteMessage = "You must submit an answer for all required questions before advancing to another page.";
 
 // User will see the idle warning after kMaxIdleTime
-const kMaxIdleTime = 20 * 60 * 50; // 20 minutes
+const kMaxIdleTime = 20 * 60 * 1000; // 20 minutes
 // User session will timeout after kMaxIdleTime + kTimeout
 const kTimeout = 5 * 60 * 1000; // 5 minutes
 
