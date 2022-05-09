@@ -3,10 +3,11 @@
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
-const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin');
-const GitRevPlugin = require('git-rev-webpack-plugin');
+const HtmlReplaceWebpackPlugin = require("html-replace-webpack-plugin");
+const GitRevPlugin = require("git-rev-webpack-plugin");
 
 const version = require("./package.json").version;
+const webpack = require("webpack");
 const gitRevPlugin = new GitRevPlugin();
 const appVersionInfo = `Version ${version} (${gitRevPlugin.hash()})`;
 
@@ -95,7 +96,11 @@ module.exports = (env, argv) => {
       ]
     },
     resolve: {
-      extensions: [ ".ts", ".tsx", ".js" ]
+      extensions: [ ".ts", ".tsx", ".js" ],
+      fallback: {
+        "crypto": require.resolve("crypto-browserify"),
+        "stream": require.resolve("stream-browserify")
+      }
     },
     stats: {
       // suppress "export not found" warnings about re-exported types
@@ -119,7 +124,10 @@ module.exports = (env, argv) => {
         patterns: [
           {from: "src/public"}
         ]
-      })
+      }),
+      new webpack.ProvidePlugin({
+        process: "process/browser",
+      }),
     ]
   };
 };
