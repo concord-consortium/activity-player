@@ -332,7 +332,7 @@ export class App extends React.PureComponent<IProps, IState> {
             glossaryPlugin={glossaryEmbeddable !== null}
           />
         }
-        { glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
+        { !idle && glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
           <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} pluginsLoaded={pluginsLoaded} />
         }
       </div>
