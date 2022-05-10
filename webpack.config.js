@@ -98,8 +98,10 @@ module.exports = (env, argv) => {
     resolve: {
       extensions: [ ".ts", ".tsx", ".js" ],
       fallback: {
+        "buffer": require.resolve("buffer/"),
         "crypto": require.resolve("crypto-browserify"),
-        "stream": require.resolve("stream-browserify")
+        "stream": require.resolve("stream-browserify"),
+        "util": require.resolve("util")
       }
     },
     stats: {
