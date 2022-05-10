@@ -1,6 +1,6 @@
 import { Activity, Plugin } from "../types";
 import {
-  addUsedApprovedScript, clearUsedApprovedScripts, findUsedApprovedScripts, getGlossaryEmbeddable, getUsedApprovedScripts, IEmbeddablePluginContext,
+  addUsedApprovedScript, clearUsedApprovedScripts, findUsedApprovedScripts, getEmbeddablePlugins, getUsedApprovedScripts, IEmbeddablePluginContext,
   initializePlugin, IPartialEmbeddablePluginContext, loadLearnerPluginState, loadPluginScripts,
   validateEmbeddablePluginContextForPlugin, validateEmbeddablePluginContextForWrappedEmbeddable
 } from "./plugin-utils";
@@ -225,14 +225,14 @@ describe("Plugin utility functions", () => {
         resourceUrl: ""
       });
     });
-  });
 
-  describe("#getGlossaryEmbeddable", () => {
-    it("finds the glossary plugin", () => {
-      const glossaryPlugin = getGlossaryEmbeddable(activity);
-      expect(glossaryPlugin).toBeDefined();
-      expect(glossaryPlugin?.type).toBe("Embeddable::EmbeddablePlugin");
-    });
+    describe("#getEmbeddablePlugins", () => {
+      it("returns all embeddable plugins", () => {
+        const embeddablePlugins = getEmbeddablePlugins(activity);
+        expect(embeddablePlugins).toBeDefined();
+        expect(embeddablePlugins![0].type).toBe("Embeddable::EmbeddablePlugin");
+      })
+    })
   });
 
 });

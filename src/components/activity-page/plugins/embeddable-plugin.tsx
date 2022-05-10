@@ -15,7 +15,8 @@ interface IProps {
 
 export const EmbeddablePlugin: React.FC<IProps> = (props) => {
     const { embeddable, pluginsLoaded, pageNumber } = props;
-
+    // Checking if the embeddable is glossary because the glossary plugin has different
+    // styling from other embeddables.
     const isGlossary = embeddable.plugin?.approved_script_label === "glossary";
     const divTarget = useRef<HTMLInputElement>(null);
     const LARA = useContext(LaraGlobalContext);
@@ -34,9 +35,9 @@ export const EmbeddablePlugin: React.FC<IProps> = (props) => {
     return (
       <div
         className={isGlossary ? "glossary-plugin-container" : "plugin-container"}
+        data-cy={"embeddable-plugin"}
+        key={pageNumber ? pageNumber : embeddable.ref_id} // teacher edition does not pass in a page number
         ref={divTarget}
-        data-cy={isGlossary ? "glossary-embeddable-plugin" : "embeddable-plugin"}
-        key={pageNumber ? pageNumber : embeddable.ref_id}
       />
     );
   };

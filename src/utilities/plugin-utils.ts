@@ -173,18 +173,19 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
   LARA.Plugins.initPlugin(pluginLabel, pluginContext);
 };
 
-export const getGlossaryEmbeddable = (activity: Activity) => {
-// Do we ever use more than one plugin?
-// What is is_half_width doing here?
-// Why is there no ref_id on the glossary plugin?
-  const glossaryPlugin = activity.plugins.find((activityPlugin: Plugin) => activityPlugin.approved_script_label === "glossary");
-  const embeddablePlugin: IEmbeddablePlugin | undefined = glossaryPlugin
-    ? { type: "Embeddable::EmbeddablePlugin",
-        plugin: glossaryPlugin,
+export const getEmbeddablePlugins = (activity: Activity) => {
+  const plugins = activity.plugins;
+  const embeddablePlugins: IEmbeddablePlugin[] | undefined =
+    plugins ?
+    plugins.map((plugin) => {
+      return {
+        type: "Embeddable::EmbeddablePlugin",
+        plugin,
         is_hidden: false,
         is_half_width: false,
-        ref_id: "" // no ref_id on the glossary plugin
-      }
+        ref_id: "" // no ref_id's on embeddable plugins except for teacher edition
+      };
+     })
     : undefined;
-  return embeddablePlugin;
+  return embeddablePlugins;
 };
