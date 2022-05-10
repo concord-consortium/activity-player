@@ -16,14 +16,14 @@ interface IProps {
   pageNumber: number;
   teacherEditionMode?: boolean;
   pluginsLoaded?: boolean;
-  glossaryPlugin?: boolean;
+  plugin?: boolean;
 }
 
 export const ExpandableContainer: React.FC<IProps> = (props) => {
-  const { activity, page, pageNumber, teacherEditionMode, pluginsLoaded, glossaryPlugin } = props;
+  const { activity, page, pageNumber, teacherEditionMode, pluginsLoaded, plugin } = props;
   const sideTips = pluginsLoaded && page ? getPageSideTipEmbeddables(activity, page) : [];
   const numSideTips = sideTips?.length || 0;
-  const verticalOffset = kExpandableContentTop + (numSideTips + (glossaryPlugin ? 1 : 0)) * (kExpandableItemHeight + kExpandableContentMargin);
+  const verticalOffset = kExpandableContentTop + (numSideTips + (plugin ? 1 : 0)) * (kExpandableItemHeight + kExpandableContentMargin);
   const sidebars = page && getPageSideBars(activity, page);
   return (
     <div className="expandable-container" id="expandable-container" key={pageNumber} data-cy="expandable-container">

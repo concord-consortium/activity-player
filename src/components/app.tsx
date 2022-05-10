@@ -34,7 +34,7 @@ import { SequenceIntroduction } from "./sequence-introduction/sequence-introduct
 import { ModalDialog } from "./modal-dialog";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
-import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
+import { EmbeddablePlugin } from "./activity-page/plugins/embeddable-plugin";
 import { getAttachmentsManagerOptions} from "../utilities/get-attachments-manager-options";
 import { IdleDetector } from "../utilities/idle-detector";
 import { initializeAttachmentsManager } from "@concord-consortium/interactive-api-host";
@@ -273,6 +273,7 @@ export class App extends React.PureComponent<IProps, IState> {
                                     s => s.layout.includes("responsive"));
     const fullWidth = (currentPage !== 0) && (hasResponsiveSection.length > 0);
     const project = activity.project ? activity.project : null;
+    // Why are we searching specifically for glossary embeddable instead of just an embeddable?
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
     const sequenceActivityId = sequence !== undefined ? getSequenceActivityId(sequence, activityIndex) : undefined;
@@ -329,11 +330,11 @@ export class App extends React.PureComponent<IProps, IState> {
             page={pagesVisible[currentPage - 1]}
             teacherEditionMode={teacherEditionMode}
             pluginsLoaded={pluginsLoaded}
-            glossaryPlugin={glossaryEmbeddable !== null}
+            plugin={glossaryEmbeddable !== null}
           />
         }
         { !idle && glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
-          <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} pluginsLoaded={pluginsLoaded} />
+          <EmbeddablePlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} pluginsLoaded={pluginsLoaded} />
         }
       </div>
     );

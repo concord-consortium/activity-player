@@ -174,6 +174,9 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
 };
 
 export const getGlossaryEmbeddable = (activity: Activity) => {
+// Do we ever use more than one plugin?
+// What is is_half_width doing here?
+// Why is there no ref_id on the glossary plugin?
   const glossaryPlugin = activity.plugins.find((activityPlugin: Plugin) => activityPlugin.approved_script_label === "glossary");
   const embeddablePlugin: IEmbeddablePlugin | undefined = glossaryPlugin
     ? { type: "Embeddable::EmbeddablePlugin",
@@ -185,4 +188,3 @@ export const getGlossaryEmbeddable = (activity: Activity) => {
     : undefined;
   return embeddablePlugin;
 };
-
