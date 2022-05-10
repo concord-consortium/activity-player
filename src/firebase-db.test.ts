@@ -3,9 +3,9 @@ import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initialize
 import { DefaultManagedInteractive } from "./test-utils/model-for-tests";
 import { getAnswerWithMetadata, LegacyLinkedRefMap } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata } from "./types";
-import firebase from "firebase/app";
+import firebase from "firebase/compat/app";
 import { RawClassInfo } from "./portal-api";
-import "firebase/firestore";
+import "firebase/compat/firestore";
 
 describe("Firestore", () => {
 
