@@ -231,8 +231,8 @@ describe("Plugin utility functions", () => {
         const embeddablePlugins = getEmbeddablePlugins(activity);
         expect(embeddablePlugins).toBeDefined();
         expect(embeddablePlugins![0].type).toBe("Embeddable::EmbeddablePlugin");
-      })
-    })
+      });
+    });
   });
 
 });
