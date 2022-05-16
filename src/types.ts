@@ -103,6 +103,9 @@ export interface IMwInteractive extends EmbeddableBase {
   linked_interactive?: { ref_id: string };
   aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX";
   show_delete_data_button?: boolean;
+  click_to_play?: boolean;
+  click_to_play_prompt?: string | null;
+  image_url?: string | null;
 }
 
 export interface IEmbeddableXhtml extends EmbeddableBase {

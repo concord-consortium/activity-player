@@ -20,6 +20,7 @@ import { Lightbox } from "./lightbox";
 import { Logger, LogEventName } from "../../../lib/logger";
 import { handleGetAttachmentUrl } from "@concord-consortium/interactive-api-host";
 import { LaraDataContext } from "../../lara-data-context";
+import { ClickToPlay } from "./click-to-play";
 
 import "./managed-interactive.scss";
 
@@ -30,10 +31,16 @@ interface IProps {
   setSendCustomMessage: (sender: (message: ICustomMessage) => void) => void;
   setNavigation?: (options: INavigationOptions) => void;
   ref?: React.Ref<ManagedInteractiveImperativeAPI>;
+  emitInteractiveAvailable?: () => void;
 }
 
 export interface ManagedInteractiveImperativeAPI {
   requestInteractiveState: (options?: IGetInteractiveState) => Promise<void>;
+}
+
+export interface IClickToPlayOptions {
+  prompt?: string | null;
+  imageUrl?: string | null;
 }
 
 const kDefaultAspectRatio = 4 / 3;
@@ -54,6 +61,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const [loadingAnswer, setLoadingAnswer] = useState(shouldWatchAnswer);
   const [loadingLegacyLinkedInteractiveState, setLoadingLegacyLinkedInteractiveState] = useState(shouldLoadLegacyLinkedInteractiveState);
   const interactiveInfo = useRef<IInteractiveInfo | undefined>(undefined);
+  const [clickToPlayOptions, setClickToPlayOptions] = useState<IClickToPlayOptions|undefined>(undefined);
+  const [clickedToPlay, setClickedToPlay] = useState(false);
 
   const embeddableRefId = props.embeddable.ref_id;
   useEffect(() => {
@@ -124,6 +133,15 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const nativeHeight = embeddableData?.native_height || 0;
   const nativeWidth = embeddableData?.native_width || 0;
   const aspectRatio = nativeHeight && nativeWidth ? nativeWidth / nativeHeight : kDefaultAspectRatio;
+
+  useEffect(() => {
+    setClickToPlayOptions(embeddableData?.click_to_play
+    ? ({
+        prompt: embeddableData.click_to_play_prompt,
+        imageUrl: embeddableData.image_url
+      })
+    : undefined);
+  }, [embeddableData]);
 
   // cf. https://www.npmjs.com/package/@react-hook/resize-observer
   const useSize = (target: any) => {
@@ -263,6 +281,13 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     });
   };
 
+  const handleClickToPlay = () => {
+    setClickToPlayOptions(undefined);
+    setClickedToPlay(true);
+    // in the current Lara code we emit the interactive is available even if the iframe src it not set yet
+    props.emitInteractiveAvailable?.();
+  };
+
   useImperativeHandle(ref, () => ({
     requestInteractiveState: (options?: IGetInteractiveState) => {
       if (shouldWatchAnswer && iframeRuntimeRef.current) {
@@ -314,8 +339,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         setSendCustomMessage={setSendCustomMessage}
         setNavigation={setNavigation}
         iframeTitle={questionNumber
-                     ? `Question ${questionNumber} ${questionName} content`
-                     : embeddable.name || "Interactive content"}
+                    ? `Question ${questionNumber} ${questionName} content`
+                    : embeddable.name || "Interactive content"}
         portalData={portalData}
         answerMetadata={answerMeta.current}
         interactiveInfo={interactiveInfo.current}
@@ -350,17 +375,26 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
                           tabIndex={0}/>
             </div>
           </div>
-      }
-      { !activeDialog && interactiveIframeRuntime }
-      {
-        activeDialog &&
-        <Modal isOpen={true} appElement={getModalContainer()} onRequestClose={activeDialog.notCloseable ? undefined : handleCloseDialog}>
-          { interactiveIframeRuntime }
-        </Modal>
-      }
-      {
-        activeLightbox && <Lightbox onClose={handleCloseLightbox} {...activeLightbox} />
-      }
+        }
+        {clickToPlayOptions && !clickedToPlay
+          ? <ClickToPlay
+              prompt={clickToPlayOptions.prompt}
+              imageUrl={clickToPlayOptions.imageUrl}
+              onClick={handleClickToPlay}
+            />
+          : <>
+              { !activeDialog && interactiveIframeRuntime }
+              {
+                activeDialog &&
+                <Modal isOpen={true} appElement={getModalContainer()} onRequestClose={activeDialog.notCloseable ? undefined : handleCloseDialog}>
+                  { interactiveIframeRuntime }
+                </Modal>
+              }
+              {
+                activeLightbox && <Lightbox onClose={handleCloseLightbox} {...activeLightbox} />
+              }
+            </>
+        }
       </div>
     );
   });
