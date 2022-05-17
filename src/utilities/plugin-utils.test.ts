@@ -231,8 +231,8 @@ describe("Plugin utility functions", () => {
         const activityLevelPlugins = getActivityLevelPlugins(activity);
         expect(activityLevelPlugins).toBeDefined();
         expect(activityLevelPlugins).toHaveLength(1);
-      })
-    })
+      });
+    });
   });
 
 });
