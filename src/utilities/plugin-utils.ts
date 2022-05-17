@@ -173,10 +173,9 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
   LARA.Plugins.initPlugin(pluginLabel, pluginContext);
 };
 
-export const getEmbeddablePlugins = (activity: Activity) => {
+export const getActivityLevelPlugins = (activity: Activity) => {
   const plugins = activity.plugins;
-  const embeddablePlugins: IEmbeddablePlugin[] | undefined =
-    plugins ?
+  const activityLevelPlugins: IEmbeddablePlugin[] =
     plugins.map((plugin) => {
       return {
         type: "Embeddable::EmbeddablePlugin",
@@ -185,7 +184,6 @@ export const getEmbeddablePlugins = (activity: Activity) => {
         is_half_width: false,
         ref_id: "" // no ref_id's on embeddable plugins except for teacher edition
       };
-     })
-    : undefined;
-  return embeddablePlugins;
+     });
+  return activityLevelPlugins;
 };

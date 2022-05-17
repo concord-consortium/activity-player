@@ -5,19 +5,18 @@ import { initializePlugin, IPartialEmbeddablePluginContext, validateEmbeddablePl
 import { LaraGlobalContext } from "../../lara-global-context";
 
 import "./embeddable-plugin.scss";
-import "./glossary-plugin.scss";
 
 interface IProps {
   embeddable: IEmbeddablePlugin;
   pageNumber?: number;
   pluginsLoaded: boolean;
+  isActivityLevelPlugin?: boolean;
 }
 
 export const EmbeddablePlugin: React.FC<IProps> = (props) => {
-    const { embeddable, pluginsLoaded, pageNumber } = props;
+    const { embeddable, pluginsLoaded, pageNumber, isActivityLevelPlugin } = props;
     // Checking if the embeddable is glossary because the glossary plugin has different
     // styling from other embeddables.
-    const isGlossary = embeddable.plugin?.approved_script_label === "glossary";
     const divTarget = useRef<HTMLInputElement>(null);
     const LARA = useContext(LaraGlobalContext);
 
@@ -34,7 +33,7 @@ export const EmbeddablePlugin: React.FC<IProps> = (props) => {
     }, [LARA, embeddable, pluginsLoaded]);
     return (
       <div
-        className={isGlossary ? "glossary-plugin-container" : "plugin-container"}
+        className={isActivityLevelPlugin ? "activity-level-plugin-container" : "plugin-container"}
         data-cy={"embeddable-plugin"}
         key={pageNumber ? pageNumber : embeddable.ref_id} // teacher edition does not pass in a page number
         ref={divTarget}

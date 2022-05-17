@@ -1,6 +1,6 @@
 import { Activity, Plugin } from "../types";
 import {
-  addUsedApprovedScript, clearUsedApprovedScripts, findUsedApprovedScripts, getEmbeddablePlugins, getUsedApprovedScripts, IEmbeddablePluginContext,
+  addUsedApprovedScript, clearUsedApprovedScripts, findUsedApprovedScripts, getActivityLevelPlugins, getUsedApprovedScripts, IEmbeddablePluginContext,
   initializePlugin, IPartialEmbeddablePluginContext, loadLearnerPluginState, loadPluginScripts,
   validateEmbeddablePluginContextForPlugin, validateEmbeddablePluginContextForWrappedEmbeddable
 } from "./plugin-utils";
@@ -226,13 +226,13 @@ describe("Plugin utility functions", () => {
       });
     });
 
-    describe("#getEmbeddablePlugins", () => {
-      it("returns all embeddable plugins", () => {
-        const embeddablePlugins = getEmbeddablePlugins(activity);
-        expect(embeddablePlugins).toBeDefined();
-        expect(embeddablePlugins![0].type).toBe("Embeddable::EmbeddablePlugin");
-      });
-    });
+    describe("#getActivityLevelPlugins", () => {
+      it("returns all activity-level plugins", () => {
+        const activityLevelPlugins = getActivityLevelPlugins(activity);
+        expect(activityLevelPlugins).toBeDefined();
+        expect(activityLevelPlugins).toHaveLength(1);
+      })
+    })
   });
 
 });
