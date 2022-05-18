@@ -25,7 +25,7 @@ import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
 import { Activity, IEmbeddablePlugin, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
-import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
+import { loadPluginScripts, getActivityLevelPlugins, loadLearnerPluginState } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
 import { Error }  from "./error/error";
 import { IdleWarning } from "./error/idle-warning";
@@ -34,7 +34,7 @@ import { SequenceIntroduction } from "./sequence-introduction/sequence-introduct
 import { ModalDialog } from "./modal-dialog";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
-import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
+import { EmbeddablePlugin } from "./activity-page/plugins/embeddable-plugin";
 import { getAttachmentsManagerOptions} from "../utilities/get-attachments-manager-options";
 import { IdleDetector } from "../utilities/idle-detector";
 import { initializeAttachmentsManager } from "@concord-consortium/interactive-api-host";
@@ -273,7 +273,7 @@ export class App extends React.PureComponent<IProps, IState> {
                                     s => s.layout.includes("responsive"));
     const fullWidth = (currentPage !== 0) && (hasResponsiveSection.length > 0);
     const project = activity.project ? activity.project : null;
-    const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
+    const activityLevelPlugins: IEmbeddablePlugin[] = getActivityLevelPlugins(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
     const sequenceActivityId = sequence !== undefined ? getSequenceActivityId(sequence, activityIndex) : undefined;
     const sequenceActivity = sequenceActivityId !== undefined
@@ -329,11 +329,19 @@ export class App extends React.PureComponent<IProps, IState> {
             page={pagesVisible[currentPage - 1]}
             teacherEditionMode={teacherEditionMode}
             pluginsLoaded={pluginsLoaded}
-            glossaryPlugin={glossaryEmbeddable !== null}
+            plugins={activityLevelPlugins.length > 0}
           />
         }
-        { !idle && glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
-          <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} pluginsLoaded={pluginsLoaded} />
+        { !idle && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
+          activityLevelPlugins.map((activityLevelPlugin, idx) => {
+            return <EmbeddablePlugin
+                    key={idx}
+                    embeddable={activityLevelPlugin}
+                    pageNumber={currentPage}
+                    pluginsLoaded={pluginsLoaded}
+                    isActivityLevelPlugin={true}
+                  />;
+          })
         }
       </div>
     );

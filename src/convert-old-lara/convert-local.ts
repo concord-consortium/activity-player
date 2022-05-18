@@ -10,9 +10,11 @@ import { convertLegacyResource } from "./convert";
   const legacyResourcePath = localDir + resourceToConvert + ".json";
   const legacyRes = await import(legacyResourcePath);
   const r = convertLegacyResource(legacyRes);
+  // tslint:disable-next-line:no-console
   console.log(JSON.stringify(r));
   fs.writeFile (localDir+"version-2/sample-new-sections-"+newResourceName+".json", JSON.stringify(r), function(err) {
     if (err) throw err;
+    // tslint:disable-next-line:no-console
     console.log("complete");
     }
 );
