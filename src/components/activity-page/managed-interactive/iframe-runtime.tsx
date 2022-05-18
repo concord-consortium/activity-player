@@ -8,7 +8,7 @@ import {
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
   ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, ILinkedInteractiveStateResponse,
   IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent,
-  ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState
+  ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState, AttachmentInfoMap
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
@@ -250,6 +250,17 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         interactiveStateRef.current = undefined;
       }
 
+      // create attachments map
+      const attachments: AttachmentInfoMap = {};
+      Object.keys(answerMetadata?.attachments || {}).forEach((key) => {
+        const attachment = answerMetadata?.attachments?.[key];
+        if (attachment) {
+          attachments[key] = {
+            contentType: attachment.contentType
+          };
+        }
+      });
+
       // note: many of the values here are placeholders that require further
       // consideration to determine whether there are more appropriate values.
       // NOTE: updatedAt is directly added here instead of in the exported lara types
@@ -275,6 +286,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           }
         },
         ...linkedInteractivesRef.current,
+        attachments
       };
       const initInteractiveMsg: IInitInteractive = report
               ? {

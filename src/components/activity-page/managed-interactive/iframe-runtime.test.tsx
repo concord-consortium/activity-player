@@ -89,11 +89,70 @@ describe("IframeRuntime component", () => {
         setNavigation={mockSetNavigation}
         iframeTitle="Interactive content"
         showDeleteDataButton={true}
+        answerMetadata={{
+          type: "interactive_state",
+          answer: JSON.stringify({foo: "bar"}),
+          question_id: "interactive_123",
+          question_type: "interactive",
+          id: "test1234",
+          submitted: true,
+          report_state: "",
+          attachments: {
+            "test.png": {
+              publicPath: "/foo/bar/test.png",
+              folder: {
+                id: "123",
+                ownerId: "testuser",
+              },
+              contentType: "image/png",
+            },
+            "test.mp3": {
+              publicPath: "/foo/bar/test.mp3",
+              folder: {
+                id: "123",
+                ownerId: "testuser",
+              },
+              contentType: "audio/mp3",
+            }
+          }
+        }}
       />);
     expect(testIframe.getByTestId("iframe-runtime")).toBeDefined();
     // allow initialization to complete
     jest.runAllTimers();
+
+    // initInteractive is posted to the iframe
     expect(lastPost()).toBe("initInteractive");
+    expect(lastPostData()).toStrictEqual({
+      activityName: undefined,
+      attachments: {
+        "test.mp3": {
+          contentType: "audio/mp3",
+        },
+        "test.png": {
+          contentType: "image/png",
+        },
+      },
+      authInfo: {email: "", loggedIn: false, provider: ""},
+      authoredState: null,
+      classInfoUrl: "",
+      collaboratorUrls: null,
+      error: "",
+      externalReportUrl: undefined,
+      globalInteractiveState: null,
+      hostFeatures: {getFirebaseJwt: {version: "1.0.0"}, modal: {alert: false, dialog: true, lightbox: true, version: "1.0.0"}},
+      interactive: {id: "123-Interactive", name: ""},
+      interactiveState: null,
+      interactiveStateUrl: "",
+      linkedInteractives: [],
+      mode: "runtime",
+      pageName: undefined,
+      pageNumber: undefined,
+      runRemoteEndpoint: undefined,
+      themeInfo: {colors: {colorA: "", colorB: ""}},
+      updatedAt: undefined,
+      version: 1
+    });
     expect(mockSetSendCustomMessage).toHaveBeenCalled();
 
     act(() => {
