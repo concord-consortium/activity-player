@@ -2,7 +2,7 @@ import { Credentials, Resource } from "@concord-consortium/token-service";
 import { act, configure, render, screen } from "@testing-library/react";
 import React from "react";
 import { ManagedInteractive } from "./managed-interactive";
-import { EmbeddableType } from "../../../types";
+import { EmbeddableType, IMwInteractive } from "../../../types";
 import { IAttachmentUrlRequest } from "@concord-consortium/lara-interactive-api";
 
 configure({ testIdAttribute: "data-cy" });
@@ -297,7 +297,34 @@ describe("ManagedInteractive component", () => {
     expect(mockHandleGetAttachmentUrl).toHaveBeenCalled();
   });
 
-  it("renders click to play over the component", async () => {
+
+  it("renders click to play over the component for normal interactives", async () => {
+
+    const sampleEmbeddable: IMwInteractive = {
+      type: "MwInteractive",
+      name: "normal test interactive",
+      is_hidden: false,
+      ref_id: "test",
+      click_to_play: true,
+      click_to_play_prompt: "Click here to play!!!",
+      image_url: "https://example.com/click-here-to-play.png",
+    };
+
+    render(<ManagedInteractive
+              embeddable={sampleEmbeddable}
+              questionNumber={1}
+              setSupportedFeatures={mockSetSupportedFeatures}
+              setSendCustomMessage={mockSetSendCustomMessage}
+              setNavigation={mockSetNavigation}
+              />);
+    expect(screen.getByTestId("click-to-play")).toBeInTheDocument();
+    expect(screen.getByTestId("click-to-play").innerHTML).toBe(`<img src="https://example.com/click-here-to-play.png"><div>Click here to play!!!</div>`);
+
+    // allow initialization to complete
+    jest.runAllTimers();
+  });
+
+  it("renders click to play over the component for library interactives", async () => {
     const sampleEmbeddable: EmbeddableType = {
       name: "mc question",
       url_fragment: null,
