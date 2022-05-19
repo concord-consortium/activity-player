@@ -13,7 +13,7 @@ import "firebase/compat/firestore";
 import { anonymousPortalData } from "./portal-api";
 import { IAnonymousPortalData, IPortalData } from "./portal-types";
 import { getLegacyLinkedRefMap, LegacyLinkedRefMap, refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
-import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, ILegacyLinkedInteractiveState } from "./types";
+import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, ILegacyLinkedInteractiveState, IApRun, IBaseApRun } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
 import { ILaraData } from "./components/lara-data-context";
@@ -28,6 +28,9 @@ const answersPath = (answerId?: string) =>
 
 const learnerPluginStatePath = (docId: string) =>
   `sources/${portalData?.database.sourceKey}/plugin_states/${docId}`;
+
+const apRunsPath = (id?: string) =>
+  `sources/${portalData?.database.sourceKey}/ap_runs${id ? "/" + id : ""}`;
 
 export interface WrappedDBAnswer {
   meta: IExportableAnswerMetadata;
@@ -269,7 +272,7 @@ export const watchAllAnswers = (callback: (wrappedAnswer: WrappedDBAnswer[]) => 
 };
 
 // use same universal timezone (UTC) as Lara uses for writing created
-export const createdString = () => (new Date()).toUTCString().replace("GMT", "UTC");
+export const utcString = () => (new Date()).toUTCString().replace("GMT", "UTC");
 
 export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   if (!portalData) {
@@ -281,7 +284,7 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   if (portalData.type === "authenticated") {
     const ltiAnswer: LTIRuntimeAnswerMetadata = {
       ...answer,
-      created: createdString(),
+      created: utcString(),
       source_key: portalData.database.sourceKey,
       resource_url: portalData.resourceUrl,
       tool_id: portalData.toolId,
@@ -307,7 +310,7 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   } else {
     const anonymousAnswer: AnonymousRuntimeAnswerMetadata = {
       ...answer,
-      created: createdString(),
+      created: utcString(),
       source_key: portalData.database.sourceKey,
       resource_url: portalData.resourceUrl,
       tool_id: portalData.toolId,
@@ -493,4 +496,73 @@ export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData
         externalReportUrl: getReportUrl(embeddableRefId) || undefined
       });
     });
+};
+
+export const getApRun = async (sequenceActivity?: string|null) => {
+  if (!portalData) {
+    throw new Error("Must set portal data first");
+  }
+  let query: firebase.firestore.Query = app.firestore().collection(apRunsPath());
+
+  if (portalData.type === "authenticated") {     // logged in user
+    query = query
+      .where("platform_id", "==", portalData.platformId)
+      .where("resource_url", "==", portalData.resourceUrl)
+      .where("context_id", "==", portalData.contextId)
+      .where("platform_user_id", "==", portalData.platformUserId.toString());
+  } else {
+    query = query.where("run_key", "==", portalData.runKey);
+  }
+
+  if (sequenceActivity) {
+    query = query.where("sequence_activity", "==", sequenceActivity);
+  }
+
+  const doc = await query.get();
+  if (doc.empty) {
+    return null;
+  }
+
+  return {id: doc.docs[0].id, data: doc.docs[0].data() as IApRun};
+};
+
+export const createOrUpdateApRun = async ({sequenceActivity, pageId}: {sequenceActivity?: string, pageId: number}) => {
+  if (!portalData) {
+    throw new Error("Must set portal data first");
+  }
+
+  let apRun: IApRun;
+  const existingApRun = await getApRun(sequenceActivity);
+
+  const common: IBaseApRun = {
+    sequence_activity: sequenceActivity || null,
+    page_id: pageId,
+    created: existingApRun?.data.created || utcString(),
+    updated: utcString(),
+  };
+
+  if (portalData.type === "authenticated") {
+    apRun = {
+      type: "authenticated",
+      platform_id: portalData.platformId,
+      platform_user_id: portalData.platformUserId,
+      context_id: portalData.contextId,
+      resource_url: portalData.resourceUrl,
+      ...common
+    };
+  } else {
+    apRun = {
+      type: "anonymous",
+      run_key: portalData.runKey,
+      ...common
+    };
+  }
+
+  const firestoreSetPromise = app.firestore()
+    .doc(apRunsPath(existingApRun?.id))
+    .set(apRun as Partial<firebase.firestore.DocumentData>);
+
+    requestTracker.registerRequest(firestoreSetPromise);
+
+  return firestoreSetPromise;
 };

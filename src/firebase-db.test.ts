@@ -1,5 +1,5 @@
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
-import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState, getLegacyLinkedRefIds, createdString } from "./firebase-db";
+import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState, getLegacyLinkedRefIds, utcString } from "./firebase-db";
 import { DefaultManagedInteractive } from "./test-utils/model-for-tests";
 import { getAnswerWithMetadata, LegacyLinkedRefMap } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata } from "./types";
@@ -107,7 +107,7 @@ describe("Firestore", () => {
 
     const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableAnswerMetadata;
 
-    const created = createdString();
+    const created = utcString();
     createOrUpdateAnswer(exportableAnswer);
 
     expect(appMock.firestore().doc).toHaveBeenCalledWith(`sources/localhost/answers/${exportableAnswer.id}`);
@@ -163,7 +163,7 @@ describe("Firestore", () => {
 
     const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableAnswerMetadata;
 
-    const created = createdString();
+    const created = utcString();
     createOrUpdateAnswer(exportableAnswer);
 
     expect(appMock.firestore().doc).toHaveBeenCalledWith(`sources/localhost/answers/${exportableAnswer.id}`);
