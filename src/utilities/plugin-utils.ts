@@ -136,11 +136,18 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
 
   let embeddableContext: IEmbeddableContextOptions | null = null;
   if (wrappedEmbeddable && wrappedEmbeddableContainer) {
+    let clickToPlay = false;
+    if (wrappedEmbeddable.type === "ManagedInteractive") {
+      clickToPlay = !!wrappedEmbeddable.library_interactive?.data.click_to_play;
+    } else if (wrappedEmbeddable.type === "MwInteractive") {
+      clickToPlay = !!wrappedEmbeddable.click_to_play;
+    }
+
     embeddableContext = {
       container: wrappedEmbeddableContainer,
       laraJson: wrappedEmbeddable,
       interactiveStateUrl: null,
-      interactiveAvailable: true,
+      interactiveAvailable: !clickToPlay,
       sendCustomMessage
     };
   }

@@ -75,6 +75,15 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     LARA?.Events.emitInteractiveSupportedFeatures(event);
   }, [LARA?.Events]);
 
+  // used by ManagedInteractive when click to play is enabled to signal the interactive
+  // is available after click to play is clicked
+  const handleEmitInteractiveAvailable = useCallback(() => {
+    const container = embeddableWrapperDivTarget.current;
+    if (container) {
+      LARA?.Events.emitInteractiveAvailable({ container, available: true });
+    }
+  }, [LARA?.Events]);
+
   let qComponent;
   if (embeddable.type === "MwInteractive" || (embeddable.type === "ManagedInteractive" && embeddable.library_interactive)) {
     qComponent = <ManagedInteractive
@@ -83,7 +92,9 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                     questionNumber={questionNumber}
                     setSupportedFeatures={handleSetSupportedFeatures}
                     setSendCustomMessage={setSendCustomMessage}
-                    setNavigation={handleSetNavigation} />;
+                    setNavigation={handleSetNavigation}
+                    emitInteractiveAvailable={handleEmitInteractiveAvailable}
+                 />;
   } else if (embeddable.type === "ManagedInteractive" && !embeddable.library_interactive) {
     qComponent = <div>Content type not supported</div>;
   } else if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.component_label === "windowShade") {

@@ -226,6 +226,34 @@ describe("Plugin utility functions", () => {
       });
     });
 
+    it("returns interactiveAvailable for interactives as false if click to play is used", () => {
+      context.wrappedEmbeddable = {
+        type: "MwInteractive",
+        click_to_play: true
+      } as any;
+
+      addUsedApprovedScript(plugin);
+      initializePlugin(context);
+      const initPluginContext = (context.LARA.Plugins.initPlugin as jest.Mock).mock.calls[0][1];
+      expect(initPluginContext.wrappedEmbeddable.interactiveAvailable).toBe(false);
+    });
+
+    it("returns interactiveAvailable for managed interactives as false if click to play is used", () => {
+      context.wrappedEmbeddable = {
+        type: "ManagedInteractive",
+        library_interactive: {
+          data: {
+            click_to_play: true
+          }
+        }
+      } as any;
+
+      addUsedApprovedScript(plugin);
+      initializePlugin(context);
+      const initPluginContext = (context.LARA.Plugins.initPlugin as jest.Mock).mock.calls[0][1];
+      expect(initPluginContext.wrappedEmbeddable.interactiveAvailable).toBe(false);
+    });
+
     describe("#getActivityLevelPlugins", () => {
       it("returns all activity-level plugins", () => {
         const activityLevelPlugins = getActivityLevelPlugins(activity);
