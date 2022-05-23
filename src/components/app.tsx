@@ -178,19 +178,22 @@ export class App extends React.PureComponent<IProps, IState> {
         // Notify user when network issues are resolved.
         onFirestoreSaveAfterTimeout(() => this.state.errorType === "network" && this.setError(null));
 
-        const apRun = await getApRun(sequenceActivity);
-        if (apRun) {
-          // use the sequence activity from the apRun if not passed as a parameter
-          if (!sequenceActivity && apRun.data.sequence_activity) {
-            sequenceActivity = apRun.data.sequence_activity;
-          }
-          // if the page is not passed as a parameter, use the page from the apRun
-          if (!page) {
-            page = `page_${apRun.data.page_id}`;
-          } else {
-            // if the page is passed as a parameter, it may not be a valid page in the sequence activity
-            // however the getPagePositionFromQueryValue() handles this case -- we can't check it here
-            // since we haven't loaded the activity in sequence definition yet
+        // __skipGetApRun is used in Cypress tests to skip the ap run load
+        if (!queryValueBoolean("__skipGetApRun")) {
+          const apRun = await getApRun(sequenceActivity);
+          if (apRun) {
+            // use the sequence activity from the apRun if not passed as a parameter
+            if (!sequenceActivity && apRun.data.sequence_activity) {
+              sequenceActivity = apRun.data.sequence_activity;
+            }
+            // if the page is not passed as a parameter, use the page from the apRun
+            if (!page) {
+              page = `page_${apRun.data.page_id}`;
+            } else {
+              // if the page is passed as a parameter, it may not be a valid page in the sequence activity
+              // however the getPagePositionFromQueryValue() handles this case -- we can't check it here
+              // since we haven't loaded the activity in sequence definition yet
+            }
           }
         }
       }
@@ -535,16 +538,15 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private handleSelectActivity = (activityNum: number) => {
-    const activityIndex = activityNum + 1;
 
-    Logger.updateSequenceActivityindex(activityIndex);
+    Logger.updateSequenceActivityindex(activityNum + 1);
     Logger.log({
       event: LogEventName.change_sequence_activity,
-      parameters: { new_activity_index: activityIndex, new_activity_name: this.state.sequence?.activities[activityNum].name }
+      parameters: { new_activity_index: activityNum + 1, new_activity_name: this.state.sequence?.activities[activityNum].name }
     });
 
     const {sequence} = this.state;
-    const sequenceActivity = sequence !== undefined ? getSequenceActivityId(sequence, activityIndex) : undefined;
+    const sequenceActivity = sequence !== undefined ? getSequenceActivityId(sequence, activityNum) : undefined;
     if (sequenceActivity) {
       setQueryValue("sequenceActivity", sequenceActivity);
     }

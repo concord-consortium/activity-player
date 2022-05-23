@@ -76,6 +76,8 @@ context("Launch AP From the Portal", () => {
     it("can work with the interactive sharing plugin", function () {
       cy.visit(`?activity=sample-activity-interactive-sharing&token=${this.portalToken}` +
         `&domain=${portalDomain}/&answersSourceKey=${answersSourceKey}`);
+
+      activityPage.getHomeButton().eq(1).click();
       cy.get("[data-cy=activity-summary]").should("contain", "Test Interactive Sharing");
       activityPage.getNavPage(1).click();
 

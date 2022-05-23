@@ -514,6 +514,7 @@ export const getApRun = async (sequenceActivity?: string|null) => {
     query = query.where("run_key", "==", portalData.runKey);
   }
 
+  // for sequence runs the sequence_activity will be set but will be null for activity only runs
   if (sequenceActivity) {
     query = query.where("sequence_activity", "==", sequenceActivity);
   }
@@ -534,6 +535,7 @@ export const createOrUpdateApRun = async ({sequenceActivity, pageId}: {sequenceA
   let apRun: IApRun;
   const existingApRun = await getApRun(sequenceActivity);
 
+  // for sequence runs the sequence_activity will be set but will be null for activity only runs
   const common: IBaseApRun = {
     sequence_activity: sequenceActivity || null,
     page_id: pageId,
@@ -558,11 +560,19 @@ export const createOrUpdateApRun = async ({sequenceActivity, pageId}: {sequenceA
     };
   }
 
-  const firestoreSetPromise = app.firestore()
-    .doc(apRunsPath(existingApRun?.id))
-    .set(apRun as Partial<firebase.firestore.DocumentData>);
+  let firestoreSetPromise: Promise<any>;
 
-    requestTracker.registerRequest(firestoreSetPromise);
+  if (existingApRun) {
+    firestoreSetPromise = app.firestore()
+      .doc(apRunsPath(existingApRun.id))
+      .set(apRun as Partial<firebase.firestore.DocumentData>);
+  } else {
+    firestoreSetPromise = app.firestore()
+      .collection(apRunsPath())
+      .add(apRun as Partial<firebase.firestore.DocumentData>);
+  }
+
+  requestTracker.registerRequest(firestoreSetPromise);
 
   return firestoreSetPromise;
 };
