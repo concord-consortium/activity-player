@@ -40,3 +40,14 @@ export const setQueryValue = (prop: string, value: any, reload = false) => {
     window.history.replaceState(null, "", "?" + newQueryString);
   }
 };
+
+export const deleteQueryValue = (prop: string, reload = false) => {
+  const parsed = queryString.parse(location.search);
+  delete parsed[prop];
+  const newQueryString = queryString.stringify(parsed);
+  if (reload) {
+    location.search = queryString.stringify(parsed);
+  } else {
+    window.history.replaceState(null, "", "?" + newQueryString);
+  }
+};

@@ -112,22 +112,33 @@ context("Saving and loading data as an anonymous user", () => {
       cy.visit(sequenceUrlWithRunKey + "&clearFirestorePersistence");
       cy.wait(1000);
 
-      // select completion page2 of activities 1 & 4
+      // select activity 1, check that home is selected then select page 1
       sequencePage.getThumbnails().eq(0).click();
       cy.get("[data-cy=custom-select-header]").click();
       cy.get("[data-cy^=list-item-1]").click();
-      activityPage.getCompletionPage().eq(0).click();
-      cy.get("[data-cy=exit-container]").contains("Sample Sequence Activity 1");
+      cy.get("[data-cy=home-button].current").should('have.length', 2)
+      activityPage.getNavPage(1).click();
+      cy.get("[data-cy=nav-pages-button].current").contains("1")
+      cy.get("[data-cy=home-button].current").should('have.length', 0)
+
+      // select activity 4, check that home is selected then select page 1
+      cy.get("[data-cy=custom-select-header]").click();
+      cy.get("[data-cy^=list-item-4]").click();
+      cy.get("[data-cy=home-button].current").should('have.length', 2)
+      activityPage.getNavPage(1).click();
+      cy.get("[data-cy=nav-pages-button].current").contains("1")
+      cy.get("[data-cy=home-button].current").should('have.length', 0)
+
+      // reload activities and check pages are auto loaded and home isn't selected
+      cy.get("[data-cy=custom-select-header]").click();
+      cy.get("[data-cy^=list-item-1]").click();
+      cy.get("[data-cy=nav-pages-button].current").contains("1")
+      cy.get("[data-cy=home-button].current").should('have.length', 0)
 
       cy.get("[data-cy=custom-select-header]").click();
       cy.get("[data-cy^=list-item-4]").click();
-      activityPage.getCompletionPage().eq(0).click();
-      cy.get("[data-cy=exit-container]").contains("Sample Sequence Activity 4");
-
-      // load the sequence again
-      // cy.visit(sequenceUrlWithRunKey + "&sequenceActivity=activity_1");
-      // cy.wait(1000);
-      // cy.get("[data-cy=exit-container]").contains("Sample Sequence Activity 1");
+      cy.get("[data-cy=nav-pages-button].current").contains("1")
+      cy.get("[data-cy=home-button].current").should('have.length', 0)
     });
   });
 });

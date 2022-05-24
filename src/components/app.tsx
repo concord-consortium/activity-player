@@ -17,7 +17,7 @@ import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
-import { queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
+import { deleteQueryValue, queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
 import { fetchPortalData, firebaseAppName } from "../portal-api";
 import { IPortalData, IPortalDataUnion } from "../portal-types";
 import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
@@ -537,7 +537,7 @@ export class App extends React.PureComponent<IProps, IState> {
     }
   }
 
-  private handleSelectActivity = (activityNum: number) => {
+  private handleSelectActivity = async (activityNum: number) => {
 
     Logger.updateSequenceActivityindex(activityNum + 1);
     Logger.log({
@@ -545,17 +545,28 @@ export class App extends React.PureComponent<IProps, IState> {
       parameters: { new_activity_index: activityNum + 1, new_activity_name: this.state.sequence?.activities[activityNum].name }
     });
 
+    let currentPage = 0;
     const {sequence} = this.state;
     const sequenceActivity = sequence !== undefined ? getSequenceActivityId(sequence, activityNum) : undefined;
-    if (sequenceActivity) {
+    if (sequenceActivity && sequence) {
+      const activity = sequence.activities[activityNum];
+      const apRun = await getApRun(sequenceActivity);
+      if (apRun) {
+        currentPage = getPagePositionFromQueryValue(activity, `page_${apRun.data.page_id}`);
+      }
       setQueryValue("sequenceActivity", sequenceActivity);
+      if (currentPage !== 0) {
+        setQueryValue("page", `page_${currentPage}`);
+      } else {
+        deleteQueryValue("page");
+      }
     }
 
     this.setState((prevState) =>
       ({ activity: prevState.sequence?.activities[activityNum],
          showSequenceIntro: false,
          activityIndex: activityNum,
-         currentPage: 0,
+         currentPage,
          sequenceActivity
       })
     );
