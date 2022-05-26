@@ -1,0 +1,18 @@
+@import "../vars.scss";
+
+.page-change-notification {
+  background-color: $cc-orange-light1;
+  color: $cc-charcoal;
+  padding: 18px;
+  font-family: Lato;
+  font-size: 20px;
+  font-weight: bold;
+  font-stretch: normal;
+  font-style: italic;
+  text-align: center;
+}
+
+.page-change-notification-errored {
+  background-color: $activity-red;
+  color: $cc-charcoal-light3;
+}
