@@ -40,6 +40,7 @@ import { IdleDetector } from "../utilities/idle-detector";
 import { initializeAttachmentsManager } from "@concord-consortium/interactive-api-host";
 import { LaraDataContext } from "./lara-data-context";
 import { __closeAllPopUps } from "../lara-plugin/plugin-api/popup";
+import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChangeNotificationStartTimeout } from "./activity-page/page-change-notification";
 
 import "./app.scss";
 
@@ -81,6 +82,7 @@ interface IState {
   pluginsLoaded: boolean;
   errorType: null | ErrorType;
   idle: boolean;
+  pageChangeNotification?: IPageChangeNotification;
 }
 interface IProps {}
 
@@ -372,6 +374,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   setNavigation={this.handleSetNavigation}
                   key={`page-${currentPage}`}
                   pluginsLoaded={this.state.pluginsLoaded}
+                  pageChangeNotification={this.state.pageChangeNotification}
                 />
         }
         { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
@@ -479,9 +482,16 @@ export class App extends React.PureComponent<IProps, IState> {
       const label = incompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage;
       this.setShowModal(true, label);
     } else if (page >= 0 && (activity && page <= activity.pages.length)) {
+
+      // wait a bit to show the page change so we don't get a flicker when the page saves quickly
+      const startPageChangeNotification = setTimeout(() => {
+        this.setState({pageChangeNotification: {state: "started"}});
+      }, PageChangeNotificationStartTimeout);
+
       const navigateAway = () => {
         __closeAllPopUps(); // close any open pop ups
-        this.setState({ currentPage: page, incompleteQuestions: [] });
+        clearTimeout(startPageChangeNotification);
+        this.setState({ currentPage: page, incompleteQuestions: [], pageChangeNotification: undefined });
         setDocumentTitle({activity, pageNumber: page});
         document.getElementsByClassName("app")[0]?.scrollIntoView(); //scroll to the top on page change
         Logger.updateActivityPage(page);
@@ -490,14 +500,21 @@ export class App extends React.PureComponent<IProps, IState> {
           parameters: { new_page: page }
         });
       };
+
       // Make sure that interactive state is saved before user can navigate away.
       const promises = this.activityPageContentRef.current?.requestInteractiveStates({unloading: true}) || [Promise.resolve()];
       Promise.all(promises)
         .then(navigateAway)
         .catch(error => {
-          // Notify user about error, but change page anyway.
-          window.alert(error);
-          navigateAway();
+          // Notify user about error, but change page anyway after displaying error and waiting a bit.
+          clearTimeout(startPageChangeNotification);
+          this.setState({pageChangeNotification: {
+            state: "errored",
+            message: error.toString()
+          }});
+          setTimeout(() => {
+            navigateAway();
+          }, PageChangeNotificationErrorTimeout);
         });
     }
   }

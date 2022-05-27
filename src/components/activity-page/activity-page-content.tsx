@@ -6,6 +6,7 @@ import { Page, SectionType } from "../../types";
 import { IGetInteractiveState, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../../lib/logger";
 import { showReport } from "../../utilities/report-utils";
+import { IPageChangeNotification, PageChangeNotification } from "./page-change-notification";
 
 import "./activity-page-content.scss";
 
@@ -18,6 +19,7 @@ interface IProps {
   totalPreviousQuestions: number;
   setNavigation: (refId: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
+  pageChangeNotification?: IPageChangeNotification;
 }
 
 export class ActivityPageContent extends React.PureComponent <IProps> {
@@ -25,6 +27,10 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
 
   public constructor(props: IProps) {
     super(props);
+  }
+
+  renderPageChangeNotification() {
+    return <PageChangeNotification pageChangeNotification={this.props.pageChangeNotification} />;
   }
 
   render() {
@@ -37,6 +43,7 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
     return (
       <>
         {page.is_hidden && this.renderHiddenWarningBanner()}
+        {this.renderPageChangeNotification()}
         <div className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
           <div className="name">{ pageTitle }</div>
           {this.renderSections(sections, totalPreviousQuestions)}
@@ -46,6 +53,7 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
             />
           }
         </div>
+        {this.renderPageChangeNotification()}
       </>
     );
   }
