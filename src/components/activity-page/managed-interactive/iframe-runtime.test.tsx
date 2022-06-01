@@ -200,7 +200,6 @@ describe("IframeRuntime component", () => {
       dispatchMessageFromChild("height", 960);
     });
     // both width and height are set.  width is 100% due to the interactive posting its height to the iframe
-    // and the aspect ratio being the default
     expect(testIframe.getByTestId("iframe-runtime").children[0]).toHaveAttribute("width", "100%");
     expect(testIframe.getByTestId("iframe-runtime").children[0]).toHaveAttribute("height", "960");
 
