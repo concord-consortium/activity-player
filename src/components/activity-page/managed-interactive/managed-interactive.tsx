@@ -179,6 +179,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     case "MANUAL":
       proposedHeight = divSize?.width / aspectRatio;
       break;
+    case "DEFAULT":
     default:
       if (divSize?.width / aspectRatio > screenHeight.dynamicHeight) {
         proposedHeight = screenHeight.dynamicHeight - kBottomMargin;

@@ -404,9 +404,12 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   // or height from container dimensions and embeddable specifications.
   const height = heightFromInteractive || heightFromSupportedFeatures || proposedHeight || kDefaultHeight;
 
+  // If the interactive sets the height, ignore the container width passed in and use all the available space.
+  const width = heightFromInteractive ? "100%" : containerWidth;
+
   return (
     <div className="iframe-runtime" data-cy="iframe-runtime">
-      <iframe key={`${id}-${reloadCount}`} ref={iframeRef} src={url} id={id} width={containerWidth} height={height} frameBorder={0}
+      <iframe key={`${id}-${reloadCount}`} ref={iframeRef} src={url} id={id} width={width} height={height} frameBorder={0}
               allowFullScreen={true}
               allow="geolocation; microphone; camera"
               title={iframeTitle}
