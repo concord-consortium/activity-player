@@ -452,11 +452,6 @@ describe("Embeddable utility functions", () => {
       expect(answerHasResponse(answer)).toEqual(false);
     });
 
-    it("returns false for non submitted answers", () => {
-      answer.meta.submitted = false;
-      expect(answerHasResponse(answer)).toEqual(false);
-    });
-
     it("returns true for interactive state answers with attachments", () => {
       answer.meta.attachments = {
         "test": {

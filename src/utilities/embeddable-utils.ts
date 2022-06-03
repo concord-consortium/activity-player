@@ -259,10 +259,10 @@ export const getInteractiveInfo = (laraData: ILaraData, embeddableRefId: string)
 
 // adapted from portal-report answer-utils.tsx#hasReponse
 export const answerHasResponse = (answer: WrappedDBAnswer): boolean => {
-  const { interactiveState, meta: { attachments, type, submitted } } = answer;
+  const { interactiveState, meta: { attachments, type } } = answer;
   const hasAttachments = !!(attachments && Object.keys(attachments).length > 0);
   const isNotInteractiveStateAnswer = type !== "interactive_state";
   const hasInteractiveStateKeys = Object.keys(interactiveState).length > 0;
 
-  return !!submitted && (hasAttachments || isNotInteractiveStateAnswer || hasInteractiveStateKeys);
+  return hasAttachments || isNotInteractiveStateAnswer || hasInteractiveStateKeys;
 };
