@@ -213,6 +213,18 @@ export class App extends React.PureComponent<IProps, IState> {
       // or the page.position of the matching page id if prefixed with "page_<id>"
       const currentPage = getPagePositionFromQueryValue(activity, page);
 
+      // set the activity and page query parameters
+      if (sequenceActivity) {
+        setQueryValue("sequenceActivity", sequenceActivity);
+      } else {
+        deleteQueryValue("sequenceActivity");
+      }
+      if (currentPage !== 0) {
+        setQueryValue("page", `page_${currentPage}`);
+      } else {
+        deleteQueryValue("page");
+      }
+
       const showThemeButtons = queryValueBoolean("themeButtons");
       // Show the warning if we are not running on production
       const showWarning = firebaseAppName() !== "report-service-pro";

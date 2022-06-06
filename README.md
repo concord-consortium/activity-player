@@ -139,6 +139,10 @@ Inside of your `package.json` file:
 * enableFirestorePersistence: uses local offline firestore cache only
 * clearFirestorePersistence: clears local offline firestore cache
 
+#### Internal parameters (used in Cypress tests)
+* __cypressLoggedIn:  triggers logged in code path for Cypress tests
+* __skipGetApRun:     skip the ap run load when loading a page
+
 ## License
 
 Activity Player is Copyright 2020 (c) by the Concord Consortium and is distributed under the [MIT license](http://www.opensource.org/licenses/MIT).

@@ -116,29 +116,30 @@ context("Saving and loading data as an anonymous user", () => {
       sequencePage.getThumbnails().eq(0).click();
       cy.get("[data-cy=custom-select-header]").click();
       cy.get("[data-cy^=list-item-1]").click();
-      cy.get("[data-cy=home-button].current").should('have.length', 2)
+      cy.get("[data-cy=home-button].current").should("have.length", 2);
       activityPage.getNavPage(1).click();
-      cy.get("[data-cy=nav-pages-button].current").contains("1")
-      cy.get("[data-cy=home-button].current").should('have.length', 0)
+      cy.get("[data-cy=nav-pages-button].current").contains("1");
+      cy.get("[data-cy=home-button].current").should("have.length", 0);
 
-      // select activity 4, check that home is selected then select page 1
+      // select activity 4, check that home is selected then select completion page
       cy.get("[data-cy=custom-select-header]").click();
       cy.get("[data-cy^=list-item-4]").click();
-      cy.get("[data-cy=home-button].current").should('have.length', 2)
-      activityPage.getNavPage(1).click();
-      cy.get("[data-cy=nav-pages-button].current").contains("1")
-      cy.get("[data-cy=home-button].current").should('have.length', 0)
+      cy.get("[data-cy=home-button].current").should("have.length", 2);
+      activityPage.getCompletionPage().should("not.have.class", "current");
+      activityPage.getCompletionPage().eq(0).click();
+      activityPage.getCompletionPage().should("have.class", "current");
+      cy.get("[data-cy=home-button].current").should("have.length", 0);
 
-      // reload activities and check pages are auto loaded and home isn't selected
+      // reload activities and check pages are auto loaded and home isn"t selected;
       cy.get("[data-cy=custom-select-header]").click();
       cy.get("[data-cy^=list-item-1]").click();
-      cy.get("[data-cy=nav-pages-button].current").contains("1")
-      cy.get("[data-cy=home-button].current").should('have.length', 0)
+      cy.get("[data-cy=nav-pages-button].current").contains("1");
+      cy.get("[data-cy=home-button].current").should("have.length", 0);
 
       cy.get("[data-cy=custom-select-header]").click();
       cy.get("[data-cy^=list-item-4]").click();
-      cy.get("[data-cy=nav-pages-button].current").contains("1")
-      cy.get("[data-cy=home-button].current").should('have.length', 0)
+      activityPage.getCompletionPage().should("have.class", "current");
+      cy.get("[data-cy=home-button].current").should("have.length", 0);
     });
   });
 });
