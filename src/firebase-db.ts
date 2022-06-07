@@ -519,6 +519,10 @@ export const getApRun = async (sequenceActivity?: string|null) => {
     query = query.where("sequence_activity", "==", sequenceActivity);
   }
 
+  // get the most latest run (might be multiple on the first load of a previously run sequence
+  // as this won't have an initial sequenceActivity to query)
+  query = query.orderBy("updated_at", "desc");
+
   const doc = await query.get();
   if (doc.empty) {
     return null;
@@ -539,8 +543,8 @@ export const createOrUpdateApRun = async ({sequenceActivity, pageId}: {sequenceA
   const common: IBaseApRun = {
     sequence_activity: sequenceActivity || null,
     page_id: pageId,
-    created: existingApRun?.data.created || utcString(),
-    updated: utcString(),
+    created_at: existingApRun?.data.created_at || Date.now(),
+    updated_at: Date.now(),
   };
 
   if (portalData.type === "authenticated") {

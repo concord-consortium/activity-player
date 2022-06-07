@@ -320,8 +320,8 @@ export interface ILegacyLinkedInteractiveState {
 export interface IBaseApRun {
   sequence_activity: string | null;
   page_id: number;
-  updated: string;
-  created: string;
+  updated_at: number;
+  created_at: number;
 }
 export interface IAnonymousApRun extends IBaseApRun {
   type: "anonymous";
