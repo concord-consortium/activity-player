@@ -70,16 +70,16 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           if (isQuestion(embeddable)) {
             numQuestions++;
             const questionId = refIdToAnswersQuestionId(embeddable.ref_id);
-            const authored_state = embeddable.authored_state
+            const authoredState = embeddable.authored_state
                                     ? JSON.parse(embeddable.authored_state)
                                     : {};
             let questionAnswered = false;
             const answer = answers?.find(a => a.meta.question_id === questionId);
-            if (answer && answerHasResponse(answer)) {
+            if (answer && answerHasResponse(answer, authoredState)) {
               numAnswers++; //Does't take into account if user erases response after saving
               questionAnswered = true;
             }
-            const questionStatus = { number: numQuestions, page: pageNum, prompt: authored_state.prompt, answered: questionAnswered };
+            const questionStatus = { number: numQuestions, page: pageNum, prompt: authoredState.prompt, answered: questionAnswered };
             questionsStatus.push(questionStatus);
           }
         });

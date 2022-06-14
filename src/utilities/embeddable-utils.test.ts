@@ -431,6 +431,7 @@ describe("Embeddable utility functions", () => {
 
   describe("#answerHasResponse", () => {
     let answer: WrappedDBAnswer;
+    let authoredState: any;
 
     beforeEach(() => {
       answer = {
@@ -446,10 +447,17 @@ describe("Embeddable utility functions", () => {
         },
         interactiveState: {}
       };
+      authoredState = {};
     });
 
     it("returns false for empty interactive state answers", () => {
-      expect(answerHasResponse(answer)).toEqual(false);
+      expect(answerHasResponse(answer, authoredState)).toEqual(false);
+    });
+
+    it("returns false for required unsubmitted required answers", () => {
+      answer.meta.submitted = false;
+      authoredState = { required: true };
+      expect(answerHasResponse(answer, authoredState)).toEqual(false);
     });
 
     it("returns true for interactive state answers with attachments", () => {
@@ -463,21 +471,21 @@ describe("Embeddable utility functions", () => {
           }
         }
       };
-      expect(answerHasResponse(answer)).toEqual(true);
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
     });
 
     it("returns true for answers that are not interactive state answers", () => {
       answer.meta.type = "open_response_answer";
-      expect(answerHasResponse(answer)).toEqual(true);
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
       answer.meta.type = "image_question_answer";
-      expect(answerHasResponse(answer)).toEqual(true);
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
       answer.meta.type = "multiple_choice_answer";
-      expect(answerHasResponse(answer)).toEqual(true);
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
     });
 
     it("returns true for interactive state answers with interactive state", () => {
       answer.interactiveState = { foo: true };
-      expect(answerHasResponse(answer)).toEqual(true);
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
     });
   });
 });
