@@ -17,11 +17,11 @@ import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
-import { queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
+import { deleteQueryValue, queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
 import { fetchPortalData, firebaseAppName } from "../portal-api";
 import { IPortalData, IPortalDataUnion } from "../portal-types";
 import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
-         onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData } from "../firebase-db";
+         onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData, createOrUpdateApRun, getApRun } from "../firebase-db";
 import { Activity, IEmbeddablePlugin, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
@@ -83,6 +83,7 @@ interface IState {
   errorType: null | ErrorType;
   idle: boolean;
   pageChangeNotification?: IPageChangeNotification;
+  sequenceActivity?: string | undefined
 }
 interface IProps {}
 
@@ -122,33 +123,15 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const sequencePath = queryValue("sequence");
-      const sequence: Sequence | undefined = sequencePath ? await getSequenceDefinition(sequencePath) : undefined;
-      const sequenceActivityNum = sequence != null
-                                    ? getSequenceActivityFromQueryValue(sequence, queryValue("sequenceActivity"))
-                                    : 0;
-      const activityIndex = sequence && sequenceActivityNum ? sequenceActivityNum - 1 : undefined;
-      const activityPath = queryValue("activity") || kDefaultActivity;
-      const activity: Activity = sequence != null && activityIndex != null && activityIndex >= 0
-                                   ? sequence.activities[activityIndex]
-                                   : await getActivityDefinition(activityPath);
-
-      const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
-
-      // page 0 is introduction, inner pages start from 1 and match page.position in exported activity if numeric
-      // or the page.position of the matching page id if prefixed with "page_<id>"
-      const currentPage = getPagePositionFromQueryValue(activity, queryValue("page"));
-
-      const showThemeButtons = queryValueBoolean("themeButtons");
-      // Show the warning if we are not running on production
-      const showWarning = firebaseAppName() !== "report-service-pro";
       const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
+      const sequencePath = queryValue("sequence");
+      const activityPath = queryValue("activity") || kDefaultActivity;
 
-      const newState: Partial<IState> = {activity, activityIndex, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode};
-      setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
-
+      let sequenceActivity = queryValue("sequenceActivity");
+      let page = queryValue("page");
+      let newState: Partial<IState> = {};
       let classHash = "";
       let role = "unknown";
       let runRemoteEndpoint = "";
@@ -194,7 +177,60 @@ export class App extends React.PureComponent<IProps, IState> {
         onFirestoreSaveTimeout(() => this.state.errorType === null && this.setError("network"));
         // Notify user when network issues are resolved.
         onFirestoreSaveAfterTimeout(() => this.state.errorType === "network" && this.setError(null));
+
+        // __skipGetApRun is used in Cypress tests to skip the ap run load
+        if (!queryValueBoolean("__skipGetApRun")) {
+          const apRun = await getApRun(sequenceActivity);
+          if (apRun) {
+            // use the sequence activity from the apRun if not passed as a parameter
+            if (!sequenceActivity && apRun.data.sequence_activity) {
+              sequenceActivity = apRun.data.sequence_activity;
+            }
+            // if the page is not passed as a parameter, use the page from the apRun
+            if (!page) {
+              page = `page_${apRun.data.page_id}`;
+            } else {
+              // if the page is passed as a parameter, it may not be a valid page in the sequence activity
+              // however the getPagePositionFromQueryValue() handles this case -- we can't check it here
+              // since we haven't loaded the activity in sequence definition yet
+            }
+          }
+        }
       }
+
+      const sequence: Sequence | undefined = sequencePath ? await getSequenceDefinition(sequencePath) : undefined;
+      const sequenceActivityNum = sequence != null
+                                    ? getSequenceActivityFromQueryValue(sequence, sequenceActivity)
+                                    : 0;
+      const activityIndex = sequence && sequenceActivityNum ? sequenceActivityNum - 1 : undefined;
+      const activity: Activity = sequence != null && activityIndex != null && activityIndex >= 0
+                                   ? sequence.activities[activityIndex]
+                                   : await getActivityDefinition(activityPath);
+
+      const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
+
+      // page 0 is introduction, inner pages start from 1 and match page.position in exported activity if numeric
+      // or the page.position of the matching page id if prefixed with "page_<id>"
+      const currentPage = getPagePositionFromQueryValue(activity, page);
+
+      // set the activity and page query parameters
+      if (sequenceActivity) {
+        setQueryValue("sequenceActivity", sequenceActivity);
+      } else {
+        deleteQueryValue("sequenceActivity");
+      }
+      if (currentPage !== 0) {
+        setQueryValue("page", `page_${currentPage}`);
+      } else {
+        deleteQueryValue("page");
+      }
+
+      const showThemeButtons = queryValueBoolean("themeButtons");
+      // Show the warning if we are not running on production
+      const showWarning = firebaseAppName() !== "report-service-pro";
+
+      newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity};
+      setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       this.setState(newState as IState);
 
@@ -268,7 +304,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, activityIndex, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const hasResponsiveSection = activity.pages[currentPage - 1]?.sections.filter(
@@ -277,13 +313,6 @@ export class App extends React.PureComponent<IProps, IState> {
     const project = activity.project ? activity.project : null;
     const activityLevelPlugins: IEmbeddablePlugin[] = getActivityLevelPlugins(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
-    const sequenceActivityId = sequence !== undefined ? getSequenceActivityId(sequence, activityIndex) : undefined;
-    const sequenceActivity = sequenceActivityId !== undefined
-                               ? sequenceActivityId
-                               : activityIndex !== undefined && activityIndex >= 0
-                                 ? activityIndex + 1
-                                 : undefined;
-    sequenceActivity !== undefined && setQueryValue("sequenceActivity", sequenceActivity);
     const backgroundImage = sequence?.background_image || activity.background_image;
     if (backgroundImage) {
       setAppBackgroundImage(backgroundImage);
@@ -473,10 +502,11 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private handleChangePage = (page: number) => {
-    const { currentPage, incompleteQuestions, activity } = this.state;
-    const pageID = activity ? getPageIDFromPosition(activity, page) : undefined;
-    if (pageID) {
-      setQueryValue("page", `page_${pageID}`);
+    const { currentPage, incompleteQuestions, activity, sequenceActivity } = this.state;
+    const pageId = activity ? getPageIDFromPosition(activity, page) : undefined;
+    if (pageId) {
+      setQueryValue("page", `page_${pageId}`);
+      createOrUpdateApRun({sequenceActivity, pageId});
     }
     if (page > currentPage && incompleteQuestions.length > 0) {
       const label = incompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage;
@@ -519,17 +549,37 @@ export class App extends React.PureComponent<IProps, IState> {
     }
   }
 
-  private handleSelectActivity = (activityNum: number) => {
+  private handleSelectActivity = async (activityNum: number) => {
+
     Logger.updateSequenceActivityindex(activityNum + 1);
     Logger.log({
       event: LogEventName.change_sequence_activity,
       parameters: { new_activity_index: activityNum + 1, new_activity_name: this.state.sequence?.activities[activityNum].name }
     });
+
+    let currentPage = 0;
+    const {sequence} = this.state;
+    const sequenceActivity = sequence !== undefined ? getSequenceActivityId(sequence, activityNum) : undefined;
+    if (sequenceActivity && sequence) {
+      const activity = sequence.activities[activityNum];
+      const apRun = await getApRun(sequenceActivity);
+      if (apRun) {
+        currentPage = getPagePositionFromQueryValue(activity, `page_${apRun.data.page_id}`);
+      }
+      setQueryValue("sequenceActivity", sequenceActivity);
+      if (currentPage !== 0) {
+        setQueryValue("page", `page_${currentPage}`);
+      } else {
+        deleteQueryValue("page");
+      }
+    }
+
     this.setState((prevState) =>
       ({ activity: prevState.sequence?.activities[activityNum],
          showSequenceIntro: false,
          activityIndex: activityNum,
-         currentPage: 0
+         currentPage,
+         sequenceActivity
       })
     );
   }

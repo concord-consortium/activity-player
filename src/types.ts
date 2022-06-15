@@ -316,3 +316,24 @@ export interface ILegacyLinkedInteractiveState {
     name: string;
   }
 }
+
+export interface IBaseApRun {
+  sequence_activity: string | null;
+  page_id: number;
+  updated_at: number;
+  created_at: number;
+}
+export interface IAnonymousApRun extends IBaseApRun {
+  type: "anonymous";
+  run_key: string;
+}
+
+export interface IAuthenticatedUserApRun extends IBaseApRun {
+  type: "authenticated";
+  platform_id: string;
+  resource_url: string;
+  context_id: string;
+  platform_user_id: string;
+}
+
+export type IApRun = IAnonymousApRun | IAuthenticatedUserApRun;

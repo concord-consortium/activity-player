@@ -1,8 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import ActivityPage from "../support/elements/activity-page";
+import SequencePage from "../support/elements/sequence-page";
 import { getInIframe } from "../support/elements/iframe";
 
 const activityPage = new ActivityPage;
+const sequencePage = new SequencePage;
 
 context("Saving and loading data as an anonymous user", () => {
 
@@ -20,15 +22,17 @@ context("Saving and loading data as an anonymous user", () => {
   });
 
   describe("Data saving", () => {
-    const runKey = uuidv4();
+    const activityRunKey = uuidv4();
+    const sequenceRunKey = uuidv4();
     const activityUrl = "?activity=sample-activity-1&enableFirestorePersistence";
+    const sequenceUrl = "?sequence=sample-sequence&enableFirestorePersistence";
 
     it("happens automatically after a small delay", () => {
       // Data is being saved in two ways:
       // 1. After a small delay (to prevent spamming the database)
       // 2. When user changes the activity pages using header navigation.
       // This test focuses on 1. case.
-      const activityUrlWithRunKey = activityUrl + "&runKey=" + runKey;
+      const activityUrlWithRunKey = activityUrl + "&runKey=" + activityRunKey;
       cy.visit(activityUrlWithRunKey + "&clearFirestorePersistence");
       activityPage.getNavPage(2).click();
       getInIframe("body", "[data-cy=choices-container] input").eq(1).click({force: true});
@@ -36,9 +40,9 @@ context("Saving and loading data as an anonymous user", () => {
       cy.wait(3000);
 
       // We are essentially reloading the page here but in this case we are not clearing the persistance first
-      // this should force the activity player to load the data back in from the runKey
+      // this should force the activity player to load the data back in from the runKey using the ap runs
+      // which will reload page 2
       cy.visit(activityUrlWithRunKey);
-      activityPage.getNavPage(2).click();
       getInIframe("body", "[data-cy=choices-container] input").eq(1).should("be.checked");
     });
 
@@ -47,7 +51,7 @@ context("Saving and loading data as an anonymous user", () => {
       // 1. After a small delay (to prevent spamming the database)
       // 2. When user changes the activity pages using header navigation.
       // This test focuses on 2. case.
-      const activityUrlWithRunKey = activityUrl + "&runKey=" + runKey;
+      const activityUrlWithRunKey = activityUrl + "&runKey=" + activityRunKey;
       cy.visit(activityUrlWithRunKey + "&clearFirestorePersistence");
 
       // Select a MC answer on page 2, immediately (!) change page to 1, and then change page to 2 again.
@@ -69,7 +73,7 @@ context("Saving and loading data as an anonymous user", () => {
     });
 
     it("is bound to runKey (after removing it, users no longer will see their data)", () => {
-      const activityUrlWithRunKey = activityUrl + "&runKey=" + runKey;
+      const activityUrlWithRunKey = activityUrl + "&runKey=" + activityRunKey;
 
       // Answer the question
       cy.visit(activityUrlWithRunKey + "&clearFirestorePersistence");
@@ -81,13 +85,61 @@ context("Saving and loading data as an anonymous user", () => {
 
       // Make sure the answer is actually saved in storage
       cy.visit(activityUrlWithRunKey);
-      activityPage.getNavPage(2).click();
       getInIframe("body", "[data-cy=choices-container] input").eq(1).should("be.checked");
 
       // Look at the page without a runKey
       cy.visit(activityUrl);
       activityPage.getNavPage(2).click();
       getInIframe("body", "[data-cy=choices-container] input").eq(1).should("not.be.checked");
+    });
+
+    it("saves page positions in activities and sequences", () => {
+      const activityUrlWithRunKey = activityUrl + "&runKey=" + activityRunKey;
+      const sequenceUrlWithRunKey = sequenceUrl + "&runKey=" + sequenceRunKey;
+
+      // load the activity
+      cy.visit(activityUrlWithRunKey + "&clearFirestorePersistence");
+
+      // go to page 2
+      activityPage.getNavPage(2).click();
+      cy.contains("Question #2");
+
+      // reload without explicit page parameter and should be on page 2
+      cy.visit(activityUrlWithRunKey);
+      cy.contains("Question #2");
+
+      // load the sequence
+      cy.visit(sequenceUrlWithRunKey + "&clearFirestorePersistence");
+      cy.wait(1000);
+
+      // select activity 1, check that home is selected then select page 1
+      sequencePage.getThumbnails().eq(0).click();
+      cy.get("[data-cy=custom-select-header]").click();
+      cy.get("[data-cy^=list-item-1]").click();
+      cy.get("[data-cy=home-button].current").should("have.length", 2);
+      activityPage.getNavPage(1).click();
+      cy.get("[data-cy=nav-pages-button].current").contains("1");
+      cy.get("[data-cy=home-button].current").should("have.length", 0);
+
+      // select activity 4, check that home is selected then select completion page
+      cy.get("[data-cy=custom-select-header]").click();
+      cy.get("[data-cy^=list-item-4]").click();
+      cy.get("[data-cy=home-button].current").should("have.length", 2);
+      activityPage.getCompletionPage().should("not.have.class", "current");
+      activityPage.getCompletionPage().eq(0).click();
+      activityPage.getCompletionPage().should("have.class", "current");
+      cy.get("[data-cy=home-button].current").should("have.length", 0);
+
+      // reload activities and check pages are auto loaded and home isn"t selected;
+      cy.get("[data-cy=custom-select-header]").click();
+      cy.get("[data-cy^=list-item-1]").click();
+      cy.get("[data-cy=nav-pages-button].current").contains("1");
+      cy.get("[data-cy=home-button].current").should("have.length", 0);
+
+      cy.get("[data-cy=custom-select-header]").click();
+      cy.get("[data-cy^=list-item-4]").click();
+      activityPage.getCompletionPage().should("have.class", "current");
+      cy.get("[data-cy=home-button].current").should("have.length", 0);
     });
   });
 });
