@@ -88,13 +88,13 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     interactiveInfo.current = getInteractiveInfo(laraData, embeddableRefId);
   }, [embeddableRefId, laraData]);
 
-  const handleNewInteractiveState = (state: any) => {
+  const handleNewInteractiveState = async (state: any) => {
     // Keep interactive state in sync if iFrame is opened in modal popup
     interactiveState.current = state;
 
     const exportableAnswer = getAnswerWithMetadata(state, props.embeddable, answerMeta.current);
     if (exportableAnswer) {
-      createOrUpdateAnswer(exportableAnswer);
+      await createOrUpdateAnswer(exportableAnswer);
     }
     // Custom callback set internally. Used by the modal dialog to close itself after the most recent
     // interactive state is received.

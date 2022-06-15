@@ -57,7 +57,7 @@ describe("IframeRuntime component", () => {
   });
 
   it("renders component", async () => {
-    const mockSetInteractiveState = jest.fn();
+    const mockSetInteractiveState = jest.fn(() => Promise.resolve());
     const mockSetSupportedFeatures = jest.fn();
     const mockSetNavigation = jest.fn();
     const mockGetFirebaseJWT = jest.fn(() => Promise.resolve("stub"));
@@ -295,6 +295,6 @@ describe("IframeRuntime component", () => {
       fireEvent.click(resetButton);
     });
     expect(global.confirm).toHaveBeenCalledTimes(1);
-    expect(mockSetInteractiveState).toHaveBeenCalledTimes(5);
+    expect(mockSetInteractiveState).toHaveBeenCalledTimes(4);
   });
 });

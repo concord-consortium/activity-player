@@ -55,7 +55,7 @@ interface IProps {
   authoredState: any;
   initialInteractiveState: any;
   legacyLinkedInteractiveState: ILegacyLinkedInteractiveState | null;
-  setInteractiveState: (state: any) => void;
+  setInteractiveState: (state: any) => Promise<void>;
   setSupportedFeatures: (container: HTMLElement, features: ISupportedFeatures) => void;
   linkedInteractives?: ILinkedInteractive[];
   report?: boolean;
@@ -89,7 +89,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const iframePhoneTimeout = useRef<number|undefined>(undefined);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const phoneRef = useRef<IframePhone>();
-  const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
+  const setInteractiveStateRef = useRef<((state: any) => Promise<void>)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
   const interactiveStateRef = useRef(initialInteractiveState);
   const linkedInteractivesRef = useRef(linkedInteractives?.length ? { linkedInteractives } : { linkedInteractives: [] });
@@ -109,7 +109,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       const post = (type: ServerMessage, data: any) => phone.post(type, data);
       const addListener = (type: ClientMessage, handler: any) => phone.addListener(type, handler);
 
-      addListener("interactiveState", (newInteractiveState: any) => {
+      addListener("interactiveState", async (newInteractiveState: any) => {
         // "nochange" and "touch" are special messages supported by LARA. We don't want to save them.
         // newInteractiveState might be undefined if interactive state is requested before any state update.
         if (newInteractiveState !== undefined && newInteractiveState !== "nochange" && newInteractiveState !== "touch") {
@@ -118,12 +118,12 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           const interactiveStateChanged = JSON.stringify(currentInteractiveState.current) !== JSON.stringify(newInteractiveState);
           if (interactiveStateChanged) {
             currentInteractiveState.current = newInteractiveState;
-            setInteractiveStateRef.current(newInteractiveState);
+            await setInteractiveStateRef.current(newInteractiveState);
           }
         }
         if (currentInteractiveState.current !== undefined && newInteractiveState === "touch") {
           // save the current interactive state with a new timestamp
-          setInteractiveStateRef.current(currentInteractiveState.current);
+          await setInteractiveStateRef.current(currentInteractiveState.current);
         }
         if (interactiveStateRequest.promise.current) {
           interactiveStateRequest.resolveAndCleanup.current?.();
@@ -378,15 +378,15 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     }
   }));
 
-  const handleResetButtonClick = () => {
+  const handleResetButtonClick = async () => {
     if (confirm("Are you sure you want to clear your work and start over on this item?")) {
       if (iframePhoneTimeout.current) {
         clearTimeout(iframePhoneTimeout.current);
         iframePhoneTimeout.current = undefined;
       }
       phoneRef.current?.disconnect();
-      setInteractiveStateRef.current(null);
-      setInteractiveState(null);
+      await setInteractiveStateRef.current(null);
+      await setInteractiveState(null);
       interactiveStateRef.current = undefined;
       // incrementing reloadCount modifies the iframe's key, causing the iframe to reload.
       setReloadCount(reloadCount + 1);
