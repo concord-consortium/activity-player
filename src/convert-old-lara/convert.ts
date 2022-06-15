@@ -1,4 +1,5 @@
 import { Page, SectionType, LibraryInteractive, Plugin, EmbeddableType } from "../types";
+import { productionGlossaryIdMap, productionGlossaryUrl } from "./glossary-info";
 
 interface legacyEmbeddableBase {
   type: string;
@@ -186,6 +187,27 @@ const newPagesResource = (resourcePages: any):Page[] => {
   );
 };
 
+const convertGlossaryPlugins = (plugins: any[]) => {
+  plugins = plugins.map(plugin => {
+    plugin = { ...plugin };
+    if (plugin.approved_script_label === "glossary") {
+      try {
+        const authorData = JSON.parse(plugin.author_data);
+        if (authorData?.glossaryResourceId && productionGlossaryIdMap[authorData?.glossaryResourceId]) {
+          const id = productionGlossaryIdMap[authorData.glossaryResourceId];
+          authorData.glossaryResourceId = "this-is-a-fake-CONVERTED-glossary-resource-id";
+          authorData.s3Url = `${productionGlossaryUrl}/api/v1/glossaries/${id}?json_only=true`;
+          plugin.author_data = JSON.stringify(authorData);
+        }
+      } catch (e) {
+        // noop
+      }
+    }
+    return plugin;
+  });
+  return plugins;
+};
+
 function convertActivityResource (legacyResource: any) {
   const newActivityResource = {
     "id": legacyResource.id,
@@ -204,7 +226,7 @@ function convertActivityResource (legacyResource: any) {
     "version": 2,
     "theme_name": legacyResource.theme_name,
     "project": legacyResource.project,
-    "plugins": legacyResource.plugins,
+    "plugins": convertGlossaryPlugins(legacyResource.plugins),
     "type": "LightweightActivity",
     "export_site": legacyResource.export_site,
     "pages": newPagesResource(legacyResource.pages)
