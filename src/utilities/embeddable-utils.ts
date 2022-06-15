@@ -6,6 +6,7 @@ import {
   EmbeddableType, Activity, Page
 } from "../types";
 import { ILaraData } from "../components/lara-data-context";
+import { WrappedDBAnswer } from "../firebase-db";
 
 export type LegacyLinkedRefMap = Record<string, {
   activity: Activity;
@@ -254,4 +255,19 @@ export const getInteractiveInfo = (laraData: ILaraData, embeddableRefId: string)
   }
 
   return interactiveInfo;
+};
+
+// adapted from portal-report answer-utils.tsx#hasReponse
+export const answerHasResponse = (answer: WrappedDBAnswer, authoredState?: any): boolean => {
+  const { interactiveState, meta: { attachments, type, submitted } } = answer;
+  const hasAttachments = !!(attachments && Object.keys(attachments).length > 0);
+  const isNotInteractiveStateAnswer = type !== "interactive_state";
+  const hasInteractiveStateKeys = Object.keys(interactiveState).length > 0;
+
+  // required questions need to be submitted to be marked as answered
+  if (authoredState?.required && !submitted) {
+    return false;
+  }
+
+  return hasAttachments || isNotInteractiveStateAnswer || hasInteractiveStateKeys;
 };

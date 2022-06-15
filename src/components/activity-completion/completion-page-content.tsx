@@ -5,9 +5,9 @@ import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-ci
 import { isValidReportLink, showReport } from "../../utilities/report-utils";
 import { Sequence, Activity, EmbeddableType, Page } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
-import { watchAllAnswers } from "../../firebase-db";
+import { watchAllAnswers, WrappedDBAnswer } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
-import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
+import { answerHasResponse, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
 import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
 
@@ -29,7 +29,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const { activity, activityName, onPageChange, showStudentReport,
     sequence, activityIndex, onActivityChange, onShowSequence } = props;
 
-  const [answers, setAnswers] = useState<any>();
+  const [answers, setAnswers] = useState<WrappedDBAnswer[]>();
 
   const handleExit = () => {
     if (sequence) {
@@ -70,15 +70,16 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           if (isQuestion(embeddable)) {
             numQuestions++;
             const questionId = refIdToAnswersQuestionId(embeddable.ref_id);
-            const authored_state = embeddable.authored_state
+            const authoredState = embeddable.authored_state
                                     ? JSON.parse(embeddable.authored_state)
                                     : {};
             let questionAnswered = false;
-            if (answers?.find((answer: any) => answer.meta.question_id === questionId)) {
+            const answer = answers?.find(a => a.meta.question_id === questionId);
+            if (answer && answerHasResponse(answer, authoredState)) {
               numAnswers++; //Does't take into account if user erases response after saving
               questionAnswered = true;
             }
-            const questionStatus = { number: numQuestions, page: pageNum, prompt: authored_state.prompt, answered: questionAnswered };
+            const questionStatus = { number: numQuestions, page: pageNum, prompt: authoredState.prompt, answered: questionAnswered };
             questionsStatus.push(questionStatus);
           }
         });

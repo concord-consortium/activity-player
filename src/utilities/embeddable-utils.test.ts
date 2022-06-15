@@ -1,5 +1,5 @@
 import { IRuntimeMetadata, IRuntimeMultipleChoiceMetadata } from "@concord-consortium/lara-interactive-api";
-import { answersQuestionIdToRefId, refIdToAnswersQuestionId, getAnswerWithMetadata, getLegacyLinkedRefMap, hasLegacyLinkedInteractive, legacyLinkedRefMapCache, getInteractiveInfo } from "./embeddable-utils";
+import { answersQuestionIdToRefId, refIdToAnswersQuestionId, getAnswerWithMetadata, getLegacyLinkedRefMap, hasLegacyLinkedInteractive, legacyLinkedRefMapCache, getInteractiveInfo, answerHasResponse } from "./embeddable-utils";
 import { DefaultManagedInteractive } from "../test-utils/model-for-tests";
 import {
   IManagedInteractive,
@@ -14,6 +14,7 @@ import {
 import _activity1 from "../data/version-2/sample-new-sections-activity-1.json";
 import _legacyLinkedInteractiveActivity from "../data/version-2/sample-new-sections-legacy-linked-interactives.json";
 import _sequenceWithQuestions from "../data/version-2/sample-new-sections-sequence-with-questions.json";
+import { WrappedDBAnswer } from "../firebase-db";
 const activity1 = _activity1 as Activity;
 const legacyLinkedInteractiveActivity = _legacyLinkedInteractiveActivity as Activity;
 const sequenceWithQuestions = _sequenceWithQuestions as Sequence;
@@ -428,4 +429,63 @@ describe("Embeddable utility functions", () => {
     });
   });
 
+  describe("#answerHasResponse", () => {
+    let answer: WrappedDBAnswer;
+    let authoredState: any;
+
+    beforeEach(() => {
+      answer = {
+        meta: {
+          question_id: "1",
+          question_type: "test",
+          id: "2",
+          type: "interactive_state",
+          answer: "{}",
+          submitted: true,
+          report_state: "{}",
+          attachments: {}
+        },
+        interactiveState: {}
+      };
+      authoredState = {};
+    });
+
+    it("returns false for empty interactive state answers", () => {
+      expect(answerHasResponse(answer, authoredState)).toEqual(false);
+    });
+
+    it("returns false for required unsubmitted required answers", () => {
+      answer.meta.submitted = false;
+      authoredState = { required: true };
+      expect(answerHasResponse(answer, authoredState)).toEqual(false);
+    });
+
+    it("returns true for interactive state answers with attachments", () => {
+      answer.meta.attachments = {
+        "test": {
+          contentType: "text/plain",
+          publicPath: "test",
+          folder: {
+            id: "10",
+            ownerId: "100"
+          }
+        }
+      };
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
+    });
+
+    it("returns true for answers that are not interactive state answers", () => {
+      answer.meta.type = "open_response_answer";
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
+      answer.meta.type = "image_question_answer";
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
+      answer.meta.type = "multiple_choice_answer";
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
+    });
+
+    it("returns true for interactive state answers with interactive state", () => {
+      answer.interactiveState = { foo: true };
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
+    });
+  });
 });
