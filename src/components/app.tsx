@@ -16,6 +16,7 @@ import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
+import { DefunctBanner } from "./defunct-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { deleteQueryValue, queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
 import { fetchPortalData, firebaseAppName } from "../portal-api";
@@ -70,6 +71,7 @@ interface IState {
   currentPage: number;
   teacherEditionMode?: boolean;
   showThemeButtons?: boolean;
+  showDefunctBanner: boolean;
   showWarning: boolean;
   username: string;
   portalData?: IPortalData;
@@ -99,6 +101,7 @@ export class App extends React.PureComponent<IProps, IState> {
       currentPage: 0,
       teacherEditionMode: false,
       showThemeButtons: false,
+      showDefunctBanner: false,
       showWarning: false,
       username: kAnonymousUserName,
       showModal: false,
@@ -207,6 +210,9 @@ export class App extends React.PureComponent<IProps, IState> {
                                    ? sequence.activities[activityIndex]
                                    : await getActivityDefinition(activityPath);
 
+      // tslint:disable-next-line:no-console
+      console.log("activity", sequence, activity);
+
       const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
 
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity if numeric
@@ -226,10 +232,12 @@ export class App extends React.PureComponent<IProps, IState> {
       }
 
       const showThemeButtons = queryValueBoolean("themeButtons");
+      // Show a warning about obsolute features if activity/sequences is marked as defunct
+      const showDefunctBanner = activity.defunct || (sequence?.defunct);
       // Show the warning if we are not running on production
-      const showWarning = firebaseAppName() !== "report-service-pro";
+      const showWarning = false;
 
-      newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity};
+      newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner, showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity};
       setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       this.setState(newState as IState);
@@ -279,11 +287,14 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   render() {
+    // tslint:disable-next-line
+    console.log("state", this.state);
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
           <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
             <div className="app" data-cy="app">
+              { this.state.showDefunctBanner && <DefunctBanner/> }
               { this.state.showWarning && <WarningBanner/> }
               { this.state.teacherEditionMode && <TeacherEditionBanner/>}
               { this.state.showSequenceIntro
