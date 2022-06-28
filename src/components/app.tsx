@@ -210,9 +210,6 @@ export class App extends React.PureComponent<IProps, IState> {
                                    ? sequence.activities[activityIndex]
                                    : await getActivityDefinition(activityPath);
 
-      // tslint:disable-next-line:no-console
-      console.log("activity", sequence, activity);
-
       const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
 
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity if numeric
@@ -235,7 +232,7 @@ export class App extends React.PureComponent<IProps, IState> {
       // Show a warning about obsolute features if activity/sequences is marked as defunct
       const showDefunctBanner = activity.defunct || (sequence?.defunct);
       // Show the warning if we are not running on production
-      const showWarning = false;
+      const showWarning = firebaseAppName() !== "report-service-pro";
 
       newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner, showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity};
       setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
@@ -287,8 +284,6 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   render() {
-    // tslint:disable-next-line
-    console.log("state", this.state);
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
