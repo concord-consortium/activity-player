@@ -229,7 +229,8 @@ function convertActivityResource (legacyResource: any) {
     "plugins": convertGlossaryPlugins(legacyResource.plugins),
     "type": "LightweightActivity",
     "export_site": legacyResource.export_site,
-    "pages": newPagesResource(legacyResource.pages)
+    "pages": newPagesResource(legacyResource.pages),
+    "defunct": legacyResource.defunct
   };
   return newActivityResource;
 }
@@ -256,7 +257,8 @@ const newSequenceResource = (sequenceResource: any) => {
       "title": sequenceResource.title,
       "type": sequenceResource.type,
       "export_site": sequenceResource.export_site,
-      "activities": getSequenceActivities(sequenceResource.activities)
+      "activities": getSequenceActivities(sequenceResource.activities),
+      "defunct": sequenceResource.defunct
     }
   );
 };

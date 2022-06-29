@@ -1,0 +1,23 @@
+@import "./vars.scss";
+
+.defunct-banner {
+  background-color: $cc-gold;
+  color: black;
+  font-size: 18px;
+  margin: -40px -40px 10px;
+  padding: 20px;
+  text-align: center;
+  width: calc(100% + 80px);
+
+  a {
+    &:link, &:visited {
+      color: black;
+    }
+    &:hover {
+      color: $cc-teal-dark1;
+    }
+    &:active {
+      color: $cc-teal-dark2;
+    }
+  }
+}
