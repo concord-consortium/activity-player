@@ -73,7 +73,7 @@ context("Launch AP From the Portal", () => {
     });
 
     // A regular 'function' syntax is used instead '=>' so cypress can control what 'this' is
-    it("can work with the interactive sharing plugin", function () {
+    it.skip("can work with the interactive sharing plugin", function () {
       cy.visit(`?activity=sample-activity-interactive-sharing&token=${this.portalToken}` +
         `&domain=${portalDomain}/&answersSourceKey=${answersSourceKey}`);
 
