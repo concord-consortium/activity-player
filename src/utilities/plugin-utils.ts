@@ -1,78 +1,90 @@
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
-import { Optional } from "utility-types";
 import { getCachedLearnerPluginState, getLearnerPluginState, getPortalData } from "../firebase-db";
 import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
-import { Activity, Embeddable, IEmbeddablePlugin, Plugin } from "../types";
+import { Activity, EmbeddableType, IEmbeddablePlugin, Plugin, ApprovedScript } from "../types";
 import { getResourceUrl } from "../lara-api";
 
-export interface UsedPluginInfo {
+export interface UsedApprovedScriptInfo {
   id: number;
   loaded: boolean;
-  plugin: Plugin;
+  approvedScript: ApprovedScript;
 }
 
-let usedPlugins: UsedPluginInfo[] = [];
+let usedApprovedScripts: UsedApprovedScriptInfo[] = [];
 
-export const getUsedPlugins = () => {
-  return usedPlugins;
+export const getUsedApprovedScripts = () => {
+  return usedApprovedScripts;
 };
 
-export const clearUsedPlugins = () => {
-  usedPlugins = [];
+export const clearUsedApprovedScripts = () => {
+  usedApprovedScripts = [];
 };
 
-export const addUsedPlugin = (plugin: Plugin) => {
-  if (!usedPlugins.find(p => p.plugin.approved_script_label === plugin.approved_script_label)) {
-    usedPlugins.push({
-      id: usedPlugins.length,
+export const addUsedApprovedScript = (plugin: Plugin) => {
+  if (!usedApprovedScripts.find(scriptInfo =>  scriptInfo.approvedScript.label === plugin.approved_script_label)) {
+    usedApprovedScripts.push({
+      id: usedApprovedScripts.length,
       loaded: false,
-      plugin
+      approvedScript: plugin.approved_script
     });
   }
 };
 
-export const findUsedPlugins = (activity: Activity, teacherEditionMode: boolean) => {
-  // search each page for teacher edition plugin use
-  for (let page = 0; page < activity.pages.length; page++) {
-    if (!activity.pages[page].is_hidden) {
-      for (let embeddableNum = 0; embeddableNum < activity.pages[page].embeddables.length; embeddableNum++) {
-        const embeddable = activity.pages[page].embeddables[embeddableNum].embeddable;
-        if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin?.approved_script_label === "teacherEditionTips" && teacherEditionMode) {
-          addUsedPlugin(embeddable.plugin);
+export const findUsedApprovedScripts = (activities: Activity[]) => {
+  // search current activity or all activities in sequence
+  activities.forEach(activity => {
+    // search each page for teacher edition plugin use
+    for (let page = 0; page < activity.pages.length; page++) {
+      if (!activity.pages[page].is_hidden) {
+        for (let section = 0; section < activity.pages[page].sections.length; section++) {
+          if (!activity.pages[page].sections[section].is_hidden) {
+            for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
+              const embeddable = activity.pages[page].sections[section].embeddables[embeddableNum];
+              // NOTE: TODO this needs to be fixed.
+              //This change might cause there to be extra space when running in non teacher edition mode and viewing a page with
+              // with teacher edition items on it.
+              //The issue is that the teacher edition item wrapper will be added to the page, and then the teacher edition plugin inside
+              //of it will decide not render anything because the app isn't in teacher edition mode.
+              //That behavior by itself is correct because we are trying to not have these "modes" be explicitly part of the
+              //activity player (or lara runtime). But the problem is that the item wrapper usually has some padding or margins.
+              //So even though it has no real content, the padding will still show up in the runtime.
+              //This change was from master when new-sections was rebased on it.
+              if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.plugin) {
+                addUsedApprovedScript(embeddable.plugin);
+              }
+            }
+          }
         }
       }
     }
-  }
-
-  // search plugin array for glossary plugin use
-  activity.plugins.forEach((activityPlugin: Plugin) => {
-    if (activityPlugin.approved_script_label === "glossary") {
-      addUsedPlugin(activityPlugin);
-    }
+    // Add activity-level plugins too
+    activity.plugins.forEach((activityPlugin: Plugin) => {
+      addUsedApprovedScript(activityPlugin);
+    });
   });
-
-  return usedPlugins;
+  return usedApprovedScripts;
 };
 
-export const loadPluginScripts = (LARA: LaraGlobalType, activity: Activity, handleLoadPlugins: () => void, teacherEditionMode: boolean) => {
-  const plugins = findUsedPlugins(activity, teacherEditionMode);
-  plugins.forEach((usedPlugin) => {
+export const loadPluginScripts = (LARA: LaraGlobalType, activities: Activity[], handleLoadScripts: () => void) => {
+  const scripts = findUsedApprovedScripts(activities);
+  scripts.forEach((usedScriptInfo) => {
     // set plugin label
-    const pluginLabel = "plugin" + usedPlugin.id;
+    const pluginLabel = "plugin" + usedScriptInfo.id;
     LARA.Plugins.setNextPluginLabel(pluginLabel);
     // load the script
     const script = document.createElement("script");
     script.type = "text/javascript";
-    script.src = usedPlugin.plugin.approved_script.url;
+    script.src = usedScriptInfo.approvedScript.url;
     script.setAttribute("data-id", pluginLabel);
     script.onload = function() {
       if (typeof window.jest === undefined) {
-        console.log(`plugin${usedPlugin.id} script loaded`);
+        // eslint-disable-next-line no-console
+        console.log(`plugin${usedScriptInfo.id} script loaded`);
       }
-      usedPlugin.loaded = true;
-      if (plugins.filter((p) => !p.loaded).length === 0) {
-        handleLoadPlugins();
+      usedScriptInfo.loaded = true;
+      if (scripts.filter((p) => !p.loaded).length === 0) {
+        handleLoadScripts();
       }
     };
     document.body.appendChild(script);
@@ -83,10 +95,9 @@ export interface IEmbeddablePluginContext {
   LARA: LaraGlobalType;
   embeddable: IEmbeddablePlugin;
   embeddableContainer: HTMLElement;
-  wrappedEmbeddable?: Embeddable;
+  wrappedEmbeddable?: EmbeddableType;
   wrappedEmbeddableContainer?: HTMLElement;
   sendCustomMessage?: (message: ICustomMessage) => void;
-  approvedScriptLabel?: string;
 }
 export type IPartialEmbeddablePluginContext = Partial<IEmbeddablePluginContext>;
 
@@ -106,38 +117,48 @@ export const validateEmbeddablePluginContextForWrappedEmbeddable =
 };
 
 // loads the learner plugin state into the firebase write-through cache
-export const loadLearnerPluginState = async (activity: Activity, teacherEditionMode: boolean) => {
-  const plugins = findUsedPlugins(activity, teacherEditionMode);
-  return await Promise.all(plugins.map(async (plugin) => await getLearnerPluginState(plugin.id)));
+export const loadLearnerPluginState = async (activities: Activity[]) => {
+  const approvedScripts = findUsedApprovedScripts(activities);
+  // PJ 09/19/2021: This doesn't seem to make sense. Currently, the state is saved and restored per approved script.
+  // It should be saved and restored per plugin instance. It works with Glossary only because there's one glossary
+  // instance per activity. Fixing this would destroy students data, so I'm not doing this. But it should be handled
+  // if we ever add more plugins that save their state.
+  return await Promise.all(approvedScripts.map(async (approvedScriptInfo) => await getLearnerPluginState(approvedScriptInfo.id)));
 };
 
 export const initializePlugin = (context: IEmbeddablePluginContext) => {
   const { LARA, embeddable, embeddableContainer,
-          wrappedEmbeddable, wrappedEmbeddableContainer, sendCustomMessage, approvedScriptLabel } = context;
-  const usedPlugin = usedPlugins.find(p => p.plugin.approved_script_label === approvedScriptLabel);
-  if (!usedPlugin) return;
+          wrappedEmbeddable, wrappedEmbeddableContainer, sendCustomMessage } = context;
+  const approvedScriptLabel = embeddable.plugin?.approved_script_label;
 
-  const embeddableContext: Optional<IEmbeddableContextOptions, "container"> = {
-    container: wrappedEmbeddableContainer,
-    laraJson: wrappedEmbeddable,
-    interactiveStateUrl: null,
-    interactiveAvailable: true,
-    sendCustomMessage
-  };
-  // cast to any for usage below
-  const embeddableContextAny = embeddableContext as any;
+  const usedScript = usedApprovedScripts.find(p => p.approvedScript.label === approvedScriptLabel);
+  if (!usedScript) return;
 
-  const pluginId = usedPlugin.id;
+  let embeddableContext: IEmbeddableContextOptions | null = null;
+  if (wrappedEmbeddable && wrappedEmbeddableContainer) {
+    embeddableContext = {
+      container: wrappedEmbeddableContainer,
+      laraJson: wrappedEmbeddable,
+      interactiveStateUrl: null,
+      interactiveAvailable: true,
+      sendCustomMessage
+    };
+  }
+
+  const approvedScriptId = usedScript.id;
+  const pluginId = embeddable.plugin?.id || 0;
   const portalData = getPortalData();
-  const pluginLabel = `plugin${pluginId}`;
+  const pluginLabel = `plugin${approvedScriptId}`;
   const pluginContext: IPluginRuntimeContextOptions = {
     type: "runtime",
-    name: usedPlugin.plugin.approved_script.name || "",
-    url: usedPlugin.plugin.approved_script.url || "",
+    name: usedScript.approvedScript.name || "",
+    url: usedScript.approvedScript.url || "",
     pluginId,
     embeddablePluginId: null,
     authoredState: embeddable.plugin?.author_data || null,
-    learnerState: getCachedLearnerPluginState(pluginId),
+    // PJ 09/19/2021: This doesn't seem to make sense. State is restored per approved script, not per plugin instance.
+    // Not fixing this, as it'd break glossary student data. See related comment in loadLearnerPluginState().
+    learnerState: getCachedLearnerPluginState(approvedScriptId),
     learnerStateSaveUrl: "",
     container: embeddableContainer,
     componentLabel: pluginLabel,
@@ -146,7 +167,7 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
     userEmail: null,
     classInfoUrl: null,
     firebaseJwtUrl: "",
-    wrappedEmbeddable: wrappedEmbeddable ? embeddableContextAny : null,
+    wrappedEmbeddable: embeddableContext,
     resourceUrl: getResourceUrl()
   };
   LARA.Plugins.initPlugin(pluginLabel, pluginContext);
@@ -158,9 +179,10 @@ export const getGlossaryEmbeddable = (activity: Activity) => {
     ? { type: "Embeddable::EmbeddablePlugin",
         plugin: glossaryPlugin,
         is_hidden: false,
-        is_full_width: false,
+        is_half_width: false,
         ref_id: "" // no ref_id on the glossary plugin
       }
     : undefined;
   return embeddablePlugin;
 };
+

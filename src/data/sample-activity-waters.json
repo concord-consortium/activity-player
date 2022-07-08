@@ -4,7 +4,16 @@
   "layout": 0,
   "name": "U2020 - Lesson 1: Discover Your Local Watershed",
   "notes": "",
-  "project_id": null,
+  "project": {
+    "about": "",
+    "footer": "",
+    "help": "",
+    "logo_ap": "https://static.concord.org/projects/logos/ap/waters-logo.png",
+    "logo_lara": "https://static.concord.org/projects/logos/lara/waters-logo.png",
+    "project_key": "waters",
+    "title": "WATERS",
+    "url": ""
+  },
   "related": "",
   "show_submit_button": true,
   "student_report_enabled": true,
@@ -12,6 +21,7 @@
   "time_to_complete": 45,
   "version": 1,
   "theme_name": "WATERS",
+  "background_image": null,
   "pages": [
     {
       "additional_sections": {},

@@ -1,12 +1,12 @@
 import { v4 as uuidv4 } from "uuid";
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
 import {
-  IExportableAnswerMetadata, IManagedInteractive, IReportState, IExportableMultipleChoiceAnswerMetadata,
+  IExportableAnswerMetadata, IReportState, IExportableMultipleChoiceAnswerMetadata,
   IExportableOpenResponseAnswerMetadata, IExportableInteractiveAnswerMetadata, IExportableImageQuestionAnswerMetadata,
-  Embeddable
+  EmbeddableType
 } from "../types";
 
-export const isQuestion = (embeddable: Embeddable) =>
+export const isQuestion = (embeddable: EmbeddableType) =>
   (embeddable.type === "ManagedInteractive" && embeddable.library_interactive?.data?.enable_learner_state) ||
   (embeddable.type === "MwInteractive" && embeddable.enable_learner_state);
 
@@ -37,8 +37,8 @@ export const questionType = (rawAuthoredState: string | null | undefined): strin
 
 export const getAnswerWithMetadata = (
     interactiveState: unknown,
-    embeddable: IManagedInteractive,
-    oldAnswerMeta?: IExportableAnswerMetadata): (IExportableAnswerMetadata | void) => {
+    embeddable: {ref_id: string, authored_state?: string | null},
+    oldAnswerMeta?: IExportableAnswerMetadata): IExportableAnswerMetadata => {
 
   const reportState: IReportState = {
     mode: "report",
@@ -65,7 +65,7 @@ export const getAnswerWithMetadata = (
       || typeof interactiveState !== "object"
       || Array.isArray(interactiveState)) {
     // If we know the interactiveState won't have any metadata then we just
-    // create a seperate simple metadata object
+    // create a separate simple metadata object
     interactiveStateMetadata = {answerType: "interactive_state"};
   } else {
     // It is common that an interactive will send an interactiveState that is an object

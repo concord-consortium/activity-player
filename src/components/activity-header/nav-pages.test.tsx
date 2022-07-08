@@ -1,6 +1,7 @@
 import React from "react";
 import { NavPages } from "./nav-pages";
 import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { DefaultTestPage } from "../../test-utils/model-for-tests";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
 
@@ -101,5 +102,22 @@ describe("Nav Pages component", () => {
       currentPage: 1
     });
     expect(wrapper.find('[data-cy="nav-pages-button"]').at(0).hasClass("disabled")).toEqual(false);
+  });
+  it("renders nav page correctly when page is hidden", () => {
+    const activityHiddenPages = [
+      {...DefaultTestPage, name: "1"},
+      {...DefaultTestPage, name: "2", is_hidden: true},
+      {...DefaultTestPage, name: "3", is_hidden: true},
+      {...DefaultTestPage, name: "4"},
+    ];
+    render(
+      <NavPages
+        pages={activityHiddenPages}
+        currentPage={0}
+        onPageChange={stubFunction}
+      />
+    );
+    // back and forward buttons, home button, 2 page buttons
+    expect(screen.getAllByRole("button").length).toBe(5);
   });
 });

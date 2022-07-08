@@ -3,18 +3,38 @@
   "description": "",
   "display_title": "",
   "logo": "",
-  "project_id": null,
+  "project": {
+    "about": "",
+    "footer": "",
+    "help": "",
+    "logo_ap": "",
+    "logo_lara": "",
+    "project_key": "default",
+    "title": "Default",
+    "url": ""
+  },
   "theme_id": null,
+  "background_image": null,
   "thumbnail_url": "",
   "title": "Sample Sequence Activity Player",
   "activities": [
     {
+      "id": 1,
       "description": "",
       "editor_mode": 0,
       "layout": 0,
       "name": "Question-Interactives Activity Player",
       "notes": "",
-      "project_id": null,
+      "project": {
+        "about": "",
+        "footer": "",
+        "help": "",
+        "logo_ap": "",
+        "logo_lara": "",
+        "project_key": "default",
+        "title": "Default",
+        "url": ""
+      },
       "related": "",
       "show_submit_button": true,
       "student_report_enabled": true,
@@ -22,6 +42,7 @@
       "time_to_complete": null,
       "version": 1,
       "theme_name": null,
+      "background_image": null,
       "pages": [
         {
           "additional_sections": {},
@@ -504,12 +525,22 @@
       "position": 1
     },
     {
+      "id": 2,
       "description": "",
       "editor_mode": 0,
       "layout": 0,
       "name": "Activity Player Copy of LARA Smoke Test v2",
       "notes": "",
-      "project_id": null,
+      "project": {
+        "about": "",
+        "footer": "",
+        "help": "",
+        "logo_ap": "",
+        "logo_lara": "",
+        "project_key": "default",
+        "title": "Default",
+        "url": ""
+      },
       "related": "",
       "show_submit_button": true,
       "student_report_enabled": true,
@@ -517,6 +548,7 @@
       "time_to_complete": null,
       "version": 1,
       "theme_name": null,
+      "background_image": null,
       "pages": [
         {
           "additional_sections": null,

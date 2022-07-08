@@ -1,3 +1,5 @@
+import { IReadableAttachmentInfo } from "@concord-consortium/interactive-api-host";
+
 export type Mode = "runtime" | "authoring" | "report";
 
 export interface IframePhone {
@@ -45,6 +47,7 @@ export interface ApprovedScript {
 }
 
 export interface Plugin {
+  id: number;
   description: string | null;
   author_data: string;
   approved_script_label: string;
@@ -59,9 +62,10 @@ export interface EmbeddableBase {
   interactiveState?: any | null;
   url_fragment?: string | null,
   is_hidden: boolean;
-  is_full_width: boolean;
+  is_half_width: boolean;
   ref_id: string;
   embeddable_ref_id?: string;
+  column?: "primary" | "secondary" | null;
 }
 
 export interface IManagedInteractive extends EmbeddableBase {
@@ -106,42 +110,49 @@ export interface IEmbeddablePlugin extends EmbeddableBase {
   plugin?: Plugin;
 }
 
-export type Embeddable = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin;
+export type EmbeddableType = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin;
 
-export interface EmbeddableWrapper {
-  section: "header_block" | "interactive_box" | null;
-  embeddable: Embeddable;
+export interface SectionType {
+  secondary_column_display_mode: "stacked" | "carousel";
+  is_hidden: boolean;
+  secondary_column_collapsible: boolean;
+  embeddables: EmbeddableType[];
+  layout: string;
+  _comment?: string;
 }
 
-interface Section {}
-
 export interface Page {
-  embeddable_display_mode: "stacked" | "carousel";
   text?: string;
   is_completion: boolean;
   is_hidden: boolean;
-  layout: string;
   id: number;
   name?: string | null;
   position: number,
-  show_header?: boolean;
-  show_info_assessment: boolean;
-  show_interactive: boolean;
   show_sidebar: boolean;
   sidebar: string | null;
   sidebar_title: string | null;
-  toggle_info_assessment: boolean;
-  additional_sections: Section;        // update when we support additional sections
-  embeddables: EmbeddableWrapper[];
+  sections: SectionType[];
+}
+
+export interface Project {
+  about: string | null;
+  footer: string | null;
+  help: string | null;
+  logo_ap: string | null;
+  logo_lara: string | null;
+  project_key: string;
+  title: string | null;
+  url: string | null;
 }
 
 export interface Activity {
+  id?: number | null;
   description: string | null;
   editor_mode: number;
   layout: number;
   name: string;
   notes?: string | null;
-  project_id: number | null;
+  project?: Project | null;
   related?: string | null;
   show_submit_button: boolean;
   student_report_enabled: boolean;
@@ -149,6 +160,7 @@ export interface Activity {
   time_to_complete: number | null;
   version: number;
   theme_name?: string | null;
+  background_image?: string | null;
   plugins: Plugin[];
   type: "LightweightActivity";
   export_site?: string | null;
@@ -161,8 +173,9 @@ export interface Sequence {
   description: string | null;
   display_title: string | null;
   logo: string | null;
-  project_id: number | null;
+  project?: Project | null;
   theme_id: number | null;
+  background_image?: string | null;
   thumbnail_url: string | null;
   title: string | null;
   activities: Activity[];
@@ -210,14 +223,18 @@ export interface IAnonymousMetadataPartial {
  * https://github.com/concord-consortium/lara/blob/c40304a14ef495acdf4f9fd09ea892c7cc98247b/app/models/interactive_run_state.rb#L110
  */
 export interface IExportableAnswerMetadataBase {
-  question_id: string;
+  question_id: string;    // converted from refId (e.g. "managed_interactive_404")
   question_type: string;
-  id: string;
+  id: string;             // randomly generated id (e.g. uuid)
   type: string;
   answer_text?: string;
   answer?: any;
   submitted: boolean | null;
   report_state: string;
+  // tracks the most recently written details for each attachment
+  attachments?: Record<string, IReadableAttachmentInfo>;
+  // allows sharing answer with other students in the same class
+  shared_with?: "context" | null;
 }
 
 export interface IExportableInteractiveAnswerMetadata extends IExportableAnswerMetadataBase {

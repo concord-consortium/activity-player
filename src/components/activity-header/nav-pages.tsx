@@ -77,7 +77,8 @@ export class NavPages extends React.Component <IProps, IState> {
   private renderButtons = () => {
     const { currentPage, pages, lockForwardNav } = this.props;
     const { pageChangeInProgress } = this.state;
-    const totalPages = pages.length;
+    const visiblePages = pages.filter((page) => !page.is_hidden);
+    const totalPages = visiblePages.length;
     const maxPagesLeftOfCurrent = currentPage - 1;
     const maxPagesRightOfCurrent = totalPages - currentPage;
     let minPage = 1;
@@ -93,7 +94,7 @@ export class NavPages extends React.Component <IProps, IState> {
     }
 
     return (
-      pages.map((page: any, pageIndex: number) => {
+      visiblePages.map((page: any, pageIndex: number) => {
         const pageNum = pageIndex + 1;
         const currentClass = currentPage === pageNum ? "current" : "";
         const completionClass = page.is_completion ? "completion-page-button" : "";

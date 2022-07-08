@@ -1,5 +1,5 @@
 import ActivityPage from "../support/elements/activity-page";
-import { getIframeBody } from "../support/elements/iframe";
+import { getInIframe } from "../support/elements/iframe";
 
 const activityPage = new ActivityPage;
 
@@ -7,6 +7,11 @@ context("Test the overall app", () => {
   before(() => {
     cy.visit("?activity=sample-activity-multiple-layout-types&preview");
     activityPage.getPage(2).click();
+  });
+  describe("URL",() => {
+    it("verify URL does not include sequenceActivity param",()=>{
+      cy.url().should("not.contain", "sequenceActivity");
+    });
   });
   describe("Sidebar",() => {
     it("verify sidebar opens",()=>{
@@ -47,8 +52,15 @@ context("Test the overall app", () => {
     it("verify we can load a managed interactive",()=>{
       cy.visit("?activity=sample-activity-1&preview");
       activityPage.getNavPage(2).click();
+      getInIframe("body", "[data-cy=choices-container]").should("be.visible");
+    });
+  });
+  describe("Hidden pages",()=>{
+    it("verify hidden content",()=>{
+      cy.visit("?activity=sample-activity-hidden-content&preview");
+      activityPage.getNavPage(2).click();
       cy.wait(500);
-      getIframeBody("body").find("[data-cy=choices-container]").should("be.visible");
+      cy.get("[data-cy=text-box]").should("contain", "This is the 3rd activity page.");
     });
   });
 });

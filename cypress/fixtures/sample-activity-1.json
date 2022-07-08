@@ -4,7 +4,16 @@
   "layout": 0,
   "name": "Single Page Test Activity",
   "notes": "",
-  "project_id": null,
+  "project": {
+    "about": "",
+    "footer": "",
+    "help": "",
+    "logo_ap": "",
+    "logo_lara": "",
+    "project_key": "default",
+    "title": "Default",
+    "url": ""
+  },
   "related": "<p>Related content for the&nbsp;sample activity used to test the LARA single page application.</p>",
   "show_submit_button": true,
   "student_report_enabled": true,

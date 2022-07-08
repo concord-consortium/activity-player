@@ -7,6 +7,7 @@ describe("Embeddable Sidetip component", () => {
   it("renders component", () => {
     const embeddable: IEmbeddablePlugin = {
       "plugin": {
+        "id": 1,
         "description": null,
         "author_data": "{\"tipType\":\"sideTip\",\"sideTip\":{\"content\":\"this is a sidetip\",\"mediaType\":\"none\",\"mediaURL\":\"\"}}",
         "approved_script_label": "teacherEditionTips",
@@ -22,7 +23,7 @@ describe("Embeddable Sidetip component", () => {
         }
       },
       "is_hidden": false,
-      "is_full_width": false,
+      "is_half_width": false,
       "type": "Embeddable::EmbeddablePlugin",
       "ref_id": "2991-Embeddable::EmbeddablePlugin"
     };

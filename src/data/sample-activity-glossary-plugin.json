@@ -4,7 +4,7 @@
   "layout": 0,
   "name": "glossary test",
   "notes": "",
-  "project_id": null,
+  "project": null,
   "related": "",
   "show_submit_button": false,
   "student_report_enabled": true,
@@ -12,6 +12,7 @@
   "time_to_complete": null,
   "version": 1,
   "theme_name": "HAS National Geographic: Water",
+  "background_image": "https://authoring.concord.org/assets/has-bg/water_background.jpg",
   "pages": [
     {
       "additional_sections": {},

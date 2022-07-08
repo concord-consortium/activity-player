@@ -4,6 +4,7 @@ import { DefaultManagedInteractive } from "./test-utils/model-for-tests";
 import { getAnswerWithMetadata } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata } from "./types";
 import firebase from "firebase/app";
+import { RawClassInfo } from "./portal-api";
 import "firebase/firestore";
 
 describe("Firestore", () => {
@@ -14,7 +15,7 @@ describe("Firestore", () => {
 
   beforeEach(async () => {
     const docResult = {
-      set: jest.fn(() => new Promise((resolve) => resolve())),
+      set: jest.fn(() => new Promise<void>((resolve) => resolve())),
       onSnapshot: jest.fn()
     };
     const docMock: any = jest.fn(() => docResult);
@@ -26,7 +27,7 @@ describe("Firestore", () => {
     const collectionMock: any = jest.fn(() => collectionResult);
 
     signInWithCustomTokenMock = jest.fn();
-    signOutMock = jest.fn(() => new Promise((resolve) => resolve()));
+    signOutMock = jest.fn(() => new Promise<void>((resolve) => resolve()));
     appMock = {
       firestore: jest.fn(() => ({
         doc: docMock,
@@ -88,7 +89,8 @@ describe("Firestore", () => {
       resourceUrl: "http://example/resource",
       toolId: "activity-player.concord.org",
       userType: "learner",
-      runRemoteEndpoint: "https://example.com/learner/1234"
+      runRemoteEndpoint: "https://example.com/learner/1234",
+      rawClassInfo: {} as RawClassInfo
     });
 
     const embeddable = {
@@ -250,7 +252,8 @@ describe("Firestore", () => {
             class_info_url: "http://example.com/4",
             offering_id: 8
           },
-          runRemoteEndpoint: "http://example.com/5"
+          runRemoteEndpoint: "http://example.com/5",
+          rawClassInfo: {} as RawClassInfo
         });
       });
 

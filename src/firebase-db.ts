@@ -10,7 +10,8 @@
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
-import { IPortalData, IAnonymousPortalData, anonymousPortalData } from "./portal-api";
+import { anonymousPortalData } from "./portal-api";
+import { IAnonymousPortalData, IPortalData } from "./portal-types";
 import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
@@ -144,7 +145,7 @@ export const setAnonymousPortalData = (_portalData: IAnonymousPortalData) => {
 
 type DocumentsListener = (docs: firebase.firestore.DocumentData[]) => void;
 
-const watchAnswerDocs = (listener: DocumentsListener, questionId?: string) => {
+const getAnswerDocsQuery = (questionId?: string) => {
   if (!portalData) {
     throw new Error("Must set portal data first");
   }
@@ -166,7 +167,11 @@ const watchAnswerDocs = (listener: DocumentsListener, questionId?: string) => {
   if (questionId) {
     query = query.where("question_id", "==", questionId);
   }
+  return query;
+};
 
+const watchAnswerDocs = (listener: DocumentsListener, questionId?: string) => {
+  const query = getAnswerDocsQuery(questionId);
   // Note that query.onSnapshot returns unsubscribe method.
   return query.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
     if (!snapshot.empty) {
@@ -181,6 +186,17 @@ const watchAnswerDocs = (listener: DocumentsListener, questionId?: string) => {
   });
 };
 
+const getAnswerDocs = (questionId?: string) => {
+  const query = getAnswerDocsQuery(questionId);
+  // Note that query.onSnapshot returns unsubscribe method.
+  return query.get().then(snapshot => {
+    if (!snapshot.empty) {
+      return snapshot.docs.map(doc => doc.data());
+    }
+    return [];
+  });
+};
+
 const firestoreDocToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
   const getInteractiveState = () => {
     const reportState = JSON.parse(doc.report_state);
@@ -192,6 +208,30 @@ const firestoreDocToWrappedAnswer = (doc: firebase.firestore.DocumentData) => {
     interactiveState
   };
   return wrappedAnswer;
+};
+
+export const getAnswer = (embeddableRefId: string): Promise<WrappedDBAnswer | null> => {
+  const questionId = refIdToAnswersQuestionId(embeddableRefId);
+  return getAnswerDocs(questionId)
+    .then((answers: firebase.firestore.DocumentData[]) => {
+      if (answers.length === 0) {
+        return null;
+      }
+      if (answers.length > 1) {
+        console.warn(
+          "Found multiple answer objects for the same question. It might be result of early " +
+          "ActivityPlayer versions. Your data might be corrupted."
+        );
+      }
+      return firestoreDocToWrappedAnswer(answers[0]);
+    });
+};
+
+export const getAllAnswers = (): Promise<WrappedDBAnswer[]>  => {
+  return getAnswerDocs()
+    .then((answers: firebase.firestore.DocumentData[]) =>
+      answers.map(doc => firestoreDocToWrappedAnswer(doc))
+    );
 };
 
 // Watches ONE question answer defined by embeddableRefId.

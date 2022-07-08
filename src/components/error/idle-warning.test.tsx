@@ -4,7 +4,7 @@ import { shallow, mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 
 describe("IdleWarning component", () => {
-  describe("when user is logged in", () => {  
+  describe("when user is logged in", () => {
     const getProps = () => ({
       username: "test user",
       onTimeout: jest.fn(),
@@ -24,19 +24,16 @@ describe("IdleWarning component", () => {
     });
 
     it("calls onTimeout after `timeout` time", () => {
-      jest.useFakeTimers(); // mock timers  
+      jest.useFakeTimers("legacy"); // mock timers
       const props = getProps();
       props.timeout = 1;
       mount(<IdleWarning {...props} />);
 
       act(() => {
-        jest.runOnlyPendingTimers();
-        jest.runOnlyPendingTimers();
-        jest.runOnlyPendingTimers();
+        jest.advanceTimersByTime(100);
       });
 
       expect(props.onTimeout).toHaveBeenCalled();
-
       jest.useRealTimers();
     });
 

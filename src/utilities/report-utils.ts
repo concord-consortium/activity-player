@@ -1,7 +1,10 @@
 import { queryValue } from "../utilities/url-query";
 import { getPortalData } from "../firebase-db";
-import { IPortalData, firebaseAppName } from "../portal-api";
+import { firebaseAppName } from "../portal-api";
+import { IPortalData } from "../portal-types";
 import { getCanonicalHostname, isProductionOrigin } from "./host-utils";
+import { getResourceUrl } from "../lara-api";
+import { refIdToAnswersQuestionId } from "./embeddable-utils";
 
 // *** IMPORTANT NOTE ***
 // When you change these URLs you need to edit the portal-report Auth Client in
@@ -44,24 +47,26 @@ const makeSourceKey = (url: string | null) => {
   return url ? parseUrl(url.toLowerCase()).hostname : "";
 };
 
-export const getReportUrl = () => {
+export const getReportUrl = (questionRefId?: string) => {
   const reportLink = portalReportBaseUrl();
   const reportFirebaseApp = firebaseAppName();
-  const activity = queryValue("activity");
-  const activityUrl = activity? ((activity.split(".json"))[0]).replace("api/v1/","") : "";
-  const runKey= queryValue("runKey");
-  // Sometimes the location of the answers is overridden with a report-source param
-  const answerSource = queryValue("report-source") || getCanonicalHostname();
-  const sourceKey = activityUrl ? makeSourceKey(activityUrl) : getCanonicalHostname();
+  const resourceUrl = getResourceUrl();
+  const runKey = queryValue("runKey");
+  // Sometimes the location of the answers is overridden with a answersSourceKey param
+  const answerSource = queryValue("answersSourceKey") || getCanonicalHostname();
+  // `sourceKey` might be useful to add during local development, usually to point to app.lara.docker.<username>
+  // since local LARA instance would be publish resources at this path.
+  const sourceKey = queryValue("sourceKey") || (resourceUrl ? makeSourceKey(resourceUrl) : getCanonicalHostname());
+
+  let result = reportLink
+    + "?firebase-app="+reportFirebaseApp
+    + "&sourceKey="+sourceKey
+    + "&answersSourceKey="+answerSource;
 
   if (runKey) {
-    return reportLink
-            + "?"
-            + "runKey=" + runKey
-            + "&activity=" + activityUrl
-            + "&firebase-app="+reportFirebaseApp
-            + "&sourceKey="+sourceKey
-            + "&answersSourceKey="+answerSource;
+    result += "&runKey=" + runKey
+            + "&activity=" + resourceUrl
+            + "&resourceUrl=" + resourceUrl;
   }
   else {
     // We know this is a IPortalData because there is no runKey
@@ -73,19 +78,21 @@ export const getReportUrl = () => {
     const offeringUrl = encodeURIComponent(offeringBaseUrl + offeringId);
     const studentId = portalData?.platformUserId;
 
-    return reportLink
-            + "?"
-            // In the future we should be able to drop this because the portal
-            // report should be able to get all the info it needs from the
-            // offering url
-            + "class=" + encodeURIComponent(classInfoUrl || "")
-            + "&firebase-app="+reportFirebaseApp
+    // In the future we should be able to drop this because the portal
+    // report should be able to get all the info it needs from the
+    // offering url
+    result += "&class=" + encodeURIComponent(classInfoUrl || "")
             + "&offering=" + offeringUrl
             + "&reportType=offering&studentId="+studentId
-            + "&sourceKey="+sourceKey
-            + "&answersSourceKey="+answerSource
             + "&auth-domain="+authDomainUrl;
   }
+
+  if (questionRefId) {
+    // Limit report to a single question.
+    result += "&iframeQuestionId=" + refIdToAnswersQuestionId(questionRefId);
+  }
+
+  return result;
 };
 
 export const showReport = () => {

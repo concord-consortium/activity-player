@@ -4,7 +4,7 @@
   "layout": 0,
   "name": "LARA Page elements Different page configs Full Width Option Off",
   "notes": "",
-  "project_id": null,
+  "project": null,
   "related": "",
   "show_submit_button": true,
   "student_report_enabled": true,
@@ -12,6 +12,7 @@
   "time_to_complete": null,
   "version": 1,
   "theme_name": null,
+  "background_image": null,
   "pages": [
     {
       "additional_sections": {},
@@ -1138,7 +1139,7 @@
         {
           "embeddable": {
             "name": "",
-            "url_fragment": "%7B%22curriculum%22%3A%22mouse%22%2C%22topBar%22%3Atrue%2C%22ui%22%3A%7B%22showPopulationSpace%22%3Atrue%2C%22showBreedingSpace%22%3Atrue%2C%22showOrganismSpace%22%3Atrue%2C%22showDNASpace%22%3Atrue%2C%22investigationPanelSpace%22%3A%22none%22%7D%2C%22backpack%22%3A%7B%22collectedMice%22%3A%5B%7B%22sex%22%3A%22female%22%2C%22genotype%22%3A%22RR%22%7D%2C%7B%22sex%22%3A%22male%22%2C%22genotype%22%3A%22RC%22%7D%2C%7B%22sex%22%3A%22female%22%2C%22genotype%22%3A%22CC%22%7D%5D%7D%2C%22populations%22%3A%7B%22instructions%22%3A%22%22%2C%22environment%22%3A%22white%22%2C%22showSwitchEnvironmentsButton%22%3Atrue%2C%22includeNeutralEnvironment%22%3Atrue%2C%22showInspectGenotype%22%3Atrue%2C%22initialPopulation%22%3A%7B%22white%22%3A33.33%2C%22tan%22%3A33.33%7D%2C%22numHawks%22%3A1%2C%22inheritance%22%3A%7B%22showStudentControlOfMutations%22%3Afalse%2C%22breedWithMutations%22%3Afalse%2C%22chanceOfMutations%22%3A2%2C%22showStudentControlOfInheritance%22%3Afalse%2C%22breedWithInheritance%22%3Atrue%2C%22randomOffspring%22%3A%7B%22white%22%3A33.33%2C%22tan%22%3A33.33%7D%7D%2C%22deadMice%22%3A%7B%22chanceOfShowingBody%22%3A50%2C%22timeToShowBody%22%3A50%7D%2C%22enableColorChart%22%3Atrue%2C%22enableGenotypeChart%22%3Atrue%2C%22enableAllelesChart%22%3Atrue%2C%22enablePieChart%22%3Atrue%7D%2C%22organisms%22%3A%7B%22instructions%22%3A%22%22%2C%22useMysteryOrganelles%22%3Afalse%2C%22useMysterySubstances%22%3Afalse%2C%22showZoomToReceptor%22%3Atrue%2C%22showZoomToNucleus%22%3Atrue%7D%2C%22breeding%22%3A%7B%22instructions%22%3A%22%22%2C%22enableStudentControlOfMutations%22%3Afalse%2C%22breedWithMutations%22%3Afalse%2C%22chanceOfMutations%22%3A2%2C%22enableInspectGametes%22%3Atrue%2C%22enableColorChart%22%3Atrue%2C%22enableGenotypeChart%22%3Atrue%2C%22enableSexChart%22%3Atrue%7D%7D",
+            "url_fragment": "?%7B%22curriculum%22%3A%22mouse%22%2C%22topBar%22%3Atrue%2C%22ui%22%3A%7B%22showPopulationSpace%22%3Atrue%2C%22showBreedingSpace%22%3Atrue%2C%22showOrganismSpace%22%3Atrue%2C%22showDNASpace%22%3Atrue%2C%22investigationPanelSpace%22%3A%22none%22%7D%2C%22backpack%22%3A%7B%22collectedMice%22%3A%5B%7B%22sex%22%3A%22female%22%2C%22genotype%22%3A%22RR%22%7D%2C%7B%22sex%22%3A%22male%22%2C%22genotype%22%3A%22RC%22%7D%2C%7B%22sex%22%3A%22female%22%2C%22genotype%22%3A%22CC%22%7D%5D%7D%2C%22populations%22%3A%7B%22instructions%22%3A%22%22%2C%22environment%22%3A%22white%22%2C%22showSwitchEnvironmentsButton%22%3Atrue%2C%22includeNeutralEnvironment%22%3Atrue%2C%22showInspectGenotype%22%3Atrue%2C%22initialPopulation%22%3A%7B%22white%22%3A33.33%2C%22tan%22%3A33.33%7D%2C%22numHawks%22%3A1%2C%22inheritance%22%3A%7B%22showStudentControlOfMutations%22%3Afalse%2C%22breedWithMutations%22%3Afalse%2C%22chanceOfMutations%22%3A2%2C%22showStudentControlOfInheritance%22%3Afalse%2C%22breedWithInheritance%22%3Atrue%2C%22randomOffspring%22%3A%7B%22white%22%3A33.33%2C%22tan%22%3A33.33%7D%7D%2C%22deadMice%22%3A%7B%22chanceOfShowingBody%22%3A50%2C%22timeToShowBody%22%3A50%7D%2C%22enableColorChart%22%3Atrue%2C%22enableGenotypeChart%22%3Atrue%2C%22enableAllelesChart%22%3Atrue%2C%22enablePieChart%22%3Atrue%7D%2C%22organisms%22%3A%7B%22instructions%22%3A%22%22%2C%22useMysteryOrganelles%22%3Afalse%2C%22useMysterySubstances%22%3Afalse%2C%22showZoomToReceptor%22%3Atrue%2C%22showZoomToNucleus%22%3Atrue%7D%2C%22breeding%22%3A%7B%22instructions%22%3A%22%22%2C%22enableStudentControlOfMutations%22%3Afalse%2C%22breedWithMutations%22%3Afalse%2C%22chanceOfMutations%22%3A2%2C%22enableInspectGametes%22%3Atrue%2C%22enableColorChart%22%3Atrue%2C%22enableGenotypeChart%22%3Atrue%2C%22enableSexChart%22%3Atrue%7D%7D",
             "authored_state": "",
             "is_hidden": false,
             "is_full_width": false,

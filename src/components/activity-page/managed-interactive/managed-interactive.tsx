@@ -4,7 +4,7 @@ import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
 import {
   ICloseModal, INavigationOptions,
-  ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures
+  ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures, IAttachmentUrlRequest, IAttachmentUrlResponse
 } from "@concord-consortium/lara-interactive-api";
 import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata } from "../../../types";
@@ -18,6 +18,7 @@ import { renderHTML } from "../../../utilities/render-html";
 import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 import { Lightbox } from "./lightbox";
 import { Logger, LogEventName } from "../../../lib/logger";
+import { handleGetAttachmentUrl } from "@concord-consortium/interactive-api-host";
 
 import "./managed-interactive.scss";
 
@@ -174,6 +175,25 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     setActiveLightbox(null);
   };
 
+  const handleGetAttachmentUrlRequest = async (request: IAttachmentUrlRequest): Promise<IAttachmentUrlResponse> => {
+    if (!answerMeta.current) {
+      return { error: "error getting attachment url: no answer metadata", requestId: request.requestId };
+    }
+    return await handleGetAttachmentUrl({
+      request,
+      answerMeta: answerMeta.current,
+      writeOptions: {
+        interactiveId,
+        onAnswerMetaUpdate: newMeta => {
+          if (!answerMeta.current) {
+            return { error: "error getting attachment url: no answer metadata", requestId: request.requestId };
+          }
+          createOrUpdateAnswer({ ...answerMeta.current, ...newMeta });
+        }
+      }
+    });
+  };
+
   useImperativeHandle(ref, () => ({
     requestInteractiveState: () => {
       if (shouldWatchAnswer && iframeRuntimeRef.current) {
@@ -208,6 +228,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         containerWidth={containerWidth}
         setNewHint={setNewHint}
         getFirebaseJWT={getFirebaseJWT}
+        getAttachmentUrl={handleGetAttachmentUrlRequest}
         showModal={showModal}
         closeModal={closeModal}
         setSendCustomMessage={setSendCustomMessage}

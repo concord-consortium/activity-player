@@ -1,4 +1,5 @@
 import React from "react";
+import Modal from "react-modal";
 import { PortalDataContext } from "./portal-data-context";
 import { Header } from "./activity-header/header";
 import { ActivityNav } from "./activity-header/activity-nav";
@@ -6,15 +7,20 @@ import { SequenceNav } from "./activity-header/sequence-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { ActivityLayouts, PageLayouts, numQuestionsOnPreviousPages, enableReportButton, setDocumentTitle, getPagePositionFromQueryValue } from "../utilities/activity-utils";
+import { ActivityLayouts, numQuestionsOnPreviousPages,
+  enableReportButton, setDocumentTitle, getPagePositionFromQueryValue,
+  getSequenceActivityFromQueryValue, getSequenceActivityId,
+  setAppBackgroundImage } from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
-import { queryValue, queryValueBoolean } from "../utilities/url-query";
-import { fetchPortalData, IPortalData, firebaseAppName } from "../portal-api";
-import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB, onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout } from "../firebase-db";
+import { queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
+import { fetchPortalData, firebaseAppName } from "../portal-api";
+import { IPortalData, IPortalDataUnion } from "../portal-types";
+import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
+         onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData } from "../firebase-db";
 import { Activity, IEmbeddablePlugin, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
@@ -25,15 +31,16 @@ import { IdleWarning } from "./error/idle-warning";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
 import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
 import { ModalDialog } from "./modal-dialog";
-import Modal from "react-modal";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
 import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
+import { getAttachmentsManagerOptions} from "../utilities/get-attachments-manager-options";
 import { IdleDetector } from "../utilities/idle-detector";
+import { initializeAttachmentsManager } from "@concord-consortium/interactive-api-host";
 
 import "./app.scss";
 
-const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
+const kDefaultActivity = "sample-new-sections";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "Please submit an answer first.";
 
 // User will see the idle warning after kMaxIdleTime
@@ -42,6 +49,8 @@ const kMaxIdleTime = 20 * 60 * 1000; // 20 minutes
 const kTimeout = 5 * 60 * 1000; // 5 minutes
 
 const kLearnPortalUrl = "https://learn.concord.org";
+
+const kAnonymousUserName = "Anonymous";
 
 export type ErrorType = "auth" | "network" | "timeout";
 
@@ -78,11 +87,12 @@ export class App extends React.PureComponent<IProps, IState> {
   public constructor(props: IProps) {
     super(props);
     this.state = {
+      activityIndex: 0,
       currentPage: 0,
       teacherEditionMode: false,
       showThemeButtons: false,
       showWarning: false,
-      username: "Anonymous",
+      username: kAnonymousUserName,
       showModal: false,
       modalLabel: "",
       incompleteQuestions: [],
@@ -105,12 +115,18 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const activityPath = queryValue("activity") || kDefaultActivity;
-      const activity: Activity = await getActivityDefinition(activityPath);
-
       const sequencePath = queryValue("sequence");
       const sequence: Sequence | undefined = sequencePath ? await getSequenceDefinition(sequencePath) : undefined;
-      const showSequenceIntro = sequence != null;
+      const sequenceActivityNum = sequence != null
+                                    ? getSequenceActivityFromQueryValue(sequence, queryValue("sequenceActivity"))
+                                    : 0;
+      const activityIndex = sequence && sequenceActivityNum ? sequenceActivityNum - 1 : undefined;
+      const activityPath = queryValue("activity") || kDefaultActivity;
+      const activity: Activity = sequence != null && activityIndex != null && activityIndex >= 0
+                                   ? sequence.activities[activityIndex]
+                                   : await getActivityDefinition(activityPath);
+
+      const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
 
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity if numeric
       // or the page.position of the matching page id if prefixed with "page_<id>"
@@ -123,7 +139,7 @@ export class App extends React.PureComponent<IProps, IState> {
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
 
-      const newState: Partial<IState> = {activity, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode};
+      const newState: Partial<IState> = {activity, activityIndex, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode};
       setDocumentTitle(activity, currentPage);
 
       let classHash = "";
@@ -161,6 +177,10 @@ export class App extends React.PureComponent<IProps, IState> {
         }
       }
 
+      getAttachmentsManagerOptions(getPortalData() as IPortalDataUnion).then(options => {
+        initializeAttachmentsManager(options);
+      });
+
       if (!preview) {
         // Notify user about network issues. Note that in preview mode Firestore network is disabled, so it doesn't
         // make sense to track requests.
@@ -172,13 +192,41 @@ export class App extends React.PureComponent<IProps, IState> {
       this.setState(newState as IState);
 
       this.LARA = initializeLara();
-      loadLearnerPluginState(activity, teacherEditionMode).then(() => {
-        loadPluginScripts(this.LARA, activity, this.handleLoadPlugins, teacherEditionMode);
+      const activities: Activity[] = sequence ? sequence.activities : [activity];
+      loadLearnerPluginState(activities).then(() => {
+        loadPluginScripts(this.LARA, activities, this.handleLoadPlugins);
       });
 
       Modal.setAppElement("#app");
 
-      Logger.initializeLogger(this.LARA, newState.username || this.state.username, role, classHash, teacherEditionMode, sequencePath, 0, sequencePath ? undefined : activityPath, currentPage, runRemoteEndpoint);
+      Logger.initializeLogger({
+        LARA: this.LARA,
+        username: (() => {
+          let username = newState.username || this.state.username;
+          const domain = queryValue("domain");
+          const domainUID = queryValue("domain_uid");
+          // If user is anonymous, but there are domain and domain_uid URL params available, use them to construct an username.
+          // PJ 9/2/2021: This might be replaced by a proper OAuth path in the future. For now, it les us log teacher edition events correctly.
+          if (username === kAnonymousUserName && domain && domainUID) {
+            // Skip protocol, use hostname only to mimic LARA behavior.
+            username = `${domainUID}@${new URL(domain).hostname}`;
+          }
+          return username;
+        })(),
+        role,
+        classHash,
+        teacherEdition: teacherEditionMode,
+        sequence: sequencePath,
+        sequenceActivityIndex: 0,
+        // Note that we're setting activity param to `sequencePath || activityPath`. This is intentional.
+        // When AP is rendering a sequence, the sequence JSON path should be used as an `activity` param value.
+        // That's the most important parameter for log-puller which always checks `activity` and ignores `sequence`.
+        // Other systems like LARA or Portal Report provide `activity` param equal to "sequence: <ID>".
+        activity: sequencePath || activityPath,
+        activityPage: currentPage,
+        runRemoteEndpoint,
+        env: firebaseAppName() === "report-service-pro" ? "production" : "dev"
+      });
 
       const idleDetector = new IdleDetector({ idle: Number(kMaxIdleTime), onIdle: this.handleIdleness });
       idleDetector.start();
@@ -211,27 +259,42 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
+    const { activity, activityIndex, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
-    const fullWidth = (currentPage !== 0) && (activity.pages[currentPage - 1].layout === PageLayouts.Responsive);
+    const hasResponsiveSection = activity.pages[currentPage - 1]?.sections.filter(s => s.layout === "responsive");
+
+    const fullWidth = (currentPage !== 0) && (hasResponsiveSection.length > 0);
+    const project = activity.project ? activity.project : null;
     const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
+    const sequenceActivityId = sequence !== undefined ? getSequenceActivityId(sequence, activityIndex) : undefined;
+    const sequenceActivity = sequenceActivityId !== undefined
+                               ? sequenceActivityId
+                               : activityIndex !== undefined && activityIndex >= 0
+                                 ? activityIndex + 1
+                                 : undefined;
+    sequenceActivity !== undefined && setQueryValue("sequenceActivity", sequenceActivity);
+    const backgroundImage = sequence?.background_image || activity.background_image;
+    if (backgroundImage) {
+      setAppBackgroundImage(backgroundImage);
+    }
+
     return (
       <React.Fragment>
         <Header
           fullWidth={fullWidth}
-          projectId={activity.project_id}
+          project={project}
           userName={username}
           contentName={sequence ? sequence.display_title || sequence.title || "" : activity.name}
           showSequence={sequence !== undefined}
           onShowSequence={sequence !== undefined ? this.handleShowSequenceIntro : undefined}
         />
         {
-          idle && !errorType && 
-          <IdleWarning 
+          idle && !errorType &&
+          <IdleWarning
             // __cypressLoggedIn is used to trigger logged in code path for Cypress tests.
-            // Eventually it should be replaced with better patterns for testing logged in users (probably via using 
+            // Eventually it should be replaced with better patterns for testing logged in users (probably via using
             // `token` param and stubbing network requests).
             timeout={kTimeout} username={username} anonymous={!portalData && queryValue("__cypressLoggedIn") !== "true"}
             onTimeout={this.handleTimeout} onContinue={this.handleContinueSession} onExit={this.goToPortal}
@@ -239,13 +302,13 @@ export class App extends React.PureComponent<IProps, IState> {
         }
         { errorType && <Error type={errorType} onExit={this.goToPortal} /> }
         {
-          !idle && !errorType && 
+          !idle && !errorType &&
           this.renderActivityContent(activity, currentPage, totalPreviousQuestions, fullWidth)
         }
         { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
           <Footer
             fullWidth={fullWidth}
-            projectId={activity.project_id}
+            project={project}
           />
         }
         { (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
@@ -276,7 +339,7 @@ export class App extends React.PureComponent<IProps, IState> {
           ? this.renderSinglePageContent(activity)
           : currentPage === 0
             ? this.renderIntroductionContent(activity)
-            : activity.pages[currentPage - 1].is_completion
+            : activity.pages.filter((page) => !page.is_hidden)[currentPage - 1].is_completion
               ? this.renderCompletionContent(activity)
               : <ActivityPageContent
                   ref={this.activityPageContentRef}
@@ -311,10 +374,13 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderSequenceNav = (fullWidth: boolean) => {
+    const { activity, activityIndex, sequence } = this.state;
+    const activityNum = activityIndex ? activityIndex + 1 : 1;
+    const currentActivity = activity && activityNum + ": " + activity.name;
     return (
       <SequenceNav
-        activities={this.state.sequence?.activities.map((a: Activity) => a.name)}
-        currentActivity={this.state.activity?.name}
+        activities={sequence?.activities.map((a: Activity) => a.name)}
+        currentActivity={currentActivity}
         fullWidth={fullWidth}
         onActivityChange={this.handleSelectActivity}
       />
@@ -380,7 +446,7 @@ export class App extends React.PureComponent<IProps, IState> {
     Logger.log({ event: LogEventName.go_back_to_portal });
     window.location.href = this.portalUrl;
   }
- 
+
   private handleChangePage = (page: number) => {
     const { currentPage, incompleteQuestions, activity } = this.state;
     if (page > currentPage && incompleteQuestions.length > 0) {
@@ -417,7 +483,8 @@ export class App extends React.PureComponent<IProps, IState> {
     this.setState((prevState) =>
       ({ activity: prevState.sequence?.activities[activityNum],
          showSequenceIntro: false,
-         activityIndex: activityNum
+         activityIndex: activityNum,
+         currentPage: 0
       })
     );
   }

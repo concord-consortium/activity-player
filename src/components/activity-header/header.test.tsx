@@ -3,21 +3,42 @@ import { Header } from "./header";
 import { AccountOwner } from "./account-owner";
 import { shallow } from "enzyme";
 import { Logo } from "./logo";
-import mwLogo from "../../assets/project-images/mw-logo.png";
 
 describe("Header component", () => {
+  const project1 = {
+    about: null,
+    footer: null,
+    help: null,
+    logo_ap: "https://static.concord.org/projects/logos/ap/mw-logo.png",
+    logo_lara: "https://static.concord.org/projects/logos/lara/mw-logo.png",
+    project_key: "molecular-workbench",
+    title: "Molecular Workbench",
+    url: "http://mw.concord.org/nexgen"
+  };
+
+  const project2 = {
+    about: null,
+    footer: null,
+    help: null,
+    logo_ap: null,
+    logo_lara: null,
+    project_key: "default",
+    title: "Default",
+    url: null
+  };
+
   it("renders header project icon", () => {
-    const headerLogo1 = <Logo logo={mwLogo} url={"http://mw.concord.org/nextgen/"}/>;
+    const headerLogo1 = <Logo logo={project1.logo_ap} url={project1.url}/>;
     const headerLogo9 = <Logo logo={undefined} url={"https://concord.org/"}/>;
 
-    const wrapperIcon = shallow(<Header projectId={1} userName={"test student"} contentName={"test activity"} />);
+    const wrapperIcon = shallow(<Header project={project1} userName={"test student"} contentName={"test activity"} />);
     expect(wrapperIcon.containsMatchingElement(headerLogo1)).toEqual(true);
 
-    const wrapperNoIcon = shallow(<Header projectId={9} userName={"test student"} contentName={"test activity"} />);
+    const wrapperNoIcon = shallow(<Header project={project2} userName={"test student"} contentName={"test activity"} />);
     expect(wrapperNoIcon.containsMatchingElement(headerLogo9)).toEqual(true);
   });
   it("renders activity title", () => {
-    const wrapperDropdown = shallow(<Header projectId={1} userName={"test student"} contentName={"test activity"} />);
+    const wrapperDropdown = shallow(<Header project={project1} userName={"test student"} contentName={"test activity"} />);
     expect(wrapperDropdown.text()).toContain("test activity");
   });
   it("renders user name", () => {
@@ -25,7 +46,7 @@ describe("Header component", () => {
       const accountOwner = <AccountOwner userName={user} />;
 
       const wrapperAccountOwner = shallow(accountOwner);
-      const wrapperHeader = shallow(<Header projectId={1} userName={user} contentName={"test activity"} />);
+      const wrapperHeader = shallow(<Header project={project1} userName={user} contentName={"test activity"} />);
       expect(wrapperHeader.containsMatchingElement(accountOwner)).toEqual(true);
       expect(wrapperAccountOwner.text()).toContain(user);
   });

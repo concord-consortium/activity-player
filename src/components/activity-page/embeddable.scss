@@ -2,14 +2,7 @@
 
 .embeddable {
   margin-bottom: 10px;
-
-  &.full-width {
-    width: 100%;
-  }
-  &.reduced-width {
-    width: 440px;
-  }
-
+  position: relative;
   .header {
     height: fit-content;
     min-height: 36px;

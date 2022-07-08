@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { queryValue, setQueryValue } from "./utilities/url-query";
 import { FirebaseAppName } from "./firebase-db";
 import { getResourceUrl } from "./lara-api";
+import { IAnonymousPortalData, IPortalData, OfferingData, PortalJWT } from "./portal-types";
 import { getCanonicalHostname, isProductionOrigin } from "./utilities/host-utils";
 
 interface PortalClassOffering {
@@ -46,13 +47,21 @@ export interface TeacherUser extends User {
 
 export type AuthenticatedUser = StudentUser | TeacherUser;
 
+export interface IOffering {
+  id: number;
+  name: string;
+  url: string;
+}
+
 export interface RawClassInfo {
+  id: number;
   uri: string;
   name: string;
   state: string;
   class_hash: string;
   teachers: RawUser[];
   students: RawUser[];
+  offerings: IOffering[];
 }
 
 interface ClassInfo {
@@ -61,71 +70,6 @@ interface ClassInfo {
   students: StudentUser[];
   teachers: TeacherUser[];
 }
-
-export interface ILTIPartial {
-  platformId: string;      // portal
-  platformUserId: string;
-  contextId: string;       // class hash
-  resourceLinkId: string;  // offering ID
-}
-
-interface OfferingData {
-  id: number;
-  activityUrl: string;
-  rubricUrl: string;
-}
-
-interface FirebaseData {
-  appName: FirebaseAppName;
-  sourceKey: string;
-  rawFirebaseJWT: string;
-}
-
-export interface IPortalData extends ILTIPartial {
-  type: "authenticated";
-  offering: OfferingData;
-  userType: "teacher" | "learner";
-  database: FirebaseData;
-  toolId: string;
-  resourceUrl: string;
-  fullName?: string;
-  learnerKey?: string;
-  basePortalUrl?: string;
-  rawPortalJWT?: string;
-  portalJWT?: PortalJWT;
-  runRemoteEndpoint: string;
-}
-
-export interface IAnonymousPortalData {
-  type: "anonymous";
-  userType: "learner";
-  runKey: string;
-  resourceUrl: string;
-  toolId: string;
-  toolUserId: "anonymous";
-  database: {
-    appName: FirebaseAppName,
-    sourceKey: string;
-  };
-}
-
-interface BasePortalJWT {
-  alg: string;
-  iat: number;
-  exp: number;
-  uid: number;
-}
-
-interface PortalStudentJWT extends BasePortalJWT {
-  domain: string;
-  user_type: "learner";
-  user_id: string;
-  learner_id: number;
-  class_info_url: string;
-  offering_id: number;
-}
-
-type PortalJWT = PortalStudentJWT;     // eventually may include other user types
 
 interface BasePortalFirebaseJWT {
   alg: string;
@@ -295,7 +239,7 @@ interface GetClassInfoParams {
 
 const getClassInfo = (params: GetClassInfoParams) => {
   const {classInfoUrl, rawPortalJWT, portal, offeringId} = params;
-  return new Promise<ClassInfo>((resolve, reject) => {
+  return new Promise<{ classInfo: ClassInfo, rawClassInfo: RawClassInfo }>((resolve, reject) => {
     superagent
     .get(classInfoUrl)
     .set("Authorization", `Bearer/JWT ${rawPortalJWT}`)
@@ -345,7 +289,7 @@ const getClassInfo = (params: GetClassInfoParams) => {
           }),
         };
 
-        resolve(classInfo);
+        resolve({ classInfo, rawClassInfo });
       }
     });
   });
@@ -407,7 +351,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     throw new Error("Unable to get classInfoUrl or offeringId");
   }
 
-  const classInfo = await getClassInfo({classInfoUrl, rawPortalJWT, portal, offeringId});
+  const { classInfo, rawClassInfo } = await getClassInfo({classInfoUrl, rawPortalJWT, portal, offeringId});
   const offeringData = await getOfferingData({portalJWT, rawPortalJWT, offeringId});
   const [rawFirebaseJWT, firebaseJWT] = await getActivityPlayerFirebaseJWT(basePortalUrl, rawPortalJWT, classInfo.classHash);
 
@@ -416,7 +360,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
   // This works fine, but for testing the activity player, we may want to load data that was previously
   // saved in a different domain (e.g. authoring.concord.org), so we first check for a "url-source"
   // query parameter.
-  const sourceKey = queryValue("report-source") || parseUrl(offeringData.activityUrl.toLowerCase()).hostname;
+  const sourceKey = queryValue("answersSourceKey") || parseUrl(offeringData.activityUrl.toLowerCase()).hostname;
 
   // for the tool id we want to distinguish activity-player branches, incase this is ever helpful for
   // dealing with mis-matched data when we load data in originally saved on another branch.
@@ -432,6 +376,7 @@ export const fetchPortalData = async (): Promise<IPortalData> => {
     platformId: firebaseJWT.claims.platform_id,
     platformUserId: firebaseJWT.claims.platform_user_id.toString(),
     contextId: classInfo.classHash,
+    rawClassInfo,
     toolId,
     resourceUrl: getResourceUrl(),
     fullName,
@@ -480,4 +425,13 @@ export const anonymousPortalData = (preview: boolean) => {
     }
   };
   return rawPortalData;
+};
+
+export const isAnonymousPortalData = (portalData: IPortalData | IAnonymousPortalData): portalData is IAnonymousPortalData =>
+              (portalData as any)?.runKey != null;
+
+export const getUniqueLearnerString = (portalData: IPortalData | IAnonymousPortalData) => {
+  return isAnonymousPortalData(portalData)
+          ? portalData.runKey
+          : portalData.runRemoteEndpoint;
 };

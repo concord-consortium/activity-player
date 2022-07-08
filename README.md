@@ -59,10 +59,11 @@ To deploy a production release:
     - In a PT workspace that includes Orange and Teal boards, search for the `label:"activity-player-<new version>" includedone:true`. You can select all, and export as CSV. Then copy the id and title columns.
     - Review recently merged PRs in GitHub UI
 2. Compute asset sizes.
-    1. Run `npm run build`
-    2. Look at file sizes with `ls dist/assets`
-    3. Add file sizes to CHANGES.md
-    4. Look at previous version file sizes from previous version in GitHub and compute the percent change `(new - prev) / prev * 100`
+    1. Run `npm install`
+    2. Run `npm run build`
+    3. Look at file sizes with `ls -a dist/assets`
+    4. Add file sizes to CHANGES.md
+    5. Look at previous version file sizes listed in the previous release notes in GitHub. Compute the percent change `(new - prev) / prev * 100`
 3. Update package, commit, and tag
     - **Mac or Linux**:
         - Run `npm version -m "$(< CHANGES.md)" [new-version-string]`
@@ -84,9 +85,16 @@ To deploy a production release:
     4. Hit "Publish Release" button
 6. QA the built version at `https://activity-player.concord.org/version/v[new-version-string]/`
 7. Checkout production
+    1. `git checkout production`
 8. Run `git reset --hard v[new-version-string]`
-9. Push production to GitHub
-10. Delete CHANGES.md to clean up your working directory
+9. Push production to GitHub **<-- this actually releases the new code**
+    1. `git push --force origin production`
+10. Check the release
+    1. Watch the GitHub actions build to see that the S3 Deploy step finished
+    2. Load the https://activity-player.concord.org and to make sure the new version is released. You can look at the version number at the bottom of the page to check this.
+11. Clean up your working directory
+    1. Delete `CHANGES.md`
+    2. `git checkout master`
 
 ### Testing
 
@@ -113,18 +121,19 @@ Inside of your `package.json` file:
 ## Url Parameters
 ### Note: these are subject to change
 
-* activity={id|url}:    load sample-activity {id} or load json from specified url
-* sequence={id|url}:    load sample-sequence {id} or load json from specified url
-* page={n|"page_[id]"}: load page n, where 0 is the activity introduction, 1 is the first page and [id] in "page_[id]" refers to an internal integer id of the page model exported from LARA.
-* themeButtons:         whether to show theme buttons
-* mode={mode}:          sets mode. Values: "teacher-edition"
-* portalReport:         override default base URL for the student report. `https://activity-player.concord.org/`, `https://activity-player-offline.concord.org/`, `https://activity-player.concord.org/version/*`, and `https://activity-player-offline.concord.org/version/*`, default to a versioned URL defined as a constant in the code `kProductionPortalReportUrl`. Every other url defaults to the master branch of the portal-report.
+* activity={id|url}:                  load sample-activity {id} or load json from specified url
+* sequence={id|url}:                  load sample-sequence {id} or load json from specified url
+* sequenceActivity={n|activity_[id]}: load activity n where n corresponds to the activity's placement in the order of sequenced activities (1 = first activity, 2 = second activity, etc.), or by the activity's unique ID
+* page={n|"page_[id]"}:               load page n, where 0 is the activity introduction, 1 is the first page and [id] in "page_[id]" refers to an internal integer id of the page model exported from LARA.
+* themeButtons:                       whether to show theme buttons
+* mode={mode}:                        sets mode. Values: "teacher-edition"
+* portalReport:                       override default base URL for the student report. `https://activity-player.concord.org/`, `https://activity-player-offline.concord.org/`, `https://activity-player.concord.org/version/*`, and `https://activity-player-offline.concord.org/version/*`, default to a versioned URL defined as a constant in the code `kProductionPortalReportUrl`. Every other url defaults to the master branch of the portal-report.
 
 #### User data loading:
 * firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ and https://activity-player-offline.concord.org/ without a path, defaults to `report-service-pro` every other url defaults to `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
 * token={n}:         set by the portal when launching external activity, to authenticate with portal API
 * domain={n}:        set by the portal when launching external activity
-* report-source={id}: which source collection to save data to in firestore (defaults to own hostname)
+* answersSourceKey={id}: which source collection to save data to in firestore (defaults to own hostname)
 * runkey={uuid}:     set by the app if we are running in anonymous datasaving mode
 * preview:           prevent running in anonymous datasaving mode
 * enableFirestorePersistence: uses local offline firestore cache only
