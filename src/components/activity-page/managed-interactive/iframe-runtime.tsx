@@ -1,24 +1,29 @@
 // cf. https://github.com/concord-consortium/question-interactives/blob/master/src/scaffolded-question/components/iframe-runtime.tsx
 import { autorun } from "mobx";
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { IframePhone } from "../../../types";
+import { IExportableAnswerMetadata, IframePhone, ILegacyLinkedInteractiveState } from "../../../types";
 import iframePhone from "iframe-phone";
 import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
   ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, ILinkedInteractiveStateResponse,
   IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent,
-  ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse
+  ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState, AttachmentInfoMap
 } from "@concord-consortium/lara-interactive-api";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
 import { IPortalData } from "../../../portal-types";
+import { IInteractiveInfo } from "../../../utilities/embeddable-utils";
+import { getReportUrl } from "../../../utilities/report-utils";
+import ReloadIcon from "../../../assets/svg-icons/icon-reload.svg";
+
+import "./iframe-runtime.scss";
 
 const kDefaultHeight = 300;
 
-const kInteractiveStateRequestTimeout = 2000; // ms
+const kInteractiveStateRequestTimeout = 20000; // ms
 
 const getListenerTypes = (textDecorationHandlerInfo: ITextDecorationHandlerInfo): Array<{type: string}> => {
   const { eventListeners } = textDecorationHandlerInfo;
@@ -41,7 +46,7 @@ const createTextDecorationInfo = () => {
 };
 
 export interface IframeRuntimeImperativeAPI {
-  requestInteractiveState: () => Promise<void>;
+  requestInteractiveState: (options?: IGetInteractiveState) => Promise<void>;
 }
 
 interface IProps {
@@ -49,12 +54,13 @@ interface IProps {
   id: string;
   authoredState: any;
   initialInteractiveState: any;
+  legacyLinkedInteractiveState: ILegacyLinkedInteractiveState | null;
   setInteractiveState: (state: any) => void;
   setSupportedFeatures: (container: HTMLElement, features: ISupportedFeatures) => void;
   linkedInteractives?: ILinkedInteractive[];
   report?: boolean;
   proposedHeight?: number;
-  containerWidth?: number;
+  containerWidth?: number | string;
   setNewHint: (newHint: string) => void;
   getFirebaseJWT: (firebaseApp: string, others: Record<string, any>) => Promise<string>;
   getAttachmentUrl: (request: IAttachmentUrlRequest) => Promise<IAttachmentUrlResponse>;
@@ -65,26 +71,33 @@ interface IProps {
   ref?: React.Ref<IframeRuntimeImperativeAPI>;
   iframeTitle: string;
   portalData?: IPortalData;
+  answerMetadata?: IExportableAnswerMetadata;
+  interactiveInfo?: IInteractiveInfo;
+  aspectRatioMethod?: "MAX" | "MANUAL" | "DEFAULT";
+  showDeleteDataButton?: boolean;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { url, id, authoredState, initialInteractiveState, setInteractiveState, linkedInteractives, report,
-    proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal,
-    setSupportedFeatures, setSendCustomMessage, setNavigation, iframeTitle, portalData } = props;
-  const _idNum = parseInt(id, 10);
-  const idNum = isFinite(_idNum) ? _idNum : 0;
+  const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
+    proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
+    setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo, aspectRatioMethod,
+    showDeleteDataButton } = props;
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
+  const [reloadCount, setReloadCount] = useState<number>(0);
+  const iframePhoneTimeout = useRef<number|undefined>(undefined);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const phoneRef = useRef<IframePhone>();
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
+  const interactiveStateRef = useRef(initialInteractiveState);
   const linkedInteractivesRef = useRef(linkedInteractives?.length ? { linkedInteractives } : { linkedInteractives: [] });
   const interactiveStateRequest = {
     promise: useRef<Promise<void>>(),
     resolveAndCleanup: useRef<() => void>(),
   };
+  const currentInteractiveState = useRef<any>(initialInteractiveState);
 
   useEffect(() => {
     const initInteractive = () => {
@@ -97,10 +110,20 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       const addListener = (type: ClientMessage, handler: any) => phone.addListener(type, handler);
 
       addListener("interactiveState", (newInteractiveState: any) => {
-        // "nochange" is a special message supported by LARA. We don't want to save it.
+        // "nochange" and "touch" are special messages supported by LARA. We don't want to save them.
         // newInteractiveState might be undefined if interactive state is requested before any state update.
-        if (newInteractiveState !== undefined && newInteractiveState !== "nochange") {
-          setInteractiveStateRef.current(newInteractiveState);
+        if (newInteractiveState !== undefined && newInteractiveState !== "nochange" && newInteractiveState !== "touch") {
+          // only update interactive state if it's different from the current one to avoid updating the timestamp
+          // used when comparing linked interactive states
+          const interactiveStateChanged = JSON.stringify(currentInteractiveState.current) !== JSON.stringify(newInteractiveState);
+          if (interactiveStateChanged) {
+            currentInteractiveState.current = newInteractiveState;
+            setInteractiveStateRef.current(newInteractiveState);
+          }
+        }
+        if (currentInteractiveState.current !== undefined && newInteractiveState === "touch") {
+          // save the current interactive state with a new timestamp
+          setInteractiveStateRef.current(currentInteractiveState.current);
         }
         if (interactiveStateRequest.promise.current) {
           interactiveStateRequest.resolveAndCleanup.current?.();
@@ -220,16 +243,27 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
       // Legacy bug fix: In the 1.0.0 release of the AP the special 'nochange'
       // message wasn't handled correctly and it was saved as the interactive state
-      // If we see that here in the initialInteractiveState we just use undefined
-      // instead. The problem is that sending this state to interactives that don't
-      // expect it, will have JSON parse errors trying to parse "nochange"
-      let _initialInteractiveState = initialInteractiveState;
-      if (initialInteractiveState === "nochange") {
-        _initialInteractiveState = undefined;
+      // If we see that here we just use undefined instead. The problem is that
+      // sending this state to interactives that don't expect it, will have JSON
+      // parse errors trying to parse "nochange"
+      if (interactiveStateRef.current === "nochange") {
+        interactiveStateRef.current = undefined;
       }
+
+      // create attachments map
+      const attachments: AttachmentInfoMap = {};
+      Object.keys(answerMetadata?.attachments || {}).forEach((key) => {
+        const attachment = answerMetadata?.attachments?.[key];
+        if (attachment) {
+          attachments[key] = {
+            contentType: attachment.contentType
+          };
+        }
+      });
 
       // note: many of the values here are placeholders that require further
       // consideration to determine whether there are more appropriate values.
+      // NOTE: updatedAt is directly added here instead of in the exported lara types
       const baseProps: Omit<IReportInitInteractive, "mode"> = {
         version: 1,
         hostFeatures: {
@@ -244,13 +278,15 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           }
         },
         authoredState,
-        interactiveState: _initialInteractiveState,
+        interactiveState: interactiveStateRef.current,
         themeInfo: {
           colors: {
             colorA: "",
             colorB: ""
           }
-        }
+        },
+        ...linkedInteractivesRef.current,
+        attachments
       };
       const initInteractiveMsg: IInitInteractive = report
               ? {
@@ -266,7 +302,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   collaboratorUrls: null,
                   classInfoUrl: portalData?.portalJWT?.class_info_url ?? "",
                   interactive: {
-                    id: idNum,
+                    id,
                     name: ""
                   },
                   authInfo: {
@@ -275,7 +311,13 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                     email: ""
                   },
                   runRemoteEndpoint: portalData?.runRemoteEndpoint,
-                  ...linkedInteractivesRef.current
+                  ...linkedInteractivesRef.current,
+                  ...(legacyLinkedInteractiveState || {}),
+                  pageName:  interactiveInfo?.pageName,
+                  pageNumber: interactiveInfo?.pageNumber,
+                  activityName: interactiveInfo?.activityName,
+                  updatedAt: answerMetadata?.created,
+                  externalReportUrl: getReportUrl(id) || undefined
                 };
       phone.post("initInteractive", initInteractiveMsg);
     };
@@ -289,6 +331,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         phoneRef.current?.post("customMessage", message);
       });
     }
+
     // Cleanup.
     return () => {
       if (phoneRef.current) {
@@ -297,7 +340,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     };
     // Re-running the effect reloads the iframe.
     // The _only_ time that's ever appropriate is when the url has changed.
-  }, [url]);  // eslint-disable-line react-hooks/exhaustive-deps
+  }, [reloadCount, url]);  // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     return autorun(() => {
@@ -309,9 +352,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   }, []);
 
   useImperativeHandle(ref, () => ({
-    requestInteractiveState: () => {
+    requestInteractiveState: (options?: IGetInteractiveState) => {
       if (!interactiveStateRequest.promise.current) {
-        phoneRef.current?.post("getInteractiveState");
+        phoneRef.current?.post("getInteractiveState", options);
         interactiveStateRequest.promise.current = new Promise<void>((resolve, reject) => {
           const cleanup = () => {
             interactiveStateRequest.promise.current = undefined;
@@ -321,34 +364,63 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
             resolve();
             cleanup();
           };
-          setTimeout(() => {
-            if (interactiveStateRequest.promise.current) {
-              const msg = `Sorry. Some items on this page did not save (${iframeTitle}).`;
-              console.error(msg);
-              reject(msg);
-              cleanup();
-            }
-          }, kInteractiveStateRequestTimeout);
-        });
+          iframePhoneTimeout.current = window.setTimeout(() => {
+              if (interactiveStateRequest.promise.current) {
+                const msg = `Sorry. Some items on this page did not save (${iframeTitle}).`;
+                console.error(msg);
+                reject(msg);
+                cleanup();
+              }
+            }, kInteractiveStateRequestTimeout);
+          });
       }
       return interactiveStateRequest.promise.current;
     }
   }));
 
-  const heightFromSupportedFeatures = ARFromSupportedFeatures && containerWidth ? containerWidth / ARFromSupportedFeatures : 0;
+  const handleResetButtonClick = () => {
+    if (confirm("Are you sure you want to clear your work and start over on this item?")) {
+      if (iframePhoneTimeout.current) {
+        clearTimeout(iframePhoneTimeout.current);
+        iframePhoneTimeout.current = undefined;
+      }
+      phoneRef.current?.disconnect();
+      setInteractiveStateRef.current(null);
+      setInteractiveState(null);
+      interactiveStateRef.current = undefined;
+      // incrementing reloadCount modifies the iframe's key, causing the iframe to reload.
+      setReloadCount(reloadCount + 1);
+    }
+  };
+
+  const heightFromSupportedFeatures = aspectRatioMethod === "MAX"
+                                        ? proposedHeight
+                                        : ARFromSupportedFeatures && containerWidth && typeof(containerWidth) === "number"
+                                            ? containerWidth / ARFromSupportedFeatures
+                                            : 0;
+
   // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone
   // "height" listener), height based on aspect ratio specified by interactive (from IframePhone "supportedFeatures" listener),
   // or height from container dimensions and embeddable specifications.
   const height = heightFromInteractive || heightFromSupportedFeatures || proposedHeight || kDefaultHeight;
 
+  // If the interactive sets the height, ignore the container width passed in and use all the available space.
+  const width = heightFromInteractive ? "100%" : containerWidth;
+
   return (
-    <div data-cy="iframe-runtime">
-      <iframe ref={iframeRef} src={url} id={id} width="100%" height={height} frameBorder={0}
+    <div className="iframe-runtime" data-cy="iframe-runtime">
+      <iframe key={`${id}-${reloadCount}`} ref={iframeRef} src={url} id={id} width={width} height={height} frameBorder={0}
               allowFullScreen={true}
-              allow="geolocation *; microphone *; camera *"
+              allow="geolocation; microphone; camera"
               title={iframeTitle}
               scrolling="no"
       />
+      {showDeleteDataButton &&
+        <button className="button reset" data-cy="reset-button" onClick={handleResetButtonClick} onKeyDown={handleResetButtonClick}>
+          Clear &amp; start over
+          <ReloadIcon />
+        </button>
+      }
     </div>
   );
 });

@@ -1,6 +1,7 @@
 import { Page, Activity, EmbeddableType, Sequence, SectionType } from "../types";
 import { SidebarConfiguration } from "../components/page-sidebar/sidebar-wrapper";
 import { isQuestion as isEmbeddableQuestion } from "./embeddable-utils";
+import { queryValue } from "./url-query";
 
 export enum ActivityLayouts {
   MultiplePages = 0,
@@ -24,30 +25,23 @@ export interface PageSectionQuestionCount {
   InteractiveBlock: number;
 }
 
+interface ISetDocumentTitleParams {
+  activity: Activity | undefined;
+  pageNumber: number;
+  sequence?: Sequence;
+  sequenceActivityNum?: number;
+}
+
 export const isSectionHidden = (section: SectionType) => {
   return section.is_hidden;
 };
 
-// export const getVisibleEmbeddablesOnPage = (page: Page) => {
-//   const headerEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Introduction)
-//     ? []
-//     : page.sections.embeddables.filter((e: any) => e.section === EmbeddableSections.Introduction && isVisibleEmbeddable(e));
-//   const interactiveEmbeddables = isEmbeddableSectionHidden(page, EmbeddableSections.Interactive)
-//     ? []
-//     : page.sections.embeddables.filter((e: any) => e.section === EmbeddableSections.Interactive && isVisibleEmbeddable(e));
-//   const infoAssessEmbeddables = isEmbeddableSectionHidden(page, null)
-//     ? []
-//     : page.sections.embeddables.filter((e: any) => (e.section !== EmbeddableSections.Interactive && e.section !== EmbeddableSections.Introduction && isVisibleEmbeddable(e)));
-
-//   return { interactiveBox: interactiveEmbeddables, headerBlock: headerEmbeddables, infoAssessment: infoAssessEmbeddables };
-// };
-
-// function isVisibleEmbeddable(e: EmbeddableType) {
-//   return !embeddable.is_hidden && !e.embeddable.embeddable_ref_id && !isEmbeddableSideTip(e);
-// }
-
 export const isEmbeddableSideTip = (e: EmbeddableType) => {
   return (e.type === "Embeddable::EmbeddablePlugin" && e.plugin?.component_label === "sideTip");
+};
+
+export const isNotVisibleEmbeddable =(e: EmbeddableType) => {
+  return e.is_hidden || e.embeddable_ref_id || isEmbeddableSideTip;
 };
 
 export const getPageSideTipEmbeddables = (activity: Activity, currentPage: Page) => {
@@ -116,12 +110,30 @@ export const numQuestionsOnPreviousSections = (currentSectionIndex: number, sect
 
 export const numQuestionsOnPreviousPages = (currentPage: number, activity: Activity) => {
   let numQuestions = 0;
-  for (let page = 0; page < currentPage - 1; page++) {
-    if (!activity.pages[page].is_hidden) {
-      for (let section = 0; section < activity.pages[page].sections.length; section++) {
-        if(!activity.pages[page].sections[section].is_hidden) {
-          for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
-            const embeddableWrapper = activity.pages[page].sections[section].embeddables[embeddableNum];
+  const visiblePages = activity.pages.filter(p => !p.is_hidden);
+
+  if (queryValue("author-preview")) {
+    for (let page = 0; page < currentPage - 1; page++) {
+      if (!activity.pages[page].is_hidden) {
+        for (let section = 0; section < activity.pages[page].sections.length; section++) {
+          if(!activity.pages[page].sections[section].is_hidden) {
+            for (let embeddableNum = 0; embeddableNum < activity.pages[page].sections[section].embeddables.length; embeddableNum++) {
+              const embeddableWrapper = activity.pages[page].sections[section].embeddables[embeddableNum];
+              if (isQuestion(embeddableWrapper) && !embeddableWrapper.is_hidden) {
+                numQuestions++;
+              }
+            }
+          }
+        }
+      }
+    }
+    return numQuestions;
+  } else {
+    for (let page = 0; page < currentPage - 1; page++) {
+      for (let section = 0; section < visiblePages[page].sections.length; section++) {
+        if(!visiblePages[page].sections[section].is_hidden) {
+          for (let embeddableNum = 0; embeddableNum < visiblePages[page].sections[section].embeddables.length; embeddableNum++) {
+            const embeddableWrapper = visiblePages[page].sections[section].embeddables[embeddableNum];
             if (isQuestion(embeddableWrapper) && !embeddableWrapper.is_hidden) {
               numQuestions++;
             }
@@ -129,8 +141,8 @@ export const numQuestionsOnPreviousPages = (currentPage: number, activity: Activ
         }
       }
     }
+    return numQuestions;
   }
-  return numQuestions;
 };
 
 export const enableReportButton = (activity: Activity) => {
@@ -138,9 +150,14 @@ export const enableReportButton = (activity: Activity) => {
   return !hasCompletionPage && activity.student_report_enabled;
 };
 
-export const getLinkedPluginEmbeddable = (section: SectionType, id: string) => {
-  const linkedPluginEmbeddable = section.embeddables.find((e: EmbeddableType) => e.embeddable_ref_id === id);
-  return linkedPluginEmbeddable?.type === "Embeddable::EmbeddablePlugin" ? linkedPluginEmbeddable : undefined;
+export const getLinkedPluginEmbeddable = (page: Page, id: string) => {
+  for (let i = 0; i < page.sections.length; i++) {
+    const linkedPluginEmbeddable = page.sections[i].embeddables.find((e: EmbeddableType) => e.embeddable_ref_id === id);
+    if (linkedPluginEmbeddable?.type === "Embeddable::EmbeddablePlugin") {
+      return linkedPluginEmbeddable;
+    }
+  }
+  return undefined;
 };
 
 export const setAppBackgroundImage = (backgroundImageUrl?: string) => {
@@ -151,11 +168,24 @@ export const setAppBackgroundImage = (backgroundImageUrl?: string) => {
   el?.style.setProperty("background-repeat", "no-repeat");
 };
 
-export const setDocumentTitle = (activity: Activity | undefined, pageNumber: number) => {
-  if (activity) {
+export const setDocumentTitle = (params: ISetDocumentTitleParams) => {
+  const { activity, pageNumber, sequence, sequenceActivityNum } = params;
+  const setTabTitle = (title: string, pages: Page[]) => {
     document.title = pageNumber === 0
-      ? activity.name
-      : `Page ${pageNumber} ${activity.pages[pageNumber - 1].name || activity.name}`;
+      ? title
+      : `Page ${pageNumber} ${pages[pageNumber - 1].name || title}`;
+  };
+
+  if (sequence && sequenceActivityNum === 0) {
+    const sequenceTitle = sequence.display_title || sequence.title || "Sequence";
+    setTabTitle(sequenceTitle, []);
+  } else if (activity) {
+    const visiblePages = activity.pages.filter(p => !p.is_hidden);
+    if (queryValue("author-preview")) {
+      setTabTitle(activity.name, activity.pages);
+    } else {
+      setTabTitle(activity.name, visiblePages);
+    }
   }
 };
 
@@ -176,6 +206,15 @@ export const getPagePositionFromQueryValue = (activity: Activity, pageQueryValue
   // page should be in the range [0, <number of pages>].
   // note that page is 1 based for the actual pages in the activity.
   return Math.max(0, Math.min((parseInt(pageQueryValue, 10) || 0), activity.pages.length));
+};
+
+export const getPageIDFromPosition = (activity: Activity, currentPosition: number): number | null => {
+  for (const page of activity.pages) {
+    if (page.position === currentPosition) {
+      return page.id;
+    }
+  }
+  return null;
 };
 
 export const getSequenceActivityFromQueryValue = (sequence: Sequence, sequenceActivityQueryValue = "0"): number => {

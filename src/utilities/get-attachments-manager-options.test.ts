@@ -66,7 +66,8 @@ describe("getAttachmentsManagerOptions", () => {
       basePortalUrl: mockBasePortalUrl,
       rawPortalJWT: mockRawPortalJWT,
       runRemoteEndpoint: mockRunRemoteEndpoint,
-      rawClassInfo: {} as RawClassInfo
+      rawClassInfo: {} as RawClassInfo,
+      collaboratorsDataUrl: "https://example.com/collaborations/1234",
     };
 
     it("returns correct options based on Portal data", async () => {

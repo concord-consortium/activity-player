@@ -12,6 +12,16 @@
     "portal_launch_path": "/users/5465/portal/offerings/2044.run_resource_html",
     "portal_username": "scypress",
     "portal_password": "cypress",
-    "answers_source_key": "cypress-test"
+    "answers_source_key": "cypress-test",
+
+    "portal_collaborator_offering": 2083,
+
+    "portal_collaborator_1_username": "ccollaborator1",
+    "portal_collaborator_1_password": "cypress",
+    "portal_collaborator_1_student_id": 901,
+
+    "portal_collaborator_2_username": "ccollaborator2",
+    "portal_collaborator_2_password": "cypress",
+    "portal_collaborator_2_student_id": 902
   }
 }

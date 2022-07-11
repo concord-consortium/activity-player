@@ -7,15 +7,17 @@
  * and then later can request the current data or to append a listener for that data.
  */
 
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 import { anonymousPortalData } from "./portal-api";
 import { IAnonymousPortalData, IPortalData } from "./portal-types";
-import { refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
-import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState } from "./types";
+import { getLegacyLinkedRefMap, LegacyLinkedRefMap, refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
+import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata, IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, ILegacyLinkedInteractiveState, IApRun, IBaseApRun } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
+import { ILaraData } from "./components/lara-data-context";
+import { getReportUrl } from "./utilities/report-utils";
 
 export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
@@ -26,6 +28,9 @@ const answersPath = (answerId?: string) =>
 
 const learnerPluginStatePath = (docId: string) =>
   `sources/${portalData?.database.sourceKey}/plugin_states/${docId}`;
+
+const apRunsPath = (id?: string) =>
+  `sources/${portalData?.database.sourceKey}/ap_runs${id ? "/" + id : ""}`;
 
 export interface WrappedDBAnswer {
   meta: IExportableAnswerMetadata;
@@ -227,6 +232,11 @@ export const getAnswer = (embeddableRefId: string): Promise<WrappedDBAnswer | nu
     });
 };
 
+// TODO: this could be optimized to a single "in" query.  For now it is a set of queries, one per answer.
+export const getAllAnswersInList = (embeddableRefIds: string[]): Promise<Array<WrappedDBAnswer | null>> => {
+  return Promise.all([...embeddableRefIds.map(getAnswer)]);
+};
+
 export const getAllAnswers = (): Promise<WrappedDBAnswer[]>  => {
   return getAnswerDocs()
     .then((answers: firebase.firestore.DocumentData[]) =>
@@ -261,6 +271,9 @@ export const watchAllAnswers = (callback: (wrappedAnswer: WrappedDBAnswer[]) => 
   });
 };
 
+// use same universal timezone (UTC) as Lara uses for writing created
+export const utcString = () => (new Date()).toUTCString().replace("GMT", "UTC");
+
 export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   if (!portalData) {
     return;
@@ -271,6 +284,7 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   if (portalData.type === "authenticated") {
     const ltiAnswer: LTIRuntimeAnswerMetadata = {
       ...answer,
+      created: utcString(),
       source_key: portalData.database.sourceKey,
       resource_url: portalData.resourceUrl,
       tool_id: portalData.toolId,
@@ -281,10 +295,22 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
       run_key: "",
       remote_endpoint: portalData.runRemoteEndpoint
     };
+
+    // remove any existing collaboration data cached in the answer
+    delete ltiAnswer.collaborators_data_url;
+    delete ltiAnswer.collaboration_owner_id;
+
+    // only add collaboration data if present as it is rarely used
+    if (portalData.collaboratorsDataUrl) {
+      ltiAnswer.collaborators_data_url = portalData.collaboratorsDataUrl;
+      ltiAnswer.collaboration_owner_id = ltiAnswer.platform_user_id;
+    }
+
     answerDocData = ltiAnswer;
   } else {
     const anonymousAnswer: AnonymousRuntimeAnswerMetadata = {
       ...answer,
+      created: utcString(),
       source_key: portalData.database.sourceKey,
       resource_url: portalData.resourceUrl,
       tool_id: portalData.toolId,
@@ -408,4 +434,149 @@ export const setLearnerPluginState = async (pluginId: number, state: string): Pr
   cachedLearnerPluginState[pluginId] = state;
 
   return state;
+};
+
+export const getLegacyLinkedRefIds = (embeddableRefId: string, linkedRefMap: LegacyLinkedRefMap) => {
+  const linkedRefIds: string[] = [];
+  let refId: string | undefined = embeddableRefId;
+  do {
+    // break out if a cycle is found
+    if (linkedRefIds.indexOf(refId) !== -1) {
+      break;
+    }
+    if (refId !== embeddableRefId) {
+      linkedRefIds.push(refId);
+    }
+    refId = linkedRefMap[refId]?.linkedRefId;
+  } while (refId);
+
+  return linkedRefIds;
+};
+
+export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData: ILaraData, callback: (info: ILegacyLinkedInteractiveState) => void) => {
+  // get a map of embeddable refs to linked refs
+  const linkedRefMap = getLegacyLinkedRefMap(laraData);
+
+  // if this ref isn't in the map it doesn't have linked interactives so we are done
+  if (!linkedRefMap[embeddableRefId]) {
+    callback({
+      hasLinkedInteractive: false,
+      linkedState: null,
+      allLinkedStates: []
+    });
+    return;
+  }
+
+  // get all the linked ref states in ancestry order with a guard against a loop in the graph
+  const linkedRefIds = getLegacyLinkedRefIds(embeddableRefId, linkedRefMap);
+
+  getAllAnswersInList(linkedRefIds)
+    .then(answers => {
+      const allLinkedStates = linkedRefIds.map((linkedRefId, index) => {
+        const linkedRef = linkedRefMap[linkedRefId];
+
+        return {
+          pageNumber: linkedRef?.page.position,
+          pageName: linkedRef?.page.name,
+          activityName: linkedRef?.activity.name,
+          interactiveState: answers[index]?.interactiveState || null,
+          updatedAt: answers[index]?.meta.created,  // created is same as updated as it is set on each write
+          externalReportUrl: getReportUrl(linkedRefId) || undefined,
+          interactive: {
+            id: linkedRefId
+          }
+        };
+      });
+      const linkedState = allLinkedStates.find(ls => ls.interactiveState)?.interactiveState || null;
+
+      callback({
+        hasLinkedInteractive: true,
+        linkedState,
+        allLinkedStates: allLinkedStates as any,  // any here as we are missing things Lara sets
+        externalReportUrl: getReportUrl(embeddableRefId) || undefined
+      });
+    });
+};
+
+export const getApRun = async (sequenceActivity?: string|null) => {
+  if (!portalData) {
+    throw new Error("Must set portal data first");
+  }
+  let query: firebase.firestore.Query = app.firestore().collection(apRunsPath());
+
+  if (portalData.type === "authenticated") {     // logged in user
+    query = query
+      .where("platform_id", "==", portalData.platformId)
+      .where("resource_url", "==", portalData.resourceUrl)
+      .where("context_id", "==", portalData.contextId)
+      .where("platform_user_id", "==", portalData.platformUserId.toString());
+  } else {
+    query = query.where("run_key", "==", portalData.runKey);
+  }
+
+  // for sequence runs the sequence_activity will be set but will be null for activity only runs
+  if (sequenceActivity) {
+    query = query.where("sequence_activity", "==", sequenceActivity);
+  }
+
+  // get the most latest run (might be multiple on the first load of a previously run sequence
+  // as this won't have an initial sequenceActivity to query)
+  query = query.orderBy("updated_at", "desc");
+
+  const doc = await query.get();
+  if (doc.empty) {
+    return null;
+  }
+
+  return {id: doc.docs[0].id, data: doc.docs[0].data() as IApRun};
+};
+
+export const createOrUpdateApRun = async ({sequenceActivity, pageId}: {sequenceActivity?: string, pageId: number}) => {
+  if (!portalData) {
+    throw new Error("Must set portal data first");
+  }
+
+  let apRun: IApRun;
+  const existingApRun = await getApRun(sequenceActivity);
+
+  // for sequence runs the sequence_activity will be set but will be null for activity only runs
+  const common: IBaseApRun = {
+    sequence_activity: sequenceActivity || null,
+    page_id: pageId,
+    created_at: existingApRun?.data.created_at || Date.now(),
+    updated_at: Date.now(),
+  };
+
+  if (portalData.type === "authenticated") {
+    apRun = {
+      type: "authenticated",
+      platform_id: portalData.platformId,
+      platform_user_id: portalData.platformUserId,
+      context_id: portalData.contextId,
+      resource_url: portalData.resourceUrl,
+      ...common
+    };
+  } else {
+    apRun = {
+      type: "anonymous",
+      run_key: portalData.runKey,
+      ...common
+    };
+  }
+
+  let firestoreSetPromise: Promise<any>;
+
+  if (existingApRun) {
+    firestoreSetPromise = app.firestore()
+      .doc(apRunsPath(existingApRun.id))
+      .set(apRun as Partial<firebase.firestore.DocumentData>);
+  } else {
+    firestoreSetPromise = app.firestore()
+      .collection(apRunsPath())
+      .add(apRun as Partial<firebase.firestore.DocumentData>);
+  }
+
+  requestTracker.registerRequest(firestoreSetPromise);
+
+  return firestoreSetPromise;
 };

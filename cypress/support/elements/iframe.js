@@ -10,7 +10,7 @@ export const getInIframe = (outerSelector, innerSelector) => {
     // run asynchronously, and create confusing log message.
 
     // Get the body element of the first iframe
-    const $firstIframe = $el.find("iframe")
+    const $firstIframe = $el.find("iframe");
     // This line might throw an exception because the iframe doesn't exist or isn't
     // loaded yet.  But in that case should will automatically retry
     const iframeBody = $firstIframe[0].contentDocument.body;
@@ -24,4 +24,4 @@ export const getInIframe = (outerSelector, innerSelector) => {
   .then(() => {
     return $innerResult;
   });
-}
+};

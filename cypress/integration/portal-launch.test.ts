@@ -4,6 +4,12 @@ import { getInIframe } from "../support/elements/iframe";
 const activityPage = new ActivityPage;
 
 context("Launch AP From the Portal", () => {
+  const portalDomain = Cypress.env("portal_domain");
+  const portalUsername = Cypress.env("portal_username");
+  const portalPassword = Cypress.env("portal_password");
+  const portalLaunchPath = Cypress.env("portal_launch_path");
+  const answersSourceKey = Cypress.env("answers_source_key");
+
   /*
     Because cypress can't jump domains this uses cy.request to log into the portal as a student.
     Then ask the portal to launch an assignment, that already exists in the portal.
@@ -26,12 +32,7 @@ context("Launch AP From the Portal", () => {
       the login will fail in a strange way. It returns success, but doesn't set a valid
       cookie.
     */
-    cy.clearCookies({domain: null});
-
-    const portalDomain = Cypress.env("portal_domain");
-    const portalUsername = Cypress.env("portal_username");
-    const portalPassword = Cypress.env("portal_password");
-    const portalLaunchPath = Cypress.env("portal_launch_path");
+    cy.clearCookies({domain: null} as any);
 
     // Login as a student
     cy.request({
@@ -44,68 +45,114 @@ context("Launch AP From the Portal", () => {
       form: true
     })
     .its("status").should("equal", 200);
-
-    // Run an AP assignment, in order to get the params from the portal
-    cy.request({
-      url: `${portalDomain}${portalLaunchPath}`,
-      method: "GET",
-      followRedirect: false
-    })
-    .then((resp) => {
-      expect(resp.status).to.eq(302);
-      expect(resp.redirectedToUrl).to.match(/^https:\/\/activity-player\.concord\.org/)
-      const url = new URL(resp.redirectedToUrl);
-      var params = new URLSearchParams(url.search);
-      return params.get("token");
-    })
-    .as("portalToken");
-
   });
 
-  // A regular 'function' syntax is used instead '=>' so cypress can control what
-  // 'this' is
-  it("can open a sample activity", function () {
-    const portalDomain = Cypress.env("portal_domain");
-    const answersSourceKey = Cypress.env("answers_source_key");
+  context("non-collaboratively", () => {
+    beforeEach(() => {
+      // Run an AP assignment, in order to get the params from the portal
+      cy.request({
+        url: `${portalDomain}${portalLaunchPath}`,
+        method: "GET",
+        followRedirect: false
+      })
+      .then((resp) => {
+        expect(resp.status).to.eq(302);
+        expect(resp.redirectedToUrl).to.match(/^https:\/\/activity-player\.concord\.org/);
+        const url = new URL(resp.redirectedToUrl!);
+        const params = new URLSearchParams(url.search);
+        return params.get("token");
+      })
+      .as("portalToken");
+    });
 
-    cy.visit(`?activity=sample-activity-1&token=${this.portalToken}` +
-      `&domain=${portalDomain}/&answersSourceKey=${answersSourceKey}`);
-    cy.get("[data-cy=activity-summary]").should("contain", "Single Page Test Activity");
+    // A regular 'function' syntax is used instead '=>' so cypress can control what 'this' is
+    it("can open a sample activity", function () {
+      cy.visit(`?activity=sample-activity-1&token=${this.portalToken}` +
+        `&domain=${portalDomain}/&answersSourceKey=${answersSourceKey}`);
+      cy.get("[data-cy=activity-summary]").should("contain", "Single Page Test Activity");
+    });
+
+    // A regular 'function' syntax is used instead '=>' so cypress can control what 'this' is
+    it.skip("can work with the interactive sharing plugin", function () {
+      cy.visit(`?activity=sample-activity-interactive-sharing&token=${this.portalToken}` +
+        `&domain=${portalDomain}/&answersSourceKey=${answersSourceKey}`);
+
+      activityPage.getHomeButton().eq(1).click();
+      cy.get("[data-cy=activity-summary]").should("contain", "Test Interactive Sharing");
+      activityPage.getNavPage(1).click();
+
+      getInIframe("body", "textarea").clear().type("hello world");
+
+      // HACK: This test assumes the interactive has already been shared
+      // because this AP is "launched" from the portal it will restore its state each time
+      // it is launched. If you are using this with a new portal, class, assignment, or student
+      // then you need to share something first by uncommenting the following 3 lines and
+      // running the test:
+      // cy.get('[data-tip="Share this"]').click();
+      // cy.get("body").should("contain", "Your work  has been shared with your class.");
+      // cy.get(".share-modal--titleBarContents--SharingPluginV1>svg").eq(1).click();  // click the close button
+
+
+      cy.get('[data-tip="Stop sharing"] > svg').click();
+
+      cy.get('[data-tip="Share this"] > svg').click();
+      cy.get("body").should("contain", "Your work  has been shared with your class.");
+      // click the close button
+      cy.get(".share-modal--titleBarContents--SharingPluginV1>svg").eq(1).click();
+
+      cy.get('[data-tip="View class work"]').click();
+      cy.get(".left-nav--students--SharingPluginV1").eq(0).click();
+      cy.get('iframe[src^="https://portal-report.concord.org"]');
+
+    });
   });
 
-  // A regular 'function' syntax is used instead '=>' so cypress can control what
-  // 'this' is
-  it("can work with the interactive sharing plugin", function () {
-    const portalDomain = Cypress.env("portal_domain");
-    const answersSourceKey = Cypress.env("answers_source_key");
+  context.skip("collaboratively", () => {
+    beforeEach(() => {
+      // load the portal homepage to set the csrf token
+      cy.request({
+        url: `${portalDomain}/`,
+        method: "GET"
+      })
+      .its("body")
+      .then((body) => {
+        const $html = Cypress.$(body);
+        // this doesn't work: $html.find('meta[name=csrf-token]').val() so do it manually
+        let csrfToken = null;
+        $html.each((i, el) => {
+          if ((el.tagName === "META") && (el.name === "csrf-token")) {
+            csrfToken = el.content;
+          }
+        });
+        return csrfToken;
+      })
+      .as("csrfToken");
+    });
 
-    cy.visit(`?activity=sample-interactive-sharing&token=${this.portalToken}` +
-      `&domain=${portalDomain}/&answersSourceKey=${answersSourceKey}`);
-    cy.get("[data-cy=activity-summary]").should("contain", "Test Interactive Sharing");
-    activityPage.getNavPage(1).click();
-
-    getInIframe("body", "textarea").clear().type("hello world");
-
-    // HACK: This test assumes the interactive has already been shared
-    // because this AP is "launched" from the portal it will restore its state each time
-    // it is launched. If you are using this with a new portal, class, assignment, or student
-    // then you need to share something first by uncommenting the following 3 lines and
-    // running the test:
-    // cy.get('[data-tip="Share this"]').click();
-    // cy.get('body').should("contain", "Your work  has been shared with your class.");
-    // cy.get('.share-modal--titleBarContents--SharingPluginV1>svg').eq(1).click();  // click the close button
-
-
-    cy.get('[data-tip="Stop sharing"]').click();
-
-    cy.get('[data-tip="Share this"]').click();
-    cy.get('body').should("contain", "Your work  has been shared with your class.");
-    // click the close button
-    cy.get('.share-modal--titleBarContents--SharingPluginV1>svg').eq(1).click();
-
-    cy.get('[data-tip="View class work"]').click();
-    cy.get('.left-nav--students--SharingPluginV1').eq(0).click();
-    cy.get('iframe[src^="https://portal-report.concord.org"]')
-
+    // A regular 'function' syntax is used instead '=>' so cypress can control what 'this' is
+    it("can open a remote activity", function () {
+      cy.request({
+        url: `${portalDomain}/api/v1/collaborations`,
+        method: "POST",
+        headers: {
+          "x-csrf-token": this.csrfToken
+        },
+        body: {
+          offering_id: Cypress.env("portal_collaborator_offering"),
+          students: [
+            {id: Cypress.env("portal_collaborator_1_student_id")},
+            {id: Cypress.env("portal_collaborator_2_student_id")}
+          ]
+        }
+      })
+      .then((resp) => {
+        expect(resp.status).to.eq(201);
+        // strip the hostname and path from external_activity_url to use local version under test
+        const url = new URL(resp.body.external_activity_url).search;
+        return cy.visit(url).then(() => {
+          return cy.get("[data-cy=activity-summary]").should("contain", "Cypress Collaborative AP Test Activity");
+        });
+      });
+    });
   });
 });

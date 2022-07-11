@@ -6,6 +6,21 @@ import { EmbeddableBase } from "../../types";
 import { IEmbeddableContextOptions } from "./plugin-context";
 
 (window as any).fetch = fetch;
+jest.mock("../../firebase-db", () => (
+  {
+    getPortalData: () => (
+      {
+        offering: {
+          id: "offering-123"
+        },
+        portalJWT: {
+          class_info_url: "https://example.com/api/v1/classes/123"
+        },
+        platformUserId: "abc345"
+      }
+    )
+  }
+));
 
 describe("Embeddable runtime context helper", () => {
   beforeEach(() => {

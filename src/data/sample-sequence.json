@@ -5,8 +5,13 @@
   "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/Small_red_damselfly_%28Ceriagrion_tenellum%29_female_form_melanogastrum.jpg/320px-Small_red_damselfly_%28Ceriagrion_tenellum%29_female_form_melanogastrum.jpg",
   "project": {
     "about": null,
+    "collaborators": "",
+    "collaborators_image_url": "",
+    "contact_email": "",
+    "copyright": "",
+    "copyright_image_url": "",
     "footer": "<p>This <a title=\"High-Adventure Science | The Concord Consortium\" href=\"http://has.concord.org\">High-Adventure Science</a> activity was developed under a series of grants from the <a title=\"nsf.gov - National Science Foundation - US National Science Foundation (NSF)\" href=\"http://nsf.gov/\">National Science Foundation</a> (DRL-0929774, DRL-1220756 ) in partnership with the <a title=\"University of California, Santa Cruz\" href=\"http://www.ucsc.edu/\">University of California, Santa Cruz</a> and <a title=\"Teachers Homepage - National Geographic Education\" href=\"http://education.nationalgeographic.com/\">National Geographic Society</a>.</p><p>Copyright 2018 <a title=\"The Concord Consortium | Revolutionary digital learning for science, math and engineering\" href=\"http://concord.org/\">The Concord Consortium</a>. All rights reserved. This is licensed under a Creative Commons Attribution-NonCommercial-NoDerivs 3.0 Unported License. Please provide attribution to The Concord Consortium and the URL http://concord.org.</p><p>Questions? Comments? You can reach us at <a href=\"mailto:HAS@concord.org\">HAS@concord.org</a>.</p><div class=\"has-footer-logobox\"><div id=\"concord-logo-footer\" class=\"has-footer-logo\"><img class=\"logo\" src=\"https://static.concord.org/projects/logos/ap/concord-logo.png\" /></div><div id=\"ngep-logo-footer\" class=\"has-footer-logo\"><img class=\"logo\" src=\"https://static.concord.org/projects/logos/ap/natgeo-logo.png\" /></div><div id=\"ucsc-logo-footer\" class=\"has-footer-logo\"><img class=\"logo\" src=\"https://static.concord.org/projects/logos/ap/ucsc-logo.png\" /></div><div id=\"nsf-logo-footer\" class=\"has-footer-logo\"><img class=\"logo\" src=\"https://static.concord.org/projects/logos/ap/nsf-logo.png\" /></div></div>",
-    "help": null,
+    "funders_image_url": "",
     "logo_ap": "https://static.concord.org/projects/logos/ap/has-logo.png",
     "logo_lara": "https://static.concord.org/projects/logos/lara/has-logo.png",
     "project_key": "has",
@@ -15,6 +20,7 @@
   },
   "theme_id": 4,
   "background_image": "https://authoring.concord.org/assets/has-bg/water_background.jpg",
+  "fixed_width_layout": "1100px",
   "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Small_pincertail_%28Onychogomphus_forcipatus%29_male_Bulgaria.jpg/640px-Small_pincertail_%28Onychogomphus_forcipatus%29_male_Bulgaria.jpg",
   "title": "Test Sequence",
   "activities": [
@@ -27,8 +33,13 @@
       "notes": "",
       "project": {
         "about": "",
+        "collaborators": "",
+        "collaborators_image_url": "",
+        "contact_email": "",
+        "copyright": "",
+        "copyright_image_url": "",
         "footer": "",
-        "help": "",
+        "funders_image_url": "",
         "logo_ap": "",
         "logo_lara": "",
         "project_key": "default",
@@ -40,49 +51,58 @@
       "student_report_enabled": true,
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Pieris_rapae_-_Small_white_12.jpg/640px-Pieris_rapae_-_Small_white_12.jpg",
       "time_to_complete": 10,
-      "version": 2,
+      "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
+      "fixed_width_layout": "1100px",
       "pages": [
         {
+          "additional_sections": {},
+          "embeddable_display_mode": "stacked",
           "is_completion": false,
           "is_hidden": false,
+          "layout": "l-6040",
           "name": null,
           "position": 1,
+          "show_header": true,
+          "show_info_assessment": false,
+          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "sections": [
+          "toggle_info_assessment": false,
+          "embeddables": [
             {
-              "layout": "l-6040",
-              "is_hidden": false,
-              "secondary_column_collapsible": false,
-              "secondary_column_display_mode": "stacked",
-              "embeddables": [
-                {
-                  "column": "full-width",
-                  "content": "<p>Sample activity page</p>",
-                  "is_callout": true,
-                  "is_half_width": false,
-                  "is_hidden": false,
-                  "name": "",
-                  "type": "Embeddable::Xhtml",
-                  "ref_id": "272294-Embeddable::Xhtml"
-                }
-              ]
+              "embeddable": {
+                "content": "<p>Sample activity page</p>",
+                "is_callout": true,
+                "is_full_width": true,
+                "is_hidden": false,
+                "name": "",
+                "type": "Embeddable::Xhtml",
+                "ref_id": "272294-Embeddable::Xhtml"
+              },
+              "section": "header_block"
             }
           ],
           "id": 1000
         },
         {
+          "additional_sections": {},
+          "embeddable_display_mode": "stacked",
           "is_completion": true,
           "is_hidden": false,
+          "layout": "l-6040",
           "name": null,
-          "position": 3,
+          "position": 2,
+          "show_header": false,
+          "show_info_assessment": false,
+          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "sections": [],
+          "toggle_info_assessment": false,
+          "embeddables": [],
           "id": 3000
         }
       ],
@@ -100,8 +120,13 @@
       "notes": "",
       "project": {
         "about": "",
+        "collaborators": "",
+        "collaborators_image_url": "",
+        "contact_email": "",
+        "copyright": "",
+        "copyright_image_url": "",
         "footer": "",
-        "help": "",
+        "funders_image_url": "",
         "logo_ap": "",
         "logo_lara": "",
         "project_key": "default",
@@ -113,36 +138,38 @@
       "student_report_enabled": true,
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Small_pearl-bordered_fritillary_%28Boloria_selene%29.jpg/640px-Small_pearl-bordered_fritillary_%28Boloria_selene%29.jpg",
       "time_to_complete": 10,
-      "version": 2,
+      "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
+      "fixed_width_layout": "1100px",
       "pages": [
         {
+          "additional_sections": {},
+          "embeddable_display_mode": "stacked",
           "is_completion": false,
           "is_hidden": false,
+          "layout": "l-6040",
           "name": null,
           "position": 1,
+          "show_header": true,
+          "show_info_assessment": false,
+          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "sections": [
+          "toggle_info_assessment": false,
+          "embeddables": [
             {
-              "secondary_column_display_mode": "stacked",
-              "is_hidden": false,
-              "layout": "l-6040",
-              "secondary_column_collapsible": false,
-              "embeddables": [
-                {
-                  "column": null,
-                  "content": "<p>Sample activity page</p>",
-                  "is_callout": true,
-                  "is_half_width": true,
-                  "is_hidden": false,
-                  "name": "",
-                  "type": "Embeddable::Xhtml",
-                  "ref_id": "272295-Embeddable::Xhtml"
-                }
-              ]
+              "embeddable": {
+                "content": "<p>Sample activity page</p>",
+                "is_callout": true,
+                "is_full_width": true,
+                "is_hidden": false,
+                "name": "",
+                "type": "Embeddable::Xhtml",
+                "ref_id": "272295-Embeddable::Xhtml"
+              },
+              "section": "header_block"
             }
           ],
           "id": 1000
@@ -162,8 +189,13 @@
       "notes": "",
       "project": {
         "about": "",
+        "collaborators": "",
+        "collaborators_image_url": "",
+        "contact_email": "",
+        "copyright": "",
+        "copyright_image_url": "",
         "footer": "",
-        "help": "",
+        "funders_image_url": "",
         "logo_ap": "",
         "logo_lara": "",
         "project_key": "default",
@@ -175,36 +207,38 @@
       "student_report_enabled": true,
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Small_heath_%28Coenonympha_pamphilus%29_P.jpg/480px-Small_heath_%28Coenonympha_pamphilus%29_P.jpg",
       "time_to_complete": 10,
-      "version": 2,
+      "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
+      "fixed_width_layout": "1100px",
       "pages": [
         {
+          "additional_sections": {},
+          "embeddable_display_mode": "stacked",
           "is_completion": false,
           "is_hidden": false,
+          "layout": "l-6040",
           "name": null,
           "position": 1,
+          "show_header": true,
+          "show_info_assessment": false,
+          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "sections": [
+          "toggle_info_assessment": false,
+          "embeddables": [
             {
-              "secondary_column_display_mode": "stacked",
-              "is_hidden": false,
-              "layout": "l-6040",
-              "secondary_column_collapsible": false,
-              "embeddables": [
-                {
-                  "column": null,
-                  "content": "<p>Sample activity page</p>",
-                  "is_callout": true,
-                  "is_half_width": true,
-                  "is_hidden": false,
-                  "name": "",
-                  "type": "Embeddable::Xhtml",
-                  "ref_id": "272296-Embeddable::Xhtml"
-                }
-              ]
+              "embeddable": {
+                "content": "<p>Sample activity page</p>",
+                "is_callout": true,
+                "is_full_width": true,
+                "is_hidden": false,
+                "name": "",
+                "type": "Embeddable::Xhtml",
+                "ref_id": "272296-Embeddable::Xhtml"
+              },
+              "section": "header_block"
             }
           ],
           "id": 1000
@@ -224,8 +258,13 @@
       "notes": "",
       "project": {
         "about": "",
+        "collaborators": "",
+        "collaborators_image_url": "",
+        "contact_email": "",
+        "copyright": "",
+        "copyright_image_url": "",
         "footer": "",
-        "help": "",
+        "funders_image_url": "",
         "logo_ap": "",
         "logo_lara": "",
         "project_key": "default",
@@ -237,57 +276,58 @@
       "student_report_enabled": true,
       "thumbnail_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Spider_with_prey_%288404951545%29.jpg/319px-Spider_with_prey_%288404951545%29.jpg",
       "time_to_complete": 10,
-      "version": 2,
+      "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
+      "fixed_width_layout": "1100px",
       "pages": [
         {
+          "additional_sections": {},
+          "embeddable_display_mode": "stacked",
           "is_completion": false,
           "is_hidden": false,
+          "layout": "l-6040",
           "name": null,
           "position": 1,
+          "show_header": true,
+          "show_info_assessment": false,
+          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "sections": [
+          "toggle_info_assessment": false,
+          "embeddables": [
             {
-              "secondary_column_display_mode": "stacked",
-              "is_hidden": false,
-              "layout": "l-6040",
-              "secondary_column_collapsible": false,
-              "embeddables": [
-                {
-                  "column": null,
-                  "content": "<p>Sample activity page</p>",
-                  "is_callout": true,
-                  "is_half_width": true,
-                  "is_hidden": false,
-                  "name": "",
-                  "type": "Embeddable::Xhtml",
-                  "ref_id": "272297-Embeddable::Xhtml"
-                }
-              ]
+              "embeddable": {
+                "content": "<p>Sample activity page</p>",
+                "is_callout": true,
+                "is_full_width": true,
+                "is_hidden": false,
+                "name": "",
+                "type": "Embeddable::Xhtml",
+                "ref_id": "272297-Embeddable::Xhtml"
+              },
+              "section": "header_block"
             }
           ],
           "id": 1000
         },
         {
+          "additional_sections": {},
+          "embeddable_display_mode": "stacked",
           "is_completion": true,
           "is_hidden": false,
+          "layout": "l-6040",
           "name": null,
-          "position": 3,
+          "position": 2,
+          "show_header": false,
+          "show_info_assessment": false,
+          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "sections": [
-            {
-              "secondary_column_display_mode": "stacked",
-              "is_hidden": false,
-              "layout": "l-6040",
-              "secondary_column_collapsible": false,
-              "embeddables": []
-            }
-          ],
+          "toggle_info_assessment": false,
+          "embeddables": [],
           "id": 3000
         }
       ],
@@ -305,8 +345,13 @@
       "notes": "",
       "project": {
         "about": "",
+        "collaborators": "",
+        "collaborators_image_url": "",
+        "contact_email": "",
+        "copyright": "",
+        "copyright_image_url": "",
         "footer": "",
-        "help": "",
+        "funders_image_url": "",
         "logo_ap": "",
         "logo_lara": "",
         "project_key": "default",
@@ -318,57 +363,58 @@
       "student_report_enabled": true,
       "thumbnail_url": "",
       "time_to_complete": 10,
-      "version": 2,
+      "version": 1,
       "theme_name": "HAS National Geographic: Water",
       "background_image": null,
+      "fixed_width_layout": "1100px",
       "pages": [
         {
+          "additional_sections": {},
+          "embeddable_display_mode": "stacked",
           "is_completion": false,
           "is_hidden": false,
+          "layout": "l-6040",
           "name": null,
           "position": 1,
+          "show_header": true,
+          "show_info_assessment": false,
+          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "sections": [
+          "toggle_info_assessment": false,
+          "embeddables": [
             {
-              "secondary_column_display_mode": "stacked",
-              "is_hidden": false,
-              "layout": "l-6040",
-              "secondary_column_collapsible": false,
-              "embeddables": [
-                {
-                  "column": null,
-                  "content": "<p>Sample activity page</p>",
-                  "is_callout": true,
-                  "is_half_width": true,
-                  "is_hidden": false,
-                  "name": "",
-                  "type": "Embeddable::Xhtml",
-                  "ref_id": "272298-Embeddable::Xhtml"
-                }
-              ]
+              "embeddable": {
+                "content": "<p>Sample activity page</p>",
+                "is_callout": true,
+                "is_full_width": true,
+                "is_hidden": false,
+                "name": "",
+                "type": "Embeddable::Xhtml",
+                "ref_id": "272298-Embeddable::Xhtml"
+              },
+              "section": "header_block"
             }
           ],
           "id": 1000
         },
         {
+          "additional_sections": {},
+          "embeddable_display_mode": "stacked",
           "is_completion": true,
           "is_hidden": false,
+          "layout": "l-6040",
           "name": null,
           "position": 3,
+          "show_header": false,
+          "show_info_assessment": false,
+          "show_interactive": false,
           "show_sidebar": false,
           "sidebar": null,
           "sidebar_title": "Did you know?",
-          "sections": [
-            {
-              "secondary_column_display_mode": "stacked",
-              "is_hidden": false,
-              "layout": "l-6040",
-              "secondary_column_collapsible": false,
-              "embeddables": []
-            }
-          ],
+          "toggle_info_assessment": false,
+          "embeddables": [],
           "id": 3000
         }
       ],

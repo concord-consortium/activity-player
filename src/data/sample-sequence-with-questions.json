@@ -5,8 +5,13 @@
   "logo": "",
   "project": {
     "about": "",
+    "collaborators": "",
+    "collaborators_image_url": "",
+    "contact_email": "",
+    "copyright": "",
+    "copyright_image_url": "",
     "footer": "",
-    "help": "",
+    "funders_image_url": "",
     "logo_ap": "",
     "logo_lara": "",
     "project_key": "default",
@@ -15,6 +20,7 @@
   },
   "theme_id": null,
   "background_image": null,
+  "fixed_width_layout": "1100px",
   "thumbnail_url": "",
   "title": "Sample Sequence Activity Player",
   "activities": [
@@ -27,8 +33,13 @@
       "notes": "",
       "project": {
         "about": "",
+        "collaborators": "",
+        "collaborators_image_url": "",
+        "contact_email": "",
+        "copyright": "",
+        "copyright_image_url": "",
         "footer": "",
-        "help": "",
+        "funders_image_url": "",
         "logo_ap": "",
         "logo_lara": "",
         "project_key": "default",
@@ -43,6 +54,7 @@
       "version": 1,
       "theme_name": null,
       "background_image": null,
+      "fixed_width_layout": "1100px",
       "pages": [
         {
           "additional_sections": {},
@@ -533,8 +545,13 @@
       "notes": "",
       "project": {
         "about": "",
+        "collaborators": "",
+        "collaborators_image_url": "",
+        "contact_email": "",
+        "copyright": "",
+        "copyright_image_url": "",
         "footer": "",
-        "help": "",
+        "funders_image_url": "",
         "logo_ap": "",
         "logo_lara": "",
         "project_key": "default",
@@ -549,6 +566,7 @@
       "version": 1,
       "theme_name": null,
       "background_image": null,
+      "fixed_width_layout": "1100px",
       "pages": [
         {
           "additional_sections": null,

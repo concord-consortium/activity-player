@@ -1,5 +1,4 @@
 @import "../vars.scss";
-$content-inner-width: 900px;
 
 .section {
   display: grid;
@@ -13,22 +12,20 @@ $content-inner-width: 900px;
   }
 
   &.full-width {
-    width: $content-inner-width;
     .embeddable.full-width {
       grid-column: span 10;
       &.half-width {
         grid-column: span 5;
       }
+      &.hidden {
+        display: none;
+      }
     }
   }
 
   &.l_6040 {
-    width: $content-inner-width;
     .column.primary {
-      position: sticky;
       grid-column: span 6;
-      overflow: hidden;
-      top: 0;
       &.expand {
         grid-column: span 9;
       }
@@ -45,13 +42,10 @@ $content-inner-width: 900px;
     }
   }
 
-  &.r_6040 {
-    width: $content-inner-width;
+  &.r_4060 {
+    grid-template-columns: minmax(45px, auto) repeat(9, 1fr);
     .column.primary {
-      position: sticky;
       grid-column: span 6;
-      overflow: hidden;
-      top: 0;
       &.expand {
         grid-column: span 9;
       }
@@ -69,12 +63,8 @@ $content-inner-width: 900px;
   }
 
   &.l_7030 {
-    width: $content-inner-width;
     .column.primary {
-      position: sticky;
       grid-column: span 7;
-      overflow: hidden;
-      top: 0;
       &.expand {
         grid-column: span 9;
       }
@@ -92,12 +82,9 @@ $content-inner-width: 900px;
   }
 
   &.r_3070 {
-    width: $content-inner-width;
+    grid-template-columns: minmax(45px, auto) repeat(9, 1fr);
     .column.primary {
-      position: sticky;
       grid-column: span 7;
-      overflow: hidden;
-      top: 0;
       &.expand {
         grid-column: span 9;
       }
@@ -116,28 +103,46 @@ $content-inner-width: 900px;
 
   &.responsive {
     display: flex;
-    flex-direction: row;
     .embeddable.full-width {
       width: 100%;
       &.half-width {
         width: 50%;
       }
+      &.hidden {
+        display: none;
+      }
+    }
+
+    .embeddable.full-width > div {
+      margin-right: 20px;
     }
 
     .column.primary {
-      position: sticky;
       right: 0;
       width: 100%;
-      overflow: hidden;
+      margin-right: 20px;
     }
     .column.secondary {
       min-width: 365px;
+      max-width: 365px;
       left: 0;
       &.stacked {
         flex-direction: column;
       }
       &.collapsed {
         min-width: 45px;
+      }
+    }
+  }
+
+  .column.primary {
+    position: relative;
+    height: auto;
+    .embeddableWrapper {
+      top: 10px;
+      align-self: flex-start;
+      &.pinned {
+        position: sticky;
       }
     }
   }
@@ -154,6 +159,9 @@ $content-inner-width: 900px;
     color: $cc-charcoal-light2;
     transition-duration: .25s;
     cursor: pointer;
+    position: sticky;
+    top: 0;
+    z-index: 3;
 
     &.right {
       justify-content: flex-start;
@@ -165,6 +173,10 @@ $content-inner-width: 900px;
       padding: 5px;
       flex-direction: column;
       justify-content: flex-start;
+      div {
+        transform: rotate(-90deg);
+        top: 20px;
+      }
     }
 
     div {
@@ -172,17 +184,6 @@ $content-inner-width: 900px;
       position: relative;
       white-space: nowrap;
       width: 30px;
-    }
-
-    &.collapsed {
-      height: 350px;
-      width: 45px;
-      padding: 5px;
-
-      div {
-        transform: rotate(-90deg);
-        top: 20px;
-      }
     }
   }
 }

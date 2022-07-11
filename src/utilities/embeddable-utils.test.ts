@@ -1,13 +1,23 @@
 import { IRuntimeMetadata, IRuntimeMultipleChoiceMetadata } from "@concord-consortium/lara-interactive-api";
-import { answersQuestionIdToRefId, refIdToAnswersQuestionId, getAnswerWithMetadata } from "./embeddable-utils";
+import { answersQuestionIdToRefId, refIdToAnswersQuestionId, getAnswerWithMetadata, getLegacyLinkedRefMap, hasLegacyLinkedInteractive, legacyLinkedRefMapCache, getInteractiveInfo, answerHasResponse } from "./embeddable-utils";
 import { DefaultManagedInteractive } from "../test-utils/model-for-tests";
 import {
   IManagedInteractive,
   IExportableOpenResponseAnswerMetadata,
   IExportableInteractiveAnswerMetadata,
   IExportableAnswerMetadata,
-  IExportableImageQuestionAnswerMetadata
+  IExportableImageQuestionAnswerMetadata,
+  Activity,
+  Sequence
 } from "../types";
+
+import _activity1 from "../data/version-2/sample-new-sections-activity-1.json";
+import _legacyLinkedInteractiveActivity from "../data/version-2/sample-new-sections-legacy-linked-interactives.json";
+import _sequenceWithQuestions from "../data/version-2/sample-new-sections-sequence-with-questions.json";
+import { WrappedDBAnswer } from "../firebase-db";
+const activity1 = _activity1 as Activity;
+const legacyLinkedInteractiveActivity = _legacyLinkedInteractiveActivity as Activity;
+const sequenceWithQuestions = _sequenceWithQuestions as Sequence;
 
 describe("Embeddable utility functions", () => {
   it("correctly converts from answer's question-id to ref_id", () => {
@@ -53,6 +63,7 @@ describe("Embeddable utility functions", () => {
         mode: "report",
         authoredState: `{"version":1,"questionType":"open_response","prompt":"<p>Write something:</p>"}`,
         interactiveState: `{"answerType":"open_response_answer","answerText":"test"}`,
+        interactive: {id: "managed_interactive_123", name: ""},
         version: 1
       })
     });
@@ -93,6 +104,7 @@ describe("Embeddable utility functions", () => {
         mode: "report",
         authoredState: `{"version":1,"questionType":"image_question","prompt":"<p>Write something:</p>"}`,
         interactiveState: `{"answerType":"image_question_answer","answerText":"test","answerImageUrl":"http://test.snapshot.com"}`,
+        interactive: {id: "managed_interactive_123", name: ""},
         version: 1
       })
     });
@@ -128,6 +140,7 @@ describe("Embeddable utility functions", () => {
         mode: "report",
         authoredState,
         interactiveState: `{"answerType":"multiple_choice_answer","selectedChoiceIds":["1"]}`,
+        interactive: {id: "managed_interactive_123", name: ""},
         version: 1
       }),
       answer: {"choice_ids": ["1"]},
@@ -152,6 +165,7 @@ describe("Embeddable utility functions", () => {
       mode: "report",
       authoredState: "",
       interactiveState: JSON.stringify(interactiveState),
+      interactive: {id: "managed_interactive_123", name: ""},
       version: 1
     });
 
@@ -217,6 +231,7 @@ describe("Embeddable utility functions", () => {
       mode: "report",
       authoredState: `{"myConfiguration": "something"}`,
       interactiveState: `{"myState":"<state />"}`,
+      interactive: {id: "managed_interactive_123", name: ""},
       version: 1
     });
 
@@ -255,6 +270,7 @@ describe("Embeddable utility functions", () => {
       mode: "report",
       authoredState: `{"version":1,"questionType":"my_question_type"}`,
       interactiveState: `{"answerType":"my_question_type_answer","myState":"<state />"}`,
+      interactive: {id: "managed_interactive_123", name: ""},
       version: 1
     });
 
@@ -323,5 +339,153 @@ describe("Embeddable utility functions", () => {
     const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable, originalAnswer) as IExportableOpenResponseAnswerMetadata;
 
     expect(exportableAnswer.id).toBe("open_response_answer_123");
+  });
+
+  describe("#getLegacyLinkedRefMap", () => {
+    it("can generate and cache an empty legacy linked ref map without data", () => {
+      const laraData = {};
+      expect(getLegacyLinkedRefMap(laraData)).toEqual({});
+      expect(legacyLinkedRefMapCache.get(laraData)).toEqual({});
+    });
+
+    it("can generate and cache a legacy linked ref map with an activity with no linked refs", () => {
+      const laraData = {activity: activity1};
+      const map = getLegacyLinkedRefMap(laraData);
+      expect(legacyLinkedRefMapCache.get(laraData)).toEqual(map);
+      expect(Object.keys(map)).toEqual(["328-ManagedInteractive", "327-ManagedInteractive"]);
+      expect(map["328-ManagedInteractive"]).not.toBeUndefined();
+      expect(map["327-ManagedInteractive"]).not.toBeUndefined();
+      expect(map["328-ManagedInteractive"]?.linkedRefId).toBeUndefined();
+      expect(map["327-ManagedInteractive"]?.linkedRefId).toBeUndefined();
+    });
+
+    it("can generate and cache a legacy linked ref map with an activity with linked refs", () => {
+      const laraData = {activity: legacyLinkedInteractiveActivity};
+      const map = getLegacyLinkedRefMap(laraData);
+      expect(legacyLinkedRefMapCache.get(laraData)).toEqual(map);
+      expect(Object.keys(map)).toEqual([
+        "319-ManagedInteractive","210507-MwInteractive","312-ManagedInteractive","313-ManagedInteractive",
+        "352-ManagedInteractive","210508-MwInteractive","314-ManagedInteractive","315-ManagedInteractive",
+        "331-ManagedInteractive","344-ManagedInteractive","340-ManagedInteractive","341-ManagedInteractive",
+        "342-ManagedInteractive","339-ManagedInteractive","336-ManagedInteractive","337-ManagedInteractive",
+        "316-ManagedInteractive","210510-MwInteractive","609-ManagedInteractive","640-ManagedInteractive",
+        "366-ManagedInteractive","384-ManagedInteractive","367-ManagedInteractive","368-ManagedInteractive",
+        "369-ManagedInteractive","370-ManagedInteractive","382-ManagedInteractive","383-ManagedInteractive",
+        "371-ManagedInteractive","387-ManagedInteractive","372-ManagedInteractive","373-ManagedInteractive",
+        "374-ManagedInteractive","375-ManagedInteractive","385-ManagedInteractive","386-ManagedInteractive"
+      ]);
+      expect(map["313-ManagedInteractive"]?.linkedRefId).toEqual("312-ManagedInteractive");
+      expect(map["352-ManagedInteractive"]?.linkedRefId).toEqual("313-ManagedInteractive");
+    });
+  });
+
+  describe("#hasLegacyLinkedInteractive", () => {
+    it("returns false when an embeddable doesn't have a legacy linked interactive", () => {
+      const embeddable = legacyLinkedInteractiveActivity.pages[0].sections[1].embeddables[1];
+      const activity = legacyLinkedInteractiveActivity;
+      expect(embeddable.ref_id).toEqual("312-ManagedInteractive");
+      expect(hasLegacyLinkedInteractive(embeddable, {activity})).toEqual(false);
+    });
+
+    it("returns true when an embeddable has a legacy linked interactive", () => {
+      const embeddable = legacyLinkedInteractiveActivity.pages[0].sections[1].embeddables[2];
+      const activity = legacyLinkedInteractiveActivity;
+      expect(embeddable.ref_id).toEqual("313-ManagedInteractive");
+      expect(hasLegacyLinkedInteractive(embeddable, {activity})).toEqual(true);
+    });
+  });
+
+  describe("#getInteractiveInfo", () => {
+    it("returns undefined when the embeddableRefId isn't found", () => {
+      const laraData = {activity: activity1};
+      expect(getInteractiveInfo(laraData, "nonExistantEmbeddableRefId")).toBeUndefined();
+    });
+
+    it("returns the correct info for any embeddableRefId in a sequence", () => {
+      const laraData = {sequence: sequenceWithQuestions};
+      expect(getInteractiveInfo(laraData, "650-ManagedInteractive")).toEqual({
+        activityName: "Question-Interactives Activity Player",
+        pageName: "Header block text and interactives",
+        pageNumber: 1,
+          });
+    });
+
+    it("returns the correct info for any embeddableRefId without a page name in an activity", () => {
+      const laraData = {activity: activity1};
+      expect(getInteractiveInfo(laraData, "328-ManagedInteractive")).toEqual({
+        activityName: "Single Page Test Activity",
+        pageName: undefined,
+        pageNumber: 1,
+      });
+    });
+
+    it("returns the correct info for any embeddableRefId with a page name in an activity", () => {
+      const laraData = {activity: legacyLinkedInteractiveActivity};
+      expect(getInteractiveInfo(laraData, "312-ManagedInteractive")).toEqual({
+        activityName: "Sample Layout Types",
+        pageName: "Full Width",
+        pageNumber: 1,
+      });
+    });
+  });
+
+  describe("#answerHasResponse", () => {
+    let answer: WrappedDBAnswer;
+    let authoredState: any;
+
+    beforeEach(() => {
+      answer = {
+        meta: {
+          question_id: "1",
+          question_type: "test",
+          id: "2",
+          type: "interactive_state",
+          answer: "{}",
+          submitted: true,
+          report_state: "{}",
+          attachments: {}
+        },
+        interactiveState: {}
+      };
+      authoredState = {};
+    });
+
+    it("returns false for empty interactive state answers", () => {
+      expect(answerHasResponse(answer, authoredState)).toEqual(false);
+    });
+
+    it("returns false for required unsubmitted required answers", () => {
+      answer.meta.submitted = false;
+      authoredState = { required: true };
+      expect(answerHasResponse(answer, authoredState)).toEqual(false);
+    });
+
+    it("returns true for interactive state answers with attachments", () => {
+      answer.meta.attachments = {
+        "test": {
+          contentType: "text/plain",
+          publicPath: "test",
+          folder: {
+            id: "10",
+            ownerId: "100"
+          }
+        }
+      };
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
+    });
+
+    it("returns true for answers that are not interactive state answers", () => {
+      answer.meta.type = "open_response_answer";
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
+      answer.meta.type = "image_question_answer";
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
+      answer.meta.type = "multiple_choice_answer";
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
+    });
+
+    it("returns true for interactive state answers with interactive state", () => {
+      answer.interactiveState = { foo: true };
+      expect(answerHasResponse(answer, authoredState)).toEqual(true);
+    });
   });
 });

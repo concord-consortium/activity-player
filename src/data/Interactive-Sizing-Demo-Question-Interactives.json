@@ -1,0 +1,1508 @@
+{
+  "background_image": null,
+  "description": "\u003Cp\u003EA test activity for the responsive layout.\u003C/p\u003E",
+  "editor_mode": 0,
+  "id": 9620,
+  "layout": 0,
+  "name": "Interactive Sizing Demo",
+  "notes": "",
+  "related": "",
+  "runtime": "LARA",
+  "show_submit_button": false,
+  "student_report_enabled": true,
+  "thumbnail_url": "",
+  "time_to_complete": null,
+  "version": 1,
+  "theme_name": "HAS National Geographic",
+  "project": null,
+  "pages": [
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 126359,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Summary Table",
+      "position": 1,
+      "show_header": true,
+      "show_info_assessment": false,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis table provides a summary of the behaviors demonstrated on the following pages.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "131008-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 280,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vSBeTkRp6sTL3aNlad1f8AyjbCLXsXUhO5BmBHZdqO4kV4790lEnMikrVTRhaCRUd-xGVslFfgDGIUu/pubhtml?gid=0\u0026amp;single=true\u0026amp;widget=true\u0026amp;headers=false",
+            "type": "MwInteractive",
+            "ref_id": "85318-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "id": 124107,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Responsive: Use All Available Space",
+      "position": 2,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThe page layout is set to \"Responsive\".\u0026nbsp;The LARA Interactive aspect ratio is set to \"use all available space\".\u003C/p\u003E\n\u003Cp\u003EWith these settings the interactive will be sized as large as possible but still the whole interactive can be seen. The interactive should always be pinned. This demo interactive reports its actual width and height along with its actual aspect ratio.\u003C/p\u003E\n\u003Cp\u003EYou should resize your window to see how the interactive changes its size depending on the size of the window.\u003C/p\u003E\n\u003Cp\u003EWith the \"use al available space\" setting, if the interactive requests its own aspect ratio, it will be ignored.\u003C/p\u003E\n\u003Cp\u003EThe interactive can also request to be a specific height. In this case the interactive width will be as wide as possible and the height will be the requested height.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "129119-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E\r\n\u003Cp\u003ECosmos dream of the mind's eye as a patch of light Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium intelligent beings across the centuries. Venture at the edge of forever totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Sea of Tranquility explorations venture. Ut enim ad minima veniam two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit courage of our questions inconspicuous motes of rock and gas courage of our questions.\u003C/p\u003E\r\n\u003Cp\u003EAs a patch of light a very small stage in a vast cosmic arena totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo two ghostly white figures in coveralls and helmets are softly dancing prime number something incredible is waiting to be known. White dwarf Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit the carbon in our apple pies the carbon in our apple pies across the centuries star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003ENemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit how far away decipherment shores of the cosmic ocean a billion trillion Drake Equation. Another world concept of the number one Sea of Tranquility nisi ut aliquid ex ea commodi consequatur the carbon in our apple pies the carbon in our apple pies. Adipisci velit two ghostly white figures in coveralls and helmets are softly dancing consectetur nisi ut aliquid ex ea commodi consequatur two ghostly white figures in coveralls and helmets are softly dancing dream of the mind's eye?\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143331-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MAX",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "83846-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "id": 124108,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Responsive: Manual Aspect Ratio",
+      "position": 3,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThe page layout is \"Responsive\". The interactive on this page has an aspect ratio of \"Manually set the aspect ratio\".\u0026nbsp; And the value is set to 576x435\u003C/p\u003E\n\u003Cp\u003EWith these settings LARA will always keep the interactive aspect ratio (width/height) the same. If the page is wide and short, like the screen of a chromebook, then the interactive will be taller than the available space for it. When this happens the interactive will scroll with the page.\u003C/p\u003E\n\u003Cp\u003EIf the interactive height is shorter than the available space then the interactive will be 'pinned' and will stay fixed as the questions scroll by it.\u003C/p\u003E\n\u003Cp\u003ETry making your window tall and narrow and then scroll the page, you should see the interactive stay in a fixed place. Now make your window wide the interactive will jump to the top of the page and scroll by as you scroll the page.\u003C/p\u003E\n\u003Cp\u003EThe interactive can also request to be a specific height. In this case the interactive width will be as wide as possible and the height will be the requested height.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "129120-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E\r\n\u003Cp\u003ECosmos dream of the mind's eye as a patch of light Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium intelligent beings across the centuries. Venture at the edge of forever totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Sea of Tranquility explorations venture. Ut enim ad minima veniam two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit courage of our questions inconspicuous motes of rock and gas courage of our questions.\u003C/p\u003E\r\n\u003Cp\u003EAs a patch of light a very small stage in a vast cosmic arena totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo two ghostly white figures in coveralls and helmets are softly dancing prime number something incredible is waiting to be known. White dwarf Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit the carbon in our apple pies the carbon in our apple pies across the centuries star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003ENemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit how far away decipherment shores of the cosmic ocean a billion trillion Drake Equation. Another world concept of the number one Sea of Tranquility nisi ut aliquid ex ea commodi consequatur the carbon in our apple pies the carbon in our apple pies. Adipisci velit two ghostly white figures in coveralls and helmets are softly dancing consectetur nisi ut aliquid ex ea commodi consequatur two ghostly white figures in coveralls and helmets are softly dancing dream of the mind's eye?\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143332-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "83847-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "id": 124109,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Responsive: Default Aspect Ratio",
+      "position": 4,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThe page layout is \"Responsive\". The interactive on this page has an aspect ratio setting of \"Default aspect ratio, ...\".\u0026nbsp;\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003EWith this setting LARA will always keep the interactive aspect ratio (width/height) the same. The default aspect ratio is about 1.32. Try making your window narrow and tall, and short and wide to see how the interactive size changes.\u003C/p\u003E\n\u003Cp\u003EWith this setting LARA will limit both the width and height of the interactive so it is never bigger than what will fit in the visible interactive area of the page.\u0026nbsp; In otherwords LARA will \u003Cstrong\u003Emake sure the interactive is small enough to be fully visible\u003C/strong\u003E. This is similiar to what the \"use all available space\" aspect ratio does, but in this case the aspect ratio of the interactive is preserved. The height limiting in this mode is different than than what happens in the \"manual...\" aspect ratio mode.\u003C/p\u003E\n\u003Cp\u003ESo if the window is short and wide, then LARA will limit the width of the interactive and you will see a white area to the right of the interactive. If the window is realy tall, then LARA will limit the height of the interactive so you will see a white area below the interactive.\u003C/p\u003E\n\u003Cp\u003EBecause of these height and width limits, the interactive will be pinned when scrolling the page.\u003C/p\u003E\n\u003Cp\u003EThe interactive can also request to be a specific height. In this case the interactive width will be as wide as possible and the height will be the requested height.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "129121-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E\r\n\u003Cp\u003ECosmos dream of the mind's eye as a patch of light Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium intelligent beings across the centuries. Venture at the edge of forever totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Sea of Tranquility explorations venture. Ut enim ad minima veniam two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit courage of our questions inconspicuous motes of rock and gas courage of our questions.\u003C/p\u003E\r\n\u003Cp\u003EAs a patch of light a very small stage in a vast cosmic arena totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo two ghostly white figures in coveralls and helmets are softly dancing prime number something incredible is waiting to be known. White dwarf Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit the carbon in our apple pies the carbon in our apple pies across the centuries star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003ENemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit how far away decipherment shores of the cosmic ocean a billion trillion Drake Equation. Another world concept of the number one Sea of Tranquility nisi ut aliquid ex ea commodi consequatur the carbon in our apple pies the carbon in our apple pies. Adipisci velit two ghostly white figures in coveralls and helmets are softly dancing consectetur nisi ut aliquid ex ea commodi consequatur two ghostly white figures in coveralls and helmets are softly dancing dream of the mind's eye?\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143334-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "83848-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 126068,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Full Width: Default aspect ratio, Interactive Box",
+      "position": 5,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThe page layout is \"Full Width\".\u003C/p\u003E\n\u003Cp\u003EThe interactive on this page has an aspect ratio setting of \"Default aspect ratio, ...\".\u0026nbsp; \u0026nbsp; And the interactive has been added to the Interactive Box section of the page.\u003C/p\u003E\n\u003Cp\u003EWith this setting LARA will always keep the interactive aspect ratio (width/height) the same. The default aspect ratio is about 1.32.\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003EJust like in the other layouts, when the interactive aspect ratio setting is \"Default aspect ratio, ...\", LARA will limit the height of the interactive to the height of the window.\u0026nbsp; This way a student can see the whole interactive at the same time.\u0026nbsp; Most LARA themes have a full width size of 936 pixels.\u0026nbsp; So if the window is tall enough then the interactive will have a size of 936px by 707px.\u0026nbsp; If the window has less than 707px then the height of the interactive will be reduced to match the window height and the width will be adjusted so the aspect ratio stays the same.\u0026nbsp;These calcuations now happen as the window is resized so you can experiment with them by resizing your browser window.\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003EThere is no pinning of interactives in Full Width layout. This is a difference from when the \"Default aspect ratio, ...\" interactive option is used in a Responsive layout or 60-40 page.\u003C/p\u003E\n\u003Cp\u003EThe interactive can also request to be a specific height. In this case the interactive width will be as wide as possible and the height will be the requested height. So this will override the window height limitation above.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "130745-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "id": 6950,
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"\",\"teacherTip\":\"Some long teacher tip. \\n\\nAbove the interactive. I think this will cause the interactive to shrink if the window height is small enough. But this has to be a lot of text so it takes up a lot of \\n\\ns \\n\\np \\n\\na \\n\\nc\\n\\ne\",\"teacherTipImageOverlay\":\"\",\"location\":\"top\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "This plugin provides Teacher Edition components",
+                "version": 3,
+                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+              }
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "6770-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "85125-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143335-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "85125-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 126069,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Full Width: Default aspect ratio, Info/Assessment block",
+      "position": 6,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThe page layout is \"Full Width\".\u003C/p\u003E\n\u003Cp\u003EThe interactive on this page has an aspect ratio setting of \"Default aspect ratio, ...\".\u0026nbsp; \u0026nbsp; And the interactive has been added to the \u003Cstrong\u003EInfo/Assessment block\u003C/strong\u003E section of the page.\u003C/p\u003E\n\u003Cp\u003EIn Full Width layout, this should behave the same as an interactive in the interactive box section of the page. This documented on the previous page.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "130746-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "85126-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": null
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 126081,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Full Width: Use all available space",
+      "position": 7,
+      "show_header": true,
+      "show_info_assessment": false,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThe page layout is \"Full Width\".\u003C/p\u003E\n\u003Cp\u003EThe interactive on this page has an aspect ratio setting of \"Use all available space\". And the interactive has been added to the Interactive Box section of the page.\u003C/p\u003E\n\u003Cp\u003EThe interactive width will be the width of the page. The interactive height will be the height of the window.\u0026nbsp; The interactive height will update as the window is resized.\u003C/p\u003E\n\u003Cp\u003EThe interactive can also request to be a specific height. In this case the interactive width will be as wide as possible and the height will be the requested height.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "130757-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MAX",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "85139-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 126082,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-full-width",
+      "name": "Full Width: Manual Aspect Ratio",
+      "position": 8,
+      "show_header": true,
+      "show_info_assessment": false,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThe page layout is \"Full Width\". The interactive on this page has an aspect ratio setting of \"Manual Aspect Ratio\". And the interactive has been added to the Interactive Box section of the page.\u003C/p\u003E\n\u003Cp\u003EThe interactive will be as wide as the page.\u0026nbsp;Most themes have a \"Full Width\" width of 936px. The height of the interactive will be this width divided by the manually entered aspect ratio. So normally this height will be \u003Cem\u003E936/aspectRatio\u003C/em\u003E\u003C/p\u003E\n\u003Cp\u003EThe height of the interactive will not be limited based on the window height. So if your window is short you will not be able to see the full interactive.\u003C/p\u003E\n\u003Cp\u003EThe interactive can also request to be a specific height. In this case the interactive width will be as wide as possible and the height will be requested height.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "130758-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "85140-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "id": 124103,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Responsive: Lab, use all available space",
+      "position": 9,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis tests the responsive layout, with the LARA linteractive aspect ratio of \"use all available space\".\u003C/p\u003E\n\u003Cp\u003EThe Lab interactive does its own scaling.\u003C/p\u003E\n\u003Cp\u003EThe interactive should not become 'unpinned'.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "129115-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E\r\n\u003Cp\u003ECosmos dream of the mind's eye as a patch of light Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium intelligent beings across the centuries. Venture at the edge of forever totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Sea of Tranquility explorations venture. Ut enim ad minima veniam two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit courage of our questions inconspicuous motes of rock and gas courage of our questions.\u003C/p\u003E\r\n\u003Cp\u003EAs a patch of light a very small stage in a vast cosmic arena totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo two ghostly white figures in coveralls and helmets are softly dancing prime number something incredible is waiting to be known. White dwarf Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit the carbon in our apple pies the carbon in our apple pies across the centuries star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003ENemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit how far away decipherment shores of the cosmic ocean a billion trillion Drake Equation. Another world concept of the number one Sea of Tranquility nisi ut aliquid ex ea commodi consequatur the carbon in our apple pies the carbon in our apple pies. Adipisci velit two ghostly white figures in coveralls and helmets are softly dancing consectetur nisi ut aliquid ex ea commodi consequatur two ghostly white figures in coveralls and helmets are softly dancing dream of the mind's eye?\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "8604-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MAX",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://lab.concord.org/embeddable.html#interactives/itsi/gas-laws/7b-why-did-the-can-collapse.json",
+            "type": "MwInteractive",
+            "ref_id": "83842-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "id": 124106,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Responsive: scaled CODAP, aspect ratio of the screen",
+      "position": 10,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThe aspect ratio of the interactive should be the same as the screen's aspect ratio, you should see a fullscreen button, and the interactive should be scaled.\u0026nbsp;This interactive should not become \"unpinned\".\u003C/p\u003E\n\u003Cp\u003EHere is how it is configured:\u003C/p\u003E\n\u003Cp\u003EThe CODAP Interactive that is configured to be scaled. This is done using a URL parameter. CODAP has a UI for creating the interactive URL and has a check box to enable this scaling.\u003C/p\u003E\n\u003Cp\u003EThe LARA interactive aspect ratio is set to \"default aspect ratio or set by interactive\". This LARA setting means that LARA will respect the aspect ratio requested by the CODAP interactive.\u0026nbsp; When CODAP interactives are configured to be scaled, they request the aspect ratio of the computer screen. This way when they go full screen the user will see the same content that they see when the interactive is not fullscreen.\u0026nbsp;\u003C/p\u003E\n\u003Cp\u003ELARA computes the actual size of the interactive using this requested aspect ratio and the available space to show the interactive. It finds the maxium size that will fit both vertically and horizontally in the available space while preserving the aspect ratio.\u003C/p\u003E\n\u003Cp\u003EThis includes a button to reset the students work below the interactive.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "129118-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E\r\n\u003Cp\u003ECosmos dream of the mind's eye as a patch of light Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium intelligent beings across the centuries. Venture at the edge of forever totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Sea of Tranquility explorations venture. Ut enim ad minima veniam two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit courage of our questions inconspicuous motes of rock and gas courage of our questions.\u003C/p\u003E\r\n\u003Cp\u003EAs a patch of light a very small stage in a vast cosmic arena totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo two ghostly white figures in coveralls and helmets are softly dancing prime number something incredible is waiting to be known. White dwarf Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit the carbon in our apple pies the carbon in our apple pies across the centuries star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003ENemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit how far away decipherment shores of the cosmic ocean a billion trillion Drake Equation. Another world concept of the number one Sea of Tranquility nisi ut aliquid ex ea commodi consequatur the carbon in our apple pies the carbon in our apple pies. Adipisci velit two ghostly white figures in coveralls and helmets are softly dancing consectetur nisi ut aliquid ex ea commodi consequatur two ghostly white figures in coveralls and helmets are softly dancing dream of the mind's eye?\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143336-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": "",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": true,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://document-store-staging.herokuapp.com/v2/documents/468/autolaunch?server=https%3A%2F%2Fcodap.concord.org%2Freleases%2Flatest%2F\u0026scaling",
+            "type": "MwInteractive",
+            "ref_id": "83845-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "id": 124104,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Responsive: scaled CODAP, all available space",
+      "position": 11,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is a CODAP Interactive that is configured to be scaled.\u003C/p\u003E\n\u003Cp\u003EThe LARA interactive aspect ratio is set to \"use all available space\".\u003C/p\u003E\n\u003Cp\u003EThis LARA setting means that LARA will ignore the aspect ratio request by the interactive itself.\u003C/p\u003E\n\u003Cp\u003EThis interactive should not become \"unpinned\".\u0026nbsp;\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "129116-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E\r\n\u003Cp\u003ECosmos dream of the mind's eye as a patch of light Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium intelligent beings across the centuries. Venture at the edge of forever totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Sea of Tranquility explorations venture. Ut enim ad minima veniam two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit courage of our questions inconspicuous motes of rock and gas courage of our questions.\u003C/p\u003E\r\n\u003Cp\u003EAs a patch of light a very small stage in a vast cosmic arena totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo two ghostly white figures in coveralls and helmets are softly dancing prime number something incredible is waiting to be known. White dwarf Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit the carbon in our apple pies the carbon in our apple pies across the centuries star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003ENemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit how far away decipherment shores of the cosmic ocean a billion trillion Drake Equation. Another world concept of the number one Sea of Tranquility nisi ut aliquid ex ea commodi consequatur the carbon in our apple pies the carbon in our apple pies. Adipisci velit two ghostly white figures in coveralls and helmets are softly dancing consectetur nisi ut aliquid ex ea commodi consequatur two ghostly white figures in coveralls and helmets are softly dancing dream of the mind's eye?\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143337-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MAX",
+            "authored_state": "",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": true,
+            "full_window": false,
+            "has_report_url": true,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://document-store-staging.herokuapp.com/v2/documents/468/autolaunch?server=https%3A%2F%2Fcodap.concord.org%2Freleases%2Flatest%2F\u0026scaling",
+            "type": "MwInteractive",
+            "ref_id": "83843-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "id": 124105,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Responsive: unscaled CODAP, all available space",
+      "position": 12,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is a CODAP Interactive that is configured to \u003Cstrong\u003Enot\u003C/strong\u003E be scaled.\u003C/p\u003E\n\u003Cp\u003EThe LARA interactive aspect ratio is set to \"use all available space\".\u003C/p\u003E\n\u003Cp\u003EThis LARA setting means that LARA will ignore the aspect ratio requested by the interactive itself.\u003C/p\u003E\n\u003Cp\u003EThis interactive should not become \"unpinned\".\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "129117-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E\r\n\u003Cp\u003ECosmos dream of the mind's eye as a patch of light Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium intelligent beings across the centuries. Venture at the edge of forever totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Sea of Tranquility explorations venture. Ut enim ad minima veniam two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit courage of our questions inconspicuous motes of rock and gas courage of our questions.\u003C/p\u003E\r\n\u003Cp\u003EAs a patch of light a very small stage in a vast cosmic arena totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo two ghostly white figures in coveralls and helmets are softly dancing prime number something incredible is waiting to be known. White dwarf Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit the carbon in our apple pies the carbon in our apple pies across the centuries star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003ENemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit how far away decipherment shores of the cosmic ocean a billion trillion Drake Equation. Another world concept of the number one Sea of Tranquility nisi ut aliquid ex ea commodi consequatur the carbon in our apple pies the carbon in our apple pies. Adipisci velit two ghostly white figures in coveralls and helmets are softly dancing consectetur nisi ut aliquid ex ea commodi consequatur two ghostly white figures in coveralls and helmets are softly dancing dream of the mind's eye?\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143338-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MAX",
+            "authored_state": null,
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": "",
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": false,
+            "show_in_featured_question_report": true,
+            "url": "https://document-store-staging.herokuapp.com/v2/documents/468/autolaunch?server=https%3A%2F%2Fcodap.concord.org%2Freleases%2Flatest%2F",
+            "type": "MwInteractive",
+            "ref_id": "83844-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 136718,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Responsive: 2 interactives",
+      "position": 13,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003ETwo interactives in a Responsive Layout.\u003C/p\u003E\n\u003Cp\u003EBoth interactives have a aspectRatio of \"Default aspect ratio/or set by interactive\".\u003C/p\u003E\n\u003Cp\u003ECurrently the height of the interactives will not be limiited, so as the screen becomes wider the interactives will become taller and the user might not be able to see all of the interactive at the same time. The behavior of this configuration might change.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "140373-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143339-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": "",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "92329-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": "",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "92330-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 136719,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "60-40: 2 interactives, default aspect ratio",
+      "position": 14,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003E60-40 layout with with 2 interactives on the page.\u003C/p\u003E\r\n\u003Cp\u003EBoth interactives have an aspect ratio of \"Default aspect ratio, or set by interactive\".\u003C/p\u003E\r\n\u003Cp\u003EIn this configuration there is no guarantee that the interactives will remained pinned.\u003C/p\u003E\r\n\u003Cp\u003EWhen there are multiple interactives in the interactive box the height of each interactive is limited to the 'viewport' height. This way each interactive can be fully viewed without scrolling.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "140374-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E\r\n\u003Cp\u003ECosmos dream of the mind's eye as a patch of light Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium intelligent beings across the centuries. Venture at the edge of forever totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Sea of Tranquility explorations venture. Ut enim ad minima veniam two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit courage of our questions inconspicuous motes of rock and gas courage of our questions.\u003C/p\u003E\r\n\u003Cp\u003EAs a patch of light a very small stage in a vast cosmic arena totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo two ghostly white figures in coveralls and helmets are softly dancing prime number something incredible is waiting to be known. White dwarf Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit the carbon in our apple pies the carbon in our apple pies across the centuries star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003ENemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit how far away decipherment shores of the cosmic ocean a billion trillion Drake Equation. Another world concept of the number one Sea of Tranquility nisi ut aliquid ex ea commodi consequatur the carbon in our apple pies the carbon in our apple pies. Adipisci velit two ghostly white figures in coveralls and helmets are softly dancing consectetur nisi ut aliquid ex ea commodi consequatur two ghostly white figures in coveralls and helmets are softly dancing dream of the mind's eye?\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143340-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": "",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "92331-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": "",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "92332-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 136720,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "60-40: 2 interactives, use all available space",
+      "position": 15,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003E60-40 layout with 2 interactives.\u003C/p\u003E\r\n\u003Cp\u003EBoth interactives' aspectRatio is set to: \"use all available space\"\u003C/p\u003E\r\n\u003Cp\u003EIn this configuration the height of each interactive is the height of the viewport. This way the full interactive can be seen without scrolling.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "140375-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143341-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MAX",
+            "authored_state": "",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "92333-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MAX",
+            "authored_state": "",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "92334-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 136723,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Responsive: Teacher Edition, default aspect ratio",
+      "position": 16,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EOn this page the interactive has a teacher edition question wrapper.\u003C/p\u003E\r\n\u003Cp\u003ETo view the page in teacher edition this \u003Ca href=\"?mode=teacher-edition\"\u003Eteacher edition link\u003C/a\u003E might work for you. If the link doesn't work, then add\u003C/p\u003E\r\n\u003Cpre\u003E?mode=teacher-edition\u003C/pre\u003E\r\n\u003Cp\u003Eto the end of the url.\u003C/p\u003E\r\n\u003Cp\u003EIn this case the pinning (or stickiness) of the interactive is based on the teacher edition content plus the interactive. So if the combination of the two fits within the viewport height, then it will be pinned.\u003C/p\u003E\r\n\u003Cp\u003EThe height limiting of the interactive is based just on the interactive itself. So the wrapping content of the teacher edition is not used in this caculation. This way if an author adds many paragraphs of teacher edition content the interactive will still be the same size that it would without the teacher edition content.\u003C/p\u003E\r\n\u003Cp\u003EIn this specific case, the interactive is set to \"default aspect ratio...\". So it will try to remain at the 1.3 aspect ratio. If you make your window wide and short, and you show the teacher edition content, you should see how the interactive height is limitied by the viewport height. And with this window size and scroll position the teacher edition content will not be visible.\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003EWe tried out a few options for handling this case. This option of ignoring the teacher edition wrapping content seemed to be the best option. If the teacher edition content is included in the sizing calculation and we try to fit it in the viewport height, then we have to resize the interactive.\u0026nbsp; So with with a large amount ot teacher edition content, the interactive will have to get really small which isn't desirable. So we settled on the relatively simple approach of just ignoring the teacher edition content in the sizing calculation. This has the caveat that the teacher edition content is still used in the pinning calculation.\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003E\u0026nbsp;\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "140376-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "id": 6674,
+              "description": null,
+              "author_data": "{\"tipType\":\"questionWrapper\",\"questionWrapper\":{\"correctExplanation\":\"\",\"distractorsExplanation\":\"\",\"exemplar\":\"\",\"teacherTip\":\"This teacher tip content shows below the interactive. \\nThe interactive sizing does not include this teacher content above or below the interactive when computing the size of the interactive. \\n\\nSince there is a lot of text here, you can resize your window in a way that you will only be able to see the interactive and the tabs above as well as the content below is not visible without scrolling.\\n\\nThere are more details about this in the introduction box of this page.\",\"teacherTipImageOverlay\":\"\",\"location\":\"bottom\"}}",
+              "approved_script_label": "teacherEditionTips",
+              "component_label": "questionWrapper",
+              "approved_script": {
+                "name": "Teacher Edition",
+                "url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/plugin.js",
+                "label": "teacherEditionTips",
+                "description": "This plugin provides Teacher Edition components",
+                "version": 3,
+                "json_url": "https://teacher-edition-tips-plugin.concord.org/version/v3.8.0/manifest.json",
+                "authoring_metadata": "{\"components\":[{\"label\":\"windowShade\",\"name\":\"Window Shades\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"sideTip\",\"name\":\"Side Tips\",\"scope\":\"embeddable\",\"guiAuthoring\":true},{\"label\":\"questionWrapper\",\"name\":\"Question Wrapper\",\"scope\":\"embeddable-decoration\",\"decorates\":[\"Embeddable::MultipleChoice\",\"Embeddable::OpenResponse\",\"Embeddable::ImageQuestion\",\"ManagedInteractive\",\"MwInteractive\",\"ImageInteractive\",\"VideoInteractive\"],\"guiAuthoring\":true,\"guiPreview\":true}]}"
+              }
+            },
+            "is_hidden": false,
+            "is_full_width": false,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "6496-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "92335-MwInteractive"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E\r\n\u003Cp\u003ECosmos dream of the mind's eye as a patch of light Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium intelligent beings across the centuries. Venture at the edge of forever totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Sea of Tranquility explorations venture. Ut enim ad minima veniam two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit courage of our questions inconspicuous motes of rock and gas courage of our questions.\u003C/p\u003E\r\n\u003Cp\u003EAs a patch of light a very small stage in a vast cosmic arena totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo two ghostly white figures in coveralls and helmets are softly dancing prime number something incredible is waiting to be known. White dwarf Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit the carbon in our apple pies the carbon in our apple pies across the centuries star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003ENemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit how far away decipherment shores of the cosmic ocean a billion trillion Drake Equation. Another world concept of the number one Sea of Tranquility nisi ut aliquid ex ea commodi consequatur the carbon in our apple pies the carbon in our apple pies. Adipisci velit two ghostly white figures in coveralls and helmets are softly dancing consectetur nisi ut aliquid ex ea commodi consequatur two ghostly white figures in coveralls and helmets are softly dancing dream of the mind's eye?\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143342-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": "",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "92335-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 139538,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Collapsible assess column, default aspect ratio",
+      "position": 17,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": true,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is a Responsive Layout page with the \"Collapsible\" option enabled for the Info/Assess column. The interactive is set up with a aspect ratio of: \"Default or set by interactive\".\u003C/p\u003E\r\n\u003Cp\u003EThe aspect ratio must remain the same whether the Info/Assess column is fully expanded or collapsed.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143343-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E\r\n\u003Cp\u003ECosmos dream of the mind's eye as a patch of light Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium intelligent beings across the centuries. Venture at the edge of forever totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Sea of Tranquility explorations venture. Ut enim ad minima veniam two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit courage of our questions inconspicuous motes of rock and gas courage of our questions.\u003C/p\u003E\r\n\u003Cp\u003EAs a patch of light a very small stage in a vast cosmic arena totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo two ghostly white figures in coveralls and helmets are softly dancing prime number something incredible is waiting to be known. White dwarf Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit the carbon in our apple pies the carbon in our apple pies across the centuries star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003ENemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit how far away decipherment shores of the cosmic ocean a billion trillion Drake Equation. Another world concept of the number one Sea of Tranquility nisi ut aliquid ex ea commodi consequatur the carbon in our apple pies the carbon in our apple pies. Adipisci velit two ghostly white figures in coveralls and helmets are softly dancing consectetur nisi ut aliquid ex ea commodi consequatur two ghostly white figures in coveralls and helmets are softly dancing dream of the mind's eye?\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143344-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": "",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "94217-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 139539,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "Collapsible assess column, use all available space",
+      "position": 18,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": true,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is a 60-40 Layout page with the \"Collapsible\" option enabled for the Info/Assess column. The interactive is set up with a aspect ratio of: \"Use all available space\".\u003C/p\u003E\r\n\u003Cp\u003EThe interactive's aspect ratio should change when the Info/Assess column is expanded or collapsed as the interactive will usually get wider or narrower without any change in height.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143345-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E\r\n\u003Cp\u003ECosmos dream of the mind's eye as a patch of light Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium intelligent beings across the centuries. Venture at the edge of forever totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Sea of Tranquility explorations venture. Ut enim ad minima veniam two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit courage of our questions inconspicuous motes of rock and gas courage of our questions.\u003C/p\u003E\r\n\u003Cp\u003EAs a patch of light a very small stage in a vast cosmic arena totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo two ghostly white figures in coveralls and helmets are softly dancing prime number something incredible is waiting to be known. White dwarf Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit the carbon in our apple pies the carbon in our apple pies across the centuries star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003ENemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit how far away decipherment shores of the cosmic ocean a billion trillion Drake Equation. Another world concept of the number one Sea of Tranquility nisi ut aliquid ex ea commodi consequatur the carbon in our apple pies the carbon in our apple pies. Adipisci velit two ghostly white figures in coveralls and helmets are softly dancing consectetur nisi ut aliquid ex ea commodi consequatur two ghostly white figures in coveralls and helmets are softly dancing dream of the mind's eye?\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143346-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MAX",
+            "authored_state": "",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "94218-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 139540,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Collapsible assess column, manually set width and height",
+      "position": 19,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": true,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is a Responsive Layout page with the \"Collapsible\" option enabled for the Info/Assess column. The interactive is set up with a aspect ratio of: \"Manually set the native width \u0026amp; height\".\u003C/p\u003E\r\n\u003Cp\u003EThe interactive's aspect ratio should not change when the Info/Assess column is expanded or collapsed.\u003C/p\u003E",
+            "is_callout": false,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143348-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E\r\n\u003Cp\u003ECosmos dream of the mind's eye as a patch of light Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium intelligent beings across the centuries. Venture at the edge of forever totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Sea of Tranquility explorations venture. Ut enim ad minima veniam two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit courage of our questions inconspicuous motes of rock and gas courage of our questions.\u003C/p\u003E\r\n\u003Cp\u003EAs a patch of light a very small stage in a vast cosmic arena totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo two ghostly white figures in coveralls and helmets are softly dancing prime number something incredible is waiting to be known. White dwarf Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit the carbon in our apple pies the carbon in our apple pies across the centuries star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003ENemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit how far away decipherment shores of the cosmic ocean a billion trillion Drake Equation. Another world concept of the number one Sea of Tranquility nisi ut aliquid ex ea commodi consequatur the carbon in our apple pies the carbon in our apple pies. Adipisci velit two ghostly white figures in coveralls and helmets are softly dancing consectetur nisi ut aliquid ex ea commodi consequatur two ghostly white figures in coveralls and helmets are softly dancing dream of the mind's eye?\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "143347-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "MANUAL",
+            "authored_state": "",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "94219-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    },
+    {
+      "additional_sections": {},
+      "embeddable_display_mode": "stacked",
+      "id": 148538,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-responsive",
+      "name": "Responsive: Sizing interactivg with Scaling interactive aspect ratio of the screen",
+      "position": 20,
+      "show_header": true,
+      "show_info_assessment": true,
+      "show_interactive": true,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "embeddables": [
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThe aspect ratio of the interactive should be the same as the screen's aspect ratio, you should see a fullscreen button, and the interactive should be scaled.\u0026nbsp;This interactive should not become \"unpinned\".\u003C/p\u003E\r\n\u003Cp\u003EHere is how it is configured:\u003C/p\u003E\r\n\u003Cp\u003EThe scaling interactive takes in a URL of an interactive as a query parameter in the form of \"wrappedInteractive=[\u003Cem\u003Eurl of interactive to be\u003C/em\u003E \u003Cem\u003Escaled\u003C/em\u003E]\"\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003EThe LARA interactive aspect ratio is set to \"default aspect ratio or set by interactive\". This LARA setting means that LARA will respect the aspect ratio requested by the interactive.\u0026nbsp; When interactives are configured to be scaled, they request the aspect ratio of the computer screen. This way when they go full screen the user will see the same content that they see when the interactive is not fullscreen.\u0026nbsp;\u003C/p\u003E\r\n\u003Cp\u003ELARA computes the actual size of the interactive using this requested aspect ratio and the available space to show the interactive. It finds the maxium size that will fit both vertically and horizontally in the available space while preserving the aspect ratio.\u003C/p\u003E\r\n\u003Cp\u003EThis includes a button to reset the students work below the interactive.\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": true,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "153346-Embeddable::Xhtml"
+          },
+          "section": "header_block"
+        },
+        {
+          "embeddable": {
+            "content": "\u003Cp\u003EThis is placeholder text. It doesn't explain anything and reading it is a waste of time. Made in the interiors of collapsing stars radio telescope Jean-Fran\u0026ccedil;ois Champollion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur the only home we've ever known citizens of distant epochs. Permanence of the stars sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt qui dolorem ipsum quia dolor sit amet quis nostrum exercitationem ullam corporis suscipit laboriosam vel illum qui dolorem eum fugiat quo voluptas nulla pariatur with pretty stories for which there's little good evidence?\u003C/p\u003E\r\n\u003Cp\u003EDispassionate extraterrestrial observer Tunguska event realm of the galaxies sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt gathered by gravity Cambrian explosion. Invent the universe a very small stage in a vast cosmic arena two ghostly white figures in coveralls and helmets are softly dancing are creatures of the cosmos sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003EKindling the energy hidden in matter Drake Equation the ash of stellar alchemy consciousness are creatures of the cosmos extraplanetary. Something incredible is waiting to be known two ghostly white figures in coveralls and helmets are softly dancing with pretty stories for which there's little good evidence vastness is bearable only through love star stuff harvesting star light dispassionate extraterrestrial observer. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit a very small stage in a vast cosmic arena as a patch of light Orion's sword nisi ut aliquid ex ea commodi consequatur network of wormholes.\u003C/p\u003E\r\n\u003Cp\u003EMade in the interiors of collapsing stars paroxysm of global death realm of the galaxies inconspicuous motes of rock and gas white dwarf Apollonius of Perga. Dream of the mind's eye kindling the energy hidden in matter the carbon in our apple pies quis nostrum exercitationem ullam corporis suscipit laboriosam Ut enim ad minima veniam qui dolorem ipsum quia dolor sit amet? Shores of the cosmic ocean sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt not a sunrise but a galaxyrise not a sunrise but a galaxyrise two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit?\u003C/p\u003E\r\n\u003Cp\u003ECosmic ocean the only home we've ever known consectetur extraplanetary radio telescope Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms take root and flourish extraordinary claims require extraordinary evidence Cambrian explosion Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur quis nostrum exercitationem ullam corporis suscipit laboriosam. Two ghostly white figures in coveralls and helmets are softly dancing hydrogen atoms a very small stage in a vast cosmic arena rich in mystery Neque porro quisquam est vel illum qui dolorem eum fugiat quo voluptas nulla pariatur.\u003C/p\u003E\r\n\u003Cp\u003EExtraplanetary not a sunrise but a galaxyrise tesseract Cambrian explosion as a patch of light Jean-Fran\u0026ccedil;ois Champollion. Hydrogen atoms vastness is bearable only through love star stuff harvesting star light stirred by starlight across the centuries from which we spring? Tendrils of gossamer clouds consectetur tingling of the spine the carbon in our apple pies a still more glorious dawn awaits Ut enim ad minima veniam. Shores of the cosmic ocean Ut enim ad minima veniam totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo hydrogen atoms citizens of distant epochs a very small stage in a vast cosmic arena.\u003C/p\u003E\r\n\u003Cp\u003ECosmos dream of the mind's eye as a patch of light Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium intelligent beings across the centuries. Venture at the edge of forever totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo Sea of Tranquility explorations venture. Ut enim ad minima veniam two ghostly white figures in coveralls and helmets are softly dancing Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit courage of our questions inconspicuous motes of rock and gas courage of our questions.\u003C/p\u003E\r\n\u003Cp\u003EAs a patch of light a very small stage in a vast cosmic arena totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo two ghostly white figures in coveralls and helmets are softly dancing prime number something incredible is waiting to be known. White dwarf Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit the carbon in our apple pies the carbon in our apple pies across the centuries star stuff harvesting star light.\u003C/p\u003E\r\n\u003Cp\u003ENemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit how far away decipherment shores of the cosmic ocean a billion trillion Drake Equation. Another world concept of the number one Sea of Tranquility nisi ut aliquid ex ea commodi consequatur the carbon in our apple pies the carbon in our apple pies. Adipisci velit two ghostly white figures in coveralls and helmets are softly dancing consectetur nisi ut aliquid ex ea commodi consequatur two ghostly white figures in coveralls and helmets are softly dancing dream of the mind's eye?\u003C/p\u003E",
+            "is_callout": true,
+            "is_full_width": false,
+            "is_hidden": false,
+            "name": "",
+            "type": "Embeddable::Xhtml",
+            "ref_id": "153349-Embeddable::Xhtml"
+          },
+          "section": null
+        },
+        {
+          "embeddable": {
+            "aspect_ratio_method": "DEFAULT",
+            "authored_state": "",
+            "click_to_play": false,
+            "click_to_play_prompt": null,
+            "enable_learner_state": false,
+            "full_window": false,
+            "has_report_url": false,
+            "image_url": null,
+            "is_full_width": true,
+            "is_hidden": false,
+            "model_library_url": null,
+            "name": "",
+            "native_height": 435,
+            "native_width": 576,
+            "no_snapshots": false,
+            "report_item_url": null,
+            "show_delete_data_button": true,
+            "show_in_featured_question_report": true,
+            "url": "https://models-resources.concord.org/question-interactives/branch/master/full-screen/?wrappedInteractive=https://models-resources.concord.org/sizing-demo-interactive/index.html",
+            "type": "MwInteractive",
+            "ref_id": "100257-MwInteractive",
+            "linked_interactives": []
+          },
+          "section": "interactive_box"
+        }
+      ]
+    }
+  ],
+  "plugins": [],
+  "type": "LightweightActivity",
+  "export_site": "Lightweight Activities Runtime and Authoring"
+}

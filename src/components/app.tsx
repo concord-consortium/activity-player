@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
+import classNames from "classnames";
 import { PortalDataContext } from "./portal-data-context";
 import { Header } from "./activity-header/header";
 import { ActivityNav } from "./activity-header/activity-nav";
@@ -8,23 +9,24 @@ import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
 import { ActivityLayouts, numQuestionsOnPreviousPages,
-  enableReportButton, setDocumentTitle, getPagePositionFromQueryValue,
-  getSequenceActivityFromQueryValue, getSequenceActivityId,
-  setAppBackgroundImage } from "../utilities/activity-utils";
+         enableReportButton, setDocumentTitle, getPagePositionFromQueryValue,
+         getSequenceActivityFromQueryValue, getSequenceActivityId,
+         setAppBackgroundImage, getPageIDFromPosition } from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
+import { DefunctBanner } from "./defunct-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
-import { queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
+import { deleteQueryValue, queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
 import { fetchPortalData, firebaseAppName } from "../portal-api";
 import { IPortalData, IPortalDataUnion } from "../portal-types";
 import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
-         onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData } from "../firebase-db";
+         onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData, createOrUpdateApRun, getApRun } from "../firebase-db";
 import { Activity, IEmbeddablePlugin, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
-import { loadPluginScripts, getGlossaryEmbeddable, loadLearnerPluginState } from "../utilities/plugin-utils";
+import { loadPluginScripts, getActivityLevelPlugins, loadLearnerPluginState } from "../utilities/plugin-utils";
 import { TeacherEditionBanner }  from "./teacher-edition-banner";
 import { Error }  from "./error/error";
 import { IdleWarning } from "./error/idle-warning";
@@ -33,15 +35,18 @@ import { SequenceIntroduction } from "./sequence-introduction/sequence-introduct
 import { ModalDialog } from "./modal-dialog";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../lib/logger";
-import { GlossaryPlugin } from "../components/activity-page/plugins/glossary-plugin";
+import { EmbeddablePlugin } from "./activity-page/plugins/embeddable-plugin";
 import { getAttachmentsManagerOptions} from "../utilities/get-attachments-manager-options";
 import { IdleDetector } from "../utilities/idle-detector";
 import { initializeAttachmentsManager } from "@concord-consortium/interactive-api-host";
+import { LaraDataContext } from "./lara-data-context";
+import { __closeAllPopUps } from "../lara-plugin/plugin-api/popup";
+import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChangeNotificationStartTimeout } from "./activity-page/page-change-notification";
 
 import "./app.scss";
 
-const kDefaultActivity = "sample-new-sections";   // may eventually want to get rid of this
-const kDefaultIncompleteMessage = "Please submit an answer first.";
+const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
+const kDefaultIncompleteMessage = "You must submit an answer for all required questions before advancing to another page.";
 
 // User will see the idle warning after kMaxIdleTime
 const kMaxIdleTime = 20 * 60 * 1000; // 20 minutes
@@ -51,6 +56,8 @@ const kTimeout = 5 * 60 * 1000; // 5 minutes
 const kLearnPortalUrl = "https://learn.concord.org";
 
 const kAnonymousUserName = "Anonymous";
+
+const kDefaultFixedWidthLayout = "1100px";
 
 export type ErrorType = "auth" | "network" | "timeout";
 
@@ -64,6 +71,7 @@ interface IState {
   currentPage: number;
   teacherEditionMode?: boolean;
   showThemeButtons?: boolean;
+  showDefunctBanner: boolean;
   showWarning: boolean;
   username: string;
   portalData?: IPortalData;
@@ -76,6 +84,8 @@ interface IState {
   pluginsLoaded: boolean;
   errorType: null | ErrorType;
   idle: boolean;
+  pageChangeNotification?: IPageChangeNotification;
+  sequenceActivity?: string | undefined
 }
 interface IProps {}
 
@@ -91,6 +101,7 @@ export class App extends React.PureComponent<IProps, IState> {
       currentPage: 0,
       teacherEditionMode: false,
       showThemeButtons: false,
+      showDefunctBanner: false,
       showWarning: false,
       username: kAnonymousUserName,
       showModal: false,
@@ -115,33 +126,15 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const sequencePath = queryValue("sequence");
-      const sequence: Sequence | undefined = sequencePath ? await getSequenceDefinition(sequencePath) : undefined;
-      const sequenceActivityNum = sequence != null
-                                    ? getSequenceActivityFromQueryValue(sequence, queryValue("sequenceActivity"))
-                                    : 0;
-      const activityIndex = sequence && sequenceActivityNum ? sequenceActivityNum - 1 : undefined;
-      const activityPath = queryValue("activity") || kDefaultActivity;
-      const activity: Activity = sequence != null && activityIndex != null && activityIndex >= 0
-                                   ? sequence.activities[activityIndex]
-                                   : await getActivityDefinition(activityPath);
-
-      const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
-
-      // page 0 is introduction, inner pages start from 1 and match page.position in exported activity if numeric
-      // or the page.position of the matching page id if prefixed with "page_<id>"
-      const currentPage = getPagePositionFromQueryValue(activity, queryValue("page"));
-
-      const showThemeButtons = queryValueBoolean("themeButtons");
-      // Show the warning if we are not running on production
-      const showWarning = firebaseAppName() !== "report-service-pro";
       const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
+      const sequencePath = queryValue("sequence");
+      const activityPath = queryValue("activity") || kDefaultActivity;
 
-      const newState: Partial<IState> = {activity, activityIndex, currentPage, showThemeButtons, showWarning, showSequenceIntro, sequence, teacherEditionMode};
-      setDocumentTitle(activity, currentPage);
-
+      let sequenceActivity = queryValue("sequenceActivity");
+      let page = queryValue("page");
+      let newState: Partial<IState> = {};
       let classHash = "";
       let role = "unknown";
       let runRemoteEndpoint = "";
@@ -187,7 +180,62 @@ export class App extends React.PureComponent<IProps, IState> {
         onFirestoreSaveTimeout(() => this.state.errorType === null && this.setError("network"));
         // Notify user when network issues are resolved.
         onFirestoreSaveAfterTimeout(() => this.state.errorType === "network" && this.setError(null));
+
+        // __skipGetApRun is used in Cypress tests to skip the ap run load
+        if (!queryValueBoolean("__skipGetApRun")) {
+          const apRun = await getApRun(sequenceActivity);
+          if (apRun) {
+            // use the sequence activity from the apRun if not passed as a parameter
+            if (!sequenceActivity && apRun.data.sequence_activity) {
+              sequenceActivity = apRun.data.sequence_activity;
+            }
+            // if the page is not passed as a parameter, use the page from the apRun
+            if (!page) {
+              page = `page_${apRun.data.page_id}`;
+            } else {
+              // if the page is passed as a parameter, it may not be a valid page in the sequence activity
+              // however the getPagePositionFromQueryValue() handles this case -- we can't check it here
+              // since we haven't loaded the activity in sequence definition yet
+            }
+          }
+        }
       }
+
+      const sequence: Sequence | undefined = sequencePath ? await getSequenceDefinition(sequencePath) : undefined;
+      const sequenceActivityNum = sequence != null
+                                    ? getSequenceActivityFromQueryValue(sequence, sequenceActivity)
+                                    : 0;
+      const activityIndex = sequence && sequenceActivityNum ? sequenceActivityNum - 1 : undefined;
+      const activity: Activity = sequence != null && activityIndex != null && activityIndex >= 0
+                                   ? sequence.activities[activityIndex]
+                                   : await getActivityDefinition(activityPath);
+
+      const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
+
+      // page 0 is introduction, inner pages start from 1 and match page.position in exported activity if numeric
+      // or the page.position of the matching page id if prefixed with "page_<id>"
+      const currentPage = getPagePositionFromQueryValue(activity, page);
+
+      // set the activity and page query parameters
+      if (sequenceActivity) {
+        setQueryValue("sequenceActivity", sequenceActivity);
+      } else {
+        deleteQueryValue("sequenceActivity");
+      }
+      if (currentPage !== 0) {
+        setQueryValue("page", `page_${currentPage}`);
+      } else {
+        deleteQueryValue("page");
+      }
+
+      const showThemeButtons = queryValueBoolean("themeButtons");
+      // Show a warning about obsolute features if activity/sequences is marked as defunct
+      const showDefunctBanner = activity.defunct || (sequence?.defunct);
+      // Show the warning if we are not running on production
+      const showWarning = firebaseAppName() !== "report-service-pro";
+
+      newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner, showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity};
+      setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       this.setState(newState as IState);
 
@@ -239,49 +287,49 @@ export class App extends React.PureComponent<IProps, IState> {
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
-          <div className="app" data-cy="app">
-            { this.state.showWarning && <WarningBanner/> }
-            { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-            { this.state.showSequenceIntro
-              ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
-              : this.renderActivity() }
-            { this.state.showThemeButtons && <ThemeButtons/>}
-            <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
-            <ModalDialog
-              label={this.state.modalLabel}
-              onClose={() => {this.setShowModal(false);}}
-              showModal={this.state.showModal}
-            />
-          </div>
+          <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
+            <div className="app" data-cy="app">
+              { this.state.showDefunctBanner && <DefunctBanner/> }
+              { this.state.showWarning && <WarningBanner/> }
+              { this.state.teacherEditionMode && <TeacherEditionBanner/>}
+              { this.state.showSequenceIntro
+                ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
+                : this.renderActivity() }
+              { this.state.showThemeButtons && <ThemeButtons/>}
+              <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
+              <ModalDialog
+                label={this.state.modalLabel}
+                onClose={() => {this.setShowModal(false);}}
+                showModal={this.state.showModal}
+              />
+            </div>
+          </LaraDataContext.Provider>
         </PortalDataContext.Provider>
       </LaraGlobalContext.Provider>
     );
   }
 
   private renderActivity = () => {
-    const { activity, activityIndex, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
-    const hasResponsiveSection = activity.pages[currentPage - 1]?.sections.filter(s => s.layout === "responsive");
-
+    const hasResponsiveSection = activity.pages[currentPage - 1]?.sections.filter(
+                                    s => s.layout.includes("responsive"));
     const fullWidth = (currentPage !== 0) && (hasResponsiveSection.length > 0);
     const project = activity.project ? activity.project : null;
-    const glossaryEmbeddable: IEmbeddablePlugin | undefined = getGlossaryEmbeddable(activity);
+    const activityLevelPlugins: IEmbeddablePlugin[] = getActivityLevelPlugins(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
-    const sequenceActivityId = sequence !== undefined ? getSequenceActivityId(sequence, activityIndex) : undefined;
-    const sequenceActivity = sequenceActivityId !== undefined
-                               ? sequenceActivityId
-                               : activityIndex !== undefined && activityIndex >= 0
-                                 ? activityIndex + 1
-                                 : undefined;
-    sequenceActivity !== undefined && setQueryValue("sequenceActivity", sequenceActivity);
     const backgroundImage = sequence?.background_image || activity.background_image;
     if (backgroundImage) {
       setAppBackgroundImage(backgroundImage);
     }
 
+    // convert option with Ruby snake case to kebab case for css
+    const fixedWidthLayout = (sequence?.fixed_width_layout || activity.fixed_width_layout || kDefaultFixedWidthLayout).replace(/_/g, "-");
+    const activityClasses = classNames("activity", fullWidth ? "responsive" : `fixed-width-${fixedWidthLayout}`);
+    const pagesVisible = queryValue("author-preview") ? activity.pages : activity.pages.filter((page) => !page.is_hidden);
     return (
-      <React.Fragment>
+      <div className={activityClasses} data-cy="activity">
         <Header
           fullWidth={fullWidth}
           project={project}
@@ -315,20 +363,29 @@ export class App extends React.PureComponent<IProps, IState> {
           <ExpandableContainer
             activity={activity}
             pageNumber={currentPage}
-            page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
+            page={pagesVisible[currentPage - 1]}
             teacherEditionMode={teacherEditionMode}
             pluginsLoaded={pluginsLoaded}
-            glossaryPlugin={glossaryEmbeddable !== null}
+            plugins={activityLevelPlugins.length > 0}
           />
         }
-        { glossaryEmbeddable && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
-          <GlossaryPlugin embeddable={glossaryEmbeddable} pageNumber={currentPage} pluginsLoaded={pluginsLoaded} />
+        { !idle && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
+          activityLevelPlugins.map((activityLevelPlugin, idx) => {
+            return <EmbeddablePlugin
+                    key={idx}
+                    embeddable={activityLevelPlugin}
+                    pageNumber={currentPage}
+                    pluginsLoaded={pluginsLoaded}
+                    isActivityLevelPlugin={true}
+                  />;
+          })
         }
-      </React.Fragment>
+      </div>
     );
   }
 
   private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
+    const pagesVisible = queryValue("author-preview") ? activity.pages : activity.pages.filter((page) => !page.is_hidden);
     return (
       <>
         { this.state.sequence && this.renderSequenceNav(fullWidth) }
@@ -339,18 +396,20 @@ export class App extends React.PureComponent<IProps, IState> {
           ? this.renderSinglePageContent(activity)
           : currentPage === 0
             ? this.renderIntroductionContent(activity)
-            : activity.pages.filter((page) => !page.is_hidden)[currentPage - 1].is_completion
+            : pagesVisible[currentPage - 1].is_completion
               ? this.renderCompletionContent(activity)
               : <ActivityPageContent
                   ref={this.activityPageContentRef}
-                  enableReportButton={currentPage === activity.pages.length && enableReportButton(activity)}
+                  activityLayout={activity.layout}
+                  enableReportButton={currentPage === pagesVisible.length && enableReportButton(activity)}
                   pageNumber={currentPage}
-                  page={activity.pages.filter((page) => !page.is_hidden)[currentPage - 1]}
+                  page={pagesVisible[currentPage - 1]}
                   totalPreviousQuestions={totalPreviousQuestions}
                   teacherEditionMode={this.state.teacherEditionMode}
                   setNavigation={this.handleSetNavigation}
                   key={`page-${currentPage}`}
                   pluginsLoaded={this.state.pluginsLoaded}
+                  pageChangeNotification={this.state.pageChangeNotification}
                 />
         }
         { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
@@ -426,6 +485,7 @@ export class App extends React.PureComponent<IProps, IState> {
       // Check current idle value to avoid logging unnecessary "show_idle_warning" events.
       // Idle detector will keep working even after session timeout.
       Logger.log({ event: LogEventName.show_idle_warning });
+      __closeAllPopUps();
       this.setState({ idle: true });
     }
   }
@@ -448,43 +508,84 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private handleChangePage = (page: number) => {
-    const { currentPage, incompleteQuestions, activity } = this.state;
+    const { currentPage, incompleteQuestions, activity, sequenceActivity } = this.state;
+    const pageId = activity ? getPageIDFromPosition(activity, page) : undefined;
+    if (pageId) {
+      setQueryValue("page", `page_${pageId}`);
+      createOrUpdateApRun({sequenceActivity, pageId});
+    }
     if (page > currentPage && incompleteQuestions.length > 0) {
       const label = incompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage;
       this.setShowModal(true, label);
     } else if (page >= 0 && (activity && page <= activity.pages.length)) {
+
+      // wait a bit to show the page change so we don't get a flicker when the page saves quickly
+      const startPageChangeNotification = setTimeout(() => {
+        this.setState({pageChangeNotification: {state: "started"}});
+      }, PageChangeNotificationStartTimeout);
+
       const navigateAway = () => {
-        this.setState({ currentPage: page, incompleteQuestions: [] });
-        setDocumentTitle(activity, page);
+        __closeAllPopUps(); // close any open pop ups
+        clearTimeout(startPageChangeNotification);
+        this.setState({ currentPage: page, incompleteQuestions: [], pageChangeNotification: undefined });
+        setDocumentTitle({activity, pageNumber: page});
+        document.getElementsByClassName("app")[0]?.scrollIntoView(); //scroll to the top on page change
         Logger.updateActivityPage(page);
         Logger.log({
           event: LogEventName.change_activity_page,
           parameters: { new_page: page }
         });
       };
+
       // Make sure that interactive state is saved before user can navigate away.
-      const promises = this.activityPageContentRef.current?.requestInteractiveStates() || [Promise.resolve()];
+      const promises = this.activityPageContentRef.current?.requestInteractiveStates({unloading: true}) || [Promise.resolve()];
       Promise.all(promises)
         .then(navigateAway)
         .catch(error => {
-          // Notify user about error, but change page anyway.
-          window.alert(error);
-          navigateAway();
+          // Notify user about error, but change page anyway after displaying error and waiting a bit.
+          clearTimeout(startPageChangeNotification);
+          this.setState({pageChangeNotification: {
+            state: "errored",
+            message: error.toString()
+          }});
+          setTimeout(() => {
+            navigateAway();
+          }, PageChangeNotificationErrorTimeout);
         });
     }
   }
 
-  private handleSelectActivity = (activityNum: number) => {
+  private handleSelectActivity = async (activityNum: number) => {
+
     Logger.updateSequenceActivityindex(activityNum + 1);
     Logger.log({
       event: LogEventName.change_sequence_activity,
       parameters: { new_activity_index: activityNum + 1, new_activity_name: this.state.sequence?.activities[activityNum].name }
     });
+
+    let currentPage = 0;
+    const {sequence} = this.state;
+    const sequenceActivity = sequence !== undefined ? getSequenceActivityId(sequence, activityNum) : undefined;
+    if (sequenceActivity && sequence) {
+      const activity = sequence.activities[activityNum];
+      const apRun = await getApRun(sequenceActivity);
+      if (apRun) {
+        currentPage = getPagePositionFromQueryValue(activity, `page_${apRun.data.page_id}`);
+      }
+      setQueryValue("sequenceActivity", sequenceActivity);
+      if (currentPage !== 0) {
+        setQueryValue("page", `page_${currentPage}`);
+      } else {
+        deleteQueryValue("page");
+      }
+    }
+
     this.setState((prevState) =>
       ({ activity: prevState.sequence?.activities[activityNum],
          showSequenceIntro: false,
          activityIndex: activityNum,
-         currentPage: 0
+         currentPage,
+         sequenceActivity
       })
     );
   }

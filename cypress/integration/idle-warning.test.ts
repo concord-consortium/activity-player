@@ -1,11 +1,11 @@
 context("Idle warning", () => {
   beforeEach(() => {
-    cy.clock();  
+    cy.clock();
   });
 
   context("when user is anonymous", () => {
     it("shows after 20 minutes of inactivity and lets user continue his work", () => {
-      cy.visit("?activity=sample-activity-1");
+      cy.visit("?activity=sample-activity-1&__skipGetApRun=true");
       cy.tick(1000); // necessary to "download" sample activity. AP uses setTimeout(, 250) for fake network request.
       cy.get("[data-cy=activity-summary]").should("contain", "Single Page Test Activity");
       cy.tick(21 * 60 * 1000); // 21 minutes
@@ -19,11 +19,11 @@ context("Idle warning", () => {
 
   context("when user is logged in", () => {
     // __cypressLoggedIn is used to trigger logged in code path for Cypress tests.
-    // Eventually it should be replaced with better patterns for testing logged in users (probably via using 
+    // Eventually it should be replaced with better patterns for testing logged in users (probably via using
     // `token` param and stubbing network requests).
 
     it("shows after 20 minutes of inactivity and lets user continue his work", () => {
-      cy.visit("?activity=sample-activity-1&__cypressLoggedIn=true");
+      cy.visit("?activity=sample-activity-1&__cypressLoggedIn=true&__skipGetApRun=true");
       cy.tick(1000); // necessary to "download" sample activity. AP uses setTimeout(, 250) for fake network request.
       cy.get("[data-cy=activity-summary]").should("contain", "Single Page Test Activity");
       cy.tick(21 * 60 * 1000); // 21 minutes
@@ -33,9 +33,9 @@ context("Idle warning", () => {
       // Activity should be visible again.
       cy.get("[data-cy=activity-summary]").should("contain", "Single Page Test Activity");
     });
-    
+
     it("shows after 20 minutes of inactivity and lets user go back to Portal", () => {
-      cy.visit("?activity=sample-activity-1&__cypressLoggedIn=true");
+      cy.visit("?activity=sample-activity-1&__cypressLoggedIn=true&__skipGetApRun=true");
       cy.tick(1000); // necessary to "download" sample activity. AP uses setTimeout(, 250) for fake network request.
       cy.get("[data-cy=activity-summary]").should("contain", "Single Page Test Activity");
       cy.tick(21 * 60 * 1000); // 21 minutes

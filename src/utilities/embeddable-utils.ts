@@ -3,12 +3,34 @@ import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
 import {
   IExportableAnswerMetadata, IReportState, IExportableMultipleChoiceAnswerMetadata,
   IExportableOpenResponseAnswerMetadata, IExportableInteractiveAnswerMetadata, IExportableImageQuestionAnswerMetadata,
-  EmbeddableType
+  EmbeddableType, Activity, Page
 } from "../types";
+import { ILaraData } from "../components/lara-data-context";
+import { WrappedDBAnswer } from "../firebase-db";
+
+export type LegacyLinkedRefMap = Record<string, {
+  activity: Activity;
+  page: Page;
+  linkedRefId: string | undefined;
+} | undefined>;
+
+export interface IInteractiveInfo {
+  activityName: string;
+  pageNumber: number;
+  pageName?: string;
+}
 
 export const isQuestion = (embeddable: EmbeddableType) =>
   (embeddable.type === "ManagedInteractive" && embeddable.library_interactive?.data?.enable_learner_state) ||
   (embeddable.type === "MwInteractive" && embeddable.enable_learner_state);
+
+export const hasLegacyLinkedInteractive = (embeddable: EmbeddableType, laraData: ILaraData) => {
+  let result = false;
+  if ((embeddable.type === "ManagedInteractive") || (embeddable.type === "MwInteractive")) {
+    result = !!getLegacyLinkedRefMap(laraData)[embeddable.ref_id]?.linkedRefId;
+  }
+  return result;
+};
 
 // LARA uses a map from the answer type to a question type.
 // Instead of using this map, we look directly at the authoredState this ought to give us more
@@ -53,6 +75,10 @@ export const getAnswerWithMetadata = (
     // LARA also seems to be storing the interactiveState as a JSON string and that
     // JSON string is what is used in the reportState
     interactiveState: JSON.stringify(interactiveState),
+    interactive: {
+      id: refIdToAnswersQuestionId(embeddable.ref_id),
+      name: "",
+    },
     version: 1
   };
 
@@ -162,4 +188,86 @@ export const refIdToAnswersQuestionId = (refId: string) => {
     return `${snakeCased}_${embeddableId}`;
   }
   return refId;
+};
+
+// cache exported so it can be checked in tests
+export const legacyLinkedRefMapCache = new WeakMap<ILaraData, LegacyLinkedRefMap>();
+
+export const getLegacyLinkedRefMap = (laraData: ILaraData): LegacyLinkedRefMap => {
+  // cache this as it is called on each render
+  const cachedLinkedRefMap = legacyLinkedRefMapCache.get(laraData);
+  if (cachedLinkedRefMap) {
+    return cachedLinkedRefMap;
+  }
+
+  const gatherLinkedRefs = (activity: Activity) => {
+    activity.pages.forEach(page => {
+      page.sections.forEach(section => {
+        section.embeddables.forEach(embeddable => {
+          if ((embeddable.type === "ManagedInteractive") || (embeddable.type === "MwInteractive")) {
+            linkedRefMap[embeddable.ref_id] = {
+              activity,
+              page,
+              linkedRefId: embeddable.linked_interactive?.ref_id
+            };
+          }
+        });
+      });
+    });
+  };
+
+  const linkedRefMap: LegacyLinkedRefMap = {};
+
+  if (laraData.sequence) {
+    laraData.sequence.activities.forEach(gatherLinkedRefs);
+  } else if (laraData.activity) {
+    gatherLinkedRefs(laraData.activity);
+  }
+
+  legacyLinkedRefMapCache.set(laraData, linkedRefMap);
+
+  return linkedRefMap;
+};
+
+export const getInteractiveInfo = (laraData: ILaraData, embeddableRefId: string): IInteractiveInfo | undefined => {
+  let interactiveInfo: IInteractiveInfo | undefined = undefined;
+
+  const findInteractiveInfo = (activity: Activity) => {
+    activity.pages.forEach(page => {
+      page.sections.forEach(section => {
+        section.embeddables.forEach(embeddable => {
+          if (embeddable.ref_id === embeddableRefId) {
+            interactiveInfo = {
+              activityName: activity.name,
+              pageName: page.name === null ? undefined : page.name,
+              pageNumber: page.position
+            };
+          }
+        });
+      });
+    });
+  };
+
+  if (laraData.sequence) {
+    laraData.sequence.activities.forEach(findInteractiveInfo);
+  } else if (laraData.activity) {
+    findInteractiveInfo(laraData.activity);
+  }
+
+  return interactiveInfo;
+};
+
+// adapted from portal-report answer-utils.tsx#hasReponse
+export const answerHasResponse = (answer: WrappedDBAnswer, authoredState?: any): boolean => {
+  const { interactiveState, meta: { attachments, type, submitted } } = answer;
+  const hasAttachments = !!(attachments && Object.keys(attachments).length > 0);
+  const isNotInteractiveStateAnswer = type !== "interactive_state";
+  const hasInteractiveStateKeys = Object.keys(interactiveState).length > 0;
+
+  // required questions need to be submitted to be marked as answered
+  if (authoredState?.required && !submitted) {
+    return false;
+  }
+
+  return hasAttachments || isNotInteractiveStateAnswer || hasInteractiveStateKeys;
 };

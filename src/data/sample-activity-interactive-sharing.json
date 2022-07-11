@@ -1,39 +1,34 @@
 {
-  "description": "<p>Test activity for reporting</p>",
+  "background_image": null,
+  "fixed_width_layout": "1100px",
+  "description": "",
   "editor_mode": 0,
+  "id": 21316,
   "layout": 0,
-  "name": "Simple Test for Reporting",
+  "name": "Test Interactive Sharing Plugin",
   "notes": "",
-  "project": {
-    "about": "",
-    "footer": "",
-    "help": "",
-    "logo_ap": "",
-    "logo_lara": "",
-    "project_key": "default",
-    "title": "Default",
-    "url": ""
-  },
   "related": "",
+  "runtime": "Activity Player",
   "show_submit_button": true,
   "student_report_enabled": true,
   "thumbnail_url": "",
   "time_to_complete": null,
   "version": 1,
   "theme_name": null,
-  "background_image": null,
+  "project": null,
   "pages": [
     {
       "additional_sections": {},
       "embeddable_display_mode": "stacked",
+      "id": 310563,
       "is_completion": false,
       "is_hidden": false,
-      "layout": "l-6040",
+      "layout": "l-full-width",
       "name": null,
       "position": 1,
       "show_header": false,
       "show_info_assessment": true,
-      "show_interactive": true,
+      "show_interactive": false,
       "show_sidebar": false,
       "sidebar": null,
       "sidebar_title": "Did you know?",
@@ -41,26 +36,9 @@
       "embeddables": [
         {
           "embeddable": {
-            "default_text": "hi",
-            "give_prediction_feedback": false,
-            "hint": "<p>hint</p>",
-            "is_full_width": false,
-            "is_hidden": false,
-            "is_prediction": false,
-            "name": "Original OR Test",
-            "prediction_feedback": "",
-            "prompt": "<p>why does ...</p>",
-            "show_in_featured_question_report": true,
-            "type": "Embeddable::OpenResponse",
-            "ref_id": "1-Embeddable::OpenResponse"
-          },
-          "section": null
-        },
-        {
-          "embeddable": {
-            "name": "Image Question Test",
+            "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"image_question\",\"imageFit\":\"shrinkBackgroundToCanvas\",\"imagePosition\":\"center\",\"prompt\":\"<p>Try to draw a cat</p>\",\"answerPrompt\":\"What does it look like?\"}",
+            "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EA simple open response question\u003C/p\u003E\"}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -79,36 +57,60 @@
             "inherit_image_url": true,
             "custom_image_url": null,
             "library_interactive": {
-              "hash": "a5d53c7ce6f9ec9a143fd06bff9108b42f3ff7ff",
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/branch/interactive-lightbox/image-question",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
-                "description": "Image Question",
+                "description": "This shouldn't be used by any real activities it is still under development.",
                 "enable_learner_state": true,
                 "full_window": false,
                 "has_report_url": false,
                 "image_url": null,
-                "name": "Image Question",
+                "name": "Open Response (master)",
                 "native_height": 435,
                 "native_width": 576,
                 "no_snapshots": false,
-                "show_delete_data_button": true,
+                "show_delete_data_button": false,
                 "thumbnail_url": "",
                 "customizable": false,
                 "authorable": true
               }
             },
             "type": "ManagedInteractive",
-            "ref_id": "26-ManagedInteractive",
+            "ref_id": "4362-ManagedInteractive",
             "linked_interactives": []
           },
-          "section": "interactive_box"
+          "section": null
+        },
+        {
+          "embeddable": {
+            "plugin": {
+              "id": 6724,
+              "description": null,
+              "author_data": "{}",
+              "approved_script_label": "laraSharing",
+              "component_label": "interactives",
+              "approved_script": {
+                "name": "Sharing",
+                "url": "https://lara-sharing-plugin.concord.org/plugin.js",
+                "label": "laraSharing",
+                "description": "This plugin provides the sharing component",
+                "version": 3,
+                "json_url": "https://lara-sharing-plugin.concord.org/manifest.json",
+                "authoring_metadata": "{\"components\":[{\"label\":\"interactives\",\"name\":\"Interactives\",\"scope\":\"embeddable-decoration\",\"guiAuthoring\":true,\"decorates\":[\"MwInteractive\",\"ManagedInteractive\"]}]}"
+              }
+            },
+            "is_hidden": false,
+            "is_full_width": true,
+            "type": "Embeddable::EmbeddablePlugin",
+            "ref_id": "6373-Embeddable::EmbeddablePlugin",
+            "embeddable_ref_id": "4362-ManagedInteractive"
+          },
+          "section": null
         }
-      ],
-      "id": 1000
+      ]
     }
   ],
   "plugins": [],

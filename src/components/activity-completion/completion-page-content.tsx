@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import IconCheck from "../../assets/svg-icons/icon-check-circle.svg";
 import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
-import { showReport } from "../../utilities/report-utils";
+import { isValidReportLink, showReport } from "../../utilities/report-utils";
 import { Sequence, Activity, EmbeddableType, Page } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
-import { watchAllAnswers } from "../../firebase-db";
+import { watchAllAnswers, WrappedDBAnswer } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
-import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
+import { answerHasResponse, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
 import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
 
@@ -29,7 +29,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const { activity, activityName, onPageChange, showStudentReport,
     sequence, activityIndex, onActivityChange, onShowSequence } = props;
 
-  const [answers, setAnswers] = useState<any>();
+  const [answers, setAnswers] = useState<WrappedDBAnswer[]>();
 
   const handleExit = () => {
     if (sequence) {
@@ -59,23 +59,27 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const activityProgress = (currentActivity: Activity) => {
     let numAnswers = 0;
     let numQuestions = 0;
+    const visiblePages = currentActivity.pages.filter(page => !page.is_hidden);
     const questionsStatus = Array<IQuestionStatus>();
-    currentActivity.pages.forEach((page: Page, index) => {
+    visiblePages.forEach((page: Page, index) => {
       const pageNum = index + 1;
-      page.sections.forEach((section) => {
-        section.embeddables.forEach((embeddable: EmbeddableType) => {
+      const visibleSections = page.sections.filter(section => !section.is_hidden);
+      visibleSections.forEach((section) => {
+        const visibleEmbeddables = section.embeddables.filter(embeddable => !embeddable.is_hidden);
+        visibleEmbeddables.forEach((embeddable: EmbeddableType) => {
           if (isQuestion(embeddable)) {
             numQuestions++;
             const questionId = refIdToAnswersQuestionId(embeddable.ref_id);
-            const authored_state = embeddable.authored_state
+            const authoredState = embeddable.authored_state
                                     ? JSON.parse(embeddable.authored_state)
                                     : {};
             let questionAnswered = false;
-            if (answers?.find((answer: any) => answer.meta.question_id === questionId)) {
+            const answer = answers?.find(a => a.meta.question_id === questionId);
+            if (answer && answerHasResponse(answer, authoredState)) {
               numAnswers++; //Does't take into account if user erases response after saving
               questionAnswered = true;
             }
-            const questionStatus = { number: numQuestions, page: pageNum, prompt: authored_state.prompt, answered: questionAnswered };
+            const questionStatus = { number: numQuestions, page: pageNum, prompt: authoredState.prompt, answered: questionAnswered };
             questionsStatus.push(questionStatus);
           }
         });
@@ -163,7 +167,10 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           <div className="exit-container" data-cy="exit-container">
             <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
             <SummaryTable questionsStatus={progress.questionsStatus} />
-            {showStudentReport && <button className="button show-my-work" onClick={handleShowAnswers}><IconCompletion width={24} height={24} />Show My Work</button>}
+            {showStudentReport && <button className={`button show-my-work ${isValidReportLink() ? "" : "disabled"}`}
+                                          onClick={handleShowAnswers}><IconCompletion width={24} height={24} />
+                                    Show My Work
+                                  </button>}
             {(!sequence || isLastActivityInSequence) &&
               <div className="exit-button">
                 <span>or</span>

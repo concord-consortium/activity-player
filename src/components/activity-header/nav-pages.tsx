@@ -1,9 +1,12 @@
 import React from "react";
+import classNames from "classnames";
+import { queryValue } from "../../utilities/url-query";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
 import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 import { Page } from "../../types";
 import ArrowPrevious from "../../assets/svg-icons/arrow-previous-icon.svg";
 import ArrowNext from "../../assets/svg-icons/arrow-next-icon.svg";
+import HiddenIcon from "../../assets/svg-icons/hidden-icon.svg";
 
 import "./nav-pages.scss";
 
@@ -51,9 +54,10 @@ export class NavPages extends React.Component <IProps, IState> {
     const { pageChangeInProgress } = this.state;
     return (
       <button
-        className={`page-button ${pageChangeInProgress || currentPage === 0 ? "disabled" : ""}`}
-        onClick={this.handleChangePage(currentPage - 1)}
+        className={`page-button arrow-button ${pageChangeInProgress || currentPage === 0 ? "last-page" : ""}`}
+        onClick={this.handlePageChangeRequest(currentPage - 1)}
         aria-label="Previous page"
+        data-cy="previous-page-button"
       >
         <ArrowPrevious className="icon"/>
       </button>
@@ -62,12 +66,19 @@ export class NavPages extends React.Component <IProps, IState> {
   private renderNextButton = () => {
     const { currentPage, pages, lockForwardNav } = this.props;
     const { pageChangeInProgress } = this.state;
-    const totalPages = pages.length;
+    const visiblePages = queryValue("author-preview") ? pages : pages.filter((page) => !page.is_hidden);
+    const totalPages = visiblePages.length;
+    // 'disabled' class disables navigation but still allows user to click on arrows or page numbers for warning modal to come up
+    // 'last-page' class disables pointer events.
+    const nextButtonClass = classNames("page-button", "arrow-button",
+                                        {"disabled": pageChangeInProgress || lockForwardNav || currentPage === totalPages},
+                                        {"last-page": currentPage === totalPages});
     return (
       <button
-        className={`page-button ${pageChangeInProgress || currentPage === totalPages || lockForwardNav ? "disabled" : ""}`}
-        onClick={this.handleChangePage(currentPage + 1)}
+        className={nextButtonClass}
+        onClick={this.handlePageChangeRequest(currentPage + 1)}
         aria-label="Next page"
+        data-cy="next-page-button"
       >
         <ArrowNext className="icon"/>
       </button>
@@ -77,7 +88,7 @@ export class NavPages extends React.Component <IProps, IState> {
   private renderButtons = () => {
     const { currentPage, pages, lockForwardNav } = this.props;
     const { pageChangeInProgress } = this.state;
-    const visiblePages = pages.filter((page) => !page.is_hidden);
+    const visiblePages = queryValue("author-preview") ? pages : pages.filter((page) => !page.is_hidden);
     const totalPages = visiblePages.length;
     const maxPagesLeftOfCurrent = currentPage - 1;
     const maxPagesRightOfCurrent = totalPages - currentPage;
@@ -94,20 +105,24 @@ export class NavPages extends React.Component <IProps, IState> {
     }
 
     return (
-      visiblePages.map((page: any, pageIndex: number) => {
+      visiblePages.map((page: Page, pageIndex: number, pageArray: Page[]) => {
+        const hiddenPagesBefore = pageArray.filter((p, index) => p.is_hidden && index < pageIndex ).length;
         const pageNum = pageIndex + 1;
+        const pageLabel = pageNum - hiddenPagesBefore;
         const currentClass = currentPage === pageNum ? "current" : "";
         const completionClass = page.is_completion ? "completion-page-button" : "";
         const disabledClass = (pageChangeInProgress || lockForwardNav && currentPage < pageNum) ? "disabled" : "";
-        const buttonContent = page.is_completion
-                              ? <IconCompletion className={`icon ${currentClass}`} width={28} height={28} />
-                              : pageNum;
+        const buttonContent = page.is_hidden
+                                ? <HiddenIcon className={`icon ${currentClass}`} width={28} height={28}/>
+                                : page.is_completion
+                                    ? <IconCompletion className={`icon ${currentClass}`} width={28} height={28} />
+                                    : pageLabel;
 
         return (
           pageNum >= minPage && pageNum <= maxPage
             ? <button
                 className={`page-button ${currentClass} ${completionClass} ${disabledClass}`}
-                onClick={this.handleChangePage(pageNum)}
+                onClick={this.handlePageChangeRequest(pageNum)}
                 key={`page ${pageNum}`}
                 data-cy={`${page.is_completion ? "nav-pages-completion-page-button" : "nav-pages-button"}`}
                 aria-label={`Page ${pageNum}`}
@@ -124,7 +139,11 @@ export class NavPages extends React.Component <IProps, IState> {
     const currentClass = this.props.currentPage === 0 ? "current" : "";
     const { pageChangeInProgress } = this.state;
     return (
-      <button className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`} onClick={this.handleChangePage(0)} aria-label="Home">
+      <button className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`}
+              onClick={this.handlePageChangeRequest(0)}
+              aria-label="Home"
+              data-cy="home-button"
+      >
         <IconHome
           className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
           width={28}
@@ -134,9 +153,12 @@ export class NavPages extends React.Component <IProps, IState> {
     );
   }
 
-  private handleChangePage = (page: number) => () => {
-    if (!this.state.pageChangeInProgress) {
-      this.setState({ pageChangeInProgress: true }, () => {
+  private handlePageChangeRequest = (page: number) => () => {
+    const { currentPage, lockForwardNav } = this.props;
+    const { pageChangeInProgress } = this.state;
+    if (!pageChangeInProgress) {
+      const allowPageChange = page < currentPage || !lockForwardNav;
+      this.setState({ pageChangeInProgress: allowPageChange }, () => {
         this.props.onPageChange(page);
       });
     }

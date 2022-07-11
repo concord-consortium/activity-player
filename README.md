@@ -61,7 +61,7 @@ To deploy a production release:
 2. Compute asset sizes.
     1. Run `npm install`
     2. Run `npm run build`
-    3. Look at file sizes with `ls -a dist/assets`
+    3. Look at file sizes with `ls -la dist/assets`
     4. Add file sizes to CHANGES.md
     5. Look at previous version file sizes listed in the previous release notes in GitHub. Compute the percent change `(new - prev) / prev * 100`
 3. Update package, commit, and tag
@@ -138,6 +138,10 @@ Inside of your `package.json` file:
 * preview:           prevent running in anonymous datasaving mode
 * enableFirestorePersistence: uses local offline firestore cache only
 * clearFirestorePersistence: clears local offline firestore cache
+
+#### Internal parameters (used in Cypress tests)
+* __cypressLoggedIn:  triggers logged in code path for Cypress tests
+* __skipGetApRun:     skip the ap run load when loading a page
 
 ## License
 

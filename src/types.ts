@@ -1,4 +1,5 @@
 import { IReadableAttachmentInfo } from "@concord-consortium/interactive-api-host";
+import { IInteractiveStateProps } from "@concord-consortium/lara-interactive-api";
 
 export type Mode = "runtime" | "authoring" | "report";
 
@@ -62,10 +63,11 @@ export interface EmbeddableBase {
   interactiveState?: any | null;
   url_fragment?: string | null,
   is_hidden: boolean;
-  is_half_width: boolean;
+  is_half_width?: boolean;
   ref_id: string;
   embeddable_ref_id?: string;
   column?: "primary" | "secondary" | null;
+  aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX";
 }
 
 export interface IManagedInteractive extends EmbeddableBase {
@@ -87,6 +89,7 @@ export interface IManagedInteractive extends EmbeddableBase {
   inherit_image_url?: boolean;
   custom_image_url?: string | null;
   linked_interactives?: { ref_id: string, label: string }[];
+  linked_interactive?: { ref_id: string };
 }
 
 export interface IMwInteractive extends EmbeddableBase {
@@ -97,6 +100,12 @@ export interface IMwInteractive extends EmbeddableBase {
   native_width?: number;
   enable_learner_state?: boolean;
   linked_interactives?: { ref_id: string, label: string }[];
+  linked_interactive?: { ref_id: string };
+  aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX";
+  show_delete_data_button?: boolean;
+  click_to_play?: boolean;
+  click_to_play_prompt?: string | null;
+  image_url?: string | null;
 }
 
 export interface IEmbeddableXhtml extends EmbeddableBase {
@@ -111,7 +120,6 @@ export interface IEmbeddablePlugin extends EmbeddableBase {
 }
 
 export type EmbeddableType = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin;
-
 export interface SectionType {
   secondary_column_display_mode: "stacked" | "carousel";
   is_hidden: boolean;
@@ -136,8 +144,13 @@ export interface Page {
 
 export interface Project {
   about: string | null;
+  collaborators: string | null;
+  collaborators_image_url: string | null;
+  contact_email: string | null;
+  copyright: string | null;
+  copyright_image_url: string | null;
   footer: string | null;
-  help: string | null;
+  funders_image_url: string | null;
   logo_ap: string | null;
   logo_lara: string | null;
   project_key: string;
@@ -166,6 +179,8 @@ export interface Activity {
   export_site?: string | null;
   pages: Page[];
   position?: number | null;
+  fixed_width_layout?: "ipad_friendly" | "1100px";
+  defunct?: boolean;
 }
 
 export interface Sequence {
@@ -181,6 +196,8 @@ export interface Sequence {
   activities: Activity[];
   type: string;
   export_site: string | null;
+  fixed_width_layout?: "ipad_friendly" | "1100px";
+  defunct?: boolean;
 }
 
 export interface IReportState {
@@ -188,6 +205,10 @@ export interface IReportState {
   mode: "report";
   authoredState: string;
   interactiveState: string;
+  interactive: {
+    id: string;
+    name: string;
+  }
 }
 
 /**
@@ -195,6 +216,7 @@ export interface IReportState {
  * keeps no user ids of its own.
  */
 export interface ILTIPartial {
+  created?: string;
   platform_id: string;      // portal
   platform_user_id: string;
   context_id: string;       // class hash
@@ -205,6 +227,9 @@ export interface ILTIPartial {
   tool_id: string;
    // This is not an LTI property but it is required in our authenticated answers
   remote_endpoint: string;
+  // These are not LTI properties but are required to track collaborations
+  collaborators_data_url?: string;
+  collaboration_owner_id?: string;
 }
 
 export interface IAnonymousMetadataPartial {
@@ -223,6 +248,7 @@ export interface IAnonymousMetadataPartial {
  * https://github.com/concord-consortium/lara/blob/c40304a14ef495acdf4f9fd09ea892c7cc98247b/app/models/interactive_run_state.rb#L110
  */
 export interface IExportableAnswerMetadataBase {
+  created?: string;
   question_id: string;    // converted from refId (e.g. "managed_interactive_404")
   question_type: string;
   id: string;             // randomly generated id (e.g. uuid)
@@ -281,3 +307,35 @@ export interface IAnonymousLearnerPluginState extends IAnonymousMetadataPartial 
   pluginId: number;
   state: string;
 }
+
+export interface ILegacyLinkedInteractiveState {
+  hasLinkedInteractive?: boolean;
+  linkedState?: any;
+  allLinkedStates?: IInteractiveStateProps[];
+  externalReportUrl?: string;
+  interactive?: {
+    id: string;
+    name: string;
+  }
+}
+
+export interface IBaseApRun {
+  sequence_activity: string | null;
+  page_id: number;
+  updated_at: number;
+  created_at: number;
+}
+export interface IAnonymousApRun extends IBaseApRun {
+  type: "anonymous";
+  run_key: string;
+}
+
+export interface IAuthenticatedUserApRun extends IBaseApRun {
+  type: "authenticated";
+  platform_id: string;
+  resource_url: string;
+  context_id: string;
+  platform_user_id: string;
+}
+
+export type IApRun = IAnonymousApRun | IAuthenticatedUserApRun;

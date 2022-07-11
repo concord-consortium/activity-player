@@ -1,7 +1,7 @@
 @import "../vars.scss";
 
 .footer {
-  width: $content-width;
+  width: 100%;
   box-sizing: border-box;
   font-size: 18px;
   color: white;
@@ -13,13 +13,45 @@
     color: white;
   }
 
-  .footer-logo-container {
-    background-color: white;
-  }
-  .footer-logo {
-    line-height: 0;
-    vertical-align: middle;
-    margin: 15px;
-  }
+  .footer-text {
 
+    .footer-text-copyright {
+      min-height: 50px;
+
+      img.copyright {
+        float: left;
+        height: auto;
+        margin: 5px 15px 5px 0;
+        max-height: 42px;
+        max-width: 120px;
+        width: auto;
+      }
+    }
+    .footer-text-collaborators {
+      min-height: 50px;
+
+      img.funder {
+        float: left;
+        height: auto;
+        margin: 5px 15px 5px 0;
+        max-height: 50px;
+        max-width: 120px;
+        min-width: 50px;
+        width: auto;
+      }
+    }
+    .footer-text-collaborators-image {
+      height: 50px;
+      margin: 15px auto;
+      width: 900px;
+
+      img {
+        height: auto;
+        width: 100%;
+      }
+    }
+    .footer-text-contact {
+      text-align: center;
+    }
+  }
 }

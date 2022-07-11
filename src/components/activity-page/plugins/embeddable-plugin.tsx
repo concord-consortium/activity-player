@@ -8,13 +8,18 @@ import "./embeddable-plugin.scss";
 
 interface IProps {
   embeddable: IEmbeddablePlugin;
+  pageNumber?: number;
   pluginsLoaded: boolean;
+  isActivityLevelPlugin?: boolean;
 }
 
 export const EmbeddablePlugin: React.FC<IProps> = (props) => {
-    const { embeddable, pluginsLoaded } = props;
+    const { embeddable, pluginsLoaded, pageNumber, isActivityLevelPlugin } = props;
+    // Checking if the embeddable is glossary because the glossary plugin has different
+    // styling from other embeddables.
     const divTarget = useRef<HTMLInputElement>(null);
     const LARA = useContext(LaraGlobalContext);
+
     useEffect(() => {
       const pluginContext: IPartialEmbeddablePluginContext = {
         LARA,
@@ -27,6 +32,11 @@ export const EmbeddablePlugin: React.FC<IProps> = (props) => {
       }
     }, [LARA, embeddable, pluginsLoaded]);
     return (
-      <div className="plugin-container" ref={divTarget} data-cy="embeddable-plugin" key={embeddable.ref_id} />
+      <div
+        className={isActivityLevelPlugin ? "activity-level-plugin-container" : "plugin-container"}
+        data-cy={"embeddable-plugin"}
+        key={pageNumber ? pageNumber : embeddable.ref_id} // teacher edition does not pass in a page number
+        ref={divTarget}
+      />
     );
   };

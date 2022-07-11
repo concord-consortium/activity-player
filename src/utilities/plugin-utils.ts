@@ -136,11 +136,18 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
 
   let embeddableContext: IEmbeddableContextOptions | null = null;
   if (wrappedEmbeddable && wrappedEmbeddableContainer) {
+    let clickToPlay = false;
+    if (wrappedEmbeddable.type === "ManagedInteractive") {
+      clickToPlay = !!wrappedEmbeddable.library_interactive?.data.click_to_play;
+    } else if (wrappedEmbeddable.type === "MwInteractive") {
+      clickToPlay = !!wrappedEmbeddable.click_to_play;
+    }
+
     embeddableContext = {
       container: wrappedEmbeddableContainer,
       laraJson: wrappedEmbeddable,
       interactiveStateUrl: null,
-      interactiveAvailable: true,
+      interactiveAvailable: !clickToPlay,
       sendCustomMessage
     };
   }
@@ -173,16 +180,17 @@ export const initializePlugin = (context: IEmbeddablePluginContext) => {
   LARA.Plugins.initPlugin(pluginLabel, pluginContext);
 };
 
-export const getGlossaryEmbeddable = (activity: Activity) => {
-  const glossaryPlugin = activity.plugins.find((activityPlugin: Plugin) => activityPlugin.approved_script_label === "glossary");
-  const embeddablePlugin: IEmbeddablePlugin | undefined = glossaryPlugin
-    ? { type: "Embeddable::EmbeddablePlugin",
-        plugin: glossaryPlugin,
+export const getActivityLevelPlugins = (activity: Activity) => {
+  const plugins = activity.plugins;
+  const activityLevelPlugins: IEmbeddablePlugin[] =
+    plugins.map((plugin) => {
+      return {
+        type: "Embeddable::EmbeddablePlugin",
+        plugin,
         is_hidden: false,
         is_half_width: false,
-        ref_id: "" // no ref_id on the glossary plugin
-      }
-    : undefined;
-  return embeddablePlugin;
+        ref_id: "" // no ref_id's on embeddable plugins except for teacher edition
+      };
+     });
+  return activityLevelPlugins;
 };
-

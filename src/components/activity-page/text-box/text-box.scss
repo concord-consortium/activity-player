@@ -3,6 +3,8 @@
 .textbox {
   p {
     margin: 20px 0;
+    overflow-wrap: break-word;
+    overflow: hidden;
   }
   li {
     margin: .75em 0;

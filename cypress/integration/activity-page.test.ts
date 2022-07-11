@@ -33,8 +33,17 @@ context("Test the overall app", () => {
   describe("Info/Assess (secondary embeddables)",()=>{
     it("verify textbox",()=>{
       activityPage.getNavPage(3).click();
+      cy.wait(1);
       activityPage.getSecondaryEmbeddable("text-box").eq(1).scrollIntoView()
         .should("be.visible").and("contain","Duis vitae ultrices augue, eu fermentum elit.");
+    });
+    it("verify collapsible column",()=>{
+      activityPage.getNavPage(2).click();
+      activityPage.getCollapsibleHeader().should("contain", "Hide");
+      activityPage.getCollapsibleHeader().click();
+      activityPage.getCollapsibleHeader().should("have.class", "collapsed").and("contain", "Show");
+      activityPage.getCollapsibleHeader().click();
+      activityPage.getCollapsibleHeader().should("have.not.class", "collapsed").and("contain", "Hide");
     });
   });
   describe("Required questions",()=>{
@@ -43,9 +52,20 @@ context("Test the overall app", () => {
       cy.wait(1000);
       activityPage.getNavPage(6).should("have.class", "disabled");
       activityPage.getNavPage(6).click();
+      cy.wait(1000);
       activityPage.getModalDialogMessage().should("have.length", 1);
       activityPage.getModalDialogClose().click();
       activityPage.getModalDialogMessage().should("have.length", 0);
+    });
+  });
+  describe("First and last page",()=>{
+    it("verify arrow navigation is disabled when on the first or last page",()=>{
+      activityPage.getHomeButton().eq(1).click();
+      cy.wait(1000);
+      activityPage.getPreviousPageButton().should("have.class", "last-page");
+      activityPage.getCompletionPage().eq(0).click();
+      cy.wait(1000);
+      activityPage.getNextPageButton().should("have.class", "last-page");
     });
   });
   describe("Question Interactives",()=>{
@@ -53,6 +73,18 @@ context("Test the overall app", () => {
       cy.visit("?activity=sample-activity-1&preview");
       activityPage.getNavPage(2).click();
       getInIframe("body", "[data-cy=choices-container]").should("be.visible");
+    });
+  });
+  describe("Reset buttons",()=>{
+    it("verify we can load an iFrame interactive that has a reset button",()=>{
+      cy.visit("?activity=sample-activity-1100px&preview");
+      activityPage.getNavPage(1).click();
+      cy.get("[data-cy=reset-button]").scrollIntoView().should("be.visible");
+    });
+    it("verify some iFrame interactives may not have a reset button",()=>{
+      cy.visit("?activity=sample-activity-1100px&preview");
+      activityPage.getNavPage(2).click();
+      cy.get("[data-cy=reset-button]").should("not.exist");
     });
   });
   describe("Hidden pages",()=>{
@@ -92,5 +124,45 @@ context("Test the teacher edition plugin", () => {
     it("should have the right number of window shades", () => {
       cy.get(".window-shade--windowShade--TETipsPluginV1").should("have.length", 4);
     });
+  });
+});
+
+context("Test fixed width settings", () => {
+  it("defaults to 1100px", () => {
+    cy.visit("?activity=sample-activity-multiple-layout-types&preview");
+    activityPage.getPage(5).click();
+    activityPage.getActivity()
+      .should("be.visible")
+      .and("have.length", 1)
+      .and("have.class", "fixed-width-1100px");
+    activityPage.getActivity()
+      .first()
+      .invoke("css", "width")
+      .then(str => parseInt(str as unknown as string, 10))
+      .should("eq", 1100);
+  });
+
+  it("shows responsive if a section in the page is responsive", () => {
+    cy.visit("?activity=sample-activity-multiple-layout-types&preview");
+    activityPage.getPage(2).click();
+    activityPage.getActivity()
+      .should("be.visible")
+      .and("have.length", 1)
+      .and("have.class", "responsive")
+      .and("have.not.class", "fixed-width-1100px");
+  });
+
+  it("uses 960px for iPad friendly activities", () => {
+    cy.visit("?activity=sample-activity-ipad-friendly&preview");
+    activityPage.getPage(2).click();
+    activityPage.getActivity()
+      .should("be.visible")
+      .and("have.length", 1)
+      .and("have.class", "fixed-width-ipad-friendly");
+    activityPage.getActivity()
+      .first()
+      .invoke("css", "width")
+      .then(str => parseInt(str as unknown as string, 10))
+      .should("eq", 960);
   });
 });

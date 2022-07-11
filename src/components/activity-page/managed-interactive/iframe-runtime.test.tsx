@@ -1,6 +1,6 @@
 import React from "react";
 import { IframeRuntime } from "./iframe-runtime";
-import { act, configure, render } from "@testing-library/react";
+import { act, configure, fireEvent, render } from "@testing-library/react";
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 
 configure({ testIdAttribute: "data-cy" });
@@ -48,10 +48,12 @@ describe("IframeRuntime component", () => {
 
   beforeEach(() => {
     jest.useFakeTimers();
+    global.confirm = jest.fn(() => true) as jest.Mock<any>;
   });
 
   afterEach(() => {
     jest.useRealTimers();
+    jest.restoreAllMocks();
   });
 
   it("renders component", async () => {
@@ -69,12 +71,13 @@ describe("IframeRuntime component", () => {
     const mockSetSendCustomMessage = jest.fn((sendMsg: CustomMsgSender) => {
       mockSendCustomMessage = sendMsg;
     });
-    const { getByTestId } = render(
+    const testIframe = render(
       <IframeRuntime
         url={"https://concord.org/"}
         id={"123-Interactive"}
         authoredState={null}
         initialInteractiveState={null}
+        legacyLinkedInteractiveState={null}
         setInteractiveState={mockSetInteractiveState}
         setSupportedFeatures={mockSetSupportedFeatures}
         setNewHint={mockSetNewHint}
@@ -85,17 +88,79 @@ describe("IframeRuntime component", () => {
         setSendCustomMessage={mockSetSendCustomMessage}
         setNavigation={mockSetNavigation}
         iframeTitle="Interactive content"
+        showDeleteDataButton={true}
+        answerMetadata={{
+          type: "interactive_state",
+          answer: JSON.stringify({foo: "bar"}),
+          question_id: "interactive_123",
+          question_type: "interactive",
+          id: "test1234",
+          submitted: true,
+          report_state: "",
+          attachments: {
+            "test.png": {
+              publicPath: "/foo/bar/test.png",
+              folder: {
+                id: "123",
+                ownerId: "testuser",
+              },
+              contentType: "image/png",
+            },
+            "test.mp3": {
+              publicPath: "/foo/bar/test.mp3",
+              folder: {
+                id: "123",
+                ownerId: "testuser",
+              },
+              contentType: "audio/mp3",
+            }
+          }
+        }}
       />);
-    expect(getByTestId("iframe-runtime")).toBeDefined();
+    expect(testIframe.getByTestId("iframe-runtime")).toBeDefined();
     // allow initialization to complete
     jest.runAllTimers();
+
+    // initInteractive is posted to the iframe
     expect(lastPost()).toBe("initInteractive");
+    expect(lastPostData()).toStrictEqual({
+      activityName: undefined,
+      attachments: {
+        "test.mp3": {
+          contentType: "audio/mp3",
+        },
+        "test.png": {
+          contentType: "image/png",
+        },
+      },
+      authInfo: {email: "", loggedIn: false, provider: ""},
+      authoredState: null,
+      classInfoUrl: "",
+      collaboratorUrls: null,
+      error: "",
+      externalReportUrl: undefined,
+      globalInteractiveState: null,
+      hostFeatures: {getFirebaseJwt: {version: "1.0.0"}, modal: {alert: false, dialog: true, lightbox: true, version: "1.0.0"}},
+      interactive: {id: "123-Interactive", name: ""},
+      interactiveState: null,
+      interactiveStateUrl: "",
+      linkedInteractives: [],
+      mode: "runtime",
+      pageName: undefined,
+      pageNumber: undefined,
+      runRemoteEndpoint: undefined,
+      themeInfo: {colors: {colorA: "", colorB: ""}},
+      updatedAt: undefined,
+      version: 1
+    });
     expect(mockSetSendCustomMessage).toHaveBeenCalled();
 
     act(() => {
       mockSendCustomMessage({ type: "custom", content: {} });
     });
     expect(lastPost()).toBe("customMessage");
+
+    expect(mockSetInteractiveState).not.toHaveBeenCalled();
 
     act(() => {
       dispatchMessageFromChild("interactiveState", {});
@@ -109,9 +174,34 @@ describe("IframeRuntime component", () => {
     expect(mockSetInteractiveState).toHaveBeenCalledTimes(1);
 
     act(() => {
+      dispatchMessageFromChild("interactiveState", "touch");
+    });
+    // "touch" message results in another call
+    expect(mockSetInteractiveState).toHaveBeenCalledTimes(2);
+
+    act(() => {
+      dispatchMessageFromChild("interactiveState", {});
+    });
+    // saving the same interactive state doesn't result in another call
+    expect(mockSetInteractiveState).toHaveBeenCalledTimes(2);
+
+    act(() => {
+      dispatchMessageFromChild("interactiveState", {foo: "bar"});
+    });
+    // saving a different interactive state results in another call
+    expect(mockSetInteractiveState).toHaveBeenCalledTimes(3);
+
+    expect(testIframe.getByTestId("iframe-runtime").children[0].tagName).toBe("IFRAME");
+    // width is not set as the containerWidth prop is undefined due to window.innerHeight not being set in this test
+    // height is the default of 300px
+    expect(testIframe.getByTestId("iframe-runtime").children[0]).not.toHaveAttribute("width");
+    expect(testIframe.getByTestId("iframe-runtime").children[0]).toHaveAttribute("height", "300");
+    act(() => {
       dispatchMessageFromChild("height", 960);
     });
-    // TODO: verify that height was handled properly
+    // both width and height are set.  width is 100% due to the interactive posting its height to the iframe
+    expect(testIframe.getByTestId("iframe-runtime").children[0]).toHaveAttribute("width", "100%");
+    expect(testIframe.getByTestId("iframe-runtime").children[0]).toHaveAttribute("height", "960");
 
     act(() => {
       dispatchMessageFromChild("supportedFeatures", { features: { aspectRatio: 1.5 } });
@@ -197,5 +287,14 @@ describe("IframeRuntime component", () => {
       dispatchMessageFromChild("log", {});
     });
     expect(mockLog).toHaveBeenCalledTimes(1);
+
+    const resetButton = testIframe.getByTestId("reset-button");
+    expect(resetButton).toBeDefined();
+    expect(mockSetInteractiveState).toHaveBeenCalledTimes(3);
+    act(() => {
+      fireEvent.click(resetButton);
+    });
+    expect(global.confirm).toHaveBeenCalledTimes(1);
+    expect(mockSetInteractiveState).toHaveBeenCalledTimes(5);
   });
 });

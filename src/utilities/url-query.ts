@@ -31,11 +31,22 @@ export const queryValueBoolean = (prop: string): boolean => {
  * without a reload or history push, but optionally with a reload.
  */
 export const setQueryValue = (prop: string, value: any, reload = false) => {
-  const parsed = queryString.parse(location.search);
+  const parsed = queryString.parse(window.location.search);
   parsed[prop] = value;
   const newQueryString = queryString.stringify(parsed);
   if (reload) {
-    location.search = queryString.stringify(parsed);
+    window.location.search = queryString.stringify(parsed);
+  } else {
+    window.history.replaceState(null, "", "?" + newQueryString);
+  }
+};
+
+export const deleteQueryValue = (prop: string, reload = false) => {
+  const parsed = queryString.parse(window.location.search);
+  delete parsed[prop];
+  const newQueryString = queryString.stringify(parsed);
+  if (reload) {
+    window.location.search = queryString.stringify(parsed);
   } else {
     window.history.replaceState(null, "", "?" + newQueryString);
   }
