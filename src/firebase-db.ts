@@ -267,7 +267,7 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   }
 
   let answerDocData: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata;
-
+  console.log(portalData);
   if (portalData.type === "authenticated") {
     const ltiAnswer: LTIRuntimeAnswerMetadata = {
       ...answer,
