@@ -370,50 +370,33 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
           <div className="hint question-txt" data-cy="hint">{renderHTML(hint)}</div>
           <div className="close-container">
             <IconArrowUp className={"close"} width={26} height={26}
-              onClick={handleHintClose}
-              onKeyDown={handleHintClose}
-              data-cy="close-hint"
-              tabIndex={0} />
+                        onClick={handleHintClose}
+                        onKeyDown={handleHintClose}
+                        data-cy="close-hint"
+                        tabIndex={0}/>
           </div>
-                data-cy="open-hint"
-                tabIndex={0}>
-                <IconQuestion className="question" height={22} width={22}/>
-              </div>
+        </div>
+      }
+      {clickToPlayOptions && !clickedToPlay
+        ? <ClickToPlay
+            prompt={clickToPlayOptions.prompt}
+            imageUrl={clickToPlayOptions.imageUrl}
+            onClick={handleClickToPlay}
+          />
+        : <>
+            { !activeDialog && interactiveIframeRuntime }
+            {
+              activeDialog &&
+              <Modal isOpen={true} appElement={getModalContainer()} onRequestClose={activeDialog.notCloseable ? undefined : handleCloseDialog}>
+                { interactiveIframeRuntime }
+              </Modal>
             }
-          </div>
-        }
-        { hint &&
-          <div className={`hint-container ${showHint ? "" : "collapsed"}`}>
-            <div className="hint question-txt" data-cy="hint">{renderHTML(hint)}</div>
-            <div className="close-container">
-              <IconArrowUp className={"close"} width={26} height={26}
-                          onClick={handleHintClose}
-                          onKeyDown={handleHintClose}
-                          data-cy="close-hint"
-                          tabIndex={0}/>
-            </div>
-          </div>
-        }
-        {clickToPlayOptions && !clickedToPlay
-          ? <ClickToPlay
-              prompt={clickToPlayOptions.prompt}
-              imageUrl={clickToPlayOptions.imageUrl}
-              onClick={handleClickToPlay}
-            />
-          : <>
-              { !activeDialog && interactiveIframeRuntime }
-              {
-                activeDialog &&
-                <Modal isOpen={true} appElement={getModalContainer()} onRequestClose={activeDialog.notCloseable ? undefined : handleCloseDialog}>
-                  { interactiveIframeRuntime }
-                </Modal>
-              }
-              {
-                activeLightbox && <Lightbox onClose={handleCloseLightbox} {...activeLightbox} />
-              }
-            </>
-        }
-      </div>
+            {
+              activeLightbox && <Lightbox onClose={handleCloseLightbox} {...activeLightbox} />
+            }
+          </>
+      }
+    </div>
     );
   });
 ManagedInteractive.displayName = "ManagedInteractive";
