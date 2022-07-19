@@ -61,7 +61,6 @@ export const getAnswerWithMetadata = (
     interactiveState: unknown,
     embeddable: {ref_id: string, authored_state?: string | null},
     oldAnswerMeta?: IExportableAnswerMetadata): IExportableAnswerMetadata => {
-      console.log(oldAnswerMeta);
   const reportState: IReportState = {
     mode: "report",
     // LARA just stores the raw authored_state, if it is null that is passed right
