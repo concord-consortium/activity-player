@@ -91,8 +91,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const handleNewInteractiveState = (state: any) => {
     // Keep interactive state in sync if iFrame is opened in modal popup
     interactiveState.current = state;
-
-    const exportableAnswer = getAnswerWithMetadata(state, props.embeddable, answerMeta.current);
+    const exportableAnswer =  shouldWatchAnswer && getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, answerMeta.current);
     if (exportableAnswer) {
       createOrUpdateAnswer(exportableAnswer);
     }
@@ -109,8 +108,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
 
   const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation } = props;
   const { authored_state } = embeddable;
-  const [ activeDialog, setActiveDialog ] = useState<IShowDialog | null>(null);
-  const [ activeLightbox, setActiveLightbox ] = useState<IShowLightbox | null>(null);
+  const [activeDialog, setActiveDialog] = useState<IShowDialog | null>(null);
+  const [activeLightbox, setActiveLightbox] = useState<IShowLightbox | null>(null);
   const questionName = embeddable.name ? `: ${embeddable.name}` : "";
   // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
   // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
@@ -124,8 +123,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const aspectRatioMethod = embeddableData?.aspect_ratio_method || "DEFAULT";
   const authoredState = useMemo(() => safeJsonParseIfString(authored_state) || {}, [authored_state]);
   const linkedInteractives = useRef(embeddable.linked_interactives?.length
-                                ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
-                                : undefined);
+    ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
+    : undefined);
   // interactiveId value should always match IDs generated above in the `linkedInteractives` array.
   const interactiveId = embeddable.ref_id;
 
@@ -190,8 +189,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       break;
   }
 
-  const [ showHint, setShowHint ] = useState(false);
-  const [ hint, setHint ] = useState("");
+  const [showHint, setShowHint] = useState(false);
+  const [hint, setHint] = useState("");
   const handleHintClose = () => {
     Logger.log({
       event: LogEventName.toggle_hint,
@@ -349,54 +348,54 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         showDeleteDataButton={showDeleteDataButton}
       />;
 
-    return (
-      <div ref={divTarget} className={miContainerClass} data-cy="managed-interactive">
-        { questionNumber &&
-          <div className="header">
-            Question #{questionNumber}{questionName}
-            { hint &&
-              <div className="question-container"
-                onClick={handleShowHint}
-                onKeyDown={handleShowHint}
-                data-cy="open-hint"
-                tabIndex={0}>
-                <IconQuestion className="question" height={22} width={22}/>
-              </div>
-            }
-          </div>
-        }
-        { hint &&
-          <div className={`hint-container ${showHint ? "" : "collapsed"}`}>
-            <div className="hint question-txt" data-cy="hint">{renderHTML(hint)}</div>
-            <div className="close-container">
-              <IconArrowUp className={"close"} width={26} height={26}
-                          onClick={handleHintClose}
-                          onKeyDown={handleHintClose}
-                          data-cy="close-hint"
-                          tabIndex={0}/>
+  return (
+    <div ref={divTarget} className={miContainerClass} data-cy="managed-interactive">
+      { questionNumber &&
+        <div className="header">
+          Question #{questionNumber}{questionName}
+          {hint &&
+            <div className="question-container"
+              onClick={handleShowHint}
+              onKeyDown={handleShowHint}
+              data-cy="open-hint"
+              tabIndex={0}>
+              <IconQuestion className="question" height={22} width={22} />
             </div>
+          }
+        </div>
+      }
+      { hint &&
+        <div className={`hint-container ${showHint ? "" : "collapsed"}`}>
+          <div className="hint question-txt" data-cy="hint">{renderHTML(hint)}</div>
+          <div className="close-container">
+            <IconArrowUp className={"close"} width={26} height={26}
+                        onClick={handleHintClose}
+                        onKeyDown={handleHintClose}
+                        data-cy="close-hint"
+                        tabIndex={0}/>
           </div>
-        }
-        {clickToPlayOptions && !clickedToPlay
-          ? <ClickToPlay
-              prompt={clickToPlayOptions.prompt}
-              imageUrl={clickToPlayOptions.imageUrl}
-              onClick={handleClickToPlay}
-            />
-          : <>
-              { !activeDialog && interactiveIframeRuntime }
-              {
-                activeDialog &&
-                <Modal isOpen={true} appElement={getModalContainer()} onRequestClose={activeDialog.notCloseable ? undefined : handleCloseDialog}>
-                  { interactiveIframeRuntime }
-                </Modal>
-              }
-              {
-                activeLightbox && <Lightbox onClose={handleCloseLightbox} {...activeLightbox} />
-              }
-            </>
-        }
-      </div>
+        </div>
+      }
+      {clickToPlayOptions && !clickedToPlay
+        ? <ClickToPlay
+            prompt={clickToPlayOptions.prompt}
+            imageUrl={clickToPlayOptions.imageUrl}
+            onClick={handleClickToPlay}
+          />
+        : <>
+            { !activeDialog && interactiveIframeRuntime }
+            {
+              activeDialog &&
+              <Modal isOpen={true} appElement={getModalContainer()} onRequestClose={activeDialog.notCloseable ? undefined : handleCloseDialog}>
+                { interactiveIframeRuntime }
+              </Modal>
+            }
+            {
+              activeLightbox && <Lightbox onClose={handleCloseLightbox} {...activeLightbox} />
+            }
+          </>
+      }
+    </div>
     );
   });
 ManagedInteractive.displayName = "ManagedInteractive";

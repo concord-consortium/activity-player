@@ -280,7 +280,6 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   }
 
   let answerDocData: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata;
-
   if (portalData.type === "authenticated") {
     const ltiAnswer: LTIRuntimeAnswerMetadata = {
       ...answer,

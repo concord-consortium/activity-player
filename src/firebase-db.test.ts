@@ -105,8 +105,8 @@ describe("Firestore", () => {
       answerType: "open_response_answer",
       answerText: "test"
     };
-
-    const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableAnswerMetadata;
+    const shouldWatchAnswer = true;
+    const exportableAnswer = shouldWatchAnswer && getAnswerWithMetadata(interactiveState, embeddable) as IExportableAnswerMetadata;
 
     const created = utcString();
     createOrUpdateAnswer(exportableAnswer);
