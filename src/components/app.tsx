@@ -230,7 +230,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
       const showThemeButtons = queryValueBoolean("themeButtons");
       // Show a warning about obsolute features if activity/sequences is marked as defunct
-      const showDefunctBanner = activity.defunct || (sequence?.defunct);
+      const showDefunctBanner = !!(activity.defunct || sequence?.defunct);
       // Show the warning if we are not running on production
       const showWarning = firebaseAppName() !== "report-service-pro";
 
