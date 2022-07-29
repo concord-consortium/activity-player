@@ -67,6 +67,7 @@ import sampleNewSectionsSequenceTE from "../data/version-2/sample-new-sections-s
 import sampleSequenceEmptyFields from "../data/sample-sequence-empty-fields.json";
 import sampleSequenceWithQuestions from "../data/sample-sequence-with-questions.json";
 import sampleSequenceTE from "../data/sample-sequence-te.json";
+import sampleSequenceDefunct from "../data/sample-sequence-defunct.json";
 
 const sampleSequences: {[name: string]: Sequence} = {
   "sample-sequence": sampleSequence as unknown as Sequence,
@@ -75,6 +76,7 @@ const sampleSequences: {[name: string]: Sequence} = {
   "sample-sequence-empty-fields": sampleSequenceEmptyFields as unknown as Sequence,
   "sample-sequence-with-questions": sampleSequenceWithQuestions as unknown as Sequence,
   "sample-sequence-te": sampleSequenceTE as unknown as Sequence,
+  "sample-sequence-defunct": sampleSequenceDefunct as unknown as Sequence,
 };
 
 export  { sampleActivities, sampleSequences };
