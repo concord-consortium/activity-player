@@ -45,6 +45,11 @@
     max-height: 649px;
     overflow: auto;
     min-height: 100px;
+
+    img {
+      height: auto;
+      max-width: 100%;
+    }
   }
 
   &.visible {
