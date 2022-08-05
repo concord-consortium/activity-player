@@ -9,7 +9,7 @@ import { refIdToAnswersQuestionId } from "./embeddable-utils";
 // *** IMPORTANT NOTE ***
 // When you change these URLs you need to edit the portal-report Auth Client in
 // the portals to allow redirects back to the the updated URLs.
-export const kProductionPortalReportUrl = "https://portal-report.concord.org/version/v4.12.0/index.html";
+export const kProductionPortalReportUrl = "https://portal-report.concord.org/version/v4.13.0/index.html";
 export const kDevPortalReportUrl = "https://portal-report.concord.org/branch/master/index.html";
 
 // The default portal report URL is based on the URL:
