@@ -94,12 +94,26 @@ describe("Embeddable runtime context helper", () => {
       const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
       const handler = jest.fn();
       runtimeContext.onInteractiveAvailable(handler);
+
       // Different container => different interactive. Handler should not be called.
       emitInteractiveAvailable({ container: document.createElement("div"), available: false });
       expect(handler).toHaveBeenCalledTimes(0);
-      const event = { container: embeddableContext.container, available: true };
-      emitInteractiveAvailable(event);
-      expect(handler).toHaveBeenCalledWith(event);
+
+      // event called directly on container should cause handler to be called
+      const containerEvent = { container: embeddableContext.container, available: true };
+      emitInteractiveAvailable(containerEvent);
+      expect(handler).toHaveBeenCalledWith(containerEvent);
+
+      // reset mock
+      handler.mockReset();
+      expect(handler).toHaveBeenCalledTimes(0);
+
+      // event called on parent of container should cause handler to be called (to enable wrapper plugins)
+      const parentContainer = document.createElement("div");
+      parentContainer.appendChild(embeddableContext.container);
+      const parentContainerEvent = { container: parentContainer, available: true };
+      emitInteractiveAvailable(parentContainerEvent);
+      expect(handler).toHaveBeenCalledWith(parentContainerEvent);
     });
   });
 
@@ -108,12 +122,26 @@ describe("Embeddable runtime context helper", () => {
       const runtimeContext = generateEmbeddableRuntimeContext(embeddableContext);
       const handler = jest.fn();
       runtimeContext.onInteractiveSupportedFeatures(handler);
+
       // Different container => different interactive. Handler should not be called.
       emitInteractiveSupportedFeatures({ container: document.createElement("div"), supportedFeatures: {} });
       expect(handler).toHaveBeenCalledTimes(0);
+
+      // event called directly on container should cause handler to be called
       const event = { container: embeddableContext.container, supportedFeatures: {} };
       emitInteractiveSupportedFeatures(event);
       expect(handler).toHaveBeenCalledWith(event);
+
+      // reset mock
+      handler.mockReset();
+      expect(handler).toHaveBeenCalledTimes(0);
+
+      // event called on parent of container should cause handler to be called (to enable wrapper plugins)
+      const parentContainer = document.createElement("div");
+      parentContainer.appendChild(embeddableContext.container);
+      const parentContainerEvent = { container: parentContainer, supportedFeatures: {} };
+      emitInteractiveSupportedFeatures(parentContainerEvent);
+      expect(handler).toHaveBeenCalledWith(parentContainerEvent);
     });
   });
 
