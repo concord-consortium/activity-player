@@ -32,6 +32,18 @@ const setAnswerSharedWithClass = (shared: boolean, embeddable: EmbeddableBase) =
   });
 };
 
+// returns true if the contextContainer is equal or is contained in eventContainer
+// this is needed as click to play on an embeddable using the sharing plugin generates interativeAvailable
+// events with the eventContainer set to the sharing plugin wrapper but the runtime context is generated
+// using the wrapped interactive's container
+const inContainerTree = (eventContainer: HTMLElement, contextContainer: HTMLElement): boolean => {
+  let treeWalker: HTMLElement | null = contextContainer;
+  while (treeWalker && (eventContainer !== treeWalker)) {
+    treeWalker = treeWalker.parentElement;
+  }
+  return eventContainer === treeWalker;
+};
+
 export const generateEmbeddableRuntimeContext = (context: IEmbeddableContextOptions): IEmbeddableRuntimeContext => {
   return {
     container: context.container,
@@ -41,7 +53,7 @@ export const generateEmbeddableRuntimeContext = (context: IEmbeddableContextOpti
     onInteractiveAvailable: (handler: IInteractiveAvailableEventHandler) => {
       // Add generic listener and filter events to limit them just to this given embeddable.
       onInteractiveAvailable((event: IInteractiveAvailableEvent) => {
-        if (event.container === context.container) {
+        if (inContainerTree(event.container, context.container)) {
           handler(event);
         }
       });
@@ -49,7 +61,7 @@ export const generateEmbeddableRuntimeContext = (context: IEmbeddableContextOpti
     onInteractiveSupportedFeatures: (handler: IInteractiveSupportedFeaturesEventHandler) => {
       // Add generic listener and filter events to limit them just to this given embeddable.
       onInteractiveSupportedFeatures((event: IInteractiveSupportedFeaturesEvent) => {
-        if (event.container === context.container) {
+        if (inContainerTree(event.container, context.container)) {
           handler(event);
         }
       });
