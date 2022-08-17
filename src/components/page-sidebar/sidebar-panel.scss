@@ -46,6 +46,9 @@
     overflow: auto;
     min-height: 100px;
 
+    iframe {
+      border: 0;
+    }
     img {
       height: auto;
       max-width: 100%;

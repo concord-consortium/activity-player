@@ -1,6 +1,9 @@
 @import "../../vars.scss";
 
 .textbox {
+  iframe {
+    border: 0;
+  }
   p {
     margin: 20px 0;
     overflow-wrap: break-word;
