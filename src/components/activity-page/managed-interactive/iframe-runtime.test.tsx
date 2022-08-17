@@ -14,10 +14,13 @@ jest.mock("../../../lib/logger", () => ({
 }));
 
 const lastCall = (mockFn: jest.Mock) => mockFn.mock.calls[mockFn.mock.calls.length - 1];
+const nextToLastCall = (mockFn: jest.Mock) => mockFn.mock.calls[mockFn.mock.calls.length - 2];
 
 const mockPost = jest.fn();
 const lastPost = () => lastCall(mockPost)[0];
 const lastPostData = () => lastCall(mockPost)[1];
+const nextToLastPost = () => nextToLastCall(mockPost)[0];
+const nextToLastPostData = () => nextToLastCall(mockPost)[1];
 const mockListeners: Record<string, (data?: any) => void> = {};
 const mockAddListener = jest.fn((message: string, callback: (data?: any) => void) => {
   mockListeners[message] = callback;
@@ -76,7 +79,7 @@ describe("IframeRuntime component", () => {
         url={"https://concord.org/"}
         id={"123-Interactive"}
         authoredState={null}
-        initialInteractiveState={null}
+        initialInteractiveState={{testing: true}}
         legacyLinkedInteractiveState={null}
         setInteractiveState={mockSetInteractiveState}
         setSupportedFeatures={mockSetSupportedFeatures}
@@ -121,7 +124,11 @@ describe("IframeRuntime component", () => {
     // allow initialization to complete
     jest.runAllTimers();
 
-    // initInteractive is posted to the iframe
+    // loadInteractive is first posted to the iframe
+    expect(nextToLastPost()).toBe("loadInteractive");
+    expect(nextToLastPostData()).toStrictEqual({testing: true});
+
+    // initInteractive is then posted to the iframe
     expect(lastPost()).toBe("initInteractive");
     expect(lastPostData()).toStrictEqual({
       activityName: undefined,
@@ -142,7 +149,7 @@ describe("IframeRuntime component", () => {
       globalInteractiveState: null,
       hostFeatures: {getFirebaseJwt: {version: "1.0.0"}, modal: {alert: false, dialog: true, lightbox: true, version: "1.0.0"}},
       interactive: {id: "123-Interactive", name: ""},
-      interactiveState: null,
+      interactiveState: {testing: true},
       interactiveStateUrl: "",
       linkedInteractives: [],
       mode: "runtime",
