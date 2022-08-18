@@ -319,6 +319,12 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   updatedAt: answerMetadata?.created,
                   externalReportUrl: getReportUrl(id) || undefined
                 };
+
+      // to support legacy interactives first post the deprecated loadInteractive message as LARA does
+      // but only when there is initialInteractiveState (also as LARA does)
+      if (initialInteractiveState) {
+        phone.post("loadInteractive", initialInteractiveState);
+      }
       phone.post("initInteractive", initInteractiveMsg);
     };
 
