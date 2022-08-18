@@ -346,6 +346,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         interactiveInfo={interactiveInfo.current}
         aspectRatioMethod={aspectRatioMethod}
         showDeleteDataButton={showDeleteDataButton}
+        getInteractiveStatePollInterval={shouldWatchAnswer ? 5000 : 0}
       />;
 
   return (

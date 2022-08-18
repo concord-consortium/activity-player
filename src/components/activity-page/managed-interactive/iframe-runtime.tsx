@@ -75,13 +75,14 @@ interface IProps {
   interactiveInfo?: IInteractiveInfo;
   aspectRatioMethod?: "MAX" | "MANUAL" | "DEFAULT";
   showDeleteDataButton?: boolean;
+  getInteractiveStatePollInterval?: number;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
     setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo, aspectRatioMethod,
-    showDeleteDataButton } = props;
+    showDeleteDataButton, getInteractiveStatePollInterval } = props;
 
   const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
   const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
@@ -98,6 +99,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     resolveAndCleanup: useRef<() => void>(),
   };
   const currentInteractiveState = useRef<any>(initialInteractiveState);
+  const getInteractiveStatePollRef = useRef(0);
 
   useEffect(() => {
     const initInteractive = () => {
@@ -326,6 +328,15 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         phone.post("loadInteractive", initialInteractiveState);
       }
       phone.post("initInteractive", initInteractiveMsg);
+
+      // NOTE: this is an experimental branch build to see how this will work with older interactives
+      // that expect polling and newer interactives that push their interactive state
+      clearInterval(getInteractiveStatePollRef.current);
+      if (getInteractiveStatePollInterval) {
+        getInteractiveStatePollRef.current = window.setInterval(() => {
+          phone?.post("getInteractiveState");
+        }, getInteractiveStatePollInterval);
+      }
     };
 
     if (iframeRef.current) {
