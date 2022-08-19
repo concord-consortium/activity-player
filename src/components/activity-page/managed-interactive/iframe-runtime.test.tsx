@@ -147,7 +147,7 @@ describe("IframeRuntime component", () => {
       error: "",
       externalReportUrl: undefined,
       globalInteractiveState: null,
-      hostFeatures: {getFirebaseJwt: {version: "1.0.0"}, modal: {alert: false, dialog: true, lightbox: true, version: "1.0.0"}},
+      hostFeatures: {getFirebaseJwt: {version: "1.0.0"}, modal: {alert: false, dialog: true, lightbox: true, version: "1.0.0"}, domain: "activity-player.unexisting.url.com"},
       interactive: {id: "123-Interactive", name: ""},
       interactiveState: {testing: true},
       interactiveStateUrl: "",

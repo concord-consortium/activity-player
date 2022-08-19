@@ -275,7 +275,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           },
           getFirebaseJwt: {
             version: "1.0.0"
-          }
+          },
+          domain: window.location.hostname
         },
         authoredState,
         interactiveState: interactiveStateRef.current,
