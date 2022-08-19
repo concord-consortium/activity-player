@@ -418,7 +418,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     <div className="iframe-runtime" data-cy="iframe-runtime">
       <iframe key={`${id}-${reloadCount}`} ref={iframeRef} src={url} id={id} width={width} height={height} frameBorder={0}
               allowFullScreen={true}
-              allow="geolocation; microphone; camera"
+              allow="geolocation; microphone; camera; bluetooth"
               title={iframeTitle}
               scrolling="no"
       />
