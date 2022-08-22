@@ -1,4 +1,4 @@
-import { deleteQueryValue, setQueryValue } from "./url-query";
+import { deleteQueryValue, setQueryValue, hashValue } from "./url-query";
 
 describe("query string functions", () => {
   const oldWindowLocation = window.location;
@@ -52,6 +52,14 @@ describe("query string functions", () => {
       deleteQueryValue("foo", true);
       expect(window.history.replaceState).not.toHaveBeenCalled();
       expect(window.location.search).toBe("?baz=bam");
+    });
+  });
+
+  describe("hashValue", () => {
+    it("returns value of a hash param", () => {
+      url.href = "https://example.com?foo=bar#baz=bam";
+      expect(hashValue("foo")).toEqual(undefined);
+      expect(hashValue("baz")).toEqual("bam");
     });
   });
 });

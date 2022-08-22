@@ -9,6 +9,15 @@ const logManagerUrl: Record<LoggerEnvironment, string> = {
   production: "//cc-log-manager.herokuapp.com/api/logs"
 };
 
+// Returns teacher logging username that is also used by Portal Report / Dashboard and possibly other systems.
+export const getLoggingTeacherUsername = (domainUID: string | number, domain?: string) => {
+  if (!domain) {
+    throw new Error("Can't construct username, missing domain");
+  }
+  // Skip protocol, use hostname only to be consistent with other apps that use this form of ID.
+  return `${domainUID}@${new URL(domain).hostname}`;
+};
+
 export interface LogParams {
   event: string | LogEventName,
   event_value?: any,
