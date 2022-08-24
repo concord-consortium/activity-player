@@ -22,7 +22,9 @@ export const clearUsedApprovedScripts = () => {
 };
 
 export const addUsedApprovedScript = (plugin: Plugin) => {
-  if (!usedApprovedScripts.find(scriptInfo =>  scriptInfo.approvedScript.label === plugin.approved_script_label)) {
+  // LARA is exporting some plugins with approved_script as null, probably due to deleted data.
+  // This will need to be fixed in LARA but this is a quick bandaid until that is done.
+  if (plugin.approved_script && !usedApprovedScripts.find(scriptInfo =>  scriptInfo.approvedScript.label === plugin.approved_script_label)) {
     usedApprovedScripts.push({
       id: usedApprovedScripts.length,
       loaded: false,
