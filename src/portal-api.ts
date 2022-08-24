@@ -130,7 +130,8 @@ const getStudentLearnerKey = (portalJWT: PortalJWT, firebaseJWT: PortalFirebaseJ
 
 const getPortalJWTWithBearerToken = (basePortalUrl: string, rawToken: string) => {
   return new Promise<[string, PortalJWT]>((resolve, reject) => {
-    const url = `${basePortalUrl}${PORTAL_JWT_URL_SUFFIX}`;
+    const basePortalUrlWithTrailingSlash = basePortalUrl.endsWith("/") ? basePortalUrl : `${basePortalUrl}/`;
+    const url = `${basePortalUrlWithTrailingSlash}${PORTAL_JWT_URL_SUFFIX}`;
     superagent
       .get(url)
       .set("Authorization", `Bearer ${rawToken}`)
@@ -327,19 +328,26 @@ export const getOfferingData = (params: GetOfferingParams) => {
   });
 };
 
-export const fetchPortalData = async (): Promise<IPortalData> => {
-
-  const bearerToken = queryValue("token");
-  const basePortalUrl = queryValue("domain");
+export const fetchPortalJWT = async (bearerToken: string) => {
+  const basePortalUrl = getBasePortalUrl();
 
   if (!bearerToken || !basePortalUrl) {
     throw new Error("No token provided for authentication (must launch from Portal)");
   }
 
   const [rawPortalJWT, portalJWT] = await getPortalJWTWithBearerToken(basePortalUrl, bearerToken);
+  return { rawPortalJWT, portalJWT };
+};
 
+export const fetchPortalData = async (rawPortalJWT: string, portalJWT: PortalJWT): Promise<IPortalData> => {
   if (portalJWT.user_type !== "learner") {
     throw new Error("Only student logins are currently supported");
+  }
+
+  const basePortalUrl = getBasePortalUrl();
+
+  if (!basePortalUrl) {
+    throw new Error("Missing base Portal URL, it should be provided using domain or auth-domain URL param");
   }
 
   const portal = parseUrl(basePortalUrl).host;
@@ -436,4 +444,8 @@ export const getUniqueLearnerString = (portalData: IPortalData | IAnonymousPorta
   return isAnonymousPortalData(portalData)
           ? portalData.runKey
           : portalData.runRemoteEndpoint;
+};
+
+export const getBasePortalUrl = () => {
+  return queryValue("domain") || queryValue("auth-domain");
 };

@@ -19,7 +19,7 @@ import { WarningBanner } from "./warning-banner";
 import { DefunctBanner } from "./defunct-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { deleteQueryValue, queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
-import { fetchPortalData, firebaseAppName } from "../portal-api";
+import { fetchPortalData, fetchPortalJWT, firebaseAppName, getBasePortalUrl } from "../portal-api";
 import { IPortalData, IPortalDataUnion } from "../portal-types";
 import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
          onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData, createOrUpdateApRun, getApRun } from "../firebase-db";
@@ -34,7 +34,7 @@ import { ExpandableContainer } from "./expandable-content/expandable-container";
 import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
 import { ModalDialog } from "./modal-dialog";
 import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
-import { Logger, LogEventName } from "../lib/logger";
+import { Logger, LogEventName, getLoggingTeacherUsername } from "../lib/logger";
 import { EmbeddablePlugin } from "./activity-page/plugins/embeddable-plugin";
 import { getAttachmentsManagerOptions} from "../utilities/get-attachments-manager-options";
 import { IdleDetector } from "../utilities/idle-detector";
@@ -42,6 +42,7 @@ import { initializeAttachmentsManager } from "@concord-consortium/interactive-ap
 import { LaraDataContext } from "./lara-data-context";
 import { __closeAllPopUps } from "../lara-plugin/plugin-api/popup";
 import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChangeNotificationStartTimeout } from "./activity-page/page-change-notification";
+import { getBearerToken } from "../utilities/auth-utils";
 
 import "./app.scss";
 
@@ -138,32 +139,53 @@ export class App extends React.PureComponent<IProps, IState> {
       let classHash = "";
       let role = "unknown";
       let runRemoteEndpoint = "";
+      let logEventsUsername = null;
 
-      if (queryValue("token")) {
+      const bearerToken = getBearerToken();
+
+      if (bearerToken) {
         try {
-          const portalData = await fetchPortalData();
-          if (portalData.fullName) {
-            newState.username = portalData.fullName;
+          const { rawPortalJWT, portalJWT } = await fetchPortalJWT(bearerToken);
+          if (portalJWT.user_type === "learner") {
+            // Student running an assigned offering from Portal.
+            // As of 08/2022, portalJWT doesn't provide user_type when JWT is obtained using token coming from OAuth.
+            // It works for students because they use short-lived tokens instead. Portal saves learner info in the
+            // student's AccessGrant right before generating AP URL with the token.
+            const portalData = await fetchPortalData(rawPortalJWT, portalJWT);
+            if (portalData.fullName) {
+              newState.username = portalData.fullName;
+            }
+            if (portalData.userType) {
+              role = portalData.userType;
+            }
+            if (portalData.contextId) {
+              classHash = portalData.contextId;
+            }
+            if (portalData.runRemoteEndpoint) {
+              runRemoteEndpoint = portalData.runRemoteEndpoint;
+            }
+            await initializeDB({ name: portalData.database.appName, preview: false });
+            await signInWithToken(portalData.database.rawFirebaseJWT);
+            this.setState({ portalData });
+            setPortalData(portalData);
+          } else if (portalJWT.user_type === "teacher" || portalJWT.user_type === undefined) {
+            // Logged-in user who is not launching an offering from Portal, most likely teacher.
+            // As of 08/2022, portalJWT doesn't provide user_type when JWT is obtained using token coming from OAuth.
+            // Also, the only way to execute this code path is to launch AP Teacher Edition from Dashboard.
+            // That's why "Teacher" username is used. In the future, we might need to obtain real username from Portal.
+            newState.username = "Teacher";
+            logEventsUsername = getLoggingTeacherUsername(portalJWT.uid, getBasePortalUrl());
+            // It might look surprising that logged-in user will use an anonymous DB / run.
+            // But it makes sense for teacher previewing an activity or viewing Teacher Edition.
+            // AP treats Teacher Edition view same as preview (storing answers in offline db).
+            await initializeAnonymousDB(preview);
           }
-          if (portalData.userType) {
-            role = portalData.userType;
-          }
-          if (portalData.contextId) {
-            classHash = portalData.contextId;
-          }
-          if (portalData.runRemoteEndpoint) {
-            runRemoteEndpoint = portalData.runRemoteEndpoint;
-          }
-          await initializeDB({ name: portalData.database.appName, preview: false });
-          await signInWithToken(portalData.database.rawFirebaseJWT);
-          this.setState({ portalData });
-
-          setPortalData(portalData);
         } catch (err) {
           this.setError("auth", err);
         }
       } else {
         try {
+          // Anonymous user running AP using a direct link most likely.
           await initializeAnonymousDB(preview);
         } catch (err) {
           this.setError("auth", err);
@@ -250,14 +272,14 @@ export class App extends React.PureComponent<IProps, IState> {
       Logger.initializeLogger({
         LARA: this.LARA,
         username: (() => {
-          let username = newState.username || this.state.username;
+          let username = logEventsUsername || newState.username || this.state.username;
           const domain = queryValue("domain");
           const domainUID = queryValue("domain_uid");
           // If user is anonymous, but there are domain and domain_uid URL params available, use them to construct an username.
-          // PJ 9/2/2021: This might be replaced by a proper OAuth path in the future. For now, it les us log teacher edition events correctly.
+          // PJ 9/2/2021: This might be replaced by a proper OAuth path in the future. For now, it lets us log teacher edition events correctly.
+          // PJ 8/19/2022: OAuth path is ready, but Portal needs to be updated to launch AP TE that way first. Only then we can remove this code.
           if (username === kAnonymousUserName && domain && domainUID) {
-            // Skip protocol, use hostname only to mimic LARA behavior.
-            username = `${domainUID}@${new URL(domain).hostname}`;
+            username = getLoggingTeacherUsername(domainUID, domain);
           }
           return username;
         })(),
