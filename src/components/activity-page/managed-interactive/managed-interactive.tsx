@@ -48,6 +48,8 @@ const kBottomMargin = 15;
 const getModalContainer = (): HTMLElement => {
   return document.getElementById("app") || document.body;
 };
+const deleteDataButtonHeight = 40;
+const headerHeight = 30;
 
 export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const iframeRuntimeRef = useRef<IframeRuntimeImperativeAPI>(null);
@@ -168,12 +170,27 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     });
   }, [screenHeight]);
 
+  const setShowDeleteDataButton = () => {
+    return embeddable.type === "MwInteractive"
+             && embeddable.enable_learner_state
+             && embeddable.show_delete_data_button
+           || embeddable.type === "ManagedInteractive"
+             && embeddable.library_interactive?.data.enable_learner_state
+             && embeddable.library_interactive.data.show_delete_data_button;
+  };
+
   const divTarget = React.useRef(null);
   const divSize: any = useSize(divTarget);
   let containerWidth: number | string = "100%";
   switch (aspectRatioMethod) {
     case "MAX":
-      proposedHeight = screenHeight.dynamicHeight;
+      // need to check if there is click & start over button and question header
+      if (setShowDeleteDataButton()) {
+        proposedHeight = screenHeight.dynamicHeight - deleteDataButtonHeight - headerHeight;
+
+      } else {
+        proposedHeight = screenHeight.dynamicHeight - headerHeight;
+      }
       break;
     case "MANUAL":
       proposedHeight = divSize?.width / aspectRatio;
@@ -298,15 +315,6 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       }
     }
   }));
-
-  const setShowDeleteDataButton = () => {
-    return embeddable.type === "MwInteractive"
-             && embeddable.enable_learner_state
-             && embeddable.show_delete_data_button
-           || embeddable.type === "ManagedInteractive"
-             && embeddable.library_interactive?.data.enable_learner_state
-             && embeddable.library_interactive.data.show_delete_data_button;
-  };
 
   // embeddable.url_fragment is an optional string (path, query params, hash) that can be defined by author.
   // Some interactives are authored that way. Note that url_fragment is not merged with the dialog URL.
