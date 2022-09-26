@@ -115,14 +115,25 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const questionName = embeddable.name ? `: ${embeddable.name}` : "";
   // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
   // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
-  let embeddableData: IMwInteractive | LibraryInteractiveData | undefined;
+  let embeddableData:  IMwInteractive | LibraryInteractiveData | undefined;
+
   if (embeddable.type === "ManagedInteractive") {
     embeddableData = embeddable.library_interactive?.data;
   } else {
     embeddableData = embeddable;
   }
+
+  let aspectRatioMethod;
+
+  if (embeddable.type === "ManagedInteractive") {
+    if (embeddable.custom_aspect_ratio_method && embeddable.custom_aspect_ratio_method !== "DEFAULT") {
+      aspectRatioMethod = embeddable.custom_aspect_ratio_method;
+    }
+  } else {
+    aspectRatioMethod = embeddableData?.aspect_ratio_method || "DEFAULT";
+  }
+
   const url = embeddableData?.base_url || embeddableData?.url || "";
-  const aspectRatioMethod = embeddableData?.aspect_ratio_method || "DEFAULT";
   const authoredState = useMemo(() => safeJsonParseIfString(authored_state) || {}, [authored_state]);
   const linkedInteractives = useRef(embeddable.linked_interactives?.length
     ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
@@ -182,12 +193,13 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const divTarget = React.useRef(null);
   const divSize: any = useSize(divTarget);
   let containerWidth: number | string = "100%";
+
   switch (aspectRatioMethod) {
     case "MAX":
       // need to check if there is click & start over button and question header
+      console.log("I AM INSIDE MAX");
       if (setShowDeleteDataButton()) {
         proposedHeight = screenHeight.dynamicHeight - deleteDataButtonHeight - headerHeight;
-
       } else {
         proposedHeight = screenHeight.dynamicHeight - headerHeight;
       }
@@ -197,6 +209,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       break;
     case "DEFAULT":
     default:
+      console.log("I AM INSIDE DEFAULT");
       if (divSize?.width / aspectRatio > screenHeight.dynamicHeight) {
         proposedHeight = screenHeight.dynamicHeight - kBottomMargin;
         containerWidth = (proposedHeight * aspectRatio);
@@ -324,6 +337,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
   const miContainerClass = questionNumber ? "managed-interactive has-question-number" : "managed-interactive";
   const showDeleteDataButton = setShowDeleteDataButton();
+
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
       "Loading..." :
