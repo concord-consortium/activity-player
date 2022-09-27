@@ -102,7 +102,14 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
     const wrapperSize: any = useSize(embeddableWrapperDivRef);
 
     const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
-    const maxAspectRatioEmbeddables = primaryEmbeddablesToRender.filter(e => e.aspect_ratio_method === "MAX");
+    const maxAspectRatioEmbeddables = primaryEmbeddablesToRender.filter(e => {
+      if (e.type === "ManagedInteractive") {
+        return e.custom_aspect_ratio_method === "MAX";
+      } else {
+        return e.aspect_ratio_method === "MAX";
+      }
+    });
+
     const hasMaxAspectRatio = maxAspectRatioEmbeddables.length > 0;
     const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed},
                                       {"max-aspect-ratio": hasMaxAspectRatio});

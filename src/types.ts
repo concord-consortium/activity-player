@@ -75,7 +75,7 @@ export interface IManagedInteractive extends EmbeddableBase {
   library_interactive: LibraryInteractive | null;
   show_in_featured_question_report?: boolean;
   inherit_aspect_ratio_method?: boolean;
-  custom_aspect_ratio_method?: "DEFAULT" | null;
+  custom_aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX" | null;
   inherit_native_width?: boolean;
   custom_native_width?: number;
   inherit_native_height?: boolean;

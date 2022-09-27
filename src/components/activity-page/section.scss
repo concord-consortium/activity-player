@@ -138,6 +138,24 @@
   .column.primary {
     position: relative;
     height: auto;
+    &.max-aspect-ratio {
+      .embeddableWrapper {
+        display: flex;
+        flex-direction: column;
+        height: 98vh;
+        .embeddable.primary, .embeddable-sub-two, .managed-interactive, .iframe-runtime {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+        }
+        .embeddable-sub-two {
+          height: 100%;
+        }
+        iframe {
+          flex: 1;
+        }
+      }
+    }
     .embeddableWrapper {
       top: 10px;
       align-self: flex-start;

@@ -196,20 +196,14 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
 
   switch (aspectRatioMethod) {
     case "MAX":
-      // need to check if there is click & start over button and question header
-      console.log("I AM INSIDE MAX");
-      if (setShowDeleteDataButton()) {
-        proposedHeight = screenHeight.dynamicHeight - deleteDataButtonHeight - headerHeight;
-      } else {
-        proposedHeight = screenHeight.dynamicHeight - headerHeight;
-      }
+      // if set to max, we set interactive height via CSS
+      proposedHeight = 0;
       break;
     case "MANUAL":
       proposedHeight = divSize?.width / aspectRatio;
       break;
     case "DEFAULT":
     default:
-      console.log("I AM INSIDE DEFAULT");
       if (divSize?.width / aspectRatio > screenHeight.dynamicHeight) {
         proposedHeight = screenHeight.dynamicHeight - kBottomMargin;
         containerWidth = (proposedHeight * aspectRatio);

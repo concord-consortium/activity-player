@@ -5,6 +5,10 @@
   &.has-question-number {
     border: 1px solid $cc-charcoal-light1;
   }
+  &.teacher-edition {
+    border-bottom-left-radius: 17px;
+    border-bottom-right-radius: 17px;
+  }
 }
 
 .question-container {
