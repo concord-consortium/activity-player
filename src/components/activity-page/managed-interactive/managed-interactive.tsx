@@ -48,8 +48,6 @@ const kBottomMargin = 15;
 const getModalContainer = (): HTMLElement => {
   return document.getElementById("app") || document.body;
 };
-const deleteDataButtonHeight = 40;
-const headerHeight = 30;
 
 export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const iframeRuntimeRef = useRef<IframeRuntimeImperativeAPI>(null);
