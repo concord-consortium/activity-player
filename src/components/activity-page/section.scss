@@ -8,7 +8,7 @@
   margin: 10px;
   position: relative;
   &.responsive {
-    width: 100%;
+    width: calc(100% - 20px);
   }
 
   &.full-width {
@@ -119,7 +119,7 @@
 
     .column.primary {
       right: 0;
-      width: 100%;
+      width: calc(100% - 365px - 50px);
       margin-right: 20px;
     }
     .column.secondary {
@@ -160,6 +160,7 @@
       top: 10px;
       align-self: flex-start;
       line-height: 0;
+      width: 100%;
       &.pinned {
         position: sticky;
       }

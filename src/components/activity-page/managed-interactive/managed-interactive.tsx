@@ -156,22 +156,27 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   // cf. https://www.npmjs.com/package/@react-hook/resize-observer
   const useSize = (target: any) => {
     const [size, setSize] = React.useState();
+
     React.useLayoutEffect(() => {
       setSize(target.current.getBoundingClientRect());
     }, [target]);
+
     useResizeObserver(target, (entry: any) => setSize(entry.contentRect));
     return size;
+
   };
 
   // use this to get height when aspect ratio method is "MAX"
   const [screenHeight, getDimension] = useState({
     dynamicHeight: window.innerHeight
   });
+
   const setDimension = () => {
     getDimension({
       dynamicHeight: window.innerHeight
     });
   };
+
   useEffect(() => {
     window.addEventListener("resize", setDimension);
     return(() => {
@@ -189,6 +194,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   };
 
   const divTarget = React.useRef(null);
+  // const divSize = divTarget.current?.
   const divSize: any = useSize(divTarget);
   let containerWidth: number | string = "100%";
 
@@ -202,16 +208,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       break;
     case "DEFAULT":
     default:
-      console.log("divSize.width", divSize.width);
-      console.log("aspectRatio", aspectRatio);
-      console.log("divSize.width / aspectRatio > (screenHeight.dynamicHeight * .95)", divSize?.width / aspectRatio > (screenHeight.dynamicHeight * .95));
-      if (divSize?.width / aspectRatio > (screenHeight.dynamicHeight * .95)) {
-        proposedHeight = screenHeight.dynamicHeight - kBottomMargin;
-        containerWidth = (proposedHeight * aspectRatio);
-      } else {
-        proposedHeight = divSize?.width / kDefaultAspectRatio;
-      }
-      break;
+        proposedHeight = (divSize?.width / aspectRatio) - kBottomMargin;
+        containerWidth = divSize?.width;
   }
 
   const [showHint, setShowHint] = useState(false);
