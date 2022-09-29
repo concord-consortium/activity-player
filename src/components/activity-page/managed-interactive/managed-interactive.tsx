@@ -202,7 +202,10 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       break;
     case "DEFAULT":
     default:
-      if (divSize?.width / aspectRatio > screenHeight.dynamicHeight) {
+      console.log("divSize.width", divSize.width);
+      console.log("aspectRatio", aspectRatio);
+      console.log("divSize.width / aspectRatio > (screenHeight.dynamicHeight * .95)", divSize?.width / aspectRatio > (screenHeight.dynamicHeight * .95));
+      if (divSize?.width / aspectRatio > (screenHeight.dynamicHeight * .95)) {
         proposedHeight = screenHeight.dynamicHeight - kBottomMargin;
         containerWidth = (proposedHeight * aspectRatio);
       } else {
