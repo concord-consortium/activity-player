@@ -155,9 +155,7 @@
     position: relative;
     height: auto;
     &.max-aspect-ratio {
-      .embeddableWrapper {
-        display: flex;
-        flex-direction: column;
+      .embeddable.primary {
         height: 98vh;
         .embeddable.primary, .embeddable-sub-two, .managed-interactive, .runtime-container, .iframe-runtime {
           display: flex;
@@ -176,7 +174,6 @@
       top: 10px;
       align-self: flex-start;
       line-height: 0;
-      // width: 100%;
       &.pinned {
         position: sticky;
       }
