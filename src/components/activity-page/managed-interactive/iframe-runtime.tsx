@@ -399,7 +399,6 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       setReloadCount(reloadCount + 1);
     }
   };
-
   const heightFromSupportedFeatures = aspectRatioMethod === "MAX"
                                         ? proposedHeight
                                         : ARFromSupportedFeatures && containerWidth && typeof(containerWidth) === "number"
@@ -411,16 +410,14 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   // or height from container dimensions and embeddable specifications.
   const height = heightFromInteractive || heightFromSupportedFeatures || proposedHeight || kDefaultHeight;
 
-  console.log("heightFromInteractive", heightFromInteractive);
-  console.log("heightFromSupportedFeatures", heightFromSupportedFeatures);
-  console.log("height", height);
-
   // If the interactive sets the height, ignore the container width passed in and use all the available space.
   const width = heightFromInteractive ? "100%" : containerWidth;
-  console.log("width", width);
+  // const width = height * (4 / 3);
+
+  console.log("height", height, "width", width);
 
   return (
-    <div className="iframe-runtime" data-cy="iframe-runtime">
+    <div className="iframe-runtime" style={{width}} data-cy="iframe-runtime">
       <iframe key={`${id}-${reloadCount}`} ref={iframeRef} src={url} id={id} width={width} height={height} frameBorder={0}
               allowFullScreen={true}
               allow="geolocation; microphone; camera; bluetooth; clipboard-read; clipboard-write"

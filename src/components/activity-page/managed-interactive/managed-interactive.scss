@@ -1,9 +1,11 @@
 @import "../../vars.scss";
 
 .managed-interactive {
-  width: 100%;
-  &.has-question-number {
-    border: 1px solid $cc-charcoal-light1;
+  // width: 100%;
+  .sub-container {
+    &.has-question-number {
+      border: 1px solid $cc-charcoal-light1;
+    }
   }
 }
 

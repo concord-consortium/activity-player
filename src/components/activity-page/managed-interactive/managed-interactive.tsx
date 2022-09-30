@@ -124,9 +124,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   let aspectRatioMethod;
 
   if (embeddable.type === "ManagedInteractive") {
-    if (embeddable.custom_aspect_ratio_method && embeddable.custom_aspect_ratio_method !== "DEFAULT") {
-      aspectRatioMethod = embeddable.custom_aspect_ratio_method;
-    }
+      aspectRatioMethod = embeddable.custom_aspect_ratio_method || "DEFAULT";
   } else {
     aspectRatioMethod = embeddableData?.aspect_ratio_method || "DEFAULT";
   }
@@ -140,8 +138,17 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const interactiveId = embeddable.ref_id;
 
   let proposedHeight: number;
-  const nativeHeight = embeddableData?.native_height || 0;
-  const nativeWidth = embeddableData?.native_width || 0;
+  let nativeHeight: number;
+  let nativeWidth: number;
+
+  if (embeddable.type === "ManagedInteractive") {
+    nativeHeight = embeddable.custom_native_height || 0;
+    nativeWidth = embeddable.custom_native_width || 0;
+  } else {
+    nativeHeight = embeddableData?.native_height || 0;
+    nativeWidth = embeddableData?.native_width || 0;
+  }
+
   const aspectRatio = nativeHeight && nativeWidth ? nativeWidth / nativeHeight : kDefaultAspectRatio;
 
   useEffect(() => {
@@ -158,7 +165,9 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     const [size, setSize] = React.useState();
 
     React.useLayoutEffect(() => {
+      if (target.current) {
       setSize(target.current.getBoundingClientRect());
+      }
     }, [target]);
 
     useResizeObserver(target, (entry: any) => setSize(entry.contentRect));
@@ -184,6 +193,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     });
   }, [screenHeight]);
 
+
   const setShowDeleteDataButton = () => {
     return embeddable.type === "MwInteractive"
              && embeddable.enable_learner_state
@@ -193,9 +203,15 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
              && embeddable.library_interactive.data.show_delete_data_button;
   };
 
-  const divTarget = React.useRef(null);
-  // const divSize = divTarget.current?.
+  const showDeleteDataButton = setShowDeleteDataButton();
+  const headerTarget = React.useRef(null);
+  const divTarget = React.useRef<HTMLDivElement>(null);
   const divSize: any = useSize(divTarget);
+  const headerSize: any = useSize(headerTarget);
+  const headerHeight = headerSize?.height || 0;
+  const deleteDataButtonHeight = showDeleteDataButton ? 44 : 0;
+  const unusableHeight = kBottomMargin + headerHeight + deleteDataButtonHeight;
+
   let containerWidth: number | string = "100%";
 
   switch (aspectRatioMethod) {
@@ -208,8 +224,16 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       break;
     case "DEFAULT":
     default:
-        proposedHeight = (divSize?.width / aspectRatio) - kBottomMargin;
-        containerWidth = divSize?.width;
+      if (divSize?.width / aspectRatio > screenHeight.dynamicHeight) {
+        console.log("I am in first if statement here");
+        proposedHeight = (screenHeight.dynamicHeight * .98) - unusableHeight;
+      } else {
+        console.log("I am in else statement");
+        proposedHeight = (divSize?.width / aspectRatio) - unusableHeight;
+      }
+      console.log("proposedHeight", proposedHeight);
+      containerWidth = proposedHeight * aspectRatio;
+      console.log("containerWidth", containerWidth);
   }
 
   const [showHint, setShowHint] = useState(false);
@@ -328,8 +352,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   // with this fragment if necessary. ActivityPlayer doesn't have knowledge about URL format and provided url_fragment
   // to perform this merge automatically.
   const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
-  const miContainerClass = questionNumber ? "managed-interactive has-question-number" : "managed-interactive";
-  const showDeleteDataButton = setShowDeleteDataButton();
+  const hasQuestionNumber = questionNumber ? "sub-container has-question-number" : "sub-container";
 
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
@@ -363,10 +386,12 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         showDeleteDataButton={showDeleteDataButton}
       />;
 
+
   return (
-    <div ref={divTarget} className={miContainerClass} data-cy="managed-interactive">
+    <div ref={divTarget} className="managed-interactive" data-cy="managed-interactive">
+      <div className={hasQuestionNumber} style={{width:containerWidth}}>
       { questionNumber &&
-        <div className="header">
+        <div className="header" ref={headerTarget}>
           Question #{questionNumber}{questionName}
           {hint &&
             <div className="question-container"
@@ -410,6 +435,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
             }
           </>
       }
+      </div>
     </div>
     );
   });
