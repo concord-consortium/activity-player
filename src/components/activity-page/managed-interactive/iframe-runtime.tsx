@@ -412,9 +412,6 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   // If the interactive sets the height, ignore the container width passed in and use all the available space.
   const width = heightFromInteractive ? "100%" : containerWidth;
-  // const width = height * (4 / 3);
-
-  console.log("height", height, "width", width);
 
   return (
     <div className="iframe-runtime" style={{width}} data-cy="iframe-runtime">

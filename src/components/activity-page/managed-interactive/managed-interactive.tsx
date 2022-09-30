@@ -225,15 +225,11 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     case "DEFAULT":
     default:
       if (divSize?.width / aspectRatio > screenHeight.dynamicHeight) {
-        console.log("I am in first if statement here");
         proposedHeight = (screenHeight.dynamicHeight * .98) - unusableHeight;
       } else {
-        console.log("I am in else statement");
         proposedHeight = (divSize?.width / aspectRatio) - unusableHeight;
       }
-      console.log("proposedHeight", proposedHeight);
       containerWidth = proposedHeight * aspectRatio;
-      console.log("containerWidth", containerWidth);
   }
 
   const [showHint, setShowHint] = useState(false);
@@ -352,7 +348,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   // with this fragment if necessary. ActivityPlayer doesn't have knowledge about URL format and provided url_fragment
   // to perform this merge automatically.
   const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
-  const hasQuestionNumber = questionNumber ? "sub-container has-question-number" : "sub-container";
+  const hasQuestionNumber = questionNumber ? "runtime-container has-question-number" : "runtime-container";
 
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
