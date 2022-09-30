@@ -124,7 +124,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   let aspectRatioMethod;
 
   if (embeddable.type === "ManagedInteractive") {
-      aspectRatioMethod = embeddable.custom_aspect_ratio_method || "DEFAULT";
+    aspectRatioMethod = embeddable.custom_aspect_ratio_method || "DEFAULT";
   } else {
     aspectRatioMethod = embeddableData?.aspect_ratio_method || "DEFAULT";
   }
