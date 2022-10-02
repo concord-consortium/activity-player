@@ -136,8 +136,8 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
       key={embeddable.ref_id}
       ref={targetDiv}
     >
-      { linkedPluginEmbeddable && <div ref={embeddableWrapperDivTarget}></div> }
-      <div ref={embeddableDivTarget}>
+      { linkedPluginEmbeddable && <div className={"embeddable-sub-one"} ref={embeddableWrapperDivTarget}></div> }
+      <div className={"embeddable-sub-two"} ref={embeddableDivTarget}>
         { qComponent }
       </div>
     </div>

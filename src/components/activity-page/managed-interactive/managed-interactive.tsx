@@ -113,14 +113,23 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const questionName = embeddable.name ? `: ${embeddable.name}` : "";
   // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
   // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
-  let embeddableData: IMwInteractive | LibraryInteractiveData | undefined;
+  let embeddableData:  IMwInteractive | LibraryInteractiveData | undefined;
+
   if (embeddable.type === "ManagedInteractive") {
     embeddableData = embeddable.library_interactive?.data;
   } else {
     embeddableData = embeddable;
   }
+
+  let aspectRatioMethod;
+
+  if (embeddable.type === "ManagedInteractive") {
+    aspectRatioMethod = embeddable.custom_aspect_ratio_method || "DEFAULT";
+  } else {
+    aspectRatioMethod = embeddableData?.aspect_ratio_method || "DEFAULT";
+  }
+
   const url = embeddableData?.base_url || embeddableData?.url || "";
-  const aspectRatioMethod = embeddableData?.aspect_ratio_method || "DEFAULT";
   const authoredState = useMemo(() => safeJsonParseIfString(authored_state) || {}, [authored_state]);
   const linkedInteractives = useRef(embeddable.linked_interactives?.length
     ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
@@ -168,12 +177,23 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     });
   }, [screenHeight]);
 
+  const setShowDeleteDataButton = () => {
+    return embeddable.type === "MwInteractive"
+             && embeddable.enable_learner_state
+             && embeddable.show_delete_data_button
+           || embeddable.type === "ManagedInteractive"
+             && embeddable.library_interactive?.data.enable_learner_state
+             && embeddable.library_interactive.data.show_delete_data_button;
+  };
+
   const divTarget = React.useRef(null);
   const divSize: any = useSize(divTarget);
   let containerWidth: number | string = "100%";
+
   switch (aspectRatioMethod) {
     case "MAX":
-      proposedHeight = screenHeight.dynamicHeight;
+      // if set to max, we set interactive height via CSS
+      proposedHeight = 0;
       break;
     case "MANUAL":
       proposedHeight = divSize?.width / aspectRatio;
@@ -299,15 +319,6 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     }
   }));
 
-  const setShowDeleteDataButton = () => {
-    return embeddable.type === "MwInteractive"
-             && embeddable.enable_learner_state
-             && embeddable.show_delete_data_button
-           || embeddable.type === "ManagedInteractive"
-             && embeddable.library_interactive?.data.enable_learner_state
-             && embeddable.library_interactive.data.show_delete_data_button;
-  };
-
   // embeddable.url_fragment is an optional string (path, query params, hash) that can be defined by author.
   // Some interactives are authored that way. Note that url_fragment is not merged with the dialog URL.
   // Each interactive will be first loaded inline with the url_fragment appended. So it can merge its custom dialog URL
@@ -316,6 +327,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
   const miContainerClass = questionNumber ? "managed-interactive has-question-number" : "managed-interactive";
   const showDeleteDataButton = setShowDeleteDataButton();
+
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
       "Loading..." :
