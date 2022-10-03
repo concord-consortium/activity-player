@@ -224,12 +224,12 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       break;
     case "DEFAULT":
     default:
-      if (divSize?.width / aspectRatio > screenHeight.dynamicHeight) {
+      if (divSize?.width / kDefaultAspectRatio > screenHeight.dynamicHeight) {
         proposedHeight = (screenHeight.dynamicHeight * .98) - unusableHeight;
       } else {
-        proposedHeight = (divSize?.width / aspectRatio) - unusableHeight;
+        proposedHeight = (divSize?.width / kDefaultAspectRatio) - unusableHeight;
       }
-      containerWidth = proposedHeight * aspectRatio;
+      containerWidth = proposedHeight * kDefaultAspectRatio;
   }
 
   const [showHint, setShowHint] = useState(false);
