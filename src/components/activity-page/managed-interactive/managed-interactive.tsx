@@ -63,6 +63,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const interactiveInfo = useRef<IInteractiveInfo | undefined>(undefined);
   const [clickToPlayOptions, setClickToPlayOptions] = useState<IClickToPlayOptions|undefined>(undefined);
   const [clickedToPlay, setClickedToPlay] = useState(false);
+  const [ARFromSupportedFeatures, setARFromSupportedFeatures] = useState(0);
+  const [heightFromInteractive, setHeightFromInteractive] = useState(0);
 
   const embeddableRefId = props.embeddable.ref_id;
   useEffect(() => {
@@ -123,7 +125,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
 
   let aspectRatioMethod;
 
-  if (embeddable.type === "ManagedInteractive") {
+  if (embeddable.type === "ManagedInteractive" && !embeddable.inherit_aspect_ratio_method) {
     aspectRatioMethod = embeddable.custom_aspect_ratio_method || "DEFAULT";
   } else {
     aspectRatioMethod = embeddableData?.aspect_ratio_method || "DEFAULT";
@@ -140,6 +142,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   let proposedHeight: number;
   let nativeHeight: number;
   let nativeWidth: number;
+  let aspectRatio: number;
 
   if (embeddable.type === "ManagedInteractive") {
     nativeHeight = embeddable.custom_native_height || 0;
@@ -149,7 +152,13 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     nativeWidth = embeddableData?.native_width || 0;
   }
 
-  const aspectRatio = nativeHeight && nativeWidth ? nativeWidth / nativeHeight : kDefaultAspectRatio;
+  if (aspectRatioMethod === "DEFAULT" && ARFromSupportedFeatures) {
+    aspectRatio = ARFromSupportedFeatures;
+  } else if (aspectRatioMethod === "MANUAL") {
+    aspectRatio = nativeWidth / nativeHeight;
+  } else {
+    aspectRatio = kDefaultAspectRatio;
+  }
 
   useEffect(() => {
     setClickToPlayOptions(embeddableData?.click_to_play
@@ -211,7 +220,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const headerHeight = headerSize?.height || 0;
   const deleteDataButtonHeight = showDeleteDataButton ? 44 : 0;
   const unusableHeight = kBottomMargin + headerHeight + deleteDataButtonHeight;
-
+  const maxHeight = screenHeight.dynamicHeight * .98;
   let containerWidth: number | string = "100%";
 
   switch (aspectRatioMethod) {
@@ -224,12 +233,16 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       break;
     case "DEFAULT":
     default:
-      if (divSize?.width / kDefaultAspectRatio > screenHeight.dynamicHeight) {
-        proposedHeight = (screenHeight.dynamicHeight * .98) - unusableHeight;
-      } else {
-        proposedHeight = (divSize?.width / kDefaultAspectRatio) - unusableHeight;
+      if (heightFromInteractive) {
+        proposedHeight = heightFromInteractive;
+        containerWidth = "100%";
       }
-      containerWidth = proposedHeight * kDefaultAspectRatio;
+      else if ((divSize?.width / aspectRatio) > (maxHeight - unusableHeight)) {
+        proposedHeight = maxHeight - unusableHeight;
+        containerWidth = (maxHeight * aspectRatio) > divSize?.width ? "100%" : (maxHeight * aspectRatio);
+      } else {
+        proposedHeight = (divSize?.width / aspectRatio);
+      }
   }
 
   const [showHint, setShowHint] = useState(false);
@@ -378,8 +391,9 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         portalData={portalData}
         answerMetadata={answerMeta.current}
         interactiveInfo={interactiveInfo.current}
-        aspectRatioMethod={aspectRatioMethod}
         showDeleteDataButton={showDeleteDataButton}
+        setAspectRatio={setARFromSupportedFeatures}
+        setHeightFromInteractive={setHeightFromInteractive}
       />;
 
 

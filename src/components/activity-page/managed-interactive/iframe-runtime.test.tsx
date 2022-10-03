@@ -69,6 +69,9 @@ describe("IframeRuntime component", () => {
     const mockGetAttachmentUrl = jest.fn(() => Promise.resolve({ url: mockAttachmentUrl, requestId: 1 }));
     const mockShowModal = jest.fn();
     const mockCloseModal = jest.fn();
+    const mockSetAspectRatio = jest.fn();
+    const mockSetHeightFromInteractive = jest.fn();
+
     type CustomMsgSender = (msg: ICustomMessage) => void;
     let mockSendCustomMessage: CustomMsgSender;
     const mockSetSendCustomMessage = jest.fn((sendMsg: CustomMsgSender) => {
@@ -82,6 +85,8 @@ describe("IframeRuntime component", () => {
         initialInteractiveState={{testing: true}}
         legacyLinkedInteractiveState={null}
         setInteractiveState={mockSetInteractiveState}
+        setAspectRatio={mockSetAspectRatio}
+        setHeightFromInteractive={mockSetHeightFromInteractive}
         setSupportedFeatures={mockSetSupportedFeatures}
         setNewHint={mockSetNewHint}
         getFirebaseJWT={mockGetFirebaseJWT}
