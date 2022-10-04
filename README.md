@@ -132,6 +132,10 @@ Inside of your `package.json` file:
 #### User data loading:
 * firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ and https://activity-player-offline.concord.org/ without a path, defaults to `report-service-pro` every other url defaults to `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
 * token={n}:         set by the portal when launching external activity, to authenticate with portal API
+* auth-domain={url}: root URL for the portal which can authenticate the current user. This parameter can be
+                    used instead of the `token` param. Activity Player will do an OAuth2 request to the auth-domain
+                    in order to get an access-token. It doesn't follow camelCase naming convetion to be consistent with other applications that also use
+                    `auth-domain` param (eg [Portal Report](https://github.com/concord-consortium/portal-report/blob/master/docs/launch.md#url-parameters))
 * domain={n}:        set by the portal when launching external activity
 * answersSourceKey={id}: which source collection to save data to in firestore (defaults to own hostname)
 * runkey={uuid}:     set by the app if we are running in anonymous datasaving mode
