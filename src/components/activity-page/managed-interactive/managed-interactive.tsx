@@ -145,8 +145,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   let aspectRatio: number;
 
   if (embeddable.type === "ManagedInteractive") {
-    nativeHeight = (embeddable.inherit_native_height ? embeddableData?.native_height : embeddable.custom_native_height) || 0;
-    nativeWidth = (embeddable.inherit_native_width ? embeddableData?.native_width : embeddable.custom_native_width) || 0;
+    nativeHeight = embeddable.inherit_native_height ? embeddableData?.native_height || 0 : embeddable.custom_native_height || 0;
+    nativeWidth = embeddable.inherit_native_width ? embeddableData?.native_width || 0 : embeddable.custom_native_width || 0;
   } else {
     nativeHeight = embeddableData?.native_height || 0;
     nativeWidth = embeddableData?.native_width || 0;
