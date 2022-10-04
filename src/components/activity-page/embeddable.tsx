@@ -118,7 +118,14 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
 
   const singlePageLayout = activityLayout === ActivityLayouts.SinglePage;
   const isFullWidthLayout = sectionLayout === "full-width" || singlePageLayout;
-  const singleWithMaxAspectRatio = isFullWidthLayout && (embeddable.type === "ManagedInteractive" ? embeddable.custom_aspect_ratio_method === "MAX" : embeddable.aspect_ratio_method === "MAX");
+
+  let hasMaxAspectRatio;
+  if (embeddable.type === "ManagedInteractive" && !embeddable.inherit_aspect_ratio_method) {
+    hasMaxAspectRatio = embeddable.custom_aspect_ratio_method === "MAX";
+  } else {
+    hasMaxAspectRatio = embeddable.aspect_ratio_method === "MAX";
+  }
+
   const embeddableClasses = classNames("embeddable",
                                         isFullWidthLayout
                                           ? "full-width"
@@ -129,7 +136,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                                               : "secondary",
                                         {"half-width":  embeddable.is_half_width && !singlePageLayout},
                                         {"hidden": embeddable.is_hidden},
-                                        {"max-aspect-ratio": singleWithMaxAspectRatio}
+                                        {"max-aspect-ratio": isFullWidthLayout && hasMaxAspectRatio}
                                       );
 
   return (
