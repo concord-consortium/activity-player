@@ -119,10 +119,11 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   const singlePageLayout = activityLayout === ActivityLayouts.SinglePage;
   const isFullWidthLayout = sectionLayout === "full-width" || singlePageLayout;
 
-  let hasMaxAspectRatio;
+  let hasMaxAspectRatio = false;
+
   if (embeddable.type === "ManagedInteractive" && !embeddable.inherit_aspect_ratio_method) {
     hasMaxAspectRatio = embeddable.custom_aspect_ratio_method === "MAX";
-  } else {
+  } else if (embeddable.type !== "ManagedInteractive") {
     hasMaxAspectRatio = embeddable.aspect_ratio_method === "MAX";
   }
 
