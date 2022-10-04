@@ -125,7 +125,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     hasMaxAspectRatio = embeddable.custom_aspect_ratio_method === "MAX";
   } else if (embeddable.type === "ManagedInteractive" && embeddable.inherit_aspect_ratio_method) {
     hasMaxAspectRatio = embeddable.library_interactive?.data.aspect_ratio_method === "MAX";
-  } else{
+  } else {
     hasMaxAspectRatio = embeddable.aspect_ratio_method === "MAX";
   }
 
