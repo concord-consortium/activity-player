@@ -63,6 +63,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const interactiveInfo = useRef<IInteractiveInfo | undefined>(undefined);
   const [clickToPlayOptions, setClickToPlayOptions] = useState<IClickToPlayOptions|undefined>(undefined);
   const [clickedToPlay, setClickedToPlay] = useState(false);
+  const [ARFromSupportedFeatures, setARFromSupportedFeatures] = useState(0);
+  const [heightFromInteractive, setHeightFromInteractive] = useState(0);
 
   const embeddableRefId = props.embeddable.ref_id;
   useEffect(() => {
@@ -123,7 +125,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
 
   let aspectRatioMethod;
 
-  if (embeddable.type === "ManagedInteractive") {
+  if (embeddable.type === "ManagedInteractive" && !embeddable.inherit_aspect_ratio_method) {
     aspectRatioMethod = embeddable.custom_aspect_ratio_method || "DEFAULT";
   } else {
     aspectRatioMethod = embeddableData?.aspect_ratio_method || "DEFAULT";
@@ -138,9 +140,25 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const interactiveId = embeddable.ref_id;
 
   let proposedHeight: number;
-  const nativeHeight = embeddableData?.native_height || 0;
-  const nativeWidth = embeddableData?.native_width || 0;
-  const aspectRatio = nativeHeight && nativeWidth ? nativeWidth / nativeHeight : kDefaultAspectRatio;
+  let nativeHeight: number;
+  let nativeWidth: number;
+  let aspectRatio: number;
+
+  if (embeddable.type === "ManagedInteractive") {
+    nativeHeight = (embeddable.inherit_native_height ? embeddableData?.native_height : embeddable.custom_native_height) || 0;
+    nativeWidth = (embeddable.inherit_native_width ? embeddableData?.native_width : embeddable.custom_native_width) || 0;
+  } else {
+    nativeHeight = embeddableData?.native_height || 0;
+    nativeWidth = embeddableData?.native_width || 0;
+  }
+
+  if (aspectRatioMethod === "DEFAULT" && ARFromSupportedFeatures) {
+    aspectRatio = ARFromSupportedFeatures;
+  } else if (aspectRatioMethod === "MANUAL") {
+    aspectRatio = nativeWidth / nativeHeight;
+  } else {
+    aspectRatio = kDefaultAspectRatio;
+  }
 
   useEffect(() => {
     setClickToPlayOptions(embeddableData?.click_to_play
@@ -154,28 +172,36 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   // cf. https://www.npmjs.com/package/@react-hook/resize-observer
   const useSize = (target: any) => {
     const [size, setSize] = React.useState();
+
     React.useLayoutEffect(() => {
+      if (target.current) {
       setSize(target.current.getBoundingClientRect());
+      }
     }, [target]);
+
     useResizeObserver(target, (entry: any) => setSize(entry.contentRect));
     return size;
+
   };
 
   // use this to get height when aspect ratio method is "MAX"
   const [screenHeight, getDimension] = useState({
     dynamicHeight: window.innerHeight
   });
+
   const setDimension = () => {
     getDimension({
       dynamicHeight: window.innerHeight
     });
   };
+
   useEffect(() => {
     window.addEventListener("resize", setDimension);
     return(() => {
         window.removeEventListener("resize", setDimension);
     });
   }, [screenHeight]);
+
 
   const setShowDeleteDataButton = () => {
     return embeddable.type === "MwInteractive"
@@ -186,8 +212,15 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
              && embeddable.library_interactive.data.show_delete_data_button;
   };
 
-  const divTarget = React.useRef(null);
+  const showDeleteDataButton = setShowDeleteDataButton();
+  const headerTarget = React.useRef(null);
+  const divTarget = React.useRef<HTMLDivElement>(null);
   const divSize: any = useSize(divTarget);
+  const headerSize: any = useSize(headerTarget);
+  const headerHeight = headerSize?.height || 0;
+  const deleteDataButtonHeight = showDeleteDataButton ? 44 : 0;
+  const unusableHeight = kBottomMargin + headerHeight + deleteDataButtonHeight;
+  const maxHeight = screenHeight.dynamicHeight * .98;
   let containerWidth: number | string = "100%";
 
   switch (aspectRatioMethod) {
@@ -200,13 +233,16 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       break;
     case "DEFAULT":
     default:
-      if (divSize?.width / aspectRatio > screenHeight.dynamicHeight) {
-        proposedHeight = screenHeight.dynamicHeight - kBottomMargin;
-        containerWidth = (proposedHeight * aspectRatio);
-      } else {
-        proposedHeight = divSize?.width / kDefaultAspectRatio;
+      if (heightFromInteractive) {
+        proposedHeight = heightFromInteractive;
+        containerWidth = "100%";
       }
-      break;
+      else if ((divSize?.width / aspectRatio) > (maxHeight - unusableHeight)) {
+        proposedHeight = maxHeight - unusableHeight;
+        containerWidth = (maxHeight * aspectRatio) > divSize?.width ? "100%" : (maxHeight * aspectRatio);
+      } else {
+        proposedHeight = (divSize?.width / aspectRatio);
+      }
   }
 
   const [showHint, setShowHint] = useState(false);
@@ -325,8 +361,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   // with this fragment if necessary. ActivityPlayer doesn't have knowledge about URL format and provided url_fragment
   // to perform this merge automatically.
   const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
-  const miContainerClass = questionNumber ? "managed-interactive has-question-number" : "managed-interactive";
-  const showDeleteDataButton = setShowDeleteDataButton();
+  const hasQuestionNumber = questionNumber ? "runtime-container has-question-number" : "runtime-container";
 
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
@@ -356,14 +391,17 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         portalData={portalData}
         answerMetadata={answerMeta.current}
         interactiveInfo={interactiveInfo.current}
-        aspectRatioMethod={aspectRatioMethod}
         showDeleteDataButton={showDeleteDataButton}
+        setAspectRatio={setARFromSupportedFeatures}
+        setHeightFromInteractive={setHeightFromInteractive}
       />;
 
+
   return (
-    <div ref={divTarget} className={miContainerClass} data-cy="managed-interactive">
+    <div ref={divTarget} className="managed-interactive" data-cy="managed-interactive">
+      <div className={hasQuestionNumber} style={{width:containerWidth}}>
       { questionNumber &&
-        <div className="header">
+        <div className="header" ref={headerTarget}>
           Question #{questionNumber}{questionName}
           {hint &&
             <div className="question-container"
@@ -407,6 +445,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
             }
           </>
       }
+      </div>
     </div>
     );
   });

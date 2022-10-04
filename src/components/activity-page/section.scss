@@ -14,6 +14,22 @@
   &.full-width {
     .embeddable.full-width {
       grid-column: span 10;
+      &.max-aspect-ratio {
+        display: flex;
+        flex-direction: column;
+        height: 98vh;
+        .embeddable.primary, .embeddable-sub-two, .managed-interactive, .runtime-container, .iframe-runtime {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+        }
+        .embeddable-sub-two {
+          height: 100%;
+        }
+        iframe {
+          flex: 1;
+        }
+      }
       &.half-width {
         grid-column: span 5;
       }
@@ -139,11 +155,9 @@
     position: relative;
     height: auto;
     &.max-aspect-ratio {
-      .embeddableWrapper {
-        display: flex;
-        flex-direction: column;
+      .embeddable.primary {
         height: 98vh;
-        .embeddable.primary, .embeddable-sub-two, .managed-interactive, .iframe-runtime {
+        .embeddable.primary, .embeddable-sub-two, .managed-interactive, .runtime-container, .iframe-runtime {
           display: flex;
           flex-direction: column;
           flex: 1;

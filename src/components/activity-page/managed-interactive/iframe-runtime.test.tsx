@@ -69,6 +69,9 @@ describe("IframeRuntime component", () => {
     const mockGetAttachmentUrl = jest.fn(() => Promise.resolve({ url: mockAttachmentUrl, requestId: 1 }));
     const mockShowModal = jest.fn();
     const mockCloseModal = jest.fn();
+    const mockSetAspectRatio = jest.fn();
+    const mockSetHeightFromInteractive = jest.fn();
+
     type CustomMsgSender = (msg: ICustomMessage) => void;
     let mockSendCustomMessage: CustomMsgSender;
     const mockSetSendCustomMessage = jest.fn((sendMsg: CustomMsgSender) => {
@@ -82,6 +85,8 @@ describe("IframeRuntime component", () => {
         initialInteractiveState={{testing: true}}
         legacyLinkedInteractiveState={null}
         setInteractiveState={mockSetInteractiveState}
+        setAspectRatio={mockSetAspectRatio}
+        setHeightFromInteractive={mockSetHeightFromInteractive}
         setSupportedFeatures={mockSetSupportedFeatures}
         setNewHint={mockSetNewHint}
         getFirebaseJWT={mockGetFirebaseJWT}
@@ -199,16 +204,8 @@ describe("IframeRuntime component", () => {
     expect(mockSetInteractiveState).toHaveBeenCalledTimes(3);
 
     expect(testIframe.getByTestId("iframe-runtime").children[0].tagName).toBe("IFRAME");
-    // width is not set as the containerWidth prop is undefined due to window.innerHeight not being set in this test
     // height is the default of 300px
-    expect(testIframe.getByTestId("iframe-runtime").children[0]).not.toHaveAttribute("width");
     expect(testIframe.getByTestId("iframe-runtime").children[0]).toHaveAttribute("height", "300");
-    act(() => {
-      dispatchMessageFromChild("height", 960);
-    });
-    // both width and height are set.  width is 100% due to the interactive posting its height to the iframe
-    expect(testIframe.getByTestId("iframe-runtime").children[0]).toHaveAttribute("width", "100%");
-    expect(testIframe.getByTestId("iframe-runtime").children[0]).toHaveAttribute("height", "960");
 
     act(() => {
       dispatchMessageFromChild("supportedFeatures", { features: { aspectRatio: 1.5 } });

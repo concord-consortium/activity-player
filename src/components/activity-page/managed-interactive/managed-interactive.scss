@@ -1,9 +1,10 @@
 @import "../../vars.scss";
 
 .managed-interactive {
-
-  &.has-question-number {
-    border: 1px solid $cc-charcoal-light1;
+  .runtime-container {
+    &.has-question-number {
+      border: 1px solid $cc-charcoal-light1;
+    }
   }
 }
 

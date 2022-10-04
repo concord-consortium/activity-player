@@ -73,18 +73,17 @@ interface IProps {
   portalData?: IPortalData;
   answerMetadata?: IExportableAnswerMetadata;
   interactiveInfo?: IInteractiveInfo;
-  aspectRatioMethod?: "MAX" | "MANUAL" | "DEFAULT";
   showDeleteDataButton?: boolean;
+  setAspectRatio: (aspectRatio: number) => void;
+  setHeightFromInteractive: (heightFromInteractive: number) => void;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
-    setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo, aspectRatioMethod,
-    showDeleteDataButton } = props;
+    setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo,
+    showDeleteDataButton, setAspectRatio, setHeightFromInteractive } = props;
 
-  const [ heightFromInteractive, setHeightFromInteractive ] = useState(0);
-  const [ ARFromSupportedFeatures, setARFromSupportedFeatures ] = useState(0);
   const [reloadCount, setReloadCount] = useState<number>(0);
   const iframePhoneTimeout = useRef<number|undefined>(undefined);
   const iframeRef = useRef<HTMLIFrameElement>(null);
@@ -105,6 +104,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       if (!phone) {
         return;
       }
+
       // Just to add some type checking to phone post (ServerMessage).
       const post = (type: ServerMessage, data: any) => phone.post(type, data);
       const addListener = (type: ClientMessage, handler: any) => phone.addListener(type, handler);
@@ -135,7 +135,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       addListener("supportedFeatures", (info: any) => {
         const features: ISupportedFeatures = info.features;
         if (features.aspectRatio) {
-          setARFromSupportedFeatures(features.aspectRatio);
+          setAspectRatio(features.aspectRatio);
         }
         if (iframeRef.current) {
           setSupportedFeatures(iframeRef.current, features);
@@ -400,19 +400,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     }
   };
 
-  const heightFromSupportedFeatures = aspectRatioMethod === "MAX"
-                                        ? proposedHeight
-                                        : ARFromSupportedFeatures && containerWidth && typeof(containerWidth) === "number"
-                                            ? containerWidth / ARFromSupportedFeatures
-                                            : 0;
-
-  // There are several options for specifying the iframe height. Check if we have height specified by interactive (from IframePhone
-  // "height" listener), height based on aspect ratio specified by interactive (from IframePhone "supportedFeatures" listener),
-  // or height from container dimensions and embeddable specifications.
-  const height = heightFromInteractive || heightFromSupportedFeatures || proposedHeight || kDefaultHeight;
-
-  // If the interactive sets the height, ignore the container width passed in and use all the available space.
-  const width = heightFromInteractive ? "100%" : containerWidth;
+  const height = proposedHeight || kDefaultHeight;
+  const width = containerWidth || "100%";
 
   return (
     <div className="iframe-runtime" data-cy="iframe-runtime">

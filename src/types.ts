@@ -11,7 +11,7 @@ export interface IframePhone {
 }
 
 export interface LibraryInteractiveData {
-  aspect_ratio_method?: "DEFAULT" | null;
+  aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX" | null;
   authoring_guidance?: string;
   base_url: string;
   url?: string;
