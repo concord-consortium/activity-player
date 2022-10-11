@@ -261,7 +261,7 @@ export const answerHasResponse = (answer: WrappedDBAnswer, authoredState?: any):
   const { interactiveState, meta: { attachments, type, submitted } } = answer;
   const hasAttachments = !!(attachments && Object.keys(attachments).length > 0);
   const isNotInteractiveStateAnswer = type !== "interactive_state";
-  const hasInteractiveStateKeys = Object.keys(interactiveState).length > 0;
+  const hasInteractiveStateKeys = interactiveState && Object.keys(interactiveState).length > 0;
 
   // required questions need to be submitted to be marked as answered
   if (authoredState?.required && !submitted) {
