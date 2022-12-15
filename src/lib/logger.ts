@@ -5,8 +5,8 @@ import { LaraGlobalType } from "../lara-plugin/index";
 type LoggerEnvironment = "dev" | "production";
 
 const logManagerUrl: Record<LoggerEnvironment, string> = {
-  dev: "//cc-log-manager-dev.herokuapp.com/api/logs",
-  production: "//cc-log-manager.herokuapp.com/api/logs"
+  dev: "https://logger.concordqa.org/logs",
+  production: "https://logger.concord.org/logs"
 };
 
 // Returns teacher logging username that is also used by Portal Report / Dashboard and possibly other systems.
