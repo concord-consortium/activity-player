@@ -69,6 +69,7 @@ context("Launch AP From the Portal", () => {
     it("can open a sample activity", function () {
       cy.visit(`?activity=sample-activity-1&token=${this.portalToken}` +
         `&domain=${portalDomain}/&answersSourceKey=${answersSourceKey}`);
+        cy.get("[data-cy=home-button]").eq(0).click();
       cy.get("[data-cy=activity-summary]").should("contain", "Single Page Test Activity");
     });
 
