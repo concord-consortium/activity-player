@@ -18,6 +18,7 @@ import { IPortalData } from "../../../portal-types";
 import { IInteractiveInfo } from "../../../utilities/embeddable-utils";
 import { getReportUrl } from "../../../utilities/report-utils";
 import ReloadIcon from "../../../assets/svg-icons/icon-reload.svg";
+import { accessibilityClick } from "../../../utilities/accessibility-helper";
 
 import "./iframe-runtime.scss";
 
@@ -385,8 +386,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     }
   }));
 
-  const handleResetButtonClick = () => {
-    if (confirm("Are you sure you want to clear your work and start over on this item?")) {
+  const handleResetButtonClick = (event: any) => {
+    if (accessibilityClick(event) && confirm("Are you sure you want to clear your work and start over on this item?")) {
       if (iframePhoneTimeout.current) {
         clearTimeout(iframePhoneTimeout.current);
         iframePhoneTimeout.current = undefined;
