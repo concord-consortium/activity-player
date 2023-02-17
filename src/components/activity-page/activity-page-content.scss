@@ -10,11 +10,18 @@
     width: 100%;
   }
 
-  .name {
-    font-size: 24px;
-    font-weight: bold;
-    max-width: 900px;
-    color: var(--theme-secondary-color);
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .name {
+      flex-grow: 1;
+      font-size: 24px;
+      font-weight: bold;
+      max-width: 850px;
+      color: var(--theme-secondary-color);
+    }
   }
 }
 

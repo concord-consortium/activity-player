@@ -20,7 +20,8 @@ module.exports = (env, argv) => {
     entry: "./src/index.tsx",
     mode: "development",
     output: {
-      filename: "assets/index.[hash].js"
+      filename: "assets/index.[hash].js",
+      hashFunction: "sha512"
     },
     performance: { hints: false },
     module: {
