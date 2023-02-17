@@ -45,6 +45,7 @@ import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChange
 import { getBearerToken } from "../utilities/auth-utils";
 
 import "./app.scss";
+import { isReadAloudAvailable, loadReadAloudSetting, saveReadAloudSetting } from "../lib/read-aloud-code-to-refactor";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "You must submit an answer for all required questions before advancing to another page.";
@@ -86,7 +87,9 @@ interface IState {
   errorType: null | ErrorType;
   idle: boolean;
   pageChangeNotification?: IPageChangeNotification;
-  sequenceActivity?: string | undefined
+  sequenceActivity?: string | undefined;
+  readAloud: boolean;
+  readAloudDisabled: boolean;
 }
 interface IProps {}
 
@@ -110,7 +113,9 @@ export class App extends React.PureComponent<IProps, IState> {
       incompleteQuestions: [],
       pluginsLoaded: false,
       errorType: null,
-      idle: false
+      idle: false,
+      readAloud: loadReadAloudSetting(),
+      readAloudDisabled: !isReadAloudAvailable()
     };
   }
 
@@ -432,6 +437,9 @@ export class App extends React.PureComponent<IProps, IState> {
                   key={`page-${currentPage}`}
                   pluginsLoaded={this.state.pluginsLoaded}
                   pageChangeNotification={this.state.pageChangeNotification}
+                  readAloud={this.state.readAloud}
+                  readAloudDisabled={this.state.readAloudDisabled}
+                  setReadAloud={this.handleSetReadAloud}
                 />
         }
         { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
@@ -644,5 +652,10 @@ export class App extends React.PureComponent<IProps, IState> {
   private handleLoadPlugins = () => {
     this.setState({ pluginsLoaded: true });
   }
+
+  private handleSetReadAloud = (readAloud: boolean) => {
+    this.setState({ readAloud });
+    saveReadAloudSetting(readAloud);
+  };
 
 }
