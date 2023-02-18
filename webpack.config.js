@@ -23,6 +23,9 @@ module.exports = (env, argv) => {
       filename: "assets/index.[hash].js",
       hashFunction: "sha512"
     },
+    devServer: {
+      allowedHosts: "all"
+    },
     performance: { hints: false },
     module: {
       rules: [

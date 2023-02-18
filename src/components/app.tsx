@@ -43,9 +43,9 @@ import { LaraDataContext } from "./lara-data-context";
 import { __closeAllPopUps } from "../lara-plugin/plugin-api/popup";
 import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChangeNotificationStartTimeout } from "./activity-page/page-change-notification";
 import { getBearerToken } from "../utilities/auth-utils";
+import { readAloudManager } from "../lib/read-aloud-code-to-refactor";
 
 import "./app.scss";
-import { isReadAloudAvailable, loadReadAloudSetting, saveReadAloudSetting } from "../lib/read-aloud-code-to-refactor";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "You must submit an answer for all required questions before advancing to another page.";
@@ -114,8 +114,8 @@ export class App extends React.PureComponent<IProps, IState> {
       pluginsLoaded: false,
       errorType: null,
       idle: false,
-      readAloud: loadReadAloudSetting(),
-      readAloudDisabled: !isReadAloudAvailable()
+      readAloud: readAloudManager.isEnabled,
+      readAloudDisabled: !readAloudManager.isAvailable
     };
   }
 
@@ -655,7 +655,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleSetReadAloud = (readAloud: boolean) => {
     this.setState({ readAloud });
-    saveReadAloudSetting(readAloud);
+    readAloudManager.enable(readAloud);
   };
 
 }

@@ -3,6 +3,7 @@ import { Project } from "../../types";
 import { AccountOwner } from "./account-owner";
 import { Logo } from "./logo";
 import SequenceBackIcon from "../../assets/svg-icons/arrow-back-icon.svg";
+import { ReadAloudText } from "../../lib/read-aloud-code-to-refactor";
 
 import "./header.scss";
 
@@ -46,7 +47,7 @@ export class Header extends React.PureComponent<IProps> {
     const { contentName, showSequence } = this.props;
     return (
       <div className="activity-title" data-cy ="activity-title">
-        {`${showSequence ? "Sequence:" : "Activity:"} ${contentName}`}
+        <ReadAloudText>{`${showSequence ? "Sequence:" : "Activity:"} ${contentName}`}</ReadAloudText>
       </div>
     );
   }

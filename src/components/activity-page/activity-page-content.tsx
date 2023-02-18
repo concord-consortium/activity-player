@@ -8,6 +8,7 @@ import { Logger, LogEventName } from "../../lib/logger";
 import { showReport } from "../../utilities/report-utils";
 import { IPageChangeNotification, PageChangeNotification } from "./page-change-notification";
 import { Toggle } from "./toggle";
+import { ReadAloudText } from "../../lib/read-aloud-code-to-refactor";
 
 import "./activity-page-content.scss";
 
@@ -50,7 +51,7 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
         {this.renderPageChangeNotification()}
         <div className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
           <div className="header">
-            <div className="name">{ pageTitle }</div>
+            <div className="name"><ReadAloudText>{ pageTitle }</ReadAloudText></div>
             {this.props.setReadAloud && <Toggle
               id="read_aloud_toggle"
               label="Tap text to listen"

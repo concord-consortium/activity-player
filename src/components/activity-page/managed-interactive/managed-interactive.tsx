@@ -21,6 +21,7 @@ import { Logger, LogEventName } from "../../../lib/logger";
 import { handleGetAttachmentUrl } from "@concord-consortium/interactive-api-host";
 import { LaraDataContext } from "../../lara-data-context";
 import { ClickToPlay } from "./click-to-play";
+import { ReadAloudText } from "../../../lib/read-aloud-code-to-refactor";
 
 import "./managed-interactive.scss";
 
@@ -402,7 +403,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       <div className={hasQuestionNumber} style={{width:containerWidth}}>
       { questionNumber &&
         <div className="header" ref={headerTarget}>
-          Question #{questionNumber}{questionName}
+          <ReadAloudText>Question #{questionNumber}{questionName}</ReadAloudText>
           {hint &&
             <div className="question-container"
               onClick={handleShowHint}

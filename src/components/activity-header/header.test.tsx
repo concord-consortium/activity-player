@@ -1,7 +1,7 @@
 import React from "react";
 import { Header } from "./header";
 import { AccountOwner } from "./account-owner";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 import { Logo } from "./logo";
 
 describe("Header component", () => {
@@ -48,7 +48,7 @@ describe("Header component", () => {
     expect(wrapperNoIcon.containsMatchingElement(headerLogo9)).toEqual(true);
   });
   it("renders activity title", () => {
-    const wrapperDropdown = shallow(<Header project={project1} userName={"test student"} contentName={"test activity"} />);
+    const wrapperDropdown = mount(<Header project={project1} userName={"test student"} contentName={"test activity"} />);
     expect(wrapperDropdown.text()).toContain("test activity");
   });
   it("renders user name", () => {
