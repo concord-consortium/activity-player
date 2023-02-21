@@ -2,6 +2,15 @@
 import classNames from "classnames";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { v4 as uuid } from "uuid";
+import queryString from "query-string";
+
+// this should not be in the final code
+const params = queryString.parse(window.location.search);
+let rate = parseFloat((params.readAloudRate as string) || "1");
+if (isNaN(rate)) {
+  rate = 1;
+}
+console.info("Read Aloud Rate:", rate);
 
 // this will probably be moved to the lara-interactive-host
 
@@ -79,6 +88,7 @@ class ReadAloudManager {
 
       if (this.selectedComponentId && (text.length > 0)) {
         const utterance = new SpeechSynthesisUtterance(text);
+        utterance.rate = rate;
         utterance.addEventListener("end", () => {
           // if this is still the currently selected component deselect it
           if (this.selectedComponentId === id) {
