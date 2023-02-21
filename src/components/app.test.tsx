@@ -15,6 +15,17 @@ import _activity from "../data/version-2/sample-new-sections-multiple-layout-typ
 import _activityWithGlossary from "../data/version-2/sample-new-sections-glossary-plugin.json";
 import _activityOnIpad from "../data/version-2/sample-new-sections-ipad-friendly.json";
 
+// monkeypatch crypto to fix issue with uuid in interactive-api-host reporting getRandomValues not available
+(global as any).crypto = {
+  getRandomValues: (array: any[]) => {
+    let l = array.length;
+    while (l--) {
+      array[l] = Math.floor(Math.random() * 256);
+    }
+    return array;
+  }
+};
+
 const activity = _activity as Activity;
 const activityWithGlossary = _activityWithGlossary as Activity;
 const activitySinglePage = _activitySinglePage as Activity;
