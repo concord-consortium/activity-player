@@ -30,7 +30,7 @@ export const Toggle: React.FC<IProps> = (props) => {
   const className = classNames("toggle", {disabled: props.disabled});
 
   return (
-    <label htmlFor={props.id} className={className}>
+    <label htmlFor={props.id} className={className} data-cy="toggle">
       <div className="label" id={labelId}>
         {props.label}
       </div>
