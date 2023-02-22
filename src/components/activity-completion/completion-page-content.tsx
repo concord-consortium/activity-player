@@ -10,6 +10,7 @@ import { isQuestion } from "../../utilities/activity-utils";
 import { answerHasResponse, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
 import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
+import { ReadAloudToggle } from "../read-aloud-toggle";
 
 import "./completion-page-content.scss";
 
@@ -23,6 +24,9 @@ interface IProps {
   activityIndex?: number;
   onActivityChange?: (activityNum: number) => void;
   onShowSequence?: () => void;
+  readAloud?: boolean;
+  setReadAloud?: (readAloud: boolean) => void;
+  readAloudDisabled?: boolean;
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
@@ -165,7 +169,14 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
             </div>
           }
           <div className="exit-container" data-cy="exit-container">
-            <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
+            <div className="summary-of-work">
+              <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
+              {props.setReadAloud && <ReadAloudToggle
+                disabled={props.readAloudDisabled}
+                isChecked={props.readAloud || false}
+                onChange={props.setReadAloud}
+              />}
+            </div>
             <SummaryTable questionsStatus={progress.questionsStatus} />
             {showStudentReport && <button className={`button show-my-work ${isValidReportLink() ? "" : "disabled"}`}
                                           onClick={handleShowAnswers}><IconCompletion width={24} height={24} />

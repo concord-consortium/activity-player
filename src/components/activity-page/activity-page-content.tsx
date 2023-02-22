@@ -7,7 +7,7 @@ import { IGetInteractiveState, INavigationOptions } from "@concord-consortium/la
 import { Logger, LogEventName } from "../../lib/logger";
 import { showReport } from "../../utilities/report-utils";
 import { IPageChangeNotification, PageChangeNotification } from "./page-change-notification";
-import { Toggle } from "./toggle";
+import { ReadAloudToggle } from "../read-aloud-toggle";
 
 import "./activity-page-content.scss";
 
@@ -51,11 +51,8 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
         <div className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
           <div className="header">
             <div className="name">{ pageTitle }</div>
-            {this.props.setReadAloud && <Toggle
-              id="read_aloud_toggle"
-              label="Tap text to listen"
+            {this.props.setReadAloud && <ReadAloudToggle
               disabled={this.props.readAloudDisabled}
-              disabledMessage="Text to speech not available on this browser."
               isChecked={this.props.readAloud || false}
               onChange={this.props.setReadAloud}
             />}
