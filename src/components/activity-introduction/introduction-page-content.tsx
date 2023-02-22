@@ -8,10 +8,13 @@ import { Activity } from "../../types";
 interface IProps {
   activity: Activity;
   onPageChange: (page: number) => void;
+  readAloud?: boolean;
+  setReadAloud?: (readAloud: boolean) => void;
+  readAloudDisabled?: boolean;
 }
 
 export const IntroductionPageContent: React.FC<IProps> = (props) => {
-  const { activity, onPageChange } = props;
+  const { activity, readAloud, readAloudDisabled, setReadAloud, onPageChange } = props;
   return (
     <div className="intro-content" data-cy="intro-page-content">
       <div className="introduction">
@@ -20,6 +23,9 @@ export const IntroductionPageContent: React.FC<IProps> = (props) => {
           introText={activity.description}
           time={activity.time_to_complete}
           imageUrl={activity.thumbnail_url}
+          readAloud={readAloud}
+          readAloudDisabled={readAloudDisabled}
+          setReadAloud={setReadAloud}
         />
         <ActivityPageLinks
           activityPages={activity.pages}

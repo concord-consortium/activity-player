@@ -491,6 +491,9 @@ export class App extends React.PureComponent<IProps, IState> {
       <IntroductionPageContent
         activity={activity}
         onPageChange={this.handleChangePage}
+        readAloud={this.state.readAloud}
+        readAloudDisabled={this.state.readAloudDisabled}
+        setReadAloud={this.handleSetReadAloud}
       />
     );
   }
@@ -506,6 +509,9 @@ export class App extends React.PureComponent<IProps, IState> {
         activityIndex={this.state.activityIndex}
         onActivityChange={this.handleSelectActivity}
         onShowSequence={this.handleShowSequenceIntro}
+        readAloud={this.state.readAloud}
+        readAloudDisabled={this.state.readAloudDisabled}
+        setReadAloud={this.handleSetReadAloud}
       />
     );
   }
