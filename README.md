@@ -45,56 +45,37 @@ Testing this is complicated. Here is one approach:
 
 ## Deployment
 
-Production releases to S3 are based on the contents of the /dist folder and are built automatically by GitHub Actions for each branch pushed to GitHub and each merge into production.
+Deployments are based on the contents of the /dist folder and are built automatically by GitHub Actions for each branch and tag pushed to GitHub.
 
-The production branch is deployed to https://activity-player.concord.org/.
+Branches are deployed to `https://activity-player.concord.org/branch/<name>/`.
 
-Other branches are deployed to https://activity-player.concord.org/branch/<name>.
+Tags are deployed to `https://activity-player.concord.org/version/<name>/`
+
+You can view the status of all the branch and tag deploys [here](https://github.com/concord-consortium/activity-player/actions).
+
+The production release is available at `https://activity-player.concord.org`.
+
+Production releases are done using a manual GitHub Actions workflow. You specify which tag you want to release to production and the workflow copies that tag's `index-top.html` to `https://activity-player.concord.org/index.html`.
+
+See the CLUE [docs/deploy.md](https://github.com/concord-consortium/collaborative-learning/blob/master/docs/deploy.md) for more details (it uses the same process).
 
 To deploy a production release:
 
-1. Copy CHANGES-template.md to CHANGES.md, and add a list of PT stories related to the release into temporary CHANGES.md
-    - Update the version and date at the top of the CHANGES.md
-    - Run `git log --reverse v<last version>...HEAD | grep '#'` to see a list of PR merges and stories that include PT ids in their message
-    - In a PT workspace that includes Orange and Teal boards, search for the `label:"activity-player-<new version>" includedone:true`. You can select all, and export as CSV. Then copy the id and title columns.
-    - Review recently merged PRs in GitHub UI
-2. Compute asset sizes.
-    1. Run `npm install`
-    2. Run `npm run build`
-    3. Look at file sizes with `ls -la dist/assets`
-    4. Add file sizes to CHANGES.md
-    5. Look at previous version file sizes listed in the previous release notes in GitHub. Compute the percent change `(new - prev) / prev * 100`
-3. Update package, commit, and tag
-    - **Mac or Linux**:
-        - Run `npm version -m "$(< CHANGES.md)" [new-version-string]`
-        - This updates the version in package.json and package-lock.json and creates a commit with the comment from CHANGES.md, and creates a tag with the name `v[new-version-string]` that has a description based on CHANGES.md.
-    - **Windows**: the command above that injects `CHANGES.md` as the message won't work in the standard windows command application.
-        - git-bash: same as above
-        - PowerShell: `npm version -m "(type CHANGES.md)" [new-version-string]` might work, I haven't tried it though.
-        - Do the steps manually and use a git client so you can paste in the multi line message
-            1. `npm version --no-git-tag-version [new-version-string]` (updates package.json and package-lock.json with the new version)
-            2. create a new commit with the CHANGES.md message
-            3. create a tag `v[new-version-string]` with the CHANGES.md message
-4. Push current branch and tag to GitHub
-  - `git push origin master`
-  - `git push origin v<new version>`
-5. Create a GitHub Release
-    1. Find the new tag at https://github.com/concord-consortium/activity-player/tags open it, and edit it
-    2. Copy the title from CHANGES.md
-    3. Copy the content from CHANGES.md
-    4. Hit "Publish Release" button
-6. QA the built version at `https://activity-player.concord.org/version/v[new-version-string]/`
-7. Checkout production
-    1. `git checkout production`
-8. Run `git reset --hard v[new-version-string]`
-9. Push production to GitHub **<-- this actually releases the new code**
-    1. `git push --force origin production`
-10. Check the release
-    1. Watch the GitHub actions build to see that the S3 Deploy step finished
-    2. Load the https://activity-player.concord.org and to make sure the new version is released. You can look at the version number at the bottom of the page to check this.
-11. Clean up your working directory
-    1. Delete `CHANGES.md`
-    2. `git checkout master`
+1. Update the version number in `package.json` and `package-lock.json`
+    - `npm version --no-git-tag-version [patch|minor|major]`
+1. Update the `CHANGELOG.md` with a description of the new version
+1. Verify that everything builds correctly
+    - `npm run lint && npm run build && npm run test`
+1. Copy asset size markdown table from previous release and change sizes to match new sizes in `dist`
+    - `cd dist`
+    - `ls -lhS *.js | awk '{print "|", $9, "|", $5, "|"}'`
+    - `ls -lhS *.css | awk '{print "|", $9, "|", $5, "|"}'`
+1. Create `release-<version>` branch and commit changes, push to GitHub, create PR and merge
+1. Test the master build at: https://activity-player.concord.org/index-master.html
+1. Push a version tag to GitHub and/or use https://github.com/concord-consortium/activity-player/releases to create a new GitHub release
+1. Stage the release by running the [Release Staging Workflow](https://github.com/concord-consortium/activity-player/actions/workflows/release-staging.yml) and entering the version tag you just pushed.
+1. Test the staged release at https://activity-player.concord.org/index-staging.html
+1. Update production by running the [Release Workflow](https://github.com/concord-consortium/activity-player/actions/workflows/release.yml) and entering the release version tag.
 
 ### Testing
 
