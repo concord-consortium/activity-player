@@ -1,5 +1,7 @@
 "use strict";
 
+const path = require("path");
+
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
@@ -108,7 +110,11 @@ module.exports = (env, argv) => {
         "querystring": require.resolve("querystring-es3"),
         "stream": require.resolve("stream-browserify"),
         "util": require.resolve("util")
-      }
+      },
+      alias: {
+        // this allows local npm link to work without causing duplicate react imports
+        react: path.resolve(__dirname, './node_modules/react')
+      },
     },
     stats: {
       // suppress "export not found" warnings about re-exported types

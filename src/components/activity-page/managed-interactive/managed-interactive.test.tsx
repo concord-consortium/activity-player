@@ -4,6 +4,7 @@ import React from "react";
 import { ManagedInteractive } from "./managed-interactive";
 import { EmbeddableType, IMwInteractive } from "../../../types";
 import { IAttachmentUrlRequest } from "@concord-consortium/lara-interactive-api";
+import { DynamicTextTester } from "../../../test-utils/dynamic-text";
 
 configure({ testIdAttribute: "data-cy" });
 
@@ -172,13 +173,14 @@ describe("ManagedInteractive component", () => {
       ref_id: "314-ManagedInteractive"
     };
 
-    render(<ManagedInteractive
+    render(<DynamicTextTester><ManagedInteractive
               embeddable={sampleEmbeddable}
               questionNumber={1}
               setSupportedFeatures={mockSetSupportedFeatures}
               setSendCustomMessage={mockSetSendCustomMessage}
               setNavigation={mockSetNavigation}
-              />);
+              />
+           </DynamicTextTester>);
     expect(screen.getByTestId("managed-interactive")).toBeInTheDocument();
     // allow initialization to complete
     jest.runAllTimers();
@@ -268,13 +270,14 @@ describe("ManagedInteractive component", () => {
       ]
     };
 
-    render(<ManagedInteractive
+    render(<DynamicTextTester><ManagedInteractive
               embeddable={sampleLinkedEmbeddable}
               questionNumber={1}
               setSupportedFeatures={mockSetSupportedFeatures}
               setSendCustomMessage={mockSetSendCustomMessage}
               setNavigation={mockSetNavigation}
-              />);
+              />
+           </DynamicTextTester>);
     expect(screen.getByTestId("managed-interactive")).toBeInTheDocument();
     expect(screen.queryByTestId("click-to-play")).toBeNull();
     // allow initialization to complete
@@ -310,13 +313,14 @@ describe("ManagedInteractive component", () => {
       image_url: "https://example.com/click-here-to-play.png",
     };
 
-    render(<ManagedInteractive
+    render(<DynamicTextTester><ManagedInteractive
               embeddable={sampleEmbeddable}
               questionNumber={1}
               setSupportedFeatures={mockSetSupportedFeatures}
               setSendCustomMessage={mockSetSendCustomMessage}
               setNavigation={mockSetNavigation}
-              />);
+              />
+           </DynamicTextTester>);
     expect(screen.getByTestId("click-to-play")).toBeInTheDocument();
     expect(screen.getByTestId("click-to-play").innerHTML).toBe(`<img src="https://example.com/click-here-to-play.png"><div>Click here to play!!!</div>`);
 
@@ -373,13 +377,14 @@ describe("ManagedInteractive component", () => {
       ref_id: "314-ManagedInteractive"
     };
 
-    render(<ManagedInteractive
+    render(<DynamicTextTester><ManagedInteractive
               embeddable={sampleEmbeddable}
               questionNumber={1}
               setSupportedFeatures={mockSetSupportedFeatures}
               setSendCustomMessage={mockSetSendCustomMessage}
               setNavigation={mockSetNavigation}
-              />);
+              />
+           </DynamicTextTester>);
     expect(screen.getByTestId("click-to-play")).toBeInTheDocument();
     expect(screen.getByTestId("click-to-play").innerHTML).toBe(`<img src="https://example.com/click-here-to-play.png"><div>Click here to play!!!</div>`);
 

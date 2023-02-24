@@ -6,6 +6,8 @@ import {
   ICloseModal, INavigationOptions,
   ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState
 } from "@concord-consortium/lara-interactive-api";
+import { DynamicText } from "@concord-consortium/dynamic-text";
+
 import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, ILegacyLinkedInteractiveState } from "../../../types";
 import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer } from "../../../firebase-db";
@@ -402,7 +404,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       <div className={hasQuestionNumber} style={{width:containerWidth}}>
       { questionNumber &&
         <div className="header" ref={headerTarget}>
-          Question #{questionNumber}{questionName}
+          <DynamicText>Question #{questionNumber}{questionName}</DynamicText>
           {hint &&
             <div className="question-container"
               onClick={handleShowHint}
@@ -416,7 +418,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       }
       { hint &&
         <div className={`hint-container ${showHint ? "" : "collapsed"}`}>
-          <div className="hint question-txt" data-cy="hint">{renderHTML(hint)}</div>
+          <div className="hint question-txt" data-cy="hint"><DynamicText>{renderHTML(hint)}</DynamicText></div>
           <div className="close-container">
             <IconArrowUp className={"close"} width={26} height={26}
                         onClick={handleHintClose}

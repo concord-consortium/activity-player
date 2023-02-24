@@ -10,7 +10,9 @@ import {
   IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent,
   ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState, AttachmentInfoMap
 } from "@concord-consortium/lara-interactive-api";
+import { DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
 import Shutterbug from "shutterbug";
+
 import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
@@ -98,6 +100,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     resolveAndCleanup: useRef<() => void>(),
   };
   const currentInteractiveState = useRef<any>(initialInteractiveState);
+
+  const dynamicText = useDynamicTextContext();
 
   useEffect(() => {
     const initInteractive = () => {
@@ -240,6 +244,24 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           interactive_id: id,
           interactive_url: url
         });
+      });
+      addListener("customMessage", (message: ICustomMessage) => {
+        if (message.type === DynamicTextCustomMessageType) {
+          const content = message.content as DynamicTextMessage;
+          switch (content.type) {
+            case "select":
+              dynamicText.selectComponent(content.id, content.options);
+              break;
+            case "register":
+              dynamicText.registerComponent(content.id, (componentMessage) => {
+                post("customMessage", {type: DynamicTextCustomMessageType, content: componentMessage});
+              });
+              break;
+            case "unregister":
+              dynamicText.unregisterComponent(content.id);
+              break;
+          }
+        }
       });
 
       // Legacy bug fix: In the 1.0.0 release of the AP the special 'nochange'

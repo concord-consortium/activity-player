@@ -1,4 +1,6 @@
 import React from "react";
+import { DynamicText } from "@concord-consortium/dynamic-text";
+
 import IconComplete from "../../assets/svg-icons/icon-check-circle.svg";
 import IconIncomplete from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
 import { renderHTML } from "../../utilities/render-html";
@@ -23,8 +25,8 @@ export const SummaryTable: React.FC<IProps> = (props) => {
     <table className="summary-table" data-cy="summary-table">
       <thead>
         <tr>
-          <th>Question</th>
-          <th>Complete</th>
+          <th><DynamicText>Question</DynamicText></th>
+          <th><DynamicText>Complete</DynamicText></th>
         </tr>
       </thead>
       <tbody>
@@ -35,7 +37,7 @@ export const SummaryTable: React.FC<IProps> = (props) => {
           const questionPrompt = question.prompt ? renderHTML(question.prompt.replace(/<\/?[^>]+(>|$)/g, "")) : "";
           return (
             <tr key={index} data-cy="summary-table-row">
-              <td>Page {question.page}: Question {question.number}. <em>{questionPrompt}</em></td>
+              <td><DynamicText>Page {question.page}: Question {question.number}. <em>{questionPrompt}</em></DynamicText></td>
               <td>{questionAnswered}</td>
             </tr>
           );
