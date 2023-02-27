@@ -60,7 +60,10 @@ export enum LogEventName {
   show_idle_warning,
   go_back_to_portal,
   continue_session,
-  session_timeout
+  session_timeout,
+  toggle_read_aloud,
+  read_aloud,
+  read_aloud_canceled,
 }
 
 export interface ILoggerOptions {
