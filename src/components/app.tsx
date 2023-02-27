@@ -64,7 +64,19 @@ const kDefaultFixedWidthLayout = "1100px";
 
 // this is exported to that the TextBox component can pass it directly to DynamicText
 // as the context due to it not re-rendering because of multiple forward refs components wrapping it
-export const dynamicTextManager = new DynamicTextManager();
+export const dynamicTextManager = new DynamicTextManager({onEvent: (event) => {
+  switch (event.type) {
+    case "readAloud":
+      Logger.log({event: LogEventName.read_aloud, event_value: event.text, ...event.extraLoggingInfo});
+      break;
+    case "readAloudCanceled":
+      Logger.log({event: LogEventName.read_aloud_canceled, event_value: event.text});
+      break;
+    case "readAloudComplete":
+      // not logged for now but may be in the future
+      break;
+  }
+}});
 
 export type ErrorType = "auth" | "network" | "timeout";
 
@@ -119,8 +131,8 @@ export class App extends React.PureComponent<IProps, IState> {
       pluginsLoaded: false,
       errorType: null,
       idle: false,
-      readAloud: dynamicTextManager.isEnabled,
-      readAloudDisabled: !dynamicTextManager.isAvailable,
+      readAloud: dynamicTextManager.isReadAloudEnabled,
+      readAloudDisabled: !dynamicTextManager.isReadAloudAvailable,
     };
   }
 
@@ -668,7 +680,8 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleSetReadAloud = (readAloud: boolean) => {
     this.setState({ readAloud });
-    dynamicTextManager.enable(readAloud);
+    dynamicTextManager.enableReadAloud(readAloud);
+    Logger.log({ event: LogEventName.toggle_read_aloud, event_value: readAloud });
   };
 
 }

@@ -250,7 +250,11 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           const content = message.content as DynamicTextMessage;
           switch (content.type) {
             case "select":
-              dynamicText.selectComponent(content.id, content.options);
+              // content.options my be undefined so it needs to be cast as any
+              dynamicText.selectComponent(content.id, {...(content.options as any), extraLoggingInfo: {
+                interactive_id: id,
+                interactive_url: url
+              }});
               break;
             case "register":
               dynamicText.registerComponent(content.id, (componentMessage) => {
