@@ -418,7 +418,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       }
       { hint &&
         <div className={`hint-container ${showHint ? "" : "collapsed"}`}>
-          <div className="hint question-txt" data-cy="hint"><DynamicText>{renderHTML(hint)}</DynamicText></div>
+          <DynamicText><div className="hint question-txt" data-cy="hint">{renderHTML(hint)}</div></DynamicText>
           <div className="close-container">
             <IconArrowUp className={"close"} width={26} height={26}
                         onClick={handleHintClose}

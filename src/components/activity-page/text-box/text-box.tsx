@@ -19,8 +19,12 @@ export const TextBox: React.FC<IProps> = (props) => {
   return(
     <div className={`textbox ${embeddable.is_callout ? "callout" : ""}`} data-cy="text-box">
       { embeddable.name && <div className="text-name"><DynamicText context={dynamicTextManager}>{embeddable.name}</DynamicText></div> }
-      <div className="content question-txt">
-        {embeddable.content && <DynamicText context={dynamicTextManager}>{renderHTML(embeddable.content)}</DynamicText>}
+      <div className="content">
+        <DynamicText context={dynamicTextManager}>
+          <div className="question-txt">
+            {embeddable.content &&  renderHTML(embeddable.content)}
+          </div>
+        </DynamicText>
       </div>
     </div>
   );

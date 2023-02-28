@@ -30,9 +30,11 @@ export class ActivitySummary extends React.PureComponent <IProps> {
             onChange={this.props.setReadAloud}
           />}
         </div>
-        <div className="activity-content intro-txt">
-          { this.props.introText && <DynamicText>{renderHTML(this.props.introText)}</DynamicText> }
-        </div>
+        <DynamicText>
+          <div className="activity-content intro-txt">
+            { this.props.introText && renderHTML(this.props.introText)}
+          </div>
+        </DynamicText>
         { this.props.time && <EstimatedTime time={this.props.time} /> }
       </div>
     );
