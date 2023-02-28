@@ -1,7 +1,7 @@
 {
   "background_image": "",
   "defunct": false,
-  "description": "\u003Cp\u003EThis activity has all the question interactives, one per page.\u003C/p\u003E\r\n\u003Cp\u003EEach question interactive uses the master branch version.\u003C/p\u003E\r\n\u003Cp\u003EThis also uses the \"WATERS\" glossary so words like \"aquatic\" and \"drought\" should be highlighted.\u003C/p\u003E",
+  "description": "\u003Cp\u003EThis activity has all the question interactives, one per page, with an intro page using the built-in AP text block.\u003C/p\u003E\r\n\u003Cp\u003EEach question interactive uses the master branch version.\u003C/p\u003E\r\n\u003Cp\u003EThis also uses the \"WATERS\" glossary so words like \"aquatic\" and \"drought\" should be highlighted.\u003C/p\u003E",
   "editor_mode": 0,
   "id": 13060,
   "layout": 0,
@@ -17,6 +17,45 @@
   "theme_name": null,
   "project": null,
   "pages": [
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "id": 155842,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "Intro Text",
+      "position": 1,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "sections": [
+        {
+          "title": "assessment_block",
+          "is_hidden": false,
+          "layout": "full-width",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "content": "\u003Cp\u003EThis is not a question-interactive but it is a text block with glossary words like \"aquatic\"\u0026nbsp;and \"drought\" which should be highlighted.\u003C/p\u003E",
+              "is_callout": true,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "Text Block",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "161808-Embeddable::Xhtml",
+              "column": "primary",
+              "position": 1
+            }
+          ]
+        }
+      ]
+    },
     {
       "additional_sections": null,
       "embeddable_display_mode": "stacked",
