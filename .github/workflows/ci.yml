@@ -15,12 +15,12 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
-      #- name: Run Tests
-      #  run: npm run test:coverage -- --runInBand
-      #- name: Upload coverage to Codecov
-      #  uses: codecov/codecov-action@v1
-      #  with:
-      #    flags: jest
+      - name: Run Tests
+        run: npm run test:coverage -- --runInBand
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v1
+        with:
+          flags: jest
   cypress:
     runs-on: ubuntu-latest
     container: cypress/browsers:node16.14.2-slim-chrome103-ff102
