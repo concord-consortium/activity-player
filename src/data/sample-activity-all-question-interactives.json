@@ -422,8 +422,7 @@
                 "data": {
                   "aspect_ratio_method": "DEFAULT",
                   "authoring_guidance": "",
-                  "base_url": "http://localhost:8081/fill-in-the-blank/",
-                  "base_url_SAVE": "https://models-resources.concord.org/question-interactives/branch/add-read-aloud/fill-in-the-blank/",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/add-read-aloud/fill-in-the-blank/",
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "",
