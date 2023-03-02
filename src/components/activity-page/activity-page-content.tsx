@@ -1,4 +1,6 @@
 import React from "react";
+import { DynamicText } from "@concord-consortium/dynamic-text";
+
 import { Section, SectionImperativeAPI } from "./section";
 import { BottomButtons } from "./bottom-buttons";
 import { numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
@@ -50,7 +52,7 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
         {this.renderPageChangeNotification()}
         <div className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
           <div className="header">
-            <div className="name">{ pageTitle }</div>
+            <div className="name"><DynamicText>{ pageTitle }</DynamicText></div>
             {this.props.setReadAloud && <ReadAloudToggle
               disabled={this.props.readAloudDisabled}
               isChecked={this.props.readAloud || false}

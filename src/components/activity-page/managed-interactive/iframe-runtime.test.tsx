@@ -2,6 +2,7 @@ import React from "react";
 import { IframeRuntime } from "./iframe-runtime";
 import { act, configure, fireEvent, render } from "@testing-library/react";
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
+import { DynamicTextTester } from "../../../test-utils/dynamic-text";
 
 configure({ testIdAttribute: "data-cy" });
 
@@ -78,7 +79,7 @@ describe("IframeRuntime component", () => {
       mockSendCustomMessage = sendMsg;
     });
     const testIframe = render(
-      <IframeRuntime
+      <DynamicTextTester><IframeRuntime
         url={"https://concord.org/"}
         id={"123-Interactive"}
         authoredState={null}
@@ -124,7 +125,8 @@ describe("IframeRuntime component", () => {
             }
           }
         }}
-      />);
+      />
+      </DynamicTextTester>);
     expect(testIframe.getByTestId("iframe-runtime")).toBeDefined();
     // allow initialization to complete
     jest.runAllTimers();

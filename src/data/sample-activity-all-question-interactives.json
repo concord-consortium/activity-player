@@ -1,7 +1,7 @@
 {
   "background_image": "",
   "defunct": false,
-  "description": "\u003Cp\u003EThis activity has all the question interactives, one per page.\u003C/p\u003E\r\n\u003Cp\u003EEach question interactive uses the master branch version.\u003C/p\u003E",
+  "description": "\u003Cp\u003EThis activity has all the question interactives, one per page, with an intro page using the built-in AP text block.\u003C/p\u003E\r\n\u003Cp\u003EEach question interactive uses the master branch version.\u003C/p\u003E\r\n\u003Cp\u003EThis also uses the \"WATERS\" glossary so words like \"aquatic\" and \"drought\" should be underlined.\u003C/p\u003E",
   "editor_mode": 0,
   "id": 13060,
   "layout": 0,
@@ -17,6 +17,45 @@
   "theme_name": null,
   "project": null,
   "pages": [
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "id": 155842,
+      "is_completion": false,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "Intro Text",
+      "position": 1,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "sections": [
+        {
+          "title": "assessment_block",
+          "is_hidden": false,
+          "layout": "full-width",
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "content": "\u003Cp\u003EThis is not a question-interactive but it is a text block with glossary words like \"aquatic\"\u0026nbsp;and \"drought\" which should be underlined.\u003C/p\u003E",
+              "is_callout": true,
+              "is_half_width": false,
+              "is_hidden": false,
+              "name": "Text Block",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "161808-Embeddable::Xhtml",
+              "column": "primary",
+              "position": 1
+            }
+          ]
+        }
+      ]
+    },
     {
       "additional_sections": null,
       "embeddable_display_mode": "stacked",
@@ -620,7 +659,7 @@
                 "data": {
                   "aspect_ratio_method": "DEFAULT",
                   "authoring_guidance": "",
-                  "base_url": "https://models-resources.s3.amazonaws.com/question-interactives/branch/master/image-question/index.html",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image-question/index.html",
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "",
@@ -913,7 +952,7 @@
             {
               "name": "",
               "url_fragment": null,
-              "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003Eprompt\u003C/p\u003E\",\"hint\":\"\u003Cp\u003Ehint\u003C/p\u003E\",\"defaultAnswer\":\"default answer\"}",
+              "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003Eprompt with glossary words like \u0026quot;aquatic\u0026quot; and \u0026quot;drought\u0026quot;\u003C/p\u003E\",\"hint\":\"\u003Cp\u003Ehint\u003C/p\u003E\",\"defaultAnswer\":\"default answer\"}",
               "is_hidden": false,
               "is_half_width": false,
               "show_in_featured_question_report": true,
@@ -1227,7 +1266,7 @@
           "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
-              "name": "",
+              "name": "Without Report...",
               "url_fragment": null,
               "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"prompt\":\"description\",\"caption\":\"caption\",\"credit\":\"credit\",\"creditLink\":\"credit link\",\"creditLinkDisplayText\":\"credit link display text\",\"videoUrl\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4\"}",
               "is_hidden": false,
@@ -1276,13 +1315,99 @@
               "linked_interactives": [],
               "column": "primary",
               "position": 1
+            },
+            {
+              "name": "With Report",
+              "url_fragment": null,
+              "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"videoUrl\":\"http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4\",\"prompt\":\"description\",\"caption\":\"caption\",\"credit\":\"credit\",\"creditLink\":\"credit link\"}",
+              "is_hidden": false,
+              "is_half_width": false,
+              "show_in_featured_question_report": true,
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": null,
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "linked_interactive_item_id": null,
+              "library_interactive": {
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/video-player/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "This video player will have a header bar above the interactive.\r\nIt will save the students position in the video. \r\nIt will show up in the teacher report.",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Video Player with Report",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": false,
+                  "authorable": true,
+                  "report_item_url": ""
+                }
+              },
+              "type": "ManagedInteractive",
+              "ref_id": "346747-ManagedInteractive",
+              "linked_interactives": [],
+              "column": "primary",
+              "position": 2
             }
           ]
         }
       ]
+    },
+    {
+      "additional_sections": null,
+      "embeddable_display_mode": "stacked",
+      "id": 155840,
+      "is_completion": true,
+      "is_hidden": false,
+      "layout": "l-6040",
+      "name": "Completion Page",
+      "position": 17,
+      "show_header": false,
+      "show_info_assessment": false,
+      "show_interactive": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": "Did you know?",
+      "toggle_info_assessment": false,
+      "sections": []
     }
   ],
-  "plugins": [],
+  "plugins": [
+    {
+      "id": 62000013060,
+      "description": null,
+      "author_data": "{\"version\":\"1.0\",\"glossaryResourceId\":\"this-is-a-fake-glossary-resource-id\",\"s3Url\":\"http://authoring-migrate.concord.org/api/v1/glossaries/62?json_only=true\"}",
+      "approved_script_label": "glossary",
+      "component_label": "glossary",
+      "approved_script": {
+        "name": "Glossary (master)",
+        "url": "https://models-resources.concord.org/glossary-plugin/plugin.js",
+        "label": "glossary",
+        "description": "This plugin provides the glossary activity plugin",
+        "version": 3,
+        "json_url": "https://models-resources.concord.org/glossary-plugin/manifest.json",
+        "authoring_metadata": "{\"components\":[{\"label\":\"glossary\",\"name\":\"Activity\",\"scope\":\"activity\",\"guiAuthoring\":true}]}"
+      }
+    }
+  ],
   "type": "LightweightActivity",
   "export_site": "Lightweight Activities Runtime and Authoring",
   "fixed_width_layout": "1100px"
