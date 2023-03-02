@@ -4,6 +4,7 @@ import { renderHTML } from "../../utilities/render-html";
 import { accessibilityClick } from "../../utilities/accessibility-helper";
 
 import "./sidebar-panel.scss";
+import { DynamicText } from "@concord-consortium/dynamic-text";
 
 interface IProps {
   handleCloseSidebarContent: (index: number, show: boolean) => void;
@@ -25,8 +26,10 @@ export class SidebarPanel extends React.PureComponent<IProps>{
             <IconClose />
           </div>
         </div>
-        <div className="sidebar-content help-content" data-cy="sidebar-content">{renderHTML(innerContent)}
-        </div>
+        <DynamicText>
+          <div className="sidebar-content help-content" data-cy="sidebar-content">{renderHTML(innerContent)}
+          </div>
+        </DynamicText>
       </div>
     );
   }

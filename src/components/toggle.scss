@@ -1,0 +1,80 @@
+@import "./vars.scss";
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: $cc-orange-dark1;
+
+  &.disabled {
+    color: rgba(121, 121, 121, 0.35);
+
+    input {
+      background-color: rgba(121, 121, 121, 0.35);
+
+      &:hover {
+        &::before {
+          box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.35);
+        }
+      }
+    }
+  }
+
+  .label {
+    cursor: pointer;
+    line-height: 1.4;
+    font-size: 16px;
+    user-select: none;
+    font-weight: bold;
+    white-space: nowrap;
+  }
+
+  input {
+    appearance: none;
+    min-width: 42px;
+    min-height: 16px;
+    margin: 0;
+
+    position: relative;
+    background-color: #797979;
+    border-radius: 12px;
+
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s;
+
+    &:checked {
+      background-color: $cc-orange-dark1;
+
+      &::before {
+        background-color: $cc-orange-light2;
+        left: unset;
+        transform: translateX(calc(100% - 10px));
+      }
+    }
+
+    &::before {
+      content: '';
+      position: absolute;
+      height: 24px;
+      width: 24px;
+      top: -5px;
+      left: 0;
+      bottom: 0;
+      object-fit: contain;
+      box-shadow: 0 0px 8px 0 rgba(0, 0, 0, 0.35);
+      border: solid 1.5px #797979;
+      background-color: white;
+      transition: all 0.3s;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    &:hover {
+      &::before {
+        box-shadow: 0 0px 8px 2px $cc-orange-dark1;
+      }
+    }
+  }
+}

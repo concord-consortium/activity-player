@@ -3,6 +3,7 @@ import { CompletionPageContent } from "./completion-page-content";
 import { shallow } from "enzyme";
 import { Activity } from "../../types";
 import _activityPlugins from "../../data/version-2/sample-new-sections-multiple-layout-types.json";
+import { DynamicTextTester } from "../../test-utils/dynamic-text";
 
 const activityPlugins = _activityPlugins as unknown as Activity;
 
@@ -12,13 +13,15 @@ describe("Completion Page Content component", () => {
       // do nothing.
     };
     const wrapperComplete = shallow(
-                              <CompletionPageContent activity={activityPlugins}
-                                                     activityName={"test"}
-                                                     onPageChange={stubFunction}
-                                                     showStudentReport={true}/>
+                              <DynamicTextTester>
+                                <CompletionPageContent activity={activityPlugins}
+                                                       activityName={"test"}
+                                                       onPageChange={stubFunction}
+                                                       showStudentReport={true}/>
+                              </DynamicTextTester>
                             );
-    expect(wrapperComplete.find('[data-cy="completion-page-content"]').length).toBe(1);
-    expect(wrapperComplete.find('[data-cy="progress-container"]').length).toBe(1);
-    expect(wrapperComplete.find('[data-cy="completion-page-content"]').text()).toContain("Fetching your data");
+    expect(wrapperComplete.html()).toContain('data-cy="completion-page-content"');
+    expect(wrapperComplete.html()).toContain('data-cy="progress-container"');
+    expect(wrapperComplete.html()).toContain("Fetching your data");
   });
 });

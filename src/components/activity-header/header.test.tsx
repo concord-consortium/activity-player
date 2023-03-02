@@ -1,8 +1,9 @@
 import React from "react";
 import { Header } from "./header";
 import { AccountOwner } from "./account-owner";
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 import { Logo } from "./logo";
+import { DynamicTextTester } from "../../test-utils/dynamic-text";
 
 describe("Header component", () => {
   const project1 = {
@@ -48,7 +49,7 @@ describe("Header component", () => {
     expect(wrapperNoIcon.containsMatchingElement(headerLogo9)).toEqual(true);
   });
   it("renders activity title", () => {
-    const wrapperDropdown = shallow(<Header project={project1} userName={"test student"} contentName={"test activity"} />);
+    const wrapperDropdown = mount(<DynamicTextTester><Header project={project1} userName={"test student"} contentName={"test activity"} /></DynamicTextTester>);
     expect(wrapperDropdown.text()).toContain("test activity");
   });
   it("renders user name", () => {

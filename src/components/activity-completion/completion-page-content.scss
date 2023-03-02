@@ -85,12 +85,20 @@
         pointer-events: none;
       }
     }
-    h1 {
-      flex-basis: 100%;
+    .summary-of-work {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
       margin: 0 0 30px;
+      gap: 10px;
 
-      .activity-title {
-        font-weight: 500;
+      h1 {
+        flex-grow: 1;
+        margin: 0;
+
+        .activity-title {
+          font-weight: 500;
+        }
       }
     }
     .exit-button {

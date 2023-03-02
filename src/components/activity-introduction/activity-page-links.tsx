@@ -1,4 +1,6 @@
 import React from "react";
+import { DynamicText } from "@concord-consortium/dynamic-text";
+
 import { Page } from "../../types";
 import { accessibilityClick } from "../../utilities/accessibility-helper";
 import "./activity-page-links.scss";
@@ -12,7 +14,7 @@ export class ActivityPageLinks extends React.PureComponent <IProps> {
   render() {
     return (
       <div className="activity-page-links" data-cy="activity-page-links">
-        <div className="pages">Pages in this Activity</div>
+        <div className="pages"><DynamicText>Pages in this Activity</DynamicText></div>
         <div className="separator" />
         { this.props.activityPages.filter((page) => !page.is_hidden).map((page, index: number) => (
           <div

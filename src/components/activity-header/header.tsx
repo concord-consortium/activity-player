@@ -1,4 +1,6 @@
 import React from "react";
+import { DynamicText } from "@concord-consortium/dynamic-text";
+
 import { Project } from "../../types";
 import { AccountOwner } from "./account-owner";
 import { Logo } from "./logo";
@@ -31,7 +33,7 @@ export class Header extends React.PureComponent<IProps> {
           <div className="header-center">
             <div className={`title-container ${showSequence && onShowSequence ? "link" : ""}`} onClick={onShowSequence}>
               {showSequence && onShowSequence && <SequenceBackIcon className="sequence-icon" />}
-              {this.renderContentTitle()}
+              <DynamicText>{this.renderContentTitle()}</DynamicText>
             </div>
           </div>
           <div className="header-right">

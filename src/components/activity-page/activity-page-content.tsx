@@ -1,4 +1,6 @@
 import React from "react";
+import { DynamicText } from "@concord-consortium/dynamic-text";
+
 import { Section, SectionImperativeAPI } from "./section";
 import { BottomButtons } from "./bottom-buttons";
 import { numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
@@ -7,6 +9,7 @@ import { IGetInteractiveState, INavigationOptions } from "@concord-consortium/la
 import { Logger, LogEventName } from "../../lib/logger";
 import { showReport } from "../../utilities/report-utils";
 import { IPageChangeNotification, PageChangeNotification } from "./page-change-notification";
+import { ReadAloudToggle } from "../read-aloud-toggle";
 
 import "./activity-page-content.scss";
 
@@ -20,6 +23,9 @@ interface IProps {
   setNavigation: (refId: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
   pageChangeNotification?: IPageChangeNotification;
+  readAloud?: boolean;
+  setReadAloud?: (readAloud: boolean) => void;
+  readAloudDisabled?: boolean;
 }
 
 export class ActivityPageContent extends React.PureComponent <IProps> {
@@ -45,7 +51,14 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
         {page.is_hidden && this.renderHiddenWarningBanner()}
         {this.renderPageChangeNotification()}
         <div className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
-          <div className="name">{ pageTitle }</div>
+          <div className="header">
+            <div className="name"><DynamicText>{ pageTitle }</DynamicText></div>
+            {this.props.setReadAloud && <ReadAloudToggle
+              disabled={this.props.readAloudDisabled}
+              isChecked={this.props.readAloud || false}
+              onChange={this.props.setReadAloud}
+            />}
+          </div>
           {this.renderSections(sections, totalPreviousQuestions)}
           { enableReportButton &&
             <BottomButtons
@@ -109,4 +122,5 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
       </div>
     );
   }
+
 }

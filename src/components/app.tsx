@@ -1,6 +1,8 @@
 import React from "react";
 import Modal from "react-modal";
 import classNames from "classnames";
+import { DynamicTextManager, DynamicTextContext } from "@concord-consortium/dynamic-text";
+
 import { PortalDataContext } from "./portal-data-context";
 import { Header } from "./activity-header/header";
 import { ActivityNav } from "./activity-header/activity-nav";
@@ -60,6 +62,22 @@ const kAnonymousUserName = "Anonymous";
 
 const kDefaultFixedWidthLayout = "1100px";
 
+// this is exported to that the TextBox component can pass it directly to DynamicText
+// as the context due to it not re-rendering because of multiple forward refs components wrapping it
+export const dynamicTextManager = new DynamicTextManager({onEvent: (event) => {
+  switch (event.type) {
+    case "readAloud":
+      Logger.log({event: LogEventName.read_aloud, event_value: event.text, ...event.extraLoggingInfo});
+      break;
+    case "readAloudCanceled":
+      Logger.log({event: LogEventName.read_aloud_canceled, event_value: event.text});
+      break;
+    case "readAloudComplete":
+      // not logged for now but may be in the future
+      break;
+  }
+}});
+
 export type ErrorType = "auth" | "network" | "timeout";
 
 interface IncompleteQuestion {
@@ -86,7 +104,9 @@ interface IState {
   errorType: null | ErrorType;
   idle: boolean;
   pageChangeNotification?: IPageChangeNotification;
-  sequenceActivity?: string | undefined
+  sequenceActivity?: string | undefined;
+  readAloud: boolean;
+  readAloudDisabled: boolean;
 }
 interface IProps {}
 
@@ -110,7 +130,9 @@ export class App extends React.PureComponent<IProps, IState> {
       incompleteQuestions: [],
       pluginsLoaded: false,
       errorType: null,
-      idle: false
+      idle: false,
+      readAloud: dynamicTextManager.isReadAloudEnabled,
+      readAloudDisabled: !dynamicTextManager.isReadAloudAvailable,
     };
   }
 
@@ -310,21 +332,23 @@ export class App extends React.PureComponent<IProps, IState> {
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
           <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
-            <div className="app" data-cy="app">
-              { this.state.showDefunctBanner && <DefunctBanner/> }
-              { this.state.showWarning && <WarningBanner/> }
-              { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-              { this.state.showSequenceIntro
-                ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
-                : this.renderActivity() }
-              { this.state.showThemeButtons && <ThemeButtons/>}
-              <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
-              <ModalDialog
-                label={this.state.modalLabel}
-                onClose={() => {this.setShowModal(false);}}
-                showModal={this.state.showModal}
-              />
-            </div>
+            <DynamicTextContext.Provider value={dynamicTextManager}>
+              <div className="app" data-cy="app">
+                { this.state.showDefunctBanner && <DefunctBanner/> }
+                { this.state.showWarning && <WarningBanner/> }
+                { this.state.teacherEditionMode && <TeacherEditionBanner/>}
+                { this.state.showSequenceIntro
+                  ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
+                  : this.renderActivity() }
+                { this.state.showThemeButtons && <ThemeButtons/>}
+                <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
+                <ModalDialog
+                  label={this.state.modalLabel}
+                  onClose={() => {this.setShowModal(false);}}
+                  showModal={this.state.showModal}
+                />
+              </div>
+            </DynamicTextContext.Provider>
           </LaraDataContext.Provider>
         </PortalDataContext.Provider>
       </LaraGlobalContext.Provider>
@@ -432,6 +456,9 @@ export class App extends React.PureComponent<IProps, IState> {
                   key={`page-${currentPage}`}
                   pluginsLoaded={this.state.pluginsLoaded}
                   pageChangeNotification={this.state.pageChangeNotification}
+                  readAloud={this.state.readAloud}
+                  readAloudDisabled={this.state.readAloudDisabled}
+                  setReadAloud={this.handleSetReadAloud}
                 />
         }
         { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
@@ -483,6 +510,9 @@ export class App extends React.PureComponent<IProps, IState> {
       <IntroductionPageContent
         activity={activity}
         onPageChange={this.handleChangePage}
+        readAloud={this.state.readAloud}
+        readAloudDisabled={this.state.readAloudDisabled}
+        setReadAloud={this.handleSetReadAloud}
       />
     );
   }
@@ -498,6 +528,9 @@ export class App extends React.PureComponent<IProps, IState> {
         activityIndex={this.state.activityIndex}
         onActivityChange={this.handleSelectActivity}
         onShowSequence={this.handleShowSequenceIntro}
+        readAloud={this.state.readAloud}
+        readAloudDisabled={this.state.readAloudDisabled}
+        setReadAloud={this.handleSetReadAloud}
       />
     );
   }
@@ -644,5 +677,11 @@ export class App extends React.PureComponent<IProps, IState> {
   private handleLoadPlugins = () => {
     this.setState({ pluginsLoaded: true });
   }
+
+  private handleSetReadAloud = (readAloud: boolean) => {
+    this.setState({ readAloud });
+    dynamicTextManager.enableReadAloud(readAloud);
+    Logger.log({ event: LogEventName.toggle_read_aloud, event_value: readAloud });
+  };
 
 }

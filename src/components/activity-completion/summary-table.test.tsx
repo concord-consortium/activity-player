@@ -1,6 +1,7 @@
 import React from "react";
 import { SummaryTable } from "./summary-table";
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
+import { DynamicTextTester } from "../../test-utils/dynamic-text";
 
 const questionsStatus = [
                           {number: 1, page: 1, prompt: "What is the answer?", answered: true},
@@ -10,8 +11,8 @@ const questionsStatus = [
 
 describe("Summary Table component", () => {
   it("renders component", () => {
-    const wrapperComplete = shallow(
-                              <SummaryTable questionsStatus={questionsStatus} />
+    const wrapperComplete = mount(
+                              <DynamicTextTester><SummaryTable questionsStatus={questionsStatus} /></DynamicTextTester>
                             );
     expect(wrapperComplete.find('[data-cy="summary-table"]').length).toBe(1);
     expect(wrapperComplete.find('[data-cy="summary-table-row"]').length).toBe(3);

@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { DynamicText } from "@concord-consortium/dynamic-text";
+
 import IconCheck from "../../assets/svg-icons/icon-check-circle.svg";
 import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
@@ -10,6 +12,7 @@ import { isQuestion } from "../../utilities/activity-utils";
 import { answerHasResponse, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
 import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
+import { ReadAloudToggle } from "../read-aloud-toggle";
 
 import "./completion-page-content.scss";
 
@@ -23,6 +26,9 @@ interface IProps {
   activityIndex?: number;
   onActivityChange?: (activityNum: number) => void;
   onShowSequence?: () => void;
+  readAloud?: boolean;
+  setReadAloud?: (readAloud: boolean) => void;
+  readAloudDisabled?: boolean;
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
@@ -129,7 +135,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
       ? <div className="completion-page-content" data-cy="completion-page-content">
           <div className="progress-container" data-cy="progress-container">
             <div className="progress-text">
-              Fetching your data ...
+              <DynamicText>Fetching your data ...</DynamicText>
             </div>
           </div>
         </div>
@@ -140,7 +146,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               : <IconUnfinishedCheck width={24} height={24} className="check incomplete" />
             }
             <div className="progress-text" data-cy="progress-text">
-              {progressText}
+              <DynamicText>{progressText}</DynamicText>
             </div>
           </div>
           {sequence && !isLastActivityInSequence &&
@@ -151,10 +157,10 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               <div className="next-step-content">
                 <div className="next-step-text">
                   <div className="next-step-title">
-                    <div className="next">Next Up ...</div>
-                    {nextActivityTitle}
+                    <div className="next"><DynamicText>Next Up ...</DynamicText></div>
+                    <DynamicText>{nextActivityTitle}</DynamicText>
                   </div>
-                  {nextActivityDescription}
+                  <DynamicText>{nextActivityDescription}</DynamicText>
                 </div>
                 <div className="next-step-buttons">
                   <button className="button" onClick={handleNextActivity}>Start Next Activity</button>
@@ -165,7 +171,14 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
             </div>
           }
           <div className="exit-container" data-cy="exit-container">
-            <h1>Summary of Work: <span className="activity-title">{activityTitle}</span></h1>
+            <div className="summary-of-work">
+              <h1><DynamicText>Summary of Work: <span className="activity-title">{activityTitle}</span></DynamicText></h1>
+              {props.setReadAloud && <ReadAloudToggle
+                disabled={props.readAloudDisabled}
+                isChecked={props.readAloud || false}
+                onChange={props.setReadAloud}
+              />}
+            </div>
             <SummaryTable questionsStatus={progress.questionsStatus} />
             {showStudentReport && <button className={`button show-my-work ${isValidReportLink() ? "" : "disabled"}`}
                                           onClick={handleShowAnswers}><IconCompletion width={24} height={24} />
