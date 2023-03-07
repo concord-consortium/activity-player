@@ -1,16 +1,24 @@
 @import "./components/vars.scss";
 
 $logbook_font_family: 'Andika';
+$logbook_font_size: 19px;
 
 body.logbook {
 
   font-family: 'Andika', 'Lato', arial, helvetica, sans-serif;
+  font-size: $logbook_font_size;
+
+  /* HACK TO TEST MOVING THE LOGBOOK UP */
+  #embeddable_104139_MwInteractive {
+    margin-top: -35px;
+  }
 
   .button {
     font-family: $logbook_font_family;
   }
 
   .activity-header {
+    font-size: $logbook_font_size + 1;
     .inner {
       background-color: $cc-orange-light1;
     }
@@ -19,9 +27,9 @@ body.logbook {
   .activity-nav {
     .nav-pages {
       .page-button {
+        font-size: $logbook_font_size;
         width: auto;
         color: $cc-charcoal;
-
         outline: none;
 
         &.current {
@@ -38,6 +46,7 @@ body.logbook {
 
   .intro-content {
     background-color: $cc-orange-light6;
+    font-size: $logbook_font_size;
 
     .introduction {
       min-height: 500px;
@@ -58,6 +67,8 @@ body.logbook {
     }
 
     .textbox.callout {
+      font-size: $logbook_font_size;
+
       .text-name {
         color: #fff;
         border-radius: 6px 6px 0 0;
@@ -70,7 +81,12 @@ body.logbook {
     }
   }
 
+  #label-read_aloud_toggle {
+    font-size: $logbook_font_size;
+  }
+
   .footer {
+    font-size: $logbook_font_size;
     background-color: $cc-orange-light1;
   }
 

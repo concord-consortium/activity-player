@@ -145,6 +145,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   return (
     <div
       className={embeddableClasses}
+      id={`embeddable_${embeddable.ref_id.replace("-", "_")}`}
       data-cy="embeddable"
       key={embeddable.ref_id}
       ref={targetDiv}
