@@ -262,6 +262,11 @@ export class App extends React.PureComponent<IProps, IState> {
                                    ? sequence.activities[activityIndex]
                                    : await getActivityDefinition(activityPath);
 
+      // change to logbook skin
+      if (activity.layout === ActivityLayouts.LogBook) {
+        document.getElementsByTagName("body").item(0)?.classList.add("logbook");
+      }
+
       const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
 
       // page 0 is introduction, inner pages start from 1 and match page.position in exported activity if numeric
@@ -474,7 +479,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   pageChangeNotification={this.state.pageChangeNotification}
                 />
         }
-        { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
+        { ([ActivityLayouts.SinglePage, ActivityLayouts.LogBook].indexOf(activity.layout) === -1 || this.state.sequence) &&
           this.renderNav(activity, currentPage, fullWidth)
         }
       </>
@@ -482,6 +487,8 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderNav = (activity: Activity, currentPage: number, fullWidth: boolean) => {
+    const isLogBook = activity.layout === ActivityLayouts.LogBook;
+
     return (
       <ActivityNav
         activityPages={activity.pages}
@@ -490,6 +497,8 @@ export class App extends React.PureComponent<IProps, IState> {
         onPageChange={this.handleChangePage}
         singlePage={activity.layout === ActivityLayouts.SinglePage}
         lockForwardNav={this.state.incompleteQuestions.length > 0}
+        usePageNames={isLogBook}
+        hideNextPrevButtons={isLogBook}
       />
     );
   }

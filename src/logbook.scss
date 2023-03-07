@@ -1,0 +1,80 @@
+@import "./components/vars.scss";
+
+$logbook_font_family: 'Andika';
+
+body.logbook {
+
+  font-family: 'Andika', 'Lato', arial, helvetica, sans-serif;
+
+  .button {
+    font-family: $logbook_font_family;
+  }
+
+  .activity-header {
+    .inner {
+      background-color: $cc-orange-light1;
+    }
+  }
+
+  .activity-nav {
+    .nav-pages {
+      .page-button {
+        width: auto;
+        color: $cc-charcoal;
+
+        outline: none;
+
+        &.current {
+          color: $cc-orange-dark1;
+          background-color: unset;
+        }
+
+        &:hover {
+          background-color: unset;
+        }
+      }
+    }
+  }
+
+  .intro-content {
+    background-color: $cc-orange-light6;
+
+    .introduction {
+      min-height: 500px;
+    }
+
+    .activity-page-links {
+      display: none;
+    }
+  }
+
+  .page-content {
+    background-color: $cc-orange-light6;
+
+    .header {
+      .name {
+        visibility: hidden;  /* quick hack to remove page name - don't use for realz */
+      }
+    }
+
+    .textbox.callout {
+      .text-name {
+        color: #fff;
+        border-radius: 6px 6px 0 0;
+        background-color: $cc-teal-dark1;
+      }
+      .content {
+        border-radius: 0 0 6px 6px;
+        background-color: $cc-teal-light3;
+      }
+    }
+  }
+
+  .footer {
+    background-color: $cc-orange-light1;
+  }
+
+  .warning-banner {
+    display: none;  /* to avoid distracting from the layout - don't use for realz */
+  }
+}
