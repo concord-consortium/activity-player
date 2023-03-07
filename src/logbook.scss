@@ -26,10 +26,13 @@ body.logbook {
 
   .activity-nav {
     .nav-pages {
+      gap: 40px;
+
       .page-button {
         font-size: $logbook_font_size;
         width: auto;
-        color: $cc-charcoal;
+        margin: 0;
+        color: $cc-teal;
         outline: none;
 
         &.current {
@@ -68,6 +71,7 @@ body.logbook {
 
     .textbox.callout {
       font-size: $logbook_font_size;
+      animation: zoom-in-zoom-out 1s ease;
 
       .text-name {
         color: #fff;
@@ -81,6 +85,10 @@ body.logbook {
     }
   }
 
+  .toggle input::before {
+    z-index: unset;
+  }
+
   #label-read_aloud_toggle {
     font-size: $logbook_font_size;
   }
@@ -92,5 +100,17 @@ body.logbook {
 
   .warning-banner {
     display: none;  /* to avoid distracting from the layout - don't use for realz */
+  }
+}
+
+@keyframes zoom-in-zoom-out {
+  0% {
+    transform: scale(1, 1);
+  }
+  50% {
+    transform: scale(1.1, 1.1);
+  }
+  100% {
+    transform: scale(1, 1);
   }
 }
