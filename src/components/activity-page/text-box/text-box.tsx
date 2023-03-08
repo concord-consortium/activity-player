@@ -1,5 +1,5 @@
 import React from "react";
-import { DynamicText } from "@concord-consortium/dynamic-text/component";
+import { DynamicText } from "@concord-consortium/dynamic-text";
 
 import { renderHTML } from "../../../utilities/render-html";
 import { IEmbeddableXhtml } from "../../../types";

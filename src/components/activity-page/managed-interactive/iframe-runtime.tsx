@@ -102,6 +102,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const currentInteractiveState = useRef<any>(initialInteractiveState);
 
   const dynamicText = useDynamicTextContext();
+  const dynamicTextComponentIds = useRef<Set<string>>(new Set());
 
   useEffect(() => {
     const initInteractive = () => {
@@ -257,11 +258,14 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
               }});
               break;
             case "register":
+              // track locally so we can unregister when the iframe unloads
+              dynamicTextComponentIds.current?.add(content.id);
               dynamicText.registerComponent(content.id, (componentMessage) => {
                 post("customMessage", {type: DynamicTextCustomMessageType, content: componentMessage});
               });
               break;
             case "unregister":
+              dynamicTextComponentIds.current?.delete(content.id);
               dynamicText.unregisterComponent(content.id);
               break;
           }
@@ -368,6 +372,15 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
     // Cleanup.
     return () => {
+      // Unregister all components that were proxied through this iframe handler so
+      // we don't leave dangling registered components and so the current component is
+      // silenced if it is being read when the iframe unloads
+      // disable warning about dynamicTextComponentIds as it is not referencing a DOM node
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      dynamicTextComponentIds.current?.forEach(componentId => {
+        dynamicText.unregisterComponent(componentId);
+      });
+
       if (phoneRef.current) {
         phoneRef.current.disconnect();
       }
