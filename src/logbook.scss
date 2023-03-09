@@ -9,8 +9,13 @@ body.logbook {
   font-size: $logbook_font_size;
 
   /* HACK TO TEST MOVING THE LOGBOOK UP */
-  #embeddable_346875_ManagedInteractive {
+  #embeddable_346875_ManagedInteractiveXX {
     margin-top: -35px;
+  }
+
+  /* HACK TO REMOVE READ ALOUD TOGGLE - DO NOT MERGE */
+  .toggle {
+    display: none;
   }
 
   .button {
@@ -83,14 +88,10 @@ body.logbook {
         background-color: $cc-teal-light3;
       }
     }
-  }
 
-  .toggle input::before {
-    z-index: unset;
-  }
-
-  #label-read_aloud_toggle {
-    font-size: $logbook_font_size;
+    .section {
+      margin-top: -35px;
+    }
   }
 
   .footer {

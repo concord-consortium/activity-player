@@ -263,9 +263,12 @@ export class App extends React.PureComponent<IProps, IState> {
                                    : await getActivityDefinition(activityPath);
 
       // change to logbook skin
-      if (activity.layout === ActivityLayouts.LogBook) {
-        document.getElementsByTagName("body").item(0)?.classList.add("logbook");
-      }
+      // if (activity.layout === ActivityLayouts.LogBook) {
+      //   document.getElementsByTagName("body").item(0)?.classList.add("logbook");
+      // }
+      // **** REMOVE THIS BEFORE ANY FINAL MERGE TO MASTER ***
+      // always use logbook skin to allow initial authoring without changing Lara
+      document.getElementsByTagName("body").item(0)?.classList.add("logbook");
 
       const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
 
