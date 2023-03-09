@@ -45,6 +45,7 @@ import { LaraDataContext } from "./lara-data-context";
 import { __closeAllPopUps } from "../lara-plugin/plugin-api/popup";
 import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChangeNotificationStartTimeout } from "./activity-page/page-change-notification";
 import { getBearerToken } from "../utilities/auth-utils";
+import { ReadAloudContext } from "./read-aloud-context";
 
 import "./app.scss";
 
@@ -338,21 +339,23 @@ export class App extends React.PureComponent<IProps, IState> {
         <PortalDataContext.Provider value={this.state.portalData}>
           <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
             <DynamicTextContext.Provider value={dynamicTextManager}>
-              <div className="app" data-cy="app">
-                { this.state.showDefunctBanner && <DefunctBanner/> }
-                { this.state.showWarning && <WarningBanner/> }
-                { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-                { this.state.showSequenceIntro
-                  ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
-                  : this.renderActivity() }
-                { this.state.showThemeButtons && <ThemeButtons/>}
-                <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
-                <ModalDialog
-                  label={this.state.modalLabel}
-                  onClose={() => {this.setShowModal(false);}}
-                  showModal={this.state.showModal}
-                />
-              </div>
+              <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud}}>
+                <div className="app" data-cy="app">
+                  { this.state.showDefunctBanner && <DefunctBanner/> }
+                  { this.state.showWarning && <WarningBanner/> }
+                  { this.state.teacherEditionMode && <TeacherEditionBanner/>}
+                  { this.state.showSequenceIntro
+                    ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
+                    : this.renderActivity() }
+                  { this.state.showThemeButtons && <ThemeButtons/>}
+                  <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
+                  <ModalDialog
+                    label={this.state.modalLabel}
+                    onClose={() => {this.setShowModal(false);}}
+                    showModal={this.state.showModal}
+                  />
+                </div>
+              </ReadAloudContext.Provider>
             </DynamicTextContext.Provider>
           </LaraDataContext.Provider>
         </PortalDataContext.Provider>
@@ -461,9 +464,6 @@ export class App extends React.PureComponent<IProps, IState> {
                   key={`page-${currentPage}`}
                   pluginsLoaded={this.state.pluginsLoaded}
                   pageChangeNotification={this.state.pageChangeNotification}
-                  readAloud={this.state.readAloud}
-                  readAloudDisabled={this.state.readAloudDisabled}
-                  setReadAloud={this.handleSetReadAloud}
                 />
         }
         { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
@@ -515,9 +515,6 @@ export class App extends React.PureComponent<IProps, IState> {
       <IntroductionPageContent
         activity={activity}
         onPageChange={this.handleChangePage}
-        readAloud={this.state.readAloud}
-        readAloudDisabled={this.state.readAloudDisabled}
-        setReadAloud={this.handleSetReadAloud}
       />
     );
   }
@@ -533,9 +530,6 @@ export class App extends React.PureComponent<IProps, IState> {
         activityIndex={this.state.activityIndex}
         onActivityChange={this.handleSelectActivity}
         onShowSequence={this.handleShowSequenceIntro}
-        readAloud={this.state.readAloud}
-        readAloudDisabled={this.state.readAloudDisabled}
-        setReadAloud={this.handleSetReadAloud}
       />
     );
   }

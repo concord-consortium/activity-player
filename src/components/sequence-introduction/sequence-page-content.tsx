@@ -2,6 +2,7 @@ import React from "react";
 import { Activity, Sequence } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { EstimatedTime } from "../activity-introduction/estimated-time";
+import { ReadAloudToggle } from "../read-aloud-toggle";
 
 import "./sequence-page-content.scss";
 
@@ -19,8 +20,11 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
   return (
     <div className="sequence-content" data-cy="sequence-page-content">
       <div className="introduction">
-        <div className="sequence-title">
-          <h2>{sequence.display_title || sequence.title || ""}</h2>
+        <div className="sequence-header">
+          <div className="sequence-title">
+            <h2>{sequence.display_title || sequence.title || ""}</h2>
+          </div>
+          <ReadAloudToggle/>
         </div>
         <div className="description">{ sequence.description && renderHTML(sequence.description) }</div>
         <EstimatedTime time={totalTime} />

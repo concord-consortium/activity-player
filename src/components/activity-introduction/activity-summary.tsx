@@ -12,9 +12,6 @@ interface IProps {
   introText: string | null;
   time: number | null;
   imageUrl: string | null;
-  readAloud?: boolean;
-  setReadAloud?: (readAloud: boolean) => void;
-  readAloudDisabled?: boolean;
 }
 
 export class ActivitySummary extends React.PureComponent <IProps> {
@@ -24,11 +21,7 @@ export class ActivitySummary extends React.PureComponent <IProps> {
         <div className="activity-title">
           { this.props.imageUrl && <img src={this.props.imageUrl} alt="Activity logo" /> }
           <h1><DynamicText>{this.props.activityName}</DynamicText></h1>
-          {this.props.setReadAloud && <ReadAloudToggle
-            disabled={this.props.readAloudDisabled}
-            isChecked={this.props.readAloud || false}
-            onChange={this.props.setReadAloud}
-          />}
+          <ReadAloudToggle/>
         </div>
         <DynamicText>
           <div className="activity-content intro-txt">

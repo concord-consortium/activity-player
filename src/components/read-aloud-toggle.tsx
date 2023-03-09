@@ -1,21 +1,22 @@
 import React from "react";
+import { useReadAloud } from "./read-aloud-context";
 import { Toggle } from "./toggle";
 
-interface IProps {
-  isChecked: boolean;
-  disabled?: boolean;
-  onChange: (checked: boolean) => void;
-}
+export const ReadAloudToggle = () => {
+  const {readAloud, readAloudDisabled, setReadAloud} = useReadAloud();
 
-export const ReadAloudToggle: React.FC<IProps> = (props) => {
+  if (!setReadAloud) {
+    return null;
+  }
+
   return (
     <Toggle
       id="read_aloud_toggle"
       label="Tap text to listen"
-      disabled={props.disabled}
+      disabled={readAloudDisabled}
       disabledMessage="Text to speech not available on this browser."
-      isChecked={props.isChecked}
-      onChange={props.onChange}
+      isChecked={readAloud}
+      onChange={setReadAloud}
     />
   );
 };

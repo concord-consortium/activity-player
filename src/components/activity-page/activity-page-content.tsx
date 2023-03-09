@@ -23,9 +23,6 @@ interface IProps {
   setNavigation: (refId: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
   pageChangeNotification?: IPageChangeNotification;
-  readAloud?: boolean;
-  setReadAloud?: (readAloud: boolean) => void;
-  readAloudDisabled?: boolean;
 }
 
 export class ActivityPageContent extends React.PureComponent <IProps> {
@@ -53,11 +50,7 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
         <div className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
           <div className="header">
             <div className="name"><DynamicText>{ pageTitle }</DynamicText></div>
-            {this.props.setReadAloud && <ReadAloudToggle
-              disabled={this.props.readAloudDisabled}
-              isChecked={this.props.readAloud || false}
-              onChange={this.props.setReadAloud}
-            />}
+            <ReadAloudToggle/>
           </div>
           {this.renderSections(sections, totalPreviousQuestions)}
           { enableReportButton &&
@@ -122,5 +115,4 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
       </div>
     );
   }
-
 }

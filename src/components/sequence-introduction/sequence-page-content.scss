@@ -12,14 +12,21 @@
     flex-direction: column;
     justify-content: space-between;
 
-    .sequence-title {
+    .sequence-header {
+      margin-bottom: 10px;
       display: flex;
 
-      h2 {
-        font-size: 32px;
-        font-weight: 900;
-        margin: 0;
-        color: var(--theme-secondary-color);
+      .sequence-title {
+        display: flex;
+        flex-grow: 1;
+
+
+        h2 {
+          font-size: 32px;
+          font-weight: 900;
+          margin: 0;
+          color: var(--theme-secondary-color);
+        }
       }
     }
 
