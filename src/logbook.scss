@@ -24,8 +24,10 @@ body.logbook {
 
   .activity-header {
     font-size: $logbook_font_size + 1;
+
     .inner {
-      background-color: $cc-orange-light1;
+      background-color: #ffa35050; // $cc-orange-light1
+      border-radius: 10px 10px 0 0;
     }
   }
 
@@ -55,6 +57,7 @@ body.logbook {
   .intro-content {
     background-color: $cc-orange-light6;
     font-size: $logbook_font_size;
+    border-radius: 0 0 10px 10px;
 
     .introduction {
       min-height: 500px;
@@ -67,6 +70,7 @@ body.logbook {
 
   .page-content {
     background-color: $cc-orange-light6;
+    border-radius: 0 0 10px 10px;
 
     .header {
       .name {
@@ -97,6 +101,7 @@ body.logbook {
   .footer {
     font-size: $logbook_font_size;
     background-color: $cc-orange-light1;
+    border-radius: 10px 10px;
   }
 
   .warning-banner {

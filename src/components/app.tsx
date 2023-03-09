@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import classNames from "classnames";
-import { DynamicTextManager, DynamicTextContext } from "@concord-consortium/dynamic-text";
+import { DynamicTextContext, DynamicTextInterface } from "@concord-consortium/dynamic-text";
 
 import { PortalDataContext } from "./portal-data-context";
 import { Header } from "./activity-header/header";
@@ -63,6 +63,14 @@ const kAnonymousUserName = "Anonymous";
 
 const kDefaultFixedWidthLayout = "1100px";
 
+// fake this to disable is
+export const dynamicTextManager: DynamicTextInterface = {
+  registerComponent: () => undefined,
+  unregisterComponent: () => undefined,
+  selectComponent: () => undefined,
+};
+
+/*
 // this is exported to that the TextBox component can pass it directly to DynamicText
 // as the context due to it not re-rendering because of multiple forward refs components wrapping it
 export const dynamicTextManager = new DynamicTextManager({onEvent: (event) => {
@@ -78,6 +86,7 @@ export const dynamicTextManager = new DynamicTextManager({onEvent: (event) => {
       break;
   }
 }});
+*/
 
 // stop speaking when navigating away
 window.addEventListener("beforeunload", () => {
