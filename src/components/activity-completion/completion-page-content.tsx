@@ -26,9 +26,6 @@ interface IProps {
   activityIndex?: number;
   onActivityChange?: (activityNum: number) => void;
   onShowSequence?: () => void;
-  readAloud?: boolean;
-  setReadAloud?: (readAloud: boolean) => void;
-  readAloudDisabled?: boolean;
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
@@ -173,11 +170,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           <div className="exit-container" data-cy="exit-container">
             <div className="summary-of-work">
               <h1><DynamicText>Summary of Work: <span className="activity-title">{activityTitle}</span></DynamicText></h1>
-              {props.setReadAloud && <ReadAloudToggle
-                disabled={props.readAloudDisabled}
-                isChecked={props.readAloud || false}
-                onChange={props.setReadAloud}
-              />}
+              <ReadAloudToggle/>
             </div>
             <SummaryTable questionsStatus={progress.questionsStatus} />
             {showStudentReport && <button className={`button show-my-work ${isValidReportLink() ? "" : "disabled"}`}
