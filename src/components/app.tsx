@@ -78,6 +78,11 @@ export const dynamicTextManager = new DynamicTextManager({onEvent: (event) => {
   }
 }});
 
+// stop speaking when navigating away
+window.addEventListener("beforeunload", () => {
+  dynamicTextManager.selectComponent(null, {text: "", readAloud: true});
+});
+
 export type ErrorType = "auth" | "network" | "timeout";
 
 interface IncompleteQuestion {
