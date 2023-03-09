@@ -78,6 +78,15 @@ body.logbook {
       }
     }
 
+    .embeddable {
+      .header {
+        display: none;
+      }
+      .runtime-container.has-question-number {
+        border: 0;
+      }
+    }
+
     .textbox.callout {
       font-size: $logbook_font_size;
       animation: zoom-in-zoom-out 1s ease;
