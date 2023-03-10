@@ -1,3 +1,4 @@
+import { DynamicText } from "@concord-consortium/dynamic-text";
 import React from "react";
 import { Activity, Sequence } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
@@ -22,7 +23,7 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
       <div className="introduction">
         <div className="sequence-header">
           <div className="sequence-title">
-            <h2>{sequence.display_title || sequence.title || ""}</h2>
+            <h2><DynamicText>{sequence.display_title || sequence.title || ""}</DynamicText></h2>
           </div>
           <ReadAloudToggle/>
         </div>
