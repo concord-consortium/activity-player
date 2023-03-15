@@ -1,6 +1,7 @@
 {
   "background_image": "",
   "defunct": false,
+  "hide_read_aloud": false,
   "description": "\u003Cp\u003EThis activity has all the question interactives, one per page, with an intro page using the built-in AP text block.\u003C/p\u003E\r\n\u003Cp\u003EEach question interactive uses the master branch version.\u003C/p\u003E\r\n\u003Cp\u003EThis also uses the \"WATERS\" glossary so words like \"aquatic\" and \"drought\" should be underlined.\u003C/p\u003E",
   "editor_mode": 0,
   "id": 13060,

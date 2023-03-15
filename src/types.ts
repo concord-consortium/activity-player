@@ -181,6 +181,7 @@ export interface Activity {
   position?: number | null;
   fixed_width_layout?: "ipad_friendly" | "1100px";
   defunct?: boolean;
+  hide_read_aloud?: boolean;
 }
 
 export interface Sequence {
@@ -198,6 +199,7 @@ export interface Sequence {
   export_site: string | null;
   fixed_width_layout?: "ipad_friendly" | "1100px";
   defunct?: boolean;
+  hide_read_aloud?: boolean;
 }
 
 export interface IReportState {

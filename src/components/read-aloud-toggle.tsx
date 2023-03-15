@@ -3,9 +3,9 @@ import { useReadAloud } from "./read-aloud-context";
 import { Toggle } from "./toggle";
 
 export const ReadAloudToggle = () => {
-  const {readAloud, readAloudDisabled, setReadAloud} = useReadAloud();
+  const {readAloud, readAloudDisabled, setReadAloud, hideReadAloud} = useReadAloud();
 
-  if (!setReadAloud) {
+  if (hideReadAloud || !setReadAloud) {
     return null;
   }
 

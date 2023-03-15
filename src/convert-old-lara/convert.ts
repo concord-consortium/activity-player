@@ -230,7 +230,8 @@ function convertActivityResource (legacyResource: any) {
     "type": "LightweightActivity",
     "export_site": legacyResource.export_site,
     "pages": newPagesResource(legacyResource.pages),
-    "defunct": legacyResource.defunct
+    "defunct": legacyResource.defunct,
+    "hide_read_aloud": legacyResource.hide_read_aloud,
   };
   return newActivityResource;
 }
@@ -258,7 +259,8 @@ const newSequenceResource = (sequenceResource: any) => {
       "type": sequenceResource.type,
       "export_site": sequenceResource.export_site,
       "activities": getSequenceActivities(sequenceResource.activities),
-      "defunct": sequenceResource.defunct
+      "defunct": sequenceResource.defunct,
+      "hide_read_aloud": sequenceResource.hide_read_aloud
     }
   );
 };
