@@ -84,6 +84,8 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     }
   }, [LARA?.Events]);
 
+  const showQuestionPrefix = activityLayout !== ActivityLayouts.Notebook;
+
   let qComponent;
   if (embeddable.type === "MwInteractive" || (embeddable.type === "ManagedInteractive" && embeddable.library_interactive)) {
     qComponent = <ManagedInteractive
@@ -94,6 +96,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                     setSendCustomMessage={setSendCustomMessage}
                     setNavigation={handleSetNavigation}
                     emitInteractiveAvailable={handleEmitInteractiveAvailable}
+                    showQuestionPrefix={showQuestionPrefix}
                  />;
   } else if (embeddable.type === "ManagedInteractive" && !embeddable.library_interactive) {
     qComponent = <div>Content type not supported</div>;

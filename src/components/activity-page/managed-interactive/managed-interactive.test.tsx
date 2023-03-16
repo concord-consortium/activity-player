@@ -179,6 +179,7 @@ describe("ManagedInteractive component", () => {
               setSupportedFeatures={mockSetSupportedFeatures}
               setSendCustomMessage={mockSetSendCustomMessage}
               setNavigation={mockSetNavigation}
+              showQuestionPrefix={true}
               />
            </DynamicTextTester>);
     expect(screen.getByTestId("managed-interactive")).toBeInTheDocument();
@@ -276,6 +277,7 @@ describe("ManagedInteractive component", () => {
               setSupportedFeatures={mockSetSupportedFeatures}
               setSendCustomMessage={mockSetSendCustomMessage}
               setNavigation={mockSetNavigation}
+              showQuestionPrefix={true}
               />
            </DynamicTextTester>);
     expect(screen.getByTestId("managed-interactive")).toBeInTheDocument();
@@ -319,6 +321,7 @@ describe("ManagedInteractive component", () => {
               setSupportedFeatures={mockSetSupportedFeatures}
               setSendCustomMessage={mockSetSendCustomMessage}
               setNavigation={mockSetNavigation}
+              showQuestionPrefix={true}
               />
            </DynamicTextTester>);
     expect(screen.getByTestId("click-to-play")).toBeInTheDocument();
@@ -383,6 +386,7 @@ describe("ManagedInteractive component", () => {
               setSupportedFeatures={mockSetSupportedFeatures}
               setSendCustomMessage={mockSetSendCustomMessage}
               setNavigation={mockSetNavigation}
+              showQuestionPrefix={true}
               />
            </DynamicTextTester>);
     expect(screen.getByTestId("click-to-play")).toBeInTheDocument();

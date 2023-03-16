@@ -127,6 +127,7 @@ export interface SectionType {
   embeddables: EmbeddableType[];
   layout: string;
   _comment?: string;
+  name?: string | null;
 }
 
 export interface Page {

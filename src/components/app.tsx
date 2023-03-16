@@ -475,6 +475,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   enableReportButton={currentPage === pagesVisible.length && enableReportButton(activity)}
                   pageNumber={currentPage}
                   page={pagesVisible[currentPage - 1]}
+                  activity={activity}
                   totalPreviousQuestions={totalPreviousQuestions}
                   teacherEditionMode={this.state.teacherEditionMode}
                   setNavigation={this.handleSetNavigation}

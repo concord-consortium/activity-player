@@ -1,10 +1,11 @@
 import React from "react";
 import { DynamicText } from "@concord-consortium/dynamic-text";
+import classNames from "classnames";
 
 import { Section, SectionImperativeAPI } from "./section";
 import { BottomButtons } from "./bottom-buttons";
-import { numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
-import { Page, SectionType } from "../../types";
+import { ActivityLayouts, getPageSideBars, numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
+import { Activity, Page, SectionType } from "../../types";
 import { IGetInteractiveState, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../../lib/logger";
 import { showReport } from "../../utilities/report-utils";
@@ -12,12 +13,27 @@ import { IPageChangeNotification, PageChangeNotification } from "./page-change-n
 import { ReadAloudToggle } from "../read-aloud-toggle";
 
 import "./activity-page-content.scss";
+import { renderHTML } from "../../utilities/render-html";
+
+const SectionTab = (props: { label: string, zIndex: number, section: SectionType, selected: boolean, onSelected: (section: SectionType) => void }) => {
+  const { label, zIndex, section, selected, onSelected } = props;
+  const className = classNames("section-tab", { selected });
+  const handleClick = () => onSelected(section);
+  const style: React.CSSProperties = {zIndex};
+
+  return (
+    <div className={className} style={style} onClick={handleClick}>
+      {label}
+    </div>
+  );
+};
 
 interface IProps {
   enableReportButton: boolean;
   activityLayout: number;
   page: Page;
   pageNumber: number;
+  activity: Activity;
   teacherEditionMode?: boolean;
   totalPreviousQuestions: number;
   setNavigation: (refId: string, options: INavigationOptions) => void;
@@ -25,11 +41,19 @@ interface IProps {
   pageChangeNotification?: IPageChangeNotification;
 }
 
-export class ActivityPageContent extends React.PureComponent <IProps> {
+interface IState {
+  selectedSection: SectionType | undefined;
+}
+
+export class ActivityPageContent extends React.Component<IProps, IState> {
   private sectionRefs: Record<string, React.RefObject<SectionImperativeAPI>> = {};
 
   public constructor(props: IProps) {
     super(props);
+
+    this.state = {
+      selectedSection: props.page.sections[0]
+    };
   }
 
   renderPageChangeNotification() {
@@ -42,6 +66,8 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
     const sections = page.sections;
     const responsiveLayoutSections = sections.filter(s => s.layout.includes("responsive"));
     const isResponsiveLayout = responsiveLayoutSections.length > 0;
+    const isNotebookLayout = this.props.activityLayout === ActivityLayouts.Notebook;
+    const renderTabs = isNotebookLayout && sections.length > 1;
 
     return (
       <>
@@ -49,11 +75,17 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
         {this.renderPageChangeNotification()}
         <div className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
           <div className="header">
-            <div className="name"><DynamicText>{ pageTitle }</DynamicText></div>
-            <ReadAloudToggle/>
+            <div className="name"><DynamicText>{pageTitle}</DynamicText></div>
+            <ReadAloudToggle />
           </div>
-          {this.renderSections(sections, totalPreviousQuestions)}
-          { enableReportButton &&
+          <div className="maybe-with-sidebar">
+            <div>
+              {renderTabs && this.renderTabs(sections)}
+              {this.renderSections(sections, totalPreviousQuestions, renderTabs)}
+            </div>
+            {isNotebookLayout && this.renderFirstSidebarInPage()}
+          </div>
+          {enableReportButton &&
             <BottomButtons
               onGenerateReport={this.handleReport}
             />
@@ -79,12 +111,13 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
     });
   }
 
-  private renderSections = (sections: SectionType[], totalPreviousQuestions: number) => {
-    const {page, activityLayout, teacherEditionMode, setNavigation, pluginsLoaded} = this.props;
+  private renderSections = (sections: SectionType[], totalPreviousQuestions: number, renderTabs: boolean) => {
+    const { page, activityLayout, teacherEditionMode, setNavigation, pluginsLoaded } = this.props;
     return (
       sections.map((section, idx) => {
         const questionCount = numQuestionsOnPreviousSections(idx, sections) || 0;
         const embeddableQuestionNumberStart = questionCount + totalPreviousQuestions;
+        const hiddenTab = renderTabs && section !== this.state.selectedSection;
         if (!section.is_hidden) {
           // `idx` is not the best key, but it doesn't seem it could cause any problems here. Even if refs
           // are recreated, updated, or pointing to different sections over time, it shouldn't matter.
@@ -92,15 +125,16 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
             this.sectionRefs[idx] = React.createRef<SectionImperativeAPI>();
           }
           return (
-            <Section page = {page}
-                    ref={this.sectionRefs[idx]}
-                    section={section}
-                    key={`section-${idx}`}
-                    activityLayout={activityLayout}
-                    questionNumberStart={embeddableQuestionNumberStart}
-                    teacherEditionMode={teacherEditionMode}
-                    setNavigation={setNavigation}
-                    pluginsLoaded={pluginsLoaded}
+            <Section page={page}
+              ref={this.sectionRefs[idx]}
+              section={section}
+              key={`section-${idx}`}
+              activityLayout={activityLayout}
+              questionNumberStart={embeddableQuestionNumberStart}
+              teacherEditionMode={teacherEditionMode}
+              setNavigation={setNavigation}
+              pluginsLoaded={pluginsLoaded}
+              hiddenTab={hiddenTab}
             />
           );
         }
@@ -108,10 +142,47 @@ export class ActivityPageContent extends React.PureComponent <IProps> {
     );
   }
 
-  private renderHiddenWarningBanner = () =>{
+  private renderHiddenWarningBanner = () => {
     return (
       <div className="hidden-page-warning">
         NOTE: This page is hidden from users
+      </div>
+    );
+  }
+
+  private renderTabs(sections: SectionType[]) {
+    return (
+      <div className="section-tabs">
+        {sections.map((section, i) => (
+          <SectionTab
+            key={i}
+            zIndex={sections.length - i}
+            label={section.name || `Tab ${i + 1}`}
+            section={section}
+            selected={this.state.selectedSection === section}
+            onSelected={this.handleSectionTabSelected.bind(this)}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  private handleSectionTabSelected(section: SectionType) {
+    this.setState({ selectedSection: section });
+  }
+
+  private renderFirstSidebarInPage() {
+    const firstSidebar = getPageSideBars(this.props.activity, this.props.page)[0];
+    if (!firstSidebar || !firstSidebar.content) {
+      return null;
+    }
+
+    return(
+      <div className="in-page-sidebar" data-cy="in-page-sidebar">
+        <div className="in-page-sidebar-title" data-cy="in-page-sidebar-title">{firstSidebar.title}</div>
+        <DynamicText>
+          <div className="in-page-sidebar-content help-content" data-cy="in-page-sidebar-content">{renderHTML(firstSidebar.content)}</div>
+        </DynamicText>
       </div>
     );
   }

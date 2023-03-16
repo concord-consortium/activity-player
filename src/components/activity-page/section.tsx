@@ -21,6 +21,7 @@ interface IProps {
   setNavigation?: (refId: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
   ref?: React.Ref<SectionImperativeAPI>;
+  hiddenTab?: boolean;
 }
 
 export interface SectionImperativeAPI {
@@ -28,7 +29,7 @@ export interface SectionImperativeAPI {
 }
 
 export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { activityLayout, page, section, questionNumberStart } = props;
+  const { activityLayout, page, section, questionNumberStart, hiddenTab } = props;
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
 
   const sectionDivRef = useRef<HTMLDivElement>(null);
@@ -201,7 +202,9 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
                                   {"r_3070": layout === "30-70"},
                                   {"responsive": responsiveSection && !singlePage},
                                   {"stacked": display_mode === "stacked"},
-                                  {"carousel": display_mode === "carousel"}
+                                  {"carousel": display_mode === "carousel"},
+                                  {"hidden-tab": hiddenTab},
+                                  {"tab-contents": activityLayout === ActivityLayouts.Notebook}
                                 );
   const embeddables = section.embeddables;
 
