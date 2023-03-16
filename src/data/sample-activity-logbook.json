@@ -1,6 +1,7 @@
 {
   "background_image": "https://models-resources.concord.org/logbook-dev/HI_muted_used.jpg",
   "defunct": false,
+  "hide_read_aloud": true,
   "description": "\u003Cp\u003EThis is a sample activity to test out the logbook \"skin\".\u003C/p\u003E",
   "editor_mode": 0,
   "id": 13065,

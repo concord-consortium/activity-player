@@ -8,16 +8,6 @@ body.logbook {
   font-family: 'Andika', 'Lato', arial, helvetica, sans-serif;
   font-size: $logbook_font_size;
 
-  /* HACK TO TEST MOVING THE LOGBOOK UP */
-  #embeddable_346875_ManagedInteractiveXX {
-    margin-top: -35px;
-  }
-
-  /* HACK TO REMOVE READ ALOUD TOGGLE - DO NOT MERGE */
-  .toggle {
-    display: none;
-  }
-
   .button {
     font-family: $logbook_font_family;
   }
@@ -100,10 +90,6 @@ body.logbook {
         border-radius: 0 0 6px 6px;
         background-color: $cc-teal-light3;
       }
-    }
-
-    .section {
-      margin-top: -35px;
     }
   }
 
