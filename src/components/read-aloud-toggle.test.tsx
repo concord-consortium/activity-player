@@ -7,7 +7,7 @@ describe("ReadAloudToggle component", () => {
   it("renders working ReadAloudToggle component", () => {
     const mockSetReadAloud = jest.fn();
     const wrapper = mount(
-      <ReadAloudContext.Provider value={{readAloud: true, readAloudDisabled: false, setReadAloud: mockSetReadAloud}}>
+      <ReadAloudContext.Provider value={{readAloud: true, readAloudDisabled: false, setReadAloud: mockSetReadAloud, hideReadAloud: false}}>
         <ReadAloudToggle />
       </ReadAloudContext.Provider>
     );
@@ -25,11 +25,22 @@ describe("ReadAloudToggle component", () => {
   it("renders disabled ReadAloudToggle component", () => {
     const mockSetReadAloud = jest.fn();
     const wrapper = mount(
-      <ReadAloudContext.Provider value={{readAloud: true, readAloudDisabled: true, setReadAloud: mockSetReadAloud}}>
+      <ReadAloudContext.Provider value={{readAloud: true, readAloudDisabled: true, setReadAloud: mockSetReadAloud, hideReadAloud: false}}>
         <ReadAloudToggle />
       </ReadAloudContext.Provider>
     );
     expect(wrapper.find('[data-cy="toggle"]').length).toBe(1);
     expect(wrapper.find(".disabled").length).toBe(1);
+  });
+
+  it("does not render ReadAloudToggle component when hideReadAloud is true", () => {
+    const mockSetReadAloud = jest.fn();
+    const wrapper = mount(
+      <ReadAloudContext.Provider value={{readAloud: true, readAloudDisabled: true, setReadAloud: mockSetReadAloud, hideReadAloud: true}}>
+        <ReadAloudToggle />
+      </ReadAloudContext.Provider>
+    );
+    expect(wrapper.find('[data-cy="toggle"]').length).toBe(0);
+    expect(wrapper.find(".disabled").length).toBe(0);
   });
 });

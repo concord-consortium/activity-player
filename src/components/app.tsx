@@ -113,6 +113,7 @@ interface IState {
   sequenceActivity?: string | undefined;
   readAloud: boolean;
   readAloudDisabled: boolean;
+  hideReadAloud: boolean;
 }
 interface IProps {}
 
@@ -139,6 +140,7 @@ export class App extends React.PureComponent<IProps, IState> {
       idle: false,
       readAloud: dynamicTextManager.isReadAloudEnabled,
       readAloudDisabled: !dynamicTextManager.isReadAloudAvailable,
+      hideReadAloud: false
     };
   }
 
@@ -284,7 +286,13 @@ export class App extends React.PureComponent<IProps, IState> {
       // Show the warning if we are not running on production
       const showWarning = firebaseAppName() !== "report-service-pro";
 
-      newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner, showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity};
+      const hideReadAloud = sequence?.hide_read_aloud || activity.hide_read_aloud;
+      if (hideReadAloud) {
+        // turn off read-aloud but do not persist the setting
+        dynamicTextManager.enableReadAloud({enabled: false, saveSetting: false});
+      }
+
+      newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner, showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity, hideReadAloud};
       setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       this.setState(newState as IState);
@@ -339,7 +347,7 @@ export class App extends React.PureComponent<IProps, IState> {
         <PortalDataContext.Provider value={this.state.portalData}>
           <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
             <DynamicTextContext.Provider value={dynamicTextManager}>
-              <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud}}>
+              <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
                 <div className="app" data-cy="app">
                   { this.state.showDefunctBanner && <DefunctBanner/> }
                   { this.state.showWarning && <WarningBanner/> }
@@ -679,7 +687,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleSetReadAloud = (readAloud: boolean) => {
     this.setState({ readAloud });
-    dynamicTextManager.enableReadAloud(readAloud);
+    dynamicTextManager.enableReadAloud({enabled: readAloud, saveSetting: true});
     Logger.log({ event: LogEventName.toggle_read_aloud, event_value: readAloud });
   };
 

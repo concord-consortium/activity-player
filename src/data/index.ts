@@ -30,6 +30,8 @@ import sampleActivity1100px from "../data/sample-activity-1100px.json";
 import sampleActivityIPadFriendly from "../data/sample-activity-ipad-friendly.json";
 import sampleActivityAllQuestionInteractives from "../data/sample-activity-all-question-interactives.json";
 import interactiveSizingDemoQI from "../data/Interactive-Sizing-Demo-Question-Interactives.json";
+import sampleActivityHideReadAloud from "../data/sample-activity-hide-read-aloud.json";
+
 const sampleActivities: {[name: string]: Activity} = {
   "sample-new-sections-activity-1": sampleNewSectionsActivity1 as Activity,
   "sample-activity-1-te": sampleActivity1TE as Activity,
@@ -61,6 +63,7 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-1100px": sampleActivity1100px as unknown as Activity,
   "sample-activity-ipad-friendly": sampleActivityIPadFriendly as unknown as Activity,
   "interactive-sizing-demo-question-interactive": interactiveSizingDemoQI as unknown as Activity,
+  "sample-activity-hide-read-aloud": sampleActivityHideReadAloud as unknown as Activity,
 };
 
 import sampleSequence from "../data/sample-sequence.json";
@@ -70,6 +73,7 @@ import sampleSequenceEmptyFields from "../data/sample-sequence-empty-fields.json
 import sampleSequenceWithQuestions from "../data/sample-sequence-with-questions.json";
 import sampleSequenceTE from "../data/sample-sequence-te.json";
 import sampleSequenceDefunct from "../data/sample-sequence-defunct.json";
+import sampleSequenceHideReadAloud from "../data/sample-sequence-hide-read-aloud.json";
 
 const sampleSequences: {[name: string]: Sequence} = {
   "sample-sequence": sampleSequence as unknown as Sequence,
@@ -79,6 +83,7 @@ const sampleSequences: {[name: string]: Sequence} = {
   "sample-sequence-with-questions": sampleSequenceWithQuestions as unknown as Sequence,
   "sample-sequence-te": sampleSequenceTE as unknown as Sequence,
   "sample-sequence-defunct": sampleSequenceDefunct as unknown as Sequence,
+  "sample-sequence-hide-read-aloud": sampleSequenceHideReadAloud as unknown as Sequence,
 };
 
 export  { sampleActivities, sampleSequences };
