@@ -263,11 +263,11 @@ export class App extends React.PureComponent<IProps, IState> {
                                    : await getActivityDefinition(activityPath);
 
       // **** REMOVE THIS BEFORE ANY FINAL MERGE TO MASTER ***
-      // always use logbook skin to allow initial authoring without changing Lara
-      activity.layout = ActivityLayouts.LogBook;
-      // change to logbook skin
-      if (activity.layout === ActivityLayouts.LogBook) {
-        document.getElementsByTagName("body").item(0)?.classList.add("logbook");
+      // always use notebook skin to allow initial authoring without changing Lara
+      activity.layout = ActivityLayouts.Notebook;
+      // change to notebook skin
+      if (activity.layout === ActivityLayouts.Notebook) {
+        document.getElementsByTagName("body").item(0)?.classList.add("notebook");
       }
 
       const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
@@ -294,7 +294,8 @@ export class App extends React.PureComponent<IProps, IState> {
       // Show the warning if we are not running on production
       const showWarning = firebaseAppName() !== "report-service-pro";
 
-      const hideReadAloud = sequence?.hide_read_aloud || activity.hide_read_aloud;
+      // **** REMOVE THE activity.layout CHECK BEFORE ANY FINAL MERGE TO MASTER ***
+      const hideReadAloud = sequence?.hide_read_aloud || activity.hide_read_aloud || (activity.layout === ActivityLayouts.Notebook);
       if (hideReadAloud) {
         // turn off read-aloud but do not persist the setting
         dynamicTextManager.enableReadAloud({enabled: false, saveSetting: false});
@@ -482,7 +483,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   pageChangeNotification={this.state.pageChangeNotification}
                 />
         }
-        { ([ActivityLayouts.SinglePage, ActivityLayouts.LogBook].indexOf(activity.layout) === -1 || this.state.sequence) &&
+        { ([ActivityLayouts.SinglePage, ActivityLayouts.Notebook].indexOf(activity.layout) === -1 || this.state.sequence) &&
           this.renderNav(activity, currentPage, fullWidth)
         }
       </>
@@ -490,7 +491,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderNav = (activity: Activity, currentPage: number, fullWidth: boolean) => {
-    const isLogBook = activity.layout === ActivityLayouts.LogBook;
+    const isNotebook = activity.layout === ActivityLayouts.Notebook;
 
     return (
       <ActivityNav
@@ -500,8 +501,8 @@ export class App extends React.PureComponent<IProps, IState> {
         onPageChange={this.handleChangePage}
         singlePage={activity.layout === ActivityLayouts.SinglePage}
         lockForwardNav={this.state.incompleteQuestions.length > 0}
-        usePageNames={isLogBook}
-        hideNextPrevButtons={isLogBook}
+        usePageNames={isNotebook}
+        hideNextPrevButtons={isNotebook}
       />
     );
   }

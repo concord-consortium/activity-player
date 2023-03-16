@@ -5,8 +5,8 @@ import { initializeAuthorization } from "./utilities/auth-utils";
 
 import "./index.sass";
 
-// for logbook skin
-import "./logbook.scss";
+// for notebook skin
+import "./notebook.scss";
 
 // allow plugin scripts to have access to React
 (window as any).React = React;

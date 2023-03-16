@@ -1,19 +1,19 @@
 @import "./components/vars.scss";
 
-$logbook_font_family: 'Andika';
-$logbook_font_size: 19px;
+$notebook_font_family: 'Andika';
+$notebook_font_size: 19px;
 
-body.logbook {
+body.notebook {
 
   font-family: 'Andika', 'Lato', arial, helvetica, sans-serif;
-  font-size: $logbook_font_size;
+  font-size: $notebook_font_size;
 
   .button {
-    font-family: $logbook_font_family;
+    font-family: $notebook_font_family;
   }
 
   .activity-header {
-    font-size: $logbook_font_size + 1;
+    font-size: $notebook_font_size + 1;
 
     .inner {
       background-color: #ffa35050; // $cc-orange-light1
@@ -26,7 +26,7 @@ body.logbook {
       gap: 40px;
 
       .page-button {
-        font-size: $logbook_font_size;
+        font-size: $notebook_font_size;
         width: auto;
         margin: 0;
         color: $cc-teal;
@@ -46,7 +46,7 @@ body.logbook {
 
   .intro-content {
     background-color: $cc-orange-light6;
-    font-size: $logbook_font_size;
+    font-size: $notebook_font_size;
     border-radius: 0 0 10px 10px;
 
     .introduction {
@@ -78,7 +78,7 @@ body.logbook {
     }
 
     .textbox.callout {
-      font-size: $logbook_font_size;
+      font-size: $notebook_font_size;
       /* animation: zoom-in-zoom-out 1s ease; */
 
       .text-name {
@@ -94,7 +94,7 @@ body.logbook {
   }
 
   .footer {
-    font-size: $logbook_font_size;
+    font-size: $notebook_font_size;
     background-color: $cc-orange-light1;
     border-radius: 10px 10px;
   }
