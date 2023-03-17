@@ -286,7 +286,13 @@ export class App extends React.PureComponent<IProps, IState> {
       // Show the warning if we are not running on production
       const showWarning = firebaseAppName() !== "report-service-pro";
 
-      const hideReadAloud = sequence?.hide_read_aloud || activity.hide_read_aloud;
+      let hideReadAloud = false;
+      if (sequence) {
+        // sequence always overrides activity level setting
+        hideReadAloud = !!sequence.hide_read_aloud;
+      } else {
+        hideReadAloud = !!activity.hide_read_aloud;
+      }
       if (hideReadAloud) {
         // turn off read-aloud but do not persist the setting
         dynamicTextManager.enableReadAloud({enabled: false, saveSetting: false});
