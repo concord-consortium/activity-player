@@ -108,6 +108,13 @@ body.notebook {
       flex-direction: row;
       gap: 10px;
 
+      .section-tabs {
+        background-color: #909090;
+        margin: -5px 8px 0 8px;
+        padding-left: 15px;
+
+      }
+
       .sections {
         width: 100%;
 

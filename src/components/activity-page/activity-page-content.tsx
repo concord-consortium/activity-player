@@ -88,8 +88,8 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
           </div>
           <div className="maybe-with-sidebar">
             <div className="sections">
-              {renderTabs && this.renderTabs(sections)}
               {isNotebookLayout && <NotebookTop />}
+              {renderTabs && this.renderTabs(sections)}
               {this.renderSections(sections, totalPreviousQuestions, renderTabs)}
               {isNotebookLayout && <NotebookBottom />}
             </div>
