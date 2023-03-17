@@ -73,7 +73,6 @@ body.notebook {
       }
     }
 
-
     .embeddable {
       .header {
         /*display: none;*/
@@ -107,10 +106,22 @@ body.notebook {
     .maybe-with-sidebar {
       display: flex;
       flex-direction: row;
-      gap: 20px;
+      gap: 10px;
 
       .sections {
         width: 100%;
+
+        .section {
+          margin: 8px;
+          margin-top: -5px;
+
+          &.tab-contents {
+            background-color: #909090;
+            border-radius: 0;
+            border: none;
+            margin-bottom: 0;
+          }
+        }
       }
 
       .in-page-sidebar {

@@ -11,9 +11,13 @@ import { Logger, LogEventName } from "../../lib/logger";
 import { showReport } from "../../utilities/report-utils";
 import { IPageChangeNotification, PageChangeNotification } from "./page-change-notification";
 import { ReadAloudToggle } from "../read-aloud-toggle";
+import { renderHTML } from "../../utilities/render-html";
+
+import NotebookTop from "../../assets/notebook/paper-top.svg";
+import NotebookBottom from "../../assets/notebook/paper-bottom.svg";
 
 import "./activity-page-content.scss";
-import { renderHTML } from "../../utilities/render-html";
+
 
 const SectionTab = (props: { label: string, zIndex: number, section: SectionType, selected: boolean, onSelected: (section: SectionType) => void }) => {
   const { label, zIndex, section, selected, onSelected } = props;
@@ -85,7 +89,9 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
           <div className="maybe-with-sidebar">
             <div className="sections">
               {renderTabs && this.renderTabs(sections)}
+              {isNotebookLayout && <NotebookTop />}
               {this.renderSections(sections, totalPreviousQuestions, renderTabs)}
+              {isNotebookLayout && <NotebookBottom />}
             </div>
             {isNotebookLayout && this.renderFirstSidebarInPage()}
           </div>
