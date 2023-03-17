@@ -62,7 +62,7 @@ body.notebook {
     background-color: $cc-orange-light6;
     border-radius: 0 0 10px 10px;
 
-    .header {
+    > .header {
       .name {
         visibility: hidden;  /* quick hack to remove page name - don't use for realz */
       }
