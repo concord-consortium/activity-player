@@ -12,7 +12,7 @@
   }
 
   &.hidden-tab {
-    display: none;
+    display: none !important;
   }
   &.tab-contents {
     background-color: $cc-teal-light5;

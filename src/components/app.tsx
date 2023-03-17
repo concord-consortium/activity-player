@@ -482,6 +482,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   key={`page-${currentPage}`}
                   pluginsLoaded={this.state.pluginsLoaded}
                   pageChangeNotification={this.state.pageChangeNotification}
+                  hideReadAloud={this.state.hideReadAloud}
                 />
         }
         { ([ActivityLayouts.SinglePage, ActivityLayouts.Notebook].indexOf(activity.layout) === -1 || this.state.sequence) &&

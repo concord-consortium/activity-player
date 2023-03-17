@@ -39,6 +39,7 @@ interface IProps {
   setNavigation: (refId: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
   pageChangeNotification?: IPageChangeNotification;
+  hideReadAloud?: boolean;
 }
 
 interface IState {
@@ -69,17 +70,20 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
     const isNotebookLayout = this.props.activityLayout === ActivityLayouts.Notebook;
     const renderTabs = isNotebookLayout && sections.length > 1;
 
+    // to allow the notebook.scss to hide the header if the read aloud is hidden
+    const headerClass = classNames("header", {"contains-read-aloud": !this.props.hideReadAloud});
+
     return (
       <>
         {page.is_hidden && this.renderHiddenWarningBanner()}
         {this.renderPageChangeNotification()}
         <div className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
-          <div className="header">
+          <div className={headerClass}>
             <div className="name"><DynamicText>{pageTitle}</DynamicText></div>
             <ReadAloudToggle />
           </div>
           <div className="maybe-with-sidebar">
-            <div>
+            <div className="sections">
               {renderTabs && this.renderTabs(sections)}
               {this.renderSections(sections, totalPreviousQuestions, renderTabs)}
             </div>

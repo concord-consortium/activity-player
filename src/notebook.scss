@@ -66,7 +66,13 @@ body.notebook {
       .name {
         visibility: hidden;  /* quick hack to remove page name - don't use for realz */
       }
+
+      display: none;
+      &.contains-read-aloud {
+        display: block;
+      }
     }
+
 
     .embeddable {
       .header {
@@ -103,7 +109,8 @@ body.notebook {
       flex-direction: row;
       gap: 20px;
 
-      div:first-child {
+      .sections {
+        width: 100%;
       }
 
       .in-page-sidebar {
