@@ -43,55 +43,11 @@
           "secondary_column_display_mode": "stacked",
           "embeddables": [
             {
-              "name": "This is a multiple choice question",
-              "url_fragment": null,
-              "authored_state": "{\"version\":1,\"questionType\":\"multiple_choice\",\"prompt\":\"\u003Cp\u003EAnd this is the prompt\u003C/p\u003E\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"Choice A\",\"correct\":false},{\"id\":\"2\",\"content\":\"Choice B\",\"correct\":false},{\"id\":\"3\",\"content\":\"Choice C\",\"correct\":false}]}",
-              "is_hidden": false,
-              "is_half_width": false,
-              "show_in_featured_question_report": true,
-              "inherit_aspect_ratio_method": true,
-              "custom_aspect_ratio_method": "DEFAULT",
-              "inherit_native_width": true,
-              "custom_native_width": 576,
-              "inherit_native_height": true,
-              "custom_native_height": 435,
-              "inherit_click_to_play": true,
-              "custom_click_to_play": false,
-              "inherit_full_window": true,
-              "custom_full_window": false,
-              "inherit_click_to_play_prompt": true,
-              "custom_click_to_play_prompt": null,
-              "inherit_image_url": true,
-              "custom_image_url": null,
-              "linked_interactive_item_id": null,
-              "library_interactive": {
-                "data": {
-                  "aspect_ratio_method": "DEFAULT",
-                  "authoring_guidance": "",
-                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
-                  "click_to_play": false,
-                  "click_to_play_prompt": null,
-                  "description": "",
-                  "enable_learner_state": true,
-                  "full_window": false,
-                  "has_report_url": false,
-                  "image_url": null,
-                  "name": "Multiple Choice (master)",
-                  "native_height": 435,
-                  "native_width": 576,
-                  "no_snapshots": false,
-                  "show_delete_data_button": false,
-                  "thumbnail_url": "",
-                  "customizable": true,
-                  "authorable": true,
-                  "report_item_url": ""
-                }
-              },
-              "type": "ManagedInteractive",
-              "ref_id": "888-ManagedInteractive",
-              "linked_interactives": [],
+              "name": "media library demo",
+              "type": "Embeddable::SpikeMediaLibrary",
+              "ref_id": "154-Embeddable::SpikeMediaLibrary",
               "column": "primary",
-              "position": 1
+              "position": 2
             },
             {
               "name": "Open Response Name",
@@ -221,7 +177,10 @@
               "ref_id": "895-ManagedInteractive",
               "linked_interactives": [],
               "column": "secondary",
-              "position": 1
+              "position": 1,
+              "spikeMediaLibraryItems": [
+                {"title": "Cute Kitten", "url": "https://placekitten.com/g/200/300", "mimeType": "image/jpeg"}
+              ]
             },
             {
               "name": "Bottom Right Open Response",
@@ -272,7 +231,12 @@
               "ref_id": "896-ManagedInteractive",
               "linked_interactives": [],
               "column": "secondary",
-              "position": 2
+              "position": 2,
+              "spikeMediaLibraryItems": [
+                {"title": "Concord Logo", "url": "https://concord.org/wp-content/themes/concord2017/images/concord-logo.svg", "mimeType": "image/svg"},
+                {"title": "Short Audio Sample", "url": "https://samplelib.com/lib/preview/mp3/sample-3s.mp3", "mimeType": "audio/mpeg"},
+                {"title": "Big Buck Bunny", "url": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4", "mimeType": "video/mp4"}
+              ]
             },
             {
               "name": "Top Left Open Response",

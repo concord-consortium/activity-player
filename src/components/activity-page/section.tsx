@@ -5,7 +5,7 @@ import { isQuestion,  getLinkedPluginEmbeddable, ActivityLayouts } from "../../u
 import { accessibilityClick } from "../../utilities/accessibility-helper";
 import IconChevronRight from "../../assets/svg-icons/icon-chevron-right.svg";
 import IconChevronLeft from "../../assets/svg-icons/icon-chevron-left.svg";
-import { EmbeddableType, Page, SectionType } from "../../types";
+import { EmbeddableType, ISpikeMediaLibraryItem, Page, SectionType } from "../../types";
 import { Logger, LogEventName } from "../../lib/logger";
 import { IGetInteractiveState, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import useResizeObserver from "@react-hook/resize-observer";
@@ -22,6 +22,7 @@ interface IProps {
   pluginsLoaded: boolean;
   ref?: React.Ref<SectionImperativeAPI>;
   hiddenTab?: boolean;
+  spikeMediaLibrary?: ISpikeMediaLibraryItem[]
 }
 
 export interface SectionImperativeAPI {
@@ -91,6 +92,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
                 teacherEditionMode={props.teacherEditionMode}
                 setNavigation={props.setNavigation}
                 pluginsLoaded={props.pluginsLoaded}
+                spikeMediaLibrary={props.spikeMediaLibrary}
               />
             );
           })

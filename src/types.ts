@@ -68,6 +68,7 @@ export interface EmbeddableBase {
   embeddable_ref_id?: string;
   column?: "primary" | "secondary" | null;
   aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX";
+  spikeMediaLibraryItems?: ISpikeMediaLibraryItem[];
 }
 
 export interface IManagedInteractive extends EmbeddableBase {
@@ -119,7 +120,13 @@ export interface IEmbeddablePlugin extends EmbeddableBase {
   plugin?: Plugin;
 }
 
-export type EmbeddableType = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin;
+export interface IEmbeddableSpikeMediaLibrary extends EmbeddableBase {
+  type: "Embeddable::SpikeMediaLibrary";
+  content?: string;
+  is_callout?: boolean;
+}
+
+export type EmbeddableType = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin | IEmbeddableSpikeMediaLibrary;
 export interface SectionType {
   secondary_column_display_mode: "stacked" | "carousel";
   is_hidden: boolean;
@@ -342,3 +349,12 @@ export interface IAuthenticatedUserApRun extends IBaseApRun {
 }
 
 export type IApRun = IAnonymousApRun | IAuthenticatedUserApRun;
+
+
+// for media library spike
+
+export type ISpikeMediaLibraryItem = {
+  title: string
+  url: string
+  mimeType: string
+}
