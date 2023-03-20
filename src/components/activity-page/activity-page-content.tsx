@@ -13,8 +13,8 @@ import { IPageChangeNotification, PageChangeNotification } from "./page-change-n
 import { ReadAloudToggle } from "../read-aloud-toggle";
 import { renderHTML } from "../../utilities/render-html";
 
-import NotebookTop from "../../assets/notebook/paper-top.svg";
-import NotebookBottom from "../../assets/notebook/paper-bottom.svg";
+import NotebookTop from "../../assets/notebook/notepage-top.svg";
+import NotebookBottom from "../../assets/notebook/notepage-bottom.svg";
 
 import "./activity-page-content.scss";
 
