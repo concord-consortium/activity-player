@@ -79,10 +79,10 @@ export const dynamicTextManager = new DynamicTextManager({onEvent: (event) => {
   }
 }});
 
-// stop speaking when navigating away
-window.addEventListener("beforeunload", () => {
-  dynamicTextManager.selectComponent(null, {text: "", readAloud: true});
-});
+// stop speaking when navigating away or (for iOS support) hiding the page
+const cancelSpeech = () => dynamicTextManager.selectComponent(null, {text: "", readAloud: true});
+window.addEventListener("beforeunload", () => cancelSpeech());
+window.addEventListener("pagehide", () => cancelSpeech());
 
 export type ErrorType = "auth" | "network" | "timeout";
 
