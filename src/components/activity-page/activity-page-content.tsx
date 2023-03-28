@@ -13,11 +13,7 @@ import { IPageChangeNotification, PageChangeNotification } from "./page-change-n
 import { ReadAloudToggle } from "../read-aloud-toggle";
 import { renderHTML } from "../../utilities/render-html";
 
-import NotebookTop from "../../assets/notebook/notepage-top.svg";
-import NotebookBottom from "../../assets/notebook/notepage-bottom.svg";
-
 import "./activity-page-content.scss";
-
 
 const SectionTab = (props: { label: string, zIndex: number, section: SectionType, selected: boolean, onSelected: (section: SectionType) => void }) => {
   const { label, zIndex, section, selected, onSelected } = props;
@@ -89,10 +85,8 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
           </div>
           <div className="maybe-with-sidebar">
             <div className="sections">
-              {isNotebookLayout && <NotebookTop />}
               {renderTabs && this.renderTabs(sections)}
               {this.renderSections(sections, totalPreviousQuestions, renderTabs)}
-              {isNotebookLayout && <NotebookBottom />}
             </div>
             {isNotebookLayout && this.renderFirstSidebarInPage()}
           </div>
