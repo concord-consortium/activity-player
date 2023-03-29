@@ -1,11 +1,13 @@
 import React from "react";
+
 import { numQuestionsOnPreviousSections, numQuestionsOnPreviousPages } from "../../utilities/activity-utils";
 import { RelatedContent } from "./related-content";
 import { SubmitButton } from "./submit-button";
-
-import "./single-page-content.scss";
 import { Activity, Page } from "../../types";
 import { Section } from "../activity-page/section";
+import { ReadAloudToggle } from "../read-aloud-toggle";
+
+import "./single-page-content.scss";
 
 interface IProps {
   activity: Activity;
@@ -42,6 +44,8 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
 
   return (
     <div className="single-page-content" data-cy="single-page-content">
+      <ReadAloudToggle style={{justifyContent: "flex-end"}} />
+
       {activity.pages.filter((page) => !page.is_hidden).map((page, index: number) => (
         renderPageContent(page, index)
       ))}

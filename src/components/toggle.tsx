@@ -10,6 +10,7 @@ interface IProps {
   disabled?: boolean;
   disabledMessage?: string;
   onChange: (checked: boolean) => void;
+  style?: React.CSSProperties
 }
 
 export const Toggle: React.FC<IProps> = (props) => {
@@ -30,7 +31,7 @@ export const Toggle: React.FC<IProps> = (props) => {
   const className = classNames("toggle", {disabled: props.disabled});
 
   return (
-    <label htmlFor={props.id} className={className} data-cy="toggle">
+    <label htmlFor={props.id} className={className} data-cy="toggle" style={props.style}>
       <div className="label" id={labelId}>
         {props.label}
       </div>
