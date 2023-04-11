@@ -3,7 +3,7 @@
 .footer {
   width: 100%;
   box-sizing: border-box;
-  font-size: 18px;
+  font-size: pxToRem(18);
   color: white;
   background-color: $cc-teal-dark1;
   padding: 20px 20px 40px;

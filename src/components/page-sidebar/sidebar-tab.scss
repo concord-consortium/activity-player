@@ -40,7 +40,7 @@
   .tab-name {
     color: $cc-charcoal;
     font-weight: normal;
-    font-size: 14px;
+    font-size: pxToRem(14);
     line-height: 1.15;
     margin-top:  0.2em;
   }

@@ -17,7 +17,7 @@
 
     .name {
       flex-grow: 1;
-      font-size: 24px;
+      font-size: pxToRem(24);
       font-weight: bold;
       max-width: 850px;
       color: var(--theme-secondary-color);
@@ -26,7 +26,7 @@
 }
 
 .hidden-page-warning {
-  font-size: 18px;
+  font-size: pxToRem(18);
   text-align: center;
   height: 30px;
   background-color: $activity-purple;

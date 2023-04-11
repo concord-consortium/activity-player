@@ -8,7 +8,7 @@
   width: 100%;
   background-color: white;
   color: $cc-charcoal;
-  font-size: 18px;
+  font-size: pxToRem(18);
 
   &.full {
     width: 100%;
@@ -29,7 +29,7 @@
     align-items: center;
     justify-content: center;
     margin: 5px;
-    font-size: 12px;
+    font-size: pxToRem(12);
     height: 100%;
     cursor: pointer;
 

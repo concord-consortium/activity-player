@@ -22,7 +22,7 @@
 
 
         h2 {
-          font-size: 32px;
+          font-size: pxToRem(32);
           font-weight: 900;
           margin: 0;
           color: var(--theme-secondary-color);
@@ -91,7 +91,7 @@
 
         .name {
           margin: 5px;
-          font-size: 19px;
+          font-size: pxToRem(19);
           font-weight: bold;
           display: flex;
           flex-direction: row;

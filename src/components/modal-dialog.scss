@@ -18,7 +18,7 @@
     background-color: var(--theme-primary-color);
     color: var(--theme-primary-text-color);
     padding: 5px 10px;
-    font-size: 18px;
+    font-size: pxToRem(18);
     font-weight: normal;
     border-radius: 8px 8px 0 0;
   }

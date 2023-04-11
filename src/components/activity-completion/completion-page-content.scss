@@ -16,7 +16,7 @@
     color: $cc-charcoal;
     cursor: pointer;
     display: block;
-    font: bold 20px Lato, Arial, Helvetica, sans-serif;
+    font: bold pxToRem(20) Lato, Arial, Helvetica, sans-serif;
     margin: 0 auto;
     padding: 5px;
     text-align: center;
@@ -36,7 +36,7 @@
     background-color: $cc-teal-light6;
     display: flex;
     flex-basis: 100%;
-    font-size: 18px;
+    font-size: pxToRem(18);
     font-style: italic;
     font-weight: bold;
     line-height: 1;
@@ -156,7 +156,7 @@
           margin: 0;
         }
         .next-step-title {
-          font-size: 16px;
+          font-size: pxToRem(16);
           font-weight: bold;
         }
         .next {

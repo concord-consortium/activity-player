@@ -5,7 +5,7 @@
   flex-direction: row;
   background-color: $cc-orange-light1;
   color: $light-font-color;
-  font-size: 26px;
+  font-size: pxToRem(26);
   padding: 8px;
   min-height: 40px;
   width: 100%;
