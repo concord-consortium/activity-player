@@ -21,6 +21,7 @@ import { IInteractiveInfo } from "../../../utilities/embeddable-utils";
 import { getReportUrl } from "../../../utilities/report-utils";
 import ReloadIcon from "../../../assets/svg-icons/icon-reload.svg";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
+import { useFontSize } from "../../font-size-context";
 
 import "./iframe-runtime.scss";
 
@@ -28,12 +29,12 @@ const kDefaultHeight = 300;
 
 const kInteractiveStateRequestTimeout = 20000; // ms
 
-const getListenerTypes = (textDecorationHandlerInfo: ITextDecorationHandlerInfo): Array<{type: string}> => {
+const getListenerTypes = (textDecorationHandlerInfo: ITextDecorationHandlerInfo): Array<{ type: string }> => {
   const { eventListeners } = textDecorationHandlerInfo;
   if (eventListeners instanceof Array) {
-    return eventListeners.map(listener => ({type: listener.type}));
+    return eventListeners.map(listener => ({ type: listener.type }));
   }
-  return [{type: eventListeners.type}];
+  return [{ type: eventListeners.type }];
 };
 
 const createTextDecorationInfo = () => {
@@ -88,7 +89,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     showDeleteDataButton, setAspectRatio, setHeightFromInteractive } = props;
 
   const [reloadCount, setReloadCount] = useState<number>(0);
-  const iframePhoneTimeout = useRef<number|undefined>(undefined);
+  const iframePhoneTimeout = useRef<number | undefined>(undefined);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const phoneRef = useRef<IframePhone>();
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
@@ -103,6 +104,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   const dynamicText = useDynamicTextContext();
   const dynamicTextComponentIds = useRef<Set<string>>(new Set());
+
+  const fontSize = useFontSize();
 
   useEffect(() => {
     const initInteractive = () => {
@@ -162,7 +165,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           post("firebaseJWT", { requestId, token: rawFirebaseJWT });
           errorMessage = "";
         }
-        catch(e) {
+        catch (e) {
           errorMessage = e.toString();
         }
         if (errorMessage) {
@@ -252,16 +255,18 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           switch (content.type) {
             case "select":
               // content.options my be undefined so it needs to be cast as any
-              dynamicText.selectComponent(content.id, {...(content.options as any), extraLoggingInfo: {
-                interactive_id: id,
-                interactive_url: url
-              }});
+              dynamicText.selectComponent(content.id, {
+                ...(content.options as any), extraLoggingInfo: {
+                  interactive_id: id,
+                  interactive_url: url
+                }
+              });
               break;
             case "register":
               // track locally so we can unregister when the iframe unloads
               dynamicTextComponentIds.current?.add(content.id);
               dynamicText.registerComponent(content.id, (componentMessage) => {
-                post("customMessage", {type: DynamicTextCustomMessageType, content: componentMessage});
+                post("customMessage", { type: DynamicTextCustomMessageType, content: componentMessage });
               });
               break;
             case "unregister":
@@ -321,36 +326,38 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         attachments
       };
       const initInteractiveMsg: IInitInteractive = report
-              ? {
-                  ...baseProps,
-                  mode: "report"
-                }
-              : {
-                  ...baseProps,
-                  error: "",
-                  mode: "runtime",
-                  globalInteractiveState: null,
-                  interactiveStateUrl: "",
-                  collaboratorUrls: null,
-                  classInfoUrl: portalData?.portalJWT?.class_info_url ?? "",
-                  interactive: {
-                    id,
-                    name: ""
-                  },
-                  authInfo: {
-                    provider: "",
-                    loggedIn: !!portalData?.platformUserId,
-                    email: ""
-                  },
-                  runRemoteEndpoint: portalData?.runRemoteEndpoint,
-                  ...linkedInteractivesRef.current,
-                  ...(legacyLinkedInteractiveState || {}),
-                  pageName:  interactiveInfo?.pageName,
-                  pageNumber: interactiveInfo?.pageNumber,
-                  activityName: interactiveInfo?.activityName,
-                  updatedAt: answerMetadata?.created,
-                  externalReportUrl: getReportUrl(id) || undefined
-                };
+        ? {
+          ...baseProps,
+          mode: "report"
+        }
+        : {
+          ...baseProps,
+          error: "",
+          mode: "runtime",
+          globalInteractiveState: null,
+          interactiveStateUrl: "",
+          collaboratorUrls: null,
+          classInfoUrl: portalData?.portalJWT?.class_info_url ?? "",
+          interactive: {
+            id,
+            name: ""
+          },
+          authInfo: {
+            provider: "",
+            loggedIn: !!portalData?.platformUserId,
+            email: ""
+          },
+          runRemoteEndpoint: portalData?.runRemoteEndpoint,
+          ...linkedInteractivesRef.current,
+          ...(legacyLinkedInteractiveState || {}),
+          pageName: interactiveInfo?.pageName,
+          pageNumber: interactiveInfo?.pageNumber,
+          activityName: interactiveInfo?.activityName,
+          updatedAt: answerMetadata?.created,
+          externalReportUrl: getReportUrl(id) || undefined
+        };
+
+      (initInteractiveMsg as any).fontSize = fontSize;
 
       // to support legacy interactives first post the deprecated loadInteractive message as LARA does
       // but only when there is initialInteractiveState (also as LARA does)
@@ -412,14 +419,14 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
             cleanup();
           };
           iframePhoneTimeout.current = window.setTimeout(() => {
-              if (interactiveStateRequest.promise.current) {
-                const msg = `Sorry. Some items on this page did not save (${iframeTitle}).`;
-                console.error(msg);
-                reject(msg);
-                cleanup();
-              }
-            }, kInteractiveStateRequestTimeout);
-          });
+            if (interactiveStateRequest.promise.current) {
+              const msg = `Sorry. Some items on this page did not save (${iframeTitle}).`;
+              console.error(msg);
+              reject(msg);
+              cleanup();
+            }
+          }, kInteractiveStateRequestTimeout);
+        });
       }
       return interactiveStateRequest.promise.current;
     }
@@ -446,10 +453,10 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   return (
     <div className="iframe-runtime" data-cy="iframe-runtime">
       <iframe key={`${id}-${reloadCount}`} ref={iframeRef} src={url} id={id} width={width} height={height} frameBorder={0}
-              allowFullScreen={true}
-              allow="geolocation; microphone; camera; bluetooth; clipboard-read; clipboard-write"
-              title={iframeTitle}
-              scrolling="no"
+        allowFullScreen={true}
+        allow="geolocation; microphone; camera; bluetooth; clipboard-read; clipboard-write"
+        title={iframeTitle}
+        scrolling="no"
       />
       {showDeleteDataButton &&
         <button className="button reset" data-cy="reset-button" onClick={handleResetButtonClick} onKeyDown={handleResetButtonClick}>

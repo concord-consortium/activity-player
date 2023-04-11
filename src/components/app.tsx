@@ -46,8 +46,16 @@ import { __closeAllPopUps } from "../lara-plugin/plugin-api/popup";
 import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChangeNotificationStartTimeout } from "./activity-page/page-change-notification";
 import { getBearerToken } from "../utilities/auth-utils";
 import { ReadAloudContext } from "./read-aloud-context";
+import { FontSizeContext, getFontSizeQueryParam } from "./font-size-context";
 
 import "./app.scss";
+
+const fontSize = getFontSizeQueryParam();
+const htmlElement = document.getElementsByTagName("html").item(0);
+if (htmlElement) {
+  console.log("AP: SETTING FONT SIZE TO", fontSize);
+  htmlElement.style.fontSize = fontSize;
+}
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "You must submit an answer for all required questions before advancing to another page.";
@@ -349,31 +357,33 @@ export class App extends React.PureComponent<IProps, IState> {
 
   render() {
     return (
-      <LaraGlobalContext.Provider value={this.LARA}>
-        <PortalDataContext.Provider value={this.state.portalData}>
-          <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
-            <DynamicTextContext.Provider value={dynamicTextManager}>
-              <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
-                <div className="app" data-cy="app">
-                  { this.state.showDefunctBanner && <DefunctBanner/> }
-                  { this.state.showWarning && <WarningBanner/> }
-                  { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-                  { this.state.showSequenceIntro
-                    ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
-                    : this.renderActivity() }
-                  { this.state.showThemeButtons && <ThemeButtons/>}
-                  <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
-                  <ModalDialog
-                    label={this.state.modalLabel}
-                    onClose={() => {this.setShowModal(false);}}
-                    showModal={this.state.showModal}
-                  />
-                </div>
-              </ReadAloudContext.Provider>
-            </DynamicTextContext.Provider>
-          </LaraDataContext.Provider>
-        </PortalDataContext.Provider>
-      </LaraGlobalContext.Provider>
+      <FontSizeContext.Provider value={fontSize}>
+        <LaraGlobalContext.Provider value={this.LARA}>
+          <PortalDataContext.Provider value={this.state.portalData}>
+            <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
+              <DynamicTextContext.Provider value={dynamicTextManager}>
+                <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
+                  <div className="app" data-cy="app">
+                    { this.state.showDefunctBanner && <DefunctBanner/> }
+                    { this.state.showWarning && <WarningBanner/> }
+                    { this.state.teacherEditionMode && <TeacherEditionBanner/>}
+                    { this.state.showSequenceIntro
+                      ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
+                      : this.renderActivity() }
+                    { this.state.showThemeButtons && <ThemeButtons/>}
+                    <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
+                    <ModalDialog
+                      label={this.state.modalLabel}
+                      onClose={() => {this.setShowModal(false);}}
+                      showModal={this.state.showModal}
+                    />
+                  </div>
+                </ReadAloudContext.Provider>
+              </DynamicTextContext.Provider>
+            </LaraDataContext.Provider>
+          </PortalDataContext.Provider>
+        </LaraGlobalContext.Provider>
+      </FontSizeContext.Provider>
     );
   }
 

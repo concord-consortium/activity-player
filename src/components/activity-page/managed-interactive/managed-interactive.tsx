@@ -365,12 +365,20 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
   const hasQuestionNumber = questionNumber ? "runtime-container has-question-number" : "runtime-container";
 
+  // force the url to use the branch
+  let forcedUrl = iframeUrl;
+  const matches = iframeUrl.match(/https:\/\/models-resources\.concord\.org\/question-interactives\/(version|branch)\/([^/]+)\/(.*)$/i);
+  if (matches) {
+    forcedUrl = `https://models-resources.concord.org/question-interactives/branch/spike-find-large-font-size/${matches[3]}`;
+  }
+  console.log("AP: FORCING", url, "TO", forcedUrl);
+
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
       "Loading..." :
       <IframeRuntime
         ref={iframeRuntimeRef}
-        url={iframeUrl}
+        url={forcedUrl}
         id={interactiveId}
         authoredState={authoredState}
         initialInteractiveState={interactiveState.current}

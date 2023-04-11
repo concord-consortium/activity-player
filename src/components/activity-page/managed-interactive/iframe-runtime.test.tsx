@@ -153,6 +153,7 @@ describe("IframeRuntime component", () => {
       collaboratorUrls: null,
       error: "",
       externalReportUrl: undefined,
+      fontSize: "16",
       globalInteractiveState: null,
       hostFeatures: {getFirebaseJwt: {version: "1.0.0"}, modal: {alert: false, dialog: true, lightbox: true, version: "1.0.0"}, domain: "activity-player.unexisting.url.com"},
       interactive: {id: "123-Interactive", name: ""},
