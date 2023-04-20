@@ -8,7 +8,7 @@
   color: $cc-charcoal;
 
   .pages {
-    font-size: 18px;
+    font-size: pxToRem(18);
     font-weight: bold;
     margin: 4px 10px;
   }

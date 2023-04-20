@@ -1,3 +1,5 @@
+@use "sass:math";
+
 $cc-charcoal: #3f3f3f;
 $cc-charcoal-light1: #979797;
 $cc-charcoal-light2: #dfdfdf;
@@ -50,4 +52,9 @@ $line-height: 1.35;
 :export {
   lightFontColor: $light-font-color;
   darkFontColor: $dark-font-color;
+}
+
+@function pxToRem($value) {
+  $remValue: math.div($value, 16) + rem;
+  @return $remValue;
 }
