@@ -13,6 +13,7 @@
   "version": 2,
   "theme_name": null,
   "background_image": null,
+  "font_size": "normal",
   "pages": [
     {
       "is_completion": false,

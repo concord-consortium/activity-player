@@ -21,6 +21,7 @@ import { IInteractiveInfo } from "../../../utilities/embeddable-utils";
 import { getReportUrl } from "../../../utilities/report-utils";
 import ReloadIcon from "../../../assets/svg-icons/icon-reload.svg";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
+import { useAccessibility } from "../../accessibility-context";
 
 import "./iframe-runtime.scss";
 
@@ -103,6 +104,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   const dynamicText = useDynamicTextContext();
   const dynamicTextComponentIds = useRef<Set<string>>(new Set());
+
+  const {fontSize, fontSizeInPx} = useAccessibility();
 
   useEffect(() => {
     const initInteractive = () => {
@@ -349,7 +352,11 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   pageNumber: interactiveInfo?.pageNumber,
                   activityName: interactiveInfo?.activityName,
                   updatedAt: answerMetadata?.created,
-                  externalReportUrl: getReportUrl(id) || undefined
+                  externalReportUrl: getReportUrl(id) || undefined,
+                  accessibility: {
+                    fontSize,
+                    fontSizeInPx
+                  }
                 };
 
       // to support legacy interactives first post the deprecated loadInteractive message as LARA does

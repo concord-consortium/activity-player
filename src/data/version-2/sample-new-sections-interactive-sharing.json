@@ -17,6 +17,7 @@
   "plugins": [],
   "type": "LightweightActivity",
   "export_site": "Lightweight Activities Runtime and Authoring",
+  "font_size": "normal",
   "pages": [
     {
       "id": 310563,
