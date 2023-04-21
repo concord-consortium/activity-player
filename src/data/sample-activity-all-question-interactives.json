@@ -13,7 +13,7 @@
   "show_submit_button": true,
   "student_report_enabled": true,
   "thumbnail_url": "",
-  "time_to_complete": null,
+  "time_to_complete": 60,
   "version": 2,
   "theme_name": null,
   "project": null,
