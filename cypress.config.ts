@@ -9,8 +9,8 @@ export default defineConfig({
   projectId: 'etatiy',
   chromeWebSecurity: false,
   env: {
-    portal_domain: 'https://learn.staging.concord.org',
-    portal_launch_path: '/users/5465/portal/offerings/2044.run_resource_html',
+    portal_domain: 'https://learn.portal.staging.concord.org',
+    portal_launch_path: '/users/111/portal/offerings/84.run_resource_html',
     portal_username: 'scypress',
     portal_password: 'cypress',
     answers_source_key: 'cypress-test',
