@@ -55,6 +55,7 @@ export const DefaultTestActivity: Activity = {
   plugins: [],
   type: "LightweightActivity",
   pages: [],
+  font_size: "normal"
 };
 
 export const DefaultLibraryInteractive: LibraryInteractive = {

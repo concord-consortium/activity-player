@@ -147,6 +147,10 @@ describe("IframeRuntime component", () => {
           contentType: "image/png",
         },
       },
+      accessibility: {
+        fontSize: "normal",
+        fontSizeInPx: 16,
+      },
       authInfo: {email: "", loggedIn: false, provider: ""},
       authoredState: null,
       classInfoUrl: "",

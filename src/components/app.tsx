@@ -46,6 +46,7 @@ import { __closeAllPopUps } from "../lara-plugin/plugin-api/popup";
 import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChangeNotificationStartTimeout } from "./activity-page/page-change-notification";
 import { getBearerToken } from "../utilities/auth-utils";
 import { ReadAloudContext } from "./read-aloud-context";
+import { AccessibilityContext, FontSize, getFontSize, getFontSizeInPx } from "./accessibility-context";
 
 import "./app.scss";
 
@@ -114,6 +115,8 @@ interface IState {
   readAloud: boolean;
   readAloudDisabled: boolean;
   hideReadAloud: boolean;
+  fontSize: FontSize;
+  fontSizeInPx: number;
 }
 interface IProps {}
 
@@ -140,7 +143,9 @@ export class App extends React.PureComponent<IProps, IState> {
       idle: false,
       readAloud: dynamicTextManager.isReadAloudEnabled,
       readAloudDisabled: !dynamicTextManager.isReadAloudAvailable,
-      hideReadAloud: false
+      hideReadAloud: false,
+      fontSize: "normal",
+      fontSizeInPx: getFontSizeInPx("normal")
     };
   }
 
@@ -268,6 +273,16 @@ export class App extends React.PureComponent<IProps, IState> {
       // or the page.position of the matching page id if prefixed with "page_<id>"
       const currentPage = getPagePositionFromQueryValue(activity, page);
 
+      // update the font size if different from default (default defined in app.scss)
+      const fontSize = getFontSize({activity, sequence});
+      const fontSizeInPx = getFontSizeInPx(fontSize);
+      if (fontSizeInPx !== getFontSizeInPx("normal")) {
+        const htmlElement = document.getElementsByTagName("html").item(0);
+        if (htmlElement) {
+          htmlElement.style.fontSize = `${fontSizeInPx}px`;
+        }
+      }
+
       // set the activity and page query parameters
       if (sequenceActivity) {
         setQueryValue("sequenceActivity", sequenceActivity);
@@ -298,7 +313,9 @@ export class App extends React.PureComponent<IProps, IState> {
         dynamicTextManager.enableReadAloud({enabled: false, saveSetting: false});
       }
 
-      newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner, showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity, hideReadAloud};
+      newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner,
+                     showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity, hideReadAloud,
+                     fontSize, fontSizeInPx};
       setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       this.setState(newState as IState);
@@ -352,25 +369,27 @@ export class App extends React.PureComponent<IProps, IState> {
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
           <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
-            <DynamicTextContext.Provider value={dynamicTextManager}>
-              <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
-                <div className="app" data-cy="app">
-                  { this.state.showDefunctBanner && <DefunctBanner/> }
-                  { this.state.showWarning && <WarningBanner/> }
-                  { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-                  { this.state.showSequenceIntro
-                    ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
-                    : this.renderActivity() }
-                  { this.state.showThemeButtons && <ThemeButtons/>}
-                  <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
-                  <ModalDialog
-                    label={this.state.modalLabel}
-                    onClose={() => {this.setShowModal(false);}}
-                    showModal={this.state.showModal}
-                  />
-                </div>
-              </ReadAloudContext.Provider>
-            </DynamicTextContext.Provider>
+            <AccessibilityContext.Provider value={{fontSize: this.state.fontSize, fontSizeInPx: this.state.fontSizeInPx}}>
+              <DynamicTextContext.Provider value={dynamicTextManager}>
+                <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
+                  <div className="app" data-cy="app">
+                    { this.state.showDefunctBanner && <DefunctBanner/> }
+                    { this.state.showWarning && <WarningBanner/> }
+                    { this.state.teacherEditionMode && <TeacherEditionBanner/>}
+                    { this.state.showSequenceIntro
+                      ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
+                      : this.renderActivity() }
+                    { this.state.showThemeButtons && <ThemeButtons/>}
+                    <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
+                    <ModalDialog
+                      label={this.state.modalLabel}
+                      onClose={() => {this.setShowModal(false);}}
+                      showModal={this.state.showModal}
+                    />
+                  </div>
+                </ReadAloudContext.Provider>
+              </DynamicTextContext.Provider>
+            </AccessibilityContext.Provider>
           </LaraDataContext.Provider>
         </PortalDataContext.Provider>
       </LaraGlobalContext.Provider>

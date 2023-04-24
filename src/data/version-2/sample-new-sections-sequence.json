@@ -24,6 +24,7 @@
   "title": "Test Sequence",
   "type": "Sequence",
   "export_site": "Lightweight Activities Runtime and Authoring",
+  "font_size": "normal",
   "activities": [
     {
       "id": 1,
@@ -41,6 +42,7 @@
       "time_to_complete": 10,
       "version": 2,
       "theme_name": "HAS National Geographic: Water",
+      "font_size": "normal",
       "project": {
         "about": null,
         "collaborators": "",
@@ -119,6 +121,7 @@
       "time_to_complete": 10,
       "version": 2,
       "theme_name": "HAS National Geographic: Water",
+      "font_size": "normal",
       "project": {
         "about": null,
         "collaborators": "",
@@ -186,6 +189,7 @@
       "time_to_complete": 10,
       "version": 2,
       "theme_name": "HAS National Geographic: Water",
+      "font_size": "normal",
       "project": {
         "about": null,
         "collaborators": "",
@@ -253,6 +257,7 @@
       "time_to_complete": 10,
       "version": 2,
       "theme_name": "HAS National Geographic: Water",
+      "font_size": "normal",
       "project": {
         "about": null,
         "collaborators": "",
@@ -331,6 +336,7 @@
       "time_to_complete": 10,
       "version": 2,
       "theme_name": "HAS National Geographic: Water",
+      "font_size": "normal",
       "project": {
         "about": null,
         "collaborators": "",

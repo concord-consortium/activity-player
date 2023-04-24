@@ -14,6 +14,7 @@
   "time_to_complete": null,
   "version": 2,
   "theme_name": "GeoHazard",
+  "font_size": "normal",
   "project": {
     "about": "",
     "collaborators": "",
