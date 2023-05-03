@@ -278,8 +278,12 @@ export class App extends React.PureComponent<IProps, IState> {
       const fontSizeInPx = getFontSizeInPx(fontSize);
       if (fontSizeInPx !== getFontSizeInPx("normal")) {
         const htmlElement = document.getElementsByTagName("html").item(0);
+        const bodyElement = document.getElementsByTagName("body").item(0);
         if (htmlElement) {
           htmlElement.style.fontSize = `${fontSizeInPx}px`;
+        }
+        if (bodyElement) {
+          bodyElement.classList.add(`font-size-${fontSize.toLowerCase().replace(/\s/, "-")}`);
         }
       }
 

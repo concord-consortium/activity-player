@@ -6,13 +6,12 @@
   border: solid 2px $cc-charcoal-light2;
   border-radius: 8px;
   width: 300px;
-  height: 140px;
   top: calc(50% - 70px);
   left: calc(50% - 150px);
   display: flex;
   flex-direction: column;
 
-  .header {
+  .modal-header {
     width: 100%;
     box-sizing: border-box;
     background-color: var(--theme-primary-color);
@@ -27,13 +26,12 @@
     padding: 10px;
   }
 
-  .footer {
+  .modal-footer {
     display: flex;
     justify-content: flex-end;
     flex-direction: row;
     width: 100%;
     box-sizing: border-box;
-    height: 100px;
   }
 
   button {

@@ -1,5 +1,12 @@
 @import "../vars.scss";
 
+// reduce section margin in large fonts to prevent the embeddable borders from being clipped in multi-column layout
+body.font-size-large {
+  .section {
+    margin: 8px;
+  }
+}
+
 .section {
   display: grid;
   gap: 10px;

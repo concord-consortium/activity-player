@@ -22,9 +22,9 @@ export class ModalDialog extends React.PureComponent <IProps> {
         contentLabel={title || "Alert"}
         className={"modal-dialog"}
       >
-        <div className="header" data-cy="modal-dialog-header">{title || "Alert"}</div>
+        <div className="modal-header" data-cy="modal-dialog-header">{title || "Alert"}</div>
         <div data-cy="modal-dialog-label">{label}</div>
-        <div className="footer">
+        <div className="modal-footer">
           <button onClick={handleClose} data-cy="modal-dialog-close">Close</button>
         </div>
       </Modal>
