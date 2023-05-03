@@ -33,6 +33,8 @@
     .thumb-holder {
       display: flex;
       flex-wrap: wrap;
+      gap: 30px;
+      margin-top: 15px;
 
       .thumb {
         display: flex;
@@ -41,8 +43,7 @@
         flex-grow: 0;
         flex-shrink: 0;
         width: 280px;
-        height: 316px;
-        margin: 15px 30px 15px 0;
+        min-height: 316px;
         padding: 8px 10px 10px;
         border-radius: 8px;
         border: solid 1.5px $cc-charcoal-light1;
