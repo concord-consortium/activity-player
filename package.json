@@ -3,6 +3,10 @@
   "version": "2.6.1",
   "description": "Concord Consortium Activity Player",
   "main": "index.js",
+  "engines": {
+    "node": ">= 16",
+    "npm": ">= 8"
+  },
   "jest": {
     "testURL": "https://activity-player.unexisting.url.com",
     "setupFilesAfterEnv": [
