@@ -1,7 +1,7 @@
 @import "./components/vars.scss";
 
 $notebook_font_family: 'Andika';
-$notebook_font_size: 19px;
+$notebook_font_size: 1rem;  // this uses the new font size setting, forced to "large" in notebooks
 
 body.notebook {
 
@@ -14,8 +14,6 @@ body.notebook {
   }
 
   .activity-header {
-    font-size: $notebook_font_size + 1;
-
     .inner {
       background-color: $cc-orange-light1;
       border-radius: 10px 10px 0 0;
