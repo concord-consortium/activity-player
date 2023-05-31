@@ -302,7 +302,11 @@ export class App extends React.PureComponent<IProps, IState> {
       const currentPage = getPagePositionFromQueryValue(activity, page);
 
       // update the font size if different from default (default defined in app.scss)
-      const fontSize = getFontSize({activity, sequence});
+      let fontSize = getFontSize({activity, sequence});
+      // force large fonts in notebook activities
+      if (activity.layout === ActivityLayouts.Notebook) {
+        fontSize = "large";
+      }
       const fontSizeInPx = getFontSizeInPx(fontSize);
       if (fontSizeInPx !== getFontSizeInPx("normal")) {
         const htmlElement = document.getElementsByTagName("html").item(0);
