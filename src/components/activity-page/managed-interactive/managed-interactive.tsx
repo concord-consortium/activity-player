@@ -115,7 +115,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const { authored_state } = embeddable;
   const [activeDialog, setActiveDialog] = useState<IShowDialog | null>(null);
   const [activeLightbox, setActiveLightbox] = useState<IShowLightbox | null>(null);
-  const questionName = embeddable.name;
+  const questionName = embeddable.name || "";
   // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
   // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
   let embeddableData:  IMwInteractive | LibraryInteractiveData | undefined;
