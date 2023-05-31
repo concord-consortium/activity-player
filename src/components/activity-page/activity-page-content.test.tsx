@@ -1,7 +1,7 @@
 import React from "react";
 import { ActivityPageContent } from "./activity-page-content";
 import { configure, render } from "@testing-library/react";
-import { DefaultTestPage } from "../../test-utils/model-for-tests";
+import { DefaultTestPage, DefaultTestActivity } from "../../test-utils/model-for-tests";
 import { DynamicTextTester } from "../../test-utils/dynamic-text";
 
 describe("Activity Page Content component", () => {
@@ -19,6 +19,7 @@ describe("Activity Page Content component", () => {
           activityLayout={0}
           page={page}
           pageNumber={5}
+          activity={DefaultTestActivity}
           totalPreviousQuestions={5}
           setNavigation={stubFunction}
           pluginsLoaded={true}
@@ -40,6 +41,7 @@ describe("Activity Page Content component", () => {
             activityLayout={0}
             page={page}
             pageNumber={5}
+            activity={DefaultTestActivity}
             totalPreviousQuestions={5}
             setNavigation={stubFunction}
             pluginsLoaded={true}
@@ -60,6 +62,7 @@ describe("Activity Page Content component", () => {
             activityLayout={0}
             page={page}
             pageNumber={5}
+            activity={DefaultTestActivity}
             totalPreviousQuestions={5}
             setNavigation={stubFunction}
             pluginsLoaded={true}

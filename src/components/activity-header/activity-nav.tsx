@@ -11,11 +11,13 @@ interface IProps {
   onPageChange: (page: number) => void;
   singlePage: boolean;
   lockForwardNav?: boolean;
+  usePageNames?: boolean;
+  hideNextPrevButtons?: boolean;
 }
 
 export class ActivityNav extends React.PureComponent <IProps> {
   render() {
-    const { activityPages, currentPage, fullWidth, lockForwardNav, onPageChange, singlePage } = this.props;
+    const { activityPages, currentPage, fullWidth, lockForwardNav, onPageChange, singlePage, usePageNames, hideNextPrevButtons } = this.props;
     return (
       <div className={`activity-nav ${fullWidth ? "full" : ""}`} data-cy="activity-nav-header">
         { !singlePage &&
@@ -24,6 +26,8 @@ export class ActivityNav extends React.PureComponent <IProps> {
             onPageChange={onPageChange}
             currentPage={currentPage}
             lockForwardNav={lockForwardNav}
+            usePageNames={usePageNames}
+            hideNextPrevButtons={hideNextPrevButtons}
           />
         }
       </div>

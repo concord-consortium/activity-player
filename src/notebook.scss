@@ -1,0 +1,136 @@
+@import "./components/vars.scss";
+
+$notebook_font_family: 'Andika';
+$notebook_font_size: 19px;
+
+body.notebook {
+
+  font-family: 'Andika', 'Lato', arial, helvetica, sans-serif;
+  font-size: $notebook_font_size;
+
+  .button {
+    height: auto;
+    font-family: $notebook_font_family;
+  }
+
+  .activity-header {
+    font-size: $notebook_font_size + 1;
+
+    .inner {
+      background-color: $cc-orange-light1;
+      border-radius: 10px 10px 0 0;
+    }
+  }
+
+  .activity-nav {
+    .nav-pages {
+      gap: 40px;
+
+      .page-button {
+        font-size: $notebook_font_size;
+        width: auto;
+        margin: 0;
+        color: $cc-teal;
+        outline: none;
+
+        &.current {
+          color: $cc-orange-dark1;
+          background-color: unset;
+        }
+
+        &:hover {
+          background-color: unset;
+        }
+      }
+    }
+  }
+
+  .intro-content {
+    background-color: $cc-orange-light6;
+    font-size: $notebook_font_size;
+    border-radius: 0 0 10px 10px;
+
+    .introduction {
+      min-height: 500px;
+    }
+
+    .activity-page-links {
+      display: none;
+    }
+  }
+
+  .page-content {
+    background-color: $cc-orange-light6;
+    border-radius: 0 0 10px 10px;
+
+    > .header {
+      .name {
+        visibility: hidden;
+      }
+
+      display: none;
+      &.contains-read-aloud {
+        display: block;
+      }
+    }
+
+    .embeddable {
+      .header {
+        border-radius: 10px 10px 0 0;
+        color: $cc-charcoal;
+        background-color: $cc-teal-light2;
+      }
+      .runtime-container.has-question-number {
+        border: 0;
+      }
+      iframe {
+        border-radius: 0 0 10px 10px;
+      }
+
+      .spike-media-library {
+        .title {
+          border-radius: 10px 10px 0 0;
+          color: $cc-charcoal;
+          background-color: $cc-teal-light2;
+        }
+        .content {
+          border-radius: 0 0 10px 10px;
+          background-color: #fff;
+        }
+      }
+    }
+
+    .textbox.callout {
+      font-size: $notebook_font_size;
+
+      .text-name {
+        color: #fff;
+        border-radius: 6px 6px 0 0;
+        background-color: $cc-teal-dark1;
+      }
+      .content {
+        border-radius: 0 0 6px 6px;
+        background-color: $cc-teal-light3;
+      }
+    }
+
+    .section-tabs {
+      margin-left: 25px;
+    }
+
+    .sections {
+      width: 100%;
+
+      .section {
+        margin-top: 0;
+        padding: 10px 10px 0 10px;
+      }
+    }
+  }
+
+  .footer {
+    font-size: $notebook_font_size;
+    background-color: $cc-orange-light1;
+    border-radius: 10px 10px;
+  }
+}
