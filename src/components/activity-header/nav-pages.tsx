@@ -17,6 +17,8 @@ interface IProps {
   currentPage: number;
   onPageChange: (page: number) => void;
   lockForwardNav?: boolean;
+  usePageNames?: boolean;
+  hideNextPrevButtons?: boolean;
 }
 
 interface IState {
@@ -39,12 +41,13 @@ export class NavPages extends React.Component <IProps, IState> {
   }
 
   render() {
+    const showNextPrevButtons = !this.props.hideNextPrevButtons;
     return (
       <div className="nav-pages" data-cy="nav-pages">
-        {this.renderPreviousButton()}
+        {showNextPrevButtons && this.renderPreviousButton()}
         {this.renderHomePageButton()}
         {this.renderButtons()}
-        {this.renderNextButton()}
+        {showNextPrevButtons && this.renderNextButton()}
       </div>
     );
   }
@@ -108,7 +111,8 @@ export class NavPages extends React.Component <IProps, IState> {
       visiblePages.map((page: Page, pageIndex: number, pageArray: Page[]) => {
         const hiddenPagesBefore = pageArray.filter((p, index) => p.is_hidden && index < pageIndex ).length;
         const pageNum = pageIndex + 1;
-        const pageLabel = pageNum - hiddenPagesBefore;
+        const visiblePageLabel = pageNum - hiddenPagesBefore;
+        const pageLabel = this.props.usePageNames ? (page.name || visiblePageLabel) : visiblePageLabel;
         const currentClass = currentPage === pageNum ? "current" : "";
         const completionClass = page.is_completion ? "completion-page-button" : "";
         const disabledClass = (pageChangeInProgress || lockForwardNav && currentPage < pageNum) ? "disabled" : "";
@@ -144,11 +148,12 @@ export class NavPages extends React.Component <IProps, IState> {
               aria-label="Home"
               data-cy="home-button"
       >
-        <IconHome
+        {this.props.usePageNames && "Home"}
+        {!this.props.usePageNames && <IconHome
           className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
           width={28}
           height={28}
-        />
+        />}
       </button>
     );
   }

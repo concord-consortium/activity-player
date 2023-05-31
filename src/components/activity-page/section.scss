@@ -6,9 +6,20 @@
   grid-auto-rows: minmax(20px, auto);
   grid-template-columns: repeat(10, 1fr);
   margin: 8px;
+
   position: relative;
   &.responsive {
     width: 100%;
+  }
+
+  &.hidden-tab {
+    display: none !important;
+  }
+  &.tab-contents {
+    background-color: $cc-teal-light5;
+    border-radius: 11px;
+    border: solid 1px $cc-teal-light2;
+    margin-bottom: 20px;
   }
 
   &.full-width {

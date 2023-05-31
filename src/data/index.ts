@@ -29,6 +29,7 @@ import sampleActivityInteractiveSharing from "../data/sample-activity-interactiv
 import sampleActivity1100px from "../data/sample-activity-1100px.json";
 import sampleActivityIPadFriendly from "../data/sample-activity-ipad-friendly.json";
 import sampleActivityAllQuestionInteractives from "../data/sample-activity-all-question-interactives.json";
+import sampleActivityNotebook from "../data/sample-activity-notebook.json";
 import interactiveSizingDemoQI from "../data/Interactive-Sizing-Demo-Question-Interactives.json";
 import sampleActivityHideReadAloud from "../data/sample-activity-hide-read-aloud.json";
 import sampleActivityAllQuestionInteractivesLargeFont from "../data/sample-activity-all-question-interactives-large-font.json";
@@ -55,6 +56,7 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-single-page-layout": sampleActivitySinglePageLayout as unknown as Activity,
   "sample-activity-all-question-interactives": sampleActivityAllQuestionInteractives as unknown as Activity,
   "sample-activity-all-question-interactives-large-font": sampleActivityAllQuestionInteractivesLargeFont as unknown as Activity,
+  "sample-activity-notebook": sampleActivityNotebook as unknown as Activity,
   "LARA-page-elements-full-width-off": sampleActivityFullWidthOff as unknown as Activity,
   "LARA-page-elements-full-width-on": sampleActivityFullWidthOn as unknown as Activity,
   "sample-question-interactive-simple": sampleActivityQISimple as unknown as Activity,

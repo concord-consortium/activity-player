@@ -6,6 +6,7 @@ import { queryValue } from "./url-query";
 export enum ActivityLayouts {
   MultiplePages = 0,
   SinglePage = 1,
+  Notebook = 2,
 }
 
 export enum SectionLayouts {
