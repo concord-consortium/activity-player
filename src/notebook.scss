@@ -15,7 +15,7 @@ body.notebook {
 
   .activity-header {
     .inner {
-      background-color: $cc-orange-light1;
+      background-color: $cc-teal-light3;
       border-radius: 10px 10px 0 0;
     }
   }
@@ -27,18 +27,11 @@ body.notebook {
       .page-button {
         font-size: $notebook_font_size;
         width: auto;
-        margin: 0;
-        color: $cc-teal;
-        outline: none;
-
-        &.current {
-          color: $cc-orange-dark1;
-          background-color: unset;
-        }
-
-        &:hover {
-          background-color: unset;
-        }
+        border-radius: 8px;
+        font-family: 'Andika', 'Lato', arial, helvetica, sans-serif;
+        gap: 5px;
+        justify-content: center;
+        align-items: center;
       }
     }
   }
@@ -58,7 +51,6 @@ body.notebook {
   }
 
   .page-content {
-    background-color: $cc-orange-light6;
     border-radius: 0 0 10px 10px;
 
     > .header {
@@ -75,14 +67,19 @@ body.notebook {
     .embeddable {
       .header {
         border-radius: 10px 10px 0 0;
-        color: $cc-charcoal;
-        background-color: $cc-teal-light2;
+        color: white;
+        background-color: $cc-teal-dark1;
+        min-height: 41.5px;
+        font-weight: bold;
       }
       .runtime-container.has-question-number {
         border: 0;
       }
       iframe {
         border-radius: 0 0 10px 10px;
+        border: 1px solid $cc-charcoal;
+        border-top: none;
+        box-sizing: border-box;
       }
 
       .spike-media-library {
@@ -104,26 +101,91 @@ body.notebook {
       .text-name {
         color: #fff;
         border-radius: 6px 6px 0 0;
-        background-color: $cc-teal-dark1;
+        background-color: #016082;
       }
+
       .content {
         border-radius: 0 0 6px 6px;
-        background-color: $cc-teal-light3;
+        background-color: $cc-teal-light5;
       }
     }
 
     .section-tabs {
-      margin-left: 25px;
+      display: flex;
+      gap: 0;
+      margin-left: 17px;
+
+      .section-tab {
+        margin-left: -7px;
+        padding: 3px 30px;
+        color: $cc-charcoal;
+        background: $cc-orange-light2;
+        font-weight: bold;
+        border-radius: 11px 11px 0 0;
+        border: solid 2px $cc-orange-light2;
+        box-shadow: 2px 0 5px 0 rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+
+        &.selected, &:hover {
+          border: solid 2px  $cc-orange-dark1;
+          border-bottom: solid 2px $cc-orange-dark1;
+          background-color: $cc-orange-dark1;
+          z-index: 100 !important;
+        }
+
+        &:hover {
+          z-index: 200 !important;
+        }
+      }
+    }
+
+    .notebookHeader {
+      height: 50px;
+      background-image: url("./assets/notebook-spiral-padding.svg");
+      background-repeat: repeat-x;
+      background-position: center;
+      position: relative;
+      z-index: 100;
     }
 
     .sections {
       width: 100%;
+      background-color: $cc-orange-light6;
+      padding-top: 30px;
+      border-radius: 4px;
+      box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.5);
+      position: relative;
+      top: -30px;
 
       .section {
         margin-top: 0;
         padding: 10px 10px 0 10px;
+
+        &.hidden-tab {
+          display: none !important;
+        }
+
+        &.tab-contents {
+          margin-bottom: 20px;
+        }
+
+        .collapsible-header {
+          padding-right: 30px;
+          border-radius: 8px;
+        }
+
       }
     }
+  }
+
+  .separator {
+    height: 2px;
+    width: 100%;
+    background-color: $cc-orange-dark1;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-clip: content-box;
+    box-sizing: border-box;
   }
 
   .footer {

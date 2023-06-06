@@ -82,6 +82,7 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
             <div className="name"><DynamicText>{pageTitle}</DynamicText></div>
             <ReadAloudToggle />
           </div>
+          {isNotebookLayout && <div className="notebookHeader" />}
           <div className="sections">
             {renderTabs && this.renderTabs(sections)}
             {this.renderSections(sections, totalPreviousQuestions, renderTabs)}
@@ -154,6 +155,7 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
 
   private renderTabs(sections: SectionType[]) {
     return (
+      <>
       <div className="section-tabs">
         {sections.map((section, i) => (
           <SectionTab
@@ -166,6 +168,8 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
           />
         ))}
       </div>
+      <div className="separator"/>
+      </>
     );
   }
 
