@@ -40,12 +40,12 @@
 
 .sidebar-hdr {
   cursor: pointer;
-  min-height: 79px;
+  min-height: 4.25rem;
   text-align: center;
-  padding: 8px;
+  padding: 0.5rem;
   position: absolute;
-  width: 85px;
-  left: -85px;
+  width: 4.25rem;
+  left: -4.25rem;
   box-sizing: border-box;
 
   &:hover {

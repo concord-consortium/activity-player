@@ -44,7 +44,7 @@
     .column.primary {
       grid-column: span 6;
       &.expand {
-        grid-column: span 9;
+        grid-column: span 10;
       }
     }
     .column.secondary {
@@ -54,7 +54,7 @@
         flex-direction: column;
       }
       &.collapsed {
-        grid-column: span 1;
+        grid-column: none;
       }
     }
   }
@@ -83,7 +83,7 @@
     .column.primary {
       grid-column: span 7;
       &.expand {
-        grid-column: span 9;
+        grid-column: span 10;
       }
     }
     .column.secondary {
@@ -93,7 +93,7 @@
         flex-direction: column;
       }
       &.collapsed {
-        grid-column: span 1;
+        grid-column: none;
       }
     }
   }

@@ -176,7 +176,7 @@ context("Test the overall app", () => {
       getInIframe("body", "[data-testid=response-textarea]").should('have.css', 'font-size', normalFont.size4);
       getInIframe("body", "[data-testid=response-textarea]").type("Text Response");
       getInIframe("body", "[data-testid=response-textarea]").should('have.css', 'font-size', normalFont.size4);
-      getInIframe("body", "[data-testid=record-timer-readout]").should('have.css', 'font-size', normalFont.size4);
+      getInIframe("body", "[data-testid=timer-readout]").should('have.css', 'font-size', normalFont.size4);
     });
   });
   describe("Scaffolded",() => {
