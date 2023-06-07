@@ -24,34 +24,6 @@
     }
   }
 
-  .section-tabs {
-    display: flex;
-    gap: 0;
-    margin-left: 17px;
-
-    .section-tab {
-      margin-left: -7px;
-      padding: 3px 30px;
-      color: white;
-      background: $cc-teal-light2;
-      font-weight: bold;
-      border-radius: 11px 11px 0 0;
-      border: solid 2px $cc-teal-light2;
-      box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.5);
-      cursor: pointer;
-
-      &.selected, &:hover {
-        border: solid 2px $cc-teal-light5;
-        border-bottom: solid 2px $cc-teal-dark1;
-        background-color: $cc-teal-dark1;
-        z-index: 100 !important;
-      }
-
-      &:hover {
-        z-index: 200 !important;
-      }
-    }
-  }
 }
 
 .hidden-page-warning {

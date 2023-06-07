@@ -148,7 +148,16 @@ export class NavPages extends React.Component <IProps, IState> {
               aria-label="Home"
               data-cy="home-button"
       >
-        {this.props.usePageNames && "Home"}
+        {this.props.usePageNames &&
+          <>
+            <IconHome
+            className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
+            width={28}
+            height={28}
+            />
+            {"Home"}
+          </>
+          }
         {!this.props.usePageNames && <IconHome
           className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
           width={28}

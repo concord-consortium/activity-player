@@ -12,16 +12,6 @@
     width: 100%;
   }
 
-  &.hidden-tab {
-    display: none !important;
-  }
-  &.tab-contents {
-    background-color: $cc-teal-light5;
-    border-radius: 11px;
-    border: solid 1px $cc-teal-light2;
-    margin-bottom: 20px;
-  }
-
   &.full-width {
     .embeddable.full-width {
       grid-column: span 10;
