@@ -142,7 +142,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   };
 
   const renderCollapsibleHeader = () => {
-    const collapsibleColumnOnLeft = section.layout === "30-70";
+    const collapsibleColumnOnLeft = section.layout === "30-70" || section.layout === "40-60";
     const headerClass = `collapsible-header ${isSecondaryCollapsed ? "collapsed" : ""} ${collapsibleColumnOnLeft ? "left" : "right"}`;
     return (
       <div className={headerClass} data-cy="collapsible-header" tabIndex={0}
