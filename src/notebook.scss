@@ -161,6 +161,21 @@ body.notebook {
         margin-top: 0;
         padding: 10px 10px 0 10px;
 
+        &.l_7030 {
+          .column {
+            &.primary{
+              &.expand {
+              grid-column: span 10;
+              }
+            }
+            &.secondary {
+              &.collapsed {
+                grid-column: none;
+              }
+            }
+          }
+        }
+
         &.hidden-tab {
           display: none !important;
         }
@@ -169,11 +184,19 @@ body.notebook {
           margin-bottom: 20px;
         }
 
-        .collapsible-header {
-          padding-right: 30px;
-          border-radius: 8px;
+        .column {
+          &.secondary {
+            .collapsible-header {
+              border-radius: 8px;
+              &.right {
+                gap: 15px;
+              }
+              &.collapsed {
+                gap: 15px;
+              }
+            }
+          }
         }
-
       }
     }
   }

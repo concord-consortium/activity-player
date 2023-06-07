@@ -29,6 +29,9 @@ export interface SectionImperativeAPI {
   requestInteractiveStates: (options?: IGetInteractiveState) => Promise<void>[];
 }
 
+const right = "right";
+const left = "left";
+
 export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { activityLayout, page, section, questionNumberStart, hiddenTab } = props;
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
@@ -139,29 +142,29 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   };
 
   const renderCollapsibleHeader = () => {
-    const rightOrientation = section.layout.includes("l");
-    const headerClass = `collapsible-header ${isSecondaryCollapsed ? "collapsed" : ""} ${rightOrientation ? "right" : ""}`;
+    const collapsibleColumnOnLeft = section.layout === "30-70";
+    const headerClass = `collapsible-header ${isSecondaryCollapsed ? "collapsed" : ""} ${collapsibleColumnOnLeft ? "left" : "right"}`;
     return (
       <div className={headerClass} data-cy="collapsible-header" tabIndex={0}
             onClick={handleCollapseHeader} onKeyDown={handleCollapseHeader} >
         {isSecondaryCollapsed
           ? <React.Fragment>
-              {renderCollapseArrow(rightOrientation)}
+              {renderCollapseArrow(collapsibleColumnOnLeft ? right : left)}
               <div>Show</div>
             </React.Fragment>
           : <React.Fragment>
-              {rightOrientation && <div>Hide</div>}
-              {renderCollapseArrow(!rightOrientation)}
-              {!rightOrientation && <div>Hide</div>}
+              {!collapsibleColumnOnLeft && <div>Hide</div>}
+              {renderCollapseArrow(collapsibleColumnOnLeft ? left : right)}
+              {collapsibleColumnOnLeft && <div>Hide</div>}
             </React.Fragment>
         }
       </div>
     );
   };
 
-  const renderCollapseArrow = (leftArrow: boolean) => {
+  const renderCollapseArrow = (arrowType: "left" | "right" ) => {
     return (
-      leftArrow
+      arrowType === left
         ? <IconChevronLeft
           width={32}
           height={32}
