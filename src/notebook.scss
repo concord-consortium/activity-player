@@ -133,6 +133,10 @@ body.notebook {
           z-index: 100 !important;
         }
 
+        &.selected {
+          color: white;
+        }
+
         &:hover {
           z-index: 200 !important;
         }
