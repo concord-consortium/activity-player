@@ -176,6 +176,10 @@ body.notebook {
         .collapsible-header {
           padding-right: 30px;
           border-radius: 8px;
+
+          div {
+            width: auto;
+          }
         }
 
       }
