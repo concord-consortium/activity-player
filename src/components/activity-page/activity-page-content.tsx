@@ -64,7 +64,7 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
   render() {
     const { enableReportButton, page, totalPreviousQuestions } = this.props;
     const pageTitle = page.name || "";
-    const sections = page.sections;
+    const sections = page.sections.filter(section => !section.is_hidden);
     const responsiveLayoutSections = sections.filter(s => s.layout.includes("responsive"));
     const isResponsiveLayout = responsiveLayoutSections.length > 0;
     const isNotebookLayout = this.props.activityLayout === ActivityLayouts.Notebook;
