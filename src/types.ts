@@ -68,7 +68,6 @@ export interface EmbeddableBase {
   embeddable_ref_id?: string;
   column?: "primary" | "secondary" | null;
   aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX";
-  spikeMediaLibraryItems?: ISpikeMediaLibraryItem[];
 }
 
 export interface IManagedInteractive extends EmbeddableBase {
@@ -352,11 +351,13 @@ export interface IAuthenticatedUserApRun extends IBaseApRun {
 
 export type IApRun = IAnonymousApRun | IAuthenticatedUserApRun;
 
-
-// for media library spike
-
-export type ISpikeMediaLibraryItem = {
+// TODO: move these media library types to LARA api types
+export type IMediaLibraryItem = {
   title: string
   url: string
   mimeType: string
+}
+export interface IMediaLibrary {
+  enabled: boolean
+  items: IMediaLibraryItem[]
 }
