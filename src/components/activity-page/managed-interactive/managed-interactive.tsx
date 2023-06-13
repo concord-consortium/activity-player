@@ -366,7 +366,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
   const hasQuestionNumber = questionNumber ? "runtime-container has-question-number" : "runtime-container";
 
-  const questionPrefix = props.showQuestionPrefix ? `Question #${questionNumber}:` : "";
+  const questionPrefix = props.showQuestionPrefix ? `Question #${questionNumber}${questionName.trim().length > 0 ? ": " : ""}` : "";
 
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
