@@ -1,7 +1,7 @@
 {
   "background_image": "",
   "defunct": false,
-  "hide_read_aloud": true,
+  "hide_read_aloud": false,
   "description": "",
   "editor_mode": 0,
   "id": 43,
