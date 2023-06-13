@@ -275,10 +275,7 @@ export class App extends React.PureComponent<IProps, IState> {
         ? sequence.activities[activityIndex]
         : await getActivityDefinition(activityPath);
 
-      // **** REMOVE THIS BEFORE ANY FINAL MERGE TO MASTER ***
-      // always use notebook skin to allow initial authoring without changing Lara
-      activity.layout = ActivityLayouts.Notebook;
-      // change to notebook skin
+      // add the notebook body class if needed to override styles
       if (activity.layout === ActivityLayouts.Notebook) {
         document.getElementsByTagName("body").item(0)?.classList.add("notebook");
       }
