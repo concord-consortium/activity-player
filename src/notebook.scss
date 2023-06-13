@@ -60,7 +60,7 @@ body.notebook {
 
       display: none;
       &.contains-read-aloud {
-        display: block;
+        display: flex;
       }
     }
 

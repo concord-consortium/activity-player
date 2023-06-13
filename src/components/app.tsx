@@ -344,11 +344,6 @@ export class App extends React.PureComponent<IProps, IState> {
         hideReadAloud = !!activity.hide_read_aloud;
       }
 
-      // **** REMOVE THIS activity.layout CHECK BEFORE ANY FINAL MERGE TO MASTER ***
-      if (activity.layout === ActivityLayouts.Notebook) {
-        hideReadAloud = true;
-      }
-
       if (hideReadAloud) {
         // turn off read-aloud but do not persist the setting
         dynamicTextManager.enableReadAloud({ enabled: false, saveSetting: false });
