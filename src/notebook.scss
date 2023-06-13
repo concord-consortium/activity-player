@@ -166,7 +166,10 @@ body.notebook {
         padding: 10px 10px 0 10px;
 
         &.hidden-tab {
-          display: none !important;
+          visibility: hidden;
+          height: 0;
+          margin: 0 !important;
+          padding: 0 !important;
         }
 
         &.tab-contents {
@@ -175,6 +178,7 @@ body.notebook {
 
         .collapsible-header {
           border-radius: 8px;
+          transition: none !important;
 
           div {
             width: auto;
