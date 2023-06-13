@@ -7,7 +7,7 @@ import { ActivityLayouts, isNotVisibleEmbeddable } from "../../utilities/activit
 import { EmbeddablePlugin } from "./plugins/embeddable-plugin";
 import { initializePlugin, IPartialEmbeddablePluginContext, validateEmbeddablePluginContextForWrappedEmbeddable
         } from "../../utilities/plugin-utils";
-import { EmbeddableType, IEmbeddablePlugin, ISpikeMediaLibraryItem } from "../../types";
+import { EmbeddableType, IEmbeddablePlugin } from "../../types";
 import { IInteractiveSupportedFeaturesEvent } from "../../lara-plugin/events";
 import { ICustomMessage, ISupportedFeatures, INavigationOptions, IGetInteractiveState } from "@concord-consortium/lara-interactive-api";
 import { SpikeMediaLibrary } from "./spike-media-library/spike-media-library";
@@ -25,7 +25,6 @@ interface IProps {
   setNavigation?: (id: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
   ref?: React.Ref<EmbeddableImperativeAPI>;
-  spikeMediaLibrary?: ISpikeMediaLibraryItem[]
 }
 
 export interface EmbeddableImperativeAPI {
@@ -35,7 +34,7 @@ export interface EmbeddableImperativeAPI {
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded, spikeMediaLibrary } = props;
+  const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded } = props;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
   }, [setNavigation, embeddable.ref_id]);
@@ -107,7 +106,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   } else if (embeddable.type === "Embeddable::Xhtml") {
     qComponent = <TextBox embeddable={embeddable} />;
   } else if (embeddable.type === "Embeddable::SpikeMediaLibrary") {
-    qComponent = <SpikeMediaLibrary embeddable={embeddable} spikeMediaLibrary={spikeMediaLibrary} />;
+    qComponent = <SpikeMediaLibrary embeddable={embeddable} />;
   } else if (isNotVisibleEmbeddable(embeddable)) {
     qComponent = undefined;
   } else {

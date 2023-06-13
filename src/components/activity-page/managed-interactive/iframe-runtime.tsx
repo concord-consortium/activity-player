@@ -22,6 +22,7 @@ import { getReportUrl } from "../../../utilities/report-utils";
 import ReloadIcon from "../../../assets/svg-icons/icon-reload.svg";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
 import { useAccessibility } from "../../accessibility-context";
+import { useMediaLibrary } from "../../media-library-context";
 
 import "./iframe-runtime.scss";
 
@@ -106,6 +107,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const dynamicTextComponentIds = useRef<Set<string>>(new Set());
 
   const {fontSize, fontSizeInPx} = useAccessibility();
+
+  const mediaLibrary = useMediaLibrary();
 
   useEffect(() => {
     const initInteractive = () => {
@@ -358,6 +361,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                     fontSizeInPx
                   }
                 };
+
+      // **** TODO: update IInitInteractive in Lara api to have media library key
+      (initInteractiveMsg as any).mediaLibary = mediaLibrary;
 
       // to support legacy interactives first post the deprecated loadInteractive message as LARA does
       // but only when there is initialInteractiveState (also as LARA does)

@@ -1,15 +1,15 @@
 import React from "react";
-import { IEmbeddableSpikeMediaLibrary, ISpikeMediaLibraryItem } from "../../../types";
+import { IEmbeddableSpikeMediaLibrary } from "../../../types";
+import { useMediaLibrary } from "../../media-library-context";
 
 import "./spike-media-library.scss";
 
 interface IProps {
   embeddable: IEmbeddableSpikeMediaLibrary;
-  spikeMediaLibrary?: ISpikeMediaLibraryItem[]
 }
 
 export const SpikeMediaLibrary: React.FC<IProps> = (props) => {
-  const spikeMediaLibrary = props.spikeMediaLibrary || [];
+  const mediaLibrary = useMediaLibrary();
 
   return(
     <div className="spike-media-library">
@@ -23,10 +23,13 @@ export const SpikeMediaLibrary: React.FC<IProps> = (props) => {
           defined in this activity without having to copy and upload them themselves.
         </p>
         <p>
-          There are {spikeMediaLibrary.length} media library items defined in this activity.  Each item has a title, url and media type (mime type):
+          The media library is <strong>{mediaLibrary.enabled ? "enabled" : "disabled"}</strong> for this activity.
+        </p>
+        <p>
+          There are {mediaLibrary.items.length} media library items defined in this activity.  Each item has a title, url and media type (mime type):
         </p>
         <ul>
-          {spikeMediaLibrary.map((item, index) => <li key={index}><a href={item.url} target="_blank" rel="noreferrer">{item.title}</a> ({item.mimeType})</li>)}
+          {mediaLibrary.items.map((item, index) => <li key={index}><a href={item.url} target="_blank" rel="noreferrer">{item.title}</a> ({item.mimeType})</li>)}
         </ul>
       </div>
     </div>

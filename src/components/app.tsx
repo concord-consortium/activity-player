@@ -29,7 +29,7 @@ import {
   signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
   onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData, createOrUpdateApRun, getApRun
 } from "../firebase-db";
-import { Activity, IEmbeddablePlugin, ISpikeMediaLibraryItem, Sequence } from "../types";
+import { Activity, IEmbeddablePlugin, IMediaLibrary, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getActivityLevelPlugins, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -51,6 +51,7 @@ import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChange
 import { getBearerToken } from "../utilities/auth-utils";
 import { ReadAloudContext } from "./read-aloud-context";
 import { AccessibilityContext, FontSize, getFontSize, getFontSizeInPx } from "./accessibility-context";
+import { MediaLibraryContext } from "./media-library-context";
 
 import "./app.scss";
 
@@ -123,7 +124,7 @@ interface IState {
   hideReadAloud: boolean;
   fontSize: FontSize;
   fontSizeInPx: number;
-  spikeMediaLibrary: ISpikeMediaLibraryItem[]
+  mediaLibrary: IMediaLibrary;
 }
 interface IProps { }
 
@@ -153,7 +154,7 @@ export class App extends React.PureComponent<IProps, IState> {
       hideReadAloud: false,
       fontSize: "normal",
       fontSizeInPx: getFontSizeInPx("normal"),
-      spikeMediaLibrary: []
+      mediaLibrary: {enabled: false, items: []}
     };
   }
 
@@ -283,17 +284,18 @@ export class App extends React.PureComponent<IProps, IState> {
         document.getElementsByTagName("body").item(0)?.classList.add("notebook");
       }
 
-      // *** SPIKE TO READ MEDIA LIBRARY ITEMS
-      let spikeMediaLibrary: ISpikeMediaLibraryItem[] = [];
-      if (sequence) {
-        sequence.activities.forEach(a => {
-          spikeMediaLibrary = spikeMediaLibrary.concat(this.gatherSpikeMediaLibraryItems(a));
-        });
-      } else if (activity) {
-        spikeMediaLibrary = this.gatherSpikeMediaLibraryItems(activity);
-      }
-      console.log("spikeMediaLibrary", spikeMediaLibrary);
-      this.setState({ spikeMediaLibrary });
+      // *** FAKE MEDIA LIBRARY ITEMS - to be replaced with a imported helper method from question-interactives
+      this.setState({ mediaLibrary: {
+        enabled: true,
+        items: [
+          {url: "https://placekitten.com/200/300", title: "Cute Kitten: 200x300", mimeType: "image/jpeg"},
+          {url: "https://placekitten.com/300/200", title: "Cute Kitten: 300x200", mimeType: "image/jpeg"},
+          {url: "https://placekitten.com/300/300", title: "Cute Kitten: 300x300", mimeType: "image/jpeg"},
+          {url: "https://placekitten.com/200/600", title: "Cute Kitten: 200x600", mimeType: "image/jpeg"},
+          {url: "https://placekitten.com/600/200", title: "Cute Kitten: 600x200", mimeType: "image/jpeg"},
+          {url: "https://placekitten.com/600/600", title: "Cute Kitten: 600x600", mimeType: "image/jpeg"},
+        ]
+      }});
 
       const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
 
@@ -412,25 +414,27 @@ export class App extends React.PureComponent<IProps, IState> {
         <PortalDataContext.Provider value={this.state.portalData}>
           <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
             <AccessibilityContext.Provider value={{fontSize: this.state.fontSize, fontSizeInPx: this.state.fontSizeInPx}}>
-              <DynamicTextContext.Provider value={dynamicTextManager}>
-                <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
-                  <div className="app" data-cy="app">
-                    { this.state.showDefunctBanner && <DefunctBanner/> }
-                    { this.state.showWarning && <WarningBanner/> }
-                    { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-                    { this.state.showSequenceIntro
-                      ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
-                      : this.renderActivity() }
-                    { this.state.showThemeButtons && <ThemeButtons/>}
-                    <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
-                    <ModalDialog
-                      label={this.state.modalLabel}
-                      onClose={() => {this.setShowModal(false);}}
-                      showModal={this.state.showModal}
-                    />
-                  </div>
-                </ReadAloudContext.Provider>
-              </DynamicTextContext.Provider>
+              <MediaLibraryContext.Provider value={this.state.mediaLibrary}>
+                <DynamicTextContext.Provider value={dynamicTextManager}>
+                  <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
+                    <div className="app" data-cy="app">
+                      { this.state.showDefunctBanner && <DefunctBanner/> }
+                      { this.state.showWarning && <WarningBanner/> }
+                      { this.state.teacherEditionMode && <TeacherEditionBanner/>}
+                      { this.state.showSequenceIntro
+                        ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
+                        : this.renderActivity() }
+                      { this.state.showThemeButtons && <ThemeButtons/>}
+                      <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
+                      <ModalDialog
+                        label={this.state.modalLabel}
+                        onClose={() => {this.setShowModal(false);}}
+                        showModal={this.state.showModal}
+                      />
+                    </div>
+                  </ReadAloudContext.Provider>
+                </DynamicTextContext.Provider>
+              </MediaLibraryContext.Provider>
             </AccessibilityContext.Provider>
           </LaraDataContext.Provider>
         </PortalDataContext.Provider>
@@ -541,7 +545,6 @@ export class App extends React.PureComponent<IProps, IState> {
                 pluginsLoaded={this.state.pluginsLoaded}
                 pageChangeNotification={this.state.pageChangeNotification}
                 hideReadAloud={this.state.hideReadAloud}
-                spikeMediaLibrary={this.state.spikeMediaLibrary}
               />
         }
         {([ActivityLayouts.SinglePage, ActivityLayouts.Notebook].indexOf(activity.layout) === -1 || this.state.sequence) &&
@@ -767,21 +770,5 @@ export class App extends React.PureComponent<IProps, IState> {
     dynamicTextManager.enableReadAloud({ enabled: readAloud, saveSetting: true });
     Logger.log({ event: LogEventName.toggle_read_aloud, event_value: readAloud });
   };
-
-  private gatherSpikeMediaLibraryItems = (activity: Activity) => {
-    const items: ISpikeMediaLibraryItem[] = [];
-    activity.pages.forEach(page => {
-      page.sections.forEach(section => {
-        section.embeddables.forEach(embeddable => {
-          if (embeddable.type !== "Embeddable::EmbeddablePlugin") {
-            embeddable.spikeMediaLibraryItems?.forEach(item => {
-              items.push({ ...item });
-            });
-          }
-        });
-      });
-    });
-    return items;
-  }
 
 }

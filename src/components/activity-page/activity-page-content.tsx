@@ -5,7 +5,7 @@ import classNames from "classnames";
 import { Section, SectionImperativeAPI } from "./section";
 import { BottomButtons } from "./bottom-buttons";
 import { ActivityLayouts, numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
-import { Activity, ISpikeMediaLibraryItem, Page, SectionType } from "../../types";
+import { Activity, Page, SectionType } from "../../types";
 import { IGetInteractiveState, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName } from "../../lib/logger";
 import { showReport } from "../../utilities/report-utils";
@@ -39,7 +39,6 @@ interface IProps {
   pluginsLoaded: boolean;
   pageChangeNotification?: IPageChangeNotification;
   hideReadAloud?: boolean;
-  spikeMediaLibrary?: ISpikeMediaLibraryItem[]
 }
 
 interface IState {
@@ -114,7 +113,7 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
   }
 
   private renderSections = (sections: SectionType[], totalPreviousQuestions: number, renderTabs: boolean) => {
-    const { page, activityLayout, teacherEditionMode, setNavigation, pluginsLoaded, spikeMediaLibrary } = this.props;
+    const { page, activityLayout, teacherEditionMode, setNavigation, pluginsLoaded } = this.props;
     return (
       sections.map((section, idx) => {
         const questionCount = numQuestionsOnPreviousSections(idx, sections) || 0;
@@ -137,7 +136,6 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
               setNavigation={setNavigation}
               pluginsLoaded={pluginsLoaded}
               hiddenTab={hiddenTab}
-              spikeMediaLibrary={spikeMediaLibrary}
             />
           );
         }

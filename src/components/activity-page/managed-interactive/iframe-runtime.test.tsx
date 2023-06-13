@@ -151,6 +151,10 @@ describe("IframeRuntime component", () => {
         fontSize: "normal",
         fontSizeInPx: 16,
       },
+      mediaLibary: {
+        enabled: false,
+        items: [],
+      },
       authInfo: {email: "", loggedIn: false, provider: ""},
       authoredState: null,
       classInfoUrl: "",
