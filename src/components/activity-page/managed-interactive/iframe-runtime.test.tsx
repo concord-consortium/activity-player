@@ -3,6 +3,7 @@ import { IframeRuntime } from "./iframe-runtime";
 import { act, configure, fireEvent, render } from "@testing-library/react";
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { DynamicTextTester } from "../../../test-utils/dynamic-text";
+import { MediaLibraryTester } from "../../../test-utils/media-library";
 
 configure({ testIdAttribute: "data-cy" });
 
@@ -79,54 +80,58 @@ describe("IframeRuntime component", () => {
       mockSendCustomMessage = sendMsg;
     });
     const testIframe = render(
-      <DynamicTextTester><IframeRuntime
-        url={"https://concord.org/"}
-        id={"123-Interactive"}
-        authoredState={null}
-        initialInteractiveState={{testing: true}}
-        legacyLinkedInteractiveState={null}
-        setInteractiveState={mockSetInteractiveState}
-        setAspectRatio={mockSetAspectRatio}
-        setHeightFromInteractive={mockSetHeightFromInteractive}
-        setSupportedFeatures={mockSetSupportedFeatures}
-        setNewHint={mockSetNewHint}
-        getFirebaseJWT={mockGetFirebaseJWT}
-        getAttachmentUrl={mockGetAttachmentUrl}
-        showModal={mockShowModal}
-        closeModal={mockCloseModal}
-        setSendCustomMessage={mockSetSendCustomMessage}
-        setNavigation={mockSetNavigation}
-        iframeTitle="Interactive content"
-        showDeleteDataButton={true}
-        answerMetadata={{
-          type: "interactive_state",
-          answer: JSON.stringify({foo: "bar"}),
-          question_id: "interactive_123",
-          question_type: "interactive",
-          id: "test1234",
-          submitted: true,
-          report_state: "",
-          attachments: {
-            "test.png": {
-              publicPath: "/foo/bar/test.png",
-              folder: {
-                id: "123",
-                ownerId: "testuser",
-              },
-              contentType: "image/png",
-            },
-            "test.mp3": {
-              publicPath: "/foo/bar/test.mp3",
-              folder: {
-                id: "123",
-                ownerId: "testuser",
-              },
-              contentType: "audio/mp3",
-            }
-          }
-        }}
-      />
-      </DynamicTextTester>);
+      <MediaLibraryTester>
+        <DynamicTextTester>
+          <IframeRuntime
+            url={"https://concord.org/"}
+            id={"123-Interactive"}
+            authoredState={null}
+            initialInteractiveState={{testing: true}}
+            legacyLinkedInteractiveState={null}
+            setInteractiveState={mockSetInteractiveState}
+            setAspectRatio={mockSetAspectRatio}
+            setHeightFromInteractive={mockSetHeightFromInteractive}
+            setSupportedFeatures={mockSetSupportedFeatures}
+            setNewHint={mockSetNewHint}
+            getFirebaseJWT={mockGetFirebaseJWT}
+            getAttachmentUrl={mockGetAttachmentUrl}
+            showModal={mockShowModal}
+            closeModal={mockCloseModal}
+            setSendCustomMessage={mockSetSendCustomMessage}
+            setNavigation={mockSetNavigation}
+            iframeTitle="Interactive content"
+            showDeleteDataButton={true}
+            answerMetadata={{
+              type: "interactive_state",
+              answer: JSON.stringify({foo: "bar"}),
+              question_id: "interactive_123",
+              question_type: "interactive",
+              id: "test1234",
+              submitted: true,
+              report_state: "",
+              attachments: {
+                "test.png": {
+                  publicPath: "/foo/bar/test.png",
+                  folder: {
+                    id: "123",
+                    ownerId: "testuser",
+                  },
+                  contentType: "image/png",
+                },
+                "test.mp3": {
+                  publicPath: "/foo/bar/test.mp3",
+                  folder: {
+                    id: "123",
+                    ownerId: "testuser",
+                  },
+                  contentType: "audio/mp3",
+                }
+              }
+            }}
+          />
+        </DynamicTextTester>
+      </MediaLibraryTester>
+    );
     expect(testIframe.getByTestId("iframe-runtime")).toBeDefined();
     // allow initialization to complete
     jest.runAllTimers();
@@ -151,7 +156,7 @@ describe("IframeRuntime component", () => {
         fontSize: "normal",
         fontSizeInPx: 16,
       },
-      mediaLibary: {
+      mediaLibrary: {
         enabled: false,
         items: [],
       },
