@@ -29,7 +29,7 @@ import {
   signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
   onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData, createOrUpdateApRun, getApRun
 } from "../firebase-db";
-import { Activity, IEmbeddablePlugin, IMediaLibrary, Sequence } from "../types";
+import { Activity, IEmbeddablePlugin, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getActivityLevelPlugins, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -39,7 +39,7 @@ import { IdleWarning } from "./error/idle-warning";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
 import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
 import { ModalDialog } from "./modal-dialog";
-import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
+import { IMediaLibrary, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName, getLoggingTeacherUsername } from "../lib/logger";
 import { EmbeddablePlugin } from "./activity-page/plugins/embeddable-plugin";
 import { getAttachmentsManagerOptions } from "../utilities/get-attachments-manager-options";
@@ -52,6 +52,7 @@ import { getBearerToken } from "../utilities/auth-utils";
 import { ReadAloudContext } from "./read-aloud-context";
 import { AccessibilityContext, FontSize, getFontSize, getFontSizeInPx } from "./accessibility-context";
 import { MediaLibraryContext } from "./media-library-context";
+import { parseMediaLibraryItems } from "../lib/parse-media-library-items";
 
 import "./app.scss";
 
@@ -281,18 +282,7 @@ export class App extends React.PureComponent<IProps, IState> {
         document.getElementsByTagName("body").item(0)?.classList.add("notebook");
       }
 
-      // *** FAKE MEDIA LIBRARY ITEMS - to be replaced with a imported helper method from question-interactives
-      this.setState({ mediaLibrary: {
-        enabled: true,
-        items: [
-          {url: "https://placekitten.com/200/300", title: "Cute Kitten: 200x300", mimeType: "image/jpeg"},
-          {url: "https://placekitten.com/300/200", title: "Cute Kitten: 300x200", mimeType: "image/jpeg"},
-          {url: "https://placekitten.com/300/300", title: "Cute Kitten: 300x300", mimeType: "image/jpeg"},
-          {url: "https://placekitten.com/200/600", title: "Cute Kitten: 200x600", mimeType: "image/jpeg"},
-          {url: "https://placekitten.com/600/200", title: "Cute Kitten: 600x200", mimeType: "image/jpeg"},
-          {url: "https://placekitten.com/600/600", title: "Cute Kitten: 600x600", mimeType: "image/jpeg"},
-        ]
-      }});
+      this.setState({ mediaLibrary: parseMediaLibraryItems({sequence, activity})});
 
       const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
 

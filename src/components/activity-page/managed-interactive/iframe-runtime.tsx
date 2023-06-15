@@ -359,11 +359,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   accessibility: {
                     fontSize,
                     fontSizeInPx
-                  }
+                  },
+                  mediaLibrary
                 };
-
-      // **** TODO: update IInitInteractive in Lara api to have media library key
-      (initInteractiveMsg as any).mediaLibary = mediaLibrary;
 
       // to support legacy interactives first post the deprecated loadInteractive message as LARA does
       // but only when there is initialInteractiveState (also as LARA does)

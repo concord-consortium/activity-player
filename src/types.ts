@@ -350,14 +350,3 @@ export interface IAuthenticatedUserApRun extends IBaseApRun {
 }
 
 export type IApRun = IAnonymousApRun | IAuthenticatedUserApRun;
-
-// TODO: move these media library types to LARA api types
-export type IMediaLibraryItem = {
-  title: string
-  url: string
-  mimeType: string
-}
-export interface IMediaLibrary {
-  enabled: boolean
-  items: IMediaLibraryItem[]
-}

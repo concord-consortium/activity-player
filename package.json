@@ -4,8 +4,8 @@
   "description": "Concord Consortium Activity Player",
   "main": "index.js",
   "engines": {
-    "node": ">= 16",
-    "npm": ">= 8"
+    "node": ">= 14",
+    "npm": ">= 6"
   },
   "jest": {
     "testURL": "https://activity-player.unexisting.url.com",
@@ -154,7 +154,7 @@
     "@aws-sdk/s3-request-presigner": "^3.44.0",
     "@concord-consortium/dynamic-text": "^1.0.3",
     "@concord-consortium/interactive-api-host": "^0.8.0",
-    "@concord-consortium/lara-interactive-api": "^1.9.2",
+    "@concord-consortium/lara-interactive-api": "^1.9.3-pre.1",
     "@concord-consortium/text-decorator": "^1.0.2",
     "@concord-consortium/token-service": "^2.1.0",
     "@react-hook/resize-observer": "^1.2.5",

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { IMediaLibrary } from "../types";
+import { IMediaLibrary } from "@concord-consortium/lara-interactive-api";
 
 export const MediaLibraryContext = React.createContext<IMediaLibrary>({
   enabled: false,

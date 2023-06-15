@@ -33,6 +33,7 @@ import sampleActivityNotebook from "../data/sample-activity-notebook.json";
 import interactiveSizingDemoQI from "../data/Interactive-Sizing-Demo-Question-Interactives.json";
 import sampleActivityHideReadAloud from "../data/sample-activity-hide-read-aloud.json";
 import sampleActivityAllQuestionInteractivesLargeFont from "../data/sample-activity-all-question-interactives-large-font.json";
+import sampleActivityMediaLibrary from "../data/sample-activity-media-library.json";
 
 const sampleActivities: {[name: string]: Activity} = {
   "sample-new-sections-activity-1": sampleNewSectionsActivity1 as Activity,
@@ -68,6 +69,7 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-ipad-friendly": sampleActivityIPadFriendly as unknown as Activity,
   "interactive-sizing-demo-question-interactive": interactiveSizingDemoQI as unknown as Activity,
   "sample-activity-hide-read-aloud": sampleActivityHideReadAloud as unknown as Activity,
+  "sample-activity-media-library": sampleActivityMediaLibrary as unknown as Activity,
 };
 
 import sampleSequence from "../data/sample-sequence.json";
