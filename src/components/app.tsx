@@ -50,7 +50,7 @@ import { __closeAllPopUps } from "../lara-plugin/plugin-api/popup";
 import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChangeNotificationStartTimeout } from "./activity-page/page-change-notification";
 import { getBearerToken } from "../utilities/auth-utils";
 import { ReadAloudContext } from "./read-aloud-context";
-import { AccessibilityContext, FontSize, getFontSize, getFontSizeInPx } from "./accessibility-context";
+import { AccessibilityContext, FontSize, FontType, getFamilyForFontType, getFontSize, getFontSizeInPx, getFontType } from "./accessibility-context";
 import { MediaLibraryContext } from "./media-library-context";
 import { parseMediaLibraryItems } from "../lib/parse-media-library-items";
 
@@ -125,6 +125,8 @@ interface IState {
   hideReadAloud: boolean;
   fontSize: FontSize;
   fontSizeInPx: number;
+  fontType: FontType;
+  fontFamilyForType: string;
   mediaLibrary: IMediaLibrary;
 }
 interface IProps { }
@@ -155,6 +157,8 @@ export class App extends React.PureComponent<IProps, IState> {
       hideReadAloud: false,
       fontSize: "normal",
       fontSizeInPx: getFontSizeInPx("normal"),
+      fontType: "normal",
+      fontFamilyForType: getFamilyForFontType("normal"),
       mediaLibrary: {enabled: false, items: []}
     };
   }
@@ -308,6 +312,9 @@ export class App extends React.PureComponent<IProps, IState> {
         }
       }
 
+      const fontType = getFontType({activity, sequence});
+      const fontFamilyForType = getFamilyForFontType(fontType);
+
       // set the activity and page query parameters
       if (sequenceActivity) {
         setQueryValue("sequenceActivity", sequenceActivity);
@@ -341,7 +348,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
       newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner,
                      showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity, hideReadAloud,
-                     fontSize, fontSizeInPx};
+                     fontSize, fontSizeInPx, fontType, fontFamilyForType};
       setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       this.setState(newState as IState);
@@ -395,7 +402,7 @@ export class App extends React.PureComponent<IProps, IState> {
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
           <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
-            <AccessibilityContext.Provider value={{fontSize: this.state.fontSize, fontSizeInPx: this.state.fontSizeInPx}}>
+            <AccessibilityContext.Provider value={{fontSize: this.state.fontSize, fontSizeInPx: this.state.fontSizeInPx, fontType: this.state.fontType, fontFamilyForType: this.state.fontFamilyForType}}>
               <MediaLibraryContext.Provider value={this.state.mediaLibrary}>
                 <DynamicTextContext.Provider value={dynamicTextManager}>
                   <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>

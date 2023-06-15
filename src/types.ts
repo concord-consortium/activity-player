@@ -209,6 +209,7 @@ export interface Sequence {
   defunct?: boolean;
   hide_read_aloud?: boolean;
   font_size: "normal" | "large"
+  layout_override: number;
 }
 
 export interface IReportState {
