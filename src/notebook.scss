@@ -78,8 +78,10 @@ body.notebook {
       iframe {
         border-radius: 0 0 10px 10px;
         border: 1px solid $cc-charcoal;
-        border-top: none;
         box-sizing: border-box;
+        &.iframe-has-header {
+          border-top: none;
+        }
       }
 
       .spike-media-library {

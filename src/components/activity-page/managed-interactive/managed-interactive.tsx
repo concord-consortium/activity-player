@@ -399,6 +399,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         showDeleteDataButton={showDeleteDataButton}
         setAspectRatio={setARFromSupportedFeatures}
         setHeightFromInteractive={setHeightFromInteractive}
+        hasHeader={questionNumber}
       />;
 
 

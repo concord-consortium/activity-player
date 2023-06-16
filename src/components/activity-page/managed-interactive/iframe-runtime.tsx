@@ -81,13 +81,14 @@ interface IProps {
   showDeleteDataButton?: boolean;
   setAspectRatio: (aspectRatio: number) => void;
   setHeightFromInteractive: (heightFromInteractive: number) => void;
+  hasHeader: number|undefined;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
     setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo,
-    showDeleteDataButton, setAspectRatio, setHeightFromInteractive } = props;
+    showDeleteDataButton, setAspectRatio, setHeightFromInteractive, hasHeader } = props;
 
   const [reloadCount, setReloadCount] = useState<number>(0);
   const iframePhoneTimeout = useRef<number|undefined>(undefined);
@@ -102,6 +103,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     resolveAndCleanup: useRef<() => void>(),
   };
   const currentInteractiveState = useRef<any>(initialInteractiveState);
+  const hasHeaderClass = hasHeader ? "iframe-has-header" : "iframe";
 
   const dynamicText = useDynamicTextContext();
   const dynamicTextComponentIds = useRef<Set<string>>(new Set());
@@ -458,6 +460,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     <div className="iframe-runtime" data-cy="iframe-runtime">
       <iframe key={`${id}-${reloadCount}`} ref={iframeRef} src={url} id={id} width={width} height={height} frameBorder={0}
               allowFullScreen={true}
+              className={hasHeaderClass}
               allow="geolocation; microphone; camera; bluetooth; clipboard-read; clipboard-write"
               title={iframeTitle}
               scrolling="no"
