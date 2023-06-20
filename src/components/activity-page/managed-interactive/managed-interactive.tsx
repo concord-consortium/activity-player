@@ -368,7 +368,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
 
   // question numbers are 1-based
   const hasQuestionNumber = (questionNumber || 0) > 0;
-  const className = classNames("runtime-container", {hasQuestionNumber: "has-question-number"});
+  const className = classNames("runtime-container", {"has-question-number": hasQuestionNumber});
 
   const questionPrefix = props.showQuestionPrefix ? `Question #${questionNumber}${questionName.trim().length > 0 ? ": " : ""}` : "";
 
