@@ -8,6 +8,11 @@ export enum ActivityLayouts {
   SinglePage = 1,
   Notebook = 2,
 }
+export enum ActivityLayoutOverrides {
+  MultiplePages = ActivityLayouts.MultiplePages + 1,
+  SinglePage = ActivityLayouts.SinglePage + 1,
+  Notebook = ActivityLayouts.Notebook + 1,
+}
 
 export enum SectionLayouts {
   FullWidth = "l-full-width",

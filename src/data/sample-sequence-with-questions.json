@@ -23,6 +23,7 @@
   "fixed_width_layout": "1100px",
   "thumbnail_url": "",
   "title": "Sample Sequence Activity Player",
+  "layout_override": 0,
   "activities": [
     {
       "id": 1,

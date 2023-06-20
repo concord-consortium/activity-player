@@ -25,6 +25,7 @@
   "type": "Sequence",
   "export_site": "Lightweight Activities Runtime and Authoring",
   "font_size": "normal",
+  "layout_override": 0,
   "activities": [
     {
       "id": 1,
