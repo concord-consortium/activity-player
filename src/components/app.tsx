@@ -281,6 +281,11 @@ export class App extends React.PureComponent<IProps, IState> {
         ? sequence.activities[activityIndex]
         : await getActivityDefinition(activityPath);
 
+      // the sequence layout override is 0 for none and +1 added to the activity layout options for the override
+      if (sequence && (sequence.layout_override > 0)) {
+        activity.layout = sequence.layout_override - 1;
+      }
+
       // add the notebook body class if needed to override styles
       if (activity.layout === ActivityLayouts.Notebook) {
         document.getElementsByTagName("body").item(0)?.classList.add("notebook");
