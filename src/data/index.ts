@@ -81,6 +81,7 @@ import sampleSequenceTE from "../data/sample-sequence-te.json";
 import sampleSequenceDefunct from "../data/sample-sequence-defunct.json";
 import sampleSequenceHideReadAloud from "../data/sample-sequence-hide-read-aloud.json";
 import sampleSequenceLargeFont from "../data/sample-sequence-large-font.json";
+import sampleSequenceNotebook from "../data/sample-sequence-notebook.json";
 
 const sampleSequences: {[name: string]: Sequence} = {
   "sample-sequence": sampleSequence as unknown as Sequence,
@@ -92,6 +93,7 @@ const sampleSequences: {[name: string]: Sequence} = {
   "sample-sequence-defunct": sampleSequenceDefunct as unknown as Sequence,
   "sample-sequence-hide-read-aloud": sampleSequenceHideReadAloud as unknown as Sequence,
   "sample-sequence-large-font": sampleSequenceLargeFont as unknown as Sequence,
+  "sample-sequence-notebook": sampleSequenceNotebook as unknown as Sequence,
 };
 
 export  { sampleActivities, sampleSequences };

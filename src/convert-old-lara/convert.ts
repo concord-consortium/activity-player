@@ -263,6 +263,7 @@ const newSequenceResource = (sequenceResource: any) => {
       "defunct": sequenceResource.defunct,
       "hide_read_aloud": sequenceResource.hide_read_aloud,
       "font_size": sequenceResource.font_size,
+      "layout_override": sequenceResource.layout_override,
     }
   );
 };
