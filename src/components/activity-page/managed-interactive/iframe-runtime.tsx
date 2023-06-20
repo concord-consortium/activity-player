@@ -81,7 +81,7 @@ interface IProps {
   showDeleteDataButton?: boolean;
   setAspectRatio: (aspectRatio: number) => void;
   setHeightFromInteractive: (heightFromInteractive: number) => void;
-  hasHeader: number|undefined;
+  hasHeader?: boolean;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
@@ -103,7 +103,6 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     resolveAndCleanup: useRef<() => void>(),
   };
   const currentInteractiveState = useRef<any>(initialInteractiveState);
-  const hasHeaderClass = hasHeader ? "iframe-has-header" : "iframe";
 
   const dynamicText = useDynamicTextContext();
   const dynamicTextComponentIds = useRef<Set<string>>(new Set());
@@ -460,7 +459,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     <div className="iframe-runtime" data-cy="iframe-runtime">
       <iframe key={`${id}-${reloadCount}`} ref={iframeRef} src={url} id={id} width={width} height={height} frameBorder={0}
               allowFullScreen={true}
-              className={hasHeaderClass}
+              className={hasHeader ? "iframe-has-header" : ""}
               allow="geolocation; microphone; camera; bluetooth; clipboard-read; clipboard-write"
               title={iframeTitle}
               scrolling="no"

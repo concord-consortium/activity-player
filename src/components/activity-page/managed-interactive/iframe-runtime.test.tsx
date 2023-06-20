@@ -101,7 +101,6 @@ describe("IframeRuntime component", () => {
             setNavigation={mockSetNavigation}
             iframeTitle="Interactive content"
             showDeleteDataButton={true}
-            hasHeader={undefined}
             answerMetadata={{
               type: "interactive_state",
               answer: JSON.stringify({foo: "bar"}),
