@@ -107,7 +107,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const dynamicText = useDynamicTextContext();
   const dynamicTextComponentIds = useRef<Set<string>>(new Set());
 
-  const {fontSize, fontSizeInPx} = useAccessibility();
+  const {fontSize, fontSizeInPx, fontType, fontFamilyForType} = useAccessibility();
 
   const mediaLibrary = useMediaLibrary();
 
@@ -359,7 +359,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   externalReportUrl: getReportUrl(id) || undefined,
                   accessibility: {
                     fontSize,
-                    fontSizeInPx
+                    fontSizeInPx,
+                    fontType,
+                    fontFamilyForType,
                   },
                   mediaLibrary
                 };
