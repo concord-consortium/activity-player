@@ -52,7 +52,7 @@
             {
               "name": "Open Response Name",
               "url_fragment": null,
-              "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"\u003Cp\u003EThis is the prompt for the test question.\u003C/p\u003E\"}",
+              "authored_state": "{\"version\":1,\"questionType\":\"open_response\",\"hint\":\"\u003Cp\u003Ehint\u003C/p\u003E\",\"prompt\":\"\u003Cp\u003EThis is the prompt for the test question.\u003C/p\u003E\"}",
               "is_hidden": false,
               "is_half_width": false,
               "show_in_featured_question_report": true,

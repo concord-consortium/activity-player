@@ -72,10 +72,18 @@ body.notebook {
         min-height: 41.5px;
         font-weight: bold;
       }
-      .runtime-container.has-question-number {
-        border: 0;
-        iframe {
-          border-radius: 0 0 10px 10px;
+      .runtime-container {
+        .hint-container {
+          border: 1px solid #3f3f3f;
+          border-top: none;
+          border-bottom: none;
+        }
+
+        &.has-question-number {
+          border: 0;
+          iframe {
+            border-radius: 0 0 10px 10px;
+          }
         }
       }
       iframe {
