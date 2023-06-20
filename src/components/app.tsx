@@ -14,7 +14,7 @@ import {
   ActivityLayouts, numQuestionsOnPreviousPages,
   enableReportButton, setDocumentTitle, getPagePositionFromQueryValue,
   getSequenceActivityFromQueryValue, getSequenceActivityId,
-  setAppBackgroundImage, getPageIDFromPosition
+  setAppBackgroundImage, getPageIDFromPosition, ActivityLayoutOverrides
 } from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
@@ -281,10 +281,7 @@ export class App extends React.PureComponent<IProps, IState> {
         ? sequence.activities[activityIndex]
         : await getActivityDefinition(activityPath);
 
-      // the sequence layout override is 0 for none and +1 added to the activity layout options for the override
-      if (sequence && (sequence.layout_override > 0)) {
-        activity.layout = sequence.layout_override - 1;
-      }
+      this.checkSequenceOverrides(activity, sequence);
 
       // add the notebook body class if needed to override styles
       if (activity.layout === ActivityLayouts.Notebook) {
@@ -513,6 +510,10 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
     const pagesVisible = queryValue("author-preview") ? activity.pages : activity.pages.filter((page) => !page.is_hidden);
+    const isNotSinglePageOrNotebookActivity = [ActivityLayouts.SinglePage, ActivityLayouts.Notebook].indexOf(activity.layout) === -1;
+    const isNotNotebookOverridenSequence =this.state.sequence && this.state.sequence.layout_override !== ActivityLayoutOverrides.Notebook;
+    const renderBottomNav = isNotSinglePageOrNotebookActivity || isNotNotebookOverridenSequence;
+
     return (
       <>
         {this.state.sequence && this.renderSequenceNav(fullWidth)}
@@ -541,7 +542,7 @@ export class App extends React.PureComponent<IProps, IState> {
                 hideReadAloud={this.state.hideReadAloud}
               />
         }
-        {([ActivityLayouts.SinglePage, ActivityLayouts.Notebook].indexOf(activity.layout) === -1 || this.state.sequence) &&
+        {renderBottomNav &&
           this.renderNav(activity, currentPage, fullWidth)
         }
       </>
@@ -715,15 +716,18 @@ export class App extends React.PureComponent<IProps, IState> {
       }
     }
 
-    this.setState((prevState) =>
-    ({
-      activity: prevState.sequence?.activities[activityNum],
-      showSequenceIntro: false,
-      activityIndex: activityNum,
-      currentPage,
-      sequenceActivity
-    })
-    );
+    this.setState((prevState) => {
+      const activity = prevState.sequence?.activities[activityNum];
+      this.checkSequenceOverrides(activity, sequence);
+
+      return {
+        activity,
+        showSequenceIntro: false,
+        activityIndex: activityNum,
+        currentPage,
+        sequenceActivity
+      };
+    });
   }
 
   private handleShowSequenceIntro = () => {
@@ -764,5 +768,12 @@ export class App extends React.PureComponent<IProps, IState> {
     dynamicTextManager.enableReadAloud({ enabled: readAloud, saveSetting: true });
     Logger.log({ event: LogEventName.toggle_read_aloud, event_value: readAloud });
   };
+
+  private checkSequenceOverrides(activity?: Activity, sequence?: Sequence) {
+    // the sequence layout override is 0 for none and +1 added to the activity layout options for the override
+    if (activity && sequence && (sequence.layout_override > 0)) {
+      activity.layout = sequence.layout_override - 1;
+    }
+  }
 
 }

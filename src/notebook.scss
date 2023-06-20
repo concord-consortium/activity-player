@@ -3,6 +3,8 @@
 $notebook_font_family: 'Andika';
 $notebook_font_size: 1rem;  // this uses the new font size setting, forced to "large" in notebooks
 
+$notebookHeaderZIndex: 99;
+
 body.notebook {
 
   font-family: 'Andika', 'Lato', arial, helvetica, sans-serif;
@@ -11,6 +13,13 @@ body.notebook {
   .button {
     height: auto;
     font-family: $notebook_font_family;
+  }
+
+  .sequence-nav {
+    .custom-select {
+      // ensure select renders over the header
+      z-index: ($notebookHeaderZIndex + 1) !important;
+    }
   }
 
   .activity-header {
@@ -47,6 +56,43 @@ body.notebook {
 
     .activity-page-links {
       display: none;
+    }
+  }
+
+  .notebookHeader {
+    height: 50px;
+    background-image: url("./assets/notebook-spiral-padding.svg");
+    background-repeat: repeat-x;
+    background-position: center;
+    position: relative;
+    z-index: $notebookHeaderZIndex;
+  }
+
+  .sequence-content {
+    .introduction {
+      width: 100%;
+      background-color: $cc-orange-light6;
+      padding-top: 30px;
+      border-radius: 4px;
+      box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.5);
+      position: relative;
+      top: -30px;
+
+      .introduction-content {
+        padding: 15px;
+
+        .sequence-header {
+          padding-top: 5px;
+        }
+
+        .thumb {
+          background-color: white;
+
+          &:hover {
+            background-color: $cc-teal-light4;
+          }
+        }
+      }
     }
   }
 
@@ -156,15 +202,6 @@ body.notebook {
       }
     }
 
-    .notebookHeader {
-      height: 50px;
-      background-image: url("./assets/notebook-spiral-padding.svg");
-      background-repeat: repeat-x;
-      background-position: center;
-      position: relative;
-      z-index: 100;
-    }
-
     .sections {
       width: 100%;
       background-color: $cc-orange-light6;
@@ -214,7 +251,7 @@ body.notebook {
 
   .footer {
     font-size: $notebook_font_size;
-    background-color: $cc-orange-light1;
+    background-color: $cc-teal-dark1;
     border-radius: 10px 10px;
   }
 }
