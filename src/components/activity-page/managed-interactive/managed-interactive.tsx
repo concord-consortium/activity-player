@@ -7,6 +7,7 @@ import {
   ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState
 } from "@concord-consortium/lara-interactive-api";
 import { DynamicText } from "@concord-consortium/dynamic-text";
+import classNames from "classnames";
 
 import { PortalDataContext } from "../../portal-data-context";
 import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, ILegacyLinkedInteractiveState } from "../../../types";
@@ -364,7 +365,10 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   // with this fragment if necessary. ActivityPlayer doesn't have knowledge about URL format and provided url_fragment
   // to perform this merge automatically.
   const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
-  const hasQuestionNumber = questionNumber ? "runtime-container has-question-number" : "runtime-container";
+
+  // question numbers are 1-based
+  const hasQuestionNumber = (questionNumber || 0) > 0;
+  const className = classNames("runtime-container", {"has-question-number": hasQuestionNumber});
 
   const questionPrefix = props.showQuestionPrefix ? `Question #${questionNumber}${questionName.trim().length > 0 ? ": " : ""}` : "";
 
@@ -399,12 +403,12 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         showDeleteDataButton={showDeleteDataButton}
         setAspectRatio={setARFromSupportedFeatures}
         setHeightFromInteractive={setHeightFromInteractive}
+        hasHeader={hasQuestionNumber}
       />;
-
 
   return (
     <div ref={divTarget} className="managed-interactive" data-cy="managed-interactive">
-      <div className={hasQuestionNumber} style={{width:containerWidth}}>
+      <div className={className} style={{width:containerWidth}}>
       { questionNumber &&
         <div className="header" ref={headerTarget}>
           <DynamicText>{questionPrefix}{questionName}</DynamicText>
