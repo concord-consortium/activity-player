@@ -76,7 +76,7 @@ body.notebook {
         border: 0;
       }
       iframe {
-        border-radius: 0 0 10px 10px;
+        border-radius: 10px;
         border: 1px solid $cc-charcoal;
         box-sizing: border-box;
         &.iframe-has-header {
