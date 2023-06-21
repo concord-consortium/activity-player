@@ -171,32 +171,36 @@ body.notebook {
 
     .section-tabs {
       display: flex;
-      gap: 0;
-      margin-left: 17px;
+      gap: 5px;
+      margin-left: 12px;
 
       .section-tab {
-        margin-left: -7px;
-        padding: 3px 30px;
+        padding: pxToRem(7) pxToRem(10);
         color: $cc-charcoal;
         background: $cc-orange-light2;
         font-weight: bold;
-        border-radius: 11px 11px 0 0;
+        border-radius: pxToRem(11) pxToRem(11) 0 0;
         border: solid 2px $cc-orange-light2;
         box-shadow: 2px 0 5px 0 rgba(0, 0, 0, 0.5);
         cursor: pointer;
+        min-width: pxToRem(24);
+        text-align: center;
 
         &.selected, &:hover {
-          border: solid 2px  $cc-orange-dark1;
-          border-bottom: solid 2px $cc-orange-dark1;
-          background-color: $cc-orange-dark1;
           z-index: 100 !important;
         }
 
         &.selected {
+          border: solid 2px  $cc-orange-dark1;
+          border-bottom: solid 2px $cc-orange-dark1;
+          background-color: $cc-orange-dark1;
           color: white;
         }
 
         &:hover {
+          border: solid 2px  $cc-orange-light1;
+          border-bottom: solid 2px $cc-orange-light1;
+          background-color: $cc-orange-light1;
           z-index: 200 !important;
         }
       }
