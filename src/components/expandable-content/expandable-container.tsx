@@ -2,7 +2,7 @@ import React  from "react";
 import { Page, Activity } from "../../types";
 import { SidebarWrapper } from "../page-sidebar/sidebar-wrapper";
 import { EmbeddablePluginSideTip } from "../activity-page/plugins/embeddable-plugin-sidetip";
-import { getPageSideTipEmbeddables, getPageSideBars, ActivityLayouts } from "../../utilities/activity-utils";
+import { getPageSideTipEmbeddables, getPageSideBars } from "../../utilities/activity-utils";
 
 import "./expandable-container.scss";
 
@@ -36,7 +36,7 @@ export const ExpandableContainer: React.FC<IProps> = (props) => {
             pluginsLoaded={pluginsLoaded}
           />)
       }
-      { sidebars && sidebars.length > 0 && activity.layout !== ActivityLayouts.Notebook &&
+      { sidebars && sidebars.length > 0 &&
         <SidebarWrapper sidebars={sidebars} verticalOffset={verticalOffset} />
       }
     </div>
