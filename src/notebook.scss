@@ -187,7 +187,10 @@ body.notebook {
         text-align: center;
 
         &.selected, &:hover {
-          z-index: 100 !important;
+          border: solid 2px  $cc-orange-dark1;
+          border-bottom: solid 2px $cc-orange-dark1;
+          background-color: $cc-orange-dark1;
+          z-index: $notebookHeaderZIndex - 1 !important;
         }
 
         &.selected {
@@ -198,10 +201,11 @@ body.notebook {
         }
 
         &:hover {
+          z-index: $notebookHeaderZIndex !important;
           border: solid 2px  $cc-orange-light1;
           border-bottom: solid 2px $cc-orange-light1;
           background-color: $cc-orange-light1;
-          z-index: 200 !important;
+
         }
       }
     }
@@ -257,5 +261,11 @@ body.notebook {
     font-size: $notebook_font_size;
     background-color: $cc-teal-dark1;
     border-radius: 10px 10px;
+  }
+
+  .expandable-container {
+    position: absolute;
+    top: 120px;
+    right: 0px;
   }
 }
