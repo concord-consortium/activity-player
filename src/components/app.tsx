@@ -281,12 +281,7 @@ export class App extends React.PureComponent<IProps, IState> {
         ? sequence.activities[activityIndex]
         : await getActivityDefinition(activityPath);
 
-      this.checkSequenceOverrides(activity, sequence);
-
-      // add the notebook body class if needed to override styles
-      if (activity.layout === ActivityLayouts.Notebook) {
-        document.getElementsByTagName("body").item(0)?.classList.add("notebook");
-      }
+      this.checkLayout(activity, sequence);
 
       this.setState({ mediaLibrary: parseMediaLibraryItems({sequence, activity})});
 
@@ -718,7 +713,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
     this.setState((prevState) => {
       const activity = prevState.sequence?.activities[activityNum];
-      this.checkSequenceOverrides(activity, sequence);
+      this.checkLayout(activity, sequence);
 
       return {
         activity,
@@ -731,7 +726,8 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private handleShowSequenceIntro = () => {
-    this.setState({ showSequenceIntro: true });
+    this.setState({ showSequenceIntro: true, activity: undefined });
+    this.checkLayout(undefined, this.state.sequence);
     Logger.log({
       event: LogEventName.show_sequence_intro_page
     });
@@ -769,11 +765,21 @@ export class App extends React.PureComponent<IProps, IState> {
     Logger.log({ event: LogEventName.toggle_read_aloud, event_value: readAloud });
   };
 
-  private checkSequenceOverrides(activity?: Activity, sequence?: Sequence) {
+  private checkLayout(activity?: Activity, sequence?: Sequence) {
     // the sequence layout override is 0 for none and +1 added to the activity layout options for the override
     if (activity && sequence && (sequence.layout_override > 0)) {
       activity.layout = sequence.layout_override - 1;
     }
-  }
 
+    // add or remove the notebook body class if needed to override styles
+    const body = document.getElementsByTagName("body").item(0);
+    const addNotebookBodyClass =
+      (activity?.layout === ActivityLayouts.Notebook) ||
+      (sequence?.layout_override === ActivityLayoutOverrides.Notebook);
+    if (addNotebookBodyClass) {
+      body?.classList.add("notebook");
+    } else {
+      body?.classList.remove("notebook");
+    }
+  }
 }
