@@ -429,7 +429,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData, activityIndex } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const hasResponsiveSection = activity.pages[currentPage - 1]?.sections.filter(
@@ -447,8 +447,12 @@ export class App extends React.PureComponent<IProps, IState> {
     const fixedWidthLayout = (sequence?.fixed_width_layout || activity.fixed_width_layout || kDefaultFixedWidthLayout).replace(/_/g, "-");
     const activityClasses = classNames("activity", fullWidth ? "responsive" : `fixed-width-${fixedWidthLayout}`);
     const pagesVisible = queryValue("author-preview") ? activity.pages : activity.pages.filter((page) => !page.is_hidden);
+
+    // create a key so when activities switch within a sequence React knows to update the DOM
+    const key = `activity-${activityIndex || 0}`;
+
     return (
-      <div className={activityClasses} data-cy="activity">
+      <div key={key} className={activityClasses} data-cy="activity">
         <Header
           fullWidth={fullWidth}
           project={project}
