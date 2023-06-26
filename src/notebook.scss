@@ -5,14 +5,20 @@ $notebook_font_size: 1rem;  // this uses the new font size setting, forced to "l
 
 $notebookHeaderZIndex: 99;
 
+$font_family: $notebook_font_family, 'Lato', arial, helvetica, sans-serif;
+
 body.notebook {
 
-  font-family: 'Andika', 'Lato', arial, helvetica, sans-serif;
+  font-family: $font_family;
   font-size: $notebook_font_size;
+
+  .ui-widget, textarea {
+    font-family: $font_family !important;
+  }
 
   button, .button {
     height: auto;
-    font-family: $notebook_font_family;
+    font-family: $font_family;
   }
 
   .sequence-nav {
@@ -37,7 +43,7 @@ body.notebook {
         font-size: $notebook_font_size;
         width: auto;
         border-radius: 8px;
-        font-family: 'Andika', 'Lato', arial, helvetica, sans-serif;
+        font-family: $font_family;
         gap: 5px;
         justify-content: center;
         align-items: center;
