@@ -21,6 +21,11 @@ body.notebook {
     font-family: $font_family;
   }
 
+  // for digging deeper label
+  h4 {
+    font-family: $font_family !important;
+  }
+
   .sequence-nav {
     .custom-select {
       // ensure select renders over the header
