@@ -509,14 +509,16 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
     const pagesVisible = queryValue("author-preview") ? activity.pages : activity.pages.filter((page) => !page.is_hidden);
-    const isNotSinglePageOrNotebookActivity = [ActivityLayouts.SinglePage, ActivityLayouts.Notebook].indexOf(activity.layout) === -1;
-    const isNotNotebookOverridenSequence =this.state.sequence && this.state.sequence.layout_override !== ActivityLayoutOverrides.Notebook;
-    const renderBottomNav = isNotSinglePageOrNotebookActivity || isNotNotebookOverridenSequence;
+    const isSinglePageActivity = activity.layout === ActivityLayouts.SinglePage;
+    const isMultiPageActivity = activity.layout === ActivityLayouts.MultiplePages;
+    const isNotebookSequenceOverride = this.state.sequence?.layout_override === ActivityLayoutOverrides.Notebook;
+    const renderTopNav = !isSinglePageActivity || isNotebookSequenceOverride;
+    const renderBottomNav = isMultiPageActivity && !isNotebookSequenceOverride;
 
     return (
       <>
         {this.state.sequence && this.renderSequenceNav(fullWidth)}
-        {(activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
+        {renderTopNav &&
           this.renderNav(activity, currentPage, fullWidth)
         }
         {activity.layout === ActivityLayouts.SinglePage
