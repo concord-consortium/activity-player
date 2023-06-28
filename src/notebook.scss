@@ -10,7 +10,7 @@ body.notebook {
   font-family: 'Andika', 'Lato', arial, helvetica, sans-serif;
   font-size: $notebook_font_size;
 
-  .button {
+  button, .button {
     height: auto;
     font-family: $notebook_font_family;
   }
