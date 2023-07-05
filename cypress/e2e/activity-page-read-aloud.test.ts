@@ -39,7 +39,7 @@ context("Test the overall app", () => {
       readAloud.verifyHeaderHintReadAloud();
       getInIframe("body", ".runtime--runtime--question-int p").eq(0).parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
       getInIframe("body", ".runtime--runtime--question-int").find("iframe").its("0.contentDocument.body").find('[data-testid=legend]').parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
-      getInIframe("body", ".iframe-runtime--hint--question-int p").eq(0).parent().click().should('have.css', 'background-color', readAlound.backgroundColor);   
+      getInIframe("body", ".iframe-runtime--hint--question-int p").eq(0).parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
     });
   });
   describe("Drag & Drop",() => {
@@ -87,9 +87,9 @@ context("Test the overall app", () => {
       getInIframe("body", ".base-app--runtime--question-int p").eq(1).parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
       getInIframe("body", "[data-test=edit-btn]").click();
       cy.wait(5000);
-      getInIframe("body", ".runtime--dialogContent--question-int").should("be.visible");
-      getInIframe("body", ".runtime--dialogRightPanel--question-int div p").eq(0).parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
-      getInIframe("body", ".runtime--answerPrompt--question-int p").parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".drawing-tool-dialog--dialogContent--question-int").should("be.visible");
+      getInIframe("body", ".drawing-tool-dialog--dialogRightPanel--question-int div p").eq(0).parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".drawing-tool-dialog--answerPrompt--question-int p").parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
       getInIframe("body", "[data-test=close-dialog-btn]").click();
       cy.wait(20000);
     });
@@ -134,7 +134,7 @@ context("Test the overall app", () => {
       getInIframe("body", ".runtime--runtime--question-int").find("iframe").its("0.contentDocument.body").find('[data-testid=response-textarea]').type("Scaffolded Open Response");
       cy.wait(2000);
       getInIframe("body", "[data-cy=lock-answer-button]").click();
-      cy.wait(2000); 
+      cy.wait(2000);
       getInIframe("body", ".iframe-runtime--hint--question-int p").parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
     });
   });
@@ -148,8 +148,8 @@ context("Test the overall app", () => {
       getInIframe("body", "[data-cy=scorebot-feedback-button]").click();
       cy.wait(5000);
       getInIframe("body", ".feedback--header--question-int").children().click().should('have.css', 'background-color', readAlound.backgroundColor);
-      getInIframe("body", ".feedback--score--question-int .sc-gswNZR.iYycqy").children().click().should('have.css', 'background-color', readAlound.backgroundColor);
-      getInIframe("body", ".feedback--score--question-int .sc-jSUZER.diMGbe .scale-to-4").eq(0).children().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".feedback--score--question-int .sc-gEvEer").children().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".feedback--score--question-int .sc-iGgWBj .scale-to-4").eq(0).children().click().should('have.css', 'background-color', readAlound.backgroundColor);
       getInIframe("body", ".feedback--feedback--question-int").children().click().should('have.css', 'background-color', readAlound.backgroundColor);
     });
   });
