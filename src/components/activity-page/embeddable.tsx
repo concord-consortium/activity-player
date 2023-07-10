@@ -10,6 +10,7 @@ import { initializePlugin, IPartialEmbeddablePluginContext, validateEmbeddablePl
 import { EmbeddableType, IEmbeddablePlugin } from "../../types";
 import { IInteractiveSupportedFeaturesEvent } from "../../lara-plugin/events";
 import { ICustomMessage, ISupportedFeatures, INavigationOptions, IGetInteractiveState } from "@concord-consortium/lara-interactive-api";
+import { SpikeMediaLibrary } from "./spike-media-library/spike-media-library";
 
 import "./embeddable.scss";
 
@@ -84,6 +85,8 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     }
   }, [LARA?.Events]);
 
+  const showQuestionPrefix = activityLayout !== ActivityLayouts.Notebook;
+
   let qComponent;
   if (embeddable.type === "MwInteractive" || (embeddable.type === "ManagedInteractive" && embeddable.library_interactive)) {
     qComponent = <ManagedInteractive
@@ -94,6 +97,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                     setSendCustomMessage={setSendCustomMessage}
                     setNavigation={handleSetNavigation}
                     emitInteractiveAvailable={handleEmitInteractiveAvailable}
+                    showQuestionPrefix={showQuestionPrefix}
                  />;
   } else if (embeddable.type === "ManagedInteractive" && !embeddable.library_interactive) {
     qComponent = <div>Content type not supported</div>;
@@ -101,6 +105,8 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     qComponent = teacherEditionMode ? <EmbeddablePlugin embeddable={embeddable} pluginsLoaded={pluginsLoaded} /> : undefined;
   } else if (embeddable.type === "Embeddable::Xhtml") {
     qComponent = <TextBox embeddable={embeddable} />;
+  } else if (embeddable.type === "Embeddable::SpikeMediaLibrary") {
+    qComponent = <SpikeMediaLibrary embeddable={embeddable} />;
   } else if (isNotVisibleEmbeddable(embeddable)) {
     qComponent = undefined;
   } else {

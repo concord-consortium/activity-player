@@ -119,7 +119,13 @@ export interface IEmbeddablePlugin extends EmbeddableBase {
   plugin?: Plugin;
 }
 
-export type EmbeddableType = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin;
+export interface IEmbeddableSpikeMediaLibrary extends EmbeddableBase {
+  type: "Embeddable::SpikeMediaLibrary";
+  content?: string;
+  is_callout?: boolean;
+}
+
+export type EmbeddableType = IManagedInteractive | IMwInteractive | IEmbeddableXhtml | IEmbeddablePlugin | IEmbeddableSpikeMediaLibrary;
 export interface SectionType {
   secondary_column_display_mode: "stacked" | "carousel";
   is_hidden: boolean;
@@ -127,6 +133,7 @@ export interface SectionType {
   embeddables: EmbeddableType[];
   layout: string;
   _comment?: string;
+  name?: string | null;
 }
 
 export interface Page {
@@ -202,6 +209,7 @@ export interface Sequence {
   defunct?: boolean;
   hide_read_aloud?: boolean;
   font_size: "normal" | "large"
+  layout_override: number;
 }
 
 export interface IReportState {

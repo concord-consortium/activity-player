@@ -21,6 +21,7 @@ interface IProps {
   setNavigation?: (refId: string, options: INavigationOptions) => void;
   pluginsLoaded: boolean;
   ref?: React.Ref<SectionImperativeAPI>;
+  hiddenTab?: boolean;
 }
 
 export interface SectionImperativeAPI {
@@ -31,7 +32,7 @@ const right = "right";
 const left = "left";
 
 export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { activityLayout, page, section, questionNumberStart } = props;
+  const { activityLayout, page, section, questionNumberStart, hiddenTab } = props;
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
 
   const sectionDivRef = useRef<HTMLDivElement>(null);
@@ -139,7 +140,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   };
 
   const renderCollapsibleHeader = () => {
-    const collapsibleColumnOnLeft = section.layout === "30-70" || section.layout === "40-60";
+    const collapsibleColumnOnLeft = section.layout === "30-70" || section.layout === "40-60" || section.layout === "responsive-2-columns";
     const headerClass = `collapsible-header ${isSecondaryCollapsed ? "collapsed" : ""} ${collapsibleColumnOnLeft ? left : right}`;
     return (
       <div className={headerClass} data-cy="collapsible-header" tabIndex={0}
@@ -204,7 +205,9 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
                                   {"r_3070": layout === "30-70"},
                                   {"responsive": responsiveSection && !singlePage},
                                   {"stacked": display_mode === "stacked"},
-                                  {"carousel": display_mode === "carousel"}
+                                  {"carousel": display_mode === "carousel"},
+                                  {"hidden-tab": hiddenTab},
+                                  {"tab-contents": activityLayout === ActivityLayouts.Notebook}
                                 );
   const embeddables = section.embeddables;
 

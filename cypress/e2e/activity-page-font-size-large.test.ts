@@ -29,7 +29,7 @@ context("Test the overall app", () => {
       activityPage.getPagesHeader().should('have.css', 'font-size', largeFont.size5);
       activityPage.getPageItemNo().should('have.css', 'font-size', largeFont.size5);
       activityPage.getPageItemLink().should('have.css', 'font-size', largeFont.size5);
-      
+
     });
   });
   describe("Bar Graph",() => {
@@ -51,7 +51,7 @@ context("Test the overall app", () => {
       getInIframe("body", ".runtime--runtime--question-int p").should('have.css', 'font-size', largeFont.size4);
       getInIframe("body", ".runtime--runtime--question-int").find("iframe").its("0.contentDocument.body").find('[data-testid=legend]').should('have.css', 'font-size', largeFont.size4);
       getInIframe("body", ".runtime--runtime--question-int").find("iframe").its("0.contentDocument.body").find('[data-testid=response-textarea]').should('have.css', 'font-size', largeFont.size4);
-      getInIframe("body", ".iframe-runtime--hint--question-int p").should('have.css', 'font-size', largeFont.size3);    
+      getInIframe("body", ".iframe-runtime--hint--question-int p").should('have.css', 'font-size', largeFont.size3);
     });
   });
   describe("Drag & Drop",() => {
@@ -71,8 +71,8 @@ context("Test the overall app", () => {
       cy.wait(5000);
       fontSize.verifyHeaderHintLargeFont("Drawing Tool", "Drawing Tool");
       getInIframe("body", ".base-app--runtime--question-int p").should('have.css', 'font-size', largeFont.size4);
-      getInIframe("body", "[data-test=upload-btn]").should('have.css', 'font-size', largeFont.size6);
-      getInIframeWithIndex("body", "[data-testid=snapshot-btn]", 1).should('have.css', 'font-size', largeFont.size6);
+      getInIframe("body", "[data-test=upload-btn]").should('have.css', 'font-size', largeFont.size4);
+      getInIframeWithIndex("body", "[data-testid=snapshot-btn]", 1).should('have.css', 'font-size', largeFont.size4);
     });
   });
   describe("FIB",() => {
@@ -101,20 +101,20 @@ context("Test the overall app", () => {
       fontSize.verifyHeaderHintLargeFont("Image Question", "Image Question");
       getInIframe("body", ".base-app--runtime--question-int p").eq(0).should('have.css', 'font-size', largeFont.size4);
       getInIframe("body", ".base-app--runtime--question-int p").eq(1).should('have.css', 'font-size', largeFont.size4);
-      getInIframe("body", "[data-test=edit-btn]").should('have.css', 'font-size', largeFont.size6);
+      getInIframe("body", "[data-test=edit-btn]").should('have.css', 'font-size', largeFont.size4);
       getInIframe("body", "[data-test=edit-btn]").click();
       cy.wait(5000);
-      getInIframeWithIndex("body", ".runtime--dialogContent--question-int", 2).should("be.visible");
-      getInIframeWithIndex("body", ".runtime--dialogRightPanel--question-int div p", 2).eq(0).should('have.css', 'font-size', largeFont.size4);
-      getInIframeWithIndex("body", ".runtime--answerPrompt--question-int p", 2).should('have.css', 'font-size', largeFont.size4);
-      getInIframeWithIndex("body", ".runtime--dialogRightPanel--question-int textarea", 2).should('have.css', 'font-size', largeFont.size4);
-      getInIframeWithIndex("body", "[data-test=close-dialog-btn]", 2).should('have.css', 'font-size', largeFont.size6);
+      getInIframeWithIndex("body", ".drawing-tool-dialog--dialogContent--question-int", 2).should("be.visible");
+      getInIframeWithIndex("body", ".drawing-tool-dialog--dialogRightPanel--question-int div p", 2).eq(0).should('have.css', 'font-size', largeFont.size4);
+      getInIframeWithIndex("body", ".drawing-tool-dialog--answerPrompt--question-int p", 2).should('have.css', 'font-size', largeFont.size4);
+      getInIframeWithIndex("body", ".drawing-tool-dialog--dialogRightPanel--question-int textarea", 2).should('have.css', 'font-size', largeFont.size4);
+      getInIframeWithIndex("body", "[data-test=close-dialog-btn]", 2).should('have.css', 'font-size', largeFont.size4);
       getInIframeWithIndex("body", "[data-test=close-dialog-btn]", 2).click();
-      getInIframeWithIndex("body", ".runtime--closeDialogSection--question-int div", 2).should('have.css', 'font-size', largeFont.size4);
+      getInIframeWithIndex("body", ".drawing-tool-dialog--closeDialogSection--question-int div", 2).should('have.css', 'font-size', largeFont.size4);
       cy.wait(20000);
-      getInIframeWithIndex("body", "[data-test=upload-btn]", 1).should('have.css', 'font-size', largeFont.size6);
+      getInIframeWithIndex("body", "[data-test=upload-btn]", 1).should('have.css', 'font-size', largeFont.size4);
       cy.wait(5000);
-      getInIframeWithIndex("body", "[data-testid=snapshot-btn]", 2).should('have.css', 'font-size', largeFont.size6);
+      getInIframeWithIndex("body", "[data-testid=snapshot-btn]", 2).should('have.css', 'font-size', largeFont.size4);
     });
   });
   describe("Labbook",() => {
@@ -194,7 +194,7 @@ context("Test the overall app", () => {
       cy.wait(2000);
       getInIframe("body", ".runtime--runtime--question-int").find("iframe").its("0.contentDocument.body").find('[data-testid=legend]').should('have.css', 'font-size', largeFont.size4);
       getInIframe("body", ".runtime--runtime--question-int").find("iframe").its("0.contentDocument.body").find('[data-testid=response-textarea]').should('have.css', 'font-size', largeFont.size4);
-          
+
     });
   });
  describe("ScoreBot",() => {
@@ -208,8 +208,8 @@ context("Test the overall app", () => {
       getInIframe("body", "[data-cy=scorebot-feedback-button]").click();
       cy.wait(5000);
       getInIframe("body", ".feedback--header--question-int").should('have.css', 'font-size', largeFont.size4);
-      getInIframe("body", ".feedback--score--question-int .sc-gswNZR.iYycqy").should('have.css', 'font-size', largeFont.size2);
-      getInIframe("body", ".feedback--score--question-int .sc-jSUZER.diMGbe .scale-to-4").eq(0).should('have.css', 'font-size', largeFont.size4);
+      getInIframe("body", ".feedback--score--question-int .sc-gEvEer").should('have.css', 'font-size', largeFont.size2);
+      getInIframe("body", ".feedback--score--question-int .sc-eqUAAy .scale-to-4").eq(0).should('have.css', 'font-size', largeFont.size4);
       getInIframe("body", ".feedback--feedback--question-int").should('have.css', 'font-size', largeFont.size4);
       getInIframe("body", "[data-testid=response-textarea]").type("Text Response");
       getInIframe("body", ".feedback--outdatedMsg--question-int").should('have.css', 'font-size', largeFont.size4);

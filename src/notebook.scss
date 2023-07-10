@@ -1,0 +1,282 @@
+@import "./components/vars.scss";
+
+$notebook_font_family: 'Andika';
+$notebook_font_size: 1rem;  // this uses the new font size setting, forced to "large" in notebooks
+
+$notebookHeaderZIndex: 99;
+
+$font_family: $notebook_font_family, 'Lato', arial, helvetica, sans-serif;
+
+body.notebook {
+
+  font-family: $font_family;
+  font-size: $notebook_font_size;
+
+  .ui-widget, textarea {
+    font-family: $font_family !important;
+  }
+
+  button, .button {
+    height: auto;
+    font-family: $font_family;
+  }
+
+  // for digging deeper label
+  h4 {
+    font-family: $font_family !important;
+  }
+
+  .sequence-nav {
+    .custom-select {
+      // ensure select renders over the header
+      z-index: ($notebookHeaderZIndex + 1) !important;
+    }
+  }
+
+  .activity-header {
+    .inner {
+      background-color: $cc-teal-light3;
+      border-radius: 10px 10px 0 0;
+    }
+  }
+
+  .activity-nav {
+    .nav-pages {
+      gap: 40px;
+
+      .page-button {
+        font-size: $notebook_font_size;
+        width: auto;
+        border-radius: 8px;
+        font-family: $font_family;
+        gap: 5px;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+
+  .intro-content {
+    background-color: $cc-orange-light6;
+    font-size: $notebook_font_size;
+    border-radius: 0 0 10px 10px;
+
+    .introduction {
+      min-height: 500px;
+    }
+
+    .activity-page-links {
+      display: none;
+    }
+  }
+
+  .notebookHeader {
+    height: 50px;
+    background-image: url("./assets/notebook-spiral-padding.svg");
+    background-repeat: repeat-x;
+    background-position: center;
+    position: relative;
+    z-index: $notebookHeaderZIndex;
+  }
+
+  .sequence-content {
+    .introduction {
+      width: 100%;
+      background-color: $cc-orange-light6;
+      padding-top: 30px;
+      border-radius: 4px;
+      box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.5);
+      position: relative;
+      top: -30px;
+
+      .introduction-content {
+        padding: 15px;
+
+        .sequence-header {
+          padding-top: 5px;
+        }
+
+        .thumb {
+          background-color: white;
+
+          &:hover {
+            background-color: $cc-teal-light4;
+          }
+        }
+      }
+    }
+  }
+
+  .page-content {
+    border-radius: 0 0 10px 10px;
+
+    > .header {
+      .name {
+        visibility: hidden;
+      }
+
+      display: none;
+      &.contains-read-aloud {
+        display: flex;
+      }
+    }
+
+    .embeddable {
+      .header {
+        border-radius: 10px 10px 0 0;
+        color: white;
+        background-color: $cc-teal-dark1;
+        min-height: 41.5px;
+        font-weight: bold;
+      }
+      .runtime-container {
+        .hint-container {
+          border: 1px solid #3f3f3f;
+          border-top: none;
+          border-bottom: none;
+        }
+
+        &.has-question-number {
+          border: 0;
+          iframe {
+            border-radius: 0 0 10px 10px;
+          }
+        }
+      }
+      iframe {
+        border-radius: 10px;
+        border: 1px solid $cc-charcoal;
+        box-sizing: border-box;
+        &.iframe-has-header {
+          border-top: none;
+        }
+      }
+
+      .spike-media-library {
+        .title {
+          border-radius: 10px 10px 0 0;
+          color: $cc-charcoal;
+          background-color: $cc-teal-light2;
+        }
+        .content {
+          border-radius: 0 0 10px 10px;
+          background-color: #fff;
+        }
+      }
+    }
+
+    .textbox.callout {
+      font-size: $notebook_font_size;
+
+      .text-name {
+        color: #fff;
+        border-radius: 6px 6px 0 0;
+        background-color: #016082;
+      }
+
+      .content {
+        border-radius: 0 0 6px 6px;
+        background-color: $cc-teal-light5;
+      }
+    }
+
+    .section-tabs {
+      display: flex;
+      gap: 5px;
+      margin-left: 12px;
+
+      .section-tab {
+        padding: pxToRem(7) pxToRem(10);
+        color: $cc-charcoal;
+        background: $cc-orange-light2;
+        font-weight: bold;
+        border-radius: pxToRem(11) pxToRem(11) 0 0;
+        border: solid 2px $cc-orange-light2;
+        box-shadow: 2px 0 5px 0 rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+        min-width: pxToRem(24);
+        text-align: center;
+
+        &.selected, &:hover {
+          border: solid 2px  $cc-orange-dark1;
+          border-bottom: solid 2px $cc-orange-dark1;
+          background-color: $cc-orange-dark1;
+          z-index: $notebookHeaderZIndex - 1 !important;
+        }
+
+        &.selected {
+          border: solid 2px  $cc-orange-dark1;
+          border-bottom: solid 2px $cc-orange-dark1;
+          background-color: $cc-orange-dark1;
+          color: white;
+        }
+
+        &:hover {
+          z-index: $notebookHeaderZIndex !important;
+          border: solid 2px  $cc-orange-light1;
+          border-bottom: solid 2px $cc-orange-light1;
+          background-color: $cc-orange-light1;
+
+        }
+      }
+    }
+
+    .sections {
+      width: 100%;
+      background-color: $cc-orange-light6;
+      padding-top: 30px;
+      border-radius: 4px;
+      box-shadow: 2px 2px 4px 0 rgba(0, 0, 0, 0.5);
+      position: relative;
+      top: -30px;
+
+      .section {
+        margin-top: 0;
+        padding: 10px 10px 0 10px;
+
+        &.hidden-tab {
+          visibility: hidden;
+          height: 0;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+
+        &.tab-contents {
+          margin-bottom: 20px;
+        }
+
+        .collapsible-header {
+          border-radius: 8px;
+          transition: none !important;
+
+          div {
+            width: auto;
+          }
+        }
+
+      }
+    }
+  }
+
+  .separator {
+    height: 2px;
+    width: 100%;
+    background-color: $cc-orange-dark1;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-clip: content-box;
+    box-sizing: border-box;
+  }
+
+  .footer {
+    font-size: $notebook_font_size;
+    background-color: $cc-teal-dark1;
+    border-radius: 10px 10px;
+  }
+
+  .expandable-container {
+    position: absolute;
+    top: 120px;
+    right: 0px;
+  }
+}

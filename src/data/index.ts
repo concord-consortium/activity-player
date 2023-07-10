@@ -29,9 +29,11 @@ import sampleActivityInteractiveSharing from "../data/sample-activity-interactiv
 import sampleActivity1100px from "../data/sample-activity-1100px.json";
 import sampleActivityIPadFriendly from "../data/sample-activity-ipad-friendly.json";
 import sampleActivityAllQuestionInteractives from "../data/sample-activity-all-question-interactives.json";
+import sampleActivityNotebook from "../data/sample-activity-notebook.json";
 import interactiveSizingDemoQI from "../data/Interactive-Sizing-Demo-Question-Interactives.json";
 import sampleActivityHideReadAloud from "../data/sample-activity-hide-read-aloud.json";
 import sampleActivityAllQuestionInteractivesLargeFont from "../data/sample-activity-all-question-interactives-large-font.json";
+import sampleActivityMediaLibrary from "../data/sample-activity-media-library.json";
 
 const sampleActivities: {[name: string]: Activity} = {
   "sample-new-sections-activity-1": sampleNewSectionsActivity1 as Activity,
@@ -55,6 +57,7 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-single-page-layout": sampleActivitySinglePageLayout as unknown as Activity,
   "sample-activity-all-question-interactives": sampleActivityAllQuestionInteractives as unknown as Activity,
   "sample-activity-all-question-interactives-large-font": sampleActivityAllQuestionInteractivesLargeFont as unknown as Activity,
+  "sample-activity-notebook": sampleActivityNotebook as unknown as Activity,
   "LARA-page-elements-full-width-off": sampleActivityFullWidthOff as unknown as Activity,
   "LARA-page-elements-full-width-on": sampleActivityFullWidthOn as unknown as Activity,
   "sample-question-interactive-simple": sampleActivityQISimple as unknown as Activity,
@@ -66,6 +69,7 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-ipad-friendly": sampleActivityIPadFriendly as unknown as Activity,
   "interactive-sizing-demo-question-interactive": interactiveSizingDemoQI as unknown as Activity,
   "sample-activity-hide-read-aloud": sampleActivityHideReadAloud as unknown as Activity,
+  "sample-activity-media-library": sampleActivityMediaLibrary as unknown as Activity,
 };
 
 import sampleSequence from "../data/sample-sequence.json";
@@ -77,6 +81,7 @@ import sampleSequenceTE from "../data/sample-sequence-te.json";
 import sampleSequenceDefunct from "../data/sample-sequence-defunct.json";
 import sampleSequenceHideReadAloud from "../data/sample-sequence-hide-read-aloud.json";
 import sampleSequenceLargeFont from "../data/sample-sequence-large-font.json";
+import sampleSequenceNotebook from "../data/sample-sequence-notebook.json";
 
 const sampleSequences: {[name: string]: Sequence} = {
   "sample-sequence": sampleSequence as unknown as Sequence,
@@ -88,6 +93,7 @@ const sampleSequences: {[name: string]: Sequence} = {
   "sample-sequence-defunct": sampleSequenceDefunct as unknown as Sequence,
   "sample-sequence-hide-read-aloud": sampleSequenceHideReadAloud as unknown as Sequence,
   "sample-sequence-large-font": sampleSequenceLargeFont as unknown as Sequence,
+  "sample-sequence-notebook": sampleSequenceNotebook as unknown as Sequence,
 };
 
 export  { sampleActivities, sampleSequences };

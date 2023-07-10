@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import classNames from "classnames";
-import { DynamicTextManager, DynamicTextContext } from "@concord-consortium/dynamic-text";
+import { DynamicTextContext, DynamicTextManager } from "@concord-consortium/dynamic-text";
 
 import { PortalDataContext } from "./portal-data-context";
 import { Header } from "./activity-header/header";
@@ -10,10 +10,12 @@ import { SequenceNav } from "./activity-header/sequence-nav";
 import { ActivityPageContent } from "./activity-page/activity-page-content";
 import { IntroductionPageContent } from "./activity-introduction/introduction-page-content";
 import { Footer } from "./activity-introduction/footer";
-import { ActivityLayouts, numQuestionsOnPreviousPages,
-         enableReportButton, setDocumentTitle, getPagePositionFromQueryValue,
-         getSequenceActivityFromQueryValue, getSequenceActivityId,
-         setAppBackgroundImage, getPageIDFromPosition } from "../utilities/activity-utils";
+import {
+  ActivityLayouts, numQuestionsOnPreviousPages,
+  enableReportButton, setDocumentTitle, getPagePositionFromQueryValue,
+  getSequenceActivityFromQueryValue, getSequenceActivityId,
+  setAppBackgroundImage, getPageIDFromPosition, ActivityLayoutOverrides
+} from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
@@ -23,22 +25,24 @@ import { CompletionPageContent } from "./activity-completion/completion-page-con
 import { deleteQueryValue, queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
 import { fetchPortalData, fetchPortalJWT, firebaseAppName, getBasePortalUrl } from "../portal-api";
 import { IPortalData, IPortalDataUnion } from "../portal-types";
-import { signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
-         onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData, createOrUpdateApRun, getApRun } from "../firebase-db";
+import {
+  signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
+  onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData, createOrUpdateApRun, getApRun
+} from "../firebase-db";
 import { Activity, IEmbeddablePlugin, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getActivityLevelPlugins, loadLearnerPluginState } from "../utilities/plugin-utils";
-import { TeacherEditionBanner }  from "./teacher-edition-banner";
-import { Error }  from "./error/error";
+import { TeacherEditionBanner } from "./teacher-edition-banner";
+import { Error } from "./error/error";
 import { IdleWarning } from "./error/idle-warning";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
 import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
 import { ModalDialog } from "./modal-dialog";
-import { INavigationOptions } from "@concord-consortium/lara-interactive-api";
+import { IMediaLibrary, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName, getLoggingTeacherUsername } from "../lib/logger";
 import { EmbeddablePlugin } from "./activity-page/plugins/embeddable-plugin";
-import { getAttachmentsManagerOptions} from "../utilities/get-attachments-manager-options";
+import { getAttachmentsManagerOptions } from "../utilities/get-attachments-manager-options";
 import { IdleDetector } from "../utilities/idle-detector";
 import { initializeAttachmentsManager } from "@concord-consortium/interactive-api-host";
 import { LaraDataContext } from "./lara-data-context";
@@ -46,7 +50,9 @@ import { __closeAllPopUps } from "../lara-plugin/plugin-api/popup";
 import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChangeNotificationStartTimeout } from "./activity-page/page-change-notification";
 import { getBearerToken } from "../utilities/auth-utils";
 import { ReadAloudContext } from "./read-aloud-context";
-import { AccessibilityContext, FontSize, getFontSize, getFontSizeInPx } from "./accessibility-context";
+import { AccessibilityContext, FontSize, FontType, getFamilyForFontType, getFontSize, getFontSizeInPx, getFontType } from "./accessibility-context";
+import { MediaLibraryContext } from "./media-library-context";
+import { parseMediaLibraryItems } from "../lib/parse-media-library-items";
 
 import "./app.scss";
 
@@ -66,19 +72,21 @@ const kDefaultFixedWidthLayout = "1100px";
 
 // this is exported to that the TextBox component can pass it directly to DynamicText
 // as the context due to it not re-rendering because of multiple forward refs components wrapping it
-export const dynamicTextManager = new DynamicTextManager({onEvent: (event) => {
-  switch (event.type) {
-    case "readAloud":
-      Logger.log({event: LogEventName.read_aloud, event_value: event.text, ...event.extraLoggingInfo});
-      break;
-    case "readAloudCanceled":
-      Logger.log({event: LogEventName.read_aloud_canceled, event_value: event.text});
-      break;
-    case "readAloudComplete":
-      // not logged for now but may be in the future
-      break;
+export const dynamicTextManager = new DynamicTextManager({
+  onEvent: (event) => {
+    switch (event.type) {
+      case "readAloud":
+        Logger.log({ event: LogEventName.read_aloud, event_value: event.text, ...event.extraLoggingInfo });
+        break;
+      case "readAloudCanceled":
+        Logger.log({ event: LogEventName.read_aloud_canceled, event_value: event.text });
+        break;
+      case "readAloudComplete":
+        // not logged for now but may be in the future
+        break;
+    }
   }
-}});
+});
 
 // stop speaking when navigating away or (for iOS support) hiding the page
 const cancelSpeech = () => dynamicTextManager.selectComponent(null, {text: "", readAloud: true});
@@ -117,8 +125,11 @@ interface IState {
   hideReadAloud: boolean;
   fontSize: FontSize;
   fontSizeInPx: number;
+  fontType: FontType;
+  fontFamilyForType: string;
+  mediaLibrary: IMediaLibrary;
 }
-interface IProps {}
+interface IProps { }
 
 export class App extends React.PureComponent<IProps, IState> {
 
@@ -145,7 +156,10 @@ export class App extends React.PureComponent<IProps, IState> {
       readAloudDisabled: !dynamicTextManager.isReadAloudAvailable,
       hideReadAloud: false,
       fontSize: "normal",
-      fontSizeInPx: getFontSizeInPx("normal")
+      fontSizeInPx: getFontSizeInPx("normal"),
+      fontType: "normal",
+      fontFamilyForType: getFamilyForFontType("normal"),
+      mediaLibrary: {enabled: false, items: []}
     };
   }
 
@@ -162,7 +176,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
-      const teacherEditionMode = queryValue("mode")?.toLowerCase( )=== "teacher-edition";
+      const teacherEditionMode = queryValue("mode")?.toLowerCase() === "teacher-edition";
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
       const sequencePath = queryValue("sequence");
@@ -260,12 +274,16 @@ export class App extends React.PureComponent<IProps, IState> {
 
       const sequence: Sequence | undefined = sequencePath ? await getSequenceDefinition(sequencePath) : undefined;
       const sequenceActivityNum = sequence != null
-                                    ? getSequenceActivityFromQueryValue(sequence, sequenceActivity)
-                                    : 0;
+        ? getSequenceActivityFromQueryValue(sequence, sequenceActivity)
+        : 0;
       const activityIndex = sequence && sequenceActivityNum ? sequenceActivityNum - 1 : undefined;
       const activity: Activity = sequence != null && activityIndex != null && activityIndex >= 0
-                                   ? sequence.activities[activityIndex]
-                                   : await getActivityDefinition(activityPath);
+        ? sequence.activities[activityIndex]
+        : await getActivityDefinition(activityPath);
+
+      this.checkLayout(activity, sequence);
+
+      this.setState({ mediaLibrary: parseMediaLibraryItems({sequence, activity})});
 
       const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
 
@@ -275,6 +293,10 @@ export class App extends React.PureComponent<IProps, IState> {
 
       // update the font size if different from default (default defined in app.scss)
       const fontSize = getFontSize({activity, sequence});
+      // force large fonts in notebook activities
+      // if (activity.layout === ActivityLayouts.Notebook) {
+      //   fontSize = "large";
+      // }
       const fontSizeInPx = getFontSizeInPx(fontSize);
       if (fontSizeInPx !== getFontSizeInPx("normal")) {
         const htmlElement = document.getElementsByTagName("html").item(0);
@@ -286,6 +308,9 @@ export class App extends React.PureComponent<IProps, IState> {
           bodyElement.classList.add(`font-size-${fontSize.toLowerCase().replace(/\s/, "-")}`);
         }
       }
+
+      const fontType = getFontType({activity, sequence});
+      const fontFamilyForType = getFamilyForFontType(fontType);
 
       // set the activity and page query parameters
       if (sequenceActivity) {
@@ -312,14 +337,15 @@ export class App extends React.PureComponent<IProps, IState> {
       } else {
         hideReadAloud = !!activity.hide_read_aloud;
       }
+
       if (hideReadAloud) {
         // turn off read-aloud but do not persist the setting
-        dynamicTextManager.enableReadAloud({enabled: false, saveSetting: false});
+        dynamicTextManager.enableReadAloud({ enabled: false, saveSetting: false });
       }
 
       newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner,
                      showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity, hideReadAloud,
-                     fontSize, fontSizeInPx};
+                     fontSize, fontSizeInPx, fontType, fontFamilyForType};
       setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       this.setState(newState as IState);
@@ -373,26 +399,28 @@ export class App extends React.PureComponent<IProps, IState> {
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
           <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
-            <AccessibilityContext.Provider value={{fontSize: this.state.fontSize, fontSizeInPx: this.state.fontSizeInPx}}>
-              <DynamicTextContext.Provider value={dynamicTextManager}>
-                <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
-                  <div className="app" data-cy="app">
-                    { this.state.showDefunctBanner && <DefunctBanner/> }
-                    { this.state.showWarning && <WarningBanner/> }
-                    { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-                    { this.state.showSequenceIntro
-                      ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
-                      : this.renderActivity() }
-                    { this.state.showThemeButtons && <ThemeButtons/>}
-                    <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
-                    <ModalDialog
-                      label={this.state.modalLabel}
-                      onClose={() => {this.setShowModal(false);}}
-                      showModal={this.state.showModal}
-                    />
-                  </div>
-                </ReadAloudContext.Provider>
-              </DynamicTextContext.Provider>
+            <AccessibilityContext.Provider value={{fontSize: this.state.fontSize, fontSizeInPx: this.state.fontSizeInPx, fontType: this.state.fontType, fontFamilyForType: this.state.fontFamilyForType}}>
+              <MediaLibraryContext.Provider value={this.state.mediaLibrary}>
+                <DynamicTextContext.Provider value={dynamicTextManager}>
+                  <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
+                    <div className="app" data-cy="app">
+                      { this.state.showDefunctBanner && <DefunctBanner/> }
+                      { this.state.showWarning && <WarningBanner/> }
+                      { this.state.teacherEditionMode && <TeacherEditionBanner/>}
+                      { this.state.showSequenceIntro
+                        ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
+                        : this.renderActivity() }
+                      { this.state.showThemeButtons && <ThemeButtons/>}
+                      <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
+                      <ModalDialog
+                        label={this.state.modalLabel}
+                        onClose={() => {this.setShowModal(false);}}
+                        showModal={this.state.showModal}
+                      />
+                    </div>
+                  </ReadAloudContext.Provider>
+                </DynamicTextContext.Provider>
+              </MediaLibraryContext.Provider>
             </AccessibilityContext.Provider>
           </LaraDataContext.Provider>
         </PortalDataContext.Provider>
@@ -401,11 +429,11 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivity = () => {
-    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData } = this.state;
+    const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData, activityIndex } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const hasResponsiveSection = activity.pages[currentPage - 1]?.sections.filter(
-                                    s => s.layout.includes("responsive"));
+      s => s.layout.includes("responsive"));
     const fullWidth = (currentPage !== 0) && (hasResponsiveSection.length > 0);
     const project = activity.project ? activity.project : null;
     const activityLevelPlugins: IEmbeddablePlugin[] = getActivityLevelPlugins(activity);
@@ -419,8 +447,12 @@ export class App extends React.PureComponent<IProps, IState> {
     const fixedWidthLayout = (sequence?.fixed_width_layout || activity.fixed_width_layout || kDefaultFixedWidthLayout).replace(/_/g, "-");
     const activityClasses = classNames("activity", fullWidth ? "responsive" : `fixed-width-${fixedWidthLayout}`);
     const pagesVisible = queryValue("author-preview") ? activity.pages : activity.pages.filter((page) => !page.is_hidden);
+
+    // create a key so when activities switch within a sequence React knows to update the DOM
+    const key = `activity-${activityIndex || 0}`;
+
     return (
-      <div className={activityClasses} data-cy="activity">
+      <div key={key} className={activityClasses} data-cy="activity">
         <Header
           fullWidth={fullWidth}
           project={project}
@@ -439,18 +471,18 @@ export class App extends React.PureComponent<IProps, IState> {
             onTimeout={this.handleTimeout} onContinue={this.handleContinueSession} onExit={this.goToPortal}
           />
         }
-        { errorType && <Error type={errorType} onExit={this.goToPortal} /> }
+        {errorType && <Error type={errorType} onExit={this.goToPortal} />}
         {
           !idle && !errorType &&
           this.renderActivityContent(activity, currentPage, totalPreviousQuestions, fullWidth)
         }
-        { (activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
+        {(activity.layout === ActivityLayouts.SinglePage || currentPage === 0) &&
           <Footer
             fullWidth={fullWidth}
             project={project}
           />
         }
-        { (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
+        {(activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
           <ExpandableContainer
             activity={activity}
             pageNumber={currentPage}
@@ -460,15 +492,15 @@ export class App extends React.PureComponent<IProps, IState> {
             plugins={activityLevelPlugins.length > 0}
           />
         }
-        { !idle && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
+        {!idle && (activity.layout === ActivityLayouts.SinglePage || !isCompletionPage) &&
           activityLevelPlugins.map((activityLevelPlugin, idx) => {
             return <EmbeddablePlugin
-                    key={idx}
-                    embeddable={activityLevelPlugin}
-                    pageNumber={currentPage}
-                    pluginsLoaded={pluginsLoaded}
-                    isActivityLevelPlugin={true}
-                  />;
+              key={idx}
+              embeddable={activityLevelPlugin}
+              pageNumber={currentPage}
+              pluginsLoaded={pluginsLoaded}
+              isActivityLevelPlugin={true}
+            />;
           })
         }
       </div>
@@ -477,33 +509,41 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
     const pagesVisible = queryValue("author-preview") ? activity.pages : activity.pages.filter((page) => !page.is_hidden);
+    const isSinglePageActivity = activity.layout === ActivityLayouts.SinglePage;
+    const isMultiPageActivity = activity.layout === ActivityLayouts.MultiplePages;
+    const isNotebookSequenceOverride = this.state.sequence?.layout_override === ActivityLayoutOverrides.Notebook;
+    const renderTopNav = !isSinglePageActivity || isNotebookSequenceOverride;
+    const renderBottomNav = isMultiPageActivity && !isNotebookSequenceOverride;
+
     return (
       <>
-        { this.state.sequence && this.renderSequenceNav(fullWidth) }
-        { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
+        {this.state.sequence && this.renderSequenceNav(fullWidth)}
+        {renderTopNav &&
           this.renderNav(activity, currentPage, fullWidth)
         }
-        { activity.layout === ActivityLayouts.SinglePage
+        {activity.layout === ActivityLayouts.SinglePage
           ? this.renderSinglePageContent(activity)
           : currentPage === 0
             ? this.renderIntroductionContent(activity)
             : pagesVisible[currentPage - 1].is_completion
               ? this.renderCompletionContent(activity)
               : <ActivityPageContent
-                  ref={this.activityPageContentRef}
-                  activityLayout={activity.layout}
-                  enableReportButton={currentPage === pagesVisible.length && enableReportButton(activity)}
-                  pageNumber={currentPage}
-                  page={pagesVisible[currentPage - 1]}
-                  totalPreviousQuestions={totalPreviousQuestions}
-                  teacherEditionMode={this.state.teacherEditionMode}
-                  setNavigation={this.handleSetNavigation}
-                  key={`page-${currentPage}`}
-                  pluginsLoaded={this.state.pluginsLoaded}
-                  pageChangeNotification={this.state.pageChangeNotification}
-                />
+                ref={this.activityPageContentRef}
+                activityLayout={activity.layout}
+                enableReportButton={currentPage === pagesVisible.length && enableReportButton(activity)}
+                pageNumber={currentPage}
+                page={pagesVisible[currentPage - 1]}
+                activity={activity}
+                totalPreviousQuestions={totalPreviousQuestions}
+                teacherEditionMode={this.state.teacherEditionMode}
+                setNavigation={this.handleSetNavigation}
+                key={`page-${currentPage}`}
+                pluginsLoaded={this.state.pluginsLoaded}
+                pageChangeNotification={this.state.pageChangeNotification}
+                hideReadAloud={this.state.hideReadAloud}
+              />
         }
-        { (activity.layout !== ActivityLayouts.SinglePage || this.state.sequence) &&
+        {renderBottomNav &&
           this.renderNav(activity, currentPage, fullWidth)
         }
       </>
@@ -511,6 +551,8 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderNav = (activity: Activity, currentPage: number, fullWidth: boolean) => {
+    const isNotebook = activity.layout === ActivityLayouts.Notebook;
+
     return (
       <ActivityNav
         activityPages={activity.pages}
@@ -519,6 +561,8 @@ export class App extends React.PureComponent<IProps, IState> {
         onPageChange={this.handleChangePage}
         singlePage={activity.layout === ActivityLayouts.SinglePage}
         lockForwardNav={this.state.incompleteQuestions.length > 0}
+        usePageNames={isNotebook}
+        hideNextPrevButtons={isNotebook}
       />
     );
   }
@@ -603,7 +647,7 @@ export class App extends React.PureComponent<IProps, IState> {
     const pageId = activity ? getPageIDFromPosition(activity, page) : undefined;
     if (pageId) {
       setQueryValue("page", `page_${pageId}`);
-      createOrUpdateApRun({sequenceActivity, pageId});
+      createOrUpdateApRun({ sequenceActivity, pageId });
     }
     if (page > currentPage && incompleteQuestions.length > 0) {
       const label = incompleteQuestions[0].navOptions?.message || kDefaultIncompleteMessage;
@@ -612,14 +656,14 @@ export class App extends React.PureComponent<IProps, IState> {
 
       // wait a bit to show the page change so we don't get a flicker when the page saves quickly
       const startPageChangeNotification = setTimeout(() => {
-        this.setState({pageChangeNotification: {state: "started"}});
+        this.setState({ pageChangeNotification: { state: "started" } });
       }, PageChangeNotificationStartTimeout);
 
       const navigateAway = () => {
         __closeAllPopUps(); // close any open pop ups
         clearTimeout(startPageChangeNotification);
         this.setState({ currentPage: page, incompleteQuestions: [], pageChangeNotification: undefined });
-        setDocumentTitle({activity, pageNumber: page});
+        setDocumentTitle({ activity, pageNumber: page });
         document.getElementsByClassName("app")[0]?.scrollIntoView(); //scroll to the top on page change
         Logger.updateActivityPage(page);
         Logger.log({
@@ -629,16 +673,18 @@ export class App extends React.PureComponent<IProps, IState> {
       };
 
       // Make sure that interactive state is saved before user can navigate away.
-      const promises = this.activityPageContentRef.current?.requestInteractiveStates({unloading: true}) || [Promise.resolve()];
+      const promises = this.activityPageContentRef.current?.requestInteractiveStates({ unloading: true }) || [Promise.resolve()];
       Promise.all(promises)
         .then(navigateAway)
         .catch(error => {
           // Notify user about error, but change page anyway after displaying error and waiting a bit.
           clearTimeout(startPageChangeNotification);
-          this.setState({pageChangeNotification: {
-            state: "errored",
-            message: error.toString()
-          }});
+          this.setState({
+            pageChangeNotification: {
+              state: "errored",
+              message: error.toString()
+            }
+          });
           setTimeout(() => {
             navigateAway();
           }, PageChangeNotificationErrorTimeout);
@@ -655,7 +701,7 @@ export class App extends React.PureComponent<IProps, IState> {
     });
 
     let currentPage = 0;
-    const {sequence} = this.state;
+    const { sequence } = this.state;
     const sequenceActivity = sequence !== undefined ? getSequenceActivityId(sequence, activityNum) : undefined;
     if (sequenceActivity && sequence) {
       const activity = sequence.activities[activityNum];
@@ -671,25 +717,30 @@ export class App extends React.PureComponent<IProps, IState> {
       }
     }
 
-    this.setState((prevState) =>
-      ({ activity: prevState.sequence?.activities[activityNum],
-         showSequenceIntro: false,
-         activityIndex: activityNum,
-         currentPage,
-         sequenceActivity
-      })
-    );
+    this.setState((prevState) => {
+      const activity = prevState.sequence?.activities[activityNum];
+      this.checkLayout(activity, sequence);
+
+      return {
+        activity,
+        showSequenceIntro: false,
+        activityIndex: activityNum,
+        currentPage,
+        sequenceActivity
+      };
+    });
   }
 
   private handleShowSequenceIntro = () => {
-    this.setState({showSequenceIntro: true});
+    this.setState({ showSequenceIntro: true, activity: undefined });
+    this.checkLayout(undefined, this.state.sequence);
     Logger.log({
       event: LogEventName.show_sequence_intro_page
     });
   }
 
   private setShowModal = (show: boolean, label = "") => {
-    this.setState({showModal: show, modalLabel: label});
+    this.setState({ showModal: show, modalLabel: label });
     Logger.log({
       event: LogEventName.toggle_modal_dialog,
       parameters: { show_modal: show, modal_label: label }
@@ -716,8 +767,25 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private handleSetReadAloud = (readAloud: boolean) => {
     this.setState({ readAloud });
-    dynamicTextManager.enableReadAloud({enabled: readAloud, saveSetting: true});
+    dynamicTextManager.enableReadAloud({ enabled: readAloud, saveSetting: true });
     Logger.log({ event: LogEventName.toggle_read_aloud, event_value: readAloud });
   };
 
+  private checkLayout(activity?: Activity, sequence?: Sequence) {
+    // the sequence layout override is 0 for none and +1 added to the activity layout options for the override
+    if (activity && sequence && (sequence.layout_override > 0)) {
+      activity.layout = sequence.layout_override - 1;
+    }
+
+    // add or remove the notebook body class if needed to override styles
+    const body = document.getElementsByTagName("body").item(0);
+    const addNotebookBodyClass =
+      (activity?.layout === ActivityLayouts.Notebook) ||
+      (sequence?.layout_override === ActivityLayoutOverrides.Notebook);
+    if (addNotebookBodyClass) {
+      body?.classList.add("notebook");
+    } else {
+      body?.classList.remove("notebook");
+    }
+  }
 }

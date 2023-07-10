@@ -10,7 +10,8 @@
 }
 
 #modal {
-  font: 400 100% lato, arial, helvetica, sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
 }
 
 .ui-dialog {
@@ -41,13 +42,12 @@
 }
 
 .ui-dialog-title {
-  font: 700 16px lato, arial, helvetica, sans-serif;
+  font-weight: 700;
   font-size: 1rem;
   margin: 0 !important;
 }
 
 .ui-widget-content {
-  font-family: lato, arial, helvetica, sans-serif;
   font-size: 1rem;
   p.response {
     font-size: 1.1rem;

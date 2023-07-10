@@ -10,6 +10,7 @@
   "type": "Sequence",
   "export_site": "Lightweight Activities Runtime and Authoring",
   "font_size": "normal",
+  "layout_override": 0,
   "activities": [
     {
       "description": "<p>This is a test activity which is contained within a sequence and uses the teacher edition plugin.</p>",

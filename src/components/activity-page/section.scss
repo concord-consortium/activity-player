@@ -6,6 +6,7 @@
   grid-auto-rows: minmax(20px, auto);
   grid-template-columns: repeat(10, 1fr);
   margin: 8px;
+
   position: relative;
   &.responsive {
     width: 100%;
@@ -215,7 +216,7 @@
       align-self: center;
       position: relative;
       white-space: nowrap;
-      width: 30px;
+      width: auto;
     }
   }
 }

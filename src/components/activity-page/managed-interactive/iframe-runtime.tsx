@@ -12,6 +12,7 @@ import {
 } from "@concord-consortium/lara-interactive-api";
 import { DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
 import Shutterbug from "shutterbug";
+import classNames from "classnames";
 
 import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
@@ -22,6 +23,7 @@ import { getReportUrl } from "../../../utilities/report-utils";
 import ReloadIcon from "../../../assets/svg-icons/icon-reload.svg";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
 import { useAccessibility } from "../../accessibility-context";
+import { useMediaLibrary } from "../../media-library-context";
 
 import "./iframe-runtime.scss";
 
@@ -80,13 +82,14 @@ interface IProps {
   showDeleteDataButton?: boolean;
   setAspectRatio: (aspectRatio: number) => void;
   setHeightFromInteractive: (heightFromInteractive: number) => void;
+  hasHeader?: boolean;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
     setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo,
-    showDeleteDataButton, setAspectRatio, setHeightFromInteractive } = props;
+    showDeleteDataButton, setAspectRatio, setHeightFromInteractive, hasHeader } = props;
 
   const [reloadCount, setReloadCount] = useState<number>(0);
   const iframePhoneTimeout = useRef<number|undefined>(undefined);
@@ -105,7 +108,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const dynamicText = useDynamicTextContext();
   const dynamicTextComponentIds = useRef<Set<string>>(new Set());
 
-  const {fontSize, fontSizeInPx} = useAccessibility();
+  const {fontSize, fontSizeInPx, fontType, fontFamilyForType} = useAccessibility();
+
+  const mediaLibrary = useMediaLibrary();
 
   useEffect(() => {
     const initInteractive = () => {
@@ -355,8 +360,11 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   externalReportUrl: getReportUrl(id) || undefined,
                   accessibility: {
                     fontSize,
-                    fontSizeInPx
-                  }
+                    fontSizeInPx,
+                    fontType,
+                    fontFamilyForType,
+                  },
+                  mediaLibrary
                 };
 
       // to support legacy interactives first post the deprecated loadInteractive message as LARA does
@@ -454,6 +462,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     <div className="iframe-runtime" data-cy="iframe-runtime">
       <iframe key={`${id}-${reloadCount}`} ref={iframeRef} src={url} id={id} width={width} height={height} frameBorder={0}
               allowFullScreen={true}
+              className={classNames({"iframe-has-header" : hasHeader})}
               allow="geolocation; microphone; camera; bluetooth; clipboard-read; clipboard-write"
               title={iframeTitle}
               scrolling="no"

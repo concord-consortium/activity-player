@@ -1,0 +1,24 @@
+@import "../../vars.scss";
+
+.spike-media-library {
+  .title {
+    background-color: $cc-charcoal-light2;
+    clear: both;
+    position: relative;
+    padding: 8px 20px 5px;
+  }
+  .content {
+    background: $cc-charcoal-light3;
+    padding: 5px 20px 20px 20px !important;
+
+    .images {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+
+      img {
+        max-width: 100px;
+      }
+    }
+  }
+}
