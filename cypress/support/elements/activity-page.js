@@ -46,6 +46,12 @@ class ActivityPage {
   getCollapsibleHeader() {
     return cy.get("[data-cy=collapsible-header]");
   }
+  getActivityNavHeader() {
+    return cy.get("[data-cy=activity-nav-header]");
+  }
+  getNavPageButton(index) {
+    return cy.get('[data-cy=nav-pages-button]').eq(index);
+  }
   //Header
   getHeaderActivityTitle() {
     return cy.get('[data-cy=activity-title]');
@@ -203,6 +209,9 @@ class ActivityPage {
   }
   getSequenceThumb() {
     return this.getSequenceContent().find('.name div').eq(1);
+  }
+  clickSequenceThumb(index) {
+    return this.getSequenceContent().find('.name div').eq(index).click();
   }
 }
 export default ActivityPage;
