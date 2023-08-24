@@ -27,6 +27,8 @@ import { ClickToPlay } from "./click-to-play";
 
 import "./managed-interactive.scss";
 
+const hideHeaderIfEmpty = window.location.search.includes("hideHeaderIfEmpty");
+
 interface IProps {
   embeddable: IManagedInteractive | IMwInteractive;
   questionNumber?: number;
@@ -370,7 +372,10 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const hasQuestionNumber = (questionNumber || 0) > 0;
   const className = classNames("runtime-container", {"has-question-number": hasQuestionNumber});
 
-  const questionPrefix = props.showQuestionPrefix ? `Question #${questionNumber}${questionName.trim().length > 0 ? ": " : ""}` : "";
+  //const questionPrefix = props.showQuestionPrefix ? `Question #${questionNumber}${questionName.trim().length > 0 ? ": " : ""}` : "";
+  // this is a quick and dirty SPIKE to hide the question number in the header
+  const questionPrefix = "";
+  const showQuestionHeader = hideHeaderIfEmpty ? (hint.trim().length + questionName.trim().length) > 0 : true;
 
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
@@ -409,7 +414,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   return (
     <div ref={divTarget} className="managed-interactive" data-cy="managed-interactive">
       <div className={className} style={{width:containerWidth}}>
-      { questionNumber &&
+      { questionNumber && showQuestionHeader &&
         <div className="header" ref={headerTarget}>
           <DynamicText>{questionPrefix}{questionName}</DynamicText>
           {hint &&
