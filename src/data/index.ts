@@ -34,6 +34,7 @@ import interactiveSizingDemoQI from "../data/Interactive-Sizing-Demo-Question-In
 import sampleActivityHideReadAloud from "../data/sample-activity-hide-read-aloud.json";
 import sampleActivityAllQuestionInteractivesLargeFont from "../data/sample-activity-all-question-interactives-large-font.json";
 import sampleActivityMediaLibrary from "../data/sample-activity-media-library.json";
+import sampleActivityAllQuestionInteractivesNotebook from "../data/sample-activity-all-question-interactives-notebook.json";
 
 const sampleActivities: {[name: string]: Activity} = {
   "sample-new-sections-activity-1": sampleNewSectionsActivity1 as Activity,
@@ -57,6 +58,7 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-single-page-layout": sampleActivitySinglePageLayout as unknown as Activity,
   "sample-activity-all-question-interactives": sampleActivityAllQuestionInteractives as unknown as Activity,
   "sample-activity-all-question-interactives-large-font": sampleActivityAllQuestionInteractivesLargeFont as unknown as Activity,
+  "sample-activity-all-question-interactives-notebook": sampleActivityAllQuestionInteractivesNotebook as unknown as Activity,
   "sample-activity-notebook": sampleActivityNotebook as unknown as Activity,
   "LARA-page-elements-full-width-off": sampleActivityFullWidthOff as unknown as Activity,
   "LARA-page-elements-full-width-on": sampleActivityFullWidthOn as unknown as Activity,
