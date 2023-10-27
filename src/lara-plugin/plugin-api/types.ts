@@ -68,6 +68,8 @@ export interface IPluginRuntimeContext {
    * @param logData Data to log. Can be either event name or hash with at least `event` property.
    */
   log: (logData: string | ILogData) => void;
+  /** The starting z-index the plugin should use */
+  startingZIndex: number;
 }
 
 export interface IEmbeddableRuntimeContext {
@@ -163,6 +165,8 @@ export interface IPluginAuthoringContext {
   wrappedEmbeddable: IEmbeddableRuntimeContext | null;
   /** Function that returns JWT (Promise) for given app name. */
   getFirebaseJwt: (appName: string) => Promise<IJwtResponse>;
+  /** The starting z-index the plugin should use */
+  startingZIndex: number;
 }
 
 export interface IUser {

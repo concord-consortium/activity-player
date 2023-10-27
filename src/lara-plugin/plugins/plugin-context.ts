@@ -212,7 +212,8 @@ export const generateRuntimePluginContext = (options: IPluginRuntimeContextOptio
     getClassInfo: () => getClassInfo(),
     getFirebaseJwt: (appName: string) => getFirebaseJwtFromPortal(appName),
     wrappedEmbeddable: options.wrappedEmbeddable ? generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
-    log: (logData: string | ILogData) => log(options, logData)
+    log: (logData: string | ILogData) => log(options, logData),
+    startingZIndex: 50000,
   };
   return context;
 };
@@ -227,6 +228,7 @@ export const generateAuthoringPluginContext = (options: IPluginAuthoringContextO
     componentLabel: options.componentLabel,
     saveAuthoredPluginState: (state: string) => saveAuthoredPluginState(options.authorDataSaveUrl, state),
     wrappedEmbeddable: options.wrappedEmbeddable ? generateEmbeddableRuntimeContext(options.wrappedEmbeddable) : null,
-    getFirebaseJwt: (appName: string) => getFirebaseJwtFromPortal(appName)
+    getFirebaseJwt: (appName: string) => getFirebaseJwtFromPortal(appName),
+    startingZIndex: 50000,
   };
 };
