@@ -239,6 +239,10 @@ body.notebook {
           height: 0;
           margin: 0 !important;
           padding: 0 !important;
+          position: relative;
+          top: -10000px; //just show it somewhere offscreen
+          left: 0;
+          opacity: 0;
         }
 
         &.tab-contents {
