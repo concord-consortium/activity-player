@@ -62,6 +62,9 @@ class ExportToMediaLibrary {
   verifyImageUpdated() {
     getInIframe("body", ".inline-content--inlineImg--question-int").should("exist");
   }
+  verifyUploadFromMediaLibraryDialogNotDisplayed() {
+    return getInIframe("body", ".base-app--runtime--question-int").find(".upload-image-modal--modal--question-int").should('not.exist');
+  }
 
   //Labbook
   getLabbookUploadFromMediaLibraryDialog() {
