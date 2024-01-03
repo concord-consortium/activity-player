@@ -123,6 +123,7 @@ interface IState {
   readAloud: boolean;
   readAloudDisabled: boolean;
   hideReadAloud: boolean;
+  hideQuestionNumbers: boolean;
   fontSize: FontSize;
   fontSizeInPx: number;
   fontType: FontType;
@@ -155,6 +156,7 @@ export class App extends React.PureComponent<IProps, IState> {
       readAloud: dynamicTextManager.isReadAloudEnabled,
       readAloudDisabled: !dynamicTextManager.isReadAloudAvailable,
       hideReadAloud: false,
+      hideQuestionNumbers: false,
       fontSize: "normal",
       fontSizeInPx: getFontSizeInPx("normal"),
       fontType: "normal",
@@ -331,11 +333,14 @@ export class App extends React.PureComponent<IProps, IState> {
       const showWarning = firebaseAppName() !== "report-service-pro";
 
       let hideReadAloud = false;
+      let hideQuestionNumbers = false;
       if (sequence) {
         // sequence always overrides activity level setting
         hideReadAloud = !!sequence.hide_read_aloud;
+        hideQuestionNumbers = !!sequence.hide_question_numbers;
       } else {
         hideReadAloud = !!activity.hide_read_aloud;
+        hideQuestionNumbers = !!activity.hide_question_numbers;
       }
 
       if (hideReadAloud) {
@@ -345,7 +350,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
       newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner,
                      showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity, hideReadAloud,
-                     fontSize, fontSizeInPx, fontType, fontFamilyForType};
+                     fontSize, fontSizeInPx, fontType, fontFamilyForType, hideQuestionNumbers};
       setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       this.setState(newState as IState);
@@ -541,6 +546,7 @@ export class App extends React.PureComponent<IProps, IState> {
                 pluginsLoaded={this.state.pluginsLoaded}
                 pageChangeNotification={this.state.pageChangeNotification}
                 hideReadAloud={this.state.hideReadAloud}
+                hideQuestionNumbers={this.state.hideQuestionNumbers}
               />
         }
         {renderBottomNav &&
