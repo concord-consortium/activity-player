@@ -232,6 +232,7 @@ function convertActivityResource (legacyResource: any) {
     "pages": newPagesResource(legacyResource.pages),
     "defunct": legacyResource.defunct,
     "hide_read_aloud": legacyResource.hide_read_aloud,
+    "hide_question_numbers": legacyResource.hide_question_numbers,
     "font_size": legacyResource.font_size,
   };
   return newActivityResource;

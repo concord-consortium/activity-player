@@ -189,6 +189,7 @@ export interface Activity {
   fixed_width_layout?: "ipad_friendly" | "1100px";
   defunct?: boolean;
   hide_read_aloud?: boolean;
+  hide_question_numbers?: boolean;
   font_size: "normal" | "large"
 }
 
@@ -208,6 +209,7 @@ export interface Sequence {
   fixed_width_layout?: "ipad_friendly" | "1100px";
   defunct?: boolean;
   hide_read_aloud?: boolean;
+  hide_question_numbers?: boolean;
   font_size: "normal" | "large"
   layout_override: number;
 }

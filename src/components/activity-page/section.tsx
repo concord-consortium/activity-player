@@ -22,6 +22,7 @@ interface IProps {
   pluginsLoaded: boolean;
   ref?: React.Ref<SectionImperativeAPI>;
   hiddenTab?: boolean;
+  hideQuestionNumbers?: boolean;
 }
 
 export interface SectionImperativeAPI {
@@ -94,6 +95,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
                 teacherEditionMode={props.teacherEditionMode}
                 setNavigation={props.setNavigation}
                 pluginsLoaded={props.pluginsLoaded}
+                hideQuestionNumbers={props.hideQuestionNumbers}
               />
             );
           })

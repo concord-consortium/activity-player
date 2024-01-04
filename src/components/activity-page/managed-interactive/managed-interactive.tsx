@@ -36,6 +36,7 @@ interface IProps {
   ref?: React.Ref<ManagedInteractiveImperativeAPI>;
   emitInteractiveAvailable?: () => void;
   showQuestionPrefix: boolean;
+  hideQuestionNumbers?: boolean;
 }
 
 export interface ManagedInteractiveImperativeAPI {
@@ -370,7 +371,10 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const hasQuestionNumber = (questionNumber || 0) > 0;
   const className = classNames("runtime-container", {"has-question-number": hasQuestionNumber});
 
-  const questionPrefix = props.showQuestionPrefix ? `Question #${questionNumber}${questionName.trim().length > 0 ? ": " : ""}` : "";
+  const trimmedQuestionName = questionName.trim();
+  const hasQuestionName = trimmedQuestionName.length > 0;
+  const questionPrefix = props.showQuestionPrefix && !props.hideQuestionNumbers ? `Question #${questionNumber}${hasQuestionName ? ": " : ""}` : "";
+  const hideQuestionHeader = props.hideQuestionNumbers && !hasQuestionName;
 
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
@@ -409,7 +413,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   return (
     <div ref={divTarget} className="managed-interactive" data-cy="managed-interactive">
       <div className={className} style={{width:containerWidth}}>
-      { questionNumber &&
+      { questionNumber && !hideQuestionHeader &&
         <div className="header" ref={headerTarget}>
           <DynamicText>{questionPrefix}{questionName}</DynamicText>
           {hint &&

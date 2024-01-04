@@ -32,6 +32,7 @@ import sampleActivityAllQuestionInteractives from "../data/sample-activity-all-q
 import sampleActivityNotebook from "../data/sample-activity-notebook.json";
 import interactiveSizingDemoQI from "../data/Interactive-Sizing-Demo-Question-Interactives.json";
 import sampleActivityHideReadAloud from "../data/sample-activity-hide-read-aloud.json";
+import sampleActivityHideQuestionNumbers from "../data/sample-activity-hide-question-numbers.json";
 import sampleActivityAllQuestionInteractivesLargeFont from "../data/sample-activity-all-question-interactives-large-font.json";
 import sampleActivityMediaLibrary from "../data/sample-activity-media-library.json";
 import sampleActivityAllQuestionInteractivesNotebook from "../data/sample-activity-all-question-interactives-notebook.json";
@@ -71,6 +72,7 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-ipad-friendly": sampleActivityIPadFriendly as unknown as Activity,
   "interactive-sizing-demo-question-interactive": interactiveSizingDemoQI as unknown as Activity,
   "sample-activity-hide-read-aloud": sampleActivityHideReadAloud as unknown as Activity,
+  "sample-activity-hide-question-numbers": sampleActivityHideQuestionNumbers as unknown as Activity,
   "sample-activity-media-library": sampleActivityMediaLibrary as unknown as Activity,
 };
 
@@ -82,6 +84,7 @@ import sampleSequenceWithQuestions from "../data/sample-sequence-with-questions.
 import sampleSequenceTE from "../data/sample-sequence-te.json";
 import sampleSequenceDefunct from "../data/sample-sequence-defunct.json";
 import sampleSequenceHideReadAloud from "../data/sample-sequence-hide-read-aloud.json";
+import sampleSequenceHideQuestionNumbers from "../data/sample-sequence-hide-question-numbers.json";
 import sampleSequenceLargeFont from "../data/sample-sequence-large-font.json";
 import sampleSequenceNotebook from "../data/sample-sequence-notebook.json";
 
@@ -94,6 +97,7 @@ const sampleSequences: {[name: string]: Sequence} = {
   "sample-sequence-te": sampleSequenceTE as unknown as Sequence,
   "sample-sequence-defunct": sampleSequenceDefunct as unknown as Sequence,
   "sample-sequence-hide-read-aloud": sampleSequenceHideReadAloud as unknown as Sequence,
+  "sample-sequence-hide-question-numbers": sampleSequenceHideQuestionNumbers as unknown as Sequence,
   "sample-sequence-large-font": sampleSequenceLargeFont as unknown as Sequence,
   "sample-sequence-notebook": sampleSequenceNotebook as unknown as Sequence,
 };
