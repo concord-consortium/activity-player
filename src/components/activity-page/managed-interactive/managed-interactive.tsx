@@ -24,6 +24,7 @@ import { Logger, LogEventName } from "../../../lib/logger";
 import { handleGetAttachmentUrl } from "@concord-consortium/interactive-api-host";
 import { LaraDataContext } from "../../lara-data-context";
 import { ClickToPlay } from "./click-to-play";
+import { ActivityLayouts, hasPluginReferencingEmbeddable } from "../../../utilities/activity-utils";
 
 import "./managed-interactive.scss";
 
@@ -72,6 +73,11 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const [heightFromInteractive, setHeightFromInteractive] = useState(0);
 
   const embeddableRefId = props.embeddable.ref_id;
+
+  const hasPlugin = useMemo(() => {
+    return !!laraData.activity && hasPluginReferencingEmbeddable(laraData.activity, embeddableRefId);
+  }, [laraData.activity, embeddableRefId]);
+
   useEffect(() => {
     if (shouldWatchAnswer) {
       return watchAnswer(embeddableRefId, (wrappedAnswer) => {
@@ -374,7 +380,9 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const trimmedQuestionName = questionName.trim();
   const hasQuestionName = trimmedQuestionName.length > 0;
   const questionPrefix = props.showQuestionPrefix && !props.hideQuestionNumbers ? `Question #${questionNumber}${hasQuestionName ? ": " : ""}` : "";
-  const hideQuestionHeader = props.hideQuestionNumbers && !hasQuestionName;
+
+  const isNotebookLayout = laraData.activity?.layout === ActivityLayouts.Notebook;
+  const hideQuestionHeader = props.hideQuestionNumbers && !hasQuestionName && !hint && !isNotebookLayout && !hasPlugin;
 
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
