@@ -593,6 +593,7 @@ export class App extends React.PureComponent<IProps, IState> {
         activity={activity}
         teacherEditionMode={this.state.teacherEditionMode}
         pluginsLoaded={this.state.pluginsLoaded}
+        hideQuestionNumbers={this.state.hideQuestionNumbers}
       />
     );
   }

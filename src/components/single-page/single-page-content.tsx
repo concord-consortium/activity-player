@@ -13,10 +13,11 @@ interface IProps {
   activity: Activity;
   teacherEditionMode?: boolean;
   pluginsLoaded: boolean;
+  hideQuestionNumbers?: boolean;
 }
 
 export const SinglePageContent: React.FC<IProps> = (props) => {
-  const { activity, teacherEditionMode, pluginsLoaded } = props;
+  const { activity, teacherEditionMode, pluginsLoaded, hideQuestionNumbers } = props;
   const renderPageContent = (page: Page, index: number) => {
     // Even though this renders as a single page, the authored JSON still has pages
     const totalPreviousQuestions = numQuestionsOnPreviousPages(page.position, activity);
@@ -34,6 +35,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
                 teacherEditionMode={teacherEditionMode}
                 pluginsLoaded={pluginsLoaded}
                 page={page}
+                hideQuestionNumbers={hideQuestionNumbers}
               />
             );
           })
