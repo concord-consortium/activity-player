@@ -131,6 +131,9 @@ class ActivityPage {
   verifyQuestionHeader(header) {
     this.getQuestionHeader().should("contain", header);
   }
+  getHintIcon() {
+    return this.getInteractive().find('[data-cy=open-hint]');
+  }
   openHint() {
     this.getInteractive().find('[data-cy=open-hint]').eq(0).click();
   }
