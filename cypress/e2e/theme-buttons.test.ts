@@ -28,9 +28,8 @@ context("Test theme buttons", () => {
       themeIds.forEach(id => {
         cy.get(`[data-cy=theme-button-${id}]`).should("be.visible");
       });
-    });
 
-    it("have access to imported text colors", () => {
+    cy.log("have access to imported text colors");
       themeIds.forEach(id => {
         cy.get(`[data-cy=theme-button-${id}]`)
           .then(elt => {

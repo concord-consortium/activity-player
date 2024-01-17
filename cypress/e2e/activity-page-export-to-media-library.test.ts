@@ -8,13 +8,15 @@ const file = {
   image: "cypress/fixtures/image/water-drop-300-250.png"
 };
 
-context("Test the overall app", () => {
-  before(() => {
-    cy.visit("?activity=https%3A%2F%2Fauthoring.lara.staging.concord.org%2Fapi%2Fv1%2Factivities%2F223.json&preview");
+function beforeTest() {
+  cy.visit("?activity=https%3A%2F%2Fauthoring.lara.staging.concord.org%2Fapi%2Fv1%2Factivities%2F223.json&preview");
     activityPage.getActivityTitle().should("contain", "Automation Activity For AP Export To Media Library");
-  });
+}
+
+context("Test the overall app", () => {
   describe("Image Question",() => {
     it("verify image question with export to media library",()=>{
+      beforeTest();
       activityPage.getNavPageButton(0).click();
       cy.wait(5000);
       exportToMediaLibrary.getUploadImageButton().click();
@@ -41,6 +43,7 @@ context("Test the overall app", () => {
   });
   describe("Drawing Tool",() => {
     it("verify drawing tool with export to media library",()=>{
+      beforeTest();
       activityPage.getNavPageButton(1).click();
       cy.wait(5000);
       exportToMediaLibrary.getUploadImageButton().click();
@@ -62,6 +65,7 @@ context("Test the overall app", () => {
   });
   describe("Labbook",() => {
     it("verify Labbook with export to media library",()=>{
+      beforeTest();
       activityPage.getNavPageButton(2).click();
       cy.wait(5000);
       exportToMediaLibrary.getLabbookUploadImageButton().click();
@@ -110,6 +114,7 @@ context("Test the overall app", () => {
   });
   describe("Labbook Wide",() => {
     it("verify Labbook Wide with export to media library",()=>{
+      beforeTest();
       activityPage.getNavPageButton(3).click();
       cy.wait(5000);
       exportToMediaLibrary.getLabbookUploadImageButton().click();

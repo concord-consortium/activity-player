@@ -8,8 +8,9 @@ context("Test the overall app", () => {
     cy.visit("?preview&sequence=https%3A%2F%2Fauthoring.lara.staging.concord.org%2Fapi%2Fv1%2Fsequences%2F13.json&sequenceActivity=0");
     activityPage.getSequenceTitle().should("contain", "Test Sequence Font Size Large");
   });
-  describe("Sequence Home Page",() => {
-    it("verify large font size in sequence home page",()=>{
+  describe("Sequence test",() => {
+    it("Test Sequence Font Size Large in Sequence",()=>{
+      cy.log("verify large font size in sequence home page");
       activityPage.getSequenceActivityTitle().should('have.css', 'font-size', largeFont.size5);
       activityPage.getAccountOwnerName().should('have.css', 'font-size', largeFont.size5);
       activityPage.getSequenceTitle().should('have.css', 'font-size', largeFont.size8);
@@ -18,10 +19,8 @@ context("Test the overall app", () => {
       activityPage.getSequenceThumb().should('have.css', 'font-size', largeFont.size9);
       activityPage.getFooterText().should('have.css', 'font-size', largeFont.size5);
       activityPage.getVersionInfo().should('have.css', 'font-size', largeFont.size2);
-    });
-  });
-  describe("Activity Home Page",() => {
-    it("verify large font size in activity home page",()=>{
+
+      cy.log("verify large font size in activity home page");
       activityPage.getSequenceThumb().click();
       activityPage.getActivityTitle().should('have.css', 'font-size', largeFont.size8);
       activityPage.getReadAloudToggle().should('have.css', 'font-size', largeFont.size4);
@@ -29,8 +28,7 @@ context("Test the overall app", () => {
       activityPage.getEstimatedTime().should('have.css', 'font-size', largeFont.size5);
       activityPage.getPagesHeader().should('have.css', 'font-size', largeFont.size5);
       activityPage.getPageItemNo().should('have.css', 'font-size', largeFont.size5);
-      activityPage.getPageItemLink().should('have.css', 'font-size', largeFont.size5);
-      
+      activityPage.getPageItemLink().should('have.css', 'font-size', largeFont.size5);     
     });
   });
 });
@@ -40,8 +38,9 @@ context("Test the overall app", () => {
     cy.visit("?preview&sequence=https%3A%2F%2Fauthoring.lara.staging.concord.org%2Fapi%2Fv1%2Fsequences%2F12.json&sequenceActivity=0");
     activityPage.getSequenceTitle().should("contain", "Test Sequence Font Size Normal");
   });
-  describe("Sequence Home Page",() => {
-    it("verify normal font size in sequence home page",()=>{
+  describe("Sequence test",() => {
+    it("Test Sequence Font Size Normal in Sequence",()=>{
+      cy.log("verify normal font size in sequence home page");
       activityPage.getSequenceActivityTitle().should('have.css', 'font-size', normalFont.size5);
       activityPage.getAccountOwnerName().should('have.css', 'font-size', normalFont.size5);
       activityPage.getSequenceTitle().should('have.css', 'font-size', normalFont.size8);
@@ -50,10 +49,8 @@ context("Test the overall app", () => {
       activityPage.getSequenceThumb().should('have.css', 'font-size', normalFont.size9);
       activityPage.getFooterText().should('have.css', 'font-size', normalFont.size5);
       activityPage.getVersionInfo().should('have.css', 'font-size', normalFont.size2);
-    });
-  });
-  describe("Activity Home Page",() => {
-    it("verify normal font size in activity home page",()=>{
+
+      cy.log("verify normal font size in activity home page");
       activityPage.getSequenceThumb().click();
       activityPage.getActivityTitle().should('have.css', 'font-size', normalFont.size8);
       activityPage.getReadAloudToggle().should('have.css', 'font-size', normalFont.size4);
@@ -61,8 +58,7 @@ context("Test the overall app", () => {
       activityPage.getEstimatedTime().should('have.css', 'font-size', normalFont.size5);
       activityPage.getPagesHeader().should('have.css', 'font-size', normalFont.size5);
       activityPage.getPageItemNo().should('have.css', 'font-size', normalFont.size5);
-      activityPage.getPageItemLink().should('have.css', 'font-size', normalFont.size5);
-      
+      activityPage.getPageItemLink().should('have.css', 'font-size', normalFont.size5);    
     });
   });
 });

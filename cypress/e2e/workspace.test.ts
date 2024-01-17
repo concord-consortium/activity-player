@@ -6,47 +6,35 @@ context("Test the overall app", () => {
     cy.visit("/?preview");
   });
 
-  describe("header",()=>{
-    it("verify header loads",()=>{
-        cy.get("[data-cy=activity-header]").should("be.visible");
-        cy.get("[data-cy=activity-title]").should("be.visible");
-        cy.get("[data-cy=account-owner]").should("be.visible");
-    });
-  });
-  describe("ActivityNavHeader",()=>{
-    it("verify ActivityNavHeader loads",()=>{
-        cy.get("[data-cy=activity-nav-header]").should("be.visible");
-        cy.get(".page-button").should("have.length", 22); // top and bottom nav headers exist
-    });
-  });
-  describe("ProfileNavHeader",()=>{
-    it("verify ProfileNavHeader loads",()=>{
-        cy.get("[data-cy=account-owner]").should("be.visible");
-        cy.get("[data-cy=account-owner]").should("contain", "Anonymous");
-    });
-  });
-  describe("content",()=>{
-    it("verify content loads",()=>{
-        cy.get("[data-cy=intro-page-content]").should("be.visible");
-    });
-  });
-  describe("footer",()=>{
-      it("verify footer loads",()=>{
-          cy.get("[data-cy=footer]").scrollIntoView().should("be.visible");
-      });
-  });
-  describe("version info",()=>{
-    it("verify version info loads",()=>{
-        cy.get("[data-cy=version-info]").scrollIntoView().should("be.visible");
-    });
-  });
-describe("accessibility",()=>{
-    it("go to correct page when tabbed and keydown enter from page navigation header",()=>{
+  describe("workspace",()=>{
+    it("verify worspace",()=>{
+      cy.log("verify header loads");
+      cy.get("[data-cy=activity-header]").should("be.visible");
+      cy.get("[data-cy=activity-title]").should("be.visible");
+      cy.get("[data-cy=account-owner]").should("be.visible");
+
+      cy.log("verify ActivityNavHeader loads");
+      cy.get("[data-cy=activity-nav-header]").should("be.visible");
+      cy.get(".page-button").should("have.length", 22); // top and bottom nav headers exist
+
+      cy.log("verify ProfileNavHeader loads");
+      cy.get("[data-cy=account-owner]").should("be.visible");
+      cy.get("[data-cy=account-owner]").should("contain", "Anonymous");
+
+      cy.log("verify content loads");
+      cy.get("[data-cy=intro-page-content]").should("be.visible");
+
+      cy.log("verify footer loads");
+      cy.get("[data-cy=footer]").scrollIntoView().should("be.visible");
+
+      cy.log("verify version info loads");
+      cy.get("[data-cy=version-info]").scrollIntoView().should("be.visible");
+
+      cy.log("go to correct page when tabbed and keydown enter from page navigation header");
       activityPage.getNavPage(2).type("{enter}");
       activityPage.getSidebarTab().should("be.visible");
-    });
 
-    it("go to correct page when tabbed and keydown enter from page list",()=>{
+      cy.log("go to correct page when tabbed and keydown enter from page list");
       cy.get("[data-cy=nav-pages] button").eq(1).type("{enter}");
       cy.get("[data-cy=intro-page-content]").should("be.visible");
       cy.get(".page-item").eq(1).focus();
