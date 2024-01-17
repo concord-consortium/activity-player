@@ -32,7 +32,7 @@ context("Launch AP From the Portal", () => {
       the login will fail in a strange way. It returns success, but doesn't set a valid
       cookie.
     */
-    cy.clearCookies({domain: null} as any);
+    // cy.clearCookies({domain: null} as any);
 
     // Login as a student
     cy.request({

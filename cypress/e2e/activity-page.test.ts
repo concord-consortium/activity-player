@@ -9,45 +9,42 @@ context("Test the overall app", () => {
     activityPage.getPage(2).click();
   });
   describe("URL",() => {
-    it("verify URL does not include sequenceActivity param",()=>{
+    it("Test the overall app",()=>{
+      cy.log("verify URL does not include sequenceActivity param");
       cy.url().should("not.contain", "sequenceActivity");
-    });
-  });
-  describe("Sidebar",() => {
-    it("verify sidebar opens",()=>{
+
+      cy.log("verify sidebar opens");
       const content="Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
       activityPage.getSidebarTab().click();
       activityPage.getSidebarContent().should("be.visible").and("contain", content);
-    });
-    it("verify sidebar closes when tab is clicked",()=>{
+
+      cy.log("verify sidebar closes when tab is clicked");
       activityPage.getSidebarTab().click();
       activityPage.getSidebarContent().should("not.be.visible");
-    });
-    it("verify sidebar closes when the close button is clicked",()=>{
+
+      cy.log("verify sidebar closes when the close button is clicked");
       activityPage.getSidebarTab().click();
       activityPage.getSidebarContent().should("be.visible");
       activityPage.getSidebarCloseButton().click();
       activityPage.getSidebarContent().should("not.be.visible");
-    });
-  });
-  describe("Info/Assess (secondary embeddables)",()=>{
-    it("verify textbox",()=>{
+
+      cy.log("Info/Assess (secondary embeddables)");
+      cy.log("verify textbox");
       activityPage.getNavPage(3).click();
       cy.wait(1);
       activityPage.getSecondaryEmbeddable("text-box").eq(1).scrollIntoView()
         .should("be.visible").and("contain","Duis vitae ultrices augue, eu fermentum elit.");
-    });
-    it("verify collapsible column",()=>{
+
+      cy.log("verify collapsible column");
       activityPage.getNavPage(2).click();
       activityPage.getCollapsibleHeader().should("contain", "Hide");
       activityPage.getCollapsibleHeader().click();
       activityPage.getCollapsibleHeader().should("have.class", "collapsed").and("contain", "Show");
       activityPage.getCollapsibleHeader().click();
       activityPage.getCollapsibleHeader().should("have.not.class", "collapsed").and("contain", "Hide");
-    });
-  });
-  describe("Required questions",()=>{
-    it("verify locked navigation",()=>{
+
+      cy.log("Required questions");
+      cy.log("verify locked navigation");
       activityPage.getNavPage(5).click();
       cy.wait(1000);
       activityPage.getNavPage(6).should("have.class", "disabled");
@@ -56,10 +53,9 @@ context("Test the overall app", () => {
       activityPage.getModalDialogMessage().should("have.length", 1);
       activityPage.getModalDialogClose().click();
       activityPage.getModalDialogMessage().should("have.length", 0);
-    });
-  });
-  describe("First and last page",()=>{
-    it("verify arrow navigation is disabled when on the first or last page",()=>{
+
+      cy.log("First and last page");
+      cy.log("verify arrow navigation is disabled when on the first or last page");
       activityPage.getHomeButton().eq(1).click();
       cy.wait(1000);
       activityPage.getPreviousPageButton().should("have.class", "last-page");
@@ -104,10 +100,11 @@ context("Test the teacher edition plugin", () => {
       cy.wait(1000);
       activityPage.getPage(1).click();
     });
-    it("should show teacher edition banner", () => {
+    it("text page 1 teacher edition", () => {
+      cy.log("should show teacher edition banner");
       cy.get(".teacher-edition-banner").should("be.visible");
-    });
-    it("should have the right number of decorated interactives and window shades", () => {
+
+      cy.log("should have the right number of decorated interactives and window shades");
       cy.get(".question-wrapper--questionWrapper--TETipsPluginV1").should("have.length", 3);
       cy.get(".window-shade--windowShade--TETipsPluginV1").should("have.length", 1);
     });
@@ -118,10 +115,11 @@ context("Test the teacher edition plugin", () => {
       cy.wait(1000);
       activityPage.getPage(2).click();
     });
-    it("should show teacher edition banner", () => {
+    it("text page 2 teacher edition", () => {
+      cy.log("should show teacher edition banner");
       cy.get(".teacher-edition-banner").should("be.visible");
-    });
-    it("should have the right number of window shades", () => {
+
+      cy.log("should have the right number of window shades");
       cy.get(".window-shade--windowShade--TETipsPluginV1").should("have.length", 4);
     });
   });

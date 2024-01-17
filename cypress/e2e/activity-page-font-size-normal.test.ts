@@ -6,22 +6,22 @@ import FontSize from "../support/elements/font-size";
 const activityPage = new ActivityPage;
 const fontSize = new FontSize;
 
+function beforeTest() {
+  cy.visit("?activity=https%3A%2F%2Fauthoring.lara.staging.concord.org%2Fapi%2Fv1%2Factivities%2F92.json&preview");
+  activityPage.getActivityTitle().should("contain", "Automation Activity For Font Size Normal");
+}
+
 context("Test the overall app", () => {
-  before(() => {
-    cy.visit("?activity=https%3A%2F%2Fauthoring.lara.staging.concord.org%2Fapi%2Fv1%2Factivities%2F92.json&preview");
-    activityPage.getActivityTitle().should("contain", "Automation Activity For Font Size Normal");
-  });
-  describe("Header and Footer",() => {
-    it("verify normal font size in header and footer",()=>{
+  describe("Home Page, Header and Footer",() => {
+    it("verify normal font size in home page, header and footer",()=>{
+      beforeTest();
       activityPage.getHeaderActivityTitle().should('have.css', 'font-size', normalFont.size5);
       activityPage.getAccountOwnerName().should('have.css', 'font-size', normalFont.size5);
       activityPage.getPageButton().should('have.css', 'font-size', normalFont.size5);
       activityPage.getFooterText().should('have.css', 'font-size', normalFont.size5);
       activityPage.getVersionInfo().should('have.css', 'font-size', normalFont.size2);
-    });
-  });
-  describe("Home Page",() => {
-    it("verify normal font size in home page",()=>{
+
+      cy.log("verify normal font size in home page");
       activityPage.getActivityTitle().should('have.css', 'font-size', normalFont.size8);
       activityPage.getReadAloudToggle().should('have.css', 'font-size', normalFont.size4);
       activityPage.getIntroText().should('have.css', 'font-size', normalFont.size5);
@@ -29,11 +29,11 @@ context("Test the overall app", () => {
       activityPage.getPagesHeader().should('have.css', 'font-size', normalFont.size5);
       activityPage.getPageItemNo().should('have.css', 'font-size', normalFont.size5);
       activityPage.getPageItemLink().should('have.css', 'font-size', normalFont.size5);
-
     });
   });
   describe("Bar Graph",() => {
     it("verify normal font size in bar graph interactive",()=>{
+      beforeTest();
       activityPage.clickPageItem(0);
       cy.wait(5000);
       fontSize.verifyHeaderHintNormalFont("Bar Graph", "Bar Graph");
@@ -45,7 +45,8 @@ context("Test the overall app", () => {
   });
   describe("Carousel",() => {
     it("verify normal font size in carousel interactive",()=>{
-      activityPage.clickPageButton(1);
+      beforeTest();
+      activityPage.clickPageItem(1);
       cy.wait(5000);
       fontSize.verifyHeaderHintNormalFont("Carousel", "Carousel");
       getInIframe("body", ".runtime--runtime--question-int p").should('have.css', 'font-size', normalFont.size4);
@@ -56,7 +57,8 @@ context("Test the overall app", () => {
   });
   describe("Drag & Drop",() => {
     it("verify normal font size in drag & drop interactive",()=>{
-      activityPage.clickPageButton(2);
+      beforeTest();
+      activityPage.clickPageItem(2);
       cy.wait(5000);
       fontSize.verifyHeaderHintNormalFont("Drag & Drop", "Drag and drop");
       getInIframe("body", ".base-app--runtime--question-int p").should('have.css', 'font-size', normalFont.size4);
@@ -67,7 +69,8 @@ context("Test the overall app", () => {
   });
   describe("Drawing Tool",() => {
     it("verify normal font size in drawing tool interactive",()=>{
-      activityPage.clickPageButton(3);
+      beforeTest();
+      activityPage.clickPageItem(3);
       cy.wait(5000);
       fontSize.verifyHeaderHintNormalFont("Drawing Tool", "Drawing Tool");
       getInIframe("body", ".base-app--runtime--question-int p").should('have.css', 'font-size', normalFont.size4);
@@ -77,7 +80,8 @@ context("Test the overall app", () => {
   });
   describe("FIB",() => {
     it("verify normal font size in fill in the blanks interactive",()=>{
-      activityPage.clickPageButton(4);
+      beforeTest();
+      activityPage.clickPageItem(4);
       cy.wait(5000);
       fontSize.verifyHeaderHintNormalFont("FIB", "FIB");
       getInIframe("body", ".base-app--runtime--question-int p").should('have.css', 'font-size', normalFont.size4);
@@ -85,7 +89,8 @@ context("Test the overall app", () => {
   });
   describe("Image Interactive",() => {
     it("verify normal font size in image interactive",()=>{
-      activityPage.clickPageButton(5);
+      beforeTest();
+      activityPage.clickPageItem(5);
       cy.wait(5000);
       activityPage.verifyPageContentHeader("Image Interactive");
       activityPage.getPageContentHeader().should('have.css', 'font-size', normalFont.size7);
@@ -96,7 +101,8 @@ context("Test the overall app", () => {
   });
   describe("Image Question",() => {
     it("verify normal font size in image question interactive",()=>{
-      activityPage.clickPageButton(6);
+      beforeTest();
+      activityPage.clickPageItem(6);
       cy.wait(5000);
       fontSize.verifyHeaderHintNormalFont("Image Question", "Image Question");
       getInIframe("body", ".base-app--runtime--question-int p").eq(0).should('have.css', 'font-size', normalFont.size4);
@@ -119,7 +125,8 @@ context("Test the overall app", () => {
   });
   describe("Labbook",() => {
     it("verify normal font size in labbook interactive",()=>{
-      activityPage.clickPageButton(6);
+      beforeTest();
+      activityPage.clickPageItem(7);
       cy.wait(5000);
       fontSize.verifyHeaderHintNormalFont("Labbook", "Labbook");
       getInIframe("body", ".base-app--runtime--question-int p").should('have.css', 'font-size', normalFont.size4);
@@ -134,7 +141,8 @@ context("Test the overall app", () => {
   });
   describe("MCQ",() => {
     it("verify normal font size in mcq interactive",()=>{
-      activityPage.clickPageButton(6);
+      beforeTest();
+      activityPage.clickPageItem(8);
       cy.wait(5000);
       fontSize.verifyHeaderHintNormalFont("MCQ", "MCQ");
       getInIframe("body", ".base-app--runtime--question-int p").should('have.css', 'font-size', normalFont.size4);
@@ -156,7 +164,8 @@ context("Test the overall app", () => {
   });
   describe("Multiselect",() => {
     it("verify normal font size in multiselect interactive",()=>{
-      activityPage.clickPageButton(6);
+      beforeTest();
+      activityPage.clickPageItem(9);
       cy.wait(5000);
       fontSize.verifyHeaderHintNormalFont("Multiselect", "Multiselect");
       getInIframe("body", ".base-app--runtime--question-int p").should('have.css', 'font-size', normalFont.size4);
@@ -169,7 +178,8 @@ context("Test the overall app", () => {
   });
   describe("Open Response",() => {
     it("verify normal font size in open response interactive",()=>{
-      activityPage.clickPageButton(6);
+      beforeTest();
+      activityPage.clickPageItem(10);
       cy.wait(5000);
       fontSize.verifyHeaderHintNormalFont("Open Response", "Open Response");
       getInIframe("body", ".base-app--runtime--question-int p").should('have.css', 'font-size', normalFont.size4);
@@ -181,7 +191,8 @@ context("Test the overall app", () => {
   });
   describe("Scaffolded",() => {
     it("verify normal font size in scaffolded interactive",()=>{
-      activityPage.clickPageButton(6);
+      beforeTest();
+      activityPage.clickPageItem(11);
       cy.wait(5000);
       fontSize.verifyHeaderHintNormalFont("Scaffolded", "Scaffold");
       getInIframe("body", ".runtime--runtime--question-int p").should('have.css', 'font-size', normalFont.size4);
@@ -199,7 +210,8 @@ context("Test the overall app", () => {
   });
  describe("ScoreBot",() => {
     it("verify normal font size in scorebot interactive",()=>{
-      activityPage.clickPageButton(6);
+      beforeTest();
+      activityPage.clickPageItem(12);
       cy.wait(5000);
       fontSize.verifyHeaderHintNormalFont("ScoreBot", "ScoreBot");
       getInIframe("body", ".runtime--prompt--question-int p").should('have.css', 'font-size', normalFont.size4);
@@ -219,7 +231,8 @@ context("Test the overall app", () => {
   });
   describe("Side by side",() => {
     it("verify normal font size in side by side interactive",()=>{
-      activityPage.clickPageButton(7);
+      beforeTest();
+      activityPage.clickPageItem(13);
       cy.wait(5000);
       activityPage.verifyPageContentHeader("Side by side");
       activityPage.getPageContentHeader().should('have.css', 'font-size', normalFont.size7);
@@ -232,7 +245,8 @@ context("Test the overall app", () => {
   });
   describe("Text Block",() => {
     it("verify normal font size in text block interactive",()=>{
-      activityPage.clickPageButton(8);
+      beforeTest();
+      activityPage.clickPageItem(14);
       cy.wait(5000);
       activityPage.verifyPageContentHeader("Text Block");
       activityPage.getPageContentHeader().should('have.css', 'font-size', normalFont.size7);
@@ -242,7 +256,8 @@ context("Test the overall app", () => {
   });
   describe("Video Interactive",() => {
     it("verify normal font size in video interactive",()=>{
-      activityPage.clickPageButton(9);
+      beforeTest();
+      activityPage.clickPageItem(15);
       cy.wait(5000);
       activityPage.verifyPageContentHeader("Video Interactive");
       activityPage.getPageContentHeader().should('have.css', 'font-size', normalFont.size7);
@@ -254,7 +269,8 @@ context("Test the overall app", () => {
   });
   describe("Summary Page",() => {
     it("verify normal font size in summary page",()=>{
-      activityPage.clickCompletionPageButton();
+      beforeTest();
+      activityPage.clickPageItem(16);
       cy.wait(2000);
       activityPage.getProgressText().should('have.css', 'font-size', normalFont.size5);
       activityPage.getSummaryActivityTitle().should('have.css', 'font-size', normalFont.size8);

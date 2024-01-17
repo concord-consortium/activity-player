@@ -8,13 +8,15 @@ const readAloud = new ReadAloud;
 const fontFamily = "Andika";
 const noteBook = new Notebook;
 
+function beforeTest() {
+  cy.visit("?activity=https%3A%2F%2Fauthoring.lara.staging.concord.org%2Fapi%2Fv1%2Factivities%2F183.json&preview");
+  activityPage.getActivityTitle().should("contain", "Automation Activity For Notebook Layout");
+}
+
 context("Test the overall app", () => {
-  before(() => {
-    cy.visit("?activity=https%3A%2F%2Fauthoring.lara.staging.concord.org%2Fapi%2Fv1%2Factivities%2F183.json&preview");
-    activityPage.getActivityTitle().should("contain", "Automation Activity For Notebook Layout");
-  });
   describe("Home Page",() => {
     it("verify home page in notebook layout",()=>{
+      beforeTest();
       activityPage.getPreviousPageButton().should("not.exist");
       activityPage.getNextPageButton().should("not.exist");
       activityPage.getActivityNavHeader().eq(0).should("exist");
@@ -31,6 +33,7 @@ context("Test the overall app", () => {
   });
   describe("Page 1: Multiple Tabs",() => {
     it("verify page 1 with multiple tabs",()=>{
+      beforeTest();
       activityPage.getNavPageButton(0).click();
       cy.wait(5000);
       noteBook.getNotebookHeader().should("exist");
@@ -58,6 +61,7 @@ context("Test the overall app", () => {
   });
   describe("Page 2: No Tabs",() => {
     it("verify page 2 with no tab",()=>{
+      beforeTest();
       activityPage.getNavPageButton(1).click();
       cy.wait(5000);
       noteBook.getNotebookHeader().should("exist");
@@ -69,6 +73,7 @@ context("Test the overall app", () => {
   });
   describe("Summary Page",() => {
     it("verify summary page",()=>{
+      beforeTest();
       activityPage.clickCompletionPageButton();
       cy.wait(2000);
       noteBook.verifyNotebookHeaderNotDisplayed();

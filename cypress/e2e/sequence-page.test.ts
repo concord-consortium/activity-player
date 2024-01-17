@@ -5,34 +5,26 @@ const activityPage = new ActivityPage;
 const sequencePage = new SequencePage;
 
 context("Test sequences", () => {
-  describe("test sequence intro page", () => {
+  describe("test sequence page", () => {
     before(() => {
       cy.visit("?sequence=sample-sequence&preview");
       cy.wait(1000);
     });
-    it("should load sequence thumbnails", () => {
+    it("test sequence pages", () => {
+      cy.log("should load sequence thumbnails");
       sequencePage.getThumbnails().should("have.length", 5);
-    });
-    it("should navigate to activity when activity thumbnail is selected", () => {
+
+      cy.log("should navigate to activity when activity thumbnail is selected");
       activityPage.getHeader().should("contain", "Sequence");
       sequencePage.getThumbnails().eq(0).click();
       activityPage.getHeader().should("contain", "Sequence");
       cy.url().should("contain", "sequenceActivity=activity_1");
-    });
-  });
-  describe("test sequence nav", () => {
-    before(() => {
-      cy.visit("?sequence=sample-sequence&preview");
-      cy.wait(1000);
-    });
-    it("should show the sequence nav menu on an activity page within the sequence", () => {
-      sequencePage.getThumbnails().should("have.length", 5);
-      sequencePage.getThumbnails().eq(0).click();
-      activityPage.getHeader().should("contain", "Sequence");
+
+      cy.log("should show the sequence nav menu on an activity page within the sequence");
       cy.get("[data-cy=sequence-nav-header]").should("contain", "Activity");
       cy.get("[data-cy=custom-select-header]").should("contain", "1: Sample Sequence Activity 1");
-    });
-    it("should allow navigating between activities within the sequence", () => {
+      
+      cy.log("should allow navigating between activities within the sequence");
       cy.get("[data-cy=custom-select-header]").click();
       cy.get("[data-cy^=list-item-2]").click();
       cy.get("[data-cy=custom-select-header]").should("contain", "2: Sample Sequence Activity 2");
@@ -48,8 +40,8 @@ context("Test sequences", () => {
       cy.get("[data-cy=custom-select-header]").should("contain", "1: Sample Sequence Activity 1");
       cy.get("[data-cy=activity-summary]").should("contain", "Sample Sequence Activity 1");
       cy.url().should("contain", "sequenceActivity=activity_1");
-    });
-    it("should always take you to the index page of an activity when navigating to another activity within the sequence", () => {
+
+      cy.log("should always take you to the index page of an activity when navigating to another activity within the sequence");
       cy.get("[data-cy=custom-select-header]").click();
       cy.get("[data-cy^=list-item-2]").click();
       cy.get("[data-cy=custom-select-header]").should("contain", "2: Sample Sequence Activity 2");
