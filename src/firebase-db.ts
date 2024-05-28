@@ -52,7 +52,7 @@ type IConfigs = {
 }
 const configurations: IConfigs = {
   "report-service-dev": {
-    apiKey: "AIzaSyCvxKWuYDgJ4r4o8JeNAOYusx0aV71_YuE",
+    apiKey: atob("QUl6YVN5Q3Z4S1d1WURnSjRyNG84SmVOQU9ZdXN4MGFWNzFfWXVF"),
     authDomain: "report-service-dev.firebaseapp.com",
     databaseURL: "https://report-service-dev.firebaseio.com",
     projectId: "report-service-dev",
@@ -61,7 +61,7 @@ const configurations: IConfigs = {
     appId: "1:402218300971:web:32b7266ef5226ff7"
   },
   "report-service-pro": {
-    apiKey: "AIzaSyBmNSa2Uz3DaEwKclsvHPBwfucSmZWAAzg",
+    apiKey: atob("QUl6YVN5Qm1OU2EyVXozRGFFd0tjbHN2SFBCd2Z1Y1NtWldBQXpn"),
     authDomain: "report-service-pro.firebaseapp.com",
     databaseURL: "https://report-service-pro.firebaseio.com",
     projectId: "report-service-pro",
