@@ -118,7 +118,11 @@ context("Test the overall app", () => {
       getInIframe("body", ".runtime--runtime--question-int p").eq(0).parent().parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
     });
   });
- describe("ScoreBot",() => {
+  /*
+
+  DISABLED DUE TO SCOREBOT NO LONGER SENDING AN API RESPONSE. SHOULD BE RE-ENABLED IF SCOREBOT IS FIXED.
+
+  describe("ScoreBot",() => {
     it("verify read aloud in scorebot interactive",()=>{
       beforeTest();
       activityPage.clickPageItem(11);
@@ -163,4 +167,5 @@ context("Test the overall app", () => {
       activityPage.getTextBlockContent().children().click().should('have.css', 'background-color', readAlound.backgroundColor);
     });
   });
+  */
 });
