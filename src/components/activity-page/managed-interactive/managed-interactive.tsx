@@ -61,7 +61,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const interactiveState = useRef<any>();
   const legacyLinkedInteractiveState = useRef<ILegacyLinkedInteractiveState | null>(null);
   const answerMeta = useRef<IExportableAnswerMetadata>();
-  const shouldWatchAnswer = isQuestion(props.embeddable);
+  const shouldWatchAnswer = isQuestion(props.embeddable, {ignoreHideQuestionNumber: true});
   const laraData = useContext(LaraDataContext);
   const shouldLoadLegacyLinkedInteractiveState = hasLegacyLinkedInteractive(props.embeddable, laraData);
   const [loadingAnswer, setLoadingAnswer] = useState(shouldWatchAnswer);
@@ -375,14 +375,18 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
 
   // question numbers are 1-based
   const hasQuestionNumber = (questionNumber || 0) > 0;
-  const className = classNames("runtime-container", {"has-question-number": hasQuestionNumber});
 
   const trimmedQuestionName = questionName.trim();
   const hasQuestionName = trimmedQuestionName.length > 0;
-  const questionPrefix = props.showQuestionPrefix && !props.hideQuestionNumbers ? `Question #${questionNumber}${hasQuestionName ? ": " : ""}` : "";
+  const questionPrefix = props.showQuestionPrefix && !props.hideQuestionNumbers && questionNumber ? `Question #${questionNumber}${hasQuestionName ? ": " : ""}` : "";
 
   const isNotebookLayout = laraData.activity?.layout === ActivityLayouts.Notebook;
-  const hideQuestionHeader = props.hideQuestionNumbers && !hasQuestionName && !hint && !isNotebookLayout && !hasPlugin;
+  const hideQuestionHeader = (props.hideQuestionNumbers || !hasQuestionNumber) && !hasQuestionName && !hint && !isNotebookLayout && !hasPlugin;
+
+  const isInteractive = embeddable.type === "MwInteractive";
+  const isManagedInteractive = embeddable.type === "ManagedInteractive";
+  const hasBorder = isManagedInteractive || (isInteractive && !hideQuestionHeader);
+  const className = classNames("runtime-container", {"has-question-number": hasQuestionNumber, "has-border": hasBorder});
 
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
@@ -415,13 +419,13 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         showDeleteDataButton={showDeleteDataButton}
         setAspectRatio={setARFromSupportedFeatures}
         setHeightFromInteractive={setHeightFromInteractive}
-        hasHeader={hasQuestionNumber}
+        hasHeader={!hideQuestionHeader}
       />;
 
   return (
     <div ref={divTarget} className="managed-interactive" data-cy="managed-interactive">
       <div className={className} style={{width:containerWidth}}>
-      { questionNumber && !hideQuestionHeader &&
+      { !hideQuestionHeader &&
         <div className="header" ref={headerTarget}>
           <DynamicText>{questionPrefix}{questionName}</DynamicText>
           {hint &&
