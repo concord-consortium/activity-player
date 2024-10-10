@@ -20,9 +20,10 @@ export interface IInteractiveInfo {
   pageName?: string;
 }
 
-export const isQuestion = (embeddable: EmbeddableType) =>
-  (embeddable.type === "ManagedInteractive" && embeddable.library_interactive?.data?.enable_learner_state) ||
-  (embeddable.type === "MwInteractive" && embeddable.enable_learner_state);
+export const isQuestion = (embeddable: EmbeddableType, options?: {ignoreHideQuestionNumber?: boolean}) => {
+  const settings = embeddable.type === "MwInteractive" ? embeddable : (embeddable.type === "ManagedInteractive" ? embeddable.library_interactive?.data : undefined);
+  return !!(settings?.enable_learner_state && (options?.ignoreHideQuestionNumber || !settings.hide_question_number));
+};
 
 export const hasLegacyLinkedInteractive = (embeddable: EmbeddableType, laraData: ILaraData) => {
   let result = false;
