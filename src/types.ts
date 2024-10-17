@@ -19,6 +19,7 @@ export interface LibraryInteractiveData {
   click_to_play_prompt?: string | null;
   description?: string;
   enable_learner_state: boolean;
+  hide_question_number?: boolean;
   full_window: boolean;
   has_report_url: boolean;
   image_url?: string | null;
@@ -99,6 +100,7 @@ export interface IMwInteractive extends EmbeddableBase {
   native_height?: number;
   native_width?: number;
   enable_learner_state?: boolean;
+  hide_question_number?: boolean;
   linked_interactives?: { ref_id: string, label: string }[];
   linked_interactive?: { ref_id: string };
   aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX";
