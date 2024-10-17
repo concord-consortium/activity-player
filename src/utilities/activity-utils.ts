@@ -254,11 +254,12 @@ export const getSequenceActivityId = (sequence: Sequence, activityIndex: number 
   return undefined;
 };
 
-export const hasPluginReferencingEmbeddable = (activity: Activity, embeddableRefId: string): boolean => {
+const pluginsRequiringHeader = ["laraSharing"];
+export const hasPluginThatRequiresHeader = (activity: Activity, embeddableRefId: string): boolean => {
   return activity.pages.reduce<boolean>((acc, page) => {
     return page.sections.reduce<boolean>((acc2, section) => {
       return section.embeddables.reduce<boolean>((acc3, embeddable) => {
-        if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.embeddable_ref_id === embeddableRefId) {
+        if (embeddable.type === "Embeddable::EmbeddablePlugin" && embeddable.embeddable_ref_id === embeddableRefId && pluginsRequiringHeader.includes(embeddable.plugin?.approved_script_label ?? "")) {
           acc3 = true;
         }
         return acc3;
@@ -266,4 +267,3 @@ export const hasPluginReferencingEmbeddable = (activity: Activity, embeddableRef
     }, acc);
   }, false);
 };
-

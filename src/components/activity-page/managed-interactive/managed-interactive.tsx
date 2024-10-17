@@ -24,7 +24,7 @@ import { Logger, LogEventName } from "../../../lib/logger";
 import { handleGetAttachmentUrl } from "@concord-consortium/interactive-api-host";
 import { LaraDataContext } from "../../lara-data-context";
 import { ClickToPlay } from "./click-to-play";
-import { ActivityLayouts, hasPluginReferencingEmbeddable } from "../../../utilities/activity-utils";
+import { ActivityLayouts, hasPluginThatRequiresHeader } from "../../../utilities/activity-utils";
 
 import "./managed-interactive.scss";
 
@@ -74,8 +74,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
 
   const embeddableRefId = props.embeddable.ref_id;
 
-  const hasPlugin = useMemo(() => {
-    return !!laraData.activity && hasPluginReferencingEmbeddable(laraData.activity, embeddableRefId);
+  const hasPluginRequiringHeader = useMemo(() => {
+    return !!laraData.activity && hasPluginThatRequiresHeader(laraData.activity, embeddableRefId);
   }, [laraData.activity, embeddableRefId]);
 
   useEffect(() => {
@@ -381,7 +381,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const questionPrefix = props.showQuestionPrefix && !props.hideQuestionNumbers && questionNumber ? `Question #${questionNumber}${hasQuestionName ? ": " : ""}` : "";
 
   const isNotebookLayout = laraData.activity?.layout === ActivityLayouts.Notebook;
-  const hideQuestionHeader = (props.hideQuestionNumbers || !hasQuestionNumber) && !hasQuestionName && !hint && !isNotebookLayout && !hasPlugin;
+  const hideQuestionHeader = (props.hideQuestionNumbers || !hasQuestionNumber) && !hasQuestionName && !hint && !isNotebookLayout && !hasPluginRequiringHeader;
 
   const isInteractive = embeddable.type === "MwInteractive";
   const isManagedInteractive = embeddable.type === "ManagedInteractive";
