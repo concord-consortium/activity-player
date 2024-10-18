@@ -21,8 +21,20 @@ export interface IInteractiveInfo {
 }
 
 export const isQuestion = (embeddable: EmbeddableType, options?: {ignoreHideQuestionNumber?: boolean}) => {
-  const settings = embeddable.type === "MwInteractive" ? embeddable : (embeddable.type === "ManagedInteractive" ? embeddable.library_interactive?.data : undefined);
-  return !!(settings?.enable_learner_state && (options?.ignoreHideQuestionNumber || !settings.hide_question_number));
+  let enable_learner_state = false;
+  let hide_question_number = false;
+  const ignoreHideQuestionNumber = options?.ignoreHideQuestionNumber ?? false;
+
+  if (embeddable.type === "MwInteractive") {
+    enable_learner_state = !!embeddable.enable_learner_state;
+    hide_question_number = !!embeddable.hide_question_number;
+  }
+  if (embeddable.type === "ManagedInteractive") {
+    enable_learner_state = !!(embeddable.library_interactive?.data.enable_learner_state);
+    hide_question_number = !!(embeddable.inherit_hide_question_number ? embeddable.library_interactive?.data.hide_question_number : embeddable.custom_hide_question_number);
+  }
+
+  return enable_learner_state && (ignoreHideQuestionNumber || !hide_question_number);
 };
 
 export const hasLegacyLinkedInteractive = (embeddable: EmbeddableType, laraData: ILaraData) => {
