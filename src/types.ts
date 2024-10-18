@@ -91,6 +91,8 @@ export interface IManagedInteractive extends EmbeddableBase {
   custom_image_url?: string | null;
   linked_interactives?: { ref_id: string, label: string }[];
   linked_interactive?: { ref_id: string };
+  inherit_hide_question_number?: boolean;
+  custom_hide_question_number?: boolean;
 }
 
 export interface IMwInteractive extends EmbeddableBase {
