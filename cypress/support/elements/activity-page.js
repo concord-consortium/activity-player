@@ -131,6 +131,9 @@ class ActivityPage {
   verifyQuestionHeader(header) {
     this.getQuestionHeader().should("contain", header);
   }
+  getRuntimeContainer() {
+    return cy.get('.runtime-container');
+  }
   getHintIcon() {
     return this.getInteractive().find('[data-cy=open-hint]');
   }
@@ -139,6 +142,9 @@ class ActivityPage {
   }
   getHintText() {
     return this.getInteractive().find('.hint.question-txt');
+  }
+  verifyHiddenQuestionNumberInteractive() {
+    cy.get('[data-cy="managed-interactive"]').should('not.exist');
   }
 
   //Alert Dialog
