@@ -143,8 +143,11 @@ class ActivityPage {
   getHintText() {
     return this.getInteractive().find('.hint.question-txt');
   }
+  hasHintIcon(interactive) {
+    return cy.wrap(interactive).find('[data-cy=open-hint]', { timeout: 0 });
+  }
   verifyHiddenQuestionNumberInteractive() {
-    cy.get('[data-cy="managed-interactive"]').should('not.exist');
+    return cy.get('[data-cy="managed-interactive"]').should('not.exist');
   }
 
   //Alert Dialog
