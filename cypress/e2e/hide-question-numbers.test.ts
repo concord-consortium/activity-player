@@ -1,6 +1,4 @@
 import ActivityPage from "../support/elements/activity-page";
-import { getInIframe, getInIframeWithIndex } from "../support/elements/iframe";
-
 
 const activityPage = new ActivityPage;
 
@@ -13,7 +11,7 @@ context("Activity hide question numbers checked", () => {
     it("verify question numbers are hidden in activity",()=>{
       activityPage.clickPageItem(0);
       cy.wait(2000);
-      activityPage.getInteractive().find('.has-question-number .header div').should("not.exist");
+      activityPage.getInteractive().find(".has-question-number .header div").should("not.exist");
       activityPage.clickPageButton(1);
       cy.wait(2000);
       activityPage.getQuestionHeader().should("exist");
@@ -26,15 +24,15 @@ context("Activity hide question numbers checked", () => {
       activityPage.clickPageButton(3);
       cy.wait(2000);
       activityPage.getRuntimeContainer()
-        .should('exist') // Check the container exists
-        .and('not.have.class', 'has-question-number'); // Verify it doesn't have the question number class 
+        .should("exist") // Check the container exists
+        .and("not.have.class", "has-question-number"); // Verify it doesn't have the question number class 
       activityPage.clickPageButton(4);
       activityPage.getRuntimeContainer()
-        .should('exist')
-        .and('have.class', 'has-question-number'); // Check it has the question number class
+        .should("exist")
+        .and("have.class", "has-question-number"); // Check it has the question number class
       activityPage.getQuestionHeader()
-        .should('contain', 'Drawing Tool Name') // Check for the presence of "Drawing Tool Name"
-        .and('not.contain', 'Question #'); // Ensure it does not contain "Question #"
+        .should("contain", "Drawing Tool Name") // Check for the presence of "Drawing Tool Name"
+        .and("not.contain", "Question #"); // Ensure it does not contain "Question #"
       // check completion page
       activityPage.clickCompletionPageButton();
       activityPage.getSummaryTableRow().should("contain", "Question 1");
@@ -80,7 +78,7 @@ context("Sequence hide question numbers checked", () => {
       activityPage.getActivityTitle().should("contain", "Automation Activity For Hide Question Numbers Checked");
       activityPage.clickPageItem(0);
       cy.wait(2000);
-      activityPage.getInteractive().find('.has-question-number .header div').should("not.exist");
+      activityPage.getInteractive().find(".has-question-number .header div").should("not.exist");
       activityPage.clickPageButton(1);
       cy.wait(2000);
       activityPage.getQuestionHeader().should("exist");
@@ -91,7 +89,7 @@ context("Sequence hide question numbers checked", () => {
       activityPage.getActivityTitle().should("contain", "Automation Activity For Hide Question Numbers Unchecked");
       activityPage.clickPageItem(0);
       cy.wait(2000);
-      activityPage.getInteractive().find('.has-question-number .header div').should("not.exist");
+      activityPage.getInteractive().find(".has-question-number .header div").should("not.exist");
       activityPage.clickPageButton(1);
       cy.wait(2000);
       activityPage.getQuestionHeader().should("exist");
