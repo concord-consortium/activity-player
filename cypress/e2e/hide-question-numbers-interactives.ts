@@ -213,7 +213,7 @@ context("Activity hide question numbers checked", () => {
       });
 
       // Page 3: Bottom Row Left - No name no hint
-      cy.log("Page 3: Bottom Row Left - Question #8: No name, no hint");
+      cy.log("Page 3: Bottom Row Left - No name, no hint");
       activityPage.getInteractive().eq(3).find(".has-question-number .header div")
         .should("not.exist")
       activityPage.getInteractive().eq(3).within(($interactive) => {
