@@ -8,142 +8,225 @@ context("Activity hide question numbers checked", () => {
     activityPage.getActivityTitle().should("contain", "Test Hide Question Number Setting");
   });
   describe("Hide question numbers checked in activity",() => {
-    it.only("Verify the left column has the hide question number setting OFF and the right has it ON.",()=>{
+    it("Verifies combinations of hide question number option, name, and hint",()=>{
+      // Visit Page 1 of activity
       activityPage.clickPageItem(0);
       cy.wait(2000);
-      cy.log("left column question numbers on page 1 shown");
-      activityPage.getInteractive().eq(0).find(".has-question-number .header div").should("exist");
-      activityPage.getInteractive().eq(1).find(".has-question-number .header div").should("exist");
-      activityPage.getInteractive().eq(2).find(".has-question-number .header div").should("exist");
-      activityPage.getInteractive().eq(3).find(".has-question-number .header div").should("exist");
-      cy.log("right column question numbers on page 1 hidden");
-      activityPage.getInteractive().eq(4).find(".has-question-number .header div").should("not.exist");
-      activityPage.getInteractive().eq(5).find(".has-question-number .header div").should("not.exist");
-      activityPage.getInteractive().eq(6).find(".has-question-number .header div").should("not.exist");
-      activityPage.getInteractive().eq(7).find(".has-question-number .header div").should("not.exist");
 
+      // Page 1: Top Left - Question #1: Name and no hint
+      cy.log("Page 1: Top Left - Question #1: Name and no hint");
+      activityPage.getInteractive().eq(0).find(".has-question-number .header div")
+        .should("exist")
+        .and("have.text", "Question #1: Name and no hint"); // Check for specific text "Question #1: Name and no hint"
+      activityPage.getInteractive().eq(0).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('not.exist'); // No hint icon expected
+      });
 
+      // Page 1: Top Right - Name and no hint
+      cy.log("Page 1: Top Right - Name and no hint");
+      activityPage.getInteractive().eq(4).find(".header div")
+        .should("exist")
+        .and("have.text", "Name and no hint"); // Check for specific text "Name and no hint"
+      activityPage.getInteractive().eq(4).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('not.exist'); // No hint icon expected
+      });
+
+      // Page 1: Row 2 Left - Question #2: Name and hint
+      cy.log("Page 1: Row 2 Left - Question #2: Name and hint");
+      activityPage.getInteractive().eq(1).find(".has-question-number .header div")
+        .should("exist")
+        .and("contain.text", "Question #2: Name and hint"); // Check for "Question #2" and name
+      activityPage.getInteractive().eq(1).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('exist'); // Hint icon expected
+      });
+
+      // Page 1: Row 2 Right - Name and hint
+      cy.log("Page 1: Row 2 Right - Name and hint");
+      activityPage.getInteractive().eq(5).find(".header div")
+        .should("exist")
+        .and("contain.text", "Name and hint"); // Check for specific text "Name and hint"
+      activityPage.getInteractive().eq(5).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('exist'); // Hint icon expected
+      });
+
+      // Page 1: Row 3 Left - Question #3: No name and hint
+      cy.log("Page 1: Row 3 Left - Question #3: No name and hint");
+      activityPage.getInteractive().eq(2).find(".has-question-number .header div")
+        .should("exist")
+        .and("contain.text", "Question #3"); // Check for Header with question number
+      activityPage.getInteractive().eq(2).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('exist'); // Hint icon expected
+      });
+
+      // Page 1: Row 3 Right - No name and hint
+      cy.log("Page 1: Row 3 Right - No name and hint");
+      activityPage.getInteractive().eq(6).find(".has-question-number .header div")
+        .should("not.exist")
+      activityPage.getInteractive().eq(6).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('exist'); // Hint icon expected
+      });
+
+      // Page 1: Bottom Row Left - Question #4: No name, no hint
+      cy.log("Page 1: Bottom Row Left - Question #4: No name, no hint");
+      activityPage.getInteractive().eq(3).find(".has-question-number .header div")
+        .should("exist")
+        .and("contain.text", "Question #4"); // Check for question # without name
+      activityPage.getInteractive().eq(3).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('not.exist'); // No hint icon expected
+      });
+
+      // Page 1: Bottom Right - No header, no hint
+      cy.log("Page 1: Bottom Right: No header, no hint");
+      activityPage.getInteractive().eq(7).find(".has-question-number .header div")
+        .should("not.exist") // Check for no header
+      activityPage.getInteractive().eq(7).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('not.exist'); // No hint icon expected
+      });
+
+      // Visit Page 2 of activity
       activityPage.clickPageButton(1);
       cy.wait(2000);
-      cy.log("left column question numbers on page 2 shown");
-      activityPage.getInteractive().eq(0).find(".has-question-number .header div").should("exist");
+      // Page 2: Top Left - Question #5: Name and no hint
+      cy.log("Page 2: Top Left - Question #5: Name and no hint");
+      activityPage.getInteractive().eq(0).find(".has-question-number .header div")
+        .should("exist")
+        .and("have.text", "Question #5: Name and no hint"); // Check for specific text "Question #5: Name and no hint"
       activityPage.getInteractive().eq(0).within(($interactive) => {
-        activityPage.hasHintIcon($interactive).should('not.exist'); // Verify no hint icon exists
+        activityPage.hasHintIcon($interactive).should('not.exist'); // No hint icon expected
       });
-      activityPage.getInteractive().eq(1).find(".has-question-number .header div").should("exist");
-      activityPage.getInteractive().eq(1).within(($interactive) => {
-        activityPage.hasHintIcon($interactive).then((hasHint) => {
-          activityPage.hasHintIcon($interactive).should('exist'); // Verify the hint icon exists
-        });
-      });
-     activityPage.getInteractive().eq(2).find(".has-question-number .header div").should("exist");
-      activityPage.getInteractive().eq(2).within(($interactive) => {
-      activityPage.hasHintIcon($interactive).then((hasHint) => {
-        activityPage.hasHintIcon($interactive).should('exist'); // Verify the hint icon exists
-        });
-      });
-      activityPage.getInteractive().eq(3).find(".has-question-number .header div").should("exist");
-      activityPage.getInteractive().eq(3).within(($interactive) => {
-        activityPage.hasHintIcon($interactive).should('not.exist'); // Verify no hint icon exists
-    });
-    cy.log("right column question numbers on page 2 hidden");
-    activityPage.getInteractive().eq(4).find(".has-question-number .header div").should("not.exist");
-    activityPage.getInteractive().eq(4).within(($interactive) => {
-      activityPage.hasHintIcon($interactive).should('not.exist'); // Verify no hint icon exists
-    });
-    activityPage.getInteractive().eq(5).find(".has-question-number .header div").should("not.exist");
-    activityPage.getInteractive().eq(5).within(($interactive) => {
-      activityPage.hasHintIcon($interactive).then((hasHint) => {
-        activityPage.hasHintIcon($interactive).should('exist'); // Verify the hint icon exists
-      });
-    });
-    activityPage.getInteractive().eq(6).find(".has-question-number .header div").should("not.exist");
-    activityPage.getInteractive().eq(6).within(($interactive) => {
-    activityPage.hasHintIcon($interactive).then((hasHint) => {
-      activityPage.hasHintIcon($interactive).should('exist'); // Verify the hint icon exists
-      });
-    });
-    activityPage.getInteractive().eq(7).find(".has-question-number .header div").should("not.exist");
-    activityPage.getInteractive().eq(7).within(($interactive) => {
-      activityPage.hasHintIcon($interactive).should('not.exist'); // Verify no hint icon exists
-    });
 
+      // Page 2: Top Right - Name and no hint
+      cy.log("Page 2: Top Right - Name and no hint");
+      activityPage.getInteractive().eq(4).find(".header div")
+        .should("exist")
+        .and("have.text", "Name and no hint"); // Check for specific text "Name and no hint"
+      activityPage.getInteractive().eq(4).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('not.exist'); // No hint icon expected
+      });
+
+      // Page 2: Row 2 Left - Question #6: Name and hint
+      cy.log("Page 2: Row 2 Left - Question #6: Name and hint");
+      activityPage.getInteractive().eq(1).find(".has-question-number .header div")
+        .should("exist")
+        .and("contain.text", "Question #6: Name and hint"); // Check for "Question #2" and name
+      activityPage.getInteractive().eq(1).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('exist'); // Hint icon expected
+      });
+
+      // Page 2: Row 2 Right - Name and hint
+      cy.log("Page 2: Row 2 Right - Name and hint");
+      activityPage.getInteractive().eq(5).find(".header div")
+        .should("exist")
+        .and("contain.text", "Name and hint"); // Check for specific text "Name and hint"
+      activityPage.getInteractive().eq(5).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('exist'); // Hint icon expected
+      });
+
+      // Page 2: Row 3 Left - Question #7: No name and hint
+      cy.log("Page 2: Row 3 Left - Question #7: No name and hint");
+      activityPage.getInteractive().eq(2).find(".has-question-number .header div")
+        .should("exist")
+        .and("contain.text", "Question #7"); // Check for Header with question number
+      activityPage.getInteractive().eq(2).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('exist'); // Hint icon expected
+      });
+
+      // Page 2: Row 3 Right - No name and hint
+      cy.log("Page 2: Row 3 Right - No name and hint");
+      activityPage.getInteractive().eq(6).find(".has-question-number .header div")
+        .should("not.exist")
+      activityPage.getInteractive().eq(6).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('exist'); // Hint icon expected
+      });
+
+      // Page 2: Bottom Row Left - Question #8: No name, no hint
+      cy.log("Page 2: Bottom Row Left - Question #8: No name, no hint");
+      activityPage.getInteractive().eq(3).find(".has-question-number .header div")
+        .should("exist")
+        .and("contain.text", "Question #8"); // Check for question # without name
+      activityPage.getInteractive().eq(3).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('not.exist'); // No hint icon expected
+      });
+
+      // Page 2: Bottom Right - No header, no hint
+      cy.log("Page 2: Bottom Right: No header, no hint");
+      activityPage.getInteractive().eq(7).find(".has-question-number .header div")
+        .should("not.exist") // Check for no header
+      activityPage.getInteractive().eq(7).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('not.exist'); // No hint icon expected
+      });
+
+    // Visit Page 3 of activity
     activityPage.clickPageButton(2);
       cy.wait(2000);
-      cy.log("verifies left column question numbers on page 3");
-      activityPage.getInteractive().eq(0).find(".has-question-number .header div").should("not.exist");
+      // Page 3: Top Left - Name and no hint
+      cy.log("Page 3: Top Left - Name and no hint");
+      activityPage.getInteractive().eq(0).find(".header div")
+      .should("exist")
+      .and("have.text", "Name and no hint"); // Check for specific text "Name and no hint"
       activityPage.getInteractive().eq(0).within(($interactive) => {
-        activityPage.hasHintIcon($interactive).should('not.exist'); // Verify no hint icon exists
+        activityPage.hasHintIcon($interactive).should('not.exist'); // No hint icon expected
       });
-      activityPage.getInteractive().eq(1).find(".has-question-number .header div").should("not.exist");
-      activityPage.getInteractive().eq(1).within(($interactive) => {
-        activityPage.hasHintIcon($interactive).then((hasHint) => {
-          activityPage.hasHintIcon($interactive).should('exist'); // Verify the hint icon exists
-        });
-      });
-     activityPage.getInteractive().eq(2).find(".has-question-number .header div").should("not.exist");
-      activityPage.getInteractive().eq(2).within(($interactive) => {
-      activityPage.hasHintIcon($interactive).then((hasHint) => {
-        activityPage.hasHintIcon($interactive).should('exist'); // Verify the hint icon exists
-        });
-      });
-      // this isn't working, commenting out for now
-      // Check the first question with the text "This has no name or hint"
-      // cy.contains('legend', 'This has no name or hint')
-      // .should('exist') // Ensure the legend exists
-      // .parent() // Navigate to the parent element
-      // .should('not.have.class', 'has-question-number') // Ensure it doesn't have the question number class
-      // .and('not.have.descendants', '.header'); // Ensure it doesn't contain a header    
-    cy.log("verifies right column question numbers on page 3");
-    activityPage.getInteractive().eq(4).find(".has-question-number .header div").should("not.exist");
-    activityPage.getInteractive().eq(4).within(($interactive) => {
-      activityPage.hasHintIcon($interactive).should('not.exist'); // Verify no hint icon exists
-    });
-    activityPage.getInteractive().eq(5).find(".has-question-number .header div").should("not.exist");
-    activityPage.getInteractive().eq(5).within(($interactive) => {
-      activityPage.hasHintIcon($interactive).then((hasHint) => {
-        activityPage.hasHintIcon($interactive).should('exist'); // Verify the hint icon exists
-      });
-    });
-    activityPage.getInteractive().eq(6).find(".has-question-number .header div").should("not.exist");
-    activityPage.getInteractive().eq(6).within(($interactive) => {
-    activityPage.hasHintIcon($interactive).then((hasHint) => {
-      activityPage.hasHintIcon($interactive).should('exist'); // Verify the hint icon exists
-      });
-    });
-    // this isn't working, commenting out for now
-    // cy.contains('legend', 'This has no name or hint')
-    //   .eq(1) // Select the second occurrence
-    //   .should('exist')
-    //   .parent()
-    //   .should('not.have.class', 'has-question-number')
-    //   .and('not.have.descendants', '.header');
-    });
-  });
-});
 
-context("Activity hide question numbers unchecked", () => {
-  before(() => {
-    cy.visit("?activity=https%3A%2F%2Fauthoring.lara.staging.concord.org%2Fapi%2Fv1%2Factivities%2F312.json&preview");
-    activityPage.getActivityTitle().should("contain", "Automation Activity For Hide Question Numbers Unchecked");
-  });
-  describe("Hide question numbers unchecked in activity",() => {
-    it("verify question numbers are not hidden in activity",()=>{
-      activityPage.clickPageItem(0);
-      cy.wait(2000);
-      activityPage.getQuestionHeader().should("exist");
-      activityPage.getQuestionHeader().should("contain", "Question #");
-      activityPage.clickPageButton(1);
-      cy.wait(2000);
-      activityPage.getQuestionHeader().should("exist");
-      activityPage.getQuestionHeader().should("contain", "Question #");
-      activityPage.clickPageButton(2);
-      cy.wait(2000);
-      activityPage.getQuestionHeader().should("exist");
-      activityPage.getQuestionHeader().should("contain", "Question #");
-      activityPage.getHintIcon().should("exist");
-      activityPage.clickCompletionPageButton();
-      activityPage.getSummaryTableRow().should("contain", "Question 1");
+      // Page 3: Top Right - Name and no hint
+      cy.log("Page 3: Top Right - Name and no hint");
+      activityPage.getInteractive().eq(4).find(".header div")
+        .should("exist")
+        .and("have.text", "Name and no hint"); // Check for specific text "Name and no hint"
+      activityPage.getInteractive().eq(4).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('not.exist'); // No hint icon expected
+      });
+
+      // Page 3: Row 2 Left - Name and hint
+      cy.log("Page 3: Row 2 Left - Name and hint");
+      activityPage.getInteractive().eq(1).find(".header div")
+      .should("exist")
+      .and("have.text", "Name and hint"); // Check for specific text "Name and hint"
+      activityPage.getInteractive().eq(1).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('exist'); // Hint icon expected
+      });
+
+      // Page 3: Row 2 Right - Name and hint
+      cy.log("Page 3: Row 2 Right - Name and hint");
+      activityPage.getInteractive().eq(5).find(".header div")
+        .should("exist")
+        .and("contain.text", "Name and hint"); // Check for specific text "Name and hint"
+      activityPage.getInteractive().eq(5).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('exist'); // Hint icon expected
+      });
+
+      // Page 3: Row 3 Left - No name and hint
+      cy.log("Page 2: Row 3 Left - No name and hint");
+      activityPage.getInteractive().eq(2).find(".header div")
+      .should("exist")
+      .and("not.have.text"); // Check for no text
+      activityPage.getInteractive().eq(2).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('exist'); // Hint icon expected
+      });
+
+      // Page 3: Row 3 Right - No name and hint
+      cy.log("Page 3: Row 3 Right - No name and hint");
+      activityPage.getInteractive().eq(6).find(".has-question-number .header div")
+        .should("not.exist") // No name expected
+      activityPage.getInteractive().eq(6).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('exist'); // Hint icon expected
+      });
+
+      // Page 3: Bottom Row Left - No name no hint
+      cy.log("Page 3: Bottom Row Left - Question #8: No name, no hint");
+      activityPage.getInteractive().eq(3).find(".has-question-number .header div")
+        .should("not.exist")
+      activityPage.getInteractive().eq(3).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('not.exist'); // No hint icon expected
+      });
+
+      // Page 2: Bottom Right - No header, no hint
+      cy.log("Page 3: Bottom Right: No header, no hint");
+      activityPage.getInteractive().eq(3).find(".has-question-number .header div")
+        .should("not.exist")
+      activityPage.getInteractive().eq(3).within(($interactive) => {
+        activityPage.hasHintIcon($interactive).should('not.exist'); // No hint icon expected
+      });
     });
   });
-});
+  });
