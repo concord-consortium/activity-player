@@ -4,7 +4,7 @@ const activityPage = new ActivityPage;
 
 context("Activity hide question numbers checked", () => {
   before(() => {
-    cy.visit("?activity=https%3A%2F%2Fauthoring.lara.staging.concord.org%2Fapi%2Fv1%2Factivities%2F311.json&preview");
+    cy.visit("?activity=https%3A%2F%2Fauthoring.lara.staging.concord.org%2Fapi%2Fv1%2Factivities%2F311.json");
     activityPage.getActivityTitle().should("contain", "Automation Activity For Hide Question Numbers Checked");
   });
   describe("Hide question numbers checked in activity",() => {
