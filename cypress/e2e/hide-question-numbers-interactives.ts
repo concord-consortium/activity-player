@@ -12,6 +12,10 @@ context("Activity hide question numbers checked", () => {
       // Visit Page 1 of activity
       activityPage.clickPageItem(0);
       cy.wait(2000);
+      // Check that "Library Interactives" exists within the page 1 content
+      activityPage.getPageContent()
+      .should("exist")
+      .and("contain.text", "Library Interactives");
 
       // Page 1: Top Left - Question #1: Name and no hint
       cy.log("Page 1: Top Left - Question #1: Name and no hint");
@@ -61,7 +65,7 @@ context("Activity hide question numbers checked", () => {
       // Page 1: Row 3 Right - No name and hint
       cy.log("Page 1: Row 3 Right - No name and hint");
       activityPage.getInteractive().eq(6).find(".has-question-number .header div")
-        .should("not.exist")
+        .should("not.exist");
       activityPage.getInteractive().eq(6).within(($interactive) => {
         activityPage.hasHintIcon($interactive).should("exist"); // Hint icon expected
       });
@@ -78,7 +82,7 @@ context("Activity hide question numbers checked", () => {
       // Page 1: Bottom Right - No header, no hint
       cy.log("Page 1: Bottom Right: No header, no hint");
       activityPage.getInteractive().eq(7).find(".has-question-number .header div")
-        .should("not.exist") // Check for no header
+        .should("not.exist"); // Check for no header
       activityPage.getInteractive().eq(7).within(($interactive) => {
         activityPage.hasHintIcon($interactive).should("not.exist"); // No hint icon expected
       });
@@ -86,6 +90,10 @@ context("Activity hide question numbers checked", () => {
       // Visit Page 2 of activity
       activityPage.clickPageButton(1);
       cy.wait(2000);
+      activityPage.getPageContent()
+      .should("exist")
+      .and("contain.text", "Interactives That Save State");
+
       // Page 2: Top Left - Question #5: Name and no hint
       cy.log("Page 2: Top Left - Question #5: Name and no hint");
       activityPage.getInteractive().eq(0).find(".has-question-number .header div")
@@ -134,7 +142,7 @@ context("Activity hide question numbers checked", () => {
       // Page 2: Row 3 Right - No name and hint
       cy.log("Page 2: Row 3 Right - No name and hint");
       activityPage.getInteractive().eq(6).find(".has-question-number .header div")
-        .should("not.exist")
+        .should("not.exist");
       activityPage.getInteractive().eq(6).within(($interactive) => {
         activityPage.hasHintIcon($interactive).should("exist"); // Hint icon expected
       });
@@ -151,14 +159,18 @@ context("Activity hide question numbers checked", () => {
       // Page 2: Bottom Right - No header, no hint
       cy.log("Page 2: Bottom Right: No header, no hint");
       activityPage.getInteractive().eq(7).find(".has-question-number .header div")
-        .should("not.exist") // Check for no header
+        .should("not.exist"); // Check for no header
       activityPage.getInteractive().eq(7).within(($interactive) => {
         activityPage.hasHintIcon($interactive).should("not.exist"); // No hint icon expected
       });
 
-    // Visit Page 3 of activity
-    activityPage.clickPageButton(2);
+      // Visit Page 3 of activity
+      activityPage.clickPageButton(2);
       cy.wait(2000);
+      activityPage.getPageContent()
+        .should("exist")
+        .and("contain.text", "Interactives That DO NOT Save State");
+
       // Page 3: Top Left - Name and no hint
       cy.log("Page 3: Top Left - Name and no hint");
       activityPage.getInteractive().eq(0).find(".header div")
@@ -207,7 +219,7 @@ context("Activity hide question numbers checked", () => {
       // Page 3: Row 3 Right - No name and hint
       cy.log("Page 3: Row 3 Right - No name and hint");
       activityPage.getInteractive().eq(6).find(".has-question-number .header div")
-        .should("not.exist") // No name expected
+        .should("not.exist"); // No name expected
       activityPage.getInteractive().eq(6).within(($interactive) => {
         activityPage.hasHintIcon($interactive).should("exist"); // Hint icon expected
       });
@@ -215,7 +227,7 @@ context("Activity hide question numbers checked", () => {
       // Page 3: Bottom Row Left - No name no hint
       cy.log("Page 3: Bottom Row Left - No name, no hint");
       activityPage.getInteractive().eq(3).find(".has-question-number .header div")
-        .should("not.exist")
+        .should("not.exist"); // No name expected
       activityPage.getInteractive().eq(3).within(($interactive) => {
         activityPage.hasHintIcon($interactive).should("not.exist"); // No hint icon expected
       });
@@ -223,10 +235,10 @@ context("Activity hide question numbers checked", () => {
       // Page 2: Bottom Right - No header, no hint
       cy.log("Page 3: Bottom Right: No header, no hint");
       activityPage.getInteractive().eq(3).find(".has-question-number .header div")
-        .should("not.exist")
+        .should("not.exist"); // No name expected
       activityPage.getInteractive().eq(3).within(($interactive) => {
         activityPage.hasHintIcon($interactive).should("not.exist"); // No hint icon expected
       });
     });
   });
-  });
+});
