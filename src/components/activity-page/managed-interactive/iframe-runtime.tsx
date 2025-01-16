@@ -1,5 +1,7 @@
 // cf. https://github.com/concord-consortium/question-interactives/blob/master/src/scaffolded-question/components/iframe-runtime.tsx
 import { autorun } from "mobx";
+import Rand from "rand-seed";
+import { loremIpsum } from "lorem-ipsum";
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
 import { IExportableAnswerMetadata, IframePhone, ILegacyLinkedInteractiveState } from "../../../types";
 import iframePhone from "iframe-phone";
@@ -26,6 +28,7 @@ import { useAccessibility } from "../../accessibility-context";
 import { useMediaLibrary } from "../../media-library-context";
 
 import "./iframe-runtime.scss";
+
 
 const kDefaultHeight = 300;
 
@@ -83,13 +86,14 @@ interface IProps {
   setAspectRatio: (aspectRatio: number) => void;
   setHeightFromInteractive: (heightFromInteractive: number) => void;
   hasHeader?: boolean;
+  randomNumGenerator?: Rand;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
     setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo,
-    showDeleteDataButton, setAspectRatio, setHeightFromInteractive, hasHeader } = props;
+    showDeleteDataButton, setAspectRatio, setHeightFromInteractive, hasHeader, randomNumGenerator } = props;
 
   const [reloadCount, setReloadCount] = useState<number>(0);
   const iframePhoneTimeout = useRef<number|undefined>(undefined);
@@ -111,6 +115,39 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const {fontSize, fontSizeInPx, fontType, fontFamilyForType} = useAccessibility();
 
   const mediaLibrary = useMediaLibrary();
+
+  const [showFeedbackButton, setShowFeedbackButton] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [teacherFeedback, setTeacherFeedback] = useState("This is the teacher feedback.");
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const probability = queryParams.get("probability") ?? "0";
+    const randomNum = randomNumGenerator?.next();
+
+    if (randomNum && randomNum <= parseFloat(probability)) {
+      setShowFeedbackButton(true);
+    }
+  }, [randomNumGenerator]);
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const updateTimeout = queryParams.get("updateTimeout") ?? "0";
+
+    if (showFeedbackButton && showFeedback && Number(updateTimeout) > 0) {
+      // for every updateTimeout seconds, update the teacher feedback with an added randomly long string of feedback
+      const intervalId = setInterval(() => {
+        const randomSentenceLength = Math.floor(Math.random() * 10) + 1;
+        const newFeedback = loremIpsum({ count: randomSentenceLength, units: "sentences" });
+        setTeacherFeedback(prev => prev + " " + newFeedback);
+      }, Number(updateTimeout) * 1000);
+
+      return () => clearInterval(intervalId);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [showFeedback, showFeedbackButton]);
+
+
 
   useEffect(() => {
     const initInteractive = () => {
@@ -472,6 +509,17 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           Clear &amp; start over
           <ReloadIcon />
         </button>
+      }
+      { showFeedbackButton && !showFeedback &&
+        <button className="feedback-button" onClick={() => setShowFeedback(true)}>
+          Show Teacher Feedback
+        </button>
+      }
+      {
+        showFeedback &&
+        <div className="teacher-feedback">
+          <div>Teacher Feedback: {teacherFeedback}</div>
+        </div>
       }
     </div>
   );

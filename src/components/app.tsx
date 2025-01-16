@@ -1,5 +1,6 @@
 import React from "react";
 import Modal from "react-modal";
+import Rand from "rand-seed";
 import classNames from "classnames";
 import { DynamicTextContext, DynamicTextManager } from "@concord-consortium/dynamic-text";
 
@@ -129,6 +130,7 @@ interface IState {
   fontType: FontType;
   fontFamilyForType: string;
   mediaLibrary: IMediaLibrary;
+  randomSeed?: Rand;
 }
 interface IProps { }
 
@@ -191,6 +193,10 @@ export class App extends React.PureComponent<IProps, IState> {
       let role = "unknown";
       let runRemoteEndpoint = "";
       let logEventsUsername = null;
+
+      const queryParams = new URLSearchParams(window.location.search);
+      const seed = queryParams.get("seed") ?? "1";
+      newState.randomSeed = new Rand(seed);
 
       const bearerToken = getBearerToken();
 
@@ -547,6 +553,7 @@ export class App extends React.PureComponent<IProps, IState> {
                 pageChangeNotification={this.state.pageChangeNotification}
                 hideReadAloud={this.state.hideReadAloud}
                 hideQuestionNumbers={this.state.hideQuestionNumbers}
+                randomNumGenerator={this.state.randomSeed}
               />
         }
         {renderBottomNav &&

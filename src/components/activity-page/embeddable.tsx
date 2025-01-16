@@ -1,4 +1,6 @@
 import React, { forwardRef, useCallback, useContext, useEffect, useImperativeHandle, useRef }  from "react";
+import Rand from "rand-seed";
+
 import classNames from "classnames";
 import { TextBox } from "./text-box/text-box";
 import { LaraGlobalContext } from "../lara-global-context";
@@ -26,6 +28,7 @@ interface IProps {
   pluginsLoaded: boolean;
   ref?: React.Ref<EmbeddableImperativeAPI>;
   hideQuestionNumbers?: boolean;
+  randomNumGenerator?: Rand;
 }
 
 export interface EmbeddableImperativeAPI {
@@ -35,7 +38,8 @@ export interface EmbeddableImperativeAPI {
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded, hideQuestionNumbers } = props;
+  const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded, hideQuestionNumbers,
+    randomNumGenerator } = props;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
   }, [setNavigation, embeddable.ref_id]);
@@ -100,6 +104,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                     emitInteractiveAvailable={handleEmitInteractiveAvailable}
                     showQuestionPrefix={showQuestionPrefix}
                     hideQuestionNumbers={hideQuestionNumbers}
+                    randomNumGenerator={randomNumGenerator}
                  />;
   } else if (embeddable.type === "ManagedInteractive" && !embeddable.library_interactive) {
     qComponent = <div>Content type not supported</div>;
