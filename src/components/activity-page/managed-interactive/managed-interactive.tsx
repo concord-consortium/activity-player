@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useContext, useMemo, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
+import Rand from "rand-seed";
 import Modal from "react-modal";
 import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import useResizeObserver from "@react-hook/resize-observer";
@@ -38,6 +39,7 @@ interface IProps {
   emitInteractiveAvailable?: () => void;
   showQuestionPrefix: boolean;
   hideQuestionNumbers?: boolean;
+  randomNumGenerator?: Rand;
 }
 
 export interface ManagedInteractiveImperativeAPI {
@@ -420,6 +422,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         setAspectRatio={setARFromSupportedFeatures}
         setHeightFromInteractive={setHeightFromInteractive}
         hasHeader={!hideQuestionHeader}
+        randomNumGenerator={props.randomNumGenerator}
       />;
 
   return (

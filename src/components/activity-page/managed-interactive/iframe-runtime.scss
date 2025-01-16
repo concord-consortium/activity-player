@@ -1,5 +1,8 @@
 @import "../../vars.scss";
 
+$teacher-feedback-light-green: #dbfadf;
+$teacher-feedback-dark-green: #69d178;
+
 .iframe-runtime {
   button.button {
     align-items: center;
@@ -15,5 +18,36 @@
     svg {
       fill: $cc-charcoal;
     }
+  }
+
+  .feedback-button {
+    background-color: $teacher-feedback-light-green;
+    border: 1px solid $cc-charcoal-light1;
+    border-radius: 4px;
+    margin: 0 auto;
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    color: $cc-charcoal;
+    font-size: 20px;
+    width: 269px;
+    height: 44px;
+    cursor: pointer;
+    margin: 20px;
+
+    &:hover, &:active {
+      background-color: $teacher-feedback-dark-green;
+    }
+    &:active {
+      color: white;
+    }
+  }
+
+  .teacher-feedback {
+    width: calc(100% - 40px);
+    box-sizing: border-box;
+    background-color: $teacher-feedback-light-green;
+    margin: 20px;
+    border-radius: 4px;
+    padding: 10px;
   }
 }

@@ -1,4 +1,5 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import Rand from "rand-seed";
 import classNames from "classnames";
 import { Embeddable, EmbeddableImperativeAPI } from "./embeddable";
 import { isQuestion,  getLinkedPluginEmbeddable, ActivityLayouts } from "../../utilities/activity-utils";
@@ -23,6 +24,7 @@ interface IProps {
   ref?: React.Ref<SectionImperativeAPI>;
   hiddenTab?: boolean;
   hideQuestionNumbers?: boolean;
+  randomNumGenerator?: Rand;
 }
 
 export interface SectionImperativeAPI {
@@ -33,7 +35,7 @@ const right = "right";
 const left = "left";
 
 export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { activityLayout, page, section, questionNumberStart, hiddenTab } = props;
+  const { activityLayout, page, section, questionNumberStart, hiddenTab, randomNumGenerator } = props;
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
 
   const sectionDivRef = useRef<HTMLDivElement>(null);
@@ -96,6 +98,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
                 setNavigation={props.setNavigation}
                 pluginsLoaded={props.pluginsLoaded}
                 hideQuestionNumbers={props.hideQuestionNumbers}
+                randomNumGenerator={randomNumGenerator}
               />
             );
           })
