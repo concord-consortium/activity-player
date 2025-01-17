@@ -370,6 +370,10 @@ export const fetchPortalData = async (rawPortalJWT: string, portalJWT: PortalJWT
   // query parameter.
   const sourceKey = queryValue("answersSourceKey") || parseUrl(offeringData.activityUrl.toLowerCase()).hostname;
 
+  // teacher feedback is saved in a different bucket
+  const resourceUrl = getResourceUrl();
+  const teacherFeedbackSourceKey = parseUrl(resourceUrl.toLowerCase()).hostname;
+
   // for the tool id we want to distinguish activity-player branches, incase this is ever helpful for
   // dealing with mis-matched data when we load data in originally saved on another branch.
   // This is currently unused for the purpose of saving and loading data
@@ -400,7 +404,8 @@ export const fetchPortalData = async (rawPortalJWT: string, portalJWT: PortalJWT
       rawFirebaseJWT,
     },
     runRemoteEndpoint: firebaseJWT.returnUrl,
-    collaboratorsDataUrl: queryValue("collaborators_data_url")
+    collaboratorsDataUrl: queryValue("collaborators_data_url"),
+    teacherFeedbackSourceKey
   };
 
   return rawPortalData;

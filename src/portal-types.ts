@@ -52,7 +52,12 @@ export interface IPortalData extends ILTIPartial {
   runRemoteEndpoint: string;
   rawClassInfo: RawClassInfo;
   collaboratorsDataUrl?: string;
+  teacherFeedbackSourceKey?: string;
 }
+
+export const isPortalData = (data: any): data is IPortalData => {
+  return data.type === "authenticated";
+};
 
 export interface IAnonymousPortalData {
   type: "anonymous";
