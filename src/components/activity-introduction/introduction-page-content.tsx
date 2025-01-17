@@ -3,7 +3,7 @@ import { ActivitySummary } from "../activity-introduction/activity-summary";
 import { ActivityPageLinks } from "../activity-introduction/activity-page-links";
 import { Activity, TeacherFeedback } from "../../types";
 import { watchActivityLevelFeedback } from "../../firebase-db";
-import { ActivityLevelFeedback } from "./activity-level-feedback";
+import { IntroPageActivityLevelFeedback } from "../teacher-feedback/intro-page-activity-level-feedback";
 
 import "./introduction-page-content.scss";
 
@@ -14,6 +14,7 @@ interface IProps {
 
 export const IntroductionPageContent: React.FC<IProps> = (props) => {
   const { activity, onPageChange } = props;
+  const hasCompletionPage = activity.pages.find(p => p.is_completion);
   const [feedback, setFeedback] = useState<TeacherFeedback | null>(null);
 
   useEffect(() => {
@@ -36,7 +37,11 @@ export const IntroductionPageContent: React.FC<IProps> = (props) => {
           onPageChange={onPageChange}
         />
       </div>
-      { feedback && <ActivityLevelFeedback teacherFeedback={feedback} /> }
+      {
+        feedback && !hasCompletionPage && (
+          <IntroPageActivityLevelFeedback teacherFeedback={feedback} />
+        )
+      }
     </div>
   );
 };
