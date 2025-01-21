@@ -37,6 +37,11 @@ const teacherFeedbackPath = (level: "activity" | "question") => {
   return `sources/${sourceKey}/${level}_feedbacks`;
 };
 
+const feedbackActivityId = (activityId: number, isSequence=false) => {
+  // Is there a better way to determine this value?
+  return isSequence ? `activity_${activityId}` : `activity-activity_${activityId}`;
+};
+
 const learnerPluginStatePath = (docId: string) =>
   `sources/${portalData?.database.sourceKey}/plugin_states/${docId}`;
 
@@ -282,7 +287,7 @@ export const watchAllAnswers = (callback: (wrappedAnswer: WrappedDBAnswer[]) => 
   });
 };
 
-const getActivityLevelFeedbackDocsQuery = (activityId?: number, isSequence=false) => {
+const getActivityLevelFeedbackDocsQuery = (activityId: number, isSequence=false) => {
   if (!portalData) {
     throw new Error("Must set portal data first");
   }
@@ -291,7 +296,7 @@ const getActivityLevelFeedbackDocsQuery = (activityId?: number, isSequence=false
 
   let query: firebase.firestore.Query = app.firestore().collection(teacherFeedbackPath("activity"));
   // Is there a better way to determine this value?
-  const activityIdString = isSequence ? `activity_${activityId}` : `activity-activity_${activityId}`;
+  const activityIdString = feedbackActivityId(activityId, isSequence);
 
   if (portalData.type === "authenticated") {
     query = query
@@ -305,7 +310,7 @@ const getActivityLevelFeedbackDocsQuery = (activityId?: number, isSequence=false
   return query;
 };
 
-const getActivityLevelFeedbackDocs = (activityId?: number, isSequence=false) => {
+const getActivityLevelFeedbackDocs = (activityId: number, isSequence=false) => {
   const query = getActivityLevelFeedbackDocsQuery(activityId, isSequence);
   if (!query) return;
 
@@ -328,10 +333,10 @@ export const getActivityLevelFeedback = async (activityId: number, isSequence=fa
   const { feedback, updatedAt } = f[0];
   const timestamp = updatedAt.toDate().toLocaleString();
   if (!feedback) return null;
-  return { feedback, timestamp };
+  return { content: feedback, timestamp };
 };
 
-const getQuestionLevelFeedbackDocsQuery = (answerId?: string) => {
+const getQuestionLevelFeedbackDocsQuery = (answerId: string) => {
   if (!portalData) {
     throw new Error("Must set portal data first");
   }
@@ -352,7 +357,7 @@ const getQuestionLevelFeedbackDocsQuery = (answerId?: string) => {
   return query;
 };
 
-const getQuestionLevelFeedbackDocs = (answerId?: string) => {
+const getQuestionLevelFeedbackDocs = (answerId: string) => {
   const query = getQuestionLevelFeedbackDocsQuery(answerId);
   if (!query) return;
 
@@ -375,7 +380,7 @@ export const getQuestionLevelFeedback = async (answerId: string): Promise<Teache
   const { feedback, updatedAt } = f[0];
   const timestamp = updatedAt.toDate().toLocaleString();
   if (!feedback) return null;
-  return { feedback, timestamp };
+  return { content: feedback, timestamp };
 };
 
 export const getAllTeacherFeedback = async (activityId: number, isSequence=false): Promise<AllTeacherFeedback> => {
@@ -397,7 +402,7 @@ export const getAllTeacherFeedback = async (activityId: number, isSequence=false
   };
 };
 
-const watchQuestionLevelFeedbackDocs = (listener: DocumentsListener, answerId?: string) => {
+const watchQuestionLevelFeedbackDocs = (listener: DocumentsListener, answerId: string) => {
   const query = getQuestionLevelFeedbackDocsQuery(answerId);
   // Note that query.onSnapshot returns unsubscribe method.
   return query?.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
@@ -413,7 +418,7 @@ const watchQuestionLevelFeedbackDocs = (listener: DocumentsListener, answerId?: 
   });
 };
 
-const watchActivityLevelFeedbackDocs = (listener: DocumentsListener, activityId?: number, isInSequence=false) => {
+const watchActivityLevelFeedbackDocs = (listener: DocumentsListener, activityId: number, isInSequence=false) => {
   const query = getActivityLevelFeedbackDocsQuery(activityId, isInSequence);
   // Note that query.onSnapshot returns unsubscribe method.
   return query?.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
@@ -446,7 +451,7 @@ export const watchQuestionLevelFeedback = (answerId: string, callback: (feedback
 
     const feedback = feedbackDocs[0].feedback;
     const timestamp = feedbackDocs[0].updatedAt.toDate().toLocaleString();
-    callback({feedback, timestamp});
+    callback({content: feedback, timestamp});
   }, answerId); // limit observer to single answer
 };
 
@@ -460,15 +465,15 @@ export const watchActivityLevelFeedback = (activityId: number, isInSequence=fals
     }
     if (feedbackDocs.length > 1) {
       console.warn(
-        "Found multiple answer objects for the same question. It might be result of early " +
+        "Found multiple activity objects for the same question. It might be result of early " +
         "ActivityPlayer versions. Your data might be corrupted."
       );
     }
 
     const feedback = feedbackDocs[0].feedback;
     const timestamp = feedbackDocs[0].updatedAt.toDate().toLocaleString();
-    callback({feedback, timestamp});
-  }, activityId, isInSequence); // limit observer to single question
+    callback({content: feedback, timestamp});
+  }, activityId, isInSequence); // limit observer to single activity
 };
 
 // use same universal timezone (UTC) as Lara uses for writing created

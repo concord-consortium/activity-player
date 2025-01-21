@@ -478,7 +478,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         <div className="teacher-feedback">
           <DynamicText>
             <div className="teacher-feedback">
-              <strong>Teacher Feedback:</strong> {feedback.feedback}
+              <strong>Teacher Feedback:</strong> {feedback.content}
             </div>
           </DynamicText>
         </div>

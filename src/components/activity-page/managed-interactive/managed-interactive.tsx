@@ -393,7 +393,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     async function watchFeedback() {
       const answer = await getAnswerMetadata(interactiveId);
       if (answer?.id) {
-        return watchQuestionLevelFeedback(answer?.id, (fb) => {
+        return watchQuestionLevelFeedback(answer.id, (fb) => {
           setFeedback(fb);
         });
       }
