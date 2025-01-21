@@ -9,20 +9,18 @@ import "./introduction-page-content.scss";
 
 interface IProps {
   activity: Activity;
-  isInSequence?: boolean;
   onPageChange: (page: number) => void;
 }
 
 export const IntroductionPageContent: React.FC<IProps> = (props) => {
-  const { activity, onPageChange, isInSequence } = props;
+  const { activity, onPageChange } = props;
   const [feedback, setFeedback] = useState<TeacherFeedback | null>(null);
 
   useEffect(() => {
-    if (!activity.id) return;
     const unsubscribe = watchActivityLevelFeedback(fb => setFeedback(fb));
 
     return () => unsubscribe();
-  }, [activity.id, isInSequence]);
+  }, []);
 
   return (
     <div className="intro-content" data-cy="intro-page-content">

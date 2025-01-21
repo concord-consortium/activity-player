@@ -602,7 +602,6 @@ export class App extends React.PureComponent<IProps, IState> {
     return (
       <IntroductionPageContent
         activity={activity}
-        isInSequence={this.state.sequence !== undefined}
         onPageChange={this.handleChangePage}
       />
     );
