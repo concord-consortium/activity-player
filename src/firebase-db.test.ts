@@ -1,5 +1,5 @@
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
-import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState, getLegacyLinkedRefIds, utcString, getApRun, createOrUpdateApRun } from "./firebase-db";
+import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState, getLegacyLinkedRefIds, utcString, getApRun, createOrUpdateApRun, watchActivityLevelFeedback, watchQuestionLevelFeedback } from "./firebase-db";
 import { DefaultManagedInteractive } from "./test-utils/model-for-tests";
 import { getAnswerWithMetadata, LegacyLinkedRefMap } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata } from "./types";
@@ -412,6 +412,48 @@ describe("AP run functions", () => {
     jest.spyOn(firebase, "initializeApp").mockImplementation(jest.fn(() => appMock));
 
     await initializeDB({name: "report-service-dev", preview: false});
+  });
+
+  describe("watchQuestionLevelFeedback", () => {
+    const feedbackCallback = jest.fn();
+    it("throws an error if the portal data isn't set", async () => {
+      setPortalData(null);
+      await expect(async () => {
+        watchQuestionLevelFeedback("test", feedbackCallback);
+      }).rejects.toThrowError("Must set portal data first");
+    });
+
+    describe("with anonymous portal data", () => {
+      beforeEach(() => {
+        setAnonymousPortalData(anonymousPortalData);
+      });
+
+      it("returns no feedback for anonymous users", async () => {
+        expect(watchQuestionLevelFeedback("test", feedbackCallback)).toStrictEqual(undefined);
+        expect(feedbackCallback).toBeCalledTimes(0);
+      });
+    });
+  });
+
+  describe("watchActivityLevelFeedback", () => {
+    const feedbackCallback = jest.fn();
+    it("throws an error if the portal data isn't set", async () => {
+      setPortalData(null);
+      await expect(async () => {
+        watchActivityLevelFeedback(feedbackCallback);
+      }).rejects.toThrowError("Must set portal data first");
+    });
+
+    describe("with anonymous portal data", () => {
+      beforeEach(() => {
+        setAnonymousPortalData(anonymousPortalData);
+      });
+
+      it("returns no feedback for anonymous users", async () => {
+        expect(watchActivityLevelFeedback(feedbackCallback)).toStrictEqual(undefined);
+        expect(feedbackCallback).toBeCalledTimes(0);
+      });
+    });
   });
 
   describe("getApRun", () => {
