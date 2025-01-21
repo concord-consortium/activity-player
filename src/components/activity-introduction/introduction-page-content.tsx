@@ -19,9 +19,7 @@ export const IntroductionPageContent: React.FC<IProps> = (props) => {
 
   useEffect(() => {
     if (activity.id) {
-      return watchActivityLevelFeedback(activity.id, isInSequence, (fb) => {
-        setFeedback(fb);
-      });
+      return watchActivityLevelFeedback(fb => setFeedback(fb));
     }
   }, [activity.id, isInSequence]);
 

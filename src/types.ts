@@ -362,8 +362,3 @@ export type TeacherFeedback = {
   content: string;
   timestamp: string;
 };
-
-export type AllTeacherFeedback = {
-  activityFeedback: TeacherFeedback[] | null;
-  questionFeedback: TeacherFeedback[] | null;
-}

@@ -15,7 +15,7 @@ import { IAnonymousPortalData, IPortalData, isPortalData } from "./portal-types"
 import { getLegacyLinkedRefMap, LegacyLinkedRefMap, refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata,
   IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, ILegacyLinkedInteractiveState, IApRun, IBaseApRun,
-  TeacherFeedback, AllTeacherFeedback } from "./types";
+  TeacherFeedback } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
 import { ILaraData } from "./components/lara-data-context";
@@ -35,11 +35,6 @@ const teacherFeedbackPath = (level: "activity" | "question") => {
 
   const sourceKey = portalData.teacherFeedbackSourceKey;
   return `sources/${sourceKey}/${level}_feedbacks`;
-};
-
-const feedbackActivityId = (activityId: number, isSequence=false) => {
-  // Is there a better way to determine this value?
-  return isSequence ? `activity_${activityId}` : `activity-activity_${activityId}`;
 };
 
 const learnerPluginStatePath = (docId: string) =>
@@ -287,7 +282,7 @@ export const watchAllAnswers = (callback: (wrappedAnswer: WrappedDBAnswer[]) => 
   });
 };
 
-const getActivityLevelFeedbackDocsQuery = (activityId: number, isSequence=false) => {
+const getActivityLevelFeedbackDocsQuery = () => {
   if (!portalData) {
     throw new Error("Must set portal data first");
   }
@@ -295,12 +290,9 @@ const getActivityLevelFeedbackDocsQuery = (activityId: number, isSequence=false)
   if (portalData.userType !== "learner" || portalData.type === "anonymous") return;
 
   let query: firebase.firestore.Query = app.firestore().collection(teacherFeedbackPath("activity"));
-  // Is there a better way to determine this value?
-  const activityIdString = feedbackActivityId(activityId, isSequence);
 
   if (portalData.type === "authenticated") {
     query = query
-      .where("activityId", "==", activityIdString)
       .where("platformId", "==", portalData.platformId)
       .where("resourceLinkId", "==", portalData.resourceLinkId)
       .where("contextId", "==", portalData.contextId)
@@ -308,32 +300,6 @@ const getActivityLevelFeedbackDocsQuery = (activityId: number, isSequence=false)
   }
 
   return query;
-};
-
-const getActivityLevelFeedbackDocs = (activityId: number, isSequence=false) => {
-  const query = getActivityLevelFeedbackDocsQuery(activityId, isSequence);
-  if (!query) return;
-
-  return query.get().then(snapshot => {
-    if (!snapshot.empty) {
-      return snapshot.docs.map(doc => doc.data());
-    }
-    return [];
-  });
-};
-
-export const getActivityLevelFeedback = async (activityId: number, isSequence=false): Promise<TeacherFeedback | null> => {
-  const feedbackDocs = getActivityLevelFeedbackDocs(activityId, isSequence);
-  if (!feedbackDocs) return Promise.resolve(null);
-
-  const f = await feedbackDocs;
-  if (f.length === 0) {
-    return null;
-  }
-  const { feedback, updatedAt } = f[0];
-  const timestamp = updatedAt.toDate().toLocaleString();
-  if (!feedback) return null;
-  return { content: feedback, timestamp };
 };
 
 const getQuestionLevelFeedbackDocsQuery = (answerId: string) => {
@@ -357,51 +323,6 @@ const getQuestionLevelFeedbackDocsQuery = (answerId: string) => {
   return query;
 };
 
-const getQuestionLevelFeedbackDocs = (answerId: string) => {
-  const query = getQuestionLevelFeedbackDocsQuery(answerId);
-  if (!query) return;
-
-  return query.get().then(snapshot => {
-    if (!snapshot.empty) {
-      return snapshot.docs.map(doc => doc.data());
-    }
-    return [];
-  });
-};
-
-export const getQuestionLevelFeedback = async (answerId: string): Promise<TeacherFeedback | null> => {
-  const feedbackDocs = getQuestionLevelFeedbackDocs(answerId);
-  if (!feedbackDocs) return Promise.resolve(null);
-
-  const f = await feedbackDocs;
-  if (f.length === 0) {
-    return null;
-  }
-  const { feedback, updatedAt } = f[0];
-  const timestamp = updatedAt.toDate().toLocaleString();
-  if (!feedback) return null;
-  return { content: feedback, timestamp };
-};
-
-export const getAllTeacherFeedback = async (activityId: number, isSequence=false): Promise<AllTeacherFeedback> => {
-  if (!portalData) {
-    throw new Error("Must set portal data first");
-  }
-  // Only logged-in students will have feedback.
-  if (portalData.userType !== "learner" || portalData.type === "anonymous") return { activityFeedback: [], questionFeedback: [] };
-
-  const activityFeedback = await getActivityLevelFeedback(activityId, isSequence);
-  const allAnswers = await getAllAnswers();
-  const questionFeedback = await Promise.all(allAnswers.map(answer => getQuestionLevelFeedback(answer.meta.id)));
-  const questionFeedbackFiltered = questionFeedback.filter(f => f !== null) as TeacherFeedback[];
-  if (!activityFeedback || !questionFeedback) return { activityFeedback: [], questionFeedback: [] };
-
-  return {
-    activityFeedback: [activityFeedback],
-    questionFeedback: questionFeedbackFiltered
-  };
-};
-
 const watchQuestionLevelFeedbackDocs = (listener: DocumentsListener, answerId: string) => {
   const query = getQuestionLevelFeedbackDocsQuery(answerId);
   // Note that query.onSnapshot returns unsubscribe method.
@@ -418,8 +339,8 @@ const watchQuestionLevelFeedbackDocs = (listener: DocumentsListener, answerId: s
   });
 };
 
-const watchActivityLevelFeedbackDocs = (listener: DocumentsListener, activityId: number, isInSequence=false) => {
-  const query = getActivityLevelFeedbackDocsQuery(activityId, isInSequence);
+const watchActivityLevelFeedbackDocs = (listener: DocumentsListener) => {
+  const query = getActivityLevelFeedbackDocsQuery();
   // Note that query.onSnapshot returns unsubscribe method.
   return query?.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
     if (!snapshot.empty) {
@@ -456,7 +377,7 @@ export const watchQuestionLevelFeedback = (answerId: string, callback: (feedback
 };
 
 // Watches ONE activity feedback
-export const watchActivityLevelFeedback = (activityId: number, isInSequence=false, callback: (feedback:TeacherFeedback | null) => void) => {
+export const watchActivityLevelFeedback = (callback: (feedback:TeacherFeedback | null) => void) => {
   // Note that watchAnswerDocs returns unsubscribe method.
   return watchActivityLevelFeedbackDocs((feedbackDocs: firebase.firestore.DocumentData[]) => {
     if (feedbackDocs.length === 0) {
@@ -473,7 +394,7 @@ export const watchActivityLevelFeedback = (activityId: number, isInSequence=fals
     const feedback = feedbackDocs[0].feedback;
     const timestamp = feedbackDocs[0].updatedAt.toDate().toLocaleString();
     callback({content: feedback, timestamp});
-  }, activityId, isInSequence); // limit observer to single activity
+  });
 };
 
 // use same universal timezone (UTC) as Lara uses for writing created
