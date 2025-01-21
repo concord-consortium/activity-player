@@ -7,6 +7,10 @@ import { DefaultManagedInteractive, DefaultXhtmlComponent, DefaultTEWindowshadeC
 import { LaraGlobalContext } from "../lara-global-context";
 import { DynamicTextTester } from "../../test-utils/dynamic-text";
 
+jest.mock("../../firebase-db", () => ({
+  getAnswer: () => { return { answerType: "multiple_choice_answer", selectedChoiceIds: []}; }
+}));
+
 describe("Embeddable component", () => {
   it("renders a non-callout text component", () => {
     const embeddable: EmbeddableType = {

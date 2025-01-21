@@ -10,8 +10,8 @@ import { DynamicText } from "@concord-consortium/dynamic-text";
 import classNames from "classnames";
 
 import { PortalDataContext } from "../../portal-data-context";
-import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, ILegacyLinkedInteractiveState } from "../../../types";
-import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer } from "../../../firebase-db";
+import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, ILegacyLinkedInteractiveState, TeacherFeedback } from "../../../types";
+import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer, watchQuestionLevelFeedback } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata, getInteractiveInfo, hasLegacyLinkedInteractive, IInteractiveInfo, isQuestion } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
@@ -71,6 +71,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const [clickedToPlay, setClickedToPlay] = useState(false);
   const [ARFromSupportedFeatures, setARFromSupportedFeatures] = useState(0);
   const [heightFromInteractive, setHeightFromInteractive] = useState(0);
+  const [feedback, setFeedback] = useState<TeacherFeedback | null>(null);
 
   const embeddableRefId = props.embeddable.ref_id;
 
@@ -388,6 +389,21 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const hasBorder = isManagedInteractive || (isInteractive && !hideQuestionHeader);
   const className = classNames("runtime-container", {"has-question-number": hasQuestionNumber, "has-border": hasBorder});
 
+  useEffect(() => {
+    let unsubscribe = () => {/* no-op */};
+    async function watchFeedback() {
+      const answer = await getAnswerMetadata(interactiveId);
+      if (answer?.id) {
+        unsubscribe = watchQuestionLevelFeedback(answer.id, (fb) => {
+          setFeedback(fb);
+        });
+      }
+    }
+    watchFeedback();
+
+    return () => unsubscribe();
+  }, [interactiveId]);
+
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
       "Loading..." :
@@ -420,6 +436,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         setAspectRatio={setARFromSupportedFeatures}
         setHeightFromInteractive={setHeightFromInteractive}
         hasHeader={!hideQuestionHeader}
+        feedback={feedback}
       />;
 
   return (

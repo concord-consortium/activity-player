@@ -1,7 +1,7 @@
 // cf. https://github.com/concord-consortium/question-interactives/blob/master/src/scaffolded-question/components/iframe-runtime.tsx
 import { autorun } from "mobx";
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { IExportableAnswerMetadata, IframePhone, ILegacyLinkedInteractiveState } from "../../../types";
+import { IExportableAnswerMetadata, IframePhone, ILegacyLinkedInteractiveState, TeacherFeedback } from "../../../types";
 import iframePhone from "iframe-phone";
 import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
@@ -10,7 +10,7 @@ import {
   IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent,
   ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState, AttachmentInfoMap
 } from "@concord-consortium/lara-interactive-api";
-import { DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
+import { DynamicText, DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
 import Shutterbug from "shutterbug";
 import classNames from "classnames";
 
@@ -83,13 +83,14 @@ interface IProps {
   setAspectRatio: (aspectRatio: number) => void;
   setHeightFromInteractive: (heightFromInteractive: number) => void;
   hasHeader?: boolean;
+  feedback?: TeacherFeedback | null;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
     setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo,
-    showDeleteDataButton, setAspectRatio, setHeightFromInteractive, hasHeader } = props;
+    showDeleteDataButton, setAspectRatio, setHeightFromInteractive, hasHeader, feedback } = props;
 
   const [reloadCount, setReloadCount] = useState<number>(0);
   const iframePhoneTimeout = useRef<number|undefined>(undefined);
@@ -472,6 +473,15 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           Clear &amp; start over
           <ReloadIcon />
         </button>
+      }
+      {feedback && 
+        <div className="teacher-feedback">
+          <DynamicText>
+            <div className="teacher-feedback">
+              <strong>Teacher Feedback:</strong> {feedback.content}
+            </div>
+          </DynamicText>
+        </div>
       }
     </div>
   );

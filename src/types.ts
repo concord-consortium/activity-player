@@ -357,3 +357,8 @@ export interface IAuthenticatedUserApRun extends IBaseApRun {
 }
 
 export type IApRun = IAnonymousApRun | IAuthenticatedUserApRun;
+
+export type TeacherFeedback = {
+  content: string;
+  timestamp: string;
+};

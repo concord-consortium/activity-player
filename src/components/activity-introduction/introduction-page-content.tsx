@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { ActivitySummary } from "../activity-introduction/activity-summary";
 import { ActivityPageLinks } from "../activity-introduction/activity-page-links";
-import { Activity } from "../../types";
+import { Activity, TeacherFeedback } from "../../types";
+import { watchActivityLevelFeedback } from "../../firebase-db";
+import { ActivityLevelFeedback } from "./activity-level-feedback";
 
 import "./introduction-page-content.scss";
 
@@ -12,6 +14,13 @@ interface IProps {
 
 export const IntroductionPageContent: React.FC<IProps> = (props) => {
   const { activity, onPageChange } = props;
+  const [feedback, setFeedback] = useState<TeacherFeedback | null>(null);
+
+  useEffect(() => {
+    const unsubscribe = watchActivityLevelFeedback(fb => setFeedback(fb));
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="intro-content" data-cy="intro-page-content">
@@ -27,6 +36,7 @@ export const IntroductionPageContent: React.FC<IProps> = (props) => {
           onPageChange={onPageChange}
         />
       </div>
+      { feedback && <ActivityLevelFeedback teacherFeedback={feedback} /> }
     </div>
   );
 };
