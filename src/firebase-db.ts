@@ -324,8 +324,10 @@ const getQuestionLevelFeedbackDocsQuery = (answerId: string) => {
 
 const watchQuestionLevelFeedbackDocs = (listener: DocumentsListener, answerId: string) => {
   const query = getQuestionLevelFeedbackDocsQuery(answerId);
+  if (!query) return () => {/* no-op */};
+
   // Note that query.onSnapshot returns unsubscribe method.
-  return query?.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
+  return query.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
     if (!snapshot.empty) {
       const docs = snapshot.docs.map(doc => doc.data());
       listener(docs);
@@ -340,8 +342,10 @@ const watchQuestionLevelFeedbackDocs = (listener: DocumentsListener, answerId: s
 
 const watchActivityLevelFeedbackDocs = (listener: DocumentsListener) => {
   const query = getActivityLevelFeedbackDocsQuery();
+  if (!query) return () => {/* no-op */};
+
   // Note that query.onSnapshot returns unsubscribe method.
-  return query?.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
+  return query.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
     if (!snapshot.empty) {
       const docs = snapshot.docs.map(doc => doc.data());
       listener(docs);

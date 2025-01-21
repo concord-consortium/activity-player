@@ -18,9 +18,10 @@ export const IntroductionPageContent: React.FC<IProps> = (props) => {
   const [feedback, setFeedback] = useState<TeacherFeedback | null>(null);
 
   useEffect(() => {
-    if (activity.id) {
-      return watchActivityLevelFeedback(fb => setFeedback(fb));
-    }
+    if (!activity.id) return;
+    const unsubscribe = watchActivityLevelFeedback(fb => setFeedback(fb));
+
+    return () => unsubscribe();
   }, [activity.id, isInSequence]);
 
   return (

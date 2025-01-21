@@ -429,7 +429,7 @@ describe("AP run functions", () => {
       });
 
       it("returns no feedback for anonymous users", async () => {
-        expect(watchQuestionLevelFeedback("test", feedbackCallback)).toStrictEqual(undefined);
+        expect(watchQuestionLevelFeedback("test", feedbackCallback)).toBeInstanceOf(Function);
         expect(feedbackCallback).toBeCalledTimes(0);
       });
     });
@@ -450,7 +450,7 @@ describe("AP run functions", () => {
       });
 
       it("returns no feedback for anonymous users", async () => {
-        expect(watchActivityLevelFeedback(feedbackCallback)).toStrictEqual(undefined);
+        expect(watchActivityLevelFeedback(feedbackCallback)).toBeInstanceOf(Function);
         expect(feedbackCallback).toBeCalledTimes(0);
       });
     });

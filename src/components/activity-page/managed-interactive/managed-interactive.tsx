@@ -390,15 +390,18 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const className = classNames("runtime-container", {"has-question-number": hasQuestionNumber, "has-border": hasBorder});
 
   useEffect(() => {
+    let unsubscribe = () => {/* no-op */};
     async function watchFeedback() {
       const answer = await getAnswerMetadata(interactiveId);
       if (answer?.id) {
-        return watchQuestionLevelFeedback(answer.id, (fb) => {
+        unsubscribe = watchQuestionLevelFeedback(answer.id, (fb) => {
           setFeedback(fb);
         });
       }
     }
     watchFeedback();
+
+    return () => unsubscribe();
   }, [interactiveId]);
 
   const interactiveIframeRuntime =
