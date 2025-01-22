@@ -11,8 +11,8 @@ import { watchAllAnswers, WrappedDBAnswer } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
 import { answerHasResponse, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
-import ccPlaceholderLogo from "../../assets/cc-placeholder.png";
 import { ReadAloudToggle } from "../read-aloud-toggle";
+import { NextSteps } from "./next-steps";
 
 import "./completion-page-content.scss";
 
@@ -106,10 +106,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const incompleteActivityProgressText =
     `It looks like you haven't quite finished this activity yet.`;
   const isLastActivityInSequence = activityIndex ? sequence?.activities.length === activityIndex + 1 : false;
-  const nextActivityTitle = !isLastActivityInSequence && sequence?.activities[activityNum + 1].name;
-  const nextActivityThumbnailURL = !isLastActivityInSequence && sequence?.activities[activityNum + 1].thumbnail_url;
-  const nextActivityDescription = !isLastActivityInSequence &&
-                                  renderHTML(sequence?.activities[activityNum + 1].description || "");
+
   let progressText = "";
 
   if (sequence) {
@@ -147,25 +144,13 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
             </div>
           </div>
           {sequence && !isLastActivityInSequence &&
-            <div className="next-step" data-cy="next-step">
-              <div className="next-step-thumbnail">
-                <img src={nextActivityThumbnailURL ? nextActivityThumbnailURL : ccPlaceholderLogo} alt="Next Activity" />
-              </div>
-              <div className="next-step-content">
-                <div className="next-step-text">
-                  <div className="next-step-title">
-                    <div className="next"><DynamicText>Next Up ...</DynamicText></div>
-                    <DynamicText>{nextActivityTitle}</DynamicText>
-                  </div>
-                  <DynamicText>{nextActivityDescription}</DynamicText>
-                </div>
-                <div className="next-step-buttons">
-                  <button className="button" onClick={handleNextActivity}>Start Next Activity</button>
-                  <span>or</span>
-                  <button className="textButton" onClick={handleExit}>Exit</button>
-                </div>
-              </div>
-            </div>
+           <NextSteps
+              nextActivityThumbnailURL={sequence?.activities[activityNum + 1].thumbnail_url}
+              nextActivityTitle={sequence?.activities[activityNum + 1].name}
+              nextActivityDescription={renderHTML(sequence?.activities[activityNum + 1].description || "")}
+              handleNextActivity={handleNextActivity}
+              handleExit={handleExit}
+            />
           }
           <div className="exit-container" data-cy="exit-container">
             <div className="summary-of-work">

@@ -108,66 +108,6 @@
     }
   }
 
-  .next-step {
-    background-color: $cc-teal-light6;
-    display: flex;
-    flex-basis: 100%;
-    margin-bottom: 20px;
-    padding: 10px;
-
-    .next-step-thumbnail {
-      background-color: var(--theme-primary-color);
-      border: solid 1px var(--theme-primary-color);
-      border-radius: 8px;
-      height: 80px;
-      margin-right: 10px;
-      max-width: 108px;
-      overflow: hidden;
-
-      img {
-        height: 100%;
-        object-fit: cover;
-        width: 100%;
-      }
-    }
-    .next-step-content {
-      display: flex;
-      flex-wrap: wrap;
-      line-height: 1.2;
-
-      .next-step-buttons {
-        margin-right: 15px;
-        width: 260px;
-
-        button {
-          width: 100%;
-        }
-        span {
-          display: block;
-          margin: 10px 0;
-          text-align: center;
-        }
-      }
-      .next-step-text {
-        flex-grow: 2;
-        margin: 0 10px 0 0;
-        width: 495px;
-
-        p {
-          margin: 0;
-        }
-        .next-step-title {
-          font-size: pxToRem(16);
-          font-weight: bold;
-        }
-        .next {
-          font-style: italic;
-          font-weight: normal;
-          margin-bottom: 5px;
-        }
-      }
-    }
-  }
 
   .num-complete-text {
     margin: 15px 0;
