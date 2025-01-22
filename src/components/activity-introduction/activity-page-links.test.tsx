@@ -3,6 +3,11 @@ import { ActivityPageLinks } from "./activity-page-links";
 import { shallow } from "enzyme";
 import { DefaultTestPage } from "../../test-utils/model-for-tests";
 
+jest.mock("../../firebase-db", () => ({
+  watchActivityLevelFeedback: jest.fn(),
+  watchQuestionLevelFeedback: jest.fn()
+}));
+
 describe("Activity Page Links component", () => {
   it("renders activity page links", () => {
     const stubFunction = () => {

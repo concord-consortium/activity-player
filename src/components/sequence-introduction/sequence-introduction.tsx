@@ -5,10 +5,11 @@ import { Header } from "../activity-header/header";
 import { SequencePageContent } from "../sequence-introduction/sequence-page-content";
 import { setQueryValue } from "../../utilities/url-query";
 import { setAppBackgroundImage } from "../../utilities/activity-utils";
+import { QuestionToActivityMap } from "../app";
 
 interface IProps {
-  sequence: Sequence | undefined;
-  questionIdsToActivityIdsMap: Record<string, number> | undefined;
+  sequence?: Sequence;
+  questionIdsToActivityIdsMap?: QuestionToActivityMap;
   username: string;
   onSelectActivity: (page: number) => void;
 }

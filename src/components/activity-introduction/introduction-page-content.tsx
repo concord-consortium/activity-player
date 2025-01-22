@@ -2,32 +2,34 @@ import React, { useEffect, useState } from "react";
 import { ActivitySummary } from "../activity-introduction/activity-summary";
 import { ActivityPageLinks } from "../activity-introduction/activity-page-links";
 import { Activity, ActivityFeedback } from "../../types";
-import { watchActivityLevelFeedback } from "../../firebase-db";
+import { QuestionToActivityMap } from "../app";
 import { IntroPageActivityLevelFeedback } from "../teacher-feedback/intro-page-activity-level-feedback";
+import { subscribeToActivityLevelFeedback } from "../../utilities/feedback-utils";
 
 import "./introduction-page-content.scss";
 
 interface IProps {
   activity: Activity;
   isSequence?: boolean;
+  questionIdsToActivityIdsMap?: QuestionToActivityMap;
   onPageChange: (page: number) => void;
 }
 
 export const IntroductionPageContent: React.FC<IProps> = (props) => {
-  const { activity, isSequence, onPageChange } = props;
+  const { activity, isSequence, questionIdsToActivityIdsMap, onPageChange } = props;
   const hasCompletionPage = activity.pages.find(p => p.is_completion);
   const [feedback, setFeedback] = useState<ActivityFeedback | null>(null);
 
   useEffect(() => {
-    const unsubscribe = watchActivityLevelFeedback(fbs => {
-      if (fbs?.length) {
-        const activityIdString = isSequence ? `activity_${activity.id}` : `activity-activity_${activity.id}`;
-        const fb = fbs.filter(f => f.activityId === activityIdString);
-        fb.length && setFeedback(fb[0]);
-      }
-    });
+    if (activity.id) {
+      const unsubscribe = subscribeToActivityLevelFeedback(
+        activity.id,
+        !!isSequence,
+        (fb: ActivityFeedback | null) => setFeedback(fb)
+      );
 
-    return () => unsubscribe();
+      return () => unsubscribe();
+    }
   }, [activity.id, isSequence]);
 
   return (
@@ -40,7 +42,10 @@ export const IntroductionPageContent: React.FC<IProps> = (props) => {
           imageUrl={activity.thumbnail_url}
         />
         <ActivityPageLinks
+          activityId={activity.id}
           activityPages={activity.pages}
+          isSequence={isSequence}
+          questionToActivityMap={questionIdsToActivityIdsMap}
           onPageChange={onPageChange}
         />
       </div>

@@ -26,6 +26,7 @@
     width: 260px;
     height: 40px;
     padding: 0 10px;
+    position: relative;
     cursor: pointer;
     &:hover {
       background-color: $cc-teal-light4;

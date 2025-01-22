@@ -7,7 +7,7 @@ import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-ci
 import { isValidReportLink, showReport } from "../../utilities/report-utils";
 import { Sequence, Activity, EmbeddableType, Page, ActivityFeedback } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
-import { watchActivityLevelFeedback, watchAllAnswers, WrappedDBAnswer } from "../../firebase-db";
+import { watchAllAnswers, WrappedDBAnswer } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
 import { answerHasResponse, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
@@ -15,8 +15,10 @@ import { SequenceIntroFeedbackBanner } from "../teacher-feedback/sequence-intro-
 import { ActivityLevelFeedbackBanner } from "../teacher-feedback/activity-level-feedback-banner";
 import { ReadAloudToggle } from "../read-aloud-toggle";
 import { NextSteps } from "./next-steps";
+import { subscribeToActivityLevelFeedback } from "../../utilities/feedback-utils";
 
 import "./completion-page-content.scss";
+
 interface IProps {
   activity: Activity;
   activityName: string;
@@ -43,13 +45,12 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
 
   useEffect(() => {
     if (activity.id) {
-      const unsubscribe = watchActivityLevelFeedback(fbs => {
-        if (fbs?.length) {
-          const activityIdString = sequence ? `activity_${activity.id}` : `activity-activity_${activity.id}`;
-          const fb = fbs.filter(f => f.activityId === activityIdString)[0];
-          setFeedback(fb);
-        }
-      });
+      const unsubscribe = subscribeToActivityLevelFeedback(
+        activity.id,
+        !!sequence,
+        (fb: ActivityFeedback | null) => setFeedback(fb)
+      );
+
       return () => unsubscribe();
     }
   }, [activity.id, sequence]);

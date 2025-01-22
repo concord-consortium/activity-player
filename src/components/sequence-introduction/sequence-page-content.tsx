@@ -9,12 +9,13 @@ import { watchActivityLevelFeedback, watchQuestionLevelFeedback } from "../../fi
 import { answersQuestionIdToRefId } from "../../utilities/embeddable-utils";
 import { SequenceIntroFeedbackBanner } from "../teacher-feedback/sequence-intro-feedback-banner";
 import { FeedbackBadge } from "../teacher-feedback/sequence-activity-feedback-badge";
+import { QuestionToActivityMap } from "../app";
 
 import "./sequence-page-content.scss";
 
 interface IProps {
   sequence: Sequence;
-  questionIdsToActivityIdsMap: Record<string, number> | undefined;
+  questionIdsToActivityIdsMap?: QuestionToActivityMap;
   onSelectActivity: (page: number) => void;
 }
 
@@ -46,7 +47,7 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
       const questionIdsToRefId = questionIds.map(answersQuestionIdToRefId);
       const activityIds: number[] = [];
       questionIdsToRefId.forEach((refId: string) => {
-        const activityId = questionIdsToActivityIdsMap?.[refId];
+        const activityId = questionIdsToActivityIdsMap?.[refId].activityId;
         if (activityId && !activityIds.includes(activityId)) {
           activityIds.push(activityId);
         }
