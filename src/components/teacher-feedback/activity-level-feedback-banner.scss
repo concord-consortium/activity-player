@@ -1,0 +1,24 @@
+@import "../vars.scss";
+
+.activity-level-feedback-banner {
+  background: $teacher-feedback-light-green;
+  border-radius: 4px;
+  color: $cc-charcoal;
+  display: flex;
+  font-size: pxToRem(18);
+  gap: 9px;
+  margin: 15px 0;
+  padding: 20px;
+
+  .teacher-feedback-icon {
+    flex-shrink: 0;
+    height: 24px;
+    width: 24px;
+  }
+
+  .activity-level-feedback-content {
+    flex-grow: 1;
+    flex-shrink: 1;
+    line-height: normal;
+  }
+}
