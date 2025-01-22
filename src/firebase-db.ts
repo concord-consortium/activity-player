@@ -400,6 +400,76 @@ export const watchActivityLevelFeedback = (callback: (feedback:TeacherFeedback |
   });
 };
 
+// Watches all activity-level feedback
+export const watchActivityFeedbackForSequence = (callback: (activityIds:string[]) => void) => {
+  // Note that watchAnswerDocs returns unsubscribe method.
+  return watchActivityLevelFeedbackDocs((feedbackDocs: firebase.firestore.DocumentData[]) => {
+    if (feedbackDocs.length === 0) {
+      callback([]);
+      return;
+    }
+    if (feedbackDocs.length > 1) {
+      console.warn(
+        "Found multiple activity objects for the same question. It might be result of early " +
+        "ActivityPlayer versions. Your data might be corrupted."
+      );
+    }
+
+    // remove string prefix from activityId
+    const activityIds = feedbackDocs.map(doc => doc.activityId.replace("activity_", ""));
+    callback(activityIds);
+  });
+};
+
+// Gets all question feedback docs for sequence or activity
+const getAllQuestionLevelFeedbackDocsQuery = () => {
+  if (!portalData) {
+    throw new Error("Must set portal data first");
+  }
+  // Only logged-in students will have feedback.
+  if (portalData.userType !== "learner" || portalData.type === "anonymous") return;
+
+  let query: firebase.firestore.Query = app.firestore().collection(teacherFeedbackPath("question"));
+
+  if (portalData.type === "authenticated") {
+    query = query
+      .where("platformId", "==", portalData.platformId)
+      .where("resourceLinkId", "==", portalData.resourceLinkId)
+      .where("contextId", "==", portalData.contextId)
+      .where("platformStudentId", "==", portalData.platformUserId.toString());
+  }
+
+  return query;
+};
+
+const watchAllQuestionLevelFeedbackDocs = (listener: DocumentsListener) => {
+  const query = getAllQuestionLevelFeedbackDocsQuery();
+  // Note that query.onSnapshot returns unsubscribe method.
+  return query?.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
+    if (!snapshot.empty) {
+      const docs = snapshot.docs.map(doc => doc.data());
+      listener(docs);
+    }
+    else {
+      listener([]);
+    }
+  }, (err) => {
+    throw new Error(err.message);
+  });
+};
+
+// Watches all question-level feedback for sequence or activity
+export const watchAllQuestionLevelFeedback = (callback: (questionIds: string[]) => void) => {
+  // Note that watchQuestionLevelFeedbackDocs returns unsubscribe method.
+  return watchAllQuestionLevelFeedbackDocs((feedbackDocs: firebase.firestore.DocumentData[]) => {
+    if (feedbackDocs.length === 0) {
+      callback([]);
+      return;
+    }
+    const feedbackQuestionIds: string[] = feedbackDocs.map(doc => doc.questionId);
+    callback(feedbackQuestionIds);
+  });
+};
 // use same universal timezone (UTC) as Lara uses for writing created
 export const utcString = () => (new Date()).toUTCString().replace("GMT", "UTC");
 

@@ -47,9 +47,10 @@
         padding: 8px 10px 10px;
         border-radius: 8px;
         border: solid 1.5px $cc-charcoal-light1;
-        overflow: hidden;
+        overflow: visible;
         color: $cc-teal-dark1;
         cursor: pointer;
+        position: relative;
 
         &:hover {
           background-color: $cc-teal-light4;
@@ -109,7 +110,7 @@
 
     }
 
-    .estimated-time {
+    .banners {
       margin-bottom: 15px;
     }
   }

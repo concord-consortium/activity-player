@@ -8,12 +8,13 @@ import { setAppBackgroundImage } from "../../utilities/activity-utils";
 
 interface IProps {
   sequence: Sequence | undefined;
+  questionIdsToActivityIdsMap: Record<string, number> | undefined;
   username: string;
   onSelectActivity: (page: number) => void;
 }
 
 export const SequenceIntroduction: React.FC<IProps> = (props) => {
-  const { sequence, username, onSelectActivity } = props;
+  const { sequence, username, questionIdsToActivityIdsMap, onSelectActivity } = props;
   setQueryValue("sequenceActivity", "0");
   const backgroundImage = sequence?.background_image;
   if (backgroundImage) {
@@ -32,6 +33,7 @@ export const SequenceIntroduction: React.FC<IProps> = (props) => {
         />
         <SequencePageContent
           sequence={sequence}
+          questionIdsToActivityIdsMap={questionIdsToActivityIdsMap}
           onSelectActivity={onSelectActivity}
         />
         <Footer

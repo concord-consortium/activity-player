@@ -1,0 +1,17 @@
+@import "../vars.scss";
+
+.intro-feedback-banner {
+  align-items: center;
+  background: $teacher-feedback-light-green;
+  color: $cc-charcoal;
+  display: flex;
+  font-size: pxToRem(18);
+  font-style: italic;
+  font-weight: bold;
+  margin: 5px 0 30px;
+  padding: 10px;
+
+  .teacher-feedback-icon {
+    margin-right: 5px;
+  }
+}

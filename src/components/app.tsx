@@ -109,6 +109,7 @@ interface IState {
   showWarning: boolean;
   username: string;
   portalData?: IPortalData;
+  questionIdsToActivityIdsMap?: Record<string, number>;
   sequence?: Sequence;
   showSequenceIntro?: boolean;
   activityIndex?: number;
@@ -283,6 +284,21 @@ export class App extends React.PureComponent<IProps, IState> {
         ? sequence.activities[activityIndex]
         : await getActivityDefinition(activityPath);
 
+      // this is used by SequencePageContent
+      const questionIdsToActivityIdsMap: Record<string, number> = {};
+      sequence?.activities.forEach((a: Activity, idx: number) => {
+        if (!a.id) return;
+        a.pages.forEach(p =>
+          p.sections.forEach(s =>
+            s.embeddables.forEach(e => {
+              if (e.ref_id && a.id) {
+                questionIdsToActivityIdsMap[e.ref_id] = a.id;
+              }
+            })
+          )
+        );
+      });
+
       this.checkLayout(activity, sequence);
 
       this.setState({ mediaLibrary: parseMediaLibraryItems({sequence, activity})});
@@ -350,7 +366,8 @@ export class App extends React.PureComponent<IProps, IState> {
 
       newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner,
                      showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity, hideReadAloud,
-                     fontSize, fontSizeInPx, fontType, fontFamilyForType, hideQuestionNumbers};
+                     fontSize, fontSizeInPx, fontType, fontFamilyForType, hideQuestionNumbers,
+                     questionIdsToActivityIdsMap};
       setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       this.setState(newState as IState);
@@ -413,7 +430,12 @@ export class App extends React.PureComponent<IProps, IState> {
                       { this.state.showWarning && <WarningBanner/> }
                       { this.state.teacherEditionMode && <TeacherEditionBanner/>}
                       { this.state.showSequenceIntro
-                        ? <SequenceIntroduction sequence={this.state.sequence} username={this.state.username} onSelectActivity={this.handleSelectActivity} />
+                        ? <SequenceIntroduction
+                            sequence={this.state.sequence}
+                            username={this.state.username}
+                            questionIdsToActivityIdsMap={this.state.questionIdsToActivityIdsMap}
+                            onSelectActivity={this.handleSelectActivity}
+                          />
                         : this.renderActivity() }
                       { this.state.showThemeButtons && <ThemeButtons/>}
                       <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
