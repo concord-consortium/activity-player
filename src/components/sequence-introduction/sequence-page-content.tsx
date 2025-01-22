@@ -6,7 +6,7 @@ import { EstimatedTime } from "../activity-introduction/estimated-time";
 import { ReadAloudToggle } from "../read-aloud-toggle";
 import { ActivityLayoutOverrides } from "../../utilities/activity-utils";
 import { watchActivityFeedbackForSequence, watchAllQuestionLevelFeedback } from "../../firebase-db";
-import { refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
+import { answersQuestionIdToRefId } from "../../utilities/embeddable-utils";
 import { SequenceIntroFeedbackBanner } from "./sequence-intro-feedback-banner";
 import { FeedbackBadge } from "./feedback-badge";
 
@@ -14,40 +14,49 @@ import "./sequence-page-content.scss";
 
 interface IProps {
   sequence: Sequence;
+  questionIdsToActivityIdsMap: Record<string, number> | undefined;
   onSelectActivity: (page: number) => void;
 }
 
 export const SequencePageContent: React.FC<IProps> = (props) => {
-  const { onSelectActivity, sequence } = props;
+  const { onSelectActivity, questionIdsToActivityIdsMap, sequence } = props;
   const isNotebookLayout = sequence.layout_override === ActivityLayoutOverrides.Notebook;
   let totalTime = 0;
   let stubCount = 0;
   const [activitiesWithActivityLevelFeedback, setActivitiesWithActivityLevelFeedback] = React.useState<string[]>([]);
-  const [activitiesWithQuestionLevelFeedback, setActivitiesWithQuestionLevelFeedback] = React.useState<string[]>([]);
+  const [activitiesWithQuestionLevelFeedback, setActivitiesWithQuestionLevelFeedback] = React.useState<number[]>([]);
 
   sequence.activities.forEach((a: Activity) => totalTime += a.time_to_complete || 0);
 
   useEffect(() => {
-    async function watchAllActivityFeedback() {
-      return watchActivityFeedbackForSequence((ids: string[]) => setActivitiesWithActivityLevelFeedback(ids));
-    }
-
-    async function watchAllQuestionFeedback() {
-      return watchAllQuestionLevelFeedback((questionIds: string[]) => {
-        const filteredByQuestionFeedback = sequence.activities.filter(a =>
-          a.pages.some(p =>
-            p.sections.some(s =>
-              s.embeddables.some(e => questionIds.includes(refIdToAnswersQuestionId(e.ref_id)))
-            )
-          )
-        ).map(activity => activity.id).filter(Boolean).map(String);
-        setActivitiesWithQuestionLevelFeedback(filteredByQuestionFeedback);
-      });
-    }
-
-    watchAllActivityFeedback();
-    watchAllQuestionFeedback();
+    const unsubscribe = watchActivityFeedbackForSequence((ids: string[]) => setActivitiesWithActivityLevelFeedback(ids));
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
   }, [sequence.activities]);
+
+  useEffect(() => {
+    const unsubscribe = watchAllQuestionLevelFeedback((questionIds: string[]) => {
+      const questionIdsToRefId = questionIds.map(answersQuestionIdToRefId);
+      const activityIds: number[] = [];
+      questionIdsToRefId.forEach((refId: string) => {
+        const activityId = questionIdsToActivityIdsMap?.[refId];
+        if (activityId && !activityIds.includes(activityId)) {
+          activityIds.push(activityId);
+        }
+      });
+
+      setActivitiesWithQuestionLevelFeedback(activityIds);
+    });
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [questionIdsToActivityIdsMap]);
 
   return (
     <div className="sequence-content" data-cy="sequence-page-content">
@@ -68,7 +77,7 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
               if (!a.thumbnail_url) {
                 stubCount++;
               }
-              const activityHasFeedback = a.id && (activitiesWithActivityLevelFeedback.includes(`${a.id}`) || activitiesWithQuestionLevelFeedback.includes(`${a.id}`));
+              const activityHasFeedback = a.id && (activitiesWithActivityLevelFeedback.includes(`${a.id}`) || activitiesWithQuestionLevelFeedback.includes(a.id));
               return (
               <div className="thumb" key={`activity-${index}`} onClick={() => onSelectActivity(index)} data-cy="sequence-thumb">
                 {activityHasFeedback && <FeedbackBadge />}
