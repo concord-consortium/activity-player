@@ -71,7 +71,7 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
           </div>
           <div className="description">{sequence.description && renderHTML(sequence.description)}</div>
           <EstimatedTime time={totalTime} />
-          {activitiesWithActivityLevelFeedback.length > 0 && <SequenceIntroFeedbackBanner />}
+          {(activitiesWithActivityLevelFeedback.length > 0 || activitiesWithQuestionLevelFeedback.length > 0) && <SequenceIntroFeedbackBanner />}
           <div className="thumb-holder">
             {sequence.activities.map((a: Activity, index: number) => {
               if (!a.thumbnail_url) {
