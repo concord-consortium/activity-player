@@ -7,8 +7,8 @@ import { ReadAloudToggle } from "../read-aloud-toggle";
 import { ActivityLayoutOverrides } from "../../utilities/activity-utils";
 import { watchActivityFeedbackForSequence, watchAllQuestionLevelFeedback } from "../../firebase-db";
 import { answersQuestionIdToRefId } from "../../utilities/embeddable-utils";
-import { SequenceIntroFeedbackBanner } from "./sequence-intro-feedback-banner";
-import { FeedbackBadge } from "./feedback-badge";
+import { SequenceIntroFeedbackBanner } from "../teacher-feedback/sequence-intro-feedback-banner";
+import { FeedbackBadge } from "../teacher-feedback/sequence-activity-feedback-badge";
 
 import "./sequence-page-content.scss";
 
