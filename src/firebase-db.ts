@@ -313,6 +313,7 @@ const getQuestionLevelFeedbackDocsQuery = (answerId: string) => {
 
   if (portalData.type === "authenticated") {
     query = query
+      .where("answerId", "==", answerId)
       .where("platformId", "==", portalData.platformId)
       .where("resourceLinkId", "==", portalData.resourceLinkId)
       .where("contextId", "==", portalData.contextId)
