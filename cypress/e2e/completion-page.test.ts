@@ -17,14 +17,15 @@ context("Test the overall app", () => {
       cy.log("test incomplete activity text");
       cy.get(".progress-text").should("contain", `It looks like you haven't quite finished this activity yet.`);
       cy.get(".exit-container .show-my-work").should("contain", "Show My Work");
-      cy.get(".next-step-text").should("contain", activity2Title);
-      cy.get(".next-step button").should("have.length", 2);
+      cy.get(".preview-title-container").should("contain", activity2Title);
+      cy.get(".next-activity-buttons").first().should("contain", "Start Next Activity");
+      cy.get(".next-activity-buttons").last().should("contain", "Exit");
       cy.get("[data-cy=summary-table]").should("have.length", 1);
       cy.get("[data-cy=summary-table-row]").should("have.length", 7);
       cy.get("[data-cy=summary-table-row]").eq(0).find("svg").should("have.class", "incomplete");
 
       cy.log("test next activity button loads next activity");
-      cy.get(".next-step button").first().should("contain", "Start Next Activity").click();
+      cy.get(".next-activity-buttons button").first().click();
       cy.get(".activity-title").should("contain", activity2Title);
 
       cy.log("Test completion page of last activity in a sequence");
