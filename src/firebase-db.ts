@@ -318,7 +318,7 @@ const getQuestionLevelFeedbackDocsQuery = (answerId?: string) => {
       .where("contextId", "==", portalData.contextId)
       .where("platformStudentId", "==", portalData.platformUserId.toString());
     if (answerId) {
-      query = query.where("answer_id", "==", answerId);
+      query = query.where("answerId", "==", answerId);
     }
   }
 
