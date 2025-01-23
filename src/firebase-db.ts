@@ -15,7 +15,7 @@ import { IAnonymousPortalData, IPortalData, isPortalData } from "./portal-types"
 import { getLegacyLinkedRefMap, LegacyLinkedRefMap, refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata,
   IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, ILegacyLinkedInteractiveState, IApRun, IBaseApRun,
-  TeacherFeedback } from "./types";
+  QuestionFeedback, ActivityFeedback} from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
 import { ILaraData } from "./components/lara-data-context";
@@ -302,7 +302,7 @@ const getActivityLevelFeedbackDocsQuery = () => {
   return query;
 };
 
-const getQuestionLevelFeedbackDocsQuery = (answerId: string) => {
+const getQuestionLevelFeedbackDocsQuery = (answerId?: string) => {
   if (!portalData) {
     throw new Error("Must set portal data first");
   }
@@ -313,17 +313,19 @@ const getQuestionLevelFeedbackDocsQuery = (answerId: string) => {
 
   if (portalData.type === "authenticated") {
     query = query
-      .where("answerId", "==", answerId)
       .where("platformId", "==", portalData.platformId)
       .where("resourceLinkId", "==", portalData.resourceLinkId)
       .where("contextId", "==", portalData.contextId)
       .where("platformStudentId", "==", portalData.platformUserId.toString());
+    if (answerId) {
+      query = query.where("answerId", "==", answerId);
+    }
   }
 
   return query;
 };
 
-const watchQuestionLevelFeedbackDocs = (listener: DocumentsListener, answerId: string) => {
+const watchQuestionLevelFeedbackDocs = (listener: DocumentsListener, answerId?: string) => {
   const query = getQuestionLevelFeedbackDocsQuery(answerId);
   if (!query) return () => {/* no-op */};
 
@@ -359,118 +361,52 @@ const watchActivityLevelFeedbackDocs = (listener: DocumentsListener) => {
   });
 };
 
-// Watches ONE question feedback
-export const watchQuestionLevelFeedback = (answerId: string, callback: (feedback: TeacherFeedback | null) => void) => {
+// Watches question level feedback for a single or for all answers
+export const watchQuestionLevelFeedback = (callback: (feedback: QuestionFeedback[] | null) => void, answerId?: string) => {
   // Note that watchQuestionLevelFeedbackDocs returns unsubscribe method.
   return watchQuestionLevelFeedbackDocs((feedbackDocs: firebase.firestore.DocumentData[]) => {
     if (feedbackDocs.length === 0) {
       callback(null);
       return;
     }
-    if (feedbackDocs.length > 1) {
+
+    if (answerId && feedbackDocs.length > 1) {
       console.warn(
-        "Found multiple answer objects for the same question. It might be result of early " +
+        "Found multiple question feedback objects for the same answer. It might be result of early " +
         "ActivityPlayer versions. Your data might be corrupted."
       );
     }
 
-    const feedback = feedbackDocs[0].feedback;
-    const timestamp = feedbackDocs[0].updatedAt.toDate().toLocaleString();
-    callback({content: feedback, timestamp});
-  }, answerId); // limit observer to single answer
+    const allFeedback = feedbackDocs.filter(doc => !!doc.feedback).map((doc) => {
+      const feedback = doc.feedback;
+      const timestamp = doc.updatedAt.toDate().toLocaleString();
+      return {questionId: doc.questionId, content: feedback, timestamp};
+    });
+
+    callback(allFeedback);
+  }, answerId); // limit observer to single answer if specified
 };
 
-// Watches ONE activity feedback
-export const watchActivityLevelFeedback = (callback: (feedback:TeacherFeedback | null) => void) => {
+// Watches all activity-level feedback for sequence or activity
+export const watchActivityLevelFeedback = (callback: (feedback:ActivityFeedback[] | null) => void) => {
   // Note that watchAnswerDocs returns unsubscribe method.
   return watchActivityLevelFeedbackDocs((feedbackDocs: firebase.firestore.DocumentData[]) => {
     if (feedbackDocs.length === 0) {
       callback(null);
       return;
     }
-    if (feedbackDocs.length > 1) {
-      console.warn(
-        "Found multiple activity objects for the same question. It might be result of early " +
-        "ActivityPlayer versions. Your data might be corrupted."
-      );
-    }
 
-    const feedback = feedbackDocs[0].feedback;
-    const timestamp = feedbackDocs[0].updatedAt.toDate().toLocaleString();
-    callback({content: feedback, timestamp});
+    const allFeedback = feedbackDocs.filter(doc => !!doc.feedback).map((doc) => {
+      const feedback = doc.feedback;
+      const timestamp = doc.updatedAt.toDate().toLocaleString();
+      const activityId = doc.activityId;
+      return {activityId, content: feedback, timestamp};
+    });
+
+    callback(allFeedback);
   });
 };
 
-// Watches all activity-level feedback
-export const watchActivityFeedbackForSequence = (callback: (activityIds:string[]) => void) => {
-  // Note that watchAnswerDocs returns unsubscribe method.
-  return watchActivityLevelFeedbackDocs((feedbackDocs: firebase.firestore.DocumentData[]) => {
-    if (feedbackDocs.length === 0) {
-      callback([]);
-      return;
-    }
-    if (feedbackDocs.length > 1) {
-      console.warn(
-        "Found multiple activity objects for the same question. It might be result of early " +
-        "ActivityPlayer versions. Your data might be corrupted."
-      );
-    }
-
-    // remove string prefix from activityId
-    const activityIds = feedbackDocs.map(doc => doc.activityId.replace("activity_", ""));
-    callback(activityIds);
-  });
-};
-
-// Gets all question feedback docs for sequence or activity
-const getAllQuestionLevelFeedbackDocsQuery = () => {
-  if (!portalData) {
-    throw new Error("Must set portal data first");
-  }
-  // Only logged-in students will have feedback.
-  if (portalData.userType !== "learner" || portalData.type === "anonymous") return;
-
-  let query: firebase.firestore.Query = app.firestore().collection(teacherFeedbackPath("question"));
-
-  if (portalData.type === "authenticated") {
-    query = query
-      .where("platformId", "==", portalData.platformId)
-      .where("resourceLinkId", "==", portalData.resourceLinkId)
-      .where("contextId", "==", portalData.contextId)
-      .where("platformStudentId", "==", portalData.platformUserId.toString());
-  }
-
-  return query;
-};
-
-const watchAllQuestionLevelFeedbackDocs = (listener: DocumentsListener) => {
-  const query = getAllQuestionLevelFeedbackDocsQuery();
-  // Note that query.onSnapshot returns unsubscribe method.
-  return query?.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
-    if (!snapshot.empty) {
-      const docs = snapshot.docs.map(doc => doc.data());
-      listener(docs);
-    }
-    else {
-      listener([]);
-    }
-  }, (err) => {
-    throw new Error(err.message);
-  });
-};
-
-// Watches all question-level feedback for sequence or activity
-export const watchAllQuestionLevelFeedback = (callback: (questionIds: string[]) => void) => {
-  // Note that watchQuestionLevelFeedbackDocs returns unsubscribe method.
-  return watchAllQuestionLevelFeedbackDocs((feedbackDocs: firebase.firestore.DocumentData[]) => {
-    if (feedbackDocs.length === 0) {
-      callback([]);
-      return;
-    }
-    const feedbackQuestionIds: string[] = feedbackDocs.map(doc => doc.questionId);
-    callback(feedbackQuestionIds);
-  });
-};
 // use same universal timezone (UTC) as Lara uses for writing created
 export const utcString = () => (new Date()).toUTCString().replace("GMT", "UTC");
 

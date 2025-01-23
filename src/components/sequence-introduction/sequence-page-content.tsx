@@ -1,11 +1,11 @@
 import { DynamicText } from "@concord-consortium/dynamic-text";
 import React, { useEffect } from "react";
-import { Activity, Sequence } from "../../types";
+import { Activity, ActivityFeedback, QuestionFeedback, Sequence } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { EstimatedTime } from "../activity-introduction/estimated-time";
 import { ReadAloudToggle } from "../read-aloud-toggle";
 import { ActivityLayoutOverrides } from "../../utilities/activity-utils";
-import { watchActivityFeedbackForSequence, watchAllQuestionLevelFeedback } from "../../firebase-db";
+import { watchActivityLevelFeedback, watchQuestionLevelFeedback } from "../../firebase-db";
 import { answersQuestionIdToRefId } from "../../utilities/embeddable-utils";
 import { SequenceIntroFeedbackBanner } from "../teacher-feedback/sequence-intro-feedback-banner";
 import { FeedbackBadge } from "../teacher-feedback/sequence-activity-feedback-badge";
@@ -29,7 +29,10 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
   sequence.activities.forEach((a: Activity) => totalTime += a.time_to_complete || 0);
 
   useEffect(() => {
-    const unsubscribe = watchActivityFeedbackForSequence((ids: string[]) => setActivitiesWithActivityLevelFeedback(ids));
+    const unsubscribe = watchActivityLevelFeedback((fbs: ActivityFeedback[]) => {
+      const ids = fbs.map((fb: ActivityFeedback) => fb.activityId.replace("activity_", ""));
+      setActivitiesWithActivityLevelFeedback(ids);
+    });
     return () => {
       if (unsubscribe) {
         unsubscribe();
@@ -38,7 +41,8 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
   }, [sequence.activities]);
 
   useEffect(() => {
-    const unsubscribe = watchAllQuestionLevelFeedback((questionIds: string[]) => {
+    const unsubscribe = watchQuestionLevelFeedback((fbs: QuestionFeedback[]) => {
+      const questionIds = fbs.map((fb: QuestionFeedback) => fb.questionId);
       const questionIdsToRefId = questionIds.map(answersQuestionIdToRefId);
       const activityIds: number[] = [];
       questionIdsToRefId.forEach((refId: string) => {

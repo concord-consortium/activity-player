@@ -4,6 +4,7 @@ import { IntroPageActivityLevelFeedback } from "./intro-page-activity-level-feed
 
 describe("Activity Level Feedback component", () => {
   const mockFeedback = {
+    activityId: "activity_1",
     content: "Great job!",
     timestamp: "2021-08-10T14:00:00Z"
   };
