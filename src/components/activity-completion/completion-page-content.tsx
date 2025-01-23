@@ -5,17 +5,18 @@ import IconCheck from "../../assets/svg-icons/icon-check-circle.svg";
 import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
 import { isValidReportLink, showReport } from "../../utilities/report-utils";
-import { Sequence, Activity, EmbeddableType, Page } from "../../types";
+import { Sequence, Activity, EmbeddableType, Page, ActivityFeedback } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
-import { watchAllAnswers, WrappedDBAnswer } from "../../firebase-db";
+import { watchActivityLevelFeedback, watchAllAnswers, WrappedDBAnswer } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
 import { answerHasResponse, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
+import { SequenceIntroFeedbackBanner } from "../teacher-feedback/sequence-intro-feedback-banner";
+import { ActivityLevelFeedbackBanner } from "../teacher-feedback/activity-level-feedback-banner";
 import { ReadAloudToggle } from "../read-aloud-toggle";
 import { NextSteps } from "./next-steps";
 
 import "./completion-page-content.scss";
-
 interface IProps {
   activity: Activity;
   activityName: string;
@@ -31,8 +32,27 @@ interface IProps {
 export const CompletionPageContent: React.FC<IProps> = (props) => {
   const { activity, activityName, onPageChange, showStudentReport,
     sequence, activityIndex, onActivityChange, onShowSequence } = props;
-
   const [answers, setAnswers] = useState<WrappedDBAnswer[]>();
+  const [feedback, setFeedback] = useState<ActivityFeedback | null>(null);
+
+  useEffect(() => {
+    watchAllAnswers(answerMetas => {
+      setAnswers(answerMetas);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (activity.id) {
+      const unsubscribe = watchActivityLevelFeedback(fbs => {
+        if (fbs?.length) {
+          const activityIdString = sequence ? `activity_${activity.id}` : `activity-activity_${activity.id}`;
+          const fb = fbs.filter(f => f.activityId === activityIdString)[0];
+          setFeedback(fb);
+        }
+      });
+      return () => unsubscribe();
+    }
+  }, [activity.id, sequence]);
 
   const handleExit = () => {
     if (sequence) {
@@ -91,12 +111,6 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     return ({ numAnswers, numQuestions, questionsStatus });
   };
 
-  useEffect(() => {
-    watchAllAnswers(answerMetas => {
-      setAnswers(answerMetas);
-    });
-  }, []);
-
   const progress = activityProgress(activity);
   const isActivityComplete = progress.numAnswers === progress.numQuestions;
   const activityTitle = (activityName !== "") || (activityName == null) ? activityName : "the activity";
@@ -134,20 +148,25 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           </div>
         </div>
       : <div className="completion-page-content" data-cy="completion-page-content">
-          <div className={`progress-container ${!isActivityComplete ? "incomplete" : ""}`} data-cy="progress-container">
-            {isActivityComplete
-              ? <IconCheck width={24} height={24} className="check" />
-              : <IconUnfinishedCheck width={24} height={24} className="check incomplete" />
-            }
-            <div className="progress-text" data-cy="progress-text">
-              <DynamicText>{progressText}</DynamicText>
+          <div className="banners">
+            <div className={`progress-container ${!isActivityComplete ? "incomplete" : ""}`} data-cy="progress-container">
+              {isActivityComplete
+                ? <IconCheck width={24} height={24} className="check" />
+                : <IconUnfinishedCheck width={24} height={24} className="check incomplete" />
+              }
+              <div className="progress-text" data-cy="progress-text">
+                <DynamicText>{progressText}</DynamicText>
+              </div>
             </div>
+            {feedback &&
+              <SequenceIntroFeedbackBanner />
+            }
           </div>
           {sequence && !isLastActivityInSequence &&
            <NextSteps
-              nextActivityThumbnailURL={sequence?.activities[activityNum + 1].thumbnail_url}
-              nextActivityTitle={sequence?.activities[activityNum + 1].name}
-              nextActivityDescription={renderHTML(sequence?.activities[activityNum + 1].description || "")}
+              nextActivityThumbnailURL={sequence.activities[activityNum + 1].thumbnail_url}
+              nextActivityTitle={sequence.activities[activityNum + 1].name}
+              nextActivityDescription={renderHTML(sequence.activities[activityNum + 1].description || "")}
               handleNextActivity={handleNextActivity}
               handleExit={handleExit}
             />
@@ -157,6 +176,10 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               <h1><DynamicText>Summary of Work: <span className="activity-title">{activityTitle}</span></DynamicText></h1>
               <ReadAloudToggle/>
             </div>
+            {feedback &&
+              <ActivityLevelFeedbackBanner teacherFeedback={feedback} />
+
+            }
             <SummaryTable questionsStatus={progress.questionsStatus} />
             {showStudentReport && <button className={`button show-my-work ${isValidReportLink() ? "" : "disabled"}`}
                                           onClick={handleShowAnswers}><IconCompletion width={24} height={24} />

@@ -1,11 +1,11 @@
 import React from "react";
-import { TeacherFeedback } from "../../types";
+import { ActivityFeedback } from "../../types";
 import TeacherFeedbackIcon from "../../assets/svg-icons/teacher-feedback-icon.svg";
 
 import "./activity-level-feedback-banner.scss";
 
 interface IProps {
-  teacherFeedback: TeacherFeedback;
+  teacherFeedback: ActivityFeedback;
 }
 
 export const ActivityLevelFeedbackBanner = ({ teacherFeedback }: IProps) => {

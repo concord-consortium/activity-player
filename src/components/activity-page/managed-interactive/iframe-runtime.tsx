@@ -1,7 +1,7 @@
 // cf. https://github.com/concord-consortium/question-interactives/blob/master/src/scaffolded-question/components/iframe-runtime.tsx
 import { autorun } from "mobx";
 import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
-import { IExportableAnswerMetadata, IframePhone, ILegacyLinkedInteractiveState, TeacherFeedback } from "../../../types";
+import { IExportableAnswerMetadata, IframePhone, ILegacyLinkedInteractiveState, QuestionFeedback } from "../../../types";
 import iframePhone from "iframe-phone";
 import {
   ClientMessage, ICustomMessage, IGetFirebaseJwtRequest, IGetInteractiveSnapshotRequest,
@@ -83,7 +83,7 @@ interface IProps {
   setAspectRatio: (aspectRatio: number) => void;
   setHeightFromInteractive: (heightFromInteractive: number) => void;
   hasHeader?: boolean;
-  feedback?: TeacherFeedback | null;
+  feedback?: QuestionFeedback | null;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
@@ -474,7 +474,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           <ReloadIcon />
         </button>
       }
-      {feedback && 
+      {feedback &&
         <div className="teacher-feedback">
           <DynamicText>
             <div className="teacher-feedback">

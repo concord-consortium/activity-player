@@ -1,12 +1,12 @@
 import React from "react";
 import { DynamicText } from "@concord-consortium/dynamic-text";
-import { TeacherFeedback } from "../../types";
+import { ActivityFeedback } from "../../types";
 import { ActivityLevelFeedbackBanner } from "./activity-level-feedback-banner";
 
 import "./intro-page-activity-level-feedback.scss";
 
 interface IProps {
-  teacherFeedback: TeacherFeedback;
+  teacherFeedback: ActivityFeedback;
 }
 
 export const IntroPageActivityLevelFeedback = ({ teacherFeedback }: IProps) => {

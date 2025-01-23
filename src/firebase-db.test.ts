@@ -419,7 +419,7 @@ describe("AP run functions", () => {
     it("throws an error if the portal data isn't set", async () => {
       setPortalData(null);
       await expect(async () => {
-        watchQuestionLevelFeedback("test", feedbackCallback);
+        watchQuestionLevelFeedback(feedbackCallback, "test");
       }).rejects.toThrowError("Must set portal data first");
     });
 
@@ -429,7 +429,7 @@ describe("AP run functions", () => {
       });
 
       it("returns no feedback for anonymous users", async () => {
-        expect(watchQuestionLevelFeedback("test", feedbackCallback)).toBeInstanceOf(Function);
+        expect(watchQuestionLevelFeedback(feedbackCallback, "test")).toBeInstanceOf(Function);
         expect(feedbackCallback).toBeCalledTimes(0);
       });
     });

@@ -10,10 +10,10 @@ import { DynamicText } from "@concord-consortium/dynamic-text";
 import classNames from "classnames";
 
 import { PortalDataContext } from "../../portal-data-context";
-import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, ILegacyLinkedInteractiveState, TeacherFeedback } from "../../../types";
+import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, ILegacyLinkedInteractiveState, QuestionFeedback } from "../../../types";
 import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer, watchQuestionLevelFeedback } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
-import { getAnswerWithMetadata, getInteractiveInfo, hasLegacyLinkedInteractive, IInteractiveInfo, isQuestion } from "../../../utilities/embeddable-utils";
+import { getAnswerWithMetadata, getInteractiveInfo, hasLegacyLinkedInteractive, IInteractiveInfo, isQuestion, refIdToAnswersQuestionId } from "../../../utilities/embeddable-utils";
 import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
 import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
@@ -71,7 +71,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const [clickedToPlay, setClickedToPlay] = useState(false);
   const [ARFromSupportedFeatures, setARFromSupportedFeatures] = useState(0);
   const [heightFromInteractive, setHeightFromInteractive] = useState(0);
-  const [feedback, setFeedback] = useState<TeacherFeedback | null>(null);
+  const [feedback, setFeedback] = useState<QuestionFeedback | null>(null);
 
   const embeddableRefId = props.embeddable.ref_id;
 
@@ -394,9 +394,13 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     async function watchFeedback() {
       const answer = await getAnswerMetadata(interactiveId);
       if (answer?.id) {
-        unsubscribe = watchQuestionLevelFeedback(answer.id, (fb) => {
-          setFeedback(fb);
-        });
+        unsubscribe = watchQuestionLevelFeedback((fbs) => {
+          if (fbs?.length) {
+            const questionId = refIdToAnswersQuestionId(interactiveId);
+            const fb = fbs.filter(f => f.questionId === questionId);
+            fb.length && setFeedback(fb[0]);
+          }
+        }, answer.id);
       }
     }
     watchFeedback();

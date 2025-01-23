@@ -620,10 +620,11 @@ export class App extends React.PureComponent<IProps, IState> {
     );
   }
 
-  private renderIntroductionContent = (activity: Activity) => {
+  private renderIntroductionContent = (activity: Activity, isSequence?: boolean) => {
     return (
       <IntroductionPageContent
         activity={activity}
+        isSequence={isSequence}
         onPageChange={this.handleChangePage}
       />
     );
