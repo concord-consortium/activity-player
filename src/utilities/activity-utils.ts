@@ -267,3 +267,28 @@ export const hasPluginThatRequiresHeader = (activity: Activity, embeddableRefId:
     }, acc);
   }, false);
 };
+
+export const getEmbeddable = (activity: Activity, embeddableRefId: string) => {
+  for (const page of activity.pages) {
+    for (const section of page.sections) {
+      const embeddable = section.embeddables.find((e: EmbeddableType) => e.ref_id === embeddableRefId);
+      if (embeddable) {
+        return embeddable;
+      }
+    }
+  }
+  return undefined;
+};
+
+export const getPageNumberFromEmbeddable = (activity: Activity, embeddableRefId: string) => {
+  for (let i = 0; i < activity.pages.length; i++) {
+    const page = activity.pages[i];
+    for (const section of page.sections) {
+      const embeddable = section.embeddables.find((e: EmbeddableType) => e.ref_id === embeddableRefId);
+      if (embeddable) {
+        return i + 1;
+      }
+    }
+  }
+  return undefined;
+};

@@ -8,7 +8,7 @@ import { isValidReportLink, showReport } from "../../utilities/report-utils";
 import { Sequence, Activity, EmbeddableType, Page, ActivityFeedback, QuestionFeedback } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers, watchQuestionLevelFeedback, WrappedDBAnswer } from "../../firebase-db";
-import { isQuestion } from "../../utilities/activity-utils";
+import { getEmbeddable, getPageNumberFromEmbeddable, isQuestion } from "../../utilities/activity-utils";
 import { answerHasResponse, answersQuestionIdToRefId, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
 import { SequenceIntroFeedbackBanner } from "../teacher-feedback/sequence-intro-feedback-banner";
@@ -16,6 +16,8 @@ import { ActivityLevelFeedbackBanner } from "../teacher-feedback/activity-level-
 import { ReadAloudToggle } from "../read-aloud-toggle";
 import { NextSteps } from "./next-steps";
 import { subscribeToActivityLevelFeedback } from "../../utilities/feedback-utils";
+import { QuestionToActivityMap } from "../app";
+import { getVisibleEmbeddables, getVisiblePages, getVisibleSections } from "./completion-page-utils";
 
 import "./completion-page-content.scss";
 
@@ -29,21 +31,51 @@ interface IProps {
   activityIndex?: number;
   onActivityChange?: (activityNum: number) => void;
   onShowSequence?: () => void;
-  questionIdsToActivityIdsMap: Record<string, number> | undefined;
+  questionIdsToActivityIdsMap?: QuestionToActivityMap;
 }
+
+const getQuestionsInActivity = (activity: Activity|undefined, questionIdsToActivityIdsMap: QuestionToActivityMap|undefined) => {
+  if (!activity || !questionIdsToActivityIdsMap || Object.entries(questionIdsToActivityIdsMap).length === 0) return [];
+  const questionsInActivity = Object.keys(questionIdsToActivityIdsMap).filter(q => questionIdsToActivityIdsMap?.[q].activityId === activity.id);
+  const questionIds = questionsInActivity.map(refIdToAnswersQuestionId);
+  const onlyQuestions = questionIds.filter(id => {
+    const embeddableId = answersQuestionIdToRefId(id);
+    const embeddable = getEmbeddable(activity, embeddableId);
+    return embeddable && isQuestion(embeddable);
+  });
+  return onlyQuestions;
+};
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
   const { activity, activityName, onPageChange, showStudentReport,
     sequence, activityIndex, onActivityChange, onShowSequence, questionIdsToActivityIdsMap } = props;
   const [answers, setAnswers] = useState<WrappedDBAnswer[]>();
   const [activityFeedback, setActivityFeedback] = useState<ActivityFeedback | null>(null);
+  const [questionsInActivity, setQuestionsInActivity] = useState<string[]>([]);
   const [questionFeedback, setQuestionFeedback] = useState<QuestionFeedback[]>([]);
+  const [questionSummaries, setQuestionSummaries] = useState<IQuestionStatus[]>([]);
 
   useEffect(() => {
-    watchAllAnswers(answerMetas => {
-      setAnswers(answerMetas);
+    const questionIds = getQuestionsInActivity(activity, questionIdsToActivityIdsMap);
+    setQuestionsInActivity(questionIds);
+  }, [activity, questionIdsToActivityIdsMap]);
+
+  useEffect(() => {
+    const unsubscribeAnswers = watchAllAnswers(answerMetas => {
+      const answersInActivity = answerMetas.filter(a => questionsInActivity.includes(a.meta.question_id));
+      setAnswers(answersInActivity);
     });
-  }, []);
+
+    const unsubscribeQFeedback = watchQuestionLevelFeedback((fbs: QuestionFeedback[]) => {
+      const questionFeedbackInThisActivity = fbs.filter(f => questionsInActivity.includes(f.questionId));
+      setQuestionFeedback(questionFeedbackInThisActivity);
+    });
+
+    return () => {
+      unsubscribeAnswers?.();
+      unsubscribeQFeedback?.();
+    };
+  }, [questionsInActivity]);
 
   useEffect(() => {
     if (activity.id) {
@@ -58,23 +90,28 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   }, [activity.id, sequence]);
 
   useEffect(() => {
-    const unsubscribe = watchQuestionLevelFeedback((fbs: QuestionFeedback[]) => {
-      const questionsInThisActivity = Object.keys(questionIdsToActivityIdsMap || {}).filter(q => questionIdsToActivityIdsMap?.[q] === activity.id);
-      console.log("questionsInThisActivity", questionsInThisActivity);
-      const questionIds = questionsInThisActivity.map(refIdToAnswersQuestionId);
-      console.log("questionIds", questionIds);
-      console.log("fbs", fbs);
-      const questionFeedbackInThisActivity = fbs.filter(f => questionIds.includes(f.questionId));
-      console.log("questionFeedbackInThisActivity", questionFeedbackInThisActivity);
-      setQuestionFeedback(questionFeedbackInThisActivity);
-    });
+    const summaries: IQuestionStatus[] = [];
+    questionsInActivity?.forEach((id, idx) => {
+      const embeddableId = answersQuestionIdToRefId(id);
+      const embeddable = getEmbeddable(activity, embeddableId);
+      if (embeddable && isQuestion(embeddable)) {
+        const feedback = questionFeedback.find(f => f.questionId === id);
+        const answer = answers?.find(a => a.meta.question_id === id);
+        const authoredState = embeddable?.authored_state ? JSON.parse(embeddable.authored_state) : {};
+        const answered = answer ? answerHasResponse(answer, authoredState) : false;
+        const page = getPageNumberFromEmbeddable(activity, embeddableId) || 0;
 
-    return () => {
-      if (unsubscribe) {
-        unsubscribe();
+        summaries.push({
+          number: idx + 1,
+          page,
+          prompt: authoredState.prompt,
+          answered,
+          feedback
+        });
       }
-    };
-  }, [activity.id, questionIdsToActivityIdsMap]);
+    });
+    setQuestionSummaries(summaries);
+  }, [activity, answers, questionFeedback, questionsInActivity]);
 
 
   const handleExit = () => {
@@ -105,13 +142,13 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const activityProgress = (currentActivity: Activity) => {
     let numAnswers = 0;
     let numQuestions = 0;
-    const visiblePages = currentActivity.pages.filter(page => !page.is_hidden);
+    const visiblePages = getVisiblePages(currentActivity);
     const questionsStatus = Array<IQuestionStatus>();
     visiblePages.forEach((page: Page, index) => {
       const pageNum = index + 1;
-      const visibleSections = page.sections.filter(section => !section.is_hidden);
+      const visibleSections = getVisibleSections(page);
       visibleSections.forEach((section) => {
-        const visibleEmbeddables = section.embeddables.filter(embeddable => !embeddable.is_hidden);
+        const visibleEmbeddables = getVisibleEmbeddables(section);
         visibleEmbeddables.forEach((embeddable: EmbeddableType) => {
           if (isQuestion(embeddable)) {
             numQuestions++;
@@ -121,7 +158,6 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
                                     : {};
             let questionAnswered = false;
             const answer = answers?.find(a => a.meta.question_id === questionId);
-            // console.log("questionFeedback", questionFeedback);
             const feedback = questionFeedback.find(f => f.questionId === questionId);
             if (answer && answerHasResponse(answer, authoredState)) {
               numAnswers++; //Does't take into account if user erases response after saving
@@ -211,7 +247,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               <ActivityLevelFeedbackBanner teacherFeedback={activityFeedback} />
 
             }
-            <SummaryTable questionsStatus={progress.questionsStatus} />
+            <SummaryTable questionsStatus={questionSummaries} />
             {showStudentReport && <button className={`button show-my-work ${isValidReportLink() ? "" : "disabled"}`}
                                           onClick={handleShowAnswers}><IconCompletion width={24} height={24} />
                                     Show My Work
