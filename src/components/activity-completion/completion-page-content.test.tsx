@@ -14,10 +14,13 @@ describe("Completion Page Content component", () => {
     };
     const wrapperComplete = shallow(
                               <DynamicTextTester>
-                                <CompletionPageContent activity={activityPlugins}
-                                                       activityName={"test"}
-                                                       onPageChange={stubFunction}
-                                                       showStudentReport={true}/>
+                                <CompletionPageContent
+                                  activity={activityPlugins}
+                                  activityName={"test"}
+                                  onPageChange={stubFunction}
+                                  showStudentReport={true}
+                                  questionIdsToActivityIdsMap={{}}
+                                />
                               </DynamicTextTester>
                             );
     expect(wrapperComplete.html()).toContain('data-cy="completion-page-content"');

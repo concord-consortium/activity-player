@@ -5,11 +5,11 @@ import IconCheck from "../../assets/svg-icons/icon-check-circle.svg";
 import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
 import { isValidReportLink, showReport } from "../../utilities/report-utils";
-import { Sequence, Activity, EmbeddableType, Page, ActivityFeedback } from "../../types";
+import { Sequence, Activity, EmbeddableType, Page, ActivityFeedback, QuestionFeedback } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
-import { watchActivityLevelFeedback, watchAllAnswers, WrappedDBAnswer } from "../../firebase-db";
+import { watchActivityLevelFeedback, watchAllAnswers, watchQuestionLevelFeedback, WrappedDBAnswer } from "../../firebase-db";
 import { isQuestion } from "../../utilities/activity-utils";
-import { answerHasResponse, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
+import { answerHasResponse, answersQuestionIdToRefId, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
 import { SequenceIntroFeedbackBanner } from "../teacher-feedback/sequence-intro-feedback-banner";
 import { ActivityLevelFeedbackBanner } from "../teacher-feedback/activity-level-feedback-banner";
@@ -27,13 +27,15 @@ interface IProps {
   activityIndex?: number;
   onActivityChange?: (activityNum: number) => void;
   onShowSequence?: () => void;
+  questionIdsToActivityIdsMap: Record<string, number> | undefined;
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
   const { activity, activityName, onPageChange, showStudentReport,
-    sequence, activityIndex, onActivityChange, onShowSequence } = props;
+    sequence, activityIndex, onActivityChange, onShowSequence, questionIdsToActivityIdsMap } = props;
   const [answers, setAnswers] = useState<WrappedDBAnswer[]>();
-  const [feedback, setFeedback] = useState<ActivityFeedback | null>(null);
+  const [activityFeedback, setActivityFeedback] = useState<ActivityFeedback | null>(null);
+  const [questionFeedback, setQuestionFeedback] = useState<QuestionFeedback[]>([]);
 
   useEffect(() => {
     watchAllAnswers(answerMetas => {
@@ -47,12 +49,32 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
         if (fbs?.length) {
           const activityIdString = sequence ? `activity_${activity.id}` : `activity-activity_${activity.id}`;
           const fb = fbs.filter(f => f.activityId === activityIdString)[0];
-          setFeedback(fb);
+          setActivityFeedback(fb);
         }
       });
       return () => unsubscribe();
     }
   }, [activity.id, sequence]);
+
+  useEffect(() => {
+    const unsubscribe = watchQuestionLevelFeedback((fbs: QuestionFeedback[]) => {
+      const questionsInThisActivity = Object.keys(questionIdsToActivityIdsMap || {}).filter(q => questionIdsToActivityIdsMap?.[q] === activity.id);
+      console.log("questionsInThisActivity", questionsInThisActivity);
+      const questionIds = questionsInThisActivity.map(refIdToAnswersQuestionId);
+      console.log("questionIds", questionIds);
+      console.log("fbs", fbs);
+      const questionFeedbackInThisActivity = fbs.filter(f => questionIds.includes(f.questionId));
+      console.log("questionFeedbackInThisActivity", questionFeedbackInThisActivity);
+      setQuestionFeedback(questionFeedbackInThisActivity);
+    });
+
+    return () => {
+      if (unsubscribe) {
+        unsubscribe();
+      }
+    };
+  }, [activity.id, questionIdsToActivityIdsMap]);
+
 
   const handleExit = () => {
     if (sequence) {
@@ -98,11 +120,19 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
                                     : {};
             let questionAnswered = false;
             const answer = answers?.find(a => a.meta.question_id === questionId);
+            // console.log("questionFeedback", questionFeedback);
+            const feedback = questionFeedback.find(f => f.questionId === questionId);
             if (answer && answerHasResponse(answer, authoredState)) {
               numAnswers++; //Does't take into account if user erases response after saving
               questionAnswered = true;
             }
-            const questionStatus = { number: numQuestions, page: pageNum, prompt: authoredState.prompt, answered: questionAnswered };
+            const questionStatus = {
+              number: numQuestions,
+              page: pageNum,
+              prompt: authoredState.prompt,
+              answered: questionAnswered,
+              feedback
+            };
             questionsStatus.push(questionStatus);
           }
         });
@@ -158,7 +188,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
                 <DynamicText>{progressText}</DynamicText>
               </div>
             </div>
-            {feedback &&
+            {activityFeedback &&
               <SequenceIntroFeedbackBanner />
             }
           </div>
@@ -176,8 +206,8 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               <h1><DynamicText>Summary of Work: <span className="activity-title">{activityTitle}</span></DynamicText></h1>
               <ReadAloudToggle/>
             </div>
-            {feedback &&
-              <ActivityLevelFeedbackBanner teacherFeedback={feedback} />
+            {activityFeedback &&
+              <ActivityLevelFeedbackBanner teacherFeedback={activityFeedback} />
 
             }
             <SummaryTable questionsStatus={progress.questionsStatus} />
