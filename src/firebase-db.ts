@@ -377,13 +377,13 @@ export const watchQuestionLevelFeedback = (callback: (feedback: QuestionFeedback
       );
     }
 
-    const feedbacks = feedbackDocs.map((doc) => {
+    const allFeedback = feedbackDocs.filter(doc => !!doc.feedback).map((doc) => {
       const feedback = doc.feedback;
       const timestamp = doc.updatedAt.toDate().toLocaleString();
       return {questionId: doc.questionId, content: feedback, timestamp};
     });
 
-    callback(feedbacks);
+    callback(allFeedback);
   }, answerId); // limit observer to single answer if specified
 };
 
@@ -396,7 +396,7 @@ export const watchActivityLevelFeedback = (callback: (feedback:ActivityFeedback[
       return;
     }
 
-    const allFeedback = feedbackDocs.map((doc) => {
+    const allFeedback = feedbackDocs.filter(doc => !!doc.feedback).map((doc) => {
       const feedback = doc.feedback;
       const timestamp = doc.updatedAt.toDate().toLocaleString();
       const activityId = doc.activityId;
