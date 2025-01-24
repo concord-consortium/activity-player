@@ -41,7 +41,7 @@ export const SummaryTable: React.FC<IProps> = (props) => {
             <tr key={index} data-cy="summary-table-row">
               <td>
                 <div className="question-meta">
-                  <div className="question-page-and-number" data-testid="question-meta">
+                  <div className="question-page-and-number" data-testid="question-page-and-number">
                     <DynamicText>Page {question.page}: Question {question.number}.</DynamicText>
                   </div>
                   <div className="question-prompt" data-testid="question-prompt">
