@@ -1,8 +1,7 @@
 import React from "react";
 import { DynamicText } from "@concord-consortium/dynamic-text";
 
-import { ActivityFeedback, Page } from "../../types";
-import { QuestionToActivityMap } from "../app";
+import { ActivityFeedback, Page, QuestionToActivityMap } from "../../types";
 import { pageHasFeedback, subscribeToActivityLevelFeedback, subscribeToQuestionLevelFeedback } from "../../utilities/feedback-utils";
 import { TeacherFeedbackSmallBadge } from "../teacher-feedback/teacher-feedback-small-badge";
 import { accessibilityClick } from "../../utilities/accessibility-helper";
@@ -33,29 +32,26 @@ export class ActivityPageLinks extends React.PureComponent <IProps, IState> {
 
   componentDidMount() {
     if (this.props.activityId) {
-      this.unsubscribeFromActivityLevelFeedback = subscribeToActivityLevelFeedback(
-        this.props.activityId,
-        !!this.props.isSequence,
-        (feedback: ActivityFeedback | null) => this.setState({ hasActivityLevelFeedback: !!feedback })
-      );
+      const { activityId, isSequence=false, questionToActivityMap } = this.props;
 
-      this.unsubscribeFromQuestionLevelFeedback = subscribeToQuestionLevelFeedback(
-        this.props.activityId,
-        !!this.props.isSequence,
-        (pageIds: number[]) => this.setState({ pagesWithFeedback: pageIds }),
-        this.props.questionToActivityMap
-      );
+      this.unsubscribeActivityLevelFeedback = subscribeToActivityLevelFeedback({
+        activityId,
+        isSequence,
+        callback: (feedback: ActivityFeedback | null) => this.setState({ hasActivityLevelFeedback: !!feedback })
+      });
+
+      this.unsubscribeQuestionLevelFeedback = subscribeToQuestionLevelFeedback({
+        activityId,
+        isSequence,
+        questionToActivityMap,
+        callback: (pageIds: number[]) => this.setState({ pagesWithFeedback: pageIds })
+      });
     }
   }
 
   componentWillUnmount() {
-    if (this.unsubscribeFromActivityLevelFeedback) {
-      this.unsubscribeFromActivityLevelFeedback();
-    }
-
-    if (this.unsubscribeFromQuestionLevelFeedback) {
-      this.unsubscribeFromQuestionLevelFeedback();
-    }
+    this.unsubscribeActivityLevelFeedback?.();
+    this.unsubscribeQuestionLevelFeedback?.();
   }
 
   render() {
@@ -97,7 +93,7 @@ export class ActivityPageLinks extends React.PureComponent <IProps, IState> {
     }
   }
 
-  private unsubscribeFromActivityLevelFeedback: (() => void) | undefined = undefined;
-  private unsubscribeFromQuestionLevelFeedback: (() => void) | undefined = undefined;
+  private unsubscribeActivityLevelFeedback: (() => void) | undefined = undefined;
+  private unsubscribeQuestionLevelFeedback: (() => void) | undefined = undefined;
 
 }

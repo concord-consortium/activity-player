@@ -29,7 +29,7 @@ import {
   signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
   onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData, createOrUpdateApRun, getApRun
 } from "../firebase-db";
-import { Activity, IEmbeddablePlugin, Sequence } from "../types";
+import { Activity, IEmbeddablePlugin, QuestionToActivityMap, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getActivityLevelPlugins, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -99,13 +99,6 @@ interface IncompleteQuestion {
   refId: string;
   navOptions: INavigationOptions;
 }
-
-type ActivityAndPage = {
-  activityId: number;
-  pageId: number;
-};
-
-export type QuestionToActivityMap = Record<string, ActivityAndPage>;
 
 interface IState {
   activity?: Activity;
@@ -635,7 +628,7 @@ export class App extends React.PureComponent<IProps, IState> {
       <IntroductionPageContent
         activity={activity}
         isSequence={!!this.state.sequence}
-        questionIdsToActivityIdsMap={this.state.questionToActivityMap}
+        questionToActivityMap={this.state.questionToActivityMap}
         onPageChange={this.handleChangePage}
       />
     );

@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ActivitySummary } from "../activity-introduction/activity-summary";
 import { ActivityPageLinks } from "../activity-introduction/activity-page-links";
-import { Activity, ActivityFeedback } from "../../types";
-import { QuestionToActivityMap } from "../app";
+import { Activity, ActivityFeedback, QuestionToActivityMap } from "../../types";
 import { IntroPageActivityLevelFeedback } from "../teacher-feedback/intro-page-activity-level-feedback";
 import { subscribeToActivityLevelFeedback } from "../../utilities/feedback-utils";
 
@@ -11,22 +10,22 @@ import "./introduction-page-content.scss";
 interface IProps {
   activity: Activity;
   isSequence?: boolean;
-  questionIdsToActivityIdsMap?: QuestionToActivityMap;
+  questionToActivityMap?: QuestionToActivityMap;
   onPageChange: (page: number) => void;
 }
 
 export const IntroductionPageContent: React.FC<IProps> = (props) => {
-  const { activity, isSequence, questionIdsToActivityIdsMap, onPageChange } = props;
+  const { activity, isSequence, questionToActivityMap: questionIdsToActivityIdsMap, onPageChange } = props;
   const hasCompletionPage = activity.pages.find(p => p.is_completion);
   const [feedback, setFeedback] = useState<ActivityFeedback | null>(null);
 
   useEffect(() => {
     if (activity.id) {
-      const unsubscribe = subscribeToActivityLevelFeedback(
-        activity.id,
-        !!isSequence,
-        (fb: ActivityFeedback | null) => setFeedback(fb)
-      );
+      const unsubscribe = subscribeToActivityLevelFeedback({
+        activityId: activity.id,
+        isSequence: !!isSequence,
+        callback: (fb: ActivityFeedback | null) => setFeedback(fb)
+      });
 
       return () => unsubscribe();
     }

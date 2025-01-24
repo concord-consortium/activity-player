@@ -1,6 +1,6 @@
 import { DynamicText } from "@concord-consortium/dynamic-text";
 import React, { useEffect } from "react";
-import { Activity, ActivityFeedback, QuestionFeedback, Sequence } from "../../types";
+import { Activity, ActivityFeedback, QuestionFeedback, QuestionToActivityMap, Sequence } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { EstimatedTime } from "../activity-introduction/estimated-time";
 import { ReadAloudToggle } from "../read-aloud-toggle";
@@ -9,7 +9,6 @@ import { watchActivityLevelFeedback, watchQuestionLevelFeedback } from "../../fi
 import { answersQuestionIdToRefId } from "../../utilities/embeddable-utils";
 import { SequenceIntroFeedbackBanner } from "../teacher-feedback/sequence-intro-feedback-banner";
 import { FeedbackBadge } from "../teacher-feedback/sequence-activity-feedback-badge";
-import { QuestionToActivityMap } from "../app";
 
 import "./sequence-page-content.scss";
 

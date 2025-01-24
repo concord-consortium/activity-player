@@ -1,8 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { queryValue } from "../../utilities/url-query";
-import { ActivityFeedback, Page } from "../../types";
-import { QuestionToActivityMap } from "../app";
+import { ActivityFeedback, Page, QuestionToActivityMap } from "../../types";
 import { pageHasFeedback, subscribeToActivityLevelFeedback, subscribeToQuestionLevelFeedback } from "../../utilities/feedback-utils";
 import { TeacherFeedbackSmallBadge } from "../teacher-feedback/teacher-feedback-small-badge";
 import ArrowPrevious from "../../assets/svg-icons/arrow-previous-icon.svg";
@@ -24,7 +23,7 @@ interface IProps {
   usePageNames?: boolean;
   hideNextPrevButtons?: boolean;
   isSequence?: boolean;
-  questionIdsToActivityIdsMap?: QuestionToActivityMap;
+  questionToActivityMap?: QuestionToActivityMap;
 }
 
 interface IState {
@@ -51,30 +50,27 @@ export class NavPages extends React.Component <IProps, IState> {
   }
 
   componentDidMount() {
-    if (!this.props.activityId) return;
+    if (this.props.activityId) {
+      const { activityId, isSequence=false, questionToActivityMap } = this.props;
 
-    this.unsubscribeFromActivityLevelFeedback = subscribeToActivityLevelFeedback(
-      this.props.activityId,
-      !!this.props.isSequence,
-      (feedback: ActivityFeedback | null) => this.setState({ hasActivityLevelFeedback: !!feedback })
-    );
+      this.unsubscribeActivityLevelFeedback = subscribeToActivityLevelFeedback({
+        activityId,
+        isSequence,
+        callback: (feedback: ActivityFeedback | null) => this.setState({ hasActivityLevelFeedback: !!feedback })
+      });
 
-    this.unsubscribeFromQuestionLevelFeedback = subscribeToQuestionLevelFeedback(
-      this.props.activityId,
-      !!this.props.isSequence,
-      (pageIds: number[]) => this.setState({ pagesWithFeedback: pageIds }),
-      this.props.questionIdsToActivityIdsMap
-    );
+      this.unsubscribeQuestionLevelFeedback = subscribeToQuestionLevelFeedback({
+        activityId,
+        isSequence,
+        questionToActivityMap,
+        callback: (pageIds: number[]) => this.setState({ pagesWithFeedback: pageIds })
+      });
+    }
   }
 
   componentWillUnmount() {
-    if (this.unsubscribeFromActivityLevelFeedback) {
-      this.unsubscribeFromActivityLevelFeedback();
-    }
-
-    if (this.unsubscribeFromQuestionLevelFeedback) {
-      this.unsubscribeFromQuestionLevelFeedback();
-    }
+    this.unsubscribeActivityLevelFeedback?.();
+    this.unsubscribeQuestionLevelFeedback?.();
   }
 
   render() {
@@ -89,8 +85,8 @@ export class NavPages extends React.Component <IProps, IState> {
     );
   }
 
-  private unsubscribeFromActivityLevelFeedback: (() => void) | undefined = undefined;
-  private unsubscribeFromQuestionLevelFeedback: (() => void) | undefined = undefined;
+  private unsubscribeActivityLevelFeedback: (() => void) | undefined = undefined;
+  private unsubscribeQuestionLevelFeedback: (() => void) | undefined = undefined;
 
   private renderPreviousButton = () => {
     const { currentPage } = this.props;
@@ -204,7 +200,7 @@ export class NavPages extends React.Component <IProps, IState> {
               width={28}
               height={28}
               />
-              {"Home"}
+              Home
             </>
             }
           {!this.props.usePageNames && <IconHome

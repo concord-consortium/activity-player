@@ -1,11 +1,10 @@
 import React from "react";
-import { Sequence } from "../../types";
+import { QuestionToActivityMap, Sequence } from "../../types";
 import { Footer } from "../activity-introduction/footer";
 import { Header } from "../activity-header/header";
 import { SequencePageContent } from "../sequence-introduction/sequence-page-content";
 import { setQueryValue } from "../../utilities/url-query";
 import { setAppBackgroundImage } from "../../utilities/activity-utils";
-import { QuestionToActivityMap } from "../app";
 
 interface IProps {
   sequence?: Sequence;
