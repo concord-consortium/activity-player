@@ -1,0 +1,28 @@
+.teacher-feedback-small-badge {
+  display: flex;
+  height: 16px;
+  left: auto;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+  top: auto;
+  width: 16px;
+
+  &.nav-pages-badge {
+    position: absolute;
+    right: 10px;
+    top: -5px; 
+  }
+
+  &.page-links-badge {
+    left: -5px;
+    position: absolute;
+    right: auto;
+    top: 0;
+  }
+
+  svg {
+    height: 16px;
+    width: 16px;
+  }
+}

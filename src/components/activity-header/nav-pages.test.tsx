@@ -26,9 +26,15 @@ const activityPages = [
   {...DefaultTestPage, name: "15"},
 ];
 
+jest.mock("../../firebase-db", () => ({
+  watchActivityLevelFeedback: jest.fn(),
+  watchQuestionLevelFeedback: jest.fn()
+}));
+
 describe("Nav Pages component", () => {
   it("renders nav pages content", () => {
     const wrapper = shallow(<NavPages
+      activityId={1}
       pages={activityPages}
       currentPage={0}
       onPageChange={stubFunction}
@@ -38,6 +44,7 @@ describe("Nav Pages component", () => {
   });
   it("renders nav pages with disabled buttons", () => {
     const wrapper = shallow(<NavPages
+      activityId={1}
       pages={activityPages}
       currentPage={5}
       onPageChange={stubFunction}
@@ -51,6 +58,7 @@ describe("Nav Pages component", () => {
   });
   it("renders pagination near start page", () => {
     const wrapper = shallow(<NavPages
+      activityId={1}
       pages={activityPages}
       currentPage={2}
       onPageChange={stubFunction}
@@ -62,6 +70,7 @@ describe("Nav Pages component", () => {
   });
   it("renders pagination in the middle", () => {
     const wrapper = shallow(<NavPages
+      activityId={1}
       pages={activityPages}
       currentPage={7}
       onPageChange={stubFunction}
@@ -73,6 +82,7 @@ describe("Nav Pages component", () => {
   });
   it("renders pagination near end page", () => {
     const wrapper = shallow(<NavPages
+      activityId={1}
       pages={activityPages}
       currentPage={13}
       onPageChange={stubFunction}
@@ -85,6 +95,7 @@ describe("Nav Pages component", () => {
   it("blocks navigation after page change is requested", () => {
     const onPageChange = jest.fn();
     const wrapper = shallow(<NavPages
+      activityId={1}
       pages={activityPages}
       currentPage={13}
       onPageChange={onPageChange}
@@ -112,6 +123,7 @@ describe("Nav Pages component", () => {
     ];
     render(
       <NavPages
+        activityId={1}
         pages={activityHiddenPages}
         currentPage={0}
         onPageChange={stubFunction}

@@ -2,6 +2,7 @@
     <g fill-rule="nonzero" fill="none">
         <circle fill="#FFF" cx="8" cy="8" r="8"/>
         <circle stroke="#979797" stroke-width="1.5" fill="#DBFADF" cx="8" cy="8" r="5.75"/>
-        <path d="m10.047 5.543.41 4.504-4.504.41-.41-4.504 4.504-.41z" stroke="#378142" fill="#4EA15A"/>
+        <path d="m10.5 5 .058.003A.5.5 0 0 1 11 5.5v5l-.003.058A.5.5 0 0 1 10.5 11h-5l-.058-.003A.5.5 0 0 1 5 10.5v-5l.003-.058A.5.5 0 0 1 5.5 5h5z" fill="#378142"/>
+        <path fill="#4EA15A" d="M10 6H6v4h4z"/>
     </g>
 </svg>

@@ -1,35 +1,44 @@
 import React from "react";
 import classNames from "classnames";
 import { queryValue } from "../../utilities/url-query";
-import IconHome from "../../assets/svg-icons/icon-home.svg";
-import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
-import { Page } from "../../types";
+import { ActivityFeedback, Page, QuestionToActivityMap } from "../../types";
+import { pageHasFeedback, subscribeToActivityLevelFeedback, subscribeToQuestionLevelFeedback } from "../../utilities/feedback-utils";
+import { TeacherFeedbackSmallBadge } from "../teacher-feedback/teacher-feedback-small-badge";
 import ArrowPrevious from "../../assets/svg-icons/arrow-previous-icon.svg";
 import ArrowNext from "../../assets/svg-icons/arrow-next-icon.svg";
 import HiddenIcon from "../../assets/svg-icons/hidden-icon.svg";
+import IconHome from "../../assets/svg-icons/icon-home.svg";
+import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 
 import "./nav-pages.scss";
 
 const kMaxPageNavigationButtons = 11;
 
 interface IProps {
+  activityId?: number | null;
   pages: Page[];
   currentPage: number;
   onPageChange: (page: number) => void;
   lockForwardNav?: boolean;
   usePageNames?: boolean;
   hideNextPrevButtons?: boolean;
+  isSequence?: boolean;
+  questionToActivityMap?: QuestionToActivityMap;
 }
 
 interface IState {
+  hasActivityLevelFeedback: boolean;
   pageChangeInProgress: boolean;
+  pagesWithFeedback: number[];
 }
 
 export class NavPages extends React.Component <IProps, IState> {
   constructor(props: IProps) {
     super(props);
     this.state = {
-      pageChangeInProgress: false
+      hasActivityLevelFeedback: false,
+      pageChangeInProgress: false,
+      pagesWithFeedback: [],
     };
   }
 
@@ -38,6 +47,30 @@ export class NavPages extends React.Component <IProps, IState> {
       // Unlock buttons after page has been changed.
       this.setState({ pageChangeInProgress: false });
     }
+  }
+
+  componentDidMount() {
+    if (this.props.activityId) {
+      const { activityId, isSequence=false, questionToActivityMap } = this.props;
+
+      this.unsubscribeActivityLevelFeedback = subscribeToActivityLevelFeedback({
+        activityId,
+        isSequence,
+        callback: (feedback: ActivityFeedback | null) => this.setState({ hasActivityLevelFeedback: !!feedback })
+      });
+
+      this.unsubscribeQuestionLevelFeedback = subscribeToQuestionLevelFeedback({
+        activityId,
+        isSequence,
+        questionToActivityMap,
+        callback: (pageIds: number[]) => this.setState({ pagesWithFeedback: pageIds })
+      });
+    }
+  }
+
+  componentWillUnmount() {
+    this.unsubscribeActivityLevelFeedback?.();
+    this.unsubscribeQuestionLevelFeedback?.();
   }
 
   render() {
@@ -52,20 +85,26 @@ export class NavPages extends React.Component <IProps, IState> {
     );
   }
 
+  private unsubscribeActivityLevelFeedback: (() => void) | undefined = undefined;
+  private unsubscribeQuestionLevelFeedback: (() => void) | undefined = undefined;
+
   private renderPreviousButton = () => {
     const { currentPage } = this.props;
     const { pageChangeInProgress } = this.state;
     return (
-      <button
-        className={`page-button arrow-button ${pageChangeInProgress || currentPage === 0 ? "last-page" : ""}`}
-        onClick={this.handlePageChangeRequest(currentPage - 1)}
-        aria-label="Previous page"
-        data-cy="previous-page-button"
-      >
-        <ArrowPrevious className="icon"/>
-      </button>
+      <div className="page-button-container">
+        <button
+          className={`page-button arrow-button ${pageChangeInProgress || currentPage === 0 ? "last-page" : ""}`}
+          onClick={this.handlePageChangeRequest(currentPage - 1)}
+          aria-label="Previous page"
+          data-cy="previous-page-button"
+        >
+          <ArrowPrevious className="icon"/>
+        </button>
+      </div>
     );
   }
+
   private renderNextButton = () => {
     const { currentPage, pages, lockForwardNav } = this.props;
     const { pageChangeInProgress } = this.state;
@@ -77,14 +116,16 @@ export class NavPages extends React.Component <IProps, IState> {
                                         {"disabled": pageChangeInProgress || lockForwardNav || currentPage === totalPages},
                                         {"last-page": currentPage === totalPages});
     return (
-      <button
-        className={nextButtonClass}
-        onClick={this.handlePageChangeRequest(currentPage + 1)}
-        aria-label="Next page"
-        data-cy="next-page-button"
-      >
-        <ArrowNext className="icon"/>
-      </button>
+      <div className="page-button-container">
+        <button
+          className={nextButtonClass}
+          onClick={this.handlePageChangeRequest(currentPage + 1)}
+          aria-label="Next page"
+          data-cy="next-page-button"
+        >
+          <ArrowNext className="icon"/>
+        </button>
+      </div>
     );
   }
 
@@ -113,6 +154,7 @@ export class NavPages extends React.Component <IProps, IState> {
         const pageNum = pageIndex + 1;
         const visiblePageLabel = pageNum - hiddenPagesBefore;
         const pageLabel = this.props.usePageNames ? (page.name || visiblePageLabel) : visiblePageLabel;
+        const hasFeedback = pageHasFeedback(page, this.state.pagesWithFeedback, this.state.hasActivityLevelFeedback);
         const currentClass = currentPage === pageNum ? "current" : "";
         const completionClass = page.is_completion ? "completion-page-button" : "";
         const disabledClass = (pageChangeInProgress || lockForwardNav && currentPage < pageNum) ? "disabled" : "";
@@ -124,15 +166,17 @@ export class NavPages extends React.Component <IProps, IState> {
 
         return (
           pageNum >= minPage && pageNum <= maxPage
-            ? <button
-                className={`page-button ${currentClass} ${completionClass} ${disabledClass}`}
-                onClick={this.handlePageChangeRequest(pageNum)}
-                key={`page ${pageNum}`}
-                data-cy={`${page.is_completion ? "nav-pages-completion-page-button" : "nav-pages-button"}`}
-                aria-label={`Page ${pageNum}`}
-              >
-                {buttonContent}
-              </button>
+            ? <div className="page-button-container" key={`page-${pageNum}`}>
+                <button
+                  className={`page-button ${currentClass} ${completionClass} ${disabledClass}`}
+                  onClick={this.handlePageChangeRequest(pageNum)}
+                  data-cy={`${page.is_completion ? "nav-pages-completion-page-button" : "nav-pages-button"}`}
+                  aria-label={`Page ${pageNum}`}
+                >
+                  {buttonContent}
+                </button>
+                {hasFeedback && <TeacherFeedbackSmallBadge location="nav-pages" />}
+              </div>
             : ""
         );
       })
@@ -143,27 +187,29 @@ export class NavPages extends React.Component <IProps, IState> {
     const currentClass = this.props.currentPage === 0 ? "current" : "";
     const { pageChangeInProgress } = this.state;
     return (
-      <button className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`}
-              onClick={this.handlePageChangeRequest(0)}
-              aria-label="Home"
-              data-cy="home-button"
-      >
-        {this.props.usePageNames &&
-          <>
-            <IconHome
+      <div className="page-button-container">
+        <button className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`}
+                onClick={this.handlePageChangeRequest(0)}
+                aria-label="Home"
+                data-cy="home-button"
+        >
+          {this.props.usePageNames &&
+            <>
+              <IconHome
+              className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
+              width={28}
+              height={28}
+              />
+              Home
+            </>
+            }
+          {!this.props.usePageNames && <IconHome
             className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
             width={28}
             height={28}
-            />
-            {"Home"}
-          </>
-          }
-        {!this.props.usePageNames && <IconHome
-          className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
-          width={28}
-          height={28}
-        />}
-      </button>
+          />}
+        </button>
+      </div>
     );
   }
 

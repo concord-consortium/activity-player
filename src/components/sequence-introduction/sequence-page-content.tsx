@@ -1,6 +1,6 @@
 import { DynamicText } from "@concord-consortium/dynamic-text";
 import React, { useEffect } from "react";
-import { Activity, ActivityFeedback, QuestionFeedback, Sequence } from "../../types";
+import { Activity, ActivityFeedback, QuestionFeedback, QuestionToActivityMap, Sequence } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { EstimatedTime } from "../activity-introduction/estimated-time";
 import { ReadAloudToggle } from "../read-aloud-toggle";
@@ -14,7 +14,7 @@ import "./sequence-page-content.scss";
 
 interface IProps {
   sequence: Sequence;
-  questionIdsToActivityIdsMap: Record<string, number> | undefined;
+  questionIdsToActivityIdsMap?: QuestionToActivityMap;
   onSelectActivity: (page: number) => void;
 }
 
@@ -46,7 +46,7 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
       const questionIdsToRefId = questionIds.map(answersQuestionIdToRefId);
       const activityIds: number[] = [];
       questionIdsToRefId.forEach((refId: string) => {
-        const activityId = questionIdsToActivityIdsMap?.[refId];
+        const activityId = questionIdsToActivityIdsMap?.[refId].activityId;
         if (activityId && !activityIds.includes(activityId)) {
           activityIds.push(activityId);
         }

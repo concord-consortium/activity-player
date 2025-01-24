@@ -29,7 +29,7 @@ import {
   signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
   onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData, createOrUpdateApRun, getApRun
 } from "../firebase-db";
-import { Activity, IEmbeddablePlugin, Sequence } from "../types";
+import { Activity, IEmbeddablePlugin, QuestionToActivityMap, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getActivityLevelPlugins, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -109,7 +109,7 @@ interface IState {
   showWarning: boolean;
   username: string;
   portalData?: IPortalData;
-  questionIdsToActivityIdsMap?: Record<string, number>;
+  questionToActivityMap?: QuestionToActivityMap;
   sequence?: Sequence;
   showSequenceIntro?: boolean;
   activityIndex?: number;
@@ -285,14 +285,14 @@ export class App extends React.PureComponent<IProps, IState> {
         : await getActivityDefinition(activityPath);
 
       // this is used by SequencePageContent
-      const questionIdsToActivityIdsMap: Record<string, number> = {};
-      sequence?.activities.forEach((a: Activity, idx: number) => {
+      const questionToActivityMap: QuestionToActivityMap = {};
+      sequence?.activities.forEach((a: Activity) => {
         if (!a.id) return;
         a.pages.forEach(p =>
           p.sections.forEach(s =>
             s.embeddables.forEach(e => {
               if (e.ref_id && a.id) {
-                questionIdsToActivityIdsMap[e.ref_id] = a.id;
+                questionToActivityMap[e.ref_id] = {activityId: a.id, pageId: p.id };
               }
             })
           )
@@ -367,7 +367,7 @@ export class App extends React.PureComponent<IProps, IState> {
       newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner,
                      showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity, hideReadAloud,
                      fontSize, fontSizeInPx, fontType, fontFamilyForType, hideQuestionNumbers,
-                     questionIdsToActivityIdsMap};
+                     questionToActivityMap};
       setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       this.setState(newState as IState);
@@ -433,7 +433,7 @@ export class App extends React.PureComponent<IProps, IState> {
                         ? <SequenceIntroduction
                             sequence={this.state.sequence}
                             username={this.state.username}
-                            questionIdsToActivityIdsMap={this.state.questionIdsToActivityIdsMap}
+                            questionIdsToActivityIdsMap={this.state.questionToActivityMap}
                             onSelectActivity={this.handleSelectActivity}
                           />
                         : this.renderActivity() }
@@ -583,6 +583,7 @@ export class App extends React.PureComponent<IProps, IState> {
 
     return (
       <ActivityNav
+        activityId={activity.id}
         activityPages={activity.pages}
         currentPage={currentPage}
         fullWidth={fullWidth}
@@ -591,6 +592,8 @@ export class App extends React.PureComponent<IProps, IState> {
         lockForwardNav={this.state.incompleteQuestions.length > 0}
         usePageNames={isNotebook}
         hideNextPrevButtons={isNotebook}
+        isSequence={!!this.state.sequence}
+        questionToActivityMap={this.state.questionToActivityMap}
       />
     );
   }
@@ -624,7 +627,8 @@ export class App extends React.PureComponent<IProps, IState> {
     return (
       <IntroductionPageContent
         activity={activity}
-        isSequence={isSequence}
+        isSequence={!!this.state.sequence}
+        questionToActivityMap={this.state.questionToActivityMap}
         onPageChange={this.handleChangePage}
       />
     );

@@ -15,7 +15,7 @@ import { IAnonymousPortalData, IPortalData, isPortalData } from "./portal-types"
 import { getLegacyLinkedRefMap, LegacyLinkedRefMap, refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata,
   IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, ILegacyLinkedInteractiveState, IApRun, IBaseApRun,
-  QuestionFeedback, ActivityFeedback} from "./types";
+  QuestionFeedback, ActivityFeedback } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
 import { ILaraData } from "./components/lara-data-context";
@@ -317,6 +317,7 @@ const getQuestionLevelFeedbackDocsQuery = (answerId?: string) => {
       .where("resourceLinkId", "==", portalData.resourceLinkId)
       .where("contextId", "==", portalData.contextId)
       .where("platformStudentId", "==", portalData.platformUserId.toString());
+
     if (answerId) {
       query = query.where("answerId", "==", answerId);
     }
@@ -372,7 +373,7 @@ export const watchQuestionLevelFeedback = (callback: (feedback: QuestionFeedback
 
     if (answerId && feedbackDocs.length > 1) {
       console.warn(
-        "Found multiple question feedback objects for the same answer. It might be result of early " +
+        "Found multiple question feedback objects for the same question. It might be result of early " +
         "ActivityPlayer versions. Your data might be corrupted."
       );
     }
@@ -389,20 +390,19 @@ export const watchQuestionLevelFeedback = (callback: (feedback: QuestionFeedback
 
 // Watches all activity-level feedback for sequence or activity
 export const watchActivityLevelFeedback = (callback: (feedback:ActivityFeedback[] | null) => void) => {
-  // Note that watchAnswerDocs returns unsubscribe method.
+  // Note that watchActivityLevelFeedbackDocs returns unsubscribe method.
   return watchActivityLevelFeedbackDocs((feedbackDocs: firebase.firestore.DocumentData[]) => {
     if (feedbackDocs.length === 0) {
       callback(null);
       return;
     }
 
-    const allFeedback = feedbackDocs.filter(doc => !!doc.feedback).map((doc) => {
-      const feedback = doc.feedback;
+    const allFeedback = feedbackDocs.filter((doc) => !!doc.feedback).map((doc) => {
+      const content = doc.feedback;
       const timestamp = doc.updatedAt.toDate().toLocaleString();
       const activityId = doc.activityId;
-      return {activityId, content: feedback, timestamp};
+      return {activityId, content, timestamp};
     });
-
     callback(allFeedback);
   });
 };
