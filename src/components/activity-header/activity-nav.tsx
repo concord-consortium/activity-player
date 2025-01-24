@@ -1,6 +1,5 @@
 import React from "react";
-import { Page } from "../../types";
-import { QuestionToActivityMap } from "../app";
+import { Page, QuestionToActivityMap } from "../../types";
 import { NavPages } from "./nav-pages";
 
 import "./activity-nav.scss";
@@ -35,7 +34,7 @@ export class ActivityNav extends React.PureComponent <IProps> {
             usePageNames={usePageNames}
             hideNextPrevButtons={hideNextPrevButtons}
             isSequence={isSequence}
-            questionIdsToActivityIdsMap={questionToActivityMap}
+            questionToActivityMap={questionToActivityMap}
           />
         }
       </div>

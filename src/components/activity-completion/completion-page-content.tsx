@@ -45,11 +45,11 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
 
   useEffect(() => {
     if (activity.id) {
-      const unsubscribe = subscribeToActivityLevelFeedback(
-        activity.id,
-        !!sequence,
-        (fb: ActivityFeedback | null) => setFeedback(fb)
-      );
+      const unsubscribe = subscribeToActivityLevelFeedback({
+        activityId: activity.id,
+        isSequence: !!sequence,
+        callback: (fb: ActivityFeedback | null) => setFeedback(fb)
+      });
 
       return () => unsubscribe();
     }

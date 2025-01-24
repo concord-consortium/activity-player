@@ -370,3 +370,10 @@ export type ActivityFeedback = BaseTeacherFeedback & {
 export type QuestionFeedback = BaseTeacherFeedback & {
   questionId: string;
 };
+
+type ActivityAndPage = {
+  activityId: number;
+  pageId: number;
+};
+
+export type QuestionToActivityMap = Record<string, ActivityAndPage>;
