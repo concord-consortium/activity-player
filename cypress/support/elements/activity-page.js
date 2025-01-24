@@ -185,9 +185,6 @@ class ActivityPage {
   getSummaryTableRow() {
     return cy.get('[data-cy=summary-table-row] td div').eq(0);
   }
-  getShowMyWorkButton() {
-    return cy.get('.button.show-my-work');
-  }
   getOrText() {
     return cy.get('.exit-button span');
   }

@@ -18,7 +18,6 @@ describe("Completion Page Content component", () => {
                                   activity={activityPlugins}
                                   activityName={"test"}
                                   onPageChange={stubFunction}
-                                  showStudentReport={true}
                                 />
                               </DynamicTextTester>
                             );

@@ -2,9 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { DynamicText } from "@concord-consortium/dynamic-text";
 
 import IconCheck from "../../assets/svg-icons/icon-check-circle.svg";
-import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
-import { isValidReportLink, showReport } from "../../utilities/report-utils";
 import { Sequence, Activity, ActivityFeedback, QuestionFeedback, QuestionToActivityMap } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers, watchQuestionLevelFeedback, WrappedDBAnswer } from "../../firebase-db";
@@ -23,7 +21,6 @@ interface IProps {
   activity: Activity;
   activityName: string;
   onPageChange: (page: number) => void;
-  showStudentReport: boolean;
   onOpenReport?: () => void;
   sequence?: Sequence;
   activityIndex?: number;
@@ -33,8 +30,8 @@ interface IProps {
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
-  const { activity, activityName, onPageChange, showStudentReport,
-    sequence, activityIndex, onActivityChange, onShowSequence, questionToActivityMap } = props;
+  const { activity, activityName, onPageChange, sequence, activityIndex, onActivityChange, onShowSequence,
+    questionToActivityMap } = props;
   const [answers, setAnswers] = useState<WrappedDBAnswer[]>();
   const [activityFeedback, setActivityFeedback] = useState<ActivityFeedback | null>(null);
   const [questionFeedback, setQuestionFeedback] = useState<QuestionFeedback[]>([]);
@@ -118,10 +115,6 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     onPageChange(0); //TODO: This should go to the student's saved state page for the next activity
   };
 
-  const handleShowAnswers = () => {
-    showReport();
-  };
-
   const isActivityComplete = answers?.length === questionsInActivity.length;
   const activityTitle = activityName || "the activity";
   const activityNum = activityIndex || 0;
@@ -190,10 +183,6 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
 
             }
             <SummaryTable questionsStatus={questionSummaries} />
-            {showStudentReport && <button className={`button show-my-work ${isValidReportLink() ? "" : "disabled"}`}
-                                          onClick={handleShowAnswers}><IconCompletion width={24} height={24} />
-                                    Show My Work
-                                  </button>}
             {(!sequence || isLastActivityInSequence) &&
               <div className="exit-button">
                 <span>or</span>
