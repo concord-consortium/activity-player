@@ -50,13 +50,8 @@ export class ActivityPageLinks extends React.PureComponent <IProps, IState> {
   }
 
   componentWillUnmount() {
-    if (this.unsubscribeActivityLevelFeedback) {
-      this.unsubscribeActivityLevelFeedback();
-    }
-
-    if (this.unsubscribeQuestionLevelFeedback) {
-      this.unsubscribeQuestionLevelFeedback();
-    }
+    this.unsubscribeActivityLevelFeedback?.();
+    this.unsubscribeQuestionLevelFeedback?.();
   }
 
   render() {
