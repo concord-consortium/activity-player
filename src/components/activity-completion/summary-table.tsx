@@ -4,9 +4,9 @@ import IconComplete from "../../assets/svg-icons/icon-check-circle.svg";
 import IconIncomplete from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
 import { renderHTML } from "../../utilities/render-html";
 import { QuestionFeedback } from "../../types";
+import { SummaryPageQuestionFeedback } from "../teacher-feedback/summary-page-question-feedback";
 
 import "./summary-table.scss";
-import { SummaryPageQuestionFeedback } from "../teacher-feedback/summary-page-question-feedback";
 
 export interface IQuestionStatus {
   number: number;

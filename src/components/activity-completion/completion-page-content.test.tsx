@@ -19,7 +19,6 @@ describe("Completion Page Content component", () => {
                                   activityName={"test"}
                                   onPageChange={stubFunction}
                                   showStudentReport={true}
-                                  questionToActivityMap={{}}
                                 />
                               </DynamicTextTester>
                             );
