@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { DynamicText } from "@concord-consortium/dynamic-text";
 
 import IconCheck from "../../assets/svg-icons/icon-check-circle.svg";
 import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
 import { isValidReportLink, showReport } from "../../utilities/report-utils";
-import { Sequence, Activity, EmbeddableType, Page, ActivityFeedback, QuestionFeedback } from "../../types";
+import { Sequence, Activity, ActivityFeedback, QuestionFeedback } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers, watchQuestionLevelFeedback, WrappedDBAnswer } from "../../firebase-db";
-import { getEmbeddable, getPageNumberFromEmbeddable, isQuestion } from "../../utilities/activity-utils";
+import { getEmbeddable, getPageNumberFromEmbeddable, isQuestion, isSequenceFinished } from "../../utilities/activity-utils";
 import { answerHasResponse, answersQuestionIdToRefId, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
 import { SequenceIntroFeedbackBanner } from "../teacher-feedback/sequence-intro-feedback-banner";
@@ -17,7 +17,6 @@ import { ReadAloudToggle } from "../read-aloud-toggle";
 import { NextSteps } from "./next-steps";
 import { subscribeToActivityLevelFeedback } from "../../utilities/feedback-utils";
 import { QuestionToActivityMap } from "../app";
-import { getVisibleEmbeddables, getVisiblePages, getVisibleSections } from "./completion-page-utils";
 
 import "./completion-page-content.scss";
 
@@ -34,30 +33,23 @@ interface IProps {
   questionIdsToActivityIdsMap?: QuestionToActivityMap;
 }
 
-const getQuestionsInActivity = (activity: Activity|undefined, questionIdsToActivityIdsMap: QuestionToActivityMap|undefined) => {
-  if (!activity || !questionIdsToActivityIdsMap || Object.entries(questionIdsToActivityIdsMap).length === 0) return [];
-  const questionsInActivity = Object.keys(questionIdsToActivityIdsMap).filter(q => questionIdsToActivityIdsMap?.[q].activityId === activity.id);
-  const questionIds = questionsInActivity.map(refIdToAnswersQuestionId);
-  const onlyQuestions = questionIds.filter(id => {
-    const embeddableId = answersQuestionIdToRefId(id);
-    const embeddable = getEmbeddable(activity, embeddableId);
-    return embeddable && isQuestion(embeddable);
-  });
-  return onlyQuestions;
-};
-
 export const CompletionPageContent: React.FC<IProps> = (props) => {
   const { activity, activityName, onPageChange, showStudentReport,
     sequence, activityIndex, onActivityChange, onShowSequence, questionIdsToActivityIdsMap } = props;
   const [answers, setAnswers] = useState<WrappedDBAnswer[]>();
   const [activityFeedback, setActivityFeedback] = useState<ActivityFeedback | null>(null);
-  const [questionsInActivity, setQuestionsInActivity] = useState<string[]>([]);
   const [questionFeedback, setQuestionFeedback] = useState<QuestionFeedback[]>([]);
-  const [questionSummaries, setQuestionSummaries] = useState<IQuestionStatus[]>([]);
 
-  useEffect(() => {
-    const questionIds = getQuestionsInActivity(activity, questionIdsToActivityIdsMap);
-    setQuestionsInActivity(questionIds);
+  const questionsInActivity = useMemo((): string[] => {
+    if (!activity || !questionIdsToActivityIdsMap || Object.entries(questionIdsToActivityIdsMap).length === 0) return [];
+    const qsInActivity = Object.keys(questionIdsToActivityIdsMap).filter(q => questionIdsToActivityIdsMap?.[q].activityId === activity.id);
+    const qIDs = qsInActivity.map(refIdToAnswersQuestionId);
+    const onlyQuestions = qIDs.filter(id => {
+      const embeddableId = answersQuestionIdToRefId(id);
+      const embeddable = getEmbeddable(activity, embeddableId);
+      return embeddable && isQuestion(embeddable);
+    });
+    return onlyQuestions;
   }, [activity, questionIdsToActivityIdsMap]);
 
   useEffect(() => {
@@ -89,7 +81,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     }
   }, [activity.id, sequence]);
 
-  useEffect(() => {
+  const questionSummaries = useMemo((): IQuestionStatus[] => {
     const summaries: IQuestionStatus[] = [];
     questionsInActivity?.forEach((id, idx) => {
       const embeddableId = answersQuestionIdToRefId(id);
@@ -110,7 +102,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
         });
       }
     });
-    setQuestionSummaries(summaries);
+    return summaries;
   }, [activity, answers, questionFeedback, questionsInActivity]);
 
 
@@ -131,79 +123,30 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     showReport();
   };
 
-  const sequenceProgress = (currentSequence: Sequence) => {
-    const activityCompletionArray = currentSequence?.activities.map((sequenceActivity) => {
-      const activityStatus = activityProgress(sequenceActivity);
-      return activityStatus.numAnswers === activityStatus.numQuestions;
-    });
-    return !activityCompletionArray.includes(false);
-  };
+  const isActivityComplete = answers?.length === questionsInActivity.length;
+  const activityTitle = activityName || "the activity";
+  const activityNum = activityIndex || 0;
+  const completedActivityProgressText = `Congratulations! You have reached the end of this activity.`;
+  const incompleteActivityProgressText = `It looks like you haven't quite finished this activity yet.`;
+  const isLastActivityInSequence = sequence ? sequence.activities.length === activityNum + 1 : false;
 
-  const activityProgress = (currentActivity: Activity) => {
-    let numAnswers = 0;
-    let numQuestions = 0;
-    const visiblePages = getVisiblePages(currentActivity);
-    const questionsStatus = Array<IQuestionStatus>();
-    visiblePages.forEach((page: Page, index) => {
-      const pageNum = index + 1;
-      const visibleSections = getVisibleSections(page);
-      visibleSections.forEach((section) => {
-        const visibleEmbeddables = getVisibleEmbeddables(section);
-        visibleEmbeddables.forEach((embeddable: EmbeddableType) => {
-          if (isQuestion(embeddable)) {
-            numQuestions++;
-            const questionId = refIdToAnswersQuestionId(embeddable.ref_id);
-            const authoredState = embeddable.authored_state
-                                    ? JSON.parse(embeddable.authored_state)
-                                    : {};
-            let questionAnswered = false;
-            const answer = answers?.find(a => a.meta.question_id === questionId);
-            const feedback = questionFeedback.find(f => f.questionId === questionId);
-            if (answer && answerHasResponse(answer, authoredState)) {
-              numAnswers++; //Does't take into account if user erases response after saving
-              questionAnswered = true;
-            }
-            const questionStatus = {
-              number: numQuestions,
-              page: pageNum,
-              prompt: authoredState.prompt,
-              answered: questionAnswered,
-              feedback
-            };
-            questionsStatus.push(questionStatus);
-          }
-        });
-      });
-    });
-    return ({ numAnswers, numQuestions, questionsStatus });
-  };
-
-  const progress = activityProgress(activity);
-  const isActivityComplete = progress.numAnswers === progress.numQuestions;
-  const activityTitle = (activityName !== "") || (activityName == null) ? activityName : "the activity";
-  const activityNum = activityIndex ? activityIndex : 0;
-  const completedActivityProgressText =
-    `Congratulations! You have reached the end of this activity.`;
-  const incompleteActivityProgressText =
-    `It looks like you haven't quite finished this activity yet.`;
-  const isLastActivityInSequence = activityIndex ? sequence?.activities.length === activityIndex + 1 : false;
-
-  let progressText = "";
-
-  if (sequence) {
-    const sequenceComplete = sequenceProgress(sequence);
-    if (isLastActivityInSequence) {
-      progressText = sequenceComplete && isActivityComplete
-                       ? completedActivityProgressText + ` You have completed all your work for this module!`
-                       : isActivityComplete
-                           ? completedActivityProgressText
-                           : incompleteActivityProgressText;
-    } else {
-      progressText = isActivityComplete ? completedActivityProgressText : incompleteActivityProgressText;
+  const getProgressText = () => {
+    if (!sequence) {
+      return isActivityComplete ? completedActivityProgressText : incompleteActivityProgressText;
     }
-  } else { //assumes is single activity
-    progressText = isActivityComplete ? completedActivityProgressText : incompleteActivityProgressText;
-  }
+
+    const sequenceComplete = isSequenceFinished(sequence, answers);
+    if (isLastActivityInSequence) {
+      if (sequenceComplete && isActivityComplete) {
+        return `${completedActivityProgressText} You have completed all your work for this module!`;
+      }
+      return isActivityComplete ? completedActivityProgressText : incompleteActivityProgressText;
+    }
+
+    return isActivityComplete ? completedActivityProgressText : incompleteActivityProgressText;
+  };
+
+  const progressText = getProgressText();
 
   return (
     !answers
