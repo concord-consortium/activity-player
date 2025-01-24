@@ -184,31 +184,28 @@ export class NavPages extends React.Component <IProps, IState> {
   }
 
   private renderHomePageButton = () => {
-    const currentClass = this.props.currentPage === 0 ? "current" : "";
-    const { pageChangeInProgress } = this.state;
+    const { currentPage, pages } = this.props;
+    const { hasActivityLevelFeedback, pageChangeInProgress, pagesWithFeedback } = this.state;
+    const currentClass = currentPage === 0 ? "current" : "";
+    const hasCompletionPage = pages.find((page: Page) => page.is_completion);
+    const showFeedbackBadge = !hasCompletionPage && (hasActivityLevelFeedback || pagesWithFeedback.length > 0);
+
     return (
       <div className="page-button-container">
-        <button className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`}
-                onClick={this.handlePageChangeRequest(0)}
-                aria-label="Home"
-                data-cy="home-button"
+        <button
+          className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`}
+          onClick={this.handlePageChangeRequest(0)}
+          aria-label="Home"
+          data-cy="home-button"
         >
-          {this.props.usePageNames &&
-            <>
-              <IconHome
-              className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
-              width={28}
-              height={28}
-              />
-              Home
-            </>
-            }
-          {!this.props.usePageNames && <IconHome
+          <IconHome
             className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
             width={28}
             height={28}
-          />}
+          />
+          {this.props.usePageNames && "Home"}
         </button>
+        {showFeedbackBadge && <TeacherFeedbackSmallBadge location="nav-pages" />}
       </div>
     );
   }

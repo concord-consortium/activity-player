@@ -29,19 +29,19 @@ interface IProps {
   activityIndex?: number;
   onActivityChange?: (activityNum: number) => void;
   onShowSequence?: () => void;
-  questionIdsToActivityIdsMap?: QuestionToActivityMap;
+  questionToActivityMap?: QuestionToActivityMap;
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
   const { activity, activityName, onPageChange, showStudentReport,
-    sequence, activityIndex, onActivityChange, onShowSequence, questionIdsToActivityIdsMap } = props;
+    sequence, activityIndex, onActivityChange, onShowSequence, questionToActivityMap } = props;
   const [answers, setAnswers] = useState<WrappedDBAnswer[]>();
   const [activityFeedback, setActivityFeedback] = useState<ActivityFeedback | null>(null);
   const [questionFeedback, setQuestionFeedback] = useState<QuestionFeedback[]>([]);
 
   const questionsInActivity = useMemo((): string[] => {
-    if (!activity || !questionIdsToActivityIdsMap || Object.entries(questionIdsToActivityIdsMap).length === 0) return [];
-    const qsInActivity = Object.keys(questionIdsToActivityIdsMap).filter(q => questionIdsToActivityIdsMap?.[q].activityId === activity.id);
+    if (!activity || !questionToActivityMap || Object.entries(questionToActivityMap).length === 0) return [];
+    const qsInActivity = Object.keys(questionToActivityMap).filter(q => questionToActivityMap?.[q].activityId === activity.id);
     const qIDs = qsInActivity.map(refIdToAnswersQuestionId);
     const onlyQuestions = qIDs.filter(id => {
       const embeddableId = answersQuestionIdToRefId(id);
@@ -49,7 +49,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
       return embeddable && isQuestion(embeddable);
     });
     return onlyQuestions;
-  }, [activity, questionIdsToActivityIdsMap]);
+  }, [activity, questionToActivityMap]);
 
   useEffect(() => {
     const unsubscribeAnswers = watchAllAnswers(answerMetas => {
@@ -125,8 +125,8 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
   const isActivityComplete = answers?.length === questionsInActivity.length;
   const activityTitle = activityName || "the activity";
   const activityNum = activityIndex || 0;
-  const completedActivityProgressText = `Congratulations! You have reached the end of this activity.`;
-  const incompleteActivityProgressText = `It looks like you haven't quite finished this activity yet.`;
+  const completedActivityProgressText = "Congratulations! You have reached the end of this activity.";
+  const incompleteActivityProgressText = "It looks like you haven't quite finished this activity yet.";
   const isLastActivityInSequence = sequence ? sequence.activities.length === activityNum + 1 : false;
 
   const getProgressText = () => {

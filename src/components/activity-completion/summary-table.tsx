@@ -6,6 +6,7 @@ import { renderHTML } from "../../utilities/render-html";
 import { QuestionFeedback } from "../../types";
 
 import "./summary-table.scss";
+import { SummaryPageQuestionFeedback } from "../teacher-feedback/summary-page-question-feedback";
 
 export interface IQuestionStatus {
   number: number;
@@ -39,10 +40,15 @@ export const SummaryTable: React.FC<IProps> = (props) => {
           return (
             <tr key={index} data-cy="summary-table-row">
               <td>
-                <DynamicText>Page {question.page}: Question {question.number}.
-                  <em>{questionPrompt}</em>
-                  {question.feedback && <span className="comment">({question.feedback.content})</span>}
-                </DynamicText>
+                <div className="question-meta">
+                  <div className="question-page-and-number" data-testid="question-meta">
+                    <DynamicText>Page {question.page}: Question {question.number}.</DynamicText>
+                  </div>
+                  <div className="question-prompt" data-testid="question-prompt">
+                    <DynamicText><em>{questionPrompt}</em></DynamicText>
+                    {question.feedback && <SummaryPageQuestionFeedback teacherFeedback={question.feedback} />}
+                  </div>
+                </div>
               </td>
               <td>{questionAnswered}</td>
             </tr>

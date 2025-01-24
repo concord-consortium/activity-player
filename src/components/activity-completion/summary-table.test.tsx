@@ -16,8 +16,11 @@ describe("Summary Table component", () => {
                             );
     expect(wrapperComplete.find('[data-cy="summary-table"]').length).toBe(1);
     expect(wrapperComplete.find('[data-cy="summary-table-row"]').length).toBe(3);
-    expect(wrapperComplete.find('[data-cy="summary-table-row"]').at(0).text()).toContain("Page 1: Question 1. What is the answer?");
-    expect(wrapperComplete.find('[data-cy="summary-table-row"]').at(1).text()).toContain("Page 1: Question 2. What is the question?");
-    expect(wrapperComplete.find('[data-cy="summary-table-row"]').at(2).text()).toContain("Page 2: Question 3. Where are we going?");
+    expect(wrapperComplete.find('[data-testid="question-meta"]').at(0).text()).toContain("Page 1: Question 1.");
+    expect(wrapperComplete.find('[data-testid="question-prompt"]').at(0).text()).toContain("What is the answer?");
+    expect(wrapperComplete.find('[data-testid="question-meta"]').at(1).text()).toContain("Page 1: Question 2.");
+    expect(wrapperComplete.find('[data-testid="question-prompt"]').at(1).text()).toContain("What is the question?");
+    expect(wrapperComplete.find('[data-testid="question-meta"]').at(2).text()).toContain("Page 2: Question 3.");
+    expect(wrapperComplete.find('[data-testid="question-prompt"]').at(2).text()).toContain("Where are we going?");
   });
 });

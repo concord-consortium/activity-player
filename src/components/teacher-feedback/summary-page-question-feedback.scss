@@ -1,0 +1,24 @@
+@import "../vars.scss";
+
+.summary-page-question-feedback {
+  background: $teacher-feedback-light-green;
+  border-radius: 0;
+  color: $cc-charcoal;
+  display: flex;
+  font-size: pxToRem(18);
+  gap: 9px;
+  margin: 6px -5px -5px 0;
+  padding: 7px 6px;
+
+  .teacher-feedback-icon {
+    flex-shrink: 0;
+    height: 24px;
+    width: 24px;
+  }
+
+  .summary-page-question-feedback-content {
+    flex-grow: 1;
+    flex-shrink: 1;
+    line-height: normal;
+  }
+}
