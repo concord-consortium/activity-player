@@ -29,7 +29,7 @@ import {
   signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
   onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData, createOrUpdateApRun, getApRun
 } from "../firebase-db";
-import { Activity, IEmbeddablePlugin, QuestionToActivityMap, Sequence } from "../types";
+import { Activity, IEmbeddablePlugin, Page, QuestionToActivityMap, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getActivityLevelPlugins, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -284,20 +284,16 @@ export class App extends React.PureComponent<IProps, IState> {
         ? sequence.activities[activityIndex]
         : await getActivityDefinition(activityPath);
 
-      // this is used by SequencePageContent
+      // This is used for teacher feedback.
       const questionToActivityMap: QuestionToActivityMap = {};
-      sequence?.activities.forEach((a: Activity) => {
-        if (!a.id) return;
-        a.pages.forEach(p =>
-          p.sections.forEach(s =>
-            s.embeddables.forEach(e => {
-              if (e.ref_id && a.id) {
-                questionToActivityMap[e.ref_id] = {activityId: a.id, pageId: p.id };
-              }
-            })
-          )
-        );
-      });
+      if (sequence) {
+        sequence.activities.forEach(a => {
+          if (!a.id) return;
+          this.processPagesForQuestionMap(a.pages, a.id, questionToActivityMap);
+        });
+      } else if (activity.id) {
+        this.processPagesForQuestionMap(activity.pages, activity.id, questionToActivityMap);
+      }
 
       this.checkLayout(activity, sequence);
 
@@ -821,5 +817,17 @@ export class App extends React.PureComponent<IProps, IState> {
     } else {
       body?.classList.remove("notebook");
     }
+  }
+
+  private processPagesForQuestionMap = (pages: Page[], activityId: number, questionToActivityMap: QuestionToActivityMap) => {
+    pages.forEach(p =>
+      p.sections.forEach(s =>
+        s.embeddables.forEach(e => {
+          if (e.ref_id) {
+            questionToActivityMap[e.ref_id] = { activityId, pageId: p.id };
+          }
+        })
+      )
+    );
   }
 }
