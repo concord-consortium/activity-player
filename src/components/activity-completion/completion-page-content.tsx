@@ -31,14 +31,14 @@ interface IProps {
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
   const { activity, activityName, onPageChange, sequence, activityIndex, onActivityChange, onShowSequence,
-    questionMap: questionToActivityMap } = props;
+    questionMap } = props;
   const [answers, setAnswers] = useState<WrappedDBAnswer[]>();
   const [activityFeedback, setActivityFeedback] = useState<ActivityFeedback | null>(null);
   const [questionFeedback, setQuestionFeedback] = useState<QuestionFeedback[]>([]);
 
   const questionsInActivity = useMemo((): string[] => {
-    if (!activity || !questionToActivityMap || Object.entries(questionToActivityMap).length === 0) return [];
-    const qsInActivity = Object.keys(questionToActivityMap).filter(q => questionToActivityMap?.[q].activityId === activity.id);
+    if (!activity || !questionMap || Object.entries(questionMap).length === 0) return [];
+    const qsInActivity = Object.keys(questionMap).filter(q => questionMap?.[q].activityId === activity.id);
     const qIDs = qsInActivity.map(refIdToAnswersQuestionId);
     const onlyQuestions = qIDs.filter(id => {
       const embeddableId = answersQuestionIdToRefId(id);
@@ -46,7 +46,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
       return embeddable && isQuestion(embeddable);
     });
     return onlyQuestions;
-  }, [activity, questionToActivityMap]);
+  }, [activity, questionMap]);
 
   useEffect(() => {
     const unsubscribeAnswers = watchAllAnswers(answerMetas => {
@@ -90,6 +90,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
         const page = getPageNumberFromEmbeddable(activity, embeddableId) || 0;
 
         summaries.push({
+          embeddableId,
           number: idx + 1,
           page,
           prompt: authoredState.prompt,
@@ -182,7 +183,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               <ActivityLevelFeedbackBanner teacherFeedback={activityFeedback} />
 
             }
-            <SummaryTable questionsStatus={questionSummaries} />
+            <SummaryTable questionsStatus={questionSummaries} onPageChange={onPageChange} />
             {(!sequence || isLastActivityInSequence) &&
               <div className="exit-button">
                 <span>or</span>

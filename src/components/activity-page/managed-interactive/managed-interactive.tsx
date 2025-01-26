@@ -38,6 +38,7 @@ interface IProps {
   emitInteractiveAvailable?: () => void;
   showQuestionPrefix: boolean;
   hideQuestionNumbers?: boolean;
+  questionToScrollTo?: string;
 }
 
 export interface ManagedInteractiveImperativeAPI {
@@ -213,6 +214,12 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         window.removeEventListener("resize", setDimension);
     });
   }, [screenHeight]);
+
+  useEffect(() => {
+    if (props.questionToScrollTo === embeddable.ref_id) {
+      divTarget.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [embeddable.ref_id, heightFromInteractive, props.questionToScrollTo]);
 
 
   const setShowDeleteDataButton = () => {

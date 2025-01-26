@@ -130,6 +130,7 @@ interface IState {
   fontType: FontType;
   fontFamilyForType: string;
   mediaLibrary: IMediaLibrary;
+  questionToScrollTo?: string;
 }
 interface IProps { }
 
@@ -162,7 +163,8 @@ export class App extends React.PureComponent<IProps, IState> {
       fontSizeInPx: getFontSizeInPx("normal"),
       fontType: "normal",
       fontFamilyForType: getFamilyForFontType("normal"),
-      mediaLibrary: {enabled: false, items: []}
+      mediaLibrary: {enabled: false, items: []},
+      questionToScrollTo: undefined
     };
   }
 
@@ -285,14 +287,14 @@ export class App extends React.PureComponent<IProps, IState> {
         : await getActivityDefinition(activityPath);
 
       // This is used for teacher feedback.
-      const questionMap: QuestionMap = {};
+      const questionToActivityMap: QuestionMap = {};
       if (sequence) {
         sequence.activities.forEach(a => {
           if (!a.id) return;
-          this.processPagesForQuestionMap(a.pages, a.id, questionMap);
+          this.processPagesForQuestionMap(a.pages, a.id, questionToActivityMap);
         });
       } else if (activity.id) {
-        this.processPagesForQuestionMap(activity.pages, activity.id, questionMap);
+        this.processPagesForQuestionMap(activity.pages, activity.id, questionToActivityMap);
       }
 
       this.checkLayout(activity, sequence);
@@ -363,7 +365,7 @@ export class App extends React.PureComponent<IProps, IState> {
       newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner,
                      showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity, hideReadAloud,
                      fontSize, fontSizeInPx, fontType, fontFamilyForType, hideQuestionNumbers,
-                     questionMap};
+                     questionMap: questionToActivityMap};
       setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       this.setState(newState as IState);
@@ -565,6 +567,7 @@ export class App extends React.PureComponent<IProps, IState> {
                 pageChangeNotification={this.state.pageChangeNotification}
                 hideReadAloud={this.state.hideReadAloud}
                 hideQuestionNumbers={this.state.hideQuestionNumbers}
+                questionToScrollTo={this.state.questionToScrollTo}
               />
         }
         {renderBottomNav &&
@@ -672,7 +675,8 @@ export class App extends React.PureComponent<IProps, IState> {
     window.location.href = this.portalUrl;
   }
 
-  private handleChangePage = (page: number) => {
+  private handleChangePage = (page: number, embeddableId?: string) => {
+    console.log("handleChangePage", page, embeddableId);
     const { currentPage, incompleteQuestions, activity, sequenceActivity } = this.state;
     const pageId = activity ? getPageIDFromPosition(activity, page) : undefined;
     if (pageId) {
@@ -692,9 +696,24 @@ export class App extends React.PureComponent<IProps, IState> {
       const navigateAway = () => {
         __closeAllPopUps(); // close any open pop ups
         clearTimeout(startPageChangeNotification);
-        this.setState({ currentPage: page, incompleteQuestions: [], pageChangeNotification: undefined });
+        this.setState({
+          currentPage: page,
+          incompleteQuestions: [],
+          pageChangeNotification: undefined,
+          questionToScrollTo: embeddableId
+        });
         setDocumentTitle({ activity, pageNumber: page });
-        document.getElementsByClassName("app")[0]?.scrollIntoView(); //scroll to the top on page change
+        // if (embeddableId) {
+        //   // scroll to the embeddable ID if it exists
+        //   console.log("scrolling to embeddable 1", embeddableId);
+        //   const embeddable = document.getElementById(embeddableId);
+        //   if (embeddable) {
+        //     console.log("scrolling to embeddable 2", embeddable);
+        //     embeddable.scrollIntoView();
+        //   }
+        // } else {
+        //   document.getElementsByClassName("app")[0]?.scrollIntoView(); //scroll to the top on page change
+        // }
         Logger.updateActivityPage(page);
         Logger.log({
           event: LogEventName.change_activity_page,
@@ -819,12 +838,12 @@ export class App extends React.PureComponent<IProps, IState> {
     }
   }
 
-  private processPagesForQuestionMap = (pages: Page[], activityId: number, questionMap: QuestionMap) => {
+  private processPagesForQuestionMap = (pages: Page[], activityId: number, questionToActivityMap: QuestionMap) => {
     pages.forEach(p =>
       p.sections.forEach(s =>
         s.embeddables.forEach(e => {
           if (e.ref_id) {
-            questionMap[e.ref_id] = { activityId, pageId: p.id };
+            questionToActivityMap[e.ref_id] = { activityId, pageId: p.id };
           }
         })
       )

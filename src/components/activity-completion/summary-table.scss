@@ -44,6 +44,20 @@
 
       .question-page-and-number {
         flex: 0 0 auto;
+
+        button {
+          appearance: none;
+          background: transparent;
+          border: none;
+          cursor: pointer;
+          display: inline;
+          font-size: pxToRem(16);
+          margin: 0;
+          outline: none;
+          padding: 0;
+          text-decoration: underline;
+          width: auto;
+        }
       }
       .question-prompt {
         flex: 1;

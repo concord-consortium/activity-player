@@ -26,6 +26,8 @@ interface IProps {
   pluginsLoaded: boolean;
   ref?: React.Ref<EmbeddableImperativeAPI>;
   hideQuestionNumbers?: boolean;
+  addRefToQuestionMap?: (refId: string, ref: any) => void;
+  questionToScrollTo?: string;
 }
 
 export interface EmbeddableImperativeAPI {
@@ -35,10 +37,12 @@ export interface EmbeddableImperativeAPI {
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded, hideQuestionNumbers } = props;
+  const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation,
+    teacherEditionMode, pluginsLoaded, hideQuestionNumbers, questionToScrollTo } = props;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
   }, [setNavigation, embeddable.ref_id]);
+  // TODO: add managedInteractiveRef to questionMap?
   const managedInteractiveRef = useRef<ManagedInteractiveImperativeAPI>(null);
   const embeddableWrapperDivTarget = useRef<HTMLInputElement>(null);
   const embeddableDivTarget = useRef<HTMLInputElement>(null);
@@ -63,7 +67,27 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     if (validPluginContext && pluginsLoaded) {
       initializePlugin(validPluginContext);
     }
-  }, [LARA, linkedPluginEmbeddable, embeddable, pluginsLoaded]);
+  }, [LARA, linkedPluginEmbeddable, embeddable, pluginsLoaded, questionToScrollTo]);
+
+  // useEffect(() => {
+  //   console.log("questionToScrollTo", questionToScrollTo);
+  //   console.log("embeddable.ref_id", embeddable.ref_id);
+  //   console.log("targetDiv.current", targetDiv.current);
+
+  //   const getInteractiveState = async () => {
+  //     const iState = await managedInteractiveRef.current?.requestInteractiveState({}) || Promise.resolve();
+  //     console.log("interactiveState", iState);
+  //     return iState;
+  //   };
+
+  //   getInteractiveState();
+    
+  //   if (questionToScrollTo === embeddable.ref_id) {
+  //     //setTimeout(() => {
+  //       targetDiv.current?.scrollIntoView({ behavior: "smooth" });
+  //     //}, 2000);
+  //   }
+  // }, [questionToScrollTo, embeddable.ref_id]);
 
   useImperativeHandle(ref, () => ({
     requestInteractiveState: (options?: IGetInteractiveState) => managedInteractiveRef.current?.requestInteractiveState(options) || Promise.resolve()
@@ -100,6 +124,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                     emitInteractiveAvailable={handleEmitInteractiveAvailable}
                     showQuestionPrefix={showQuestionPrefix}
                     hideQuestionNumbers={hideQuestionNumbers}
+                    questionToScrollTo={questionToScrollTo}
                  />;
   } else if (embeddable.type === "ManagedInteractive" && !embeddable.library_interactive) {
     qComponent = <div>Content type not supported</div>;
