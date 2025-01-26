@@ -36,6 +36,19 @@
         fill: $cc-orange-dark1;
       }
     }
+
+    .question-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+
+      .question-page-and-number {
+        flex: 0 0 auto;
+      }
+      .question-prompt {
+        flex: 1;
+      }
+    }
   }
   th {
     background: $cc-teal-dark1;

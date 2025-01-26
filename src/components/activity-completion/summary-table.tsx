@@ -1,9 +1,10 @@
 import React from "react";
 import { DynamicText } from "@concord-consortium/dynamic-text";
-
 import IconComplete from "../../assets/svg-icons/icon-check-circle.svg";
 import IconIncomplete from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
 import { renderHTML } from "../../utilities/render-html";
+import { QuestionFeedback } from "../../types";
+import { SummaryPageQuestionFeedback } from "../teacher-feedback/summary-page-question-feedback";
 
 import "./summary-table.scss";
 
@@ -12,6 +13,7 @@ export interface IQuestionStatus {
   page: number;
   prompt: string;
   answered: boolean;
+  feedback?: QuestionFeedback;
 }
 
 interface IProps {
@@ -37,7 +39,17 @@ export const SummaryTable: React.FC<IProps> = (props) => {
           const questionPrompt = question.prompt ? renderHTML(question.prompt.replace(/<\/?[^>]+(>|$)/g, "")) : "";
           return (
             <tr key={index} data-cy="summary-table-row">
-              <td><DynamicText>Page {question.page}: Question {question.number}. <em>{questionPrompt}</em></DynamicText></td>
+              <td>
+                <div className="question-meta">
+                  <div className="question-page-and-number" data-testid="question-page-and-number">
+                    <DynamicText>Page {question.page}: Question {question.number}.</DynamicText>
+                  </div>
+                  <div className="question-prompt" data-testid="question-prompt">
+                    <DynamicText><em>{questionPrompt}</em></DynamicText>
+                    {question.feedback && <SummaryPageQuestionFeedback teacherFeedback={question.feedback} />}
+                  </div>
+                </div>
+              </td>
               <td>{questionAnswered}</td>
             </tr>
           );

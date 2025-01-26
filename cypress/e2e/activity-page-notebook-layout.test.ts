@@ -83,7 +83,6 @@ context("Test the overall app", () => {
       activityPage.getSummaryActivityTitle().invoke("css", "font-family").should("contain", fontFamily);
       activityPage.getSummaryTableHead().invoke("css", "font-family").should("contain", fontFamily);
       activityPage.getSummaryTableRow().invoke("css", "font-family").should("contain", fontFamily);
-      activityPage.getShowMyWorkButton().invoke("css", "font-family").should("contain", fontFamily);
       activityPage.getOrText().invoke("css", "font-family").should("contain", fontFamily);
       activityPage.getExitTextButton().invoke("css", "font-family").should("contain", fontFamily);
     });

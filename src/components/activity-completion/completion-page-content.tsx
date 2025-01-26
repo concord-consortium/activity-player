@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { DynamicText } from "@concord-consortium/dynamic-text";
 
 import IconCheck from "../../assets/svg-icons/icon-check-circle.svg";
-import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
 import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
-import { isValidReportLink, showReport } from "../../utilities/report-utils";
-import { Sequence, Activity, EmbeddableType, Page, ActivityFeedback } from "../../types";
+import { Sequence, Activity, ActivityFeedback, QuestionFeedback, QuestionMap } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
-import { watchAllAnswers, WrappedDBAnswer } from "../../firebase-db";
-import { isQuestion } from "../../utilities/activity-utils";
-import { answerHasResponse, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
+import { watchAllAnswers, watchQuestionLevelFeedback, WrappedDBAnswer } from "../../firebase-db";
+import { getEmbeddable, getPageNumberFromEmbeddable, isQuestion, isSequenceFinished } from "../../utilities/activity-utils";
+import { answerHasResponse, answersQuestionIdToRefId, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
 import { SequenceIntroFeedbackBanner } from "../teacher-feedback/sequence-intro-feedback-banner";
 import { ActivityLevelFeedbackBanner } from "../teacher-feedback/activity-level-feedback-banner";
@@ -23,37 +21,86 @@ interface IProps {
   activity: Activity;
   activityName: string;
   onPageChange: (page: number) => void;
-  showStudentReport: boolean;
   onOpenReport?: () => void;
   sequence?: Sequence;
   activityIndex?: number;
   onActivityChange?: (activityNum: number) => void;
   onShowSequence?: () => void;
+  questionMap?: QuestionMap;
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
-  const { activity, activityName, onPageChange, showStudentReport,
-    sequence, activityIndex, onActivityChange, onShowSequence } = props;
+  const { activity, activityName, onPageChange, sequence, activityIndex, onActivityChange, onShowSequence,
+    questionMap: questionToActivityMap } = props;
   const [answers, setAnswers] = useState<WrappedDBAnswer[]>();
-  const [feedback, setFeedback] = useState<ActivityFeedback | null>(null);
+  const [activityFeedback, setActivityFeedback] = useState<ActivityFeedback | null>(null);
+  const [questionFeedback, setQuestionFeedback] = useState<QuestionFeedback[]>([]);
+
+  const questionsInActivity = useMemo((): string[] => {
+    if (!activity || !questionToActivityMap || Object.entries(questionToActivityMap).length === 0) return [];
+    const qsInActivity = Object.keys(questionToActivityMap).filter(q => questionToActivityMap?.[q].activityId === activity.id);
+    const qIDs = qsInActivity.map(refIdToAnswersQuestionId);
+    const onlyQuestions = qIDs.filter(id => {
+      const embeddableId = answersQuestionIdToRefId(id);
+      const embeddable = getEmbeddable(activity, embeddableId);
+      return embeddable && isQuestion(embeddable);
+    });
+    return onlyQuestions;
+  }, [activity, questionToActivityMap]);
 
   useEffect(() => {
-    watchAllAnswers(answerMetas => {
-      setAnswers(answerMetas);
+    const unsubscribeAnswers = watchAllAnswers(answerMetas => {
+      const answersInActivity = answerMetas.filter(a => questionsInActivity.includes(a.meta.question_id));
+      setAnswers(answersInActivity);
     });
-  }, []);
+
+    const unsubscribeQFeedback = watchQuestionLevelFeedback((fbs: QuestionFeedback[]) => {
+      const questionFeedbackInThisActivity = fbs.filter(f => questionsInActivity.includes(f.questionId));
+      setQuestionFeedback(questionFeedbackInThisActivity);
+    });
+
+    return () => {
+      unsubscribeAnswers?.();
+      unsubscribeQFeedback?.();
+    };
+  }, [questionsInActivity]);
 
   useEffect(() => {
     if (activity.id) {
       const unsubscribe = subscribeToActivityLevelFeedback({
         activityId: activity.id,
         isSequence: !!sequence,
-        callback: (fb: ActivityFeedback | null) => setFeedback(fb)
+        callback: (fb: ActivityFeedback | null) => setActivityFeedback(fb)
       });
 
       return () => unsubscribe();
     }
   }, [activity.id, sequence]);
+
+  const questionSummaries = useMemo((): IQuestionStatus[] => {
+    const summaries: IQuestionStatus[] = [];
+    questionsInActivity?.forEach((id, idx) => {
+      const embeddableId = answersQuestionIdToRefId(id);
+      const embeddable = getEmbeddable(activity, embeddableId);
+      if (embeddable && isQuestion(embeddable)) {
+        const feedback = questionFeedback.find(f => f.questionId === id);
+        const answer = answers?.find(a => a.meta.question_id === id);
+        const authoredState = embeddable?.authored_state ? JSON.parse(embeddable.authored_state) : {};
+        const answered = answer ? answerHasResponse(answer, authoredState) : false;
+        const page = getPageNumberFromEmbeddable(activity, embeddableId) || 0;
+
+        summaries.push({
+          number: idx + 1,
+          page,
+          prompt: authoredState.prompt,
+          answered,
+          feedback
+        });
+      }
+    });
+    return summaries;
+  }, [activity, answers, questionFeedback, questionsInActivity]);
+
 
   const handleExit = () => {
     if (sequence) {
@@ -68,76 +115,30 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
     onPageChange(0); //TODO: This should go to the student's saved state page for the next activity
   };
 
-  const handleShowAnswers = () => {
-    showReport();
-  };
+  const isActivityComplete = answers?.length === questionsInActivity.length;
+  const activityTitle = activityName || "the activity";
+  const activityNum = activityIndex || 0;
+  const completedActivityProgressText = "Congratulations! You have reached the end of this activity.";
+  const incompleteActivityProgressText = "It looks like you haven't quite finished this activity yet.";
+  const isLastActivityInSequence = sequence ? sequence.activities.length === activityNum + 1 : false;
 
-  const sequenceProgress = (currentSequence: Sequence) => {
-    const activityCompletionArray = currentSequence?.activities.map((sequenceActivity) => {
-      const activityStatus = activityProgress(sequenceActivity);
-      return activityStatus.numAnswers === activityStatus.numQuestions;
-    });
-    return !activityCompletionArray.includes(false);
-  };
-
-  const activityProgress = (currentActivity: Activity) => {
-    let numAnswers = 0;
-    let numQuestions = 0;
-    const visiblePages = currentActivity.pages.filter(page => !page.is_hidden);
-    const questionsStatus = Array<IQuestionStatus>();
-    visiblePages.forEach((page: Page, index) => {
-      const pageNum = index + 1;
-      const visibleSections = page.sections.filter(section => !section.is_hidden);
-      visibleSections.forEach((section) => {
-        const visibleEmbeddables = section.embeddables.filter(embeddable => !embeddable.is_hidden);
-        visibleEmbeddables.forEach((embeddable: EmbeddableType) => {
-          if (isQuestion(embeddable)) {
-            numQuestions++;
-            const questionId = refIdToAnswersQuestionId(embeddable.ref_id);
-            const authoredState = embeddable.authored_state
-                                    ? JSON.parse(embeddable.authored_state)
-                                    : {};
-            let questionAnswered = false;
-            const answer = answers?.find(a => a.meta.question_id === questionId);
-            if (answer && answerHasResponse(answer, authoredState)) {
-              numAnswers++; //Does't take into account if user erases response after saving
-              questionAnswered = true;
-            }
-            const questionStatus = { number: numQuestions, page: pageNum, prompt: authoredState.prompt, answered: questionAnswered };
-            questionsStatus.push(questionStatus);
-          }
-        });
-      });
-    });
-    return ({ numAnswers, numQuestions, questionsStatus });
-  };
-
-  const progress = activityProgress(activity);
-  const isActivityComplete = progress.numAnswers === progress.numQuestions;
-  const activityTitle = (activityName !== "") || (activityName == null) ? activityName : "the activity";
-  const activityNum = activityIndex ? activityIndex : 0;
-  const completedActivityProgressText =
-    `Congratulations! You have reached the end of this activity.`;
-  const incompleteActivityProgressText =
-    `It looks like you haven't quite finished this activity yet.`;
-  const isLastActivityInSequence = activityIndex ? sequence?.activities.length === activityIndex + 1 : false;
-
-  let progressText = "";
-
-  if (sequence) {
-    const sequenceComplete = sequenceProgress(sequence);
-    if (isLastActivityInSequence) {
-      progressText = sequenceComplete && isActivityComplete
-                       ? completedActivityProgressText + ` You have completed all your work for this module!`
-                       : isActivityComplete
-                           ? completedActivityProgressText
-                           : incompleteActivityProgressText;
-    } else {
-      progressText = isActivityComplete ? completedActivityProgressText : incompleteActivityProgressText;
+  const getProgressText = () => {
+    if (!sequence) {
+      return isActivityComplete ? completedActivityProgressText : incompleteActivityProgressText;
     }
-  } else { //assumes is single activity
-    progressText = isActivityComplete ? completedActivityProgressText : incompleteActivityProgressText;
-  }
+
+    const sequenceComplete = isSequenceFinished(sequence, answers);
+    if (isLastActivityInSequence) {
+      if (sequenceComplete && isActivityComplete) {
+        return `${completedActivityProgressText} You have completed all your work for this module!`;
+      }
+      return isActivityComplete ? completedActivityProgressText : incompleteActivityProgressText;
+    }
+
+    return isActivityComplete ? completedActivityProgressText : incompleteActivityProgressText;
+  };
+
+  const progressText = getProgressText();
 
   return (
     !answers
@@ -159,7 +160,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
                 <DynamicText>{progressText}</DynamicText>
               </div>
             </div>
-            {feedback &&
+            {activityFeedback &&
               <SequenceIntroFeedbackBanner />
             }
           </div>
@@ -177,15 +178,11 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               <h1><DynamicText>Summary of Work: <span className="activity-title">{activityTitle}</span></DynamicText></h1>
               <ReadAloudToggle/>
             </div>
-            {feedback &&
-              <ActivityLevelFeedbackBanner teacherFeedback={feedback} />
+            {activityFeedback &&
+              <ActivityLevelFeedbackBanner teacherFeedback={activityFeedback} />
 
             }
-            <SummaryTable questionsStatus={progress.questionsStatus} />
-            {showStudentReport && <button className={`button show-my-work ${isValidReportLink() ? "" : "disabled"}`}
-                                          onClick={handleShowAnswers}><IconCompletion width={24} height={24} />
-                                    Show My Work
-                                  </button>}
+            <SummaryTable questionsStatus={questionSummaries} />
             {(!sequence || isLastActivityInSequence) &&
               <div className="exit-button">
                 <span>or</span>

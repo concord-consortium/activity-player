@@ -32,20 +32,5 @@ context("Test Opening Portal Reports from various places", () => {
       activityPage.getPage(3).click();
       cy.wait(1000);
     });
-    describe("Open report from end of activity without completion page", () => {
-      it("verify correct link is sent to the portal report", () => {
-        cy.get("[data-cy=exit-container] > .show-my-work").should("be.visible").click();
-        cy.window().its("open").should("be.calledWith",
-          portalReportUrl + "?firebase-app=report-service-dev" +
-            "&sourceKey=example.com" +
-            "&answersSourceKey=authoring.staging.concord.org" +
-            "&runKey=" + runKey +
-            "&activity=" + activityStructureUrl +
-            "&resourceUrl=" + activityStructureUrl);
-      });
-    });
-    // describe("Open report from completion page", () => {
-
-    // });
   });
 });

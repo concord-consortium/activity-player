@@ -192,26 +192,18 @@ export class NavPages extends React.Component <IProps, IState> {
 
     return (
       <div className="page-button-container">
-        <button className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`}
-                onClick={this.handlePageChangeRequest(0)}
-                aria-label="Home"
-                data-cy="home-button"
+        <button
+          className={`page-button ${currentClass} ${(pageChangeInProgress) ? "disabled" : ""}`}
+          onClick={this.handlePageChangeRequest(0)}
+          aria-label="Home"
+          data-cy="home-button"
         >
-          {this.props.usePageNames &&
-            <>
-              <IconHome
-                className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
-                width={28}
-                height={28}
-              />
-              Home
-            </>
-            }
-          {!this.props.usePageNames && <IconHome
+          <IconHome
             className={`icon ${this.props.currentPage === 0 ? "current" : ""}`}
             width={28}
             height={28}
-          />}
+          />
+          {this.props.usePageNames && "Home"}
         </button>
         {showFeedbackBadge && <TeacherFeedbackSmallBadge location="nav-pages" />}
       </div>

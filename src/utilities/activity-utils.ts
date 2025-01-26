@@ -1,7 +1,8 @@
 import { Page, Activity, EmbeddableType, Sequence, SectionType } from "../types";
 import { SidebarConfiguration } from "../components/page-sidebar/sidebar-wrapper";
-import { isQuestion as isEmbeddableQuestion } from "./embeddable-utils";
+import { answerHasResponse, isQuestion as isEmbeddableQuestion, refIdToAnswersQuestionId } from "./embeddable-utils";
 import { queryValue } from "./url-query";
+import { WrappedDBAnswer } from "../firebase-db";
 
 export enum ActivityLayouts {
   MultiplePages = 0,
@@ -266,4 +267,66 @@ export const hasPluginThatRequiresHeader = (activity: Activity, embeddableRefId:
       }, acc2);
     }, acc);
   }, false);
+};
+
+export const getEmbeddable = (activity: Activity, embeddableRefId: string) => {
+  for (const page of activity.pages) {
+    for (const section of page.sections) {
+      const embeddable = section.embeddables.find((e: EmbeddableType) => e.ref_id === embeddableRefId);
+      if (embeddable) {
+        return embeddable;
+      }
+    }
+  }
+  return undefined;
+};
+
+export const getPageNumberFromEmbeddable = (activity: Activity, embeddableRefId: string) => {
+  for (let i = 0; i < activity.pages.length; i++) {
+    const page = activity.pages[i];
+    for (const section of page.sections) {
+      const embeddable = section.embeddables.find((e: EmbeddableType) => e.ref_id === embeddableRefId);
+      if (embeddable) {
+        return i + 1;
+      }
+    }
+  }
+  return undefined;
+};
+
+export const getVisiblePages = (activity: Activity) => {
+  return activity.pages.filter(page => !page.is_hidden);
+};
+
+export const getVisibleSections = (page: Page) => {
+  return page.sections.filter(section => !section.is_hidden);
+};
+
+export const getVisibleEmbeddables = (section: any) => {
+  return section.embeddables.filter((embeddable: any) => !embeddable.is_hidden);
+};
+
+export const isSequenceFinished = (sequence: Sequence, answers: WrappedDBAnswer[]|undefined): boolean => {
+  return sequence.activities.every((activity) => {
+    return isActivityFinished(activity, answers);
+  });
+};
+
+export const isActivityFinished = (activity: Activity, answers: WrappedDBAnswer[] | undefined): boolean => {
+  const { numAnswers, numQuestions } = getVisiblePages(activity)
+    .flatMap(page => getVisibleSections(page))
+    .flatMap(section => getVisibleEmbeddables(section))
+    .filter(isQuestion)
+    .reduce((acc, embeddable) => {
+      acc.numQuestions++;
+      const questionId = refIdToAnswersQuestionId(embeddable.ref_id);
+      const authoredState = embeddable.authored_state ? JSON.parse(embeddable.authored_state) : {};
+      const answer = answers?.find(a => a.meta.question_id === questionId);
+      if (answer && answerHasResponse(answer, authoredState)) {
+        acc.numAnswers++;
+      }
+      return acc;
+    }, { numAnswers: 0, numQuestions: 0 });
+
+  return numAnswers === numQuestions;
 };

@@ -285,7 +285,6 @@ context("Test the overall app", () => {
       activityPage.getSummaryActivityTitle().should('have.css', 'font-size', normalFont.size8);
       activityPage.getSummaryTableHead().should('have.css', 'font-size', normalFont.size4);
       activityPage.getSummaryTableRow().should('have.css', 'font-size', normalFont.size4);
-      activityPage.getShowMyWorkButton().should('have.css', 'font-size', normalFont.size6);
       activityPage.getOrText().should('have.css', 'font-size', normalFont.size4);
       activityPage.getExitTextButton().should('have.css', 'font-size', normalFont.size6);
     });

@@ -16,7 +16,6 @@ context("Test the overall app", () => {
     it("test summary page", () => {
       cy.log("test incomplete activity text");
       cy.get(".progress-text").should("contain", `It looks like you haven't quite finished this activity yet.`);
-      cy.get(".exit-container .show-my-work").should("contain", "Show My Work");
       cy.get(".preview-title-container").should("contain", activity2Title);
       cy.get(".next-activity-buttons").first().should("contain", "Start Next Activity");
       cy.get(".next-activity-buttons").last().should("contain", "Exit");
