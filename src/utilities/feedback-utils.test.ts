@@ -34,12 +34,12 @@ describe("Feedback utility functions", () => {
     const activityId = 1;
     const isSequence = false;
     const callback = jest.fn();
-    const questionToActivityMap = {
+    const questionMap = {
       "refId1": { activityId: 1, pageId: 1 },
       "refId2": { activityId: 1, pageId: 2 },
       "refId3": { activityId: 1, pageId: 3 },
     };
-    const unsubscribe = subscribeToQuestionLevelFeedback({ activityId, isSequence, callback, questionToActivityMap });
+    const unsubscribe = subscribeToQuestionLevelFeedback({ activityId, isSequence, callback, questionMap });
     expect(unsubscribe).toBeDefined();
     expect(callback).toHaveBeenCalledWith([1, 3]);
   });

@@ -1,7 +1,7 @@
 import React from "react";
 import { DynamicText } from "@concord-consortium/dynamic-text";
 
-import { ActivityFeedback, Page, QuestionToActivityMap } from "../../types";
+import { ActivityFeedback, Page, QuestionMap } from "../../types";
 import { pageHasFeedback, subscribeToActivityLevelFeedback, subscribeToQuestionLevelFeedback } from "../../utilities/feedback-utils";
 import { TeacherFeedbackSmallBadge } from "../teacher-feedback/teacher-feedback-small-badge";
 import { accessibilityClick } from "../../utilities/accessibility-helper";
@@ -12,7 +12,7 @@ interface IProps {
   activityId?: number | null;
   activityPages: Page[];
   isSequence?: boolean;
-  questionToActivityMap?: QuestionToActivityMap;
+  questionMap?: QuestionMap;
   onPageChange: (page: number) => void;
 }
 
@@ -32,7 +32,7 @@ export class ActivityPageLinks extends React.PureComponent <IProps, IState> {
 
   componentDidMount() {
     if (this.props.activityId) {
-      const { activityId, isSequence=false, questionToActivityMap } = this.props;
+      const { activityId, isSequence=false, questionMap } = this.props;
 
       this.unsubscribeActivityLevelFeedback = subscribeToActivityLevelFeedback({
         activityId,
@@ -43,7 +43,7 @@ export class ActivityPageLinks extends React.PureComponent <IProps, IState> {
       this.unsubscribeQuestionLevelFeedback = subscribeToQuestionLevelFeedback({
         activityId,
         isSequence,
-        questionToActivityMap,
+        questionMap,
         callback: (pageIds: number[]) => this.setState({ pagesWithFeedback: pageIds })
       });
     }
