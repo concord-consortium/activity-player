@@ -3,7 +3,7 @@ import { DynamicText } from "@concord-consortium/dynamic-text";
 
 import IconCheck from "../../assets/svg-icons/icon-check-circle.svg";
 import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
-import { Sequence, Activity, ActivityFeedback, QuestionFeedback, QuestionToActivityMap } from "../../types";
+import { Sequence, Activity, ActivityFeedback, QuestionFeedback, QuestionMap } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers, watchQuestionLevelFeedback, WrappedDBAnswer } from "../../firebase-db";
 import { getEmbeddable, getPageNumberFromEmbeddable, isQuestion, isSequenceFinished } from "../../utilities/activity-utils";
@@ -26,12 +26,12 @@ interface IProps {
   activityIndex?: number;
   onActivityChange?: (activityNum: number) => void;
   onShowSequence?: () => void;
-  questionToActivityMap?: QuestionToActivityMap;
+  questionMap?: QuestionMap;
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
   const { activity, activityName, onPageChange, sequence, activityIndex, onActivityChange, onShowSequence,
-    questionToActivityMap } = props;
+    questionMap: questionToActivityMap } = props;
   const [answers, setAnswers] = useState<WrappedDBAnswer[]>();
   const [activityFeedback, setActivityFeedback] = useState<ActivityFeedback | null>(null);
   const [questionFeedback, setQuestionFeedback] = useState<QuestionFeedback[]>([]);

@@ -1,5 +1,5 @@
 import { watchActivityLevelFeedback, watchQuestionLevelFeedback } from "../firebase-db";
-import { Page, ActivityFeedback, QuestionFeedback, QuestionToActivityMap } from "../types";
+import { Page, ActivityFeedback, QuestionFeedback, QuestionMap } from "../types";
 import { answersQuestionIdToRefId } from "./embeddable-utils";
 
 interface ISubscribeActivityLevelFeedback {
@@ -12,7 +12,7 @@ interface ISubscribeQuestionLevelFeedback {
   activityId: number;
   callback: (pageIds: number[]) => void;
   isSequence: boolean;
-  questionToActivityMap?: QuestionToActivityMap;
+  questionMap?: QuestionMap;
 }
 
 export const subscribeToActivityLevelFeedback = (args: ISubscribeActivityLevelFeedback) => {
@@ -26,14 +26,14 @@ export const subscribeToActivityLevelFeedback = (args: ISubscribeActivityLevelFe
 };
 
 export const subscribeToQuestionLevelFeedback = (args: ISubscribeQuestionLevelFeedback) => {
-  const { activityId, callback, isSequence, questionToActivityMap } = args;
+  const { activityId, callback, isSequence, questionMap } = args;
 
   return watchQuestionLevelFeedback((fb: QuestionFeedback[] | null) => {
     const questionIdsToRefId = fb?.map(f => answersQuestionIdToRefId(f.questionId));
     const pageIds: number[] = [];
     questionIdsToRefId?.forEach((refId: string) => {
-      const pageId = questionToActivityMap?.[refId]?.pageId;
-      const refActivityId = questionToActivityMap?.[refId]?.activityId;
+      const pageId = questionMap?.[refId]?.pageId;
+      const refActivityId = questionMap?.[refId]?.activityId;
       if ((!isSequence || (refActivityId === activityId && isSequence)) && pageId && !pageIds.includes(pageId)) {
         pageIds.push(pageId);
       }

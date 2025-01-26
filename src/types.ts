@@ -376,4 +376,4 @@ type ActivityAndPage = {
   pageId: number;
 };
 
-export type QuestionToActivityMap = Record<string, ActivityAndPage>;
+export type QuestionMap = Record<string, ActivityAndPage>;

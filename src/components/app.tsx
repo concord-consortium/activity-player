@@ -29,7 +29,7 @@ import {
   signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
   onFirestoreSaveTimeout, onFirestoreSaveAfterTimeout, getPortalData, createOrUpdateApRun, getApRun
 } from "../firebase-db";
-import { Activity, IEmbeddablePlugin, Page, QuestionToActivityMap, Sequence } from "../types";
+import { Activity, IEmbeddablePlugin, Page, QuestionMap, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
 import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getActivityLevelPlugins, loadLearnerPluginState } from "../utilities/plugin-utils";
@@ -109,7 +109,7 @@ interface IState {
   showWarning: boolean;
   username: string;
   portalData?: IPortalData;
-  questionToActivityMap?: QuestionToActivityMap;
+  questionMap?: QuestionMap;
   sequence?: Sequence;
   showSequenceIntro?: boolean;
   activityIndex?: number;
@@ -285,14 +285,14 @@ export class App extends React.PureComponent<IProps, IState> {
         : await getActivityDefinition(activityPath);
 
       // This is used for teacher feedback.
-      const questionToActivityMap: QuestionToActivityMap = {};
+      const questionMap: QuestionMap = {};
       if (sequence) {
         sequence.activities.forEach(a => {
           if (!a.id) return;
-          this.processPagesForQuestionMap(a.pages, a.id, questionToActivityMap);
+          this.processPagesForQuestionMap(a.pages, a.id, questionMap);
         });
       } else if (activity.id) {
-        this.processPagesForQuestionMap(activity.pages, activity.id, questionToActivityMap);
+        this.processPagesForQuestionMap(activity.pages, activity.id, questionMap);
       }
 
       this.checkLayout(activity, sequence);
@@ -363,7 +363,7 @@ export class App extends React.PureComponent<IProps, IState> {
       newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner,
                      showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity, hideReadAloud,
                      fontSize, fontSizeInPx, fontType, fontFamilyForType, hideQuestionNumbers,
-                     questionToActivityMap};
+                     questionMap};
       setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       this.setState(newState as IState);
@@ -429,7 +429,7 @@ export class App extends React.PureComponent<IProps, IState> {
                         ? <SequenceIntroduction
                             sequence={this.state.sequence}
                             username={this.state.username}
-                            questionIdsToActivityIdsMap={this.state.questionToActivityMap}
+                            questionMap={this.state.questionMap}
                             onSelectActivity={this.handleSelectActivity}
                           />
                         : this.renderActivity() }
@@ -589,7 +589,7 @@ export class App extends React.PureComponent<IProps, IState> {
         usePageNames={isNotebook}
         hideNextPrevButtons={isNotebook}
         isSequence={!!this.state.sequence}
-        questionToActivityMap={this.state.questionToActivityMap}
+        questionMap={this.state.questionMap}
       />
     );
   }
@@ -624,7 +624,7 @@ export class App extends React.PureComponent<IProps, IState> {
       <IntroductionPageContent
         activity={activity}
         isSequence={!!this.state.sequence}
-        questionToActivityMap={this.state.questionToActivityMap}
+        questionMap={this.state.questionMap}
         onPageChange={this.handleChangePage}
       />
     );
@@ -638,7 +638,7 @@ export class App extends React.PureComponent<IProps, IState> {
         onPageChange={this.handleChangePage}
         sequence={this.state.sequence}
         activityIndex={this.state.activityIndex}
-        questionToActivityMap={this.state.questionToActivityMap}
+        questionMap={this.state.questionMap}
         onActivityChange={this.handleSelectActivity}
         onShowSequence={this.handleShowSequenceIntro}
       />
@@ -819,12 +819,12 @@ export class App extends React.PureComponent<IProps, IState> {
     }
   }
 
-  private processPagesForQuestionMap = (pages: Page[], activityId: number, questionToActivityMap: QuestionToActivityMap) => {
+  private processPagesForQuestionMap = (pages: Page[], activityId: number, questionMap: QuestionMap) => {
     pages.forEach(p =>
       p.sections.forEach(s =>
         s.embeddables.forEach(e => {
           if (e.ref_id) {
-            questionToActivityMap[e.ref_id] = { activityId, pageId: p.id };
+            questionMap[e.ref_id] = { activityId, pageId: p.id };
           }
         })
       )
