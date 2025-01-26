@@ -1,6 +1,6 @@
 import { DynamicText } from "@concord-consortium/dynamic-text";
 import React, { useEffect } from "react";
-import { Activity, ActivityFeedback, QuestionFeedback, QuestionToActivityMap, Sequence } from "../../types";
+import { Activity, ActivityFeedback, QuestionFeedback, QuestionMap, Sequence } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { EstimatedTime } from "../activity-introduction/estimated-time";
 import { ReadAloudToggle } from "../read-aloud-toggle";
@@ -14,12 +14,12 @@ import "./sequence-page-content.scss";
 
 interface IProps {
   sequence: Sequence;
-  questionIdsToActivityIdsMap?: QuestionToActivityMap;
+  questionMap?: QuestionMap;
   onSelectActivity: (page: number) => void;
 }
 
 export const SequencePageContent: React.FC<IProps> = (props) => {
-  const { onSelectActivity, questionIdsToActivityIdsMap, sequence } = props;
+  const { onSelectActivity, questionMap, sequence } = props;
   const isNotebookLayout = sequence.layout_override === ActivityLayoutOverrides.Notebook;
   let totalTime = 0;
   let stubCount = 0;
@@ -46,7 +46,7 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
       const questionIdsToRefId = questionIds.map(answersQuestionIdToRefId);
       const activityIds: number[] = [];
       questionIdsToRefId.forEach((refId: string) => {
-        const activityId = questionIdsToActivityIdsMap?.[refId].activityId;
+        const activityId = questionMap?.[refId].activityId;
         if (activityId && !activityIds.includes(activityId)) {
           activityIds.push(activityId);
         }
@@ -60,7 +60,7 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
         unsubscribe();
       }
     };
-  }, [questionIdsToActivityIdsMap]);
+  }, [questionMap]);
 
   return (
     <div className="sequence-content" data-cy="sequence-page-content">

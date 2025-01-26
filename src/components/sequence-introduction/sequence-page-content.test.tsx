@@ -11,7 +11,7 @@ describe("Sequence Page Content component", () => {
     const stubFunction = () => {
       // do nothing.
     };
-    const wrapper = shallow(<SequencePageContent sequence={sequence} questionIdsToActivityIdsMap={{}} onSelectActivity={stubFunction} />);
+    const wrapper = shallow(<SequencePageContent sequence={sequence} questionMap={{}} onSelectActivity={stubFunction} />);
     expect(wrapper.find('[data-cy="sequence-page-content"]').length).toBe(1);
   });
 });

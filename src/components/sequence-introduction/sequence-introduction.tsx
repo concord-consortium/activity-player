@@ -1,5 +1,5 @@
 import React from "react";
-import { QuestionToActivityMap, Sequence } from "../../types";
+import { QuestionMap, Sequence } from "../../types";
 import { Footer } from "../activity-introduction/footer";
 import { Header } from "../activity-header/header";
 import { SequencePageContent } from "../sequence-introduction/sequence-page-content";
@@ -8,13 +8,13 @@ import { setAppBackgroundImage } from "../../utilities/activity-utils";
 
 interface IProps {
   sequence?: Sequence;
-  questionIdsToActivityIdsMap?: QuestionToActivityMap;
+  questionMap?: QuestionMap;
   username: string;
   onSelectActivity: (page: number) => void;
 }
 
 export const SequenceIntroduction: React.FC<IProps> = (props) => {
-  const { sequence, username, questionIdsToActivityIdsMap, onSelectActivity } = props;
+  const { sequence, username, questionMap, onSelectActivity } = props;
   setQueryValue("sequenceActivity", "0");
   const backgroundImage = sequence?.background_image;
   if (backgroundImage) {
@@ -33,7 +33,7 @@ export const SequenceIntroduction: React.FC<IProps> = (props) => {
         />
         <SequencePageContent
           sequence={sequence}
-          questionIdsToActivityIdsMap={questionIdsToActivityIdsMap}
+          questionMap={questionMap}
           onSelectActivity={onSelectActivity}
         />
         <Footer
