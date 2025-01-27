@@ -42,10 +42,12 @@ context("Test the overall app", () => {
     });
     it("test summary page question links", () => {
       completionPage.getQuestionLinks().should("have.length", 7);
+      cy.log("Test clicking first question link loads page containing first question and brings it into view.");
       completionPage.getQuestionLinks().eq(0).click();
       activityPage.getInteractive().eq(0).should("be.visible")
         .find("iframe").invoke("attr", "id").should("eq", "650-ManagedInteractive");
       activityPage.getCompletionPage().first().click();
+      cy.log("Test clicking last question link loads page containing last question and brings it into view.");
       completionPage.getQuestionLinks().should("have.length", 7);
       completionPage.getQuestionLinks().eq(6).click();
       activityPage.getInteractive().eq(6).should("be.visible")
