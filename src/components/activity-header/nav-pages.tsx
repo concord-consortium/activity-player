@@ -1,7 +1,7 @@
 import React from "react";
 import classNames from "classnames";
 import { queryValue } from "../../utilities/url-query";
-import { ActivityFeedback, Page, QuestionMap } from "../../types";
+import { ActivityFeedback, Page } from "../../types";
 import { pageHasFeedback, subscribeToActivityLevelFeedback, subscribeToQuestionLevelFeedback } from "../../utilities/feedback-utils";
 import { TeacherFeedbackSmallBadge } from "../teacher-feedback/teacher-feedback-small-badge";
 import ArrowPrevious from "../../assets/svg-icons/arrow-previous-icon.svg";
@@ -9,6 +9,7 @@ import ArrowNext from "../../assets/svg-icons/arrow-next-icon.svg";
 import HiddenIcon from "../../assets/svg-icons/hidden-icon.svg";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
 import IconCompletion from "../../assets/svg-icons/icon-completion.svg";
+import { QuestionInfoContext } from "../question-info-context";
 
 import "./nav-pages.scss";
 
@@ -23,7 +24,6 @@ interface IProps {
   usePageNames?: boolean;
   hideNextPrevButtons?: boolean;
   isSequence?: boolean;
-  questionMap?: QuestionMap;
 }
 
 interface IState {
@@ -33,6 +33,8 @@ interface IState {
 }
 
 export class NavPages extends React.Component <IProps, IState> {
+  static contextType = QuestionInfoContext;
+
   constructor(props: IProps) {
     super(props);
     this.state = {
@@ -51,7 +53,7 @@ export class NavPages extends React.Component <IProps, IState> {
 
   componentDidMount() {
     if (this.props.activityId) {
-      const { activityId, isSequence=false, questionMap } = this.props;
+      const { activityId, isSequence=false } = this.props;
 
       this.unsubscribeActivityLevelFeedback = subscribeToActivityLevelFeedback({
         activityId,
@@ -62,7 +64,7 @@ export class NavPages extends React.Component <IProps, IState> {
       this.unsubscribeQuestionLevelFeedback = subscribeToQuestionLevelFeedback({
         activityId,
         isSequence,
-        questionMap,
+        questionMap: this.context.questionMap,
         callback: (pageIds: number[]) => this.setState({ pagesWithFeedback: pageIds })
       });
     }

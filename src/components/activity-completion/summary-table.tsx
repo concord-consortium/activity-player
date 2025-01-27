@@ -46,7 +46,9 @@ export const SummaryTable: React.FC<IProps> = (props) => {
               <td>
                 <div className="question-meta">
                   <div className="question-page-and-number" data-testid="question-page-and-number">
-                    <button onClick={() => onPageChange(question.page, refId)}><DynamicText>Page {question.page}: Question {question.number}.</DynamicText></button>
+                    <button onClick={() => onPageChange(question.page, refId)} data-testid="question-link">
+                      <DynamicText>Page {question.page}: Question {question.number}.</DynamicText>
+                    </button>
                   </div>
                   <div className="question-prompt" data-testid="question-prompt">
                     <DynamicText><em>{questionPrompt}</em></DynamicText>

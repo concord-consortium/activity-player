@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { ActivitySummary } from "../activity-introduction/activity-summary";
 import { ActivityPageLinks } from "../activity-introduction/activity-page-links";
-import { Activity, ActivityFeedback, QuestionMap } from "../../types";
+import { Activity, ActivityFeedback} from "../../types";
 import { IntroPageActivityLevelFeedback } from "../teacher-feedback/intro-page-activity-level-feedback";
 import { subscribeToActivityLevelFeedback } from "../../utilities/feedback-utils";
 
@@ -10,12 +10,11 @@ import "./introduction-page-content.scss";
 interface IProps {
   activity: Activity;
   isSequence?: boolean;
-  questionMap?: QuestionMap;
   onPageChange: (page: number) => void;
 }
 
 export const IntroductionPageContent: React.FC<IProps> = (props) => {
-  const { activity, isSequence, questionMap, onPageChange } = props;
+  const { activity, isSequence, onPageChange } = props;
   const hasCompletionPage = activity.pages.find(p => p.is_completion);
   const [feedback, setFeedback] = useState<ActivityFeedback | null>(null);
 
@@ -44,7 +43,6 @@ export const IntroductionPageContent: React.FC<IProps> = (props) => {
           activityId={activity.id}
           activityPages={activity.pages}
           isSequence={isSequence}
-          questionMap={questionMap}
           onPageChange={onPageChange}
         />
       </div>

@@ -372,7 +372,7 @@ export type QuestionFeedback = BaseTeacherFeedback & {
 };
 
 type ActivityAndPage = {
-  activityId: number;
+  activityId?: number | null;
   pageId: number;
 };
 

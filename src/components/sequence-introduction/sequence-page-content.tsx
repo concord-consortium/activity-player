@@ -9,17 +9,18 @@ import { watchActivityLevelFeedback, watchQuestionLevelFeedback } from "../../fi
 import { answersQuestionIdToRefId } from "../../utilities/embeddable-utils";
 import { SequenceIntroFeedbackBanner } from "../teacher-feedback/sequence-intro-feedback-banner";
 import { FeedbackBadge } from "../teacher-feedback/sequence-activity-feedback-badge";
+import { useQuestionInfoContext } from "../question-info-context";
 
 import "./sequence-page-content.scss";
 
 interface IProps {
   sequence: Sequence;
-  questionMap?: QuestionMap;
   onSelectActivity: (page: number) => void;
 }
 
 export const SequencePageContent: React.FC<IProps> = (props) => {
-  const { onSelectActivity, questionMap, sequence } = props;
+  const { onSelectActivity, sequence } = props;
+  const { questionMap } = useQuestionInfoContext();
   const isNotebookLayout = sequence.layout_override === ActivityLayoutOverrides.Notebook;
   let totalTime = 0;
   let stubCount = 0;

@@ -53,6 +53,7 @@ import { ReadAloudContext } from "./read-aloud-context";
 import { AccessibilityContext, FontSize, FontType, getFamilyForFontType, getFontSize, getFontSizeInPx, getFontType } from "./accessibility-context";
 import { MediaLibraryContext } from "./media-library-context";
 import { parseMediaLibraryItems } from "../lib/parse-media-library-items";
+import { QuestionInfoContext } from "./question-info-context";
 
 import "./app.scss";
 
@@ -287,14 +288,14 @@ export class App extends React.PureComponent<IProps, IState> {
         : await getActivityDefinition(activityPath);
 
       // This is used for teacher feedback.
-      const questionToActivityMap: QuestionMap = {};
+      const questionMap: QuestionMap = {};
       if (sequence) {
         sequence.activities.forEach(a => {
           if (!a.id) return;
-          this.processPagesForQuestionMap(a.pages, a.id, questionToActivityMap);
+          this.processPagesForQuestionMap(a.pages, questionMap, a.id);
         });
-      } else if (activity.id) {
-        this.processPagesForQuestionMap(activity.pages, activity.id, questionToActivityMap);
+      } else {
+        this.processPagesForQuestionMap(activity.pages, questionMap, activity.id);
       }
 
       this.checkLayout(activity, sequence);
@@ -365,7 +366,7 @@ export class App extends React.PureComponent<IProps, IState> {
       newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner,
                      showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity, hideReadAloud,
                      fontSize, fontSizeInPx, fontType, fontFamilyForType, hideQuestionNumbers,
-                     questionMap: questionToActivityMap};
+                     questionMap};
       setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       this.setState(newState as IState);
@@ -421,30 +422,31 @@ export class App extends React.PureComponent<IProps, IState> {
           <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
             <AccessibilityContext.Provider value={{fontSize: this.state.fontSize, fontSizeInPx: this.state.fontSizeInPx, fontType: this.state.fontType, fontFamilyForType: this.state.fontFamilyForType}}>
               <MediaLibraryContext.Provider value={this.state.mediaLibrary}>
-                <DynamicTextContext.Provider value={dynamicTextManager}>
-                  <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
-                    <div className="app" data-cy="app">
-                      { this.state.showDefunctBanner && <DefunctBanner/> }
-                      { this.state.showWarning && <WarningBanner/> }
-                      { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-                      { this.state.showSequenceIntro
-                        ? <SequenceIntroduction
-                            sequence={this.state.sequence}
-                            username={this.state.username}
-                            questionMap={this.state.questionMap}
-                            onSelectActivity={this.handleSelectActivity}
-                          />
-                        : this.renderActivity() }
-                      { this.state.showThemeButtons && <ThemeButtons/>}
-                      <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
-                      <ModalDialog
-                        label={this.state.modalLabel}
-                        onClose={() => {this.setShowModal(false);}}
-                        showModal={this.state.showModal}
-                      />
-                    </div>
-                  </ReadAloudContext.Provider>
-                </DynamicTextContext.Provider>
+                <QuestionInfoContext.Provider value={{questionMap: this.state.questionMap, questionToScrollTo: this.state.questionToScrollTo}}>
+                  <DynamicTextContext.Provider value={dynamicTextManager}>
+                    <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
+                      <div className="app" data-cy="app">
+                        { this.state.showDefunctBanner && <DefunctBanner/> }
+                        { this.state.showWarning && <WarningBanner/> }
+                        { this.state.teacherEditionMode && <TeacherEditionBanner/>}
+                        { this.state.showSequenceIntro
+                          ? <SequenceIntroduction
+                              sequence={this.state.sequence}
+                              username={this.state.username}
+                              onSelectActivity={this.handleSelectActivity}
+                            />
+                          : this.renderActivity() }
+                        { this.state.showThemeButtons && <ThemeButtons/>}
+                        <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
+                        <ModalDialog
+                          label={this.state.modalLabel}
+                          onClose={() => {this.setShowModal(false);}}
+                          showModal={this.state.showModal}
+                        />
+                      </div>
+                    </ReadAloudContext.Provider>
+                  </DynamicTextContext.Provider>
+                </QuestionInfoContext.Provider>
               </MediaLibraryContext.Provider>
             </AccessibilityContext.Provider>
           </LaraDataContext.Provider>
@@ -567,7 +569,6 @@ export class App extends React.PureComponent<IProps, IState> {
                 pageChangeNotification={this.state.pageChangeNotification}
                 hideReadAloud={this.state.hideReadAloud}
                 hideQuestionNumbers={this.state.hideQuestionNumbers}
-                questionToScrollTo={this.state.questionToScrollTo}
               />
         }
         {renderBottomNav &&
@@ -592,7 +593,6 @@ export class App extends React.PureComponent<IProps, IState> {
         usePageNames={isNotebook}
         hideNextPrevButtons={isNotebook}
         isSequence={!!this.state.sequence}
-        questionMap={this.state.questionMap}
       />
     );
   }
@@ -627,7 +627,6 @@ export class App extends React.PureComponent<IProps, IState> {
       <IntroductionPageContent
         activity={activity}
         isSequence={!!this.state.sequence}
-        questionMap={this.state.questionMap}
         onPageChange={this.handleChangePage}
       />
     );
@@ -641,7 +640,6 @@ export class App extends React.PureComponent<IProps, IState> {
         onPageChange={this.handleChangePage}
         sequence={this.state.sequence}
         activityIndex={this.state.activityIndex}
-        questionMap={this.state.questionMap}
         onActivityChange={this.handleSelectActivity}
         onShowSequence={this.handleShowSequenceIntro}
       />
@@ -676,7 +674,6 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private handleChangePage = (page: number, embeddableId?: string) => {
-    console.log("handleChangePage", page, embeddableId);
     const { currentPage, incompleteQuestions, activity, sequenceActivity } = this.state;
     const pageId = activity ? getPageIDFromPosition(activity, page) : undefined;
     if (pageId) {
@@ -703,17 +700,6 @@ export class App extends React.PureComponent<IProps, IState> {
           questionToScrollTo: embeddableId
         });
         setDocumentTitle({ activity, pageNumber: page });
-        // if (embeddableId) {
-        //   // scroll to the embeddable ID if it exists
-        //   console.log("scrolling to embeddable 1", embeddableId);
-        //   const embeddable = document.getElementById(embeddableId);
-        //   if (embeddable) {
-        //     console.log("scrolling to embeddable 2", embeddable);
-        //     embeddable.scrollIntoView();
-        //   }
-        // } else {
-        //   document.getElementsByClassName("app")[0]?.scrollIntoView(); //scroll to the top on page change
-        // }
         Logger.updateActivityPage(page);
         Logger.log({
           event: LogEventName.change_activity_page,
@@ -838,7 +824,7 @@ export class App extends React.PureComponent<IProps, IState> {
     }
   }
 
-  private processPagesForQuestionMap = (pages: Page[], activityId: number, questionToActivityMap: QuestionMap) => {
+  private processPagesForQuestionMap = (pages: Page[], questionToActivityMap: QuestionMap, activityId?: number | null) => {
     pages.forEach(p =>
       p.sections.forEach(s =>
         s.embeddables.forEach(e => {

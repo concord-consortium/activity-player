@@ -27,7 +27,6 @@ interface IProps {
   ref?: React.Ref<EmbeddableImperativeAPI>;
   hideQuestionNumbers?: boolean;
   addRefToQuestionMap?: (refId: string, ref: any) => void;
-  questionToScrollTo?: string;
 }
 
 export interface EmbeddableImperativeAPI {
@@ -38,7 +37,7 @@ type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation,
-    teacherEditionMode, pluginsLoaded, hideQuestionNumbers, questionToScrollTo } = props;
+    teacherEditionMode, pluginsLoaded, hideQuestionNumbers } = props;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
   }, [setNavigation, embeddable.ref_id]);
@@ -66,7 +65,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     if (validPluginContext && pluginsLoaded) {
       initializePlugin(validPluginContext);
     }
-  }, [LARA, linkedPluginEmbeddable, embeddable, pluginsLoaded, questionToScrollTo]);
+  }, [LARA, linkedPluginEmbeddable, embeddable, pluginsLoaded]);
 
   useImperativeHandle(ref, () => ({
     requestInteractiveState: (options?: IGetInteractiveState) => managedInteractiveRef.current?.requestInteractiveState(options) || Promise.resolve()
@@ -103,7 +102,6 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                     emitInteractiveAvailable={handleEmitInteractiveAvailable}
                     showQuestionPrefix={showQuestionPrefix}
                     hideQuestionNumbers={hideQuestionNumbers}
-                    questionToScrollTo={questionToScrollTo}
                  />;
   } else if (embeddable.type === "ManagedInteractive" && !embeddable.library_interactive) {
     qComponent = <div>Content type not supported</div>;

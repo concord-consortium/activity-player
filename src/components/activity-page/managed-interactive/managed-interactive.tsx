@@ -24,6 +24,7 @@ import { ClickToPlay } from "./click-to-play";
 import { Header } from "./managed-interactive-header";
 import { Hint } from "./managed-interactive-hint";
 import { ActivityLayouts, hasPluginThatRequiresHeader } from "../../../utilities/activity-utils";
+import { useQuestionInfoContext } from "../../question-info-context";
 
 import "./managed-interactive.scss";
 
@@ -37,7 +38,6 @@ interface IProps {
   emitInteractiveAvailable?: () => void;
   showQuestionPrefix: boolean;
   hideQuestionNumbers?: boolean;
-  questionToScrollTo?: string;
 }
 
 export interface ManagedInteractiveImperativeAPI {
@@ -55,6 +55,7 @@ const getModalContainer = (): HTMLElement => {
 
 export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation } = props;
+  const { questionToScrollTo } = useQuestionInfoContext();
   const portalData = useContext(PortalDataContext);
   const laraData = useContext(LaraDataContext);
 
@@ -108,10 +109,10 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   });
 
   useEffect(() => {
-    if (props.questionToScrollTo === embeddableRefId && divSize) {
+    if (questionToScrollTo === embeddableRefId && divSize) {
       divTarget.current?.scrollIntoView({ behavior: "smooth" });
     }
-  }, [embeddableRefId, divSize, props.questionToScrollTo]);
+  }, [embeddableRefId, divSize, questionToScrollTo]);
 
   useEffect(() => {
     if (shouldWatchAnswer) {

@@ -24,7 +24,6 @@ interface IProps {
   hiddenTab?: boolean;
   hideQuestionNumbers?: boolean;
   addRefToQuestionMap?: (refId: string, ref: any) => void;
-  questionToScrollTo?: string;
 }
 
 export interface SectionImperativeAPI {
@@ -35,7 +34,7 @@ const right = "right";
 const left = "left";
 
 export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { activityLayout, page, section, questionNumberStart, hiddenTab, addRefToQuestionMap, questionToScrollTo } = props;
+  const { activityLayout, page, section, questionNumberStart, hiddenTab, addRefToQuestionMap } = props;
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
 
   const sectionDivRef = useRef<HTMLDivElement>(null);
@@ -99,7 +98,6 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
                 pluginsLoaded={props.pluginsLoaded}
                 hideQuestionNumbers={props.hideQuestionNumbers}
                 addRefToQuestionMap={addRefToQuestionMap}
-                questionToScrollTo={questionToScrollTo}
               />
             );
           })

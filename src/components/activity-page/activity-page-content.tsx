@@ -41,7 +41,6 @@ interface IProps {
   hideReadAloud?: boolean;
   hideQuestionNumbers?: boolean;
   addRefToQuestionMap?: (refId: string, ref: any) => void;
-  questionToScrollTo?: string;
 }
 
 interface IState {
@@ -64,7 +63,7 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
   }
 
   render() {
-    const { enableReportButton, page, totalPreviousQuestions, questionToScrollTo } = this.props;
+    const { enableReportButton, page, totalPreviousQuestions } = this.props;
     const pageTitle = page.name || "";
     const sections = page.sections.filter(section => !section.is_hidden);
     const responsiveLayoutSections = sections.filter(s => s.layout.includes("responsive"));
@@ -141,7 +140,6 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
               hiddenTab={hiddenTab}
               hideQuestionNumbers={hideQuestionNumbers}
               addRefToQuestionMap={addRefToQuestionMap}
-              questionToScrollTo={this.props.questionToScrollTo}
             />
           );
         }

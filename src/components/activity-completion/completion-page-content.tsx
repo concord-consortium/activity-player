@@ -3,7 +3,7 @@ import { DynamicText } from "@concord-consortium/dynamic-text";
 
 import IconCheck from "../../assets/svg-icons/icon-check-circle.svg";
 import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-circle.svg";
-import { Sequence, Activity, ActivityFeedback, QuestionFeedback, QuestionMap } from "../../types";
+import { Sequence, Activity, ActivityFeedback, QuestionFeedback } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers, watchQuestionLevelFeedback, WrappedDBAnswer } from "../../firebase-db";
 import { getEmbeddable, getPageNumberFromEmbeddable, isQuestion, isSequenceFinished } from "../../utilities/activity-utils";
@@ -14,6 +14,7 @@ import { ActivityLevelFeedbackBanner } from "../teacher-feedback/activity-level-
 import { ReadAloudToggle } from "../read-aloud-toggle";
 import { NextSteps } from "./next-steps";
 import { subscribeToActivityLevelFeedback } from "../../utilities/feedback-utils";
+import { useQuestionInfoContext } from "../question-info-context";
 
 import "./completion-page-content.scss";
 
@@ -26,12 +27,11 @@ interface IProps {
   activityIndex?: number;
   onActivityChange?: (activityNum: number) => void;
   onShowSequence?: () => void;
-  questionMap?: QuestionMap;
 }
 
 export const CompletionPageContent: React.FC<IProps> = (props) => {
-  const { activity, activityName, onPageChange, sequence, activityIndex, onActivityChange, onShowSequence,
-    questionMap } = props;
+  const { activity, activityName, onPageChange, sequence, activityIndex, onActivityChange, onShowSequence } = props;
+  const { questionMap } = useQuestionInfoContext();
   const [answers, setAnswers] = useState<WrappedDBAnswer[]>();
   const [activityFeedback, setActivityFeedback] = useState<ActivityFeedback | null>(null);
   const [questionFeedback, setQuestionFeedback] = useState<QuestionFeedback[]>([]);
