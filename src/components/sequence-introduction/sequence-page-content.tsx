@@ -1,6 +1,6 @@
 import { DynamicText } from "@concord-consortium/dynamic-text";
 import React, { useEffect } from "react";
-import { Activity, ActivityFeedback, QuestionFeedback, QuestionMap, Sequence } from "../../types";
+import { Activity, ActivityFeedback, QuestionFeedback, Sequence } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { EstimatedTime } from "../activity-introduction/estimated-time";
 import { ReadAloudToggle } from "../read-aloud-toggle";
