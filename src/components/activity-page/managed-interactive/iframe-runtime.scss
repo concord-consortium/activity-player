@@ -1,6 +1,9 @@
 @import "../../vars.scss";
 
 .iframe-runtime {
+  iframe {
+    border: 0;
+  }
   button.button {
     align-items: center;
     display: flex;
@@ -16,12 +19,20 @@
       fill: $cc-charcoal;
     }
   }
+  .iframe-runtime-buttons {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
 
-  .teacher-feedback {
-    box-sizing: border-box;
-    background-color: $teacher-feedback-light-green;
-    margin: 20px;
-    border-radius: 4px;
-    padding: 10px;
+    .teacher-feedback {
+      box-sizing: border-box;
+      background-color: $teacher-feedback-light-green;
+      margin: 20px;
+      margin-top: 0px;
+      border-radius: 4px;
+      padding: 10px;
+    }
   }
+
 }

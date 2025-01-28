@@ -12,8 +12,6 @@ import {
 } from "@concord-consortium/lara-interactive-api";
 import { DynamicText, DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
 import Shutterbug from "shutterbug";
-import classNames from "classnames";
-
 import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
@@ -90,7 +88,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
     setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo,
-    showDeleteDataButton, setAspectRatio, setHeightFromInteractive, hasHeader, feedback } = props;
+    showDeleteDataButton, setAspectRatio, setHeightFromInteractive, feedback } = props;
 
   const [reloadCount, setReloadCount] = useState<number>(0);
   const iframePhoneTimeout = useRef<number|undefined>(undefined);
@@ -461,28 +459,32 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   return (
     <div className="iframe-runtime" data-cy="iframe-runtime">
-      <iframe key={`${id}-${reloadCount}`} ref={iframeRef} src={url} id={id} width={width} height={height} frameBorder={0}
-              allowFullScreen={true}
-              className={classNames({"iframe-has-header" : hasHeader})}
-              allow="geolocation; microphone; camera; bluetooth; clipboard-read; clipboard-write"
-              title={iframeTitle}
-              scrolling="no"
+      <iframe
+        key={`${id}-${reloadCount}`}
+        ref={iframeRef}
+        src={url}
+        id={id}
+        width={width}
+        height={height}
+        allowFullScreen={true}
+        allow="geolocation; microphone; camera; bluetooth; clipboard-read; clipboard-write"
+        title={iframeTitle}
       />
-      {showDeleteDataButton &&
-        <button className="button reset" data-cy="reset-button" onClick={handleResetButtonClick} onKeyDown={handleResetButtonClick}>
-          Clear &amp; start over
-          <ReloadIcon />
-        </button>
-      }
-      {feedback &&
-        <div className="teacher-feedback">
-          <DynamicText>
-            <div className="teacher-feedback">
-              <strong>Teacher Feedback:</strong> {feedback.content}
-            </div>
-          </DynamicText>
-        </div>
-      }
+      <div className="iframe-runtime-buttons">
+        {showDeleteDataButton &&
+          <button className="button reset" data-cy="reset-button" onClick={handleResetButtonClick} onKeyDown={handleResetButtonClick}>
+            Clear &amp; start over
+            <ReloadIcon />
+          </button>
+        }
+        {feedback &&
+          <div className="teacher-feedback">
+            <DynamicText>
+                <strong>Teacher Feedback:</strong> {feedback.content}
+            </DynamicText>
+          </div>
+        }
+      </div>
     </div>
   );
 });
