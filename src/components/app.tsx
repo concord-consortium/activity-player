@@ -700,6 +700,10 @@ export class App extends React.PureComponent<IProps, IState> {
           questionToScrollTo: embeddableId
         });
         setDocumentTitle({ activity, pageNumber: page });
+        if (!embeddableId) {
+          // If there's no target embeddable specified, scroll to the top on page change
+          document.getElementsByClassName("app")[0]?.scrollIntoView();
+        }
         Logger.updateActivityPage(page);
         Logger.log({
           event: LogEventName.change_activity_page,
