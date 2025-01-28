@@ -64,6 +64,7 @@ export enum LogEventName {
   toggle_read_aloud,
   read_aloud,
   read_aloud_canceled,
+  click_summary_page_question_link,
 }
 
 export interface ILoggerOptions {

@@ -6,6 +6,7 @@ import { renderHTML } from "../../utilities/render-html";
 import { QuestionFeedback } from "../../types";
 import { SummaryPageQuestionFeedback } from "../teacher-feedback/summary-page-question-feedback";
 import { answersQuestionIdToRefId } from "../../utilities/embeddable-utils";
+import { LogEventName, Logger } from "../../lib/logger";
 
 import "./summary-table.scss";
 
@@ -25,6 +26,14 @@ interface IProps {
 
 export const SummaryTable: React.FC<IProps> = (props) => {
   const { questionsStatus, onPageChange } = props;
+
+  const handleQuestionLinkClick = (page: number, refId?: string) => {
+    onPageChange(page, refId);
+    Logger.log({
+      event: LogEventName.click_summary_page_question_link,
+      parameters: { target_question: refId }
+    });
+  };
 
   return (
     <table className="summary-table" data-cy="summary-table">
@@ -46,7 +55,7 @@ export const SummaryTable: React.FC<IProps> = (props) => {
               <td>
                 <div className="question-meta">
                   <div className="question-page-and-number" data-testid="question-page-and-number">
-                    <button onClick={() => onPageChange(question.page, refId)} data-testid="question-link">
+                    <button onClick={() => handleQuestionLinkClick(question.page, refId)} data-testid="question-link">
                       <DynamicText>Page {question.page}: Question {question.number}.</DynamicText>
                     </button>
                   </div>
