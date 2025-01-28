@@ -469,6 +469,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         allowFullScreen={true}
         allow="geolocation; microphone; camera; bluetooth; clipboard-read; clipboard-write"
         title={iframeTitle}
+        scrolling="no"
       />
       <div className="iframe-runtime-buttons">
         {showDeleteDataButton &&
