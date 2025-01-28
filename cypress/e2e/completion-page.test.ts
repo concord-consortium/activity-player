@@ -40,7 +40,7 @@ context("Test the overall app", () => {
       completionPage.getExitButton().should("have.length", 1).and("contain", "Exit").click();
       cy.get("[data-cy=sequence-page-content]").should("be.visible");
     });
-    it("test summary page question links", () => {
+    it("test completion page question links", () => {
       completionPage.getQuestionLinks().should("have.length", 7);
       cy.log("Test clicking first question link loads page containing first question and brings it into view.");
       completionPage.getQuestionLinks().eq(0).click();
