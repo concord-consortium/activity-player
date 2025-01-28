@@ -10,7 +10,7 @@ interface IProps {
   hideHeader: boolean;
 }
 
-export const Header: React.FC<IProps> = ({ questionNumber, questionName, hint, onToggleHint, hideHeader }) => {
+export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, questionName, hint, onToggleHint, hideHeader }) => {
   if (hideHeader) return null;
 
   return (

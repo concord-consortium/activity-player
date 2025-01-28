@@ -9,7 +9,7 @@ interface IProps {
   onToggleHint: () => void;
 }
 
-export const Hint: React.FC<IProps> = ({hint, showHint, onToggleHint}) => {
+export const ManagedInteractiveHint: React.FC<IProps> = ({hint, showHint, onToggleHint}) => {
   if (!hint) return null;
 
   return (

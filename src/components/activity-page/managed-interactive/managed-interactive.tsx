@@ -21,8 +21,8 @@ import { Logger, LogEventName } from "../../../lib/logger";
 import { handleGetAttachmentUrl } from "@concord-consortium/interactive-api-host";
 import { LaraDataContext } from "../../lara-data-context";
 import { ClickToPlay } from "./click-to-play";
-import { Header } from "./managed-interactive-header";
-import { Hint } from "./managed-interactive-hint";
+import { ManagedInteractiveHeader } from "./managed-interactive-header";
+import { ManagedInteractiveHint } from "./managed-interactive-hint";
 import { ActivityLayouts, hasPluginThatRequiresHeader } from "../../../utilities/activity-utils";
 import { useQuestionInfoContext } from "../../question-info-context";
 
@@ -55,7 +55,7 @@ const getModalContainer = (): HTMLElement => {
 
 export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation } = props;
-  const { questionToScrollTo } = useQuestionInfoContext();
+  const { scrollToQuestionId } = useQuestionInfoContext();
   const portalData = useContext(PortalDataContext);
   const laraData = useContext(LaraDataContext);
 
@@ -109,10 +109,10 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   });
 
   useEffect(() => {
-    if (questionToScrollTo === embeddableRefId && divSize) {
+    if (scrollToQuestionId === embeddableRefId && divSize) {
       divTarget.current?.scrollIntoView({ behavior: "smooth" });
     }
-  }, [embeddableRefId, divSize, questionToScrollTo]);
+  }, [embeddableRefId, divSize, scrollToQuestionId]);
 
   useEffect(() => {
     if (shouldWatchAnswer) {
@@ -370,14 +370,14 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   return (
     <div ref={divTarget} className="managed-interactive" data-cy="managed-interactive">
       <div className={className} style={{width:containerWidth}}>
-      <Header
+      <ManagedInteractiveHeader
         questionNumber={props.hideQuestionNumbers ? undefined : questionNumber}
         questionName={questionName}
         hint={hint}
         onToggleHint={handleShowHint}
         hideHeader={hideQuestionHeader}
       />
-      <Hint
+      <ManagedInteractiveHint
         hint={hint}
         showHint={showHint}
         onToggleHint={handleHintClose}

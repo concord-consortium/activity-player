@@ -131,7 +131,7 @@ interface IState {
   fontType: FontType;
   fontFamilyForType: string;
   mediaLibrary: IMediaLibrary;
-  questionToScrollTo?: string;
+  scrollToQuestionId?: string;
 }
 interface IProps { }
 
@@ -165,7 +165,7 @@ export class App extends React.PureComponent<IProps, IState> {
       fontType: "normal",
       fontFamilyForType: getFamilyForFontType("normal"),
       mediaLibrary: {enabled: false, items: []},
-      questionToScrollTo: undefined
+      scrollToQuestionId: undefined
     };
   }
 
@@ -422,7 +422,7 @@ export class App extends React.PureComponent<IProps, IState> {
           <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
             <AccessibilityContext.Provider value={{fontSize: this.state.fontSize, fontSizeInPx: this.state.fontSizeInPx, fontType: this.state.fontType, fontFamilyForType: this.state.fontFamilyForType}}>
               <MediaLibraryContext.Provider value={this.state.mediaLibrary}>
-                <QuestionInfoContext.Provider value={{questionMap: this.state.questionMap, questionToScrollTo: this.state.questionToScrollTo}}>
+                <QuestionInfoContext.Provider value={{questionMap: this.state.questionMap, scrollToQuestionId: this.state.scrollToQuestionId}}>
                   <DynamicTextContext.Provider value={dynamicTextManager}>
                     <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
                       <div className="app" data-cy="app">
@@ -697,7 +697,7 @@ export class App extends React.PureComponent<IProps, IState> {
           currentPage: page,
           incompleteQuestions: [],
           pageChangeNotification: undefined,
-          questionToScrollTo: embeddableId
+          scrollToQuestionId: embeddableId
         });
         setDocumentTitle({ activity, pageNumber: page });
         if (!embeddableId) {

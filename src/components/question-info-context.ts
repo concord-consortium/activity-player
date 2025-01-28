@@ -3,7 +3,7 @@ import { QuestionMap } from "../types";
 
 type QuestionInfo = {
   questionMap?: QuestionMap;
-  questionToScrollTo?: string;
+  scrollToQuestionId?: string;
 }
 
 export const QuestionInfoContext = React.createContext<QuestionInfo>({});
