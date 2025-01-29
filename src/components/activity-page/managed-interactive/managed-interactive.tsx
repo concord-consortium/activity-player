@@ -1,30 +1,30 @@
 import React, { useState, useCallback, useContext, useMemo, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
 import Modal from "react-modal";
 import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
-import useResizeObserver from "@react-hook/resize-observer";
 import {
   ICloseModal, INavigationOptions,
   ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState
 } from "@concord-consortium/lara-interactive-api";
-import { DynamicText } from "@concord-consortium/dynamic-text";
 import classNames from "classnames";
 
 import { PortalDataContext } from "../../portal-data-context";
-import { IManagedInteractive, IMwInteractive, LibraryInteractiveData, IExportableAnswerMetadata, ILegacyLinkedInteractiveState, QuestionFeedback } from "../../../types";
+import { useSizeAndAspectRatio } from "../../../hooks/use-aspect-ratio";
+import { useSize } from "../../../hooks/use-size";
+import { IManagedInteractive, IMwInteractive, IExportableAnswerMetadata, ILegacyLinkedInteractiveState, QuestionFeedback } from "../../../types";
 import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer, watchQuestionLevelFeedback } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata, getInteractiveInfo, hasLegacyLinkedInteractive, IInteractiveInfo, isQuestion, refIdToAnswersQuestionId } from "../../../utilities/embeddable-utils";
-import IconQuestion from "../../../assets/svg-icons/icon-question.svg";
-import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
-import { renderHTML } from "../../../utilities/render-html";
 import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 import { Lightbox } from "./lightbox";
 import { Logger, LogEventName } from "../../../lib/logger";
 import { handleGetAttachmentUrl } from "@concord-consortium/interactive-api-host";
 import { LaraDataContext } from "../../lara-data-context";
 import { ClickToPlay } from "./click-to-play";
+import { ManagedInteractiveHeader } from "./managed-interactive-header";
+import { ManagedInteractiveHint } from "./managed-interactive-hint";
 import { ActivityLayouts, hasPluginThatRequiresHeader } from "../../../utilities/activity-utils";
+import { useQuestionInfoContext } from "../../question-info-context";
 
 import "./managed-interactive.scss";
 
@@ -49,35 +49,70 @@ export interface IClickToPlayOptions {
   imageUrl?: string | null;
 }
 
-const kDefaultAspectRatio = 4 / 3;
-const kBottomMargin = 15;
 const getModalContainer = (): HTMLElement => {
   return document.getElementById("app") || document.body;
 };
 
 export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
+  const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation } = props;
+  const { scrollToQuestionId } = useQuestionInfoContext();
+  const portalData = useContext(PortalDataContext);
+  const laraData = useContext(LaraDataContext);
+
+  const [activeDialog, setActiveDialog] = useState<IShowDialog | null>(null);
+  const [activeLightbox, setActiveLightbox] = useState<IShowLightbox | null>(null);
+  const [ARFromSupportedFeatures, setARFromSupportedFeatures] = useState(0);
+  const [clickedToPlay, setClickedToPlay] = useState(false);
+  const [clickToPlayOptions, setClickToPlayOptions] = useState<IClickToPlayOptions|undefined>(undefined);
+  const [feedback, setFeedback] = useState<QuestionFeedback | null>(null);
+  const [hint, setHint] = useState("");
+  const [heightFromInteractive, setHeightFromInteractive] = useState(0);
+  const [screenHeight, setScreenHeight] = useState({dynamicHeight: window.innerHeight});
+  const [showHint, setShowHint] = useState(false);
+  const shouldWatchAnswer = isQuestion(props.embeddable, {ignoreHideQuestionNumber: true});
+  const [loadingAnswer, setLoadingAnswer] = useState(shouldWatchAnswer);
+
   const iframeRuntimeRef = useRef<IframeRuntimeImperativeAPI>(null);
   const onSetInteractiveStateCallback = useRef<() => void>();
   const interactiveState = useRef<any>();
   const legacyLinkedInteractiveState = useRef<ILegacyLinkedInteractiveState | null>(null);
   const answerMeta = useRef<IExportableAnswerMetadata>();
-  const shouldWatchAnswer = isQuestion(props.embeddable, {ignoreHideQuestionNumber: true});
-  const laraData = useContext(LaraDataContext);
   const shouldLoadLegacyLinkedInteractiveState = hasLegacyLinkedInteractive(props.embeddable, laraData);
-  const [loadingAnswer, setLoadingAnswer] = useState(shouldWatchAnswer);
   const [loadingLegacyLinkedInteractiveState, setLoadingLegacyLinkedInteractiveState] = useState(shouldLoadLegacyLinkedInteractiveState);
   const interactiveInfo = useRef<IInteractiveInfo | undefined>(undefined);
-  const [clickToPlayOptions, setClickToPlayOptions] = useState<IClickToPlayOptions|undefined>(undefined);
-  const [clickedToPlay, setClickedToPlay] = useState(false);
-  const [ARFromSupportedFeatures, setARFromSupportedFeatures] = useState(0);
-  const [heightFromInteractive, setHeightFromInteractive] = useState(0);
-  const [feedback, setFeedback] = useState<QuestionFeedback | null>(null);
+  const headerTarget = React.useRef(null);
+  const divTarget = React.useRef<HTMLDivElement>(null);
+  const divSize = useSize(divTarget);
+  const headerSize = useSize(headerTarget);
 
-  const embeddableRefId = props.embeddable.ref_id;
+  const embeddableRefId = embeddable.ref_id;
 
   const hasPluginRequiringHeader = useMemo(() => {
     return !!laraData.activity && hasPluginThatRequiresHeader(laraData.activity, embeddableRefId);
   }, [laraData.activity, embeddableRefId]);
+
+  useEffect(() => {
+    window.addEventListener("resize", () => setScreenHeight({dynamicHeight: window.innerHeight}));
+    return(() => {
+        window.removeEventListener("resize", () => setScreenHeight({dynamicHeight: window.innerHeight}));
+    });
+  }, []);
+
+  const { proposedHeight, containerWidth } = useSizeAndAspectRatio({
+    embeddable: props.embeddable,
+    ARFromSupportedFeatures,
+    heightFromInteractive,
+    divSize,
+    headerSize,
+    screenHeight,
+    showDeleteDataButton: false
+  });
+
+  useEffect(() => {
+    if (scrollToQuestionId === embeddableRefId && divSize) {
+      divTarget.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [embeddableRefId, divSize, scrollToQuestionId]);
 
   useEffect(() => {
     if (shouldWatchAnswer) {
@@ -102,6 +137,38 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     interactiveInfo.current = getInteractiveInfo(laraData, embeddableRefId);
   }, [embeddableRefId, laraData]);
 
+  useEffect(() => {
+    let unsubscribe = () => {/* no-op */};
+    async function watchFeedback() {
+      const answer = await getAnswerMetadata(embeddableRefId);
+      if (answer?.id) {
+        unsubscribe = watchQuestionLevelFeedback((fbs) => {
+          if (fbs?.length) {
+            const questionId = refIdToAnswersQuestionId(embeddableRefId);
+            const fb = fbs.filter(f => f.questionId === questionId);
+            fb.length && setFeedback(fb[0]);
+          }
+        }, answer.id);
+      }
+    }
+    watchFeedback();
+
+    return () => unsubscribe();
+  }, [embeddableRefId]);
+
+  // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
+  // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
+  const embeddableData = embeddable.type === "ManagedInteractive" ? embeddable.library_interactive?.data : embeddable;
+
+  useEffect(() => {
+    setClickToPlayOptions(embeddableData?.click_to_play
+    ? ({
+        prompt: embeddableData.click_to_play_prompt,
+        imageUrl: embeddableData.image_url
+      })
+    : undefined);
+  }, [embeddableData]);
+
   const handleNewInteractiveState = (state: any) => {
     // Keep interactive state in sync if iFrame is opened in modal popup
     interactiveState.current = state;
@@ -115,166 +182,6 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     onSetInteractiveStateCallback.current = undefined;
   };
 
-  const portalData = useContext(PortalDataContext);
-  const getFirebaseJWT = useCallback((firebaseApp: string, others: Record<string, any>) => {
-    return handleGetFirebaseJWT({ firebase_app: firebaseApp, ...others }, portalData);
-  }, [portalData]);
-
-  const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation } = props;
-  const { authored_state } = embeddable;
-  const [activeDialog, setActiveDialog] = useState<IShowDialog | null>(null);
-  const [activeLightbox, setActiveLightbox] = useState<IShowLightbox | null>(null);
-  const questionName = embeddable.name || "";
-  // in older iframe interactive embeddables, we get url, native_width, native_height, etc. directly off
-  // of the embeddable object. On newer managed/library interactives, this data is in library_interactive.data.
-  let embeddableData:  IMwInteractive | LibraryInteractiveData | undefined;
-
-  if (embeddable.type === "ManagedInteractive") {
-    embeddableData = embeddable.library_interactive?.data;
-  } else {
-    embeddableData = embeddable;
-  }
-
-  let aspectRatioMethod;
-
-  if (embeddable.type === "ManagedInteractive" && !embeddable.inherit_aspect_ratio_method) {
-    aspectRatioMethod = embeddable.custom_aspect_ratio_method || "DEFAULT";
-  } else {
-    aspectRatioMethod = embeddableData?.aspect_ratio_method || "DEFAULT";
-  }
-
-  const url = embeddableData?.base_url || embeddableData?.url || "";
-  const authoredState = useMemo(() => safeJsonParseIfString(authored_state) || {}, [authored_state]);
-  const linkedInteractives = useRef(embeddable.linked_interactives?.length
-    ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
-    : undefined);
-  // interactiveId value should always match IDs generated above in the `linkedInteractives` array.
-  const interactiveId = embeddable.ref_id;
-
-  let proposedHeight: number;
-  let nativeHeight: number;
-  let nativeWidth: number;
-  let aspectRatio: number;
-
-  if (embeddable.type === "ManagedInteractive") {
-    nativeHeight = (embeddable.inherit_native_height ? embeddableData?.native_height : embeddable.custom_native_height) || 0;
-    nativeWidth = (embeddable.inherit_native_width ? embeddableData?.native_width : embeddable.custom_native_width) || 0;
-  } else {
-    nativeHeight = embeddableData?.native_height || 0;
-    nativeWidth = embeddableData?.native_width || 0;
-  }
-
-  if (aspectRatioMethod === "DEFAULT" && ARFromSupportedFeatures) {
-    aspectRatio = ARFromSupportedFeatures;
-  } else if (aspectRatioMethod === "MANUAL") {
-    aspectRatio = nativeWidth / nativeHeight;
-  } else {
-    aspectRatio = kDefaultAspectRatio;
-  }
-
-  useEffect(() => {
-    setClickToPlayOptions(embeddableData?.click_to_play
-    ? ({
-        prompt: embeddableData.click_to_play_prompt,
-        imageUrl: embeddableData.image_url
-      })
-    : undefined);
-  }, [embeddableData]);
-
-  // cf. https://www.npmjs.com/package/@react-hook/resize-observer
-  const useSize = (target: any) => {
-    const [size, setSize] = React.useState();
-
-    React.useLayoutEffect(() => {
-      if (target.current) {
-      setSize(target.current.getBoundingClientRect());
-      }
-    }, [target]);
-
-    useResizeObserver(target, (entry: any) => setSize(entry.contentRect));
-    return size;
-
-  };
-
-  // use this to get height when aspect ratio method is "MAX"
-  const [screenHeight, getDimension] = useState({
-    dynamicHeight: window.innerHeight
-  });
-
-  const setDimension = () => {
-    getDimension({
-      dynamicHeight: window.innerHeight
-    });
-  };
-
-  useEffect(() => {
-    window.addEventListener("resize", setDimension);
-    return(() => {
-        window.removeEventListener("resize", setDimension);
-    });
-  }, [screenHeight]);
-
-
-  const setShowDeleteDataButton = () => {
-    return embeddable.type === "MwInteractive"
-             && embeddable.enable_learner_state
-             && embeddable.show_delete_data_button
-           || embeddable.type === "ManagedInteractive"
-             && embeddable.library_interactive?.data.enable_learner_state
-             && embeddable.library_interactive.data.show_delete_data_button;
-  };
-
-  const showDeleteDataButton = setShowDeleteDataButton();
-  const headerTarget = React.useRef(null);
-  const divTarget = React.useRef<HTMLDivElement>(null);
-  const divSize: any = useSize(divTarget);
-  const headerSize: any = useSize(headerTarget);
-  const headerHeight = headerSize?.height || 0;
-  const deleteDataButtonHeight = showDeleteDataButton ? 44 : 0;
-  const unusableHeight = kBottomMargin + headerHeight + deleteDataButtonHeight;
-  const maxHeight = screenHeight.dynamicHeight * .98;
-  let containerWidth: number | string = "100%";
-
-  switch (aspectRatioMethod) {
-    case "MAX":
-      // if set to max, we set interactive height via CSS
-      proposedHeight = 0;
-      break;
-    case "MANUAL":
-      proposedHeight = divSize?.width / aspectRatio;
-      break;
-    case "DEFAULT":
-    default:
-      if (heightFromInteractive) {
-        proposedHeight = heightFromInteractive;
-        containerWidth = "100%";
-      }
-      else if ((divSize?.width / aspectRatio) > (maxHeight - unusableHeight)) {
-        proposedHeight = maxHeight - unusableHeight;
-        containerWidth = (maxHeight * aspectRatio) > divSize?.width ? "100%" : (maxHeight * aspectRatio);
-      } else {
-        proposedHeight = (divSize?.width / aspectRatio);
-      }
-  }
-
-  const [showHint, setShowHint] = useState(false);
-  const [hint, setHint] = useState("");
-  const handleHintClose = () => {
-    Logger.log({
-      event: LogEventName.toggle_hint,
-      parameters: { show_hint: false, hint }
-    });
-    setShowHint(false);
-  };
-  const handleShowHint = () => {
-    if (accessibilityClick(event)) {
-      Logger.log({
-        event: LogEventName.toggle_hint,
-        parameters: { show_hint: !showHint, hint }
-      });
-      setShowHint(!showHint);
-    }
-  };
   const setNewHint = useCallback((newHint: string) => {
     setHint(newHint);
   }, []);
@@ -300,6 +207,46 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       setActiveLightbox(null);
     }
   }, [activeDialog, activeLightbox]);
+
+  const getFirebaseJWT = useCallback((firebaseApp: string, others: Record<string, any>) => {
+    return handleGetFirebaseJWT({ firebase_app: firebaseApp, ...others }, portalData);
+  }, [portalData]);
+
+  const { authored_state } = embeddable;
+  const questionName = embeddable.name || "";
+  const url = embeddableData?.base_url || embeddableData?.url || "";
+  const authoredState = useMemo(() => safeJsonParseIfString(authored_state) || {}, [authored_state]);
+  const linkedInteractives = useRef(embeddable.linked_interactives?.length
+    ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
+    : undefined);
+
+  const setShowDeleteDataButton = () => {
+    return embeddable.type === "MwInteractive"
+             && embeddable.enable_learner_state
+             && embeddable.show_delete_data_button
+           || embeddable.type === "ManagedInteractive"
+             && embeddable.library_interactive?.data.enable_learner_state
+             && embeddable.library_interactive.data.show_delete_data_button;
+  };
+
+  const showDeleteDataButton = setShowDeleteDataButton();
+
+  const handleHintClose = () => {
+    Logger.log({
+      event: LogEventName.toggle_hint,
+      parameters: { show_hint: false, hint }
+    });
+    setShowHint(false);
+  };
+  const handleShowHint = () => {
+    if (accessibilityClick(event)) {
+      Logger.log({
+        event: LogEventName.toggle_hint,
+        parameters: { show_hint: !showHint, hint }
+      });
+      setShowHint(!showHint);
+    }
+  };
 
   const handleCloseDialog = () => {
     // Request current interactive state in the dialog before closing it.
@@ -333,10 +280,10 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       request,
       answerMeta: answerMetadata,
       writeOptions: {
-        interactiveId,
+        interactiveId: embeddableRefId,
         onAnswerMetaUpdate: newMeta => {
           // don't allow writes over passed in interactiveId (for now, until it is needed and thought through...)
-          if (!answerMeta.current && request.interactiveId && request.interactiveId !== interactiveId) {
+          if (!answerMeta.current && request.interactiveId && request.interactiveId !== embeddableRefId) {
             return { error: "writing to another interactive is not allowed", requestId: request.requestId };
           }
           if (!answerMeta.current) {
@@ -376,11 +323,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
 
   // question numbers are 1-based
   const hasQuestionNumber = (questionNumber || 0) > 0;
-
-  const trimmedQuestionName = questionName.trim();
-  const hasQuestionName = trimmedQuestionName.length > 0;
-  const questionPrefix = props.showQuestionPrefix && !props.hideQuestionNumbers && questionNumber ? `Question #${questionNumber}${hasQuestionName ? ": " : ""}` : "";
-
+  const hasQuestionName = questionName.trim().length > 0;
   const isNotebookLayout = laraData.activity?.layout === ActivityLayouts.Notebook;
   const hideQuestionHeader = (props.hideQuestionNumbers || !hasQuestionNumber) && !hasQuestionName && !hint && !isNotebookLayout && !hasPluginRequiringHeader;
 
@@ -389,32 +332,13 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const hasBorder = isManagedInteractive || (isInteractive && !hideQuestionHeader);
   const className = classNames("runtime-container", {"has-question-number": hasQuestionNumber, "has-border": hasBorder});
 
-  useEffect(() => {
-    let unsubscribe = () => {/* no-op */};
-    async function watchFeedback() {
-      const answer = await getAnswerMetadata(interactiveId);
-      if (answer?.id) {
-        unsubscribe = watchQuestionLevelFeedback((fbs) => {
-          if (fbs?.length) {
-            const questionId = refIdToAnswersQuestionId(interactiveId);
-            const fb = fbs.filter(f => f.questionId === questionId);
-            fb.length && setFeedback(fb[0]);
-          }
-        }, answer.id);
-      }
-    }
-    watchFeedback();
-
-    return () => unsubscribe();
-  }, [interactiveId]);
-
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
       "Loading..." :
       <IframeRuntime
         ref={iframeRuntimeRef}
         url={iframeUrl}
-        id={interactiveId}
+        id={embeddableRefId}
         authoredState={authoredState}
         initialInteractiveState={interactiveState.current}
         legacyLinkedInteractiveState={legacyLinkedInteractiveState.current}
@@ -446,32 +370,18 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   return (
     <div ref={divTarget} className="managed-interactive" data-cy="managed-interactive">
       <div className={className} style={{width:containerWidth}}>
-      { !hideQuestionHeader &&
-        <div className="header" ref={headerTarget}>
-          <DynamicText>{questionPrefix}{questionName}</DynamicText>
-          {hint &&
-            <div className="question-container"
-              onClick={handleShowHint}
-              onKeyDown={handleShowHint}
-              data-cy="open-hint"
-              tabIndex={0}>
-              <IconQuestion className="question" height={22} width={22} />
-            </div>
-          }
-        </div>
-      }
-      { hint &&
-        <div className={`hint-container ${showHint ? "" : "collapsed"}`}>
-          <DynamicText><div className="hint question-txt" data-cy="hint">{renderHTML(hint)}</div></DynamicText>
-          <div className="close-container">
-            <IconArrowUp className={"close"} width={26} height={26}
-                        onClick={handleHintClose}
-                        onKeyDown={handleHintClose}
-                        data-cy="close-hint"
-                        tabIndex={0}/>
-          </div>
-        </div>
-      }
+      <ManagedInteractiveHeader
+        questionNumber={props.hideQuestionNumbers ? undefined : questionNumber}
+        questionName={questionName}
+        hint={hint}
+        onToggleHint={handleShowHint}
+        hideHeader={hideQuestionHeader}
+      />
+      <ManagedInteractiveHint
+        hint={hint}
+        showHint={showHint}
+        onToggleHint={handleHintClose}
+      />
       {clickToPlayOptions && !clickedToPlay
         ? <ClickToPlay
             prompt={clickToPlayOptions.prompt}

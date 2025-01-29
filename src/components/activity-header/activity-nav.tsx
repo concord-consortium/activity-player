@@ -1,5 +1,5 @@
 import React from "react";
-import { Page, QuestionMap } from "../../types";
+import { Page } from "../../types";
 import { NavPages } from "./nav-pages";
 
 import "./activity-nav.scss";
@@ -15,13 +15,12 @@ interface IProps {
   usePageNames?: boolean;
   hideNextPrevButtons?: boolean;
   isSequence?: boolean;
-  questionMap?: QuestionMap;
 }
 
 export class ActivityNav extends React.PureComponent <IProps> {
   render() {
     const { activityId, activityPages, currentPage, fullWidth, lockForwardNav, onPageChange, singlePage, usePageNames,
-            hideNextPrevButtons, isSequence, questionMap } = this.props;
+            hideNextPrevButtons, isSequence } = this.props;
     return (
       <div className={`activity-nav ${fullWidth ? "full" : ""}`} data-cy="activity-nav-header">
         { !singlePage &&
@@ -34,7 +33,6 @@ export class ActivityNav extends React.PureComponent <IProps> {
             usePageNames={usePageNames}
             hideNextPrevButtons={hideNextPrevButtons}
             isSequence={isSequence}
-            questionMap={questionMap}
           />
         }
       </div>

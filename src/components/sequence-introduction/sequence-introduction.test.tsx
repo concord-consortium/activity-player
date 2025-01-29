@@ -14,7 +14,7 @@ describe("Sequence Page Content component", () => {
     const stubFunction = () => {
       // do nothing.
     };
-    const wrapper = shallow(<SequenceIntroduction sequence={sequence} questionMap={{}} username="test" onSelectActivity={stubFunction} />);
+    const wrapper = shallow(<SequenceIntroduction sequence={sequence} username="test" onSelectActivity={stubFunction} />);
     expect(wrapper.find(Header).length).toBe(1);
     expect(wrapper.find(Footer).length).toBe(1);
     expect(wrapper.find(SequencePageContent).length).toBe(1);
@@ -23,7 +23,7 @@ describe("Sequence Page Content component", () => {
     const stubFunction = () => {
       // do nothing.
     };
-    const wrapper = shallow(<SequenceIntroduction sequence={undefined} questionMap={{}} username="test" onSelectActivity={stubFunction} />);
+    const wrapper = shallow(<SequenceIntroduction sequence={undefined} username="test" onSelectActivity={stubFunction} />);
     expect(wrapper.find('[data-cy="sequence-loading"]').length).toBe(1);
   });
 });

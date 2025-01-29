@@ -44,9 +44,30 @@
 
       .question-page-and-number {
         flex: 0 0 auto;
+
+        button {
+          appearance: none;
+          background: transparent;
+          border: none;
+          color: $cc-charcoal;
+          cursor: pointer;
+          display: inline;
+          font-family: "Lato", arial, helvetica, sans-serif;
+          font-size: pxToRem(16);
+          font-weight: normal;
+          font-style: normal;
+          letter-spacing: normal;
+          margin: 0;
+          outline: none;
+          padding: 0;
+          text-decoration: underline;
+          text-transform: none;
+          width: auto;
+        }
       }
       .question-prompt {
         flex: 1;
+        font-weight: normal;
       }
     }
   }

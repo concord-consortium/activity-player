@@ -26,6 +26,7 @@ interface IProps {
   pluginsLoaded: boolean;
   ref?: React.Ref<EmbeddableImperativeAPI>;
   hideQuestionNumbers?: boolean;
+  addRefToQuestionMap?: (refId: string, ref: any) => void;
 }
 
 export interface EmbeddableImperativeAPI {
@@ -35,7 +36,8 @@ export interface EmbeddableImperativeAPI {
 type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation, teacherEditionMode, pluginsLoaded, hideQuestionNumbers } = props;
+  const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation,
+    teacherEditionMode, pluginsLoaded, hideQuestionNumbers } = props;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
   }, [setNavigation, embeddable.ref_id]);

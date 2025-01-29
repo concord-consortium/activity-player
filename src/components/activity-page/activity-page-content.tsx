@@ -40,6 +40,7 @@ interface IProps {
   pageChangeNotification?: IPageChangeNotification;
   hideReadAloud?: boolean;
   hideQuestionNumbers?: boolean;
+  addRefToQuestionMap?: (refId: string, ref: any) => void;
 }
 
 interface IState {
@@ -114,7 +115,7 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
   }
 
   private renderSections = (sections: SectionType[], totalPreviousQuestions: number, renderTabs: boolean) => {
-    const { page, activityLayout, teacherEditionMode, setNavigation, pluginsLoaded, hideQuestionNumbers } = this.props;
+    const { page, activityLayout, teacherEditionMode, setNavigation, pluginsLoaded, hideQuestionNumbers, addRefToQuestionMap } = this.props;
     return (
       sections.map((section, idx) => {
         const questionCount = numQuestionsOnPreviousSections(idx, sections) || 0;
@@ -138,6 +139,7 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
               pluginsLoaded={pluginsLoaded}
               hiddenTab={hiddenTab}
               hideQuestionNumbers={hideQuestionNumbers}
+              addRefToQuestionMap={addRefToQuestionMap}
             />
           );
         }
