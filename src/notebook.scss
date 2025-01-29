@@ -130,6 +130,7 @@ body.notebook {
         font-weight: bold;
       }
       .runtime-container {
+        background-color: white;
         .hint-container {
           border: 1px solid #3f3f3f;
           border-top: none;
@@ -137,19 +138,12 @@ body.notebook {
         }
 
         &.has-border {
-          border: 0;
-          iframe {
-            border-radius: 0 0 10px 10px;
-          }
+          border: 1px solid $cc-charcoal;
+          border-radius: 10px;
         }
       }
       iframe {
-        border-radius: 10px;
-        border: 1px solid $cc-charcoal;
         box-sizing: border-box;
-        &.iframe-has-header {
-          border-top: none;
-        }
       }
 
       .spike-media-library {
