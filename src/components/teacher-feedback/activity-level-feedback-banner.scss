@@ -5,6 +5,7 @@
   border-radius: 4px;
   color: $cc-charcoal;
   display: flex;
+  flex-wrap: wrap;
   font-size: pxToRem(18);
   gap: 9px;
   margin: 15px 0;
@@ -16,9 +17,16 @@
     width: 24px;
   }
 
+  .activity-level-feedback-title {
+    flex-grow: 1;
+    flex-shrink: 1;
+    line-height: normal;
+  }
+
   .activity-level-feedback-content {
     flex-grow: 1;
     flex-shrink: 1;
     line-height: normal;
+    width: 100%;
   }
 }

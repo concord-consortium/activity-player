@@ -15,7 +15,8 @@ import { IAnonymousPortalData, IPortalData, isPortalData } from "./portal-types"
 import { getLegacyLinkedRefMap, LegacyLinkedRefMap, refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata,
   IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, ILegacyLinkedInteractiveState, IApRun, IBaseApRun,
-  QuestionFeedback, ActivityFeedback } from "./types";
+  QuestionFeedback, ActivityFeedback, 
+  IRubric} from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
 import { ILaraData } from "./components/lara-data-context";
@@ -25,6 +26,14 @@ export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
 let portalData: IPortalData | IAnonymousPortalData | null;
 
+// const validFsId = (anyPath: string) => {
+//   const safeCharacter = "%";
+//   return anyPath
+//     .replace(/\//g, safeCharacter)
+//     .replace(/\.\./g, safeCharacter)
+//     .replace(/__/g, safeCharacter);
+// };
+
 const answersPath = (answerId?: string) =>
   `sources/${portalData?.database.sourceKey}/answers${answerId ? "/" + answerId : ""}`;
 
@@ -33,8 +42,19 @@ const teacherFeedbackPath = (level: "activity" | "question") => {
     throw new Error("Teacher feedback is only available for authenticated users.");
   }
 
-  const sourceKey = portalData.teacherFeedbackSourceKey;
-  return `sources/${sourceKey}/${level}_feedbacks`;
+  return `sources/${portalData.teacherFeedbackSourceKey}/${level}_feedbacks`;
+};
+
+const feedbackSettingsPath = () => {
+  if (!isPortalData(portalData)) {
+    throw new Error("Teacher feedback is only available for authenticated users.");
+  }
+
+  const path = `/sources/${portalData.teacherFeedbackSourceKey}/feedback_settings`;
+
+  // return path + `/${validFsId(portalData.platformId + "-" + portalData.resourceLinkId)}`;
+
+  return path;
 };
 
 const learnerPluginStatePath = (docId: string) =>
@@ -389,7 +409,23 @@ export const watchQuestionLevelFeedback = (callback: (feedback: QuestionFeedback
 };
 
 // Watches all activity-level feedback for sequence or activity
-export const watchActivityLevelFeedback = (callback: (feedback:ActivityFeedback[] | null) => void) => {
+export const watchActivityLevelFeedback = (callback: (feedback: ActivityFeedback[] | null) => void) => {
+  let rubric: IRubric | undefined = undefined;
+  if (portalData?.type === "authenticated") {
+    const path = feedbackSettingsPath();
+    const query = app.firestore().collection(path)
+      .where("contextId", "==", portalData.contextId)
+      .where("platformId", "==", portalData.platformId)
+      .where("resourceLinkId", "==", portalData.resourceLinkId);
+
+    // set rubric to a snapshot of the query
+    query.onSnapshot(snapshot => {
+      if (snapshot.docs[0]) {
+        rubric = snapshot.docs[0].data().rubric;
+      }
+    });
+  }
+
   // Note that watchActivityLevelFeedbackDocs returns unsubscribe method.
   return watchActivityLevelFeedbackDocs((feedbackDocs: firebase.firestore.DocumentData[]) => {
     if (feedbackDocs.length === 0) {
@@ -399,9 +435,10 @@ export const watchActivityLevelFeedback = (callback: (feedback:ActivityFeedback[
 
     const allFeedback = feedbackDocs.filter((doc) => !!doc.feedback).map((doc) => {
       const content = doc.feedback;
+      const rubricFeedback = doc.rubricFeedback;
       const timestamp = doc.updatedAt.toDate().toLocaleString();
       const activityId = doc.activityId;
-      return {activityId, content, timestamp};
+      return {activityId, content, rubric, rubricFeedback, timestamp};
     });
     callback(allFeedback);
   });
