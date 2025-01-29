@@ -212,6 +212,16 @@ body.notebook {
           background-color: $cc-orange-light1;
 
         }
+
+        .teacher-feedback-small-badge {
+          height: 0;
+          position: relative;
+          top: calc(-100% - 18px);
+          left: calc(100% - 12.5px);
+          svg {
+            transform: scale(1.5)
+          }
+        }
       }
     }
 
