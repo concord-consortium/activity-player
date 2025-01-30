@@ -152,6 +152,24 @@
     }
   }
 
+  &.l_7030, &.r_3070, &.responsive {
+    .column.secondary {
+      .iframe-runtime {
+        .feedback-button {
+          padding: 10px 10px 15px 10px;
+          .feedback-button-content {
+            align-items: flex-start;
+          }
+          .feedback-button-text {
+            text-align: left;
+            width: 135px;
+            line-height: 1.1;
+          }
+        }
+      }
+    }
+  }
+
   .column.primary {
     position: relative;
     height: auto;

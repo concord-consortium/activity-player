@@ -10,7 +10,7 @@ import {
   IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent,
   ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState, AttachmentInfoMap
 } from "@concord-consortium/lara-interactive-api";
-import { DynamicText, DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
+import { DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
 import Shutterbug from "shutterbug";
 import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
@@ -22,11 +22,11 @@ import ReloadIcon from "../../../assets/svg-icons/icon-reload.svg";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
 import { useAccessibility } from "../../accessibility-context";
 import { useMediaLibrary } from "../../media-library-context";
+import { InteractiveFeedback } from "../../teacher-feedback/interactive-feedback";
 
 import "./iframe-runtime.scss";
 
 const kDefaultHeight = 300;
-
 const kInteractiveStateRequestTimeout = 20000; // ms
 
 const getListenerTypes = (textDecorationHandlerInfo: ITextDecorationHandlerInfo): Array<{type: string}> => {
@@ -478,13 +478,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
             <ReloadIcon />
           </button>
         }
-        {feedback &&
-          <div className="teacher-feedback">
-            <DynamicText>
-                <strong>Teacher Feedback:</strong> {feedback.content}
-            </DynamicText>
-          </div>
-        }
+        {feedback && <InteractiveFeedback embeddableRefId={id} feedback={feedback} />}
       </div>
     </div>
   );

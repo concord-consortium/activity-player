@@ -1,0 +1,45 @@
+@import "../vars.scss";
+
+.feedback-button {
+  background-color: $teacher-feedback-light-green;
+  border: 1px solid $cc-charcoal-light1;
+  border-radius: 4px;
+  font-family: 'Lato', sans-serif;
+  font-weight: bold;
+  font-size: pxToRem(20);
+  color: $cc-charcoal;
+  width: fit-content;
+  padding: 7px 10px;
+  line-height: 1.6;
+  cursor: pointer;
+  margin-left: 20px;
+
+  &:hover, &:active {
+    background-color: $teacher-feedback-dark-green;
+  }
+  &:active {
+    color: white;
+  }
+
+  .feedback-button-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .button-icon {
+      display: flex;
+      justify-content: center;
+    }
+  }
+}
+
+.teacher-feedback {
+  width: calc(100% - 40px);
+  box-sizing: border-box;
+  background-color: $teacher-feedback-light-green;
+  margin: 0px 20px;
+  border-radius: 4px;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+}
