@@ -365,7 +365,8 @@ export type BaseTeacherFeedback = {
 
 export type ActivityFeedback = BaseTeacherFeedback & {
   activityId: string;
-  rubric?: IRubric;
+  feedbackSettings?: Record<string, any>;
+  manualScore?: number;
   rubricFeedback?: any;
 };
 
@@ -380,13 +381,13 @@ type ActivityAndPage = {
 
 export type QuestionMap = Record<string, ActivityAndPage>;
 
-export interface IRubricCriteriaGroup {
+export interface RubricCriteriaGroup {
   label: string;
   labelForStudent: string;
-  criteria: IRubricCriterion[];
+  criteria: RubricCriterion[];
 }
 
-export interface IRubricCriterion {
+export interface RubricCriterion {
   id: string;
   description: string;
   descriptionForStudent: string;
@@ -397,13 +398,13 @@ export interface IRubricCriterion {
   iconPhrase: string;
 }
 
-export interface IRubricRating {
+export interface RubricRating {
   id: string;
   label: string;
   score: number;
 }
 
-export interface IRubricV110 {
+export interface RubricV110 {
   id: string;
   version: "1.0.0" | "1.1.0";
   versionNumber: string;
@@ -414,8 +415,8 @@ export interface IRubricV110 {
   criteriaLabel: string;
   criteriaLabelForStudent: string;
   feedbackLabelForStudent: string;
-  criteria: IRubricCriterion[];
-  ratings: IRubricRating[];
+  criteria: RubricCriterion[];
+  ratings: RubricRating[];
 }
 
 export const tagSummaryDisplayValues = ["none", "above", "below", "onlySummary"] as const;
@@ -427,8 +428,8 @@ export const tagSummaryDisplayLabels: Record<ITagSummaryDisplay, string> = {
   onlySummary: "Only display Tag Summary",
 };
 
-export type IRubric = Omit<IRubricV110, "version" | "criteria"> & {
+export type Rubric = Omit<RubricV110, "version" | "criteria"> & {
   version: "1.2.0";
-  criteriaGroups: IRubricCriteriaGroup[];
+  criteriaGroups: RubricCriteriaGroup[];
   tagSummaryDisplay: ITagSummaryDisplay;
 };

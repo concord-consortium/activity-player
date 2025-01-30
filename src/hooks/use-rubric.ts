@@ -1,17 +1,17 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { Updater, useImmer } from "use-immer";
-import { IRubric } from "../types";
+import { Rubric } from "../types";
 
 export interface IRubricContext {
-  rubric: IRubric;
-  setRubric: Updater<IRubric>;
+  rubric: Rubric;
+  setRubric: Updater<Rubric>;
   loadStatus: "loading" | "loaded" | "error";
   saveStatus: "unsaved" | "saving" | "saved" | "error";
   isDirty: boolean;
   saveRubric: () => void;
 }
 
-const migrate = (rubric: IRubric) => {
+const migrate = (rubric: Rubric) => {
   // right now there are no explicit version migrations BUT iconPhrase and tagSummaryDisplay were
   // added without a version bump so ensure they have a default value if they are undefined
   rubric.criteriaGroups.forEach(criteriaGroup => {
@@ -25,12 +25,12 @@ const migrate = (rubric: IRubric) => {
 };
 
 export const useRubricValue = (authoredContentUrl: string): IRubricContext => {
-  const [rubric, _setRubric] = useImmer<IRubric>({} as IRubric);
+  const [rubric, _setRubric] = useImmer<Rubric>({} as Rubric);
   const [loadStatus, setLoadStatus] = useState<IRubricContext["loadStatus"]>("loading");
   const [saveStatus, setSaveStatus] = useState<IRubricContext["saveStatus"]>("unsaved");
   const [isDirty, setIsDirty] = useState(false);
 
-  const setRubric: Updater<IRubric> = (arg) => {
+  const setRubric: Updater<Rubric> = (arg) => {
     setIsDirty(true);
     setSaveStatus("unsaved");
     _setRubric(arg);
@@ -56,6 +56,7 @@ export const useRubricValue = (authoredContentUrl: string): IRubricContext => {
 
     // tslint:disable-next-line:no-console
     loadAuthoredContent().catch(console.error);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const saveRubric = () => {

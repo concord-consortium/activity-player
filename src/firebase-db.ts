@@ -15,8 +15,7 @@ import { IAnonymousPortalData, IPortalData, isPortalData } from "./portal-types"
 import { getLegacyLinkedRefMap, LegacyLinkedRefMap, refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata,
   IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, ILegacyLinkedInteractiveState, IApRun, IBaseApRun,
-  QuestionFeedback, ActivityFeedback, 
-  IRubric} from "./types";
+  QuestionFeedback, ActivityFeedback } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
 import { ILaraData } from "./components/lara-data-context";
@@ -346,6 +345,23 @@ const getQuestionLevelFeedbackDocsQuery = (answerId?: string) => {
   return query;
 };
 
+const getFeedbackSettingsQuery = () => {
+  if (!portalData) {
+    throw new Error("Must set portal data first");
+  }
+
+  // Only logged-in students will have feedback.
+  if (portalData.userType !== "learner" || portalData.type === "anonymous") return;
+
+  const path = feedbackSettingsPath();
+  const query = app.firestore().collection(path)
+    .where("contextId", "==", portalData.contextId)
+    .where("platformId", "==", portalData.platformId)
+    .where("resourceLinkId", "==", portalData.resourceLinkId);
+
+  return query;
+};
+
 const watchQuestionLevelFeedbackDocs = (listener: DocumentsListener, answerId?: string) => {
   const query = getQuestionLevelFeedbackDocsQuery(answerId);
   if (!query) return () => {/* no-op */};
@@ -410,18 +426,12 @@ export const watchQuestionLevelFeedback = (callback: (feedback: QuestionFeedback
 
 // Watches all activity-level feedback for sequence or activity
 export const watchActivityLevelFeedback = (callback: (feedback: ActivityFeedback[] | null) => void) => {
-  let rubric: IRubric | undefined = undefined;
+  let feedbackSettings: Record<string, any> | undefined = undefined;
   if (portalData?.type === "authenticated") {
-    const path = feedbackSettingsPath();
-    const query = app.firestore().collection(path)
-      .where("contextId", "==", portalData.contextId)
-      .where("platformId", "==", portalData.platformId)
-      .where("resourceLinkId", "==", portalData.resourceLinkId);
-
-    // set rubric to a snapshot of the query
-    query.onSnapshot(snapshot => {
+    const query = getFeedbackSettingsQuery();
+    query?.onSnapshot(snapshot => {
       if (snapshot.docs[0]) {
-        rubric = snapshot.docs[0].data().rubric;
+        feedbackSettings = snapshot.docs[0].data();
       }
     });
   }
@@ -436,9 +446,10 @@ export const watchActivityLevelFeedback = (callback: (feedback: ActivityFeedback
     const allFeedback = feedbackDocs.filter((doc) => !!doc.feedback).map((doc) => {
       const content = doc.feedback;
       const rubricFeedback = doc.rubricFeedback;
+      const manualScore = doc.score;
       const timestamp = doc.updatedAt.toDate().toLocaleString();
       const activityId = doc.activityId;
-      return {activityId, content, rubric, rubricFeedback, timestamp};
+      return {activityId, content, feedbackSettings, manualScore, rubricFeedback, timestamp};
     });
     callback(allFeedback);
   });
