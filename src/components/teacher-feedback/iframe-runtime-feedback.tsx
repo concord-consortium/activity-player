@@ -4,14 +4,14 @@ import { QuestionFeedback } from "../../types";
 import { LogEventName, Logger } from "../../lib/logger";
 import TeacherFeedbackIcon from "../../assets/svg-icons/teacher-feedback-icon.svg";
 
-import "./interactive-feedback.scss";
+import "./iframe-runtime-feedback.scss";
 
 interface IProps {
   feedback: QuestionFeedback;
   embeddableRefId: string;
 }
 
-export const InteractiveFeedback: React.FC<IProps> = ({feedback, embeddableRefId}) => {
+export const IframeRuntimeFeedback: React.FC<IProps> = ({feedback, embeddableRefId}) => {
   const [showFeedback, setShowFeedback] = React.useState(false);
 
   React.useEffect(() => {

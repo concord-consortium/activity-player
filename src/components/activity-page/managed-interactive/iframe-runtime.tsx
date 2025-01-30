@@ -22,7 +22,7 @@ import ReloadIcon from "../../../assets/svg-icons/icon-reload.svg";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
 import { useAccessibility } from "../../accessibility-context";
 import { useMediaLibrary } from "../../media-library-context";
-import { InteractiveFeedback } from "../../teacher-feedback/interactive-feedback";
+import { IframeRuntimeFeedback } from "../../teacher-feedback/iframe-runtime-feedback";
 
 import "./iframe-runtime.scss";
 
@@ -478,7 +478,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
             <ReloadIcon />
           </button>
         }
-        {feedback && <InteractiveFeedback embeddableRefId={id} feedback={feedback} />}
+        {feedback && <IframeRuntimeFeedback embeddableRefId={id} feedback={feedback} />}
       </div>
     </div>
   );
