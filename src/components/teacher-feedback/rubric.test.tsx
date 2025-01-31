@@ -4,6 +4,10 @@ import { RubricComponent } from "./rubric";
 import { baseMockFeedback, rubricScoreActivitySettings, mockRubric, mockRubricFeedback, 
   criteriaLabelForStudent, feedbackLabelForStudent, criteriaDescriptionForStudent} from "../../test-utils/rubric";
 
+jest.mock("./rubric-score", () => ({
+  RubricScore: () => <div data-testid="mock-rubric-score" />
+}));
+
 describe("RubricComponent", () => {
   it("should render nothing if no rubric is provided", () => {
     const wrapper = shallow(
