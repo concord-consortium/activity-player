@@ -19,11 +19,17 @@ export const ActivityLevelFeedbackBanner = ({ teacherFeedback }: IProps) => {
   return (
     <div className={bannerClass} data-testid="activity-level-feedback-banner">
       <TeacherFeedbackIcon className="teacher-feedback-icon" />
-      {hasRubric && <div className="activity-level-feedback-title"><strong>Overall Teacher Feedback for This Activity:</strong> </div>}
+      {hasRubric && (
+        <div className="activity-level-feedback-title">
+          <strong>Overall Teacher Feedback for This Activity:</strong>
+        </div>
+      )}
       <div className="activity-level-feedback-content" data-testid="activity-level-feedback-content">
-        {hasRubric
-          ? <RubricComponent teacherFeedback={teacherFeedback} />
-          : <><strong>Overall Teacher Feedback for This Activity:</strong> {teacherFeedback.content}</>}
+        {hasRubric ? (
+          <RubricComponent teacherFeedback={teacherFeedback} />
+        ) : (
+          <><strong>Overall Teacher Feedback for This Activity:</strong> {teacherFeedback.content}</>
+        )}
       </div>
     </div>
   );
