@@ -1,5 +1,5 @@
 import { DynamicText } from "@concord-consortium/dynamic-text";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { QuestionFeedback } from "../../types";
 import { LogEventName, Logger } from "../../lib/logger";
 import TeacherFeedbackIcon from "../../assets/svg-icons/teacher-feedback-icon.svg";
@@ -12,9 +12,9 @@ interface IProps {
 }
 
 export const IframeRuntimeFeedback: React.FC<IProps> = ({feedback, embeddableRefId}) => {
-  const [showFeedback, setShowFeedback] = React.useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // when teacher updates feedback, show button again
     setShowFeedback(false);
   }, [feedback.content]);
@@ -30,7 +30,7 @@ export const IframeRuntimeFeedback: React.FC<IProps> = ({feedback, embeddableRef
 
   return (
     showFeedback ?
-    <div className="teacher-feedback">
+    <div className="teacher-feedback" data-testid="teacher-feedback">
       <div>
         <TeacherFeedbackIcon/>
       </div>
@@ -38,7 +38,7 @@ export const IframeRuntimeFeedback: React.FC<IProps> = ({feedback, embeddableRef
           <strong>Teacher Feedback:</strong> {feedback.content}
       </DynamicText>
     </div> :
-    <button className="feedback-button" onClick={handleShowFeedback}>
+    <button className="feedback-button" onClick={handleShowFeedback} data-testid="feedback-button">
       <div className="feedback-button-content">
         <div className="button-icon">
           <TeacherFeedbackIcon/>
