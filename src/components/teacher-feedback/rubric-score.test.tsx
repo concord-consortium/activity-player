@@ -36,6 +36,21 @@ describe("Rubric Score component", () => {
     expect(wrapper.find('[data-testid="rubric-overall-score"]').text()).toBe("Overall Score: 50 out of 100");
   });
 
+  it("renders 'N/A' when score type is 'manual' and no score has been given", () => {
+    const mockFeedback = {
+      ...baseMockFeedback,
+      feedbackSettings: {
+        activitySettings: manualScoreActivitySettings,
+        rubric: mockRubric
+      },
+      rubricFeedback: mockRubricFeedback
+    };
+
+    const wrapper = shallow(<RubricScore teacherFeedback={mockFeedback} />);
+    expect(wrapper.find('[data-testid="rubric-overall-score"]').length).toBe(1);
+    expect(wrapper.find('[data-testid="rubric-overall-score"]').text()).toBe("Overall Score: N/A out of 100");
+  });
+
   it("does not render component when score type is 'none'", () => {
     const mockFeedback = {
       ...baseMockFeedback,
@@ -66,20 +81,6 @@ describe("Rubric Score component", () => {
   it("does not render component when there is no rubric", () => {
     const mockFeedback = {
       ...baseMockFeedback
-    };
-
-    const wrapper = shallow(<RubricScore teacherFeedback={mockFeedback} />);
-    expect(wrapper.isEmptyRender()).toBe(true);
-  });
-
-  it("does not render component when score type is 'manual' and no score has been given", () => {
-    const mockFeedback = {
-      ...baseMockFeedback,
-      feedbackSettings: {
-        activitySettings: manualScoreActivitySettings,
-        rubric: mockRubric
-      },
-      rubricFeedback: mockRubricFeedback
     };
 
     const wrapper = shallow(<RubricScore teacherFeedback={mockFeedback} />);
