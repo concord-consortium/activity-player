@@ -262,6 +262,23 @@ body.notebook {
           }
         }
 
+        &.l_6040, &.r_4060 {
+          .column.secondary {
+            .iframe-runtime {
+              .feedback-button {
+                padding: 10px 10px 15px 10px;
+                .feedback-button-content {
+                  align-items: flex-start;
+                }
+                .feedback-button-text {
+                  text-align: left;
+                  width: 135px;
+                  line-height: 1.1;
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
