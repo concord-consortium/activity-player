@@ -51,6 +51,10 @@ context("Test sequences", () => {
       cy.get("[data-cy=custom-select-header]").should("contain", "3: Sample Sequence Activity 3");
       cy.get("[data-cy=activity-summary]").should("exist");
       cy.get("[data-cy=activity-summary]").should("contain", "Sample Sequence Activity 3");
+
+      cy.log("should always load the sequence intro page when query param `showFeedback` is set");
+      cy.visit("?sequence=sample-sequence&preview&sequenceActivity=activity_1&showFeedback");
+      cy.url().should("contain", "sequenceActivity=0");
     });
   });
 });
