@@ -31,5 +31,12 @@ context("Loading activities", () => {
       activityPage.getSecondaryEmbeddable("text-box").eq(1).scrollIntoView()
         .should("be.visible").and("contain","Duis vitae ultrices augue, eu fermentum elit.");
     });
+
+    it("can load the completion page when `showFeedback` query param is set", () => {
+      cy.visit("?activity=sample-activity-1&preview");
+      cy.get("[data-cy=completion-page-content]").should("not.exist");
+      cy.visit("?activity=sample-activity-1&showFeedback&preview");
+      cy.get("[data-cy=completion-page-content]").should("be.visible");
+    });
   });
 });

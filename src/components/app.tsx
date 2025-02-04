@@ -134,6 +134,7 @@ interface IState {
   fontFamilyForType: string;
   mediaLibrary: IMediaLibrary;
   scrollToQuestionId?: string;
+  showFeedbackPage: boolean;
 }
 interface IProps { }
 
@@ -167,7 +168,8 @@ export class App extends React.PureComponent<IProps, IState> {
       fontType: "normal",
       fontFamilyForType: getFamilyForFontType("normal"),
       mediaLibrary: {enabled: false, items: []},
-      scrollToQuestionId: undefined
+      scrollToQuestionId: undefined,
+      showFeedbackPage: false
     };
   }
 
@@ -189,6 +191,7 @@ export class App extends React.PureComponent<IProps, IState> {
       const preview = queryValueBoolean("preview") || teacherEditionMode;
       const sequencePath = queryValue("sequence");
       const activityPath = queryValue("activity") || kDefaultActivity;
+      this.setState({showFeedbackPage: queryValueBoolean("showFeedback") });
 
       let sequenceActivity = queryValue("sequenceActivity");
       let page = queryValue("page");
@@ -281,7 +284,7 @@ export class App extends React.PureComponent<IProps, IState> {
       }
 
       const sequence: Sequence | undefined = sequencePath ? await getSequenceDefinition(sequencePath) : undefined;
-      const sequenceActivityNum = sequence != null
+      const sequenceActivityNum = sequence != null && !this.state.showFeedbackPage
         ? getSequenceActivityFromQueryValue(sequence, sequenceActivity)
         : 0;
       const activityIndex = sequence && sequenceActivityNum ? sequenceActivityNum - 1 : undefined;
@@ -306,9 +309,24 @@ export class App extends React.PureComponent<IProps, IState> {
 
       const showSequenceIntro = sequence != null && sequenceActivityNum < 1;
 
-      // page 0 is introduction, inner pages start from 1 and match page.position in exported activity if numeric
-      // or the page.position of the matching page id if prefixed with "page_<id>"
-      const currentPage = getPagePositionFromQueryValue(activity, page);
+      // If query parameter `showFeedback` is true, take the user to the "feedback page". For sequences, the
+      // feedback page is the home page. For activities, the feedback page is the completion page or the home
+      // page if no completion page is set.
+      const completionPageIndex = activity.pages.findIndex((p: Page) => p.is_completion);
+      const completionPageNum = completionPageIndex !== -1 ? completionPageIndex + 1 : 0;
+      const feedbackPageNum = sequence ? 0 : completionPageNum;
+
+      if (this.state.showFeedbackPage) {
+        if (sequence) {
+          this.handleShowSequenceIntro();
+        }
+
+        deleteQueryValue("showFeedback");
+      }
+
+      const currentPage = !this.state.showFeedbackPage
+        ? getPagePositionFromQueryValue(activity, page)
+        : feedbackPageNum;
 
       // update the font size if different from default (default defined in app.scss)
       const fontSize = getFontSize({activity, sequence});
