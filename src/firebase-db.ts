@@ -25,14 +25,6 @@ export type FirebaseAppName = "report-service-dev" | "report-service-pro";
 
 let portalData: IPortalData | IAnonymousPortalData | null;
 
-// const validFsId = (anyPath: string) => {
-//   const safeCharacter = "%";
-//   return anyPath
-//     .replace(/\//g, safeCharacter)
-//     .replace(/\.\./g, safeCharacter)
-//     .replace(/__/g, safeCharacter);
-// };
-
 const answersPath = (answerId?: string) =>
   `sources/${portalData?.database.sourceKey}/answers${answerId ? "/" + answerId : ""}`;
 
@@ -49,11 +41,7 @@ const feedbackSettingsPath = () => {
     throw new Error("Teacher feedback is only available for authenticated users.");
   }
 
-  const path = `/sources/${portalData.teacherFeedbackSourceKey}/feedback_settings`;
-
-  // return path + `/${validFsId(portalData.platformId + "-" + portalData.resourceLinkId)}`;
-
-  return path;
+  return `/sources/${portalData.teacherFeedbackSourceKey}/feedback_settings`;
 };
 
 const learnerPluginStatePath = (docId: string) =>
