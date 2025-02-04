@@ -36,7 +36,7 @@ describe("Rubric Score component", () => {
     expect(wrapper.find('[data-testid="rubric-overall-score"]').text()).toBe("Overall Score: 50 out of 100");
   });
 
-  it("renders 'N/A' when score type is 'manual' and no score has been given", () => {
+  it("does not render score when score type is 'manual' and no score has been given", () => {
     const mockFeedback = {
       ...baseMockFeedback,
       feedbackSettings: {
@@ -47,8 +47,7 @@ describe("Rubric Score component", () => {
     };
 
     const wrapper = shallow(<RubricScore teacherFeedback={mockFeedback} />);
-    expect(wrapper.find('[data-testid="rubric-overall-score"]').length).toBe(1);
-    expect(wrapper.find('[data-testid="rubric-overall-score"]').text()).toBe("Overall Score: N/A out of 100");
+    expect(wrapper.find('[data-testid="rubric-overall-score"]').length).toBe(0);
   });
 
   it("does not render component when score type is 'none'", () => {

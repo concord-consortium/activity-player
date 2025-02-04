@@ -35,7 +35,8 @@ export const RubricScore = ({teacherFeedback}: IProps) => {
   const scoredQuestions = activity ? getScoredQuestions(activity) : [];
   const hasScoredQuestions = scoredQuestions.length > 0;
   const { maxScore, scoreType } = getScoringSettings(initialScoringSettings, { hasScoredQuestions, rubric });
-  if (scoreType === NO_SCORE) return null;
+
+  if (scoreType === NO_SCORE || (scoreType === MANUAL_SCORE && !teacherFeedback.manualScore)) return null;
 
   const displayMaxScore = scoreType === RUBRIC_SCORE
     ? computeRubricMaxScore(rubric)
@@ -43,7 +44,7 @@ export const RubricScore = ({teacherFeedback}: IProps) => {
       ? scoredQuestions.length
       : maxScore;
   const overallScore = scoreType === MANUAL_SCORE
-    ? teacherFeedback.manualScore ?? "N/A"
+    ? teacherFeedback.manualScore
     : scoreType === AUTOMATIC_SCORE && activity
       ? getAutoScore(activity, studentAnswers)
       : getRubricDisplayScore(rubric, rubricFeedback);
