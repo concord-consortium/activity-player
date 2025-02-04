@@ -320,7 +320,8 @@ export const getOfferingData = (params: GetOfferingParams) => {
         const offeringData: OfferingData = {
           id: rawOffering.id,
           activityUrl: rawOffering.activity_url,
-          rubricUrl: rawOffering.rubric_url
+          rubricUrl: rawOffering.rubric_url,
+          locked: !!rawOffering.locked,
         };
         resolve(offeringData);
       }

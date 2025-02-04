@@ -25,6 +25,7 @@ import { ManagedInteractiveHeader } from "./managed-interactive-header";
 import { ManagedInteractiveHint } from "./managed-interactive-hint";
 import { ActivityLayouts, hasPluginThatRequiresHeader } from "../../../utilities/activity-utils";
 import { useQuestionInfoContext } from "../../question-info-context";
+import { isOfferingLocked } from "../../../utilities/portal-data-utils";
 
 import "./managed-interactive.scss";
 
@@ -173,7 +174,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     // Keep interactive state in sync if iFrame is opened in modal popup
     interactiveState.current = state;
     const exportableAnswer =  shouldWatchAnswer && getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, answerMeta.current);
-    if (exportableAnswer) {
+    if (exportableAnswer && !isOfferingLocked(portalData)) {
       createOrUpdateAnswer(exportableAnswer);
     }
     // Custom callback set internally. Used by the modal dialog to close itself after the most recent

@@ -54,6 +54,8 @@ import { AccessibilityContext, FontSize, FontType, getFamilyForFontType, getFont
 import { MediaLibraryContext } from "./media-library-context";
 import { parseMediaLibraryItems } from "../lib/parse-media-library-items";
 import { QuestionInfoContext } from "./question-info-context";
+import { LockedBanner } from "./locked-banner";
+import { isOfferingLocked } from "../utilities/portal-data-utils";
 
 import "./app.scss";
 
@@ -428,6 +430,7 @@ export class App extends React.PureComponent<IProps, IState> {
                       <div className="app" data-cy="app">
                         { this.state.showDefunctBanner && <DefunctBanner/> }
                         { this.state.showWarning && <WarningBanner/> }
+                        { isOfferingLocked(this.state.portalData) && <LockedBanner isSequence={!!this.state.sequence}/> }
                         { this.state.teacherEditionMode && <TeacherEditionBanner/>}
                         { this.state.showSequenceIntro
                           ? <SequenceIntroduction

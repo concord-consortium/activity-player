@@ -1,8 +1,13 @@
 @import "../../vars.scss";
 
 .iframe-runtime {
+  position: relative;
   iframe {
     border: 0;
+
+    &.iframe-runtime-locked {
+      pointer-events: none;
+    }
   }
   button.button {
     align-items: center;

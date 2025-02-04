@@ -23,6 +23,7 @@ import { accessibilityClick } from "../../../utilities/accessibility-helper";
 import { useAccessibility } from "../../accessibility-context";
 import { useMediaLibrary } from "../../media-library-context";
 import { IframeRuntimeFeedback } from "../../teacher-feedback/iframe-runtime-feedback";
+import { isOfferingLocked } from "../../../utilities/portal-data-utils";
 
 import "./iframe-runtime.scss";
 
@@ -456,10 +457,13 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   const height = proposedHeight || kDefaultHeight;
   const width = containerWidth || "100%";
+  const locked = isOfferingLocked(portalData);
 
   return (
     <div className="iframe-runtime" data-cy="iframe-runtime">
       <iframe
+        className={locked ? "iframe-runtime-locked" : ""}
+        tabIndex={locked ? -1 : 0}
         key={`${id}-${reloadCount}`}
         ref={iframeRef}
         src={url}
