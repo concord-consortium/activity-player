@@ -10,6 +10,14 @@
   margin: 15px 0;
   padding: 20px;
 
+  &.has-rubric {
+    flex-wrap: wrap;
+
+    .activity-level-feedback-content {
+      width: 100%;
+    }
+  }
+
   .teacher-feedback-icon {
     flex-shrink: 0;
     height: 24px;
@@ -17,6 +25,12 @@
   }
 
   .activity-level-feedback-content {
+    flex-grow: 1;
+    flex-shrink: 1;
+    line-height: normal;
+  }
+
+  .activity-level-feedback-title {
     flex-grow: 1;
     flex-shrink: 1;
     line-height: normal;

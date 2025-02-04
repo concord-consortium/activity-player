@@ -33,8 +33,15 @@ const teacherFeedbackPath = (level: "activity" | "question") => {
     throw new Error("Teacher feedback is only available for authenticated users.");
   }
 
-  const sourceKey = portalData.teacherFeedbackSourceKey;
-  return `sources/${sourceKey}/${level}_feedbacks`;
+  return `sources/${portalData.teacherFeedbackSourceKey}/${level}_feedbacks`;
+};
+
+const feedbackSettingsPath = () => {
+  if (!isPortalData(portalData)) {
+    throw new Error("Teacher feedback is only available for authenticated users.");
+  }
+
+  return `/sources/${portalData.teacherFeedbackSourceKey}/feedback_settings`;
 };
 
 const learnerPluginStatePath = (docId: string) =>
@@ -326,6 +333,23 @@ const getQuestionLevelFeedbackDocsQuery = (answerId?: string) => {
   return query;
 };
 
+const getFeedbackSettingsQuery = () => {
+  if (!portalData) {
+    throw new Error("Must set portal data first");
+  }
+
+  // Only logged-in students will have feedback.
+  if (portalData.userType !== "learner" || portalData.type === "anonymous") return;
+
+  const path = feedbackSettingsPath();
+  const query = app.firestore().collection(path)
+    .where("contextId", "==", portalData.contextId)
+    .where("platformId", "==", portalData.platformId)
+    .where("resourceLinkId", "==", portalData.resourceLinkId);
+
+  return query;
+};
+
 const watchQuestionLevelFeedbackDocs = (listener: DocumentsListener, answerId?: string) => {
   const query = getQuestionLevelFeedbackDocsQuery(answerId);
   if (!query) return () => {/* no-op */};
@@ -389,7 +413,17 @@ export const watchQuestionLevelFeedback = (callback: (feedback: QuestionFeedback
 };
 
 // Watches all activity-level feedback for sequence or activity
-export const watchActivityLevelFeedback = (callback: (feedback:ActivityFeedback[] | null) => void) => {
+export const watchActivityLevelFeedback = (callback: (feedback: ActivityFeedback[] | null) => void) => {
+  let feedbackSettings: Record<string, any> | undefined = undefined;
+  if (portalData?.type === "authenticated") {
+    const query = getFeedbackSettingsQuery();
+    query?.onSnapshot(snapshot => {
+      if (snapshot.docs[0]) {
+        feedbackSettings = snapshot.docs[0].data();
+      }
+    });
+  }
+
   // Note that watchActivityLevelFeedbackDocs returns unsubscribe method.
   return watchActivityLevelFeedbackDocs((feedbackDocs: firebase.firestore.DocumentData[]) => {
     if (feedbackDocs.length === 0) {
@@ -399,9 +433,11 @@ export const watchActivityLevelFeedback = (callback: (feedback:ActivityFeedback[
 
     const allFeedback = feedbackDocs.filter((doc) => !!doc.feedback).map((doc) => {
       const content = doc.feedback;
+      const rubricFeedback = doc.rubricFeedback;
+      const manualScore = doc.score;
       const timestamp = doc.updatedAt.toDate().toLocaleString();
       const activityId = doc.activityId;
-      return {activityId, content, timestamp};
+      return {activityId, content, feedbackSettings, manualScore, rubricFeedback, timestamp};
     });
     callback(allFeedback);
   });

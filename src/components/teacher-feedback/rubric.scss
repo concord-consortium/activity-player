@@ -1,0 +1,54 @@
+@import "../vars.scss";
+
+.rubric {
+  background: white;
+  color: $cc-charcoal;
+  font-size: pxToRem(16);
+  margin: 0 0 20px;
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+
+    table, th, td {
+      border: solid 1px $cc-teal-dark1;
+    }
+
+    table {
+      border-radius: 5px;
+    }
+
+    th, td {
+      padding: 8px;
+    }
+
+    th {
+      font-weight: bold;
+    }
+
+    td {
+      vertical-align: top;
+
+      div {
+        align-items: center;
+        display: flex;
+        gap: 5px;
+
+        li {
+          list-style-type: disc;
+          margin-left: 20px;
+        }
+      }
+    }
+
+    td.groupLabel {
+      text-align: center;
+      transform: rotate(180deg);
+      writing-mode: vertical-rl;
+    }
+  }
+}
+
+.feedback-text {
+  margin: 0 0 15px;
+}
