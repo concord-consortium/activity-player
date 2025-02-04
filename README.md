@@ -109,6 +109,7 @@ Inside of your `package.json` file:
 * themeButtons:                       whether to show theme buttons
 * mode={mode}:                        sets mode. Values: "teacher-edition"
 * portalReport:                       override default base URL for the student report. `https://activity-player.concord.org/`, `https://activity-player-offline.concord.org/`, `https://activity-player.concord.org/version/*`, and `https://activity-player-offline.concord.org/version/*`, default to a versioned URL defined as a constant in the code `kProductionPortalReportUrl`. Every other url defaults to the master branch of the portal-report.
+* override:locked                     When set to "true" the offering is locked, independent of the portal data value.  Useful for development/testing.
 
 #### User data loading:
 * firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ and https://activity-player-offline.concord.org/ without a path, defaults to `report-service-pro` every other url defaults to `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.

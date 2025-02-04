@@ -82,7 +82,8 @@ describe("Firestore", () => {
       offering: {
         id: 1,
         activityUrl: "http://example/activities/1",
-        rubricUrl: ""
+        rubricUrl: "",
+        locked: false
       },
       platformId: "https://example",
       platformUserId: "1",
@@ -234,7 +235,8 @@ describe("Firestore", () => {
           offering: {
             id: 1,
             activityUrl: "http://example.com/1",
-            rubricUrl: "http://example.com/2"
+            rubricUrl: "http://example.com/2",
+            locked: false
           },
           userType: "learner",
           database: {
@@ -340,7 +342,8 @@ describe("AP run functions", () => {
     offering: {
       id: 1,
       activityUrl: "http://example.com/1",
-      rubricUrl: "http://example.com/2"
+      rubricUrl: "http://example.com/2",
+      locked: false
     },
     userType: "learner",
     database: {

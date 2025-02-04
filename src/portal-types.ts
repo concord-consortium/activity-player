@@ -12,6 +12,7 @@ export interface OfferingData {
   id: number;
   activityUrl: string;
   rubricUrl: string;
+  locked: boolean;
 }
 interface FirebaseData {
   appName: FirebaseAppName;

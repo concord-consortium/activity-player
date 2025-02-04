@@ -54,7 +54,7 @@ describe("getAttachmentsManagerOptions", () => {
       contextId: "context-id",
       resourceLinkId: "resource-link-id",
       type: "authenticated",
-      offering: { id: 1, activityUrl: "https://concord.org/activity", rubricUrl: "" },
+      offering: { id: 1, activityUrl: "https://concord.org/activity", rubricUrl: "", locked: false },
       userType: "learner",
       resourceUrl: "https://concord.org/my/resource",
       toolId: "my-tool",
