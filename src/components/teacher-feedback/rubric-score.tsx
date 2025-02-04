@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { DynamicText } from "@concord-consortium/dynamic-text";
 import { ActivityFeedback } from "../../types";
 import { LaraDataContext } from "../lara-data-context";
 import { getAllAnswers } from "../../firebase-db";
@@ -51,7 +52,7 @@ export const RubricScore = ({teacherFeedback}: IProps) => {
 
   return (
     <div className="overall-score" data-testid="rubric-overall-score">
-      <strong>Overall Score:</strong> {overallScore} out of {displayMaxScore}
+      <DynamicText><strong>Overall Score:</strong> {overallScore} out of {displayMaxScore}</DynamicText>
     </div>
   );
 };

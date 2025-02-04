@@ -1,8 +1,28 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import { DynamicTextContext } from "@concord-consortium/dynamic-text";
 import { RubricScore } from "./rubric-score";
 import { baseMockFeedback, rubricScoreActivitySettings, mockRubric, mockRubricFeedback,
   manualScoreActivitySettings, noScoreActivitySettings } from "../../test-utils/rubric";
+import { ActivityFeedback } from "../../types";
+
+jest.mock("../../firebase-db", () => ({
+  getAllAnswers: () => jest.fn()
+}));
+
+const mockDynamicTextContextValue = {
+  registerComponent: jest.fn(),
+  unregisterComponent: jest.fn(),
+  selectComponent: jest.fn()
+};
+
+const renderComponent = (feedback: ActivityFeedback) => {
+  return render(
+    <DynamicTextContext.Provider value={mockDynamicTextContextValue}>
+      <RubricScore teacherFeedback={feedback} />
+    </DynamicTextContext.Provider>
+  );
+};
 
 describe("Rubric Score component", () => {
   it("renders component with a rubric score", () => {
@@ -15,9 +35,9 @@ describe("Rubric Score component", () => {
       rubricFeedback: mockRubricFeedback
     };
 
-    const wrapper = shallow(<RubricScore teacherFeedback={mockFeedback} />);
-    expect(wrapper.find('[data-testid="rubric-overall-score"]').length).toBe(1);
-    expect(wrapper.find('[data-testid="rubric-overall-score"]').text()).toBe("Overall Score: 5 out of 10");
+    renderComponent(mockFeedback);
+    expect(screen.queryByTestId("rubric-overall-score")).not.toBeNull();
+    expect(screen.queryByTestId("rubric-overall-score")?.textContent).toBe("Overall Score: 5 out of 10");
   });
 
   it("renders component with a manual score", () => {
@@ -31,9 +51,9 @@ describe("Rubric Score component", () => {
       rubricFeedback: mockRubricFeedback
     };
 
-    const wrapper = shallow(<RubricScore teacherFeedback={mockFeedback} />);
-    expect(wrapper.find('[data-testid="rubric-overall-score"]').length).toBe(1);
-    expect(wrapper.find('[data-testid="rubric-overall-score"]').text()).toBe("Overall Score: 50 out of 100");
+    renderComponent(mockFeedback);
+    expect(screen.queryByTestId("rubric-overall-score")).not.toBeNull();
+    expect(screen.queryByTestId("rubric-overall-score")?.textContent).toBe("Overall Score: 50 out of 100");
   });
 
   it("does not render score when score type is 'manual' and no score has been given", () => {
@@ -46,8 +66,8 @@ describe("Rubric Score component", () => {
       rubricFeedback: mockRubricFeedback
     };
 
-    const wrapper = shallow(<RubricScore teacherFeedback={mockFeedback} />);
-    expect(wrapper.find('[data-testid="rubric-overall-score"]').length).toBe(0);
+    renderComponent(mockFeedback);
+    expect(screen.queryByTestId("rubric-overall-score")).toBeNull();
   });
 
   it("does not render component when score type is 'none'", () => {
@@ -60,8 +80,8 @@ describe("Rubric Score component", () => {
       rubricFeedback: mockRubricFeedback
     };
 
-    const wrapper = shallow(<RubricScore teacherFeedback={mockFeedback} />);
-    expect(wrapper.isEmptyRender()).toBe(true);
+    renderComponent(mockFeedback);
+    expect(screen.queryByTestId("rubric-overall-score")).toBeNull();
   });
 
   it("does not render component when there is no rubric feedback", () => {
@@ -73,8 +93,8 @@ describe("Rubric Score component", () => {
       },
     };
 
-    const wrapper = shallow(<RubricScore teacherFeedback={mockFeedback} />);
-    expect(wrapper.isEmptyRender()).toBe(true);
+    renderComponent(mockFeedback);
+    expect(screen.queryByTestId("rubric-overall-score")).toBeNull();
   });
 
   it("does not render component when there is no rubric", () => {
@@ -82,7 +102,7 @@ describe("Rubric Score component", () => {
       ...baseMockFeedback
     };
 
-    const wrapper = shallow(<RubricScore teacherFeedback={mockFeedback} />);
-    expect(wrapper.isEmptyRender()).toBe(true);
+    renderComponent(mockFeedback);
+    expect(screen.queryByTestId("rubric-overall-score")).toBeNull();
   });
 });

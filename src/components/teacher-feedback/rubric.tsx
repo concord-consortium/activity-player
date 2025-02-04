@@ -1,5 +1,6 @@
 import * as React from "react";
 import Markdown from "markdown-to-jsx";
+import { DynamicText } from "@concord-consortium/dynamic-text";
 import { ActivityFeedback, Rubric, RubricCriteriaGroup } from "../../types";
 import { RubricScore } from "./rubric-score";
 
@@ -31,10 +32,10 @@ export const RubricComponent = ({teacherFeedback}: IProps) => {
           <thead>
             <tr>
               <th colSpan={hasGroupLabel ? 2 : 1}>
-                { criteriaLabel }
+                <DynamicText>{ criteriaLabel }</DynamicText>
               </th>
               <th>
-                { rubric?.feedbackLabelForStudent }
+                <DynamicText>{ rubric?.feedbackLabelForStudent }</DynamicText>
               </th>
             </tr>
           </thead>
@@ -65,20 +66,22 @@ export const RubricComponent = ({teacherFeedback}: IProps) => {
                       <td
                         rowSpan={criteriaGroup.criteria.length}
                         className="groupLabel">
-                        {label}
+                        <DynamicText>{label}</DynamicText>
                       </td>
                     }
                     <td>
                       <div>
                         {criteria.iconUrl && <img src={criteria.iconUrl} title={criteria.iconPhrase} />}
-                        <Markdown>{description}</Markdown>
+                        <DynamicText><Markdown>{description}</Markdown></DynamicText>
                       </div>
                     </td>
                     <td>
-                      { rubric?.showRatingDescriptions
+                      <DynamicText>
+                        { rubric?.showRatingDescriptions
                           ? `${ratingLabel} – ${ratingDescription}`
                           : ratingLabel
-                      }
+                        }
+                      </DynamicText>
                     </td>
                   </tr>
                 );
@@ -88,7 +91,7 @@ export const RubricComponent = ({teacherFeedback}: IProps) => {
         </table>
       </div>
       <div className="feedback-text" data-testid="rubric-feedback-text">
-        {teacherFeedback.content}
+        <DynamicText>{teacherFeedback.content}</DynamicText>
       </div>
       <RubricScore teacherFeedback={teacherFeedback} />
     </>

@@ -1,5 +1,6 @@
 import React from "react";
-import { mount, shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import { DynamicTextContext } from "@concord-consortium/dynamic-text";
 import { RubricComponent } from "./rubric";
 import { baseMockFeedback, rubricScoreActivitySettings, mockRubric, mockRubricFeedback, 
   criteriaLabelForStudent, feedbackLabelForStudent, criteriaDescriptionForStudent} from "../../test-utils/rubric";
@@ -8,12 +9,20 @@ jest.mock("./rubric-score", () => ({
   RubricScore: () => <div data-testid="mock-rubric-score" />
 }));
 
+const mockDynamicTextContextValue = {
+  registerComponent: jest.fn(),
+  unregisterComponent: jest.fn(),
+  selectComponent: jest.fn()
+};
+
 describe("RubricComponent", () => {
   it("should render nothing if no rubric is provided", () => {
-    const wrapper = shallow(
-      <RubricComponent teacherFeedback={baseMockFeedback} />
+    render(
+      <DynamicTextContext.Provider value={mockDynamicTextContextValue}>
+        <RubricComponent teacherFeedback={baseMockFeedback} />
+      </DynamicTextContext.Provider>
     );
-    expect(wrapper.isEmptyRender()).toBe(true);
+    expect(screen.queryByTestId("rubric")).toBeNull();
   });
   it("should render rubric", () => {
     const mockFeedback = {
@@ -24,14 +33,16 @@ describe("RubricComponent", () => {
       },
       rubricFeedback: mockRubricFeedback
     };
-    const wrapper = mount(
-      <RubricComponent teacherFeedback={mockFeedback} />
+    render(
+      <DynamicTextContext.Provider value={mockDynamicTextContextValue}>
+        <RubricComponent teacherFeedback={mockFeedback} />
+      </DynamicTextContext.Provider>
     );
-    expect(wrapper.find('[data-testid="rubric"]').exists()).toBe(true);
-    expect(wrapper.find('[data-testid="rubric"]').find("table").exists()).toBe(true);
-    expect(wrapper.find("thead").find("th").at(0).text()).toBe(criteriaLabelForStudent);
-    expect(wrapper.find("thead").find("th").at(1).text()).toBe(feedbackLabelForStudent);
-    expect(wrapper.find("tbody").find("td").at(0).text()).toContain(criteriaDescriptionForStudent);
-    expect(wrapper.find("tbody").find("td").at(1).text()).toContain("DEVELOPING");
+    expect(screen.queryByTestId("rubric")).not.toBeNull();
+    expect(screen.queryByTestId("rubric")?.querySelector("table")).not.toBeNull();
+    expect(screen.queryByTestId("rubric")?.querySelector("thead")?.querySelectorAll("th")[0].textContent).toBe(criteriaLabelForStudent);
+    expect(screen.queryByTestId("rubric")?.querySelector("thead")?.querySelectorAll("th")[1].textContent).toBe(feedbackLabelForStudent);
+    expect(screen.queryByTestId("rubric")?.querySelector("tbody")?.querySelectorAll("td")[0].textContent).toContain(criteriaDescriptionForStudent);
+    expect(screen.queryByTestId("rubric")?.querySelector("tbody")?.querySelectorAll("td")[1].textContent).toContain("DEVELOPING");
   });
 });

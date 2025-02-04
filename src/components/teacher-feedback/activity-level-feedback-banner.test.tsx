@@ -1,8 +1,15 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import { DynamicTextContext } from "@concord-consortium/dynamic-text";
 import { ActivityLevelFeedbackBanner } from "./activity-level-feedback-banner";
 
 describe("Activity Level Feedback component", () => {
+  const mockDynamicTextContextValue = {
+    registerComponent: jest.fn(),
+    unregisterComponent: jest.fn(),
+    selectComponent: jest.fn()
+  };
+
   const mockFeedback = {
     activityId: "activity_1",
     content: "Great job!",
@@ -10,10 +17,14 @@ describe("Activity Level Feedback component", () => {
   };
 
   it("renders component", () => {
-    const wrapper = shallow(<ActivityLevelFeedbackBanner teacherFeedback={mockFeedback} />);
-    expect(wrapper.find('[data-testid="activity-level-feedback-banner"]').length).toBe(1);
-    expect(wrapper.find('[data-testid="activity-level-feedback-content"]').length).toBe(1);
-    expect(wrapper.find('[data-testid="activity-level-feedback-content"]').find("strong").text()).toBe("Overall Teacher Feedback for This Activity:");
-    expect(wrapper.find('[data-testid="activity-level-feedback-content"]').text()).toContain(mockFeedback.content);
+    render(
+      <DynamicTextContext.Provider value={mockDynamicTextContextValue}>
+        <ActivityLevelFeedbackBanner teacherFeedback={mockFeedback} />
+      </DynamicTextContext.Provider>
+    );
+    expect(screen.queryByTestId("activity-level-feedback-banner")).not.toBeNull();
+    expect(screen.queryByTestId("activity-level-feedback-content")).not.toBeNull();
+    expect(screen.queryByTestId("activity-level-feedback-content")?.querySelector("strong")?.textContent).toBe("Overall Teacher Feedback for This Activity:");
+    expect(screen.queryByTestId("activity-level-feedback-content")?.textContent).toContain(mockFeedback.content);
   });
 });
