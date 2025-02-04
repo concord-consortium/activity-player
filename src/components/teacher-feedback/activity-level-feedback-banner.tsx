@@ -12,21 +12,22 @@ interface IProps {
 }
 
 export const ActivityLevelFeedbackBanner = ({ teacherFeedback }: IProps) => {
-  const hasRubric = !!teacherFeedback.feedbackSettings?.rubric;
+  const { rubric } = teacherFeedback.feedbackSettings ?? {};
+  const shouldRenderRubric = !!rubric && !rubric.hideRubricFromStudentsInStudentReport;
   const bannerClass = classNames("activity-level-feedback-banner", {
-    "has-rubric": hasRubric
+    "has-rubric": shouldRenderRubric
   });
 
   return (
     <div className={bannerClass} data-testid="activity-level-feedback-banner">
       <TeacherFeedbackIcon className="teacher-feedback-icon" />
-      {hasRubric && (
+      {shouldRenderRubric && (
         <div className="activity-level-feedback-title">
           <DynamicText><strong>Overall Teacher Feedback for This Activity:</strong></DynamicText>
         </div>
       )}
       <div className="activity-level-feedback-content" data-testid="activity-level-feedback-content">
-        {hasRubric ? (
+        {shouldRenderRubric ? (
           <RubricComponent teacherFeedback={teacherFeedback} />
         ) : (
           <DynamicText><strong>Overall Teacher Feedback for This Activity:</strong> {teacherFeedback.content}</DynamicText>
