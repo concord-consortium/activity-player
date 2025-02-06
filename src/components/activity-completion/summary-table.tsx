@@ -60,8 +60,11 @@ export const SummaryTable: React.FC<IProps> = (props) => {
                     </button>
                   </div>
                   <div className="question-prompt" data-testid="question-prompt">
-                    <DynamicText><em>{questionPrompt}</em></DynamicText>
-                    {question.feedback && <SummaryPageQuestionFeedback teacherFeedback={question.feedback} />}
+                    {questionPrompt && <DynamicText><em>{questionPrompt}</em></DynamicText>}
+                    {question.feedback && (
+                      <div className={questionPrompt ? "question-feedback" : "question-feedback no-prompt"}>
+                        <SummaryPageQuestionFeedback teacherFeedback={question.feedback} />
+                      </div>)}
                   </div>
                 </div>
               </td>
