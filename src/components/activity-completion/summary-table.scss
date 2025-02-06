@@ -69,6 +69,13 @@
         flex: 1;
         font-weight: normal;
       }
+      .question-feedback {
+        margin-top: 6px;
+
+        &.no-prompt {
+          margin-top: 0;
+        }
+      }
     }
   }
   th {
