@@ -1,5 +1,5 @@
 import { Activity } from "../types";
-import { isQuestion, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isSectionHidden, numQuestionsOnPreviousSections, getPageIDFromPosition } from "./activity-utils";
+import { isQuestion, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isSectionHidden, numQuestionsOnPreviousSections, getPageIDFromPosition, getPageNumberFromEmbeddable } from "./activity-utils";
 import _activityHidden from "../data/version-2/sample-new-sections-hidden-content.json";
 import _activity from "../data/version-2/sample-new-sections-activity-1.json";
 import { DefaultTestActivity } from "../test-utils/model-for-tests";
@@ -65,5 +65,21 @@ describe("Activity utility functions", () => {
     expect(getPageIDFromPosition(activity, 1)).toBe(1000);
     expect(getPageIDFromPosition(activity, 2)).toBe(2000);
     expect(getPageIDFromPosition(activity, 3)).toBe(3000);
+  });
+  it("ignores hidden pages when getting the page number of an embeddable", () => {
+    const { pages } = activityHidden;
+
+    // make sure the second page is hidden
+    expect(pages[0].is_hidden).toBe(false);
+    expect(pages[1].is_hidden).toBe(true);
+    expect(pages[2].is_hidden).toBe(false);
+
+    // make sure the second page (that is hidden) has an embeddable and that its page number is undefined
+    expect(pages[1].sections[0].embeddables[0]).toBeDefined();
+    expect(getPageNumberFromEmbeddable(activityHidden, pages[1].sections[0].embeddables[0].ref_id)).toBeUndefined();
+
+    // make sure the page number of the third page is 2 since the second page is hidden
+    expect(pages[2].sections[0].embeddables[0]).toBeDefined();
+    expect(getPageNumberFromEmbeddable(activityHidden, pages[2].sections[0].embeddables[0].ref_id)).toBe(2);
   });
 });

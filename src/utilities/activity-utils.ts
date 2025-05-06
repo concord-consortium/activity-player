@@ -282,12 +282,17 @@ export const getEmbeddable = (activity: Activity, embeddableRefId: string) => {
 };
 
 export const getPageNumberFromEmbeddable = (activity: Activity, embeddableRefId: string) => {
+  let pageNumber = 0;
   for (let i = 0; i < activity.pages.length; i++) {
     const page = activity.pages[i];
+    if (page.is_hidden) {
+      continue;
+    }
+    pageNumber++;
     for (const section of page.sections) {
       const embeddable = section.embeddables.find((e: EmbeddableType) => e.ref_id === embeddableRefId);
       if (embeddable) {
-        return i + 1;
+        return pageNumber;
       }
     }
   }
