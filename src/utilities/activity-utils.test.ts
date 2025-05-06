@@ -74,7 +74,7 @@ describe("Activity utility functions", () => {
     expect(pages[1].is_hidden).toBe(true);
     expect(pages[2].is_hidden).toBe(false);
 
-    // make sure the second page (that is hidden) has an embeddable and that its page number if undefined
+    // make sure the second page (that is hidden) has an embeddable and that its page number is undefined
     expect(pages[1].sections[0].embeddables[0]).toBeDefined();
     expect(getPageNumberFromEmbeddable(activityHidden, pages[1].sections[0].embeddables[0].ref_id)).toBeUndefined();
 
