@@ -850,14 +850,18 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private processPagesForQuestionMap = (pages: Page[], questionToActivityMap: QuestionMap, activityId?: number | null) => {
-    pages.forEach(p =>
+    pages.forEach(p => {
+      if (p.is_hidden) {
+        // hidden pages are not included in the question map
+        return;
+      }
       p.sections.forEach(s =>
         s.embeddables.forEach(e => {
           if (e.ref_id) {
             questionToActivityMap[e.ref_id] = { activityId, pageId: p.id };
           }
         })
-      )
-    );
+      );
+    });
   }
 }
