@@ -184,6 +184,12 @@ export class App extends React.PureComponent<IProps, IState> {
     }
   }
 
+  // note - this is different than the getVisiblePages in activity-utils.ts as it also looks at the author-preview query param
+  private getVisiblePages = (activity: Activity) => {
+    const pagesVisible = queryValue("author-preview") ? activity.pages : activity.pages.filter((page) => !page.is_hidden);
+    return pagesVisible;
+  }
+
   async componentDidMount() {
     try {
       const teacherEditionMode = queryValue("mode")?.toLowerCase() === "teacher-edition";
@@ -312,7 +318,7 @@ export class App extends React.PureComponent<IProps, IState> {
       // If query parameter `showFeedback` is true, take the user to the "feedback page". For sequences, the
       // feedback page is the home page. For activities, the feedback page is the completion page or the home
       // page if no completion page is set.
-      const completionPageIndex = activity.pages.findIndex((p: Page) => p.is_completion);
+      const completionPageIndex = this.getVisiblePages(activity).findIndex((p: Page) => p.is_completion);
       const completionPageNum = completionPageIndex !== -1 ? completionPageIndex + 1 : 0;
       const feedbackPageNum = sequence ? 0 : completionPageNum;
 
@@ -494,7 +500,7 @@ export class App extends React.PureComponent<IProps, IState> {
     // convert option with Ruby snake case to kebab case for css
     const fixedWidthLayout = (sequence?.fixed_width_layout || activity.fixed_width_layout || kDefaultFixedWidthLayout).replace(/_/g, "-");
     const activityClasses = classNames("activity", fullWidth ? "responsive" : `fixed-width-${fixedWidthLayout}`);
-    const pagesVisible = queryValue("author-preview") ? activity.pages : activity.pages.filter((page) => !page.is_hidden);
+    const pagesVisible = this.getVisiblePages(activity);
 
     // create a key so when activities switch within a sequence React knows to update the DOM
     const key = `activity-${activityIndex || 0}`;
@@ -556,7 +562,7 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
-    const pagesVisible = queryValue("author-preview") ? activity.pages : activity.pages.filter((page) => !page.is_hidden);
+    const pagesVisible = this.getVisiblePages(activity);
     const isSinglePageActivity = activity.layout === ActivityLayouts.SinglePage;
     const isMultiPageActivity = activity.layout === ActivityLayouts.MultiplePages;
     const isNotebookSequenceOverride = this.state.sequence?.layout_override === ActivityLayoutOverrides.Notebook;
