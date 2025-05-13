@@ -176,8 +176,10 @@ export const setAppBackgroundImage = (backgroundImageUrl?: string) => {
 };
 
 export const setDocumentTitle = (params: ISetDocumentTitleParams) => {
-  const { activity, pageNumber, sequence, sequenceActivityNum } = params;
+  const { activity, sequence, sequenceActivityNum } = params;
   const setTabTitle = (title: string, pages: Page[]) => {
+    // as a sanity check, ensure the page number is in the range [0, <number of pages>].
+    const pageNumber = Math.max(0, Math.min(params.pageNumber, pages.length));
     document.title = pageNumber === 0
       ? title
       : `Page ${pageNumber} ${pages[pageNumber - 1].name || title}`;
