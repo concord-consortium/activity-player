@@ -30,7 +30,7 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
   sequence.activities.forEach((a: Activity) => totalTime += a.time_to_complete || 0);
 
   useEffect(() => {
-    const unsubscribe = watchActivityLevelFeedback((fbs: ActivityFeedback[]) => {
+    const unsubscribe = watchActivityLevelFeedback(fbs => {
       const ids = fbs.map((fb: ActivityFeedback) => fb.activityId.replace("activity_", ""));
       setActivitiesWithActivityLevelFeedback(ids);
     });
@@ -42,7 +42,7 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
   }, [sequence.activities]);
 
   useEffect(() => {
-    const unsubscribe = watchQuestionLevelFeedback((fbs: QuestionFeedback[]) => {
+    const unsubscribe = watchQuestionLevelFeedback(fbs => {
       const questionIds = fbs.map((fb: QuestionFeedback) => fb.questionId);
       const questionIdsToRefId = questionIds.map(answersQuestionIdToRefId);
       const activityIds: number[] = [];

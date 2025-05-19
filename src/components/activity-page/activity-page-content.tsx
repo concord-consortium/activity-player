@@ -5,7 +5,7 @@ import classNames from "classnames";
 import { Section, SectionImperativeAPI } from "./section";
 import { BottomButtons } from "./bottom-buttons";
 import { ActivityLayouts, numQuestionsOnPreviousSections } from "../../utilities/activity-utils";
-import { Activity, Page, QuestionFeedback, SectionType } from "../../types";
+import { Activity, Page, SectionType } from "../../types";
 import { IGetInteractiveState, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { QuestionInfoContext } from "../question-info-context";
 import { answersQuestionIdToRefId } from "../../utilities/embeddable-utils";
@@ -81,7 +81,7 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
     const { activity, page } = this.props;
     const { questionMap } = this.context;
     if (activity.id) {
-      this.unsubscribeQuestionLevelFeedback = watchQuestionLevelFeedback((fbs: QuestionFeedback[]) => {
+      this.unsubscribeQuestionLevelFeedback = watchQuestionLevelFeedback(fbs => {
         const qIds: string[] = [];
         fbs.forEach(fb => {
           const eRefId = answersQuestionIdToRefId(fb.questionId);
