@@ -2,8 +2,8 @@ import { Page, ActivityFeedback, QuestionFeedback } from "../types";
 import { pageHasFeedback, subscribeToActivityLevelFeedback, subscribeToQuestionLevelFeedback } from "./feedback-utils";
 
 jest.mock("../firebase-db", () => ({
-  watchActivityLevelFeedback: jest.fn((callback: (feedback: ActivityFeedback | null) => void) => {
-    callback(null);
+  watchActivityLevelFeedback: jest.fn((callback: (fbs: ActivityFeedback[]) => void) => {
+    callback([]);
 
     // simulate the unsubscribe function
     return jest.fn();

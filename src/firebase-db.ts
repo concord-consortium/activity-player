@@ -387,14 +387,9 @@ const watchActivityLevelFeedbackDocs = (listener: DocumentsListener) => {
 };
 
 // Watches question level feedback for a single or for all answers
-export const watchQuestionLevelFeedback = (callback: (feedback: QuestionFeedback[] | null) => void, answerId?: string) => {
+export const watchQuestionLevelFeedback = (callback: (fbs: QuestionFeedback[]) => void, answerId?: string) => {
   // Note that watchQuestionLevelFeedbackDocs returns unsubscribe method.
   return watchQuestionLevelFeedbackDocs((feedbackDocs: firebase.firestore.DocumentData[]) => {
-    if (feedbackDocs.length === 0) {
-      callback(null);
-      return;
-    }
-
     if (answerId && feedbackDocs.length > 1) {
       console.warn(
         "Found multiple question feedback objects for the same question. It might be result of early " +
@@ -413,7 +408,7 @@ export const watchQuestionLevelFeedback = (callback: (feedback: QuestionFeedback
 };
 
 // Watches all activity-level feedback for sequence or activity
-export const watchActivityLevelFeedback = (callback: (feedback: ActivityFeedback[] | null) => void) => {
+export const watchActivityLevelFeedback = (callback: (fbs: ActivityFeedback[]) => void) => {
   let feedbackSettings: Record<string, any> | undefined = undefined;
   if (portalData?.type === "authenticated") {
     const query = getFeedbackSettingsQuery();
@@ -426,11 +421,6 @@ export const watchActivityLevelFeedback = (callback: (feedback: ActivityFeedback
 
   // Note that watchActivityLevelFeedbackDocs returns unsubscribe method.
   return watchActivityLevelFeedbackDocs((feedbackDocs: firebase.firestore.DocumentData[]) => {
-    if (feedbackDocs.length === 0) {
-      callback(null);
-      return;
-    }
-
     const allFeedback = feedbackDocs.filter((doc) => !!doc.feedback).map((doc) => {
       const content = doc.feedback;
       const rubricFeedback = doc.rubricFeedback;

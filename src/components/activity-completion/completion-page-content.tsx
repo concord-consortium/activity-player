@@ -54,7 +54,7 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
       setAnswers(answersInActivity);
     });
 
-    const unsubscribeQFeedback = watchQuestionLevelFeedback((fbs: QuestionFeedback[]) => {
+    const unsubscribeQFeedback = watchQuestionLevelFeedback(fbs => {
       const questionFeedbackInThisActivity = fbs.filter(f => questionsInActivity.includes(f.questionId));
       setQuestionFeedback(questionFeedbackInThisActivity);
     });
