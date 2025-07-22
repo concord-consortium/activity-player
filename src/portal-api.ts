@@ -302,6 +302,15 @@ interface GetOfferingParams {
   offeringId: string;
 }
 
+// these are the only fields we need from the raw offering data
+interface PartialRawOfferingData {
+  id: number;
+  activity_url: string;
+  rubric_url: string;
+  locked: boolean;
+  students: Array<{ user_id: number; locked: boolean }>;
+}
+
 export const getOfferingData = (params: GetOfferingParams) => {
   const {portalJWT, rawPortalJWT, offeringId} = params;
 
@@ -316,12 +325,16 @@ export const getOfferingData = (params: GetOfferingParams) => {
       } else if (!res.body || !res.body.activity_url) {
         reject("Invalid offering response");
       } else {
-        const rawOffering: any = res.body;
+        const rawOffering: PartialRawOfferingData = res.body;
+        // locking used to be done at the offering level, but now it is done at the student level,
+        // falling back to offering level if student level is not set (which it always should be on the portal but just in case)
+        const myStudent = rawOffering.students.find(s => s.user_id === portalJWT.uid);
+        const locked = myStudent?.locked ?? rawOffering.locked;
         const offeringData: OfferingData = {
           id: rawOffering.id,
           activityUrl: rawOffering.activity_url,
           rubricUrl: rawOffering.rubric_url,
-          locked: !!rawOffering.locked,
+          locked: !!locked, // ensure boolean
         };
         resolve(offeringData);
       }
