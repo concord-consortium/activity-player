@@ -1,5 +1,7 @@
 # [LARA] Activity Player
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/concord-consortium/activity-player)
+
 This is a single page React and Typescript application intended to provide a platform for presenting "Lightweight" activities.
 
 ## Development
