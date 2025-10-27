@@ -171,6 +171,7 @@
     "jsonwebtoken": "^8.5.1",
     "markdown-to-jsx": "^7.7.3",
     "mobx": "^6.3.8",
+    "nanoid": "^5.1.6",
     "query-string": "^7.0.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",

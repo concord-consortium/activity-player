@@ -6,12 +6,13 @@ import {
   ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState
 } from "@concord-consortium/lara-interactive-api";
 import classNames from "classnames";
+import { nanoid } from "nanoid";
 
 import { PortalDataContext } from "../../portal-data-context";
 import { useSizeAndAspectRatio } from "../../../hooks/use-aspect-ratio";
 import { useSize } from "../../../hooks/use-size";
 import { IManagedInteractive, IMwInteractive, IExportableAnswerMetadata, ILegacyLinkedInteractiveState, QuestionFeedback } from "../../../types";
-import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer, watchQuestionLevelFeedback } from "../../../firebase-db";
+import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer, watchQuestionLevelFeedback, saveInteractiveHistoryState } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata, getInteractiveInfo, hasLegacyLinkedInteractive, IInteractiveInfo, isQuestion, refIdToAnswersQuestionId } from "../../../utilities/embeddable-utils";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
@@ -85,6 +86,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const divTarget = React.useRef<HTMLDivElement>(null);
   const divSize = useSize(divTarget);
   const headerSize = useSize(headerTarget);
+  const interactiveStateHistoryIdRef = useRef(nanoid());
 
   const embeddableRefId = embeddable.ref_id;
 
@@ -176,6 +178,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     const exportableAnswer =  shouldWatchAnswer && getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, answerMeta.current);
     if (exportableAnswer && !isOfferingLocked(portalData)) {
       createOrUpdateAnswer(exportableAnswer);
+      saveInteractiveHistoryState(exportableAnswer.id, interactiveStateHistoryIdRef.current, state);
+      interactiveStateHistoryIdRef.current = nanoid();
     }
     // Custom callback set internally. Used by the modal dialog to close itself after the most recent
     // interactive state is received.
@@ -304,6 +308,17 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     props.emitInteractiveAvailable?.();
   };
 
+  const handleLog = (logData: any) => {
+    logData.data = {...logData.data, interactiveStateHistoryId: interactiveStateHistoryIdRef.current};
+    Logger.log({
+      event: logData.action,
+      event_value: logData.value,
+      parameters: logData.data,
+      interactive_id: embeddableRefId,
+      interactive_url: url
+    });
+  };
+
   useImperativeHandle(ref, () => ({
     requestInteractiveState: (options?: IGetInteractiveState) => {
       if (shouldWatchAnswer && iframeRuntimeRef.current) {
@@ -366,6 +381,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         setHeightFromInteractive={setHeightFromInteractive}
         hasHeader={!hideQuestionHeader}
         feedback={feedback}
+        log={handleLog}
       />;
 
   return (

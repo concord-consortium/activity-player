@@ -99,6 +99,7 @@ describe("IframeRuntime component", () => {
             closeModal={mockCloseModal}
             setSendCustomMessage={mockSetSendCustomMessage}
             setNavigation={mockSetNavigation}
+            log={mockLog}
             iframeTitle="Interactive content"
             showDeleteDataButton={true}
             answerMetadata={{

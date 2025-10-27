@@ -494,6 +494,34 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
   return firestoreSetPromise;
 }
 
+export const saveInteractiveHistoryState = async (answerId: string, interactiveStateHistoryId: string, state: any) => {
+  if (!portalData) {
+    return;
+  }
+
+  let historyEntry: any = {
+    id: interactiveStateHistoryId,
+    state,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  };
+  if (portalData.type === "authenticated") {
+    historyEntry = {...historyEntry,
+      run_key: "",
+      context_id: portalData.contextId,
+      platform_id: portalData.platformId,
+      platform_user_id: portalData.platformUserId.toString(),
+    };
+  } else {
+    historyEntry = {...historyEntry,
+      run_key: portalData.runKey,
+    };
+  }
+
+  // TDB: need to determine where in the Firebase DB this should be stored
+  // and then we would need to update the rules to allow reading/writing to that location
+  console.log("Storing history entry", answerId, historyEntry);
+};
+
 export const getLearnerPluginStateDocId = (pluginId: number) => {
   if (!portalData) {
     return undefined;
