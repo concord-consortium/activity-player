@@ -94,7 +94,7 @@ export class Logger {
     if (DEBUG_LOGGER) {
       console.log("Logger#initializeLogger called.");
     }
-    this._instance = this._instance ?? new Logger(options);
+    this._instance = new Logger(options);
   }
 
   public static updateActivity(activity: string) {
