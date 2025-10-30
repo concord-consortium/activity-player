@@ -128,6 +128,7 @@ interface IState {
   readAloudDisabled: boolean;
   hideReadAloud: boolean;
   hideQuestionNumbers: boolean;
+  saveInteractiveStateHistory: boolean;
   fontSize: FontSize;
   fontSizeInPx: number;
   fontType: FontType;
@@ -163,6 +164,7 @@ export class App extends React.PureComponent<IProps, IState> {
       readAloudDisabled: !dynamicTextManager.isReadAloudAvailable,
       hideReadAloud: false,
       hideQuestionNumbers: false,
+      saveInteractiveStateHistory: false,
       fontSize: "normal",
       fontSizeInPx: getFontSizeInPx("normal"),
       fontType: "normal",
@@ -375,13 +377,16 @@ export class App extends React.PureComponent<IProps, IState> {
 
       let hideReadAloud = false;
       let hideQuestionNumbers = false;
+      let saveInteractiveStateHistory = false;
       if (sequence) {
         // sequence always overrides activity level setting
         hideReadAloud = !!sequence.hide_read_aloud;
         hideQuestionNumbers = !!sequence.hide_question_numbers;
+        saveInteractiveStateHistory = !!sequence.save_interactive_state_history;
       } else {
         hideReadAloud = !!activity.hide_read_aloud;
         hideQuestionNumbers = !!activity.hide_question_numbers;
+        saveInteractiveStateHistory = !!activity.save_interactive_state_history;
       }
 
       if (hideReadAloud) {
@@ -392,7 +397,7 @@ export class App extends React.PureComponent<IProps, IState> {
       newState = {...newState, activity, activityIndex, currentPage, showThemeButtons, showDefunctBanner,
                      showWarning, showSequenceIntro, sequence, teacherEditionMode, sequenceActivity, hideReadAloud,
                      fontSize, fontSizeInPx, fontType, fontFamilyForType, hideQuestionNumbers,
-                     questionMap};
+                     questionMap, saveInteractiveStateHistory};
       setDocumentTitle({activity, pageNumber: currentPage, sequence, sequenceActivityNum});
 
       this.setState(newState as IState);
@@ -431,7 +436,8 @@ export class App extends React.PureComponent<IProps, IState> {
         activity: sequencePath || activityPath,
         activityPage: currentPage,
         runRemoteEndpoint,
-        env: firebaseAppName() === "report-service-pro" ? "production" : "dev"
+        env: firebaseAppName() === "report-service-pro" ? "production" : "dev",
+        saveInteractiveStateHistoryId: saveInteractiveStateHistory
       });
 
       const idleDetector = new IdleDetector({ idle: Number(kMaxIdleTime), onIdle: this.handleIdleness });
@@ -596,6 +602,7 @@ export class App extends React.PureComponent<IProps, IState> {
                 pageChangeNotification={this.state.pageChangeNotification}
                 hideReadAloud={this.state.hideReadAloud}
                 hideQuestionNumbers={this.state.hideQuestionNumbers}
+                saveInteractiveStateHistory={this.state.saveInteractiveStateHistory}
               />
         }
         {renderBottomNav &&
@@ -645,6 +652,7 @@ export class App extends React.PureComponent<IProps, IState> {
         teacherEditionMode={this.state.teacherEditionMode}
         pluginsLoaded={this.state.pluginsLoaded}
         hideQuestionNumbers={this.state.hideQuestionNumbers}
+        saveInteractiveStateHistory={this.state.saveInteractiveStateHistory}
       />
     );
   }

@@ -1,5 +1,6 @@
 import { IReadableAttachmentInfo } from "@concord-consortium/interactive-api-host";
 import { IInteractiveStateProps } from "@concord-consortium/lara-interactive-api";
+import firebase from "firebase/compat/app";
 
 export type Mode = "runtime" | "authoring" | "report";
 
@@ -194,6 +195,7 @@ export interface Activity {
   defunct?: boolean;
   hide_read_aloud?: boolean;
   hide_question_numbers?: boolean;
+  save_interactive_state_history?: boolean;
   font_size: "normal" | "large"
 }
 
@@ -214,6 +216,7 @@ export interface Sequence {
   defunct?: boolean;
   hide_read_aloud?: boolean;
   hide_question_numbers?: boolean;
+  save_interactive_state_history?: boolean;
   font_size: "normal" | "large"
   layout_override: number;
 }
@@ -433,3 +436,36 @@ export type Rubric = Omit<RubricV110, "version" | "criteria"> & {
   criteriaGroups: RubricCriteriaGroup[];
   tagSummaryDisplay: ITagSummaryDisplay;
 };
+
+export interface IInteractiveStateHistoryBaseEntry {
+  id: string;
+  answer_id: string;
+  question_id: string;
+  state_type: "full"
+  created_at: firebase.firestore.FieldValue | Date;
+}
+export interface IAuthenticatedInteractiveStateHistoryEntry extends IInteractiveStateHistoryBaseEntry {
+  type: "authenticated";
+  context_id: string;
+  platform_id: string;
+  platform_user_id: string;
+  resource_link_id: string;
+  run_key: "";
+}
+export interface IAnonymousInteractiveStateHistoryEntry extends IInteractiveStateHistoryBaseEntry {
+  type: "anonymous";
+  run_key: string;
+}
+
+export type IInteractiveStateHistory = IAuthenticatedInteractiveStateHistoryEntry | IAnonymousInteractiveStateHistoryEntry;
+
+export type IInteractiveStateHistoryWithState = IInteractiveStateHistory & {
+  state: any;
+};
+
+export interface ISaveInteractiveStateHistoryEntryOptions {
+  answerId: string;
+  questionId: string;
+  interactiveStateHistoryId: string;
+  state: any;
+}

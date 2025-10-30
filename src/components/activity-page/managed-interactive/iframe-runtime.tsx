@@ -12,7 +12,6 @@ import {
 } from "@concord-consortium/lara-interactive-api";
 import { DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
 import Shutterbug from "shutterbug";
-import { Logger } from "../../../lib/logger";
 import { watchAnswer } from "../../../firebase-db";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
 import { IPortalData } from "../../../portal-types";
@@ -83,13 +82,14 @@ interface IProps {
   setHeightFromInteractive: (heightFromInteractive: number) => void;
   hasHeader?: boolean;
   feedback?: QuestionFeedback | null;
+  log: (logData: any) => void;
 }
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
     setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo,
-    showDeleteDataButton, setAspectRatio, setHeightFromInteractive, feedback } = props;
+    showDeleteDataButton, setAspectRatio, setHeightFromInteractive, feedback, log } = props;
 
   const [reloadCount, setReloadCount] = useState<number>(0);
   const iframePhoneTimeout = useRef<number|undefined>(undefined);
@@ -246,13 +246,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         closeModal(options);
       });
       addListener("log", (logData: any) => {
-        Logger.log({
-          event: logData.action,
-          event_value: logData.value,
-          parameters: logData.data,
-          interactive_id: id,
-          interactive_url: url
-        });
+        log(logData);
       });
       addListener("customMessage", (message: ICustomMessage) => {
         if (message.type === DynamicTextCustomMessageType) {

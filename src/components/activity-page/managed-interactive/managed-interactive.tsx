@@ -6,12 +6,13 @@ import {
   ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState
 } from "@concord-consortium/lara-interactive-api";
 import classNames from "classnames";
+import { nanoid } from "../../../utilities/nanoid";
 
 import { PortalDataContext } from "../../portal-data-context";
 import { useSizeAndAspectRatio } from "../../../hooks/use-aspect-ratio";
 import { useSize } from "../../../hooks/use-size";
 import { IManagedInteractive, IMwInteractive, IExportableAnswerMetadata, ILegacyLinkedInteractiveState, QuestionFeedback } from "../../../types";
-import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer, watchQuestionLevelFeedback } from "../../../firebase-db";
+import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer, watchQuestionLevelFeedback, saveInteractiveStateHistoryEntry } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata, getInteractiveInfo, hasLegacyLinkedInteractive, IInteractiveInfo, isQuestion, refIdToAnswersQuestionId } from "../../../utilities/embeddable-utils";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
@@ -39,6 +40,7 @@ interface IProps {
   emitInteractiveAvailable?: () => void;
   showQuestionPrefix: boolean;
   hideQuestionNumbers?: boolean;
+  saveInteractiveStateHistory?: boolean;
 }
 
 export interface ManagedInteractiveImperativeAPI {
@@ -55,7 +57,7 @@ const getModalContainer = (): HTMLElement => {
 };
 
 export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation } = props;
+  const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation, saveInteractiveStateHistory } = props;
   const { scrollToQuestionId } = useQuestionInfoContext();
   const portalData = useContext(PortalDataContext);
   const laraData = useContext(LaraDataContext);
@@ -85,6 +87,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const divTarget = React.useRef<HTMLDivElement>(null);
   const divSize = useSize(divTarget);
   const headerSize = useSize(headerTarget);
+  const interactiveStateHistoryIdRef = useRef(nanoid());
 
   const embeddableRefId = embeddable.ref_id;
 
@@ -176,6 +179,15 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     const exportableAnswer =  shouldWatchAnswer && getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, answerMeta.current);
     if (exportableAnswer && !isOfferingLocked(portalData)) {
       createOrUpdateAnswer(exportableAnswer);
+      if (saveInteractiveStateHistory) {
+        saveInteractiveStateHistoryEntry({
+          answerId: exportableAnswer.id,
+          questionId: exportableAnswer.question_id,
+          interactiveStateHistoryId: interactiveStateHistoryIdRef.current,
+          state
+        });
+        interactiveStateHistoryIdRef.current = nanoid();
+      }
     }
     // Custom callback set internally. Used by the modal dialog to close itself after the most recent
     // interactive state is received.
@@ -304,6 +316,17 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     props.emitInteractiveAvailable?.();
   };
 
+  const handleLog = (logData: any) => {
+    Logger.log({
+      event: logData.action,
+      event_value: logData.value,
+      parameters: logData.data,
+      interactive_id: embeddableRefId,
+      interactive_url: url,
+      interactiveStateHistoryId: saveInteractiveStateHistory ? interactiveStateHistoryIdRef.current : undefined
+    });
+  };
+
   useImperativeHandle(ref, () => ({
     requestInteractiveState: (options?: IGetInteractiveState) => {
       if (shouldWatchAnswer && iframeRuntimeRef.current) {
@@ -366,6 +389,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         setHeightFromInteractive={setHeightFromInteractive}
         hasHeader={!hideQuestionHeader}
         feedback={feedback}
+        log={handleLog}
       />;
 
   return (

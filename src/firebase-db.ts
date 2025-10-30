@@ -15,7 +15,9 @@ import { IAnonymousPortalData, IPortalData, isPortalData } from "./portal-types"
 import { getLegacyLinkedRefMap, LegacyLinkedRefMap, refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata,
   IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, ILegacyLinkedInteractiveState, IApRun, IBaseApRun,
-  QuestionFeedback, ActivityFeedback } from "./types";
+  QuestionFeedback, ActivityFeedback, IAnonymousInteractiveStateHistoryEntry, IAuthenticatedInteractiveStateHistoryEntry,
+  IInteractiveStateHistory, IInteractiveStateHistoryBaseEntry, IInteractiveStateHistoryWithState,
+  ISaveInteractiveStateHistoryEntryOptions} from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
 import { ILaraData } from "./components/lara-data-context";
@@ -27,6 +29,12 @@ let portalData: IPortalData | IAnonymousPortalData | null;
 
 const answersPath = (answerId?: string) =>
   `sources/${portalData?.database.sourceKey}/answers${answerId ? "/" + answerId : ""}`;
+
+const interactiveStateHistoryPath = (historyId?: string) =>
+  `sources/${portalData?.database.sourceKey}/interactive_state_histories${historyId ? "/" + historyId : ""}`;
+
+const interactiveStateHistoryStatePath = (historyId?: string) =>
+  `sources/${portalData?.database.sourceKey}/interactive_state_history_states${historyId ? "/" + historyId : ""}`;
 
 const teacherFeedbackPath = (level: "activity" | "question") => {
   if (!isPortalData(portalData)) {
@@ -493,6 +501,62 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
 
   return firestoreSetPromise;
 }
+
+
+export const saveInteractiveStateHistoryEntry = async (options: ISaveInteractiveStateHistoryEntryOptions) => {
+  if (!portalData) {
+    return;
+  }
+  const { answerId, questionId, interactiveStateHistoryId, state } = options;
+
+  let historyEntry: IInteractiveStateHistory;
+  const baseHistoryEntry: IInteractiveStateHistoryBaseEntry = {
+    id: interactiveStateHistoryId,
+    answer_id: answerId,
+    question_id: questionId,
+    state_type: "full",
+    created_at: firebase.firestore.FieldValue.serverTimestamp()
+  };
+  if (portalData.type === "authenticated") {
+    const authenticatedEntry: IAuthenticatedInteractiveStateHistoryEntry = {
+      ...baseHistoryEntry,
+      type: "authenticated",
+      context_id: portalData.contextId,
+      platform_id: portalData.platformId,
+      platform_user_id: portalData.platformUserId.toString(),
+      resource_link_id: portalData.resourceLinkId,
+      run_key: "",
+    };
+    historyEntry = authenticatedEntry;
+  } else {
+    const anonymousEntry: IAnonymousInteractiveStateHistoryEntry = {
+      ...baseHistoryEntry,
+      type: "anonymous",
+      run_key: portalData.runKey,
+    };
+    historyEntry = anonymousEntry;
+  }
+
+  // actual state to be stored separately with a kind field to allow for different storage strategies
+  // in the future
+  const historyEntryWithState: IInteractiveStateHistoryWithState = {
+    ...historyEntry,
+    state,
+  };
+
+  const historyEntrySetPromise = app.firestore()
+    .doc(interactiveStateHistoryPath(interactiveStateHistoryId))
+    .set(historyEntry as Partial<firebase.firestore.DocumentData>);
+
+  const historyEntryStateSetPromise = app.firestore()
+    .doc(interactiveStateHistoryStatePath(interactiveStateHistoryId))
+    .set(historyEntryWithState as Partial<firebase.firestore.DocumentData>);
+
+  requestTracker.registerRequest(historyEntrySetPromise);
+  requestTracker.registerRequest(historyEntryStateSetPromise);
+
+  return Promise.all([historyEntrySetPromise, historyEntryStateSetPromise]);
+};
 
 export const getLearnerPluginStateDocId = (pluginId: number) => {
   if (!portalData) {

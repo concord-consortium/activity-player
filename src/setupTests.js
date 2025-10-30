@@ -26,3 +26,24 @@ require("jquery-ui/ui/tabbable");
 require("jquery-ui/ui/unique-id");
 require("jquery-ui/ui/version");
 
+if (typeof crypto === "undefined" || typeof crypto.getRandomValues !== "function") {
+  console.warn(
+    "Insecure crypto.getRandomValues polyfill applied. ONLY for testing purposes."
+  );
+
+  // Define a mock crypto object if it doesn"t exist
+  if (typeof window.crypto === "undefined") {
+    window.crypto = {};
+  }
+
+  // Polyfill the required method using Math.random()
+  window.crypto.getRandomValues = (array) => {
+    for (let i = 0; i < array.length; i++) {
+      // Math.random() gives a float between 0 (inclusive) and 1 (exclusive).
+      // We multiply by 256 and floor it to get an integer between 0 and 255.
+      array[i] = Math.floor(Math.random() * 256);
+    }
+    return array;
+  };
+}
+

@@ -23,6 +23,7 @@ interface IProps {
   ref?: React.Ref<SectionImperativeAPI>;
   hiddenTab?: boolean;
   hideQuestionNumbers?: boolean;
+  saveInteractiveStateHistory?: boolean;
   addRefToQuestionMap?: (refId: string, ref: any) => void;
 }
 
@@ -97,6 +98,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
                 setNavigation={props.setNavigation}
                 pluginsLoaded={props.pluginsLoaded}
                 hideQuestionNumbers={props.hideQuestionNumbers}
+                saveInteractiveStateHistory={props.saveInteractiveStateHistory}
                 addRefToQuestionMap={addRefToQuestionMap}
               />
             );

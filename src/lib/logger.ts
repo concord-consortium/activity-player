@@ -2,6 +2,11 @@ import { v4 as uuid } from "uuid";
 import { DEBUG_LOGGER } from "../lib/debug";
 import { LaraGlobalType } from "../lara-plugin/index";
 
+const skipSendingLog = new URLSearchParams(window.location.search).get("dangerouslySkipSendingLog") === "true";
+if (skipSendingLog) {
+  console.warn("Logger: Skipping sending logs to logging service due to dangerouslySkipSendingLog URL parameter.");
+}
+
 type LoggerEnvironment = "dev" | "production";
 
 const logManagerUrl: Record<LoggerEnvironment, string> = {
@@ -24,6 +29,7 @@ export interface LogParams {
   parameters?: any,
   interactive_id?: string | undefined,
   interactive_url?: string | undefined
+  interactiveStateHistoryId?: string | undefined,
 }
 
 interface LogMessage {
@@ -80,6 +86,7 @@ export interface ILoggerOptions {
   activityPage: number;
   runRemoteEndpoint: string;
   env: LoggerEnvironment;
+  saveInteractiveStateHistoryId: boolean;
 }
 
 export class Logger {
@@ -87,7 +94,7 @@ export class Logger {
     if (DEBUG_LOGGER) {
       console.log("Logger#initializeLogger called.");
     }
-    this._instance = new Logger(options);
+    this._instance = this._instance ?? new Logger(options);
   }
 
   public static updateActivity(activity: string) {
@@ -104,9 +111,9 @@ export class Logger {
 
   public static log(logParams: LogParams) {
     if (!this._instance) return;
-    const { event, parameters, event_value, interactive_id, interactive_url  } = logParams;
+    const { event, parameters, event_value, interactive_id, interactive_url, interactiveStateHistoryId  } = logParams;
     const eventString = typeof event === "string" ? event : LogEventName[event];
-    const logMessage = Logger.Instance.createLogMessage(eventString, parameters, event_value, interactive_id, interactive_url);
+    const logMessage = Logger.Instance.createLogMessage(eventString, parameters, event_value, interactive_id, interactive_url, interactiveStateHistoryId);
     this._instance.LARA.Events.emitLog(logMessage);
     sendToLoggingService(logMessage, logManagerUrl[Logger.Instance.env]);
   }
@@ -133,10 +140,11 @@ export class Logger {
   private activity: string | undefined;
   private activityPage: number;
   private runRemoteEndpoint: string;
+  private saveInteractiveStateHistoryId: boolean;
 
   private constructor(options: ILoggerOptions) {
     const { LARA, username, role, classHash, teacherEdition, sequence, sequenceActivityIndex,
-      activity, activityPage, runRemoteEndpoint, env } = options;
+      activity, activityPage, runRemoteEndpoint, env, saveInteractiveStateHistoryId } = options;
     this.LARA = LARA;
     this.session = uuid();
     this.username = username;
@@ -148,6 +156,7 @@ export class Logger {
     this.activity = activity;
     this.activityPage = activityPage;
     this.runRemoteEndpoint = runRemoteEndpoint;
+    this.saveInteractiveStateHistoryId = saveInteractiveStateHistoryId;
     this.env = env;
   }
 
@@ -157,7 +166,15 @@ export class Logger {
     event_value?: any,
     interactive_id?: string,
     interactive_url?: string,
+    interactiveStateHistoryId?: string
   ): LogMessage {
+
+    if (this.saveInteractiveStateHistoryId && interactiveStateHistoryId) {
+      parameters = {
+        ...parameters,
+        interactiveStateHistoryId
+      };
+    }
 
     const logMessage: LogMessage = {
       application: "Activity Player",
@@ -187,7 +204,14 @@ export class Logger {
 
 function sendToLoggingService(data: LogMessage, url: string) {
   if (DEBUG_LOGGER) {
-    console.log("Logger#sendToLoggingService sending", JSON.stringify(data), "to", url);
+    if (skipSendingLog) {
+      console.log("Logger#sendToLoggingService SKIPPING sending", JSON.stringify(data));
+    } else {
+      console.log("Logger#sendToLoggingService sending", JSON.stringify(data), "to", url);
+    }
+  }
+  if (skipSendingLog) {
+    return;
   }
   const request = new XMLHttpRequest();
   request.open("POST", url, true);
