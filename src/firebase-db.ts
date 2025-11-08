@@ -16,8 +16,7 @@ import { getLegacyLinkedRefMap, LegacyLinkedRefMap, refIdToAnswersQuestionId } f
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata,
   IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, ILegacyLinkedInteractiveState, IApRun, IBaseApRun,
   QuestionFeedback, ActivityFeedback, IAnonymousInteractiveStateHistoryEntry, IAuthenticatedInteractiveStateHistoryEntry,
-  IInteractiveStateHistory, IInteractiveStateHistoryBaseEntry,
-  ISaveInteractiveStateHistoryEntryOptions} from "./types";
+  IInteractiveStateHistory, IInteractiveStateHistoryBaseEntry } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
 import { ILaraData } from "./components/lara-data-context";
@@ -444,22 +443,64 @@ export const watchActivityLevelFeedback = (callback: (fbs: ActivityFeedback[]) =
 // use same universal timezone (UTC) as Lara uses for writing created
 export const utcString = () => (new Date()).toUTCString().replace("GMT", "UTC");
 
-export function createOrUpdateAnswer(answer: IExportableAnswerMetadata, interactiveStateHistoryId?: string) {
+export async function createOrUpdateAnswer(answer: IExportableAnswerMetadata, interactiveStateHistoryId?: string) {
+  // create the new/updated answer document data
   const answerDocData = createAnswerDoc(answer, interactiveStateHistoryId);
   if (!answerDocData) {
     return;
   }
 
-  // TODO: LARA stores a created field with the date the answer was created
-  // I'm not sure how to do that easily in Firestore, we could at least add
-  // an updatedAt time using Firestore's features.
-  const firestoreSetPromise = app.firestore()
-    .doc(answersPath(answer.id))
-    .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
+  // first lookup to see if there is an existing answer
+  const existingAnswer = await app.firestore().doc(answersPath(answer.id)).get();
+  const existingAnswerData = existingAnswer.exists
+    ? existingAnswer.data() as LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata
+    : undefined;
 
-  requestTracker.registerRequest(firestoreSetPromise);
+  // determine what we need to do about history
+  let historyAction: "create" | "update" | "none" = "none";
+  if (interactiveStateHistoryId) {
+    if (existingAnswerData?.interactive_state_history_id === interactiveStateHistoryId) {
+      // the caller's history id matches the existing answer's history id, so we just update
+      historyAction = "update";
+    } else {
+      // the caller's history id is different than the existing answer's history id, so we create new history
+      historyAction = "create";
+    }
+  } else if (existingAnswerData?.interactive_state_history_id) {
+    // no history id provided by the caller but the existing answer has one, so we update that one -
+    // this is currently used by the onAnswerMetaUpdate callback in managed-interactive to save the attachment data
+    // on answers that already exist
+    historyAction = "update";
+    interactiveStateHistoryId = existingAnswerData.interactive_state_history_id;
+  }
 
-  return firestoreSetPromise;
+  // create a batch to perform all of the writes together
+  const batch = app.firestore().batch();
+
+  // create/update the answer document, merging with any existing data
+  const answerRef = app.firestore().doc(answersPath(answer.id));
+  batch.set(answerRef, answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
+
+  // do we need to create or update the history?
+  if (interactiveStateHistoryId && historyAction !== "none") {
+    if (historyAction === "create") {
+      // create new history entry
+      const historyEntry = createInteractiveStateHistoryEntry(answerDocData, interactiveStateHistoryId);
+      const historyEntryRef = app.firestore().doc(interactiveStateHistoryPath(interactiveStateHistoryId));
+      batch.set(historyEntryRef, historyEntry as Partial<firebase.firestore.DocumentData>);
+    }
+
+    // update/create the history state - merge the existing answer data (if any) with the new data so we get
+    // previously saved fields like attachments
+    const historyState = {...existingAnswerData, ...answerDocData, interactive_state_history_id: interactiveStateHistoryId};
+    const historyStateRef = app.firestore().doc(interactiveStateHistoryStatePath(interactiveStateHistoryId));
+    batch.set(historyStateRef, historyState as Partial<firebase.firestore.DocumentData>);
+  }
+
+  const batchPromise = batch.commit();
+  requestTracker.registerRequest(batchPromise);
+
+  return batchPromise;
 }
 
 export function createAnswerDoc(answer: IExportableAnswerMetadata, interactiveStateHistoryId?: string) {
@@ -517,9 +558,7 @@ const isAuthenticatedAnswerDoc = (answerDoc: LTIRuntimeAnswerMetadata | Anonymou
   return "remote_endpoint" in answerDoc;
 };
 
-export const saveInteractiveStateHistoryEntry = async (options: ISaveInteractiveStateHistoryEntryOptions) => {
-  const { answerDoc, interactiveStateHistoryId } = options;
-
+export const createInteractiveStateHistoryEntry = (answerDoc: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata, interactiveStateHistoryId: string) => {
   let historyEntry: IInteractiveStateHistory;
   const baseHistoryEntry: IInteractiveStateHistoryBaseEntry = {
     id: interactiveStateHistoryId,
@@ -548,28 +587,7 @@ export const saveInteractiveStateHistoryEntry = async (options: ISaveInteractive
     historyEntry = anonymousEntry;
   }
 
-  const historyEntrySetPromise = app.firestore()
-    .doc(interactiveStateHistoryPath(interactiveStateHistoryId))
-    .set(historyEntry as Partial<firebase.firestore.DocumentData>);
-
-  const historyEntryStateSetPromise = app.firestore()
-    .doc(interactiveStateHistoryStatePath(interactiveStateHistoryId))
-    .set(answerDoc as Partial<firebase.firestore.DocumentData>);
-
-  requestTracker.registerRequest(historyEntrySetPromise);
-  requestTracker.registerRequest(historyEntryStateSetPromise);
-
-  return Promise.all([historyEntrySetPromise, historyEntryStateSetPromise]);
-};
-
-export const updateInteractiveStateHistoryState = async (interactiveStateHistoryId: string, updatedState: any) => {
-  const historyEntryStateSetPromise = app.firestore()
-    .doc(interactiveStateHistoryStatePath(interactiveStateHistoryId))
-    .set(updatedState as Partial<firebase.firestore.DocumentData>, {merge: true});
-
-  requestTracker.registerRequest(historyEntryStateSetPromise);
-
-  return historyEntryStateSetPromise;
+  return historyEntry;
 };
 
 export const getLearnerPluginStateDocId = (pluginId: number) => {

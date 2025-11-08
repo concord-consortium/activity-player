@@ -12,7 +12,7 @@ import { PortalDataContext } from "../../portal-data-context";
 import { useSizeAndAspectRatio } from "../../../hooks/use-aspect-ratio";
 import { useSize } from "../../../hooks/use-size";
 import { IManagedInteractive, IMwInteractive, IExportableAnswerMetadata, ILegacyLinkedInteractiveState, QuestionFeedback } from "../../../types";
-import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer, watchQuestionLevelFeedback, saveInteractiveStateHistoryEntry, createAnswerDoc, updateInteractiveStateHistoryState } from "../../../firebase-db";
+import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer, watchQuestionLevelFeedback } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata, getInteractiveInfo, hasLegacyLinkedInteractive, IInteractiveInfo, isQuestion, refIdToAnswersQuestionId } from "../../../utilities/embeddable-utils";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
@@ -181,11 +181,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       const interactiveStateHistoryId = saveInteractiveStateHistory ? interactiveStateHistoryIdRef.current : undefined;
       createOrUpdateAnswer(exportableAnswer, interactiveStateHistoryId);
       if (interactiveStateHistoryId) {
-        const answerDoc = createAnswerDoc(exportableAnswer, interactiveStateHistoryId);
-        if (answerDoc) {
-          saveInteractiveStateHistoryEntry({ answerDoc, interactiveStateHistoryId });
-          interactiveStateHistoryIdRef.current = nanoid();
-        }
+        interactiveStateHistoryIdRef.current = nanoid();
       }
     }
     // Custom callback set internally. Used by the modal dialog to close itself after the most recent
@@ -298,31 +294,19 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
           if (!answerMeta.current && request.interactiveId && request.interactiveId !== embeddableRefId) {
             return { error: "writing to another interactive is not allowed", requestId: request.requestId };
           }
+
+          let interactiveStateHistoryId: string | undefined = undefined;
           if (!answerMeta.current) {
             // allow answers that are only attachments (e.g., a recorded audio response)
             answerMeta.current = getAnswerWithMetadata({}, props.embeddable);
-          }
-          const newOrUpdatedAnswer: any = { ...answerMeta.current, ...newMeta };
-
-          // if saving interactive state history, reuse the existing interactive_state_history_id if present
-          const existingInteractiveStateHistoryId = newOrUpdatedAnswer.interactive_state_history_id;
-          const interactiveStateHistoryId = saveInteractiveStateHistory
-            ? (existingInteractiveStateHistoryId ?? interactiveStateHistoryIdRef.current)
-            : undefined;
-
-          createOrUpdateAnswer(newOrUpdatedAnswer, interactiveStateHistoryId);
-
-          // save a new interactive state history entry only if we created a new interactive_state_history_id
-          if (!existingInteractiveStateHistoryId && interactiveStateHistoryId) {
-            const answerDoc = createAnswerDoc(newOrUpdatedAnswer, interactiveStateHistoryId);
-            if (answerDoc) {
-              saveInteractiveStateHistoryEntry({ answerDoc, interactiveStateHistoryId });
+            if (saveInteractiveStateHistory) {
+              interactiveStateHistoryId = interactiveStateHistoryIdRef.current;
               interactiveStateHistoryIdRef.current = nanoid();
             }
-          } else if (existingInteractiveStateHistoryId) {
-            // update the existing interactive state history state entry with the new answer data
-            updateInteractiveStateHistoryState(existingInteractiveStateHistoryId, newOrUpdatedAnswer);
           }
+
+          // note: we only pass an interactiveStateHistoryId when creating a new answer document
+          createOrUpdateAnswer({...answerMeta.current, ...newMeta}, interactiveStateHistoryId);
         }
       }
     });

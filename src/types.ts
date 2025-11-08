@@ -466,8 +466,3 @@ export type IInteractiveStateHistory = IAuthenticatedInteractiveStateHistoryEntr
 export type IInteractiveStateHistoryWithState = IInteractiveStateHistory & {
   state: any;
 };
-
-export interface ISaveInteractiveStateHistoryEntryOptions {
-  answerDoc: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata
-  interactiveStateHistoryId: string;
-}
