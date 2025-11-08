@@ -251,6 +251,8 @@ export interface ILTIPartial {
   // These are not LTI properties but are required to track collaborations
   collaborators_data_url?: string;
   collaboration_owner_id?: string;
+  // This is not an LTI property but is required to track history
+  interactive_state_history_id?: string;
 }
 
 export interface IAnonymousMetadataPartial {
@@ -260,6 +262,8 @@ export interface IAnonymousMetadataPartial {
   tool_id: string;
   tool_user_id: "anonymous";
   platform_user_id: string;
+  // This is not an LTI property but is required to track history
+  interactive_state_history_id?: string;
 }
 
 /**
@@ -464,8 +468,6 @@ export type IInteractiveStateHistoryWithState = IInteractiveStateHistory & {
 };
 
 export interface ISaveInteractiveStateHistoryEntryOptions {
-  answerId: string;
-  questionId: string;
+  answerDoc: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata
   interactiveStateHistoryId: string;
-  state: any;
 }

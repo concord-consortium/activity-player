@@ -16,7 +16,7 @@ import { getLegacyLinkedRefMap, LegacyLinkedRefMap, refIdToAnswersQuestionId } f
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata,
   IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, ILegacyLinkedInteractiveState, IApRun, IBaseApRun,
   QuestionFeedback, ActivityFeedback, IAnonymousInteractiveStateHistoryEntry, IAuthenticatedInteractiveStateHistoryEntry,
-  IInteractiveStateHistory, IInteractiveStateHistoryBaseEntry, IInteractiveStateHistoryWithState,
+  IInteractiveStateHistory, IInteractiveStateHistoryBaseEntry,
   ISaveInteractiveStateHistoryEntryOptions} from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
@@ -444,7 +444,25 @@ export const watchActivityLevelFeedback = (callback: (fbs: ActivityFeedback[]) =
 // use same universal timezone (UTC) as Lara uses for writing created
 export const utcString = () => (new Date()).toUTCString().replace("GMT", "UTC");
 
-export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
+export function createOrUpdateAnswer(answer: IExportableAnswerMetadata, interactiveStateHistoryId?: string) {
+  const answerDocData = createAnswerDoc(answer, interactiveStateHistoryId);
+  if (!answerDocData) {
+    return;
+  }
+
+  // TODO: LARA stores a created field with the date the answer was created
+  // I'm not sure how to do that easily in Firestore, we could at least add
+  // an updatedAt time using Firestore's features.
+  const firestoreSetPromise = app.firestore()
+    .doc(answersPath(answer.id))
+    .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
+
+  requestTracker.registerRequest(firestoreSetPromise);
+
+  return firestoreSetPromise;
+}
+
+export function createAnswerDoc(answer: IExportableAnswerMetadata, interactiveStateHistoryId?: string) {
   if (!portalData) {
     return;
   }
@@ -462,7 +480,8 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
       context_id: portalData.contextId,
       resource_link_id: portalData.resourceLinkId,
       run_key: "",
-      remote_endpoint: portalData.runRemoteEndpoint
+      remote_endpoint: portalData.runRemoteEndpoint,
+      interactive_state_history_id: interactiveStateHistoryId
     };
 
     // remove any existing collaboration data cached in the answer
@@ -485,46 +504,38 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
       tool_id: portalData.toolId,
       run_key: portalData.runKey,
       tool_user_id: "anonymous",
-      platform_user_id: portalData.runKey
+      platform_user_id: portalData.runKey,
+      interactive_state_history_id: interactiveStateHistoryId
     };
     answerDocData = anonymousAnswer;
   }
 
-  // TODO: LARA stores a created field with the date the answer was created
-  // I'm not sure how to do that easily in Firestore, we could at least add
-  // an updatedAt time using Firestore's features.
-  const firestoreSetPromise = app.firestore()
-    .doc(answersPath(answer.id))
-    .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
-
-  requestTracker.registerRequest(firestoreSetPromise);
-
-  return firestoreSetPromise;
+  return answerDocData;
 }
 
+const isAuthenticatedAnswerDoc = (answerDoc: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata): answerDoc is LTIRuntimeAnswerMetadata => {
+  return "remote_endpoint" in answerDoc;
+};
 
 export const saveInteractiveStateHistoryEntry = async (options: ISaveInteractiveStateHistoryEntryOptions) => {
-  if (!portalData) {
-    return;
-  }
-  const { answerId, questionId, interactiveStateHistoryId, state } = options;
+  const { answerDoc, interactiveStateHistoryId } = options;
 
   let historyEntry: IInteractiveStateHistory;
   const baseHistoryEntry: IInteractiveStateHistoryBaseEntry = {
     id: interactiveStateHistoryId,
-    answer_id: answerId,
-    question_id: questionId,
+    answer_id: answerDoc.id,
+    question_id: answerDoc.question_id,
     state_type: "full",
     created_at: firebase.firestore.FieldValue.serverTimestamp()
   };
-  if (portalData.type === "authenticated") {
+  if (isAuthenticatedAnswerDoc(answerDoc)) {
     const authenticatedEntry: IAuthenticatedInteractiveStateHistoryEntry = {
       ...baseHistoryEntry,
       type: "authenticated",
-      context_id: portalData.contextId,
-      platform_id: portalData.platformId,
-      platform_user_id: portalData.platformUserId.toString(),
-      resource_link_id: portalData.resourceLinkId,
+      context_id: answerDoc.context_id,
+      platform_id: answerDoc.platform_id,
+      platform_user_id: answerDoc.platform_user_id,
+      resource_link_id: answerDoc.resource_link_id,
       run_key: "",
     };
     historyEntry = authenticatedEntry;
@@ -532,17 +543,10 @@ export const saveInteractiveStateHistoryEntry = async (options: ISaveInteractive
     const anonymousEntry: IAnonymousInteractiveStateHistoryEntry = {
       ...baseHistoryEntry,
       type: "anonymous",
-      run_key: portalData.runKey,
+      run_key: answerDoc.run_key,
     };
     historyEntry = anonymousEntry;
   }
-
-  // actual state to be stored separately with a kind field to allow for different storage strategies
-  // in the future
-  const historyEntryWithState: IInteractiveStateHistoryWithState = {
-    ...historyEntry,
-    state,
-  };
 
   const historyEntrySetPromise = app.firestore()
     .doc(interactiveStateHistoryPath(interactiveStateHistoryId))
@@ -550,12 +554,22 @@ export const saveInteractiveStateHistoryEntry = async (options: ISaveInteractive
 
   const historyEntryStateSetPromise = app.firestore()
     .doc(interactiveStateHistoryStatePath(interactiveStateHistoryId))
-    .set(historyEntryWithState as Partial<firebase.firestore.DocumentData>);
+    .set(answerDoc as Partial<firebase.firestore.DocumentData>);
 
   requestTracker.registerRequest(historyEntrySetPromise);
   requestTracker.registerRequest(historyEntryStateSetPromise);
 
   return Promise.all([historyEntrySetPromise, historyEntryStateSetPromise]);
+};
+
+export const updateInteractiveStateHistoryState = async (interactiveStateHistoryId: string, updatedState: any) => {
+  const historyEntryStateSetPromise = app.firestore()
+    .doc(interactiveStateHistoryStatePath(interactiveStateHistoryId))
+    .set(updatedState as Partial<firebase.firestore.DocumentData>, {merge: true});
+
+  requestTracker.registerRequest(historyEntryStateSetPromise);
+
+  return historyEntryStateSetPromise;
 };
 
 export const getLearnerPluginStateDocId = (pluginId: number) => {
