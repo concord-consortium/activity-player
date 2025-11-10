@@ -51,6 +51,7 @@ interface LogMessage {
   parameters: any;
   interactive_id: string | undefined,
   interactive_url: string | undefined,
+  interactiveStateHistoryId?: string | undefined,
 }
 
 export enum LogEventName {
@@ -169,13 +170,6 @@ export class Logger {
     interactiveStateHistoryId?: string
   ): LogMessage {
 
-    if (this.saveInteractiveStateHistoryId && interactiveStateHistoryId) {
-      parameters = {
-        ...parameters,
-        interactiveStateHistoryId
-      };
-    }
-
     const logMessage: LogMessage = {
       application: "Activity Player",
       username: this.username,
@@ -197,9 +191,12 @@ export class Logger {
       run_remote_endpoint: this.runRemoteEndpoint
     };
 
+    if (this.saveInteractiveStateHistoryId && interactiveStateHistoryId) {
+      logMessage.interactiveStateHistoryId = interactiveStateHistoryId;
+    }
+
     return logMessage;
   }
-
 }
 
 function sendToLoggingService(data: LogMessage, url: string) {
