@@ -450,11 +450,17 @@ export async function createOrUpdateAnswer(answer: IExportableAnswerMetadata, in
     return;
   }
 
-  // first lookup to see if there is an existing answer
-  const existingAnswer = await app.firestore().doc(answersPath(answer.id)).get();
-  const existingAnswerData = existingAnswer.exists
-    ? existingAnswer.data() as LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata
-    : undefined;
+  // first lookup to see if there is an existing answer - this might throw an exception for anonymous users
+  // if the document does not exist since the rules check the run key
+  let existingAnswerData: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata | undefined = undefined;
+  try {
+    const existingAnswer = await app.firestore().doc(answersPath(answer.id)).get();
+    existingAnswerData = existingAnswer.exists
+      ? existingAnswer.data() as LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata
+      : undefined;
+  } catch (e) {
+    // ignore any errors
+  }
 
   // determine what we need to do about history
   let historyAction: "create" | "update" | "none" = "none";
