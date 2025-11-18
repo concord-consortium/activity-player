@@ -7,6 +7,7 @@ import firebase from "firebase/compat/app";
 import { RawClassInfo } from "./portal-api";
 import "firebase/compat/firestore";
 import { IAnonymousPortalData, IPortalData } from "./portal-types";
+import { platform } from "os";
 
 describe("Firestore", () => {
 
@@ -16,8 +17,10 @@ describe("Firestore", () => {
 
   beforeEach(async () => {
     const docResult = {
+      get: jest.fn(() => new Promise<any>((resolve) => resolve(docMock))),
       set: jest.fn(() => new Promise<void>((resolve) => resolve())),
-      onSnapshot: jest.fn()
+      onSnapshot: jest.fn(),
+      exists: false,
     };
     const docMock: any = jest.fn(() => docResult);
     const collectionResult: any = {
@@ -27,13 +30,20 @@ describe("Firestore", () => {
     };
     const collectionMock: any = jest.fn(() => collectionResult);
 
+    const batchResult = {
+      set: jest.fn(),
+      commit: jest.fn(() => new Promise<void>((resolve) => resolve()))
+    };
+    const batchMock: any = jest.fn(() => batchResult);
+
     signInWithCustomTokenMock = jest.fn();
     signOutMock = jest.fn(() => new Promise<void>((resolve) => resolve()));
     appMock = {
       firestore: jest.fn(() => ({
         doc: docMock,
         collection: collectionMock,
-        settings: jest.fn()
+        settings: jest.fn(),
+        batch: batchMock
       })),
       auth: jest.fn(() => ({
         signInWithCustomToken: signInWithCustomTokenMock,
@@ -70,7 +80,7 @@ describe("Firestore", () => {
     expect(appMock.firestore().doc().set).not.toHaveBeenCalled();
   });
 
-  it("creates answers with the correct metadata for authenticated users", () => {
+  it("creates answers with the correct metadata for authenticated users", async () => {
     setPortalData({
       type: "authenticated",
       contextId: "context-id",
@@ -109,13 +119,11 @@ describe("Firestore", () => {
     const shouldWatchAnswer = true;
     const exportableAnswer = shouldWatchAnswer && getAnswerWithMetadata(interactiveState, embeddable) as IExportableAnswerMetadata;
 
-    const created = utcString();
-    createOrUpdateAnswer(exportableAnswer);
+    await createOrUpdateAnswer(exportableAnswer);
 
-    expect(appMock.firestore().doc).toHaveBeenCalledWith(`sources/localhost/answers/${exportableAnswer.id}`);
-    expect(appMock.firestore().doc().set).toHaveBeenCalledWith({
+    const authenticatedAnswer = {
       version: 1,
-      created,
+      created: utcString(),
       answer: "test",
       answer_text: "test",
       context_id: "context-id",
@@ -135,10 +143,41 @@ describe("Firestore", () => {
       type: "open_response_answer",
       collaborators_data_url: "https://example.com/collaborations/1234",
       collaboration_owner_id: "1"
-    }, {merge: true});
+    };
+
+    expect(appMock.firestore().doc).toHaveBeenCalledWith(`sources/localhost/answers/${exportableAnswer.id}`);
+    expect(appMock.firestore().batch).toHaveBeenCalled();
+    expect(appMock.firestore().batch().set).toHaveBeenCalledTimes(1);
+    expect(appMock.firestore().batch().set).toHaveBeenCalledWith(expect.anything(), authenticatedAnswer, {merge: true});
+
+
+    // clear the batch set mock and test with a second call to createOrUpdateAnswer with the interactive state history id set
+    const setMock = appMock.firestore().batch().set;
+    setMock.mockClear();
+    authenticatedAnswer.created = utcString();
+    await createOrUpdateAnswer(exportableAnswer, "test-history-id");
+    expect(appMock.firestore().batch().set).toHaveBeenCalledTimes(3);
+
+    // first call is for the answer, that we've already tested above
+    // second call is creation of interactive state history record
+    expect(setMock.mock.calls[1][1]).toEqual({
+      answer_id: exportableAnswer.id,
+      context_id: "context-id",
+      created_at: {_delegate: {_methodName: "FieldValue.serverTimestamp"}},
+      id: "test-history-id",
+      platform_id: "https://example",
+      platform_user_id: "1",
+      question_id: "managed_interactive_123",
+      resource_link_id: "2",
+      run_key: "",
+      state_type: "full",
+      type: "authenticated"
+    });
+    // third call is setting the interactive state history state
+    expect(setMock.mock.calls[2][1]).toEqual({...authenticatedAnswer, interactive_state_history_id: "test-history-id"});
   });
 
-  it("creates answers with the correct metadata for an anonymous user", () => {
+  it("creates answers with the correct metadata for an anonymous user", async () => {
     setAnonymousPortalData({
       type: "anonymous",
       database: {
@@ -165,13 +204,11 @@ describe("Firestore", () => {
 
     const exportableAnswer = getAnswerWithMetadata(interactiveState, embeddable) as IExportableAnswerMetadata;
 
-    const created = utcString();
-    createOrUpdateAnswer(exportableAnswer);
+    await createOrUpdateAnswer(exportableAnswer);
 
-    expect(appMock.firestore().doc).toHaveBeenCalledWith(`sources/localhost/answers/${exportableAnswer.id}`);
-    expect(appMock.firestore().doc().set).toHaveBeenCalledWith({
+    const anonymousAnswer = {
       version: 1,
-      created,
+      created: utcString(),
       answer: "anonymous test",
       answer_text: "anonymous test",
       id: exportableAnswer.id,
@@ -186,7 +223,33 @@ describe("Firestore", () => {
       tool_id: "activity-player.concord.org",
       tool_user_id: "anonymous",
       type: "open_response_answer"
-    }, {merge: true});
+    };
+
+    expect(appMock.firestore().doc).toHaveBeenCalledWith(`sources/localhost/answers/${exportableAnswer.id}`);
+    expect(appMock.firestore().batch).toHaveBeenCalled();
+    expect(appMock.firestore().batch().set).toHaveBeenCalledTimes(1);
+    expect(appMock.firestore().batch().set).toHaveBeenCalledWith(expect.anything(), anonymousAnswer, {merge: true});
+
+    // clear the batch set mock and test with a second call to createOrUpdateAnswer with the interactive state history id set
+    const setMock = appMock.firestore().batch().set;
+    setMock.mockClear();
+    anonymousAnswer.created = utcString();
+    await createOrUpdateAnswer(exportableAnswer, "test-history-id");
+    expect(appMock.firestore().batch().set).toHaveBeenCalledTimes(3);
+
+    // first call is for the answer, that we've already tested above
+    // second call is creation of interactive state history record
+    expect(setMock.mock.calls[1][1]).toEqual({
+      answer_id: exportableAnswer.id,
+      created_at: {_delegate: {_methodName: "FieldValue.serverTimestamp"}},
+      id: "test-history-id",
+      question_id: "managed_interactive_123",
+      run_key: "fake-run-key",
+      state_type: "full",
+      type: "anonymous"
+    });
+    // third call is setting the interactive state history state
+    expect(setMock.mock.calls[2][1]).toEqual({...anonymousAnswer, interactive_state_history_id: "test-history-id"});
   });
 
   describe("#setLearnerPluginState", () => {

@@ -6,6 +6,7 @@ import {
   ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState
 } from "@concord-consortium/lara-interactive-api";
 import classNames from "classnames";
+import { nanoid } from "../../../utilities/nanoid";
 
 import { PortalDataContext } from "../../portal-data-context";
 import { useSizeAndAspectRatio } from "../../../hooks/use-aspect-ratio";
@@ -39,6 +40,7 @@ interface IProps {
   emitInteractiveAvailable?: () => void;
   showQuestionPrefix: boolean;
   hideQuestionNumbers?: boolean;
+  saveInteractiveStateHistory?: boolean;
 }
 
 export interface ManagedInteractiveImperativeAPI {
@@ -55,7 +57,7 @@ const getModalContainer = (): HTMLElement => {
 };
 
 export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation } = props;
+  const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation, saveInteractiveStateHistory } = props;
   const { scrollToQuestionId } = useQuestionInfoContext();
   const portalData = useContext(PortalDataContext);
   const laraData = useContext(LaraDataContext);
@@ -85,6 +87,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const divTarget = React.useRef<HTMLDivElement>(null);
   const divSize = useSize(divTarget);
   const headerSize = useSize(headerTarget);
+  const interactiveStateHistoryIdRef = useRef(nanoid());
 
   const embeddableRefId = embeddable.ref_id;
 
@@ -173,9 +176,13 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const handleNewInteractiveState = (state: any) => {
     // Keep interactive state in sync if iFrame is opened in modal popup
     interactiveState.current = state;
-    const exportableAnswer =  shouldWatchAnswer && getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, answerMeta.current);
+    const exportableAnswer = shouldWatchAnswer && getAnswerWithMetadata(state, props.embeddable as IManagedInteractive, answerMeta.current);
     if (exportableAnswer && !isOfferingLocked(portalData)) {
-      createOrUpdateAnswer(exportableAnswer);
+      const interactiveStateHistoryId = saveInteractiveStateHistory ? interactiveStateHistoryIdRef.current : undefined;
+      createOrUpdateAnswer(exportableAnswer, interactiveStateHistoryId);
+      if (interactiveStateHistoryId) {
+        interactiveStateHistoryIdRef.current = nanoid();
+      }
     }
     // Custom callback set internally. Used by the modal dialog to close itself after the most recent
     // interactive state is received.
@@ -287,11 +294,19 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
           if (!answerMeta.current && request.interactiveId && request.interactiveId !== embeddableRefId) {
             return { error: "writing to another interactive is not allowed", requestId: request.requestId };
           }
+
+          let interactiveStateHistoryId: string | undefined = undefined;
           if (!answerMeta.current) {
             // allow answers that are only attachments (e.g., a recorded audio response)
             answerMeta.current = getAnswerWithMetadata({}, props.embeddable);
+            if (saveInteractiveStateHistory) {
+              interactiveStateHistoryId = interactiveStateHistoryIdRef.current;
+              interactiveStateHistoryIdRef.current = nanoid();
+            }
           }
-          createOrUpdateAnswer({ ...answerMeta.current, ...newMeta });
+
+          // note: we only pass an interactiveStateHistoryId when creating a new answer document
+          createOrUpdateAnswer({...answerMeta.current, ...newMeta}, interactiveStateHistoryId);
         }
       }
     });
@@ -302,6 +317,17 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     setClickedToPlay(true);
     // in the current Lara code we emit the interactive is available even if the iframe src it not set yet
     props.emitInteractiveAvailable?.();
+  };
+
+  const handleLog = (logData: any) => {
+    Logger.log({
+      event: logData.action,
+      event_value: logData.value,
+      parameters: logData.data,
+      interactive_id: embeddableRefId,
+      interactive_url: url,
+      interactiveStateHistoryId: saveInteractiveStateHistory ? interactiveStateHistoryIdRef.current : undefined
+    });
   };
 
   useImperativeHandle(ref, () => ({
@@ -366,6 +392,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         setHeightFromInteractive={setHeightFromInteractive}
         hasHeader={!hideQuestionHeader}
         feedback={feedback}
+        log={handleLog}
       />;
 
   return (

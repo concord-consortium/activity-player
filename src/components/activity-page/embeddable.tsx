@@ -26,6 +26,7 @@ interface IProps {
   pluginsLoaded: boolean;
   ref?: React.Ref<EmbeddableImperativeAPI>;
   hideQuestionNumbers?: boolean;
+  saveInteractiveStateHistory?: boolean;
   addRefToQuestionMap?: (refId: string, ref: any) => void;
 }
 
@@ -37,7 +38,7 @@ type ISendCustomMessage = (message: ICustomMessage) => void;
 
 export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { embeddable, sectionLayout, activityLayout, linkedPluginEmbeddable, displayMode, questionNumber, setNavigation,
-    teacherEditionMode, pluginsLoaded, hideQuestionNumbers } = props;
+    teacherEditionMode, pluginsLoaded, hideQuestionNumbers, saveInteractiveStateHistory } = props;
   const handleSetNavigation = useCallback((options: INavigationOptions) => {
     setNavigation?.(embeddable.ref_id, options);
   }, [setNavigation, embeddable.ref_id]);
@@ -102,6 +103,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                     emitInteractiveAvailable={handleEmitInteractiveAvailable}
                     showQuestionPrefix={showQuestionPrefix}
                     hideQuestionNumbers={hideQuestionNumbers}
+                    saveInteractiveStateHistory={saveInteractiveStateHistory}
                  />;
   } else if (embeddable.type === "ManagedInteractive" && !embeddable.library_interactive) {
     qComponent = <div>Content type not supported</div>;

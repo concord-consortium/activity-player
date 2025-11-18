@@ -1,5 +1,6 @@
 import { IReadableAttachmentInfo } from "@concord-consortium/interactive-api-host";
 import { IInteractiveStateProps } from "@concord-consortium/lara-interactive-api";
+import firebase from "firebase/compat/app";
 
 export type Mode = "runtime" | "authoring" | "report";
 
@@ -194,6 +195,7 @@ export interface Activity {
   defunct?: boolean;
   hide_read_aloud?: boolean;
   hide_question_numbers?: boolean;
+  save_interactive_state_history?: boolean;
   font_size: "normal" | "large"
 }
 
@@ -214,6 +216,7 @@ export interface Sequence {
   defunct?: boolean;
   hide_read_aloud?: boolean;
   hide_question_numbers?: boolean;
+  save_interactive_state_history?: boolean;
   font_size: "normal" | "large"
   layout_override: number;
 }
@@ -248,6 +251,8 @@ export interface ILTIPartial {
   // These are not LTI properties but are required to track collaborations
   collaborators_data_url?: string;
   collaboration_owner_id?: string;
+  // This is not an LTI property but is required to track history
+  interactive_state_history_id?: string;
 }
 
 export interface IAnonymousMetadataPartial {
@@ -257,6 +262,8 @@ export interface IAnonymousMetadataPartial {
   tool_id: string;
   tool_user_id: "anonymous";
   platform_user_id: string;
+  // This is not an LTI property but is required to track history
+  interactive_state_history_id?: string;
 }
 
 /**
@@ -432,4 +439,30 @@ export type Rubric = Omit<RubricV110, "version" | "criteria"> & {
   version: "1.2.0";
   criteriaGroups: RubricCriteriaGroup[];
   tagSummaryDisplay: ITagSummaryDisplay;
+};
+
+export interface IInteractiveStateHistoryBaseEntry {
+  id: string;
+  answer_id: string;
+  question_id: string;
+  state_type: "full"
+  created_at: firebase.firestore.FieldValue | Date;
+}
+export interface IAuthenticatedInteractiveStateHistoryEntry extends IInteractiveStateHistoryBaseEntry {
+  type: "authenticated";
+  context_id: string;
+  platform_id: string;
+  platform_user_id: string;
+  resource_link_id: string;
+  run_key: "";
+}
+export interface IAnonymousInteractiveStateHistoryEntry extends IInteractiveStateHistoryBaseEntry {
+  type: "anonymous";
+  run_key: string;
+}
+
+export type IInteractiveStateHistory = IAuthenticatedInteractiveStateHistoryEntry | IAnonymousInteractiveStateHistoryEntry;
+
+export type IInteractiveStateHistoryWithState = IInteractiveStateHistory & {
+  state: any;
 };

@@ -15,7 +15,8 @@ import { IAnonymousPortalData, IPortalData, isPortalData } from "./portal-types"
 import { getLegacyLinkedRefMap, LegacyLinkedRefMap, refIdToAnswersQuestionId } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata, LTIRuntimeAnswerMetadata, AnonymousRuntimeAnswerMetadata,
   IAuthenticatedLearnerPluginState, IAnonymousLearnerPluginState, ILegacyLinkedInteractiveState, IApRun, IBaseApRun,
-  QuestionFeedback, ActivityFeedback } from "./types";
+  QuestionFeedback, ActivityFeedback, IAnonymousInteractiveStateHistoryEntry, IAuthenticatedInteractiveStateHistoryEntry,
+  IInteractiveStateHistory, IInteractiveStateHistoryBaseEntry } from "./types";
 import { queryValueBoolean } from "./utilities/url-query";
 import { RequestTracker } from "./utilities/request-tracker";
 import { ILaraData } from "./components/lara-data-context";
@@ -27,6 +28,12 @@ let portalData: IPortalData | IAnonymousPortalData | null;
 
 const answersPath = (answerId?: string) =>
   `sources/${portalData?.database.sourceKey}/answers${answerId ? "/" + answerId : ""}`;
+
+const interactiveStateHistoryPath = (historyId?: string) =>
+  `sources/${portalData?.database.sourceKey}/interactive_state_histories${historyId ? "/" + historyId : ""}`;
+
+const interactiveStateHistoryStatePath = (historyId?: string) =>
+  `sources/${portalData?.database.sourceKey}/interactive_state_history_states${historyId ? "/" + historyId : ""}`;
 
 const teacherFeedbackPath = (level: "activity" | "question") => {
   if (!isPortalData(portalData)) {
@@ -436,7 +443,73 @@ export const watchActivityLevelFeedback = (callback: (fbs: ActivityFeedback[]) =
 // use same universal timezone (UTC) as Lara uses for writing created
 export const utcString = () => (new Date()).toUTCString().replace("GMT", "UTC");
 
-export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
+export async function createOrUpdateAnswer(answer: IExportableAnswerMetadata, interactiveStateHistoryId?: string) {
+  // create the new/updated answer document data
+  const answerDocData = createAnswerDoc(answer, interactiveStateHistoryId);
+  if (!answerDocData) {
+    return;
+  }
+
+  // first lookup to see if there is an existing answer - this might throw an exception for anonymous users
+  // if the document does not exist since the rules check the run key
+  let existingAnswerData: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata | undefined = undefined;
+  try {
+    const existingAnswer = await app.firestore().doc(answersPath(answer.id)).get();
+    existingAnswerData = existingAnswer.exists
+      ? existingAnswer.data() as LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata
+      : undefined;
+  } catch (e) {
+    // ignore any errors
+  }
+
+  // determine what we need to do about history
+  let historyAction: "create" | "update" | "none" = "none";
+  if (interactiveStateHistoryId) {
+    if (existingAnswerData?.interactive_state_history_id === interactiveStateHistoryId) {
+      // the caller's history id matches the existing answer's history id, so we just update
+      historyAction = "update";
+    } else {
+      // the caller's history id is different than the existing answer's history id, so we create new history
+      historyAction = "create";
+    }
+  } else if (existingAnswerData?.interactive_state_history_id) {
+    // no history id provided by the caller but the existing answer has one, so we update that one -
+    // this is currently used by the onAnswerMetaUpdate callback in managed-interactive to save the attachment data
+    // on answers that already exist
+    historyAction = "update";
+    interactiveStateHistoryId = existingAnswerData.interactive_state_history_id;
+  }
+
+  // create a batch to perform all of the writes together
+  const batch = app.firestore().batch();
+
+  // create/update the answer document, merging with any existing data
+  const answerRef = app.firestore().doc(answersPath(answer.id));
+  batch.set(answerRef, answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
+
+  // do we need to create or update the history?
+  if (interactiveStateHistoryId && historyAction !== "none") {
+    if (historyAction === "create") {
+      // create new history entry
+      const historyEntry = createInteractiveStateHistoryEntry(answerDocData, interactiveStateHistoryId);
+      const historyEntryRef = app.firestore().doc(interactiveStateHistoryPath(interactiveStateHistoryId));
+      batch.set(historyEntryRef, historyEntry as Partial<firebase.firestore.DocumentData>);
+    }
+
+    // update/create the history state - merge the existing answer data (if any) with the new data so we get
+    // previously saved fields like attachments
+    const historyState = {...existingAnswerData, ...answerDocData, interactive_state_history_id: interactiveStateHistoryId};
+    const historyStateRef = app.firestore().doc(interactiveStateHistoryStatePath(interactiveStateHistoryId));
+    batch.set(historyStateRef, historyState as Partial<firebase.firestore.DocumentData>);
+  }
+
+  const batchPromise = batch.commit();
+  requestTracker.registerRequest(batchPromise);
+
+  return batchPromise;
+}
+
+export function createAnswerDoc(answer: IExportableAnswerMetadata, interactiveStateHistoryId?: string) {
   if (!portalData) {
     return;
   }
@@ -454,7 +527,8 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
       context_id: portalData.contextId,
       resource_link_id: portalData.resourceLinkId,
       run_key: "",
-      remote_endpoint: portalData.runRemoteEndpoint
+      remote_endpoint: portalData.runRemoteEndpoint,
+      interactive_state_history_id: interactiveStateHistoryId
     };
 
     // remove any existing collaboration data cached in the answer
@@ -477,22 +551,50 @@ export function createOrUpdateAnswer(answer: IExportableAnswerMetadata) {
       tool_id: portalData.toolId,
       run_key: portalData.runKey,
       tool_user_id: "anonymous",
-      platform_user_id: portalData.runKey
+      platform_user_id: portalData.runKey,
+      interactive_state_history_id: interactiveStateHistoryId
     };
     answerDocData = anonymousAnswer;
   }
 
-  // TODO: LARA stores a created field with the date the answer was created
-  // I'm not sure how to do that easily in Firestore, we could at least add
-  // an updatedAt time using Firestore's features.
-  const firestoreSetPromise = app.firestore()
-    .doc(answersPath(answer.id))
-    .set(answerDocData as Partial<firebase.firestore.DocumentData>, {merge: true});
-
-  requestTracker.registerRequest(firestoreSetPromise);
-
-  return firestoreSetPromise;
+  return answerDocData;
 }
+
+const isAuthenticatedAnswerDoc = (answerDoc: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata): answerDoc is LTIRuntimeAnswerMetadata => {
+  return "remote_endpoint" in answerDoc;
+};
+
+export const createInteractiveStateHistoryEntry = (answerDoc: LTIRuntimeAnswerMetadata | AnonymousRuntimeAnswerMetadata, interactiveStateHistoryId: string) => {
+  let historyEntry: IInteractiveStateHistory;
+  const baseHistoryEntry: IInteractiveStateHistoryBaseEntry = {
+    id: interactiveStateHistoryId,
+    answer_id: answerDoc.id,
+    question_id: answerDoc.question_id,
+    state_type: "full",
+    created_at: firebase.firestore.FieldValue.serverTimestamp()
+  };
+  if (isAuthenticatedAnswerDoc(answerDoc)) {
+    const authenticatedEntry: IAuthenticatedInteractiveStateHistoryEntry = {
+      ...baseHistoryEntry,
+      type: "authenticated",
+      context_id: answerDoc.context_id,
+      platform_id: answerDoc.platform_id,
+      platform_user_id: answerDoc.platform_user_id,
+      resource_link_id: answerDoc.resource_link_id,
+      run_key: "",
+    };
+    historyEntry = authenticatedEntry;
+  } else {
+    const anonymousEntry: IAnonymousInteractiveStateHistoryEntry = {
+      ...baseHistoryEntry,
+      type: "anonymous",
+      run_key: answerDoc.run_key,
+    };
+    historyEntry = anonymousEntry;
+  }
+
+  return historyEntry;
+};
 
 export const getLearnerPluginStateDocId = (pluginId: number) => {
   if (!portalData) {
