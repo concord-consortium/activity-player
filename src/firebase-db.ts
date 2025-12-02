@@ -63,7 +63,7 @@ export interface WrappedDBAnswer {
 }
 export type DBChangeListener = (wrappedDBAnswer: WrappedDBAnswer | null) => void;
 
-interface IConfig {
+export interface IConfig {
   apiKey: string;
   authDomain: string;
   databaseURL: string;
@@ -109,6 +109,10 @@ export const onFirestoreSaveAfterTimeout = (handler: () => void) => {
   requestTracker.successAfterTimeoutHandler = handler;
 };
 let app: firebase.app.App;
+
+export const getConfiguration = (name?: FirebaseAppName): IConfig => {
+  return name ? configurations[name] : configurations["report-service-dev"];
+};
 
 // preview mode will run Firestore in offline mode and clear it (as otherwise the local data is persisted).
 export async function initializeDB({ name, preview }: { name: FirebaseAppName, preview: boolean }) {
