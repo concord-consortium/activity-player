@@ -11,8 +11,9 @@ import {
   ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState, AttachmentInfoMap
 } from "@concord-consortium/lara-interactive-api";
 import { DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
+import { FirebaseObjectStorageConfig, FirebaseObjectStorageUser } from "@concord-consortium/object-storage";
 import Shutterbug from "shutterbug";
-import { watchAnswer } from "../../../firebase-db";
+import { getConfiguration, watchAnswer } from "../../../firebase-db";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
 import { IPortalData } from "../../../portal-types";
 import { IInteractiveInfo } from "../../../utilities/embeddable-utils";
@@ -23,6 +24,8 @@ import { useAccessibility } from "../../accessibility-context";
 import { useMediaLibrary } from "../../media-library-context";
 import { IframeRuntimeFeedback } from "../../teacher-feedback/iframe-runtime-feedback";
 import { isOfferingLocked } from "../../../utilities/portal-data-utils";
+import { queryValue, queryValueBoolean } from "../../../utilities/url-query";
+import { anonymousPortalData } from "../../../portal-api";
 
 import "./iframe-runtime.scss";
 
@@ -294,6 +297,30 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         }
       });
 
+      // create object storage config
+      const preview = queryValueBoolean("preview") || queryValue("mode")?.toLowerCase() === "teacher-edition";
+      const objectStorePortalData = portalData ?? anonymousPortalData(preview);
+
+      const objectStorageUser: FirebaseObjectStorageUser =
+        objectStorePortalData.type === "authenticated" ? {
+          type: "authenticated",
+          jwt: objectStorePortalData.rawPortalJWT as string,
+          contextId: objectStorePortalData.contextId,
+          platformId: objectStorePortalData.platformId,
+          platformUserId: objectStorePortalData.platformUserId,
+          resourceLinkId: objectStorePortalData.resourceLinkId,
+        } : {
+          type: "anonymous",
+          runKey: objectStorePortalData.runKey,
+        };
+      const objectStorageConfig: FirebaseObjectStorageConfig = {
+        version: 1,
+        type: "firebase",
+        app: getConfiguration(objectStorePortalData.database.appName),
+        root: `sources/${objectStorePortalData.database.sourceKey}`,
+        user: objectStorageUser
+      };
+
       // note: many of the values here are placeholders that require further
       // consideration to determine whether there are more appropriate values.
       // NOTE: updatedAt is directly added here instead of in the exported lara types
@@ -320,7 +347,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           }
         },
         ...linkedInteractivesRef.current,
-        attachments
+        attachments,
+        objectStorageConfig: objectStorageConfig as Record<string, any>,
       };
       const initInteractiveMsg: IInitInteractive = report
               ? {

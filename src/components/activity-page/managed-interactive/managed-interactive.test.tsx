@@ -5,6 +5,7 @@ import { ManagedInteractive } from "./managed-interactive";
 import { EmbeddableType, IMwInteractive } from "../../../types";
 import { IAttachmentUrlRequest } from "@concord-consortium/lara-interactive-api";
 import { DynamicTextTester } from "../../../test-utils/dynamic-text";
+import { IConfig } from "../../../firebase-db";
 
 configure({ testIdAttribute: "data-cy" });
 
@@ -81,7 +82,8 @@ const mockWatchAnswer = jest.fn((id: string, callback: (answer: any) => void) =>
 jest.mock("../../../firebase-db", () => ({
   watchAnswer: (id: string, callback: (answer: any) => void) => mockWatchAnswer(id, callback),
   getAnswer: () => { return { answerType: "multiple_choice_answer", selectedChoiceIds: []}; },
-  getPortalData: () => undefined
+  getPortalData: () => undefined,
+  getConfiguration: () => ({} as IConfig)
 }));
 
 const mockHandleGetFirebaseJWT = jest.fn();

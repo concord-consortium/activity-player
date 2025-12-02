@@ -143,7 +143,14 @@ describe("IframeRuntime component", () => {
 
     // initInteractive is then posted to the iframe
     expect(lastPost()).toBe("initInteractive");
-    expect(lastPostData()).toStrictEqual({
+
+    // extract out dynamic bits
+    const postData = lastPostData();
+    const { externalReportUrl, objectStorageConfig } = postData;
+    delete postData.externalReportUrl;
+    delete postData.objectStorageConfig;
+
+    expect(postData).toStrictEqual({
       activityName: undefined,
       attachments: {
         "test.mp3": {
@@ -168,7 +175,6 @@ describe("IframeRuntime component", () => {
       classInfoUrl: "",
       collaboratorUrls: null,
       error: "",
-      externalReportUrl: undefined,
       globalInteractiveState: null,
       hostFeatures: {getFirebaseJwt: {version: "1.0.0"}, modal: {alert: false, dialog: true, lightbox: true, version: "1.0.0"}, domain: "activity-player.unexisting.url.com"},
       interactive: {id: "123-Interactive", name: ""},
@@ -181,8 +187,33 @@ describe("IframeRuntime component", () => {
       runRemoteEndpoint: undefined,
       themeInfo: {colors: {colorA: "", colorB: ""}},
       updatedAt: undefined,
-      version: 1
+      version: 1,
     });
+
+    expect(externalReportUrl).toBeDefined();
+
+    expect(objectStorageConfig.user.runKey).toBeDefined();
+    objectStorageConfig.app.apiKey = "obfuscated-api-key-for-tests";
+    objectStorageConfig.user.runKey = "static-run-key-for-tests";
+    expect(objectStorageConfig).toStrictEqual({
+      app: {
+        apiKey: "obfuscated-api-key-for-tests",
+        appId: "1:402218300971:web:32b7266ef5226ff7",
+        authDomain: "report-service-dev.firebaseapp.com",
+        databaseURL: "https://report-service-dev.firebaseio.com",
+        messagingSenderId: "402218300971",
+        projectId: "report-service-dev",
+        storageBucket: "report-service-dev.appspot.com",
+      },
+      root: "sources/activity-player.unexisting.url.com",
+      type: "firebase",
+      user: {
+        runKey: "static-run-key-for-tests",
+        type: "anonymous",
+      },
+      version: 1,
+    });
+
     expect(mockSetSendCustomMessage).toHaveBeenCalled();
 
     act(() => {
