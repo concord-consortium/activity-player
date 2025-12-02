@@ -193,10 +193,11 @@ describe("IframeRuntime component", () => {
     expect(externalReportUrl).toBeDefined();
 
     expect(objectStorageConfig.user.runKey).toBeDefined();
+    objectStorageConfig.app.apiKey = "obfuscated-api-key-for-tests";
     objectStorageConfig.user.runKey = "static-run-key-for-tests";
     expect(objectStorageConfig).toStrictEqual({
       app: {
-        apiKey: "AIzaSyCvxKWuYDgJ4r4o8JeNAOYusx0aV71_YuE",
+        apiKey: "obfuscated-api-key-for-tests",
         appId: "1:402218300971:web:32b7266ef5226ff7",
         authDomain: "report-service-dev.firebaseapp.com",
         databaseURL: "https://report-service-dev.firebaseio.com",
