@@ -66,9 +66,11 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.(png|woff|woff2|eot|ttf)$/,
-          loader: "url-loader",
-          options: {
-            limit: 8192
+          type: "asset",
+          parser: {
+            dataUrlCondition: {
+              maxSize: 8192
+            }
           }
         },
         {
@@ -77,7 +79,12 @@ module.exports = (env, argv) => {
             {
               // Do not apply SVGR import in CSS files.
               issuer: /\.(css|scss|less)$/,
-              use: "url-loader"
+              type: "asset",
+              parser: {
+                dataUrlCondition: {
+                  maxSize: 8192
+                }
+              }
             },
             {
               issuer: /\.tsx?$/,
@@ -90,7 +97,7 @@ module.exports = (env, argv) => {
         process.env.CODE_COVERAGE ? {
           test: /\.[tj]sx?$/,
           use: {
-            loader: "istanbul-instrumenter-loader",
+            loader: "@jsdevtools/coverage-istanbul-loader",
             options: { esModules: true },
           },
           enforce: "post",
