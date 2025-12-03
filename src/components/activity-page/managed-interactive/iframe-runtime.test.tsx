@@ -205,6 +205,7 @@ describe("IframeRuntime component", () => {
         projectId: "report-service-dev",
         storageBucket: "report-service-dev.appspot.com",
       },
+      questionId: "interactive_123",
       root: "sources/activity-player.unexisting.url.com",
       type: "firebase",
       user: {

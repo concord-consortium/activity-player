@@ -16,7 +16,7 @@ import Shutterbug from "shutterbug";
 import { getConfiguration, watchAnswer } from "../../../firebase-db";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
 import { IPortalData } from "../../../portal-types";
-import { IInteractiveInfo } from "../../../utilities/embeddable-utils";
+import { IInteractiveInfo, refIdToAnswersQuestionId } from "../../../utilities/embeddable-utils";
 import { getReportUrl } from "../../../utilities/report-utils";
 import ReloadIcon from "../../../assets/svg-icons/icon-reload.svg";
 import { accessibilityClick } from "../../../utilities/accessibility-helper";
@@ -318,7 +318,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         type: "firebase",
         app: getConfiguration(objectStorePortalData.database.appName),
         root: `sources/${objectStorePortalData.database.sourceKey}`,
-        user: objectStorageUser
+        user: objectStorageUser,
+        questionId: refIdToAnswersQuestionId(id)
       };
 
       // note: many of the values here are placeholders that require further
