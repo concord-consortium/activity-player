@@ -153,7 +153,7 @@
     "@concord-consortium/dynamic-text": "^1.0.6",
     "@concord-consortium/interactive-api-host": "^0.8.0",
     "@concord-consortium/lara-interactive-api": "^1.10.0",
-    "@concord-consortium/object-storage": "1.0.0-pre.5",
+    "@concord-consortium/object-storage": "1.0.0-pre.6",
     "@concord-consortium/text-decorator": "^1.0.2",
     "@concord-consortium/token-service": "^2.1.0",
     "@react-hook/resize-observer": "^1.2.5",
