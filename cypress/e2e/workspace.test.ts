@@ -15,7 +15,7 @@ context("Test the overall app", () => {
 
       cy.log("verify ActivityNavHeader loads");
       cy.get("[data-cy=activity-nav-header]").should("be.visible");
-      cy.get(".page-button").should("have.length", 22); // top and bottom nav headers exist
+      cy.get(".page-button").should("have.length", 24); // top and bottom nav headers exist
 
       cy.log("verify ProfileNavHeader loads");
       cy.get("[data-cy=account-owner]").should("be.visible");

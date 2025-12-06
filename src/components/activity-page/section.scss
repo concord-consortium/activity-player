@@ -138,6 +138,14 @@
       right: 0;
       width: 100%;
       margin-right: 20px;
+
+      &.responsive-50-50 {
+        width: 50%;
+
+        &.expand {
+          width: 100%;
+        }
+      }
     }
     .column.secondary {
       min-width: 365px;
@@ -145,6 +153,14 @@
       left: 0;
       &.stacked {
         flex-direction: column;
+      }
+      &.responsive-50-50 {
+        min-width: 50%;
+        max-width: 50%;
+
+        &.collapsed {
+          min-width: 45px;
+        }
       }
       &.collapsed {
         min-width: 45px;

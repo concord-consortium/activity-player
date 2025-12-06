@@ -146,7 +146,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   };
 
   const renderCollapsibleHeader = () => {
-    const collapsibleColumnOnLeft = section.layout === "30-70" || section.layout === "40-60" || section.layout === "responsive-2-columns";
+    const collapsibleColumnOnLeft = section.layout === "30-70" || section.layout === "40-60" || section.layout === "responsive-30-70" || section.layout === "responsive-50-50";
     const headerClass = `collapsible-header ${isSecondaryCollapsed ? "collapsed" : ""} ${collapsibleColumnOnLeft ? left : right}`;
     return (
       <div className={headerClass} data-cy="collapsible-header" tabIndex={0}
@@ -196,13 +196,15 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   const display_mode = section.secondary_column_display_mode;
   const singlePage = activityLayout === ActivityLayouts.SinglePage;
   const responsiveFullWidth = layout === "responsive-full-width";
-  const responsive2Column = layout === "responsive-2-columns";
+  const responsive3070Column = layout === "responsive-30-70";
+  const responsive5050 = layout === "responsive-50-50";
   const splitLayout = layout === "60-40" ||
                       layout === "40-60" ||
                       layout === "70-30" ||
                       layout === "30-70" ||
-                      responsive2Column;
-  const responsiveSection = responsive2Column || responsiveFullWidth || layout === "responsive";
+                      responsive3070Column ||
+                      responsive5050;
+  const responsiveSection = responsive3070Column || responsive5050 || responsiveFullWidth || layout === "responsive";
   const sectionClass = classNames("section",
                                   {"full-width": layout === "full-width" || singlePage},
                                   {"l_6040": layout === "60-40"},
