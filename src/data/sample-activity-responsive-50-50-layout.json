@@ -250,6 +250,24 @@
       "sidebar_title": "Did you know?",
       "sections": [
         {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "is_half_width": false,
+              "content": "<p>The section below uses the 50-50 layout and has a collapsible column.</p>",
+              "is_callout": true,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "272424-Embeddable::Xhtml"
+            }
+          ]
+        },
+        {
           "title": "assessment_block",
           "name": null,
           "layout": "responsive-50-50",
@@ -365,6 +383,71 @@
               "type": "ManagedInteractive",
               "ref_id": "10253-ManagedInteractive",
               "linked_interactives": []
+            }
+          ]
+        },
+        {
+          "layout": "full-width",
+          "is_hidden": false,
+          "secondary_column_collapsible": false,
+          "secondary_column_display_mode": "stacked",
+          "embeddables": [
+            {
+              "column": null,
+              "is_half_width": false,
+              "content": "<p>This is a full width section containing text box and an interactive.</p>",
+              "is_callout": true,
+              "is_hidden": false,
+              "name": "",
+              "type": "Embeddable::Xhtml",
+              "ref_id": "272424-Embeddable::Xhtml"
+            },
+            {
+              "name": "",
+              "url_fragment": "",
+              "authored_state": "",
+              "is_hidden": false,
+              "is_full_width": true,
+              "show_in_featured_question_report": true,
+              "inherit_aspect_ratio_method": true,
+              "custom_aspect_ratio_method": null,
+              "inherit_native_width": true,
+              "custom_native_width": 576,
+              "inherit_native_height": true,
+              "custom_native_height": 435,
+              "inherit_click_to_play": true,
+              "custom_click_to_play": false,
+              "inherit_full_window": true,
+              "custom_full_window": false,
+              "inherit_click_to_play_prompt": true,
+              "custom_click_to_play_prompt": null,
+              "inherit_image_url": true,
+              "custom_image_url": null,
+              "library_interactive": {
+                "hash": "53f9a6e00236e2c86b5c3dbf2fe186e179ed8872",
+                "data": {
+                  "aspect_ratio_method": "DEFAULT",
+                  "authoring_guidance": "<p>Author a model at&nbsp;<a href=\"https://connected-bio-spaces.concord.org/?authoring\">https://connected-bio-spaces.concord.org/?authoring</a>, hit Submit, then copy the fragment of the url after \"?\".</p>",
+                  "base_url": "https://connected-bio-spaces.concord.org/",
+                  "click_to_play": false,
+                  "click_to_play_prompt": null,
+                  "description": "",
+                  "enable_learner_state": true,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "image_url": null,
+                  "name": "Connected Bio",
+                  "native_height": 435,
+                  "native_width": 576,
+                  "no_snapshots": false,
+                  "show_delete_data_button": false,
+                  "thumbnail_url": "",
+                  "customizable": false,
+                  "authorable": false
+                }
+              },
+              "type": "ManagedInteractive",
+              "ref_id": "359-ManagedInteractive"
             }
           ]
         }
