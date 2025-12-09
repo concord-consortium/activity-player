@@ -196,7 +196,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   const display_mode = section.secondary_column_display_mode;
   const singlePage = activityLayout === ActivityLayouts.SinglePage;
   const responsiveFullWidth = layout === "responsive-full-width";
-  const responsive3070Column = layout === "responsive-30-70";
+  const responsive3070Column = layout === "responsive-30-70" || layout === "responsive-2-column";
   const responsive5050 = layout === "responsive-50-50";
   const splitLayout = layout === "60-40" ||
                       layout === "40-60" ||
