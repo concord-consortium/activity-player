@@ -26,8 +26,8 @@ context("Loading activities", () => {
       cy.get("[data-cy=activity-summary]").should("contain", "Sample Layout Types");
     });
 
-    it("can load page 4", () => {
-      cy.visit("?activity=sample-activity-multiple-layout-types&page=4&preview");
+    it("can load page 5", () => {
+      cy.visit("?activity=sample-activity-multiple-layout-types&page=5&preview");
       activityPage.getSecondaryEmbeddable("text-box").eq(1).scrollIntoView()
         .should("be.visible").and("contain","Duis vitae ultrices augue, eu fermentum elit.");
     });

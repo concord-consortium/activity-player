@@ -45,10 +45,10 @@ context("Test the overall app", () => {
 
       cy.log("Required questions");
       cy.log("verify locked navigation");
-      activityPage.getNavPage(5).click();
-      cy.wait(1000);
-      activityPage.getNavPage(6).should("have.class", "disabled");
       activityPage.getNavPage(6).click();
+      cy.wait(1000);
+      activityPage.getNavPage(7).should("have.class", "disabled");
+      activityPage.getNavPage(7).click();
       cy.wait(1000);
       activityPage.getModalDialogMessage().should("have.length", 1);
       activityPage.getModalDialogClose().click();
@@ -128,7 +128,7 @@ context("Test the teacher edition plugin", () => {
 context("Test fixed width settings", () => {
   it("defaults to 1100px", () => {
     cy.visit("?activity=sample-activity-multiple-layout-types&preview");
-    activityPage.getPage(5).click();
+    activityPage.getPage(6).click();
     activityPage.getActivity()
       .should("be.visible")
       .and("have.length", 1)

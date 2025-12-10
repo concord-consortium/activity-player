@@ -18,6 +18,7 @@ import sampleActivityPluginsSinglePage from "../data/sample-activity-plugins-sin
 import sampleActivityGlossaryPlugin from "../data/sample-activity-glossary-plugin.json";
 import sampleActivityGlossaryPluginExampleInteractive from "../data/sample-activity-glossary-plugin-example-interactive.json";
 import sampleActivityResponsive from "../data/sample-activity-responsive-layout.json";
+import sampleActivityResponsive5050 from "../data/sample-activity-responsive-50-50-layout.json";
 import sampleActivitySinglePageLayout from "../data/sample-activity-single-page-layout.json";
 import sampleActivityFullWidthOff from "../data/LARA-page-elements-full-width-off.json";
 import sampleActivityFullWidthOn from "../data/LARA-page-elements-full-width-on.json";
@@ -78,6 +79,7 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-media-library": sampleActivityMediaLibrary as unknown as Activity,
   "sample-activity-hide-question-number": sampleActivityHideQuestionNumber as unknown as Activity,
   "sample-activity-save-interactive-state-history": sampleActivitySaveInteractiveStateHistory as unknown as Activity,
+  "sample-activity-responsive-50-50-layout": sampleActivityResponsive5050 as unknown as Activity,
 };
 
 import sampleSequence from "../data/sample-sequence.json";

@@ -114,6 +114,9 @@ const newSectionsResource = (resourcePage: legacyPageType): SectionType[] => {
     case "l-responsive":
       sectionLayout  = "responsive";
       break;
+    case "l-responsive-50-50":
+      sectionLayout  = "responsive-50-50";
+      break;
     case "l-6040":
       sectionLayout = "40-60";
       break;

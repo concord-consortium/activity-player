@@ -18,6 +18,7 @@ export enum ActivityLayoutOverrides {
 export enum SectionLayouts {
   FullWidth = "l-full-width",
   Responsive = "l-responsive",
+  Responsive5050 = "l-responsive-50-50",
   SixtyForty = "l-6040",
   FortySixty = "r-4060",
   SeventyThirty = "l-7030",

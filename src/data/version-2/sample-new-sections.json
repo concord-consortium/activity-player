@@ -1102,7 +1102,7 @@
           ]
         },
         {
-          "layout": "responsive-2-columns",
+          "layout": "responsive-30-70",
           "is_hidden": false,
           "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
@@ -1404,7 +1404,7 @@
           ]
         },
         {
-          "layout": "responsive-2-columns",
+          "layout": "responsive-30-70",
           "is_hidden": false,
           "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
@@ -1514,7 +1514,7 @@
           ]
         },
         {
-          "layout": "responsive-2-columns",
+          "layout": "responsive-30-70",
           "is_hidden": false,
           "secondary_column_collapsible": true,
           "secondary_column_display_mode": "stacked",
@@ -2330,7 +2330,7 @@
           ]
         },
         {
-          "layout": "responsive-2-columns",
+          "layout": "responsive-30-70",
           "is_hidden": false,
           "secondary_column_collapsible": false,
           "secondary_column_display_mode": "stacked",
