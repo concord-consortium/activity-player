@@ -8,8 +8,10 @@ import {
   IGetInteractiveSnapshotResponse, IInitInteractive, ILinkedInteractive, IReportInitInteractive,
   ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, ILinkedInteractiveStateResponse,
   IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent,
-  ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState, AttachmentInfoMap
+  ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState, AttachmentInfoMap,
+  IPubSubCreateChannel, IPubSubSubscribe, IPubSubUnsubscribe, IPubSubPublish
 } from "@concord-consortium/lara-interactive-api";
+import { PubSubManager } from "@concord-consortium/interactive-api-host";
 import { DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
 import { FirebaseObjectStorageConfig, FirebaseObjectStorageUser } from "@concord-consortium/object-storage";
 import Shutterbug from "shutterbug";
@@ -88,6 +90,9 @@ interface IProps {
   log: (logData: any) => void;
 }
 
+// this is managed outside of the component to persist across component unmount/mount cycles
+const pubSubManager = new PubSubManager();
+
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
@@ -121,6 +126,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       if (!phone) {
         return;
       }
+
+      pubSubManager.addInteractive(id, phone);
 
       // Just to add some type checking to phone post (ServerMessage).
       const post = (type: ServerMessage, data: any) => phone.post(type, data);
@@ -276,6 +283,18 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           }
         }
       });
+      addListener("createChannel", (message: IPubSubCreateChannel) => {
+        pubSubManager.createChannel(message.channelId, message.channelInfo);
+      });
+      addListener("publish", (message: IPubSubPublish) => {
+        pubSubManager.publish(id, message.channelId, message.message);
+      });
+      addListener("subscribe", (message: IPubSubSubscribe) => {
+        pubSubManager.subscribe(id, message.channelId, message.subscriptionId);
+      });
+      addListener("unsubscribe", (message: IPubSubUnsubscribe) => {
+        pubSubManager.unsubscribe(id, message.channelId, message.subscriptionId);
+      });
 
       // Legacy bug fix: In the 1.0.0 release of the AP the special 'nochange'
       // message wasn't handled correctly and it was saved as the interactive state
@@ -418,6 +437,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       dynamicTextComponentIds.current?.forEach(componentId => {
         dynamicText.unregisterComponent(componentId);
       });
+
+      pubSubManager.removeInteractive(id);
 
       if (phoneRef.current) {
         phoneRef.current.disconnect();
