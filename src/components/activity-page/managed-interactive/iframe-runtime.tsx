@@ -284,7 +284,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         }
       });
       addListener("createChannel", (message: IPubSubCreateChannel) => {
-        pubSubManager.createChannel(id, message.channelId, message.channelInfo);
+        pubSubManager.createChannel(message.channelId, message.channelInfo);
       });
       addListener("publish", (message: IPubSubPublish) => {
         pubSubManager.publish(id, message.channelId, message.message);
