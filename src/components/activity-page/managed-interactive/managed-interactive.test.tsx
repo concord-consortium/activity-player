@@ -74,9 +74,37 @@ jest.mock("@concord-consortium/token-service", () => ({
 }));
 
 const mockHandleGetAttachmentUrl = jest.fn();
-jest.mock("@concord-consortium/interactive-api-host", () => ({
-  handleGetAttachmentUrl: (...args: any) => mockHandleGetAttachmentUrl(...args)
-}));
+let mockAddInteractive: jest.Mock;
+let mockRemoveInteractive: jest.Mock;
+let mockCreateChannel: jest.Mock;
+let mockSubscribe: jest.Mock;
+let mockUnsubscribe: jest.Mock;
+let mockPublish: jest.Mock;
+
+jest.mock("@concord-consortium/interactive-api-host", () => {
+  // Initialize the mock functions
+  mockAddInteractive = jest.fn();
+  mockRemoveInteractive = jest.fn();
+  mockCreateChannel = jest.fn();
+  mockSubscribe = jest.fn();
+  mockUnsubscribe = jest.fn();
+  mockPublish = jest.fn();
+
+  // Create a mock class that returns an instance with all the methods
+  class MockPubSubManager {
+    addInteractive = mockAddInteractive;
+    removeInteractive = mockRemoveInteractive;
+    createChannel = mockCreateChannel;
+    subscribe = mockSubscribe;
+    unsubscribe = mockUnsubscribe;
+    publish = mockPublish;
+  }
+
+  return {
+    handleGetAttachmentUrl: (...args: any) => mockHandleGetAttachmentUrl(...args),
+    PubSubManager: MockPubSubManager
+  };
+});
 
 const mockWatchAnswer = jest.fn((id: string, callback: (answer: any) => void) => callback({ meta: {} }));
 jest.mock("../../../firebase-db", () => ({
