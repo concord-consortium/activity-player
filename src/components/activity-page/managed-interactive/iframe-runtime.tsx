@@ -323,7 +323,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       const objectStorageUser: FirebaseObjectStorageUser =
         objectStorePortalData.type === "authenticated" ? {
           type: "authenticated",
-          jwt: objectStorePortalData.rawPortalJWT as string,
+          jwt: objectStorePortalData.database.rawFirebaseJWT,
           contextId: objectStorePortalData.contextId,
           platformId: objectStorePortalData.platformId,
           platformUserId: objectStorePortalData.platformUserId,
