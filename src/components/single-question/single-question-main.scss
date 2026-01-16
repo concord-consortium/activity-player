@@ -1,0 +1,133 @@
+// src/components/single-question/single-question-main.scss
+
+// Class-based selector for the main element
+.single-question-main {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-height: 0; // Required for flex children with overflow
+
+  // All slide wrappers are positioned absolutely and layered.
+  // Visibility is controlled via --visible/--hidden classes with a subtle fade.
+  .single-question-main__slide-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center; // Horizontally center content
+    padding: 20px;
+    overflow: auto;
+
+    // Use before/after pseudo-elements with flex-grow to vertically center content
+    &::before,
+    &::after {
+      content: "";
+      flex: 1;
+    }
+
+    // Hide scrollbar but keep functionality
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none; // IE/Edge
+
+    &::-webkit-scrollbar {
+      display: none; // Chrome/Safari/Opera
+    }
+
+    // Default state: hidden
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 150ms ease-out, visibility 150ms ease-out;
+
+    // Visible state
+    &.single-question-main__slide-wrapper--visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    // Hidden state (explicit for clarity)
+    &.single-question-main__slide-wrapper--hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    // Slide type-specific styling
+    &--introduction,
+    &--page-header,
+    &--section-header,
+    &--completion {
+      background-color: #f9f9f9;
+    }
+
+    &--embeddable {
+      // Embeddable fills available space (full width by default)
+      > .embeddable {
+        width: 100%;
+        height: 100%;
+        max-height: 100%;
+      }
+
+      // embeddable-sub-two wraps the actual interactive content
+      .embeddable-sub-two {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      // For iframe-based embeddables, fill available vertical space with min/max constraints
+      .managed-interactive,
+      .mw-interactive {
+        width: 100%;
+        height: 100%;
+        min-height: 300px;
+        max-height: calc(100vh - 180px); // Account for header + scrubber
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      // Text box and runtime container styling
+      .textbox,
+      .textbox .content,
+      .runtime-container {
+        background: #fff;
+      }
+
+      .textbox .content {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+  }
+
+  // Respect activity's fixed_width_layout setting
+  // These classes are added to the container based on activity.fixed_width_layout
+  &--fixed-width-ipad {
+    .single-question-main__slide-wrapper--embeddable > .embeddable {
+      max-width: 1024px; // iPad-friendly width
+      margin: 0 auto;
+    }
+  }
+
+  &--fixed-width-1100 {
+    .single-question-main__slide-wrapper--embeddable > .embeddable {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+  }
+}
+
+// WCAG: Respect reduced motion preference - disable fade transition
+@media (prefers-reduced-motion: reduce) {
+  .single-question-main .single-question-main__slide-wrapper {
+    transition: none;
+  }
+}

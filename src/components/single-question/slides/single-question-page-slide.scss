@@ -1,0 +1,32 @@
+.single-question-page-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  max-width: 800px;
+  width: 100%;
+  padding: 40px;
+
+  &__number {
+    font-size: 0.875rem;
+    color: #666666; // WCAG: Improved contrast for small text (4.5:1 ratio)
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+
+  &__title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 24px 0;
+  }
+
+  &__text {
+    font-size: 1.125rem;
+    color: #555;
+    line-height: 1.6;
+    max-width: 600px;
+  }
+}

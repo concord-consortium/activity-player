@@ -1,0 +1,171 @@
+.single-question-completion-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px;
+  overflow: hidden;
+
+  // Confetti container - covers the slide area
+  &__confetti {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  // Individual confetti particle
+  &__confetti-particle {
+    position: absolute;
+    top: -20px;
+    border-radius: 2px;
+    opacity: 0;
+    transform: rotate(0deg);
+  }
+
+  // Content wrapper to ensure it's above confetti
+  &__content {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  // Initial state before animation
+  &__icon {
+    width: 80px;
+    height: 80px;
+    fill: #4caf50;
+    margin-bottom: 24px;
+    transform: scale(0.8);
+    opacity: 0;
+  }
+
+  &__title {
+    font-size: 2.5rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 16px 0;
+    transform: translateY(10px);
+    opacity: 0;
+  }
+
+  &__message {
+    font-size: 1.25rem;
+    color: #666;
+    margin: 0;
+    transform: translateY(10px);
+    opacity: 0;
+  }
+
+  // Animated state
+  &--animate {
+    .single-question-completion-slide__icon {
+      animation: completion-icon-pop 400ms ease-out forwards;
+    }
+
+    .single-question-completion-slide__title {
+      animation: completion-fade-up 300ms ease-out 150ms forwards;
+    }
+
+    .single-question-completion-slide__message {
+      animation: completion-fade-up 300ms ease-out 250ms forwards;
+    }
+
+    // Animate confetti particles
+    .single-question-completion-slide__confetti-particle {
+      animation: confetti-fall 2s ease-out forwards;
+    }
+  }
+}
+
+// Keyframes for celebration animation
+@keyframes completion-icon-pop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes completion-fade-up {
+  0% {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Confetti falling animation
+@keyframes confetti-fall {
+  0% {
+    opacity: 1;
+    top: -20px;
+    transform: rotate(0deg) translateX(0);
+  }
+  25% {
+    opacity: 1;
+    transform: rotate(90deg) translateX(10px);
+  }
+  50% {
+    opacity: 1;
+    transform: rotate(180deg) translateX(-10px);
+  }
+  75% {
+    opacity: 0.8;
+    transform: rotate(270deg) translateX(10px);
+  }
+  100% {
+    opacity: 0;
+    top: 100%;
+    transform: rotate(360deg) translateX(-5px);
+  }
+}
+
+// WCAG: Respect reduced motion - show content immediately without animation
+@media (prefers-reduced-motion: reduce) {
+  .single-question-completion-slide {
+    &__icon,
+    &__title,
+    &__message {
+      transform: none;
+      opacity: 1;
+      animation: none;
+    }
+
+    &__confetti {
+      display: none;
+    }
+
+    &--animate {
+      .single-question-completion-slide__icon,
+      .single-question-completion-slide__title,
+      .single-question-completion-slide__message {
+        animation: none;
+      }
+    }
+  }
+}

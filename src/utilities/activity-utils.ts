@@ -8,11 +8,13 @@ export enum ActivityLayouts {
   MultiplePages = 0,
   SinglePage = 1,
   Notebook = 2,
+  SingleQuestion = 3,
 }
 export enum ActivityLayoutOverrides {
   MultiplePages = ActivityLayouts.MultiplePages + 1,
   SinglePage = ActivityLayouts.SinglePage + 1,
   Notebook = ActivityLayouts.Notebook + 1,
+  SingleQuestion = ActivityLayouts.SingleQuestion + 1,
 }
 
 export enum SectionLayouts {
@@ -337,4 +339,16 @@ export const isActivityFinished = (activity: Activity, answers: WrappedDBAnswer[
     }, { numAnswers: 0, numQuestions: 0 });
 
   return numAnswers === numQuestions;
+};
+
+/**
+ * Checks if an activity uses the SingleQuestion layout.
+ * This should be called after sequence layout overrides have been applied.
+ */
+export const isSingleQuestionLayout = (activity: Activity, sequence?: Sequence): boolean => {
+  // Check sequence-level override first (offset by 1)
+  if (sequence && sequence.layout_override === ActivityLayoutOverrides.SingleQuestion) {
+    return true;
+  }
+  return activity.layout === ActivityLayouts.SingleQuestion;
 };

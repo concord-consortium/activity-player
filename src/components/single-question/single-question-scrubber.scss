@@ -1,0 +1,268 @@
+// src/components/single-question/single-question-scrubber.scss
+
+.single-question-scrubber {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 70px;
+  min-height: 70px;
+  padding: 0 20px;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+
+  // WCAG: Navigation buttons with minimum 44x44px touch target
+  &__nav-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 2px solid #666666; // WCAG: Improved contrast (3.9:1 ratio against white)
+    border-radius: 50%;
+    background-color: #fff;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    flex-shrink: 0;
+
+    &:hover:not(:disabled) {
+      background-color: #f0f0f0;
+      border-color: #333;
+    }
+
+    &:focus {
+      outline: 2px solid #0066cc;
+      outline-offset: 2px;
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      border-color: #ccc;
+    }
+  }
+
+  &__icon {
+    width: 20px;
+    height: 20px;
+    stroke: #333;
+  }
+
+  // Dots container
+  &__dots-container {
+    flex: 1;
+    max-width: 600px;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding: 8px;
+    overflow-x: auto;
+    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none; // IE/Edge
+
+    &::-webkit-scrollbar {
+      display: none; // Chrome/Safari
+    }
+
+    &:focus {
+      outline: 2px solid #0066cc;
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+  }
+
+  // Individual dot button (half size: 4px default, 6px current)
+  &__dot {
+    width: 4px;
+    height: 4px;
+    min-width: 4px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: #ccc;
+    cursor: pointer;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+
+    &:hover {
+      transform: scale(1.5);
+      background-color: #999;
+    }
+
+    &:focus {
+      outline: 2px solid #0066cc;
+      outline-offset: 2px;
+    }
+
+    // Current slide - larger and highlighted
+    &--current {
+      width: 6px;
+      height: 6px;
+      min-width: 6px;
+      background-color: #0066cc;
+
+      &:hover {
+        background-color: #0066cc;
+      }
+    }
+
+    // Introduction slide - slightly larger
+    &--intro {
+      width: 5px;
+      height: 5px;
+      min-width: 5px;
+      background-color: #4caf50;
+
+      &.single-question-scrubber__dot--current {
+        width: 7px;
+        height: 7px;
+        min-width: 7px;
+      }
+    }
+
+    // Completion slide - slightly larger
+    &--completion {
+      width: 5px;
+      height: 5px;
+      min-width: 5px;
+      background-color: #4caf50;
+
+      &.single-question-scrubber__dot--current {
+        width: 7px;
+        height: 7px;
+        min-width: 7px;
+      }
+    }
+
+    // Page boundary - orange color with separator line
+    &--page {
+      position: relative;
+      margin-left: 6px;
+      background-color: #ff9800;
+
+      // Vertical separator line before page boundary
+      &::before {
+        content: "";
+        position: absolute;
+        left: -4px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 10px;
+        background-color: #aaa;
+      }
+
+      &:hover {
+        background-color: #f57c00;
+      }
+
+      &.single-question-scrubber__dot--current {
+        background-color: #e65100;
+      }
+    }
+
+    // Activity boundary (for sequences) - purple color with separator
+    &--activity {
+      position: relative;
+      margin-left: 6px;
+      width: 5px;
+      height: 5px;
+      min-width: 5px;
+      background-color: #9c27b0;
+
+      // Vertical separator line before activity boundary
+      &::before {
+        content: "";
+        position: absolute;
+        left: -4px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 12px;
+        background-color: #9c27b0;
+      }
+
+      &:hover {
+        background-color: #7b1fa2;
+      }
+
+      &.single-question-scrubber__dot--current {
+        width: 7px;
+        height: 7px;
+        min-width: 7px;
+        background-color: #6a1b9a;
+      }
+    }
+  }
+
+  // Counter display
+  &__counter {
+    min-width: 70px;
+    text-align: center;
+    font-size: 1rem;
+    color: #333; // WCAG: 4.5:1 contrast ratio against white
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  // Help button for keyboard shortcuts
+  &__help-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px; // WCAG: Minimum touch target
+    height: 44px;
+    border: 2px solid #666666;
+    border-radius: 50%;
+    background-color: #fff;
+    cursor: pointer;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+    flex-shrink: 0;
+    margin-left: 8px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+
+    &:hover {
+      background-color: #f0f0f0;
+      border-color: #333;
+    }
+
+    &:focus {
+      outline: 2px solid #0066cc;
+      outline-offset: 2px;
+    }
+  }
+}
+
+// WCAG: Respect reduced motion preference
+@media (prefers-reduced-motion: reduce) {
+  .single-question-scrubber {
+    &__nav-button,
+    &__dot {
+      transition: none;
+    }
+  }
+}
+
+// Responsive: Stack dots below on narrow screens
+@media (max-width: 600px) {
+  .single-question-scrubber {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 12px 20px;
+
+    &__dots-container {
+      order: 10;
+      flex-basis: 100%;
+      max-width: none;
+      margin-top: 8px;
+    }
+
+    &__counter {
+      order: 5;
+    }
+  }
+}

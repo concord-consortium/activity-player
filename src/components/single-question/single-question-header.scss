@@ -1,0 +1,146 @@
+// src/components/single-question/single-question-header.scss
+
+// WCAG: Visually hidden utility for screen reader-only content
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Class-based selector for the header element
+.single-question-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  min-height: 60px;
+  padding: 0 20px;
+  background-color: #fff;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+  &__left {
+    display: flex;
+    align-items: center;
+    min-width: 150px;
+    height: 100%;
+  }
+
+  &__logo {
+    height: 36px;
+    width: auto;
+    display: block; // Remove extra space below inline SVG
+
+    &--default {
+      fill: #333;
+    }
+  }
+
+  &__center {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  // Breadcrumb navigation styles
+  &__breadcrumb {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+
+  &__breadcrumb-list {
+    display: flex;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: nowrap;
+    overflow: hidden;
+    height: 100%;
+  }
+
+  &__breadcrumb-list-item {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    min-width: 0; // Allow text truncation
+
+    // The aria-current span wrapper needs flex alignment too
+    > span[aria-current] {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+  }
+
+  &__breadcrumb-item {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    color: #333;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+    line-height: 1;
+
+    &--clickable {
+      background: none;
+      border: none;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      color: #0066cc;
+      font-size: 1rem;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+
+      &:hover {
+        text-decoration: underline;
+        background-color: rgba(0, 102, 204, 0.1);
+      }
+
+      &:focus {
+        outline: 2px solid #0066cc;
+        outline-offset: 2px;
+      }
+    }
+  }
+
+  &__breadcrumb-separator {
+    width: 16px;
+    height: 16px;
+    fill: #666666; // WCAG: Improved contrast (3:1 ratio for UI components)
+    flex-shrink: 0;
+    margin: 0 4px;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    min-width: 150px;
+    justify-content: flex-end;
+    height: 100%;
+  }
+
+  &__username {
+    font-size: 0.875rem;
+    color: #666;
+    line-height: 1;
+  }
+}

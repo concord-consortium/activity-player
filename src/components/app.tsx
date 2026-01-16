@@ -19,6 +19,7 @@ import {
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
+import { SingleQuestionContent } from "./single-question";
 import { WarningBanner } from "./warning-banner";
 import { DefunctBanner } from "./defunct-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
@@ -58,6 +59,14 @@ import { LockedBanner } from "./locked-banner";
 import { isOfferingLocked } from "../utilities/portal-data-utils";
 
 import "./app.scss";
+
+// Development override for SingleQuestion layout testing
+// Set to true to force all activities to use SingleQuestion layout
+const FORCE_SINGLE_QUESTION_OVERRIDE = true;
+
+// Check for query param override: ?forceSingleQuestionLayout=true
+const SINGLE_QUESTION_OVERRIDE = FORCE_SINGLE_QUESTION_OVERRIDE ||
+  new URLSearchParams(window.location.search).get("forceSingleQuestionLayout") === "true";
 
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "You must submit an answer for all required questions before advancing to another page.";
@@ -491,6 +500,12 @@ export class App extends React.PureComponent<IProps, IState> {
   private renderActivity = () => {
     const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData, activityIndex } = this.state;
     if (!activity) return (<div>Loading</div>);
+
+    // SingleQuestion layout has its own complete rendering path without the standard wrapper
+    if (activity.layout === ActivityLayouts.SingleQuestion) {
+      return this.renderSingleQuestionContent(activity);
+    }
+
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
     const hasResponsiveSection = activity.pages[currentPage - 1]?.sections.filter(
       s => s.layout.includes("responsive"));
@@ -568,6 +583,11 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   private renderActivityContent = (activity: Activity, currentPage: number, totalPreviousQuestions: number, fullWidth: boolean) => {
+    // SingleQuestion layout has its own complete rendering path
+    if (activity.layout === ActivityLayouts.SingleQuestion) {
+      return this.renderSingleQuestionContent(activity);
+    }
+
     const pagesVisible = this.getVisiblePages(activity);
     const isSinglePageActivity = activity.layout === ActivityLayouts.SinglePage;
     const isMultiPageActivity = activity.layout === ActivityLayouts.MultiplePages;
@@ -677,6 +697,17 @@ export class App extends React.PureComponent<IProps, IState> {
         activityIndex={this.state.activityIndex}
         onActivityChange={this.handleSelectActivity}
         onShowSequence={this.handleShowSequenceIntro}
+      />
+    );
+  }
+
+  private renderSingleQuestionContent = (activity: Activity) => {
+    return (
+      <SingleQuestionContent
+        activity={activity}
+        userName={this.state.username}
+        pluginsLoaded={this.state.pluginsLoaded}
+        teacherEditionMode={this.state.teacherEditionMode}
       />
     );
   }
@@ -849,6 +880,11 @@ export class App extends React.PureComponent<IProps, IState> {
     // the sequence layout override is 0 for none and +1 added to the activity layout options for the override
     if (activity && sequence && (sequence.layout_override > 0)) {
       activity.layout = sequence.layout_override - 1;
+    }
+
+    // Development override for SingleQuestion layout testing
+    if (SINGLE_QUESTION_OVERRIDE && activity) {
+      activity.layout = ActivityLayouts.SingleQuestion;
     }
 
     // add or remove the notebook body class if needed to override styles
