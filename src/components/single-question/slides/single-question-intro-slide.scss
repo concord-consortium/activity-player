@@ -1,0 +1,78 @@
+.single-question-intro-slide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 800px;
+  width: 100%;
+  padding: 40px;
+
+  .activity-summary {
+    text-align: center;
+
+    .activity-title {
+      margin-bottom: 24px;
+
+      h1 {
+        font-size: 2rem;
+        color: #333;
+      }
+    }
+  }
+
+  // Prominent "Start" button to guide students
+  &__start-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 32px;
+    padding: 16px 48px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: #0066cc;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    min-height: 56px; // Larger touch target for primary action
+    transition: background-color 0.2s ease, transform 0.1s ease;
+
+    &:hover {
+      background-color: #0052a3;
+    }
+
+    &:focus {
+      outline: 3px solid #0066cc;
+      outline-offset: 3px;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+
+  &__start-icon {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+  }
+
+  &__keyboard-hint {
+    margin-top: 16px;
+    font-size: 0.875rem;
+    color: #666666; // WCAG: 4.5:1 contrast ratio for small text
+    font-style: italic;
+  }
+}
+
+// WCAG: Respect reduced motion
+@media (prefers-reduced-motion: reduce) {
+  .single-question-intro-slide__start-button {
+    transition: none;
+
+    &:active {
+      transform: none;
+    }
+  }
+}
