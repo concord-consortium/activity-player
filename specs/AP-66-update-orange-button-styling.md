@@ -82,6 +82,7 @@ The keyboard focus double-border from Zeplin (3.5px white + 2.5px blue, both "in
 | `src/components/vars.scss` | Added 6 new `$cc-button-*` color variables |
 | `src/components/app.scss` | Updated `.button` class: default, hover, active, and new `:focus-visible` styles |
 | `src/components/activity-page/bottom-buttons.scss` | Removed dead `&:hover` rule from disabled button override |
+| `src/components/activity-page/managed-interactive/iframe-runtime.scss` | Replaced hardcoded SVG `fill` values with `currentColor` to follow button text color |
 
 ### Acceptance Criteria
 
@@ -184,3 +185,10 @@ The keyboard focus double-border from Zeplin (3.5px white + 2.5px blue, both "in
 **Context**: Copilot flagged that the box-shadow CSS doesn't produce "3.5px white + 2.5px blue" visible rings. The Zeplin CSS (`inset 0 0 0 2.5px blue, inset 0 0 0 3.5px white`) produces 2.5px blue outer + ~1px white inner.
 
 **Decision**: The CSS matches Zeplin's export and the visual design. Updated descriptive text to reflect actual visible ring widths. CSS unchanged.
+
+---
+
+### Reset button SVG icon fill regression
+**Context**: The reset button in `iframe-runtime.scss` had hardcoded SVG fill values (`fill: $cc-charcoal` default, `fill: white` on `:active`) that mirrored the old `.button` text color behavior. With the updated button styling (text stays black on `:active` instead of turning white), the white icon fill on press no longer matched.
+
+**Decision**: Replaced both hardcoded fill rules with `svg { fill: currentColor; }` so the icon automatically inherits the button text color in all states. This is more resilient to future color changes.
