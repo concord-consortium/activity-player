@@ -15,13 +15,8 @@
     line-height: 1.6;
     margin: 0 auto 5px;
 
-    &:active {
-      svg {
-        fill: white;
-      }
-    }
     svg {
-      fill: $cc-charcoal;
+      fill: currentColor;
     }
   }
   .iframe-runtime-buttons {
