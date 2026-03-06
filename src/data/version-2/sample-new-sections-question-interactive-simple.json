@@ -74,7 +74,7 @@
                 "data": {
                   "aspect_ratio_method": "DEFAULT",
                   "authoring_guidance": "",
-                  "base_url": "https://models-resources.concord.org/question-interactives/branch/interactive-lightbox/image-question",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image-question",
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "Image Question",

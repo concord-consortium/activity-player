@@ -74,7 +74,7 @@
                 "data": {
                   "aspect_ratio_method": "DEFAULT",
                   "authoring_guidance": "",
-                  "base_url": "https://models-resources.concord.org/question-interactives/branch/interactive-lightbox/image",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image",
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "",
@@ -123,7 +123,7 @@
                 "data": {
                   "aspect_ratio_method": "DEFAULT",
                   "authoring_guidance": "",
-                  "base_url": "https://models-resources.concord.org/question-interactives/branch/interactive-lightbox/image",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image",
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "",
@@ -201,7 +201,7 @@
                 "data": {
                   "aspect_ratio_method": "DEFAULT",
                   "authoring_guidance": "<p>Enter the URL of the video, plus optional link to captions or subtitles</p>",
-                  "base_url": "https://models-resources.concord.org/question-interactives/branch/interactive-lightbox/video-player/",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/video-player/",
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "Video test",
@@ -268,7 +268,7 @@
                 "data": {
                   "aspect_ratio_method": "DEFAULT",
                   "authoring_guidance": "",
-                  "base_url": "https://models-resources.concord.org/question-interactives/branch/interactive-lightbox/image",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image",
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "",
@@ -337,7 +337,7 @@
                 "data": {
                   "aspect_ratio_method": "DEFAULT",
                   "authoring_guidance": "",
-                  "base_url": "https://models-resources.concord.org/question-interactives/branch/interactive-lightbox/image",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image",
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "",
@@ -433,7 +433,7 @@
                 "data": {
                   "aspect_ratio_method": "DEFAULT",
                   "authoring_guidance": "",
-                  "base_url": "https://models-resources.concord.org/question-interactives/branch/interactive-lightbox/image",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image",
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "",
@@ -535,7 +535,7 @@
                 "data": {
                   "aspect_ratio_method": "DEFAULT",
                   "authoring_guidance": "",
-                  "base_url": "https://models-resources.concord.org/question-interactives/branch/interactive-lightbox/open-response/",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "",
@@ -666,7 +666,7 @@
                 "data": {
                   "aspect_ratio_method": "DEFAULT",
                   "authoring_guidance": "",
-                  "base_url": "https://models-resources.concord.org/question-interactives/branch/interactive-lightbox/multiple-choice/",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/multiple-choice/",
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "",
@@ -735,7 +735,7 @@
                 "data": {
                   "aspect_ratio_method": "DEFAULT",
                   "authoring_guidance": "",
-                  "base_url": "https://models-resources.concord.org/question-interactives/branch/interactive-lightbox/drawing-tool/",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/drawing-tool/",
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "",
@@ -804,7 +804,7 @@
                 "data": {
                   "aspect_ratio_method": "DEFAULT",
                   "authoring_guidance": "",
-                  "base_url": "https://models-resources.concord.org/question-interactives/branch/interactive-lightbox/open-response/",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "",
@@ -873,7 +873,7 @@
                 "data": {
                   "aspect_ratio_method": "DEFAULT",
                   "authoring_guidance": "",
-                  "base_url": "https://models-resources.concord.org/question-interactives/branch/interactive-lightbox/image-question",
+                  "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image-question",
                   "click_to_play": false,
                   "click_to_play_prompt": null,
                   "description": "Image Question",
