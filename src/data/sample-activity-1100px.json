@@ -74,7 +74,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v1.3.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",

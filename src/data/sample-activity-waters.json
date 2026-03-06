@@ -306,7 +306,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -460,7 +460,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -510,7 +510,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -571,7 +571,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/video-player/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/video-player/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
@@ -715,7 +715,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -765,7 +765,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -815,7 +815,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1017,7 +1017,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1044,7 +1044,7 @@
           "embeddable": {
             "name": "",
             "url_fragment": null,
-            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"prompt\":\"<p>If pollutants were added to the local watershed around your school, what other <strong>areas would be affected</strong> by the pollution? </p>\",\"required\":true,\"subinteractives\":[{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p> </p>\"},\"id\":\"7bfc641f-2877-4979-9ab4-766a3647209b\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>If pollutants were added to the local watershed around your school, what other areas would be affected by the pollution? </p>\",\"hint\":\"<p>Think about what direction the water flows in a watershed. </p>\\n<p></p>\"},\"id\":\"7a555aa0-3411-4fe4-8268-5f9146a659fb\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.3.0/fill-in-the-blank\",\"authoredState\":{\"version\":1,\"questionType\":\"iframe_interactive\",\"blanks\":[{\"id\":\"[blank-1]\",\"size\":20}],\"prompt\":\"<p>If pollutants were added to the local watershed around the school, the areas that would be affected are located [blank-1].</p>\"},\"id\":\"f4d28052-1601-4d5d-a6c8-d750f5ec6c34\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.3.0/multiple-choice\",\"authoredState\":{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"The areas upstream are affected by the pollutants. \",\"correct\":false},{\"id\":\"2\",\"content\":\"The areas downstream are affected by the pollutants.\",\"correct\":false}]},\"id\":\"dd1d46c0-302a-492b-92ee-650308fe8bc6\"},{\"url\":\"https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Any pollutants added to the local watershed around our school would affect all of the areas downstream in the watershed.</p>\",\"defaultAnswer\":\"Please rewrite the answer in your own words.\"},\"id\":\"7934c11b-7d36-493b-9238-9d493fe17f9b\"}]}",
+            "authored_state": "{\"version\":1,\"questionType\":\"iframe_interactive\",\"prompt\":\"<p>If pollutants were added to the local watershed around your school, what other <strong>areas would be affected</strong> by the pollution? </p>\",\"required\":true,\"subinteractives\":[{\"url\":\"https://models-resources.concord.org/question-interactives/branch/master/open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p> </p>\"},\"id\":\"7bfc641f-2877-4979-9ab4-766a3647209b\"},{\"url\":\"https://models-resources.concord.org/question-interactives/branch/master/open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>If pollutants were added to the local watershed around your school, what other areas would be affected by the pollution? </p>\",\"hint\":\"<p>Think about what direction the water flows in a watershed. </p>\\n<p></p>\"},\"id\":\"7a555aa0-3411-4fe4-8268-5f9146a659fb\"},{\"url\":\"https://models-resources.concord.org/question-interactives/branch/master/fill-in-the-blank\",\"authoredState\":{\"version\":1,\"questionType\":\"iframe_interactive\",\"blanks\":[{\"id\":\"[blank-1]\",\"size\":20}],\"prompt\":\"<p>If pollutants were added to the local watershed around the school, the areas that would be affected are located [blank-1].</p>\"},\"id\":\"f4d28052-1601-4d5d-a6c8-d750f5ec6c34\"},{\"url\":\"https://models-resources.concord.org/question-interactives/branch/master/multiple-choice\",\"authoredState\":{\"version\":1,\"questionType\":\"multiple_choice\",\"multipleAnswers\":false,\"layout\":\"vertical\",\"choices\":[{\"id\":\"1\",\"content\":\"The areas upstream are affected by the pollutants. \",\"correct\":false},{\"id\":\"2\",\"content\":\"The areas downstream are affected by the pollutants.\",\"correct\":false}]},\"id\":\"dd1d46c0-302a-492b-92ee-650308fe8bc6\"},{\"url\":\"https://models-resources.concord.org/question-interactives/branch/master/open-response\",\"authoredState\":{\"version\":1,\"questionType\":\"open_response\",\"prompt\":\"<p>Any pollutants added to the local watershed around our school would affect all of the areas downstream in the watershed.</p>\",\"defaultAnswer\":\"Please rewrite the answer in your own words.\"},\"id\":\"7934c11b-7d36-493b-9238-9d493fe17f9b\"}]}",
             "is_hidden": false,
             "is_full_width": true,
             "show_in_featured_question_report": true,
@@ -1067,7 +1067,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/scaffolded-question/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/scaffolded-question/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1196,7 +1196,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1246,7 +1246,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1296,7 +1296,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1376,7 +1376,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1451,7 +1451,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/open-response/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/open-response/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
@@ -1537,7 +1537,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/video-player/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/video-player/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "This video player will not have the blue header bar above the interactive.\r\nIt does not save the students position in the video. \r\nIt will not show up in the teacher report.",
@@ -2125,7 +2125,7 @@
               "data": {
                 "aspect_ratio_method": "DEFAULT",
                 "authoring_guidance": "",
-                "base_url": "https://models-resources.concord.org/question-interactives/version/v0.3.0/image/",
+                "base_url": "https://models-resources.concord.org/question-interactives/branch/master/image/",
                 "click_to_play": false,
                 "click_to_play_prompt": null,
                 "description": "",
