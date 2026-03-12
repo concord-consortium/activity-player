@@ -100,9 +100,16 @@ jest.mock("@concord-consortium/interactive-api-host", () => {
     publish = mockPublish;
   }
 
+  class MockJobManager {
+    addInteractive = jest.fn();
+    removeInteractive = jest.fn();
+    onJobUpdate = jest.fn();
+  }
+
   return {
     handleGetAttachmentUrl: (...args: any) => mockHandleGetAttachmentUrl(...args),
-    PubSubManager: MockPubSubManager
+    PubSubManager: MockPubSubManager,
+    JobManager: MockJobManager
   };
 });
 
