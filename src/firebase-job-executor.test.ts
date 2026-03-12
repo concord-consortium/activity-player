@@ -221,14 +221,14 @@ describe("FirebaseJobExecutor", () => {
     it("does NOT set up listener for final backfilled jobs", async () => {
       const successJob = makeJobInfo({ status: "success" });
       mockQueryGet.mockResolvedValue({ docs: [{ data: () => ({ jobInfo: successJob }) }] });
-      await firebaseJobExecutor.getJobs({ interactiveId: "i-1" });
+      await firebaseJobExecutor.getJobs({ interactiveId: "i-1", user_type: "authenticated", platform_user_id: "42" });
       expect(mockOnSnapshot).not.toHaveBeenCalled();
     });
 
     it("returns empty array and logs error on Firestore failure", async () => {
       const consoleSpy = jest.spyOn(console, "error").mockImplementation(jest.fn());
       mockQueryGet.mockRejectedValue(new Error("Permission denied"));
-      const jobs = await firebaseJobExecutor.getJobs({ interactiveId: "i-1" });
+      const jobs = await firebaseJobExecutor.getJobs({ interactiveId: "i-1", user_type: "authenticated", platform_user_id: "42" });
       expect(jobs).toEqual([]);
       expect(consoleSpy).toHaveBeenCalledWith(
         expect.stringContaining("getJobs failed"),

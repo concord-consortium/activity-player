@@ -2,7 +2,10 @@ import { IJobExecutor, IJobInfo } from "@concord-consortium/interactive-api-host
 import { IPortalData, IAnonymousPortalData } from "./portal-types";
 import { getFirestoreDb } from "./firebase-db";
 
-const useEmulator = (new URLSearchParams(window.location.search)).get("emulator") === "true";
+const useEmulator =
+  typeof window !== "undefined"
+    ? new URLSearchParams(window.location.search).get("emulator") === "true"
+    : false;
 if (useEmulator) {
   console.warn("[FirebaseJobExecutor] Using Firebase Functions emulator at localhost:5001");
 }
@@ -164,16 +167,25 @@ class FirebaseJobExecutor implements IJobExecutor {
         .collection(`sources/${sourceKey}/jobs`)
         .where("interactiveId", "==", context.interactiveId);
 
-      // Scope to this specific user/run to avoid cross-user data leakage
+      // Scope to this specific user/run to avoid cross-user data leakage.
+      // If we cannot determine a valid user identity, do not query at all.
+      let hasUserScope = false;
       if (context.user_type === "authenticated" && context.platform_user_id) {
         query = query.where("platform_user_id", "==", context.platform_user_id);
+        hasUserScope = true;
       } else if (context.user_type === "anonymous" && context.run_key) {
         query = query.where("run_key", "==", context.run_key);
+        hasUserScope = true;
+      }
+
+      if (!hasUserScope) {
+        return [];
       }
 
       const snapshot = await query.get();
       const jobs: IJobInfo[] = snapshot.docs
-        .map(doc => doc.data()?.jobInfo as IJobInfo)
+        .map(doc => doc.data()?.jobInfo as IJobInfo | undefined)
+        .filter((job): job is IJobInfo => !!job && typeof job.createdAt === "number")
         .sort((a, b) => a.createdAt - b.createdAt);
 
       // Set up listeners for non-final backfilled jobs so status updates arrive
@@ -223,7 +235,8 @@ class FirebaseJobExecutor implements IJobExecutor {
       .onSnapshot(
         snapshot => {
           if (!snapshot.exists) return;
-          const job = snapshot.data()?.jobInfo as IJobInfo;
+          const job = snapshot.data()?.jobInfo as IJobInfo | undefined;
+          if (!job || !job.status) return;
           this.updateCallback?.(job);
           // Auto-clean listener once job reaches a final state
           if (job.status !== "queued" && job.status !== "running") {

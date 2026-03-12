@@ -110,7 +110,12 @@ export const onFirestoreSaveAfterTimeout = (handler: () => void) => {
 };
 let app: firebase.app.App;
 
-export const getFirestoreDb = (): firebase.firestore.Firestore => app.firestore();
+export const getFirestoreDb = (): firebase.firestore.Firestore => {
+  if (!app) {
+    throw new Error("Firebase app has not been initialized. Call initializeDB before calling getFirestoreDb.");
+  }
+  return app.firestore();
+};
 
 export const getConfiguration = (name?: FirebaseAppName): IConfig => {
   return name ? configurations[name] : configurations["report-service-dev"];
