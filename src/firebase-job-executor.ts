@@ -171,7 +171,10 @@ class FirebaseJobExecutor implements IJobExecutor {
       // If we cannot determine a valid user identity, do not query at all.
       let hasUserScope = false;
       if (context.user_type === "authenticated" && context.platform_user_id) {
-        query = query.where("platform_user_id", "==", context.platform_user_id);
+        query = query
+          .where("platform_user_id", "==", context.platform_user_id)
+          .where("platform_id", "==", context.platform_id)
+          .where("context_id", "==", context.context_id);
         hasUserScope = true;
       } else if (context.user_type === "anonymous" && context.run_key) {
         query = query.where("run_key", "==", context.run_key);
