@@ -174,7 +174,8 @@ class FirebaseJobExecutor implements IJobExecutor {
         query = query
           .where("platform_user_id", "==", context.platform_user_id)
           .where("platform_id", "==", context.platform_id)
-          .where("context_id", "==", context.context_id);
+          .where("context_id", "==", context.context_id)
+          .where("resource_link_id", "==", context.resource_link_id);
         hasUserScope = true;
       } else if (context.user_type === "anonymous" && context.run_key) {
         query = query.where("run_key", "==", context.run_key);
@@ -191,7 +192,10 @@ class FirebaseJobExecutor implements IJobExecutor {
         .filter((job): job is IJobInfo => !!job && typeof job.createdAt === "number")
         .sort((a, b) => a.createdAt - b.createdAt);
 
-      // Set up listeners for non-final backfilled jobs so status updates arrive
+      // Set up listeners for non-final backfilled jobs so status updates arrive.
+      // Note: onSnapshot fires immediately with the current document state when
+      // first attached, so any job that finishes between the query above and the
+      // subscribe call here will still deliver its final status via the snapshot.
       for (const job of jobs) {
         if (job.status === "queued" || job.status === "running") {
           this.jobIdToInteractiveId.set(job.id, context.interactiveId);
