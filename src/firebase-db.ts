@@ -110,6 +110,13 @@ export const onFirestoreSaveAfterTimeout = (handler: () => void) => {
 };
 let app: firebase.app.App;
 
+export const getFirestoreDb = (): firebase.firestore.Firestore => {
+  if (!app) {
+    throw new Error("Firebase app has not been initialized. Call initializeDB before calling getFirestoreDb.");
+  }
+  return app.firestore();
+};
+
 export const getConfiguration = (name?: FirebaseAppName): IConfig => {
   return name ? configurations[name] : configurations["report-service-dev"];
 };
@@ -125,6 +132,11 @@ export async function initializeDB({ name, preview }: { name: FirebaseAppName, p
   app.firestore().settings({
     ignoreUndefinedProperties: true,
   });
+
+  if (queryValueBoolean("emulator")) {
+    console.warn("[FirebaseDB] Using Firebase Firestore emulator at localhost:9090");
+    app.firestore().useEmulator("localhost", 9090);
+  }
 
   // The following flags are useful for tests. It makes it possible to clear the persistence
   // at the beginning of a test, and enable perisistence on each visit call

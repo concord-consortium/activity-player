@@ -49,6 +49,8 @@ import { LaraDataContext } from "./lara-data-context";
 import { __closeAllPopUps } from "../lara-plugin/plugin-api/popup";
 import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChangeNotificationStartTimeout } from "./activity-page/page-change-notification";
 import { getBearerToken } from "../utilities/auth-utils";
+import { configure as configureJobExecutor } from "../firebase-job-executor";
+import { handleGetFirebaseJWT } from "../portal-utils";
 import { ReadAloudContext } from "./read-aloud-context";
 import { AccessibilityContext, FontSize, FontType, getFamilyForFontType, getFontSize, getFontSizeInPx, getFontType } from "./accessibility-context";
 import { MediaLibraryContext } from "./media-library-context";
@@ -236,6 +238,10 @@ export class App extends React.PureComponent<IProps, IState> {
             await signInWithToken(portalData.database.rawFirebaseJWT);
             this.setState({ portalData });
             setPortalData(portalData);
+            configureJobExecutor({
+              portalData,
+              getFirebaseJWT: (appName: string) => handleGetFirebaseJWT({ firebase_app: appName }, portalData),
+            });
           } else if (portalJWT.user_type === "teacher" || portalJWT.user_type === undefined) {
             // Logged-in user who is not launching an offering from Portal, most likely teacher.
             // As of 08/2022, portalJWT doesn't provide user_type when JWT is obtained using token coming from OAuth.
@@ -255,6 +261,10 @@ export class App extends React.PureComponent<IProps, IState> {
         try {
           // Anonymous user running AP using a direct link most likely.
           await initializeAnonymousDB(preview);
+          configureJobExecutor({
+            portalData: getPortalData() as IPortalDataUnion,
+            getFirebaseJWT: () => Promise.resolve(""),
+          });
         } catch (err) {
           this.setError("auth", err);
         }

@@ -11,7 +11,8 @@ import {
   ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState, AttachmentInfoMap,
   IPubSubCreateChannel, IPubSubSubscribe, IPubSubUnsubscribe, IPubSubPublish
 } from "@concord-consortium/lara-interactive-api";
-import { PubSubManager } from "@concord-consortium/interactive-api-host";
+import { PubSubManager, JobManager } from "@concord-consortium/interactive-api-host";
+import { firebaseJobExecutor, buildJobContext } from "../../../firebase-job-executor";
 import { DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
 import { FirebaseObjectStorageConfig, FirebaseObjectStorageUser } from "@concord-consortium/object-storage";
 import Shutterbug from "shutterbug";
@@ -90,8 +91,9 @@ interface IProps {
   log: (logData: any) => void;
 }
 
-// this is managed outside of the component to persist across component unmount/mount cycles
+// these are managed outside of the component to persist across component unmount/mount cycles
 const pubSubManager = new PubSubManager();
+const jobManager = new JobManager(firebaseJobExecutor);
 
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
@@ -127,7 +129,10 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         return;
       }
 
+      const preview = queryValueBoolean("preview") || queryValue("mode")?.toLowerCase() === "teacher-edition";
+
       pubSubManager.addInteractive(id, phone);
+      jobManager.addInteractive(id, phone, buildJobContext(id, portalData ?? anonymousPortalData(preview)));
 
       // Just to add some type checking to phone post (ServerMessage).
       const post = (type: ServerMessage, data: any) => phone.post(type, data);
@@ -317,7 +322,6 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       });
 
       // create object storage config
-      const preview = queryValueBoolean("preview") || queryValue("mode")?.toLowerCase() === "teacher-edition";
       const objectStorePortalData = portalData ?? anonymousPortalData(preview);
 
       const objectStorageUser: FirebaseObjectStorageUser =
@@ -439,6 +443,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       });
 
       pubSubManager.removeInteractive(id);
+      jobManager.removeInteractive(id);
+      firebaseJobExecutor.removeInteractive(id);
 
       if (phoneRef.current) {
         phoneRef.current.disconnect();
