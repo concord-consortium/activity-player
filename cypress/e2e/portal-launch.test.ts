@@ -49,7 +49,10 @@ context("Launch AP From the Portal", () => {
 
   context("non-collaboratively", () => {
     beforeEach(() => {
-      // Run an AP assignment, in order to get the params from the portal
+      // Run an AP assignment to get portal-issued launch params.
+      // The portal token format changed from an opaque AccessGrant to a
+      // signed portal JWT, so we now preserve all redirect params and let
+      // each test override activity/answersSourceKey as needed.
       cy.request({
         url: `${portalDomain}${portalLaunchPath}`,
         method: "GET",
@@ -59,24 +62,27 @@ context("Launch AP From the Portal", () => {
         expect(resp.status).to.eq(302);
         expect(resp.redirectedToUrl).to.match(/^https:\/\/activity-player\.concord\.org/);
         const url = new URL(resp.redirectedToUrl!);
-        const params = new URLSearchParams(url.search);
-        return params.get("token");
+        return url.search;
       })
-      .as("portalToken");
+      .as("portalSearch");
     });
 
     // A regular 'function' syntax is used instead '=>' so cypress can control what 'this' is
     it("can open a sample activity", function () {
-      cy.visit(`?activity=sample-activity-1&token=${this.portalToken}` +
-        `&domain=${portalDomain}/&answersSourceKey=${answersSourceKey}`);
-        cy.get("[data-cy=home-button]").eq(0).click();
+      const params = new URLSearchParams(this.portalSearch);
+      params.set("activity", "sample-activity-1");
+      params.set("answersSourceKey", answersSourceKey);
+      cy.visit(`/?${params.toString()}`);
+      cy.get("[data-cy=home-button]").eq(0).click();
       cy.get("[data-cy=activity-summary]").should("contain", "Single Page Test Activity");
     });
 
     // A regular 'function' syntax is used instead '=>' so cypress can control what 'this' is
     it.skip("can work with the interactive sharing plugin", function () {
-      cy.visit(`?activity=sample-activity-interactive-sharing&token=${this.portalToken}` +
-        `&domain=${portalDomain}/&answersSourceKey=${answersSourceKey}`);
+      const params = new URLSearchParams(this.portalSearch);
+      params.set("activity", "sample-activity-interactive-sharing");
+      params.set("answersSourceKey", answersSourceKey);
+      cy.visit(`/?${params.toString()}`);
 
       activityPage.getHomeButton().eq(1).click();
       cy.get("[data-cy=activity-summary]").should("contain", "Test Interactive Sharing");
