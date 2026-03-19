@@ -10,6 +10,7 @@ import { ActivityNav } from "./activity-header/activity-nav";
 import { Header } from "./activity-header/header";
 import { Footer } from "./activity-introduction/footer";
 import { EmbeddablePlugin } from "../components/activity-page/plugins/embeddable-plugin";
+import { Error } from "./error/error";
 import _activitySinglePage from "../data/version-2/sample-new-sections-single-page-layout.json";
 import _activity from "../data/version-2/sample-new-sections-multiple-layout-types.json";
 import _activityWithGlossary from "../data/version-2/sample-new-sections-glossary-plugin.json";
@@ -60,5 +61,12 @@ describe("App component", () => {
     const wrapper = shallow(<App />);
     wrapper.setState({ activity: activityWithGlossary, pluginsLoaded: true });
     expect(wrapper.find(EmbeddablePlugin).length).toBe(1);
+  });
+  it("renders error when auth fails and no activity is loaded", () => {
+    const wrapper = shallow(<App />);
+    wrapper.setState({ errorType: "auth" });
+    expect(wrapper.find(Error).length).toBe(1);
+    expect(wrapper.find(Error).prop("type")).toBe("auth");
+    expect(wrapper.find(".activity.fixed-width-1100px").length).toBe(1);
   });
 });

@@ -256,6 +256,7 @@ export class App extends React.PureComponent<IProps, IState> {
           }
         } catch (err) {
           this.setError("auth", err);
+          return;
         }
       } else {
         try {
@@ -267,6 +268,7 @@ export class App extends React.PureComponent<IProps, IState> {
           });
         } catch (err) {
           this.setError("auth", err);
+          return;
         }
       }
 
@@ -472,13 +474,17 @@ export class App extends React.PureComponent<IProps, IState> {
                         { this.state.showWarning && <WarningBanner/> }
                         { isOfferingLocked(this.state.portalData) && <LockedBanner isSequence={!!this.state.sequence}/> }
                         { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-                        { this.state.showSequenceIntro
-                          ? <SequenceIntroduction
-                              sequence={this.state.sequence}
-                              username={this.state.username}
-                              onSelectActivity={this.handleSelectActivity}
-                            />
-                          : this.renderActivity() }
+                        { this.state.errorType && !this.state.activity
+                          ? <div className="activity fixed-width-1100px">
+                              <Error type={this.state.errorType} />
+                            </div>
+                          : this.state.showSequenceIntro
+                            ? <SequenceIntroduction
+                                sequence={this.state.sequence}
+                                username={this.state.username}
+                                onSelectActivity={this.handleSelectActivity}
+                              />
+                            : this.renderActivity() }
                         { this.state.showThemeButtons && <ThemeButtons/>}
                         <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
                         <ModalDialog
