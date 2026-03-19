@@ -21,7 +21,7 @@ export const Error: React.FC<IProps> = ({ type, onExit }) => {
       <h1>Hmm... we&apos;re having trouble connecting.</h1>
       <p className={isAuth ? "auth-message" : undefined}>{ errorMsg[type] }</p>
       {isAuth
-        ? <p className="auth-instruction">Please close this tab and use the Run button to relaunch the activity.</p>
+        ? <p className="auth-instruction">Please close this tab and relaunch the activity.</p>
         : <>
             <p>Try:</p>
             <ul>

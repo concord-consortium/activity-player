@@ -73,7 +73,7 @@ const kLearnPortalUrl = "https://learn.concord.org";
 
 const kAnonymousUserName = "Anonymous";
 
-const kDefaultFixedWidthLayout = "1100px";
+export const kDefaultFixedWidthLayout = "1100px";
 
 // this is exported to that the TextBox component can pass it directly to DynamicText
 // as the context due to it not re-rendering because of multiple forward refs components wrapping it
@@ -475,7 +475,7 @@ export class App extends React.PureComponent<IProps, IState> {
                         { isOfferingLocked(this.state.portalData) && <LockedBanner isSequence={!!this.state.sequence}/> }
                         { this.state.teacherEditionMode && <TeacherEditionBanner/>}
                         { this.state.errorType && !this.state.activity
-                          ? <div className="activity fixed-width-1100px">
+                          ? <div className={`activity fixed-width-${kDefaultFixedWidthLayout}`}>
                               <Error type={this.state.errorType} />
                             </div>
                           : this.state.showSequenceIntro

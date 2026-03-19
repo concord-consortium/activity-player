@@ -3,7 +3,7 @@ import $ from "jquery";
 (window as any).jQuery = $;
 (window as any).$ = $;
 import "jquery-ui";
-import { App } from "./app";
+import { App, kDefaultFixedWidthLayout } from "./app";
 import { shallow } from "enzyme";
 import { Activity } from "../types";
 import { ActivityNav } from "./activity-header/activity-nav";
@@ -67,6 +67,6 @@ describe("App component", () => {
     wrapper.setState({ errorType: "auth" });
     expect(wrapper.find(Error).length).toBe(1);
     expect(wrapper.find(Error).prop("type")).toBe("auth");
-    expect(wrapper.find(".activity.fixed-width-1100px").length).toBe(1);
+    expect(wrapper.find(`.activity.fixed-width-${kDefaultFixedWidthLayout}`).length).toBe(1);
   });
 });
