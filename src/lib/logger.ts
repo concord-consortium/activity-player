@@ -1,6 +1,17 @@
 import { v4 as uuid } from "uuid";
 import { DEBUG_LOGGER } from "../lib/debug";
 import { LaraGlobalType } from "../lara-plugin/index";
+import { emitLogEvent } from "@concord-consortium/log-monitor";
+import { onLog } from "../lara-plugin/events";
+import { queryValueBoolean } from "../utilities/url-query";
+
+const logMonitorEnabled = queryValueBoolean("logMonitor");
+if (logMonitorEnabled) {
+  onLog((logData: any) => {
+    const { event, ...data } = logData;
+    emitLogEvent({ event, data, timestamp: Date.now() });
+  });
+}
 
 const skipSendingLog = new URLSearchParams(window.location.search).get("dangerouslySkipSendingLog") === "true";
 if (skipSendingLog) {

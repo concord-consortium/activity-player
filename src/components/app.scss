@@ -19,6 +19,17 @@ body {
   justify-content: center;
   background-color: var(--theme-primary-color);
   overflow: auto;
+
+  &:has(.log-monitor) {
+    overflow: hidden;
+
+    > .app {
+      overflow: auto;
+      height: 100%;
+      min-width: 0;
+      flex: 1;
+    }
+  }
 }
 
 .app {
