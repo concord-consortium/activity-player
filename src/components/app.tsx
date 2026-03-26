@@ -58,9 +58,11 @@ import { parseMediaLibraryItems } from "../lib/parse-media-library-items";
 import { QuestionInfoContext } from "./question-info-context";
 import { LockedBanner } from "./locked-banner";
 import { isOfferingLocked } from "../utilities/portal-data-utils";
+import { LogMonitor } from "@concord-consortium/log-monitor";
 
 import "./app.scss";
 
+const logMonitorEnabled = queryValueBoolean("logMonitor");
 const kDefaultActivity = "sample-activity-multiple-layout-types";   // may eventually want to get rid of this
 const kDefaultIncompleteMessage = "You must submit an answer for all required questions before advancing to another page.";
 
@@ -493,6 +495,7 @@ export class App extends React.PureComponent<IProps, IState> {
                           showModal={this.state.showModal}
                         />
                       </div>
+                      {logMonitorEnabled && <LogMonitor logFilePrefix="activity-player-log-events" />}
                     </ReadAloudContext.Provider>
                   </DynamicTextContext.Provider>
                 </QuestionInfoContext.Provider>
