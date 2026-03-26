@@ -29,6 +29,14 @@ body {
       min-width: 0;
       flex: 1;
     }
+
+    .sidebar-container {
+      right: -200px !important;
+
+      &.expanded {
+        right: 300px !important;
+      }
+    }
   }
 }
 
