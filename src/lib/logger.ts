@@ -2,14 +2,14 @@ import { v4 as uuid } from "uuid";
 import { DEBUG_LOGGER } from "../lib/debug";
 import { LaraGlobalType } from "../lara-plugin/index";
 import { emitLogEvent } from "@concord-consortium/log-monitor";
-import { onLog } from "../lara-plugin/events";
+import { ILogData, onLog } from "../lara-plugin/events";
 import { queryValueBoolean } from "../utilities/url-query";
 
 const logMonitorEnabled = queryValueBoolean("logMonitor");
 if (logMonitorEnabled) {
-  onLog((logData: any) => {
+  onLog((logData: ILogData) => {
     const { event, ...data } = logData;
-    emitLogEvent({ event, data, timestamp: Date.now() });
+    emitLogEvent({ event, data: data as Record<string, unknown>, timestamp: Date.now() });
   });
 }
 
