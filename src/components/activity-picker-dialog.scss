@@ -1,0 +1,84 @@
+@import "./vars.scss";
+
+.activity-picker-dialog {
+  position: fixed;
+  background-color: white;
+  border: solid 2px $cc-charcoal-light2;
+  border-radius: 8px;
+  width: 540px;
+  max-width: calc(100vw - 40px);
+  top: 80px;
+  left: calc(50% - 270px);
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    background-color: var(--theme-primary-color);
+    color: var(--theme-primary-text-color);
+    padding: 6px 12px;
+    font-size: pxToRem(18);
+    border-radius: 6px 6px 0 0;
+  }
+
+  .body {
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .instructions {
+    color: $font-color;
+    font-size: pxToRem(14);
+  }
+
+  textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 8px;
+    font-size: pxToRem(14);
+    border: solid 1px $cc-charcoal-light1;
+    border-radius: 4px;
+    font-family: monospace;
+    resize: vertical;
+  }
+
+  .error {
+    color: #c0392b;
+    font-size: pxToRem(13);
+    min-height: pxToRem(16);
+  }
+
+  .accepted-formats {
+    color: $cc-charcoal-hint;
+    font-size: pxToRem(12);
+    margin: 6px 0 0;
+    padding-left: 20px;
+
+    li {
+      margin-bottom: 4px;
+    }
+
+    code {
+      font-size: pxToRem(11);
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 10px 16px;
+    border-top: solid 1px $cc-charcoal-light2;
+  }
+
+  button {
+    font-size: pxToRem(14);
+    padding: 6px 16px;
+    cursor: pointer;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
+}
