@@ -1,6 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import classNames from "classnames";
+import queryString from "query-string";
 import { DynamicTextContext, DynamicTextManager } from "@concord-consortium/dynamic-text";
 
 import { PortalDataContext } from "./portal-data-context";
@@ -39,6 +40,7 @@ import { IdleWarning } from "./error/idle-warning";
 import { ExpandableContainer } from "./expandable-content/expandable-container";
 import { SequenceIntroduction } from "./sequence-introduction/sequence-introduction";
 import { ModalDialog } from "./modal-dialog";
+import { ActivityPickerDialog } from "./activity-picker-dialog";
 import { IMediaLibrary, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import { Logger, LogEventName, getLoggingTeacherUsername } from "../lib/logger";
 import { EmbeddablePlugin } from "./activity-page/plugins/embeddable-plugin";
@@ -121,7 +123,8 @@ interface IState {
   showSequenceIntro?: boolean;
   activityIndex?: number;
   showModal: boolean;
-  modalLabel: string
+  modalLabel: string;
+  showActivityPicker: boolean;
   incompleteQuestions: IncompleteQuestion[];
   pluginsLoaded: boolean;
   errorType: null | ErrorType;
@@ -160,6 +163,7 @@ export class App extends React.PureComponent<IProps, IState> {
       username: kAnonymousUserName,
       showModal: false,
       modalLabel: "",
+      showActivityPicker: false,
       incompleteQuestions: [],
       pluginsLoaded: false,
       errorType: null,
@@ -202,6 +206,15 @@ export class App extends React.PureComponent<IProps, IState> {
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
       const sequencePath = queryValue("sequence");
+
+      // When `noDefaultActivity` is set and the user hasn't provided an activity
+      // or sequence, skip the default-sample fallback and show a dialog that
+      // lets them paste an activity reference (typically an authoring "Run" URL).
+      if (!queryValue("activity") && !sequencePath && queryValueBoolean("noDefaultActivity")) {
+        this.setState({ showActivityPicker: true });
+        return;
+      }
+
       const activityPath = queryValue("activity") || kDefaultActivity;
       this.setState({showFeedbackPage: queryValueBoolean("showFeedback") });
 
@@ -476,17 +489,19 @@ export class App extends React.PureComponent<IProps, IState> {
                         { this.state.showWarning && <WarningBanner/> }
                         { isOfferingLocked(this.state.portalData) && <LockedBanner isSequence={!!this.state.sequence}/> }
                         { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-                        { this.state.errorType && !this.state.activity
-                          ? <div className={`activity fixed-width-${kDefaultFixedWidthLayout}`}>
-                              <Error type={this.state.errorType} />
-                            </div>
-                          : this.state.showSequenceIntro
-                            ? <SequenceIntroduction
-                                sequence={this.state.sequence}
-                                username={this.state.username}
-                                onSelectActivity={this.handleSelectActivity}
-                              />
-                            : this.renderActivity() }
+                        { this.state.showActivityPicker
+                          ? <ActivityPickerDialog onSubmit={this.handleActivityPickerSubmit} />
+                          : this.state.errorType && !this.state.activity
+                            ? <div className={`activity fixed-width-${kDefaultFixedWidthLayout}`}>
+                                <Error type={this.state.errorType} />
+                              </div>
+                            : this.state.showSequenceIntro
+                              ? <SequenceIntroduction
+                                  sequence={this.state.sequence}
+                                  username={this.state.username}
+                                  onSelectActivity={this.handleSelectActivity}
+                                />
+                              : this.renderActivity() }
                         { this.state.showThemeButtons && <ThemeButtons/>}
                         <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
                         <ModalDialog
@@ -830,6 +845,16 @@ export class App extends React.PureComponent<IProps, IState> {
     Logger.log({
       event: LogEventName.show_sequence_intro_page
     });
+  }
+
+  // Handler for the activity-picker dialog shown when `noDefaultActivity` is
+  // set and no activity/sequence is provided. Merges the extracted params
+  // into the current URL and triggers a reload so the normal componentDidMount
+  // flow picks up the activity.
+  private handleActivityPickerSubmit = (params: Record<string, string>) => {
+    const current = queryString.parse(window.location.search);
+    delete current.noDefaultActivity;
+    window.location.search = queryString.stringify({ ...current, ...params });
   }
 
   private setShowModal = (show: boolean, label = "") => {
