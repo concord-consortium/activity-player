@@ -32,7 +32,7 @@
     font-size: pxToRem(14);
   }
 
-  input {
+  textarea {
     width: 100%;
     box-sizing: border-box;
     padding: 6px 8px;
@@ -40,6 +40,7 @@
     border: solid 1px $cc-charcoal-light1;
     border-radius: 4px;
     font-family: monospace;
+    resize: vertical;
   }
 
   .error {

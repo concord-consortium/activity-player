@@ -13,9 +13,9 @@ export const ActivityPickerDialog: React.FC<IProps> = ({ onSubmit }) => {
   const [input, setInput] = useState("");
   const [error, setError] = useState("");
 
-  const handleSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    const params = extractActivityParams(input);
+  const doSubmit = () => {
+    // Strip stray newlines so a URL pasted from a wrapped source still parses.
+    const params = extractActivityParams(input.replace(/[\r\n]+/g, ""));
     if (!params) {
       setError("Please paste a URL or activity reference.");
       return;
@@ -23,9 +23,23 @@ export const ActivityPickerDialog: React.FC<IProps> = ({ onSubmit }) => {
     onSubmit(params);
   };
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    doSubmit();
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInput(event.target.value);
     if (error) setError("");
+  };
+
+  // In a textarea, Enter would normally insert a newline; submit on plain Enter
+  // instead, and reserve Shift+Enter for the rare case where a newline is wanted.
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      doSubmit();
+    }
   };
 
   return (
@@ -41,18 +55,20 @@ export const ActivityPickerDialog: React.FC<IProps> = ({ onSubmit }) => {
           <div className="instructions">
             Paste a URL or activity reference from the authoring system:
           </div>
-          <input
-            type="text"
+          <textarea
             value={input}
             onChange={handleChange}
-            placeholder="https://authoring.staging.concord.org/api/v1/123.json"
+            onKeyDown={handleKeyDown}
+            placeholder="https://authoring.concord.org/activities/14237/edit"
             autoFocus={true}
+            rows={3}
             data-cy="activity-picker-input"
           />
           <div className="error" data-cy="activity-picker-error">{error}</div>
           <ul className="accepted-formats">
             <li>An Activity Player URL with an <code>activity</code> or <code>sequence</code> query parameter</li>
-            <li>A direct authoring JSON endpoint (<code>.../api/v1/&lt;id&gt;.json</code>)</li>
+            <li>An authoring URL (e.g. <code>.../activities/&lt;id&gt;/edit</code> or <code>.../sequences/&lt;id&gt;/edit</code>)</li>
+            <li>A direct authoring JSON endpoint (<code>.../api/v1/&lt;resource&gt;/&lt;id&gt;.json</code>)</li>
             <li>A sample activity key (e.g. <code>sample-activity-1</code>)</li>
           </ul>
         </div>
