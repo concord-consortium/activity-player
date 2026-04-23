@@ -39,6 +39,8 @@ import sampleActivityMediaLibrary from "../data/sample-activity-media-library.js
 import sampleActivityAllQuestionInteractivesNotebook from "../data/sample-activity-all-question-interactives-notebook.json";
 import sampleActivityHideQuestionNumber from "../data/sample-activity-hide-question-number.json";
 import sampleActivitySaveInteractiveStateHistory from "../data/sample-activity-save-interactive-state-history.json";
+import sampleActivityCodap from "../data/sample-activity-codap.json";
+import sampleActivityCodapFullScreen from "../data/sample-activity-codap-full-screen.json";
 
 const sampleActivities: {[name: string]: Activity} = {
   "sample-new-sections-activity-1": sampleNewSectionsActivity1 as Activity,
@@ -80,6 +82,8 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-activity-hide-question-number": sampleActivityHideQuestionNumber as unknown as Activity,
   "sample-activity-save-interactive-state-history": sampleActivitySaveInteractiveStateHistory as unknown as Activity,
   "sample-activity-responsive-50-50-layout": sampleActivityResponsive5050 as unknown as Activity,
+  "sample-activity-codap": sampleActivityCodap as unknown as Activity,
+  "sample-activity-codap-full-screen": sampleActivityCodapFullScreen as unknown as Activity,
 };
 
 import sampleSequence from "../data/sample-sequence.json";
