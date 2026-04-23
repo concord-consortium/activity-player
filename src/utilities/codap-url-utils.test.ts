@@ -78,4 +78,13 @@ describe("convertCodapUrl", () => {
     expect(convertCodapUrl("not a url", v3)).toBe("not a url");
     expect(convertCodapUrl("", v3)).toBe("");
   });
+
+  it("passes through unchanged when the base URL is not http(s) (XSS defense)", () => {
+    const v2 = "https://codap.concord.org/app/?foo=bar";
+    expect(convertCodapUrl(v2, "javascript:alert(1)")).toBe(v2);
+    expect(convertCodapUrl(v2, "data:text/html,<script>alert(1)</script>")).toBe(v2);
+    expect(convertCodapUrl(v2, "file:///etc/passwd")).toBe(v2);
+    expect(convertCodapUrl(v2, "not a url")).toBe(v2);
+    expect(convertCodapUrl(v2, "")).toBe(v2);
+  });
 });

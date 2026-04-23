@@ -18,6 +18,18 @@ const codapBaseUrlOverride = queryValue("codap");
 
 const isCodapUrl = (url: URL) => kCodapHostnames.has(url.hostname);
 
+// Only http(s) bases are accepted. Rejecting other schemes (javascript:, data:,
+// file:, etc.) prevents an attacker-crafted link like `?codap=javascript:...`
+// from turning a CODAP iframe into an execution vector.
+const isSafeBase = (base: string): boolean => {
+  try {
+    const { protocol } = new URL(base);
+    return protocol === "http:" || protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
 // Replace the origin+path of a CODAP URL with a user-supplied base URL,
 // preserving the original query string verbatim (so flag-style params like
 // `interactiveApi` keep their exact form) and the original hash. Any query
@@ -46,6 +58,8 @@ const swapBase = (original: URL, base: string): string => {
  * CODAP URL is detected or if `url` can't be parsed.
  */
 export const convertCodapUrl = (url: string, base: string): string => {
+  if (!isSafeBase(base)) return url;
+
   let parsed: URL;
   try {
     parsed = new URL(url);
