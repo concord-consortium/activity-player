@@ -112,6 +112,7 @@ Inside of your `package.json` file:
 * mode={mode}:                        sets mode. Values: "teacher-edition"
 * portalReport:                       override default base URL for the student report. `https://activity-player.concord.org/`, `https://activity-player-offline.concord.org/`, `https://activity-player.concord.org/version/*`, and `https://activity-player-offline.concord.org/version/*`, default to a versioned URL defined as a constant in the code `kProductionPortalReportUrl`. Every other url defaults to the master branch of the portal-report.
 * override:locked                     When set to "true" the offering is locked, independent of the portal data value.  Useful for development/testing.
+* codap={url}:                        rewrite CODAP URLs (V2 or V3) to use the given base URL, preserving query params and hash. Also rewrites CODAP URLs nested inside a full-screen question interactive (via its `wrappedInteractive` parameter). Useful for testing an activity against a specific CODAP V3 build without re-authoring. Example: `codap=https://codap3.concord.org`
 
 #### User data loading:
 * firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ and https://activity-player-offline.concord.org/ without a path, defaults to `report-service-pro` every other url defaults to `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.

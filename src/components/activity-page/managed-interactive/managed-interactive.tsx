@@ -27,6 +27,7 @@ import { ManagedInteractiveHint } from "./managed-interactive-hint";
 import { ActivityLayouts, hasPluginThatRequiresHeader } from "../../../utilities/activity-utils";
 import { useQuestionInfoContext } from "../../question-info-context";
 import { isOfferingLocked } from "../../../utilities/portal-data-utils";
+import { maybeConvertCodapUrl } from "../../../utilities/codap-url-utils";
 
 import "./managed-interactive.scss";
 
@@ -346,7 +347,10 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   // Each interactive will be first loaded inline with the url_fragment appended. So it can merge its custom dialog URL
   // with this fragment if necessary. ActivityPlayer doesn't have knowledge about URL format and provided url_fragment
   // to perform this merge automatically.
-  const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
+  const rawIframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
+  // When the `codap` URL parameter is set, rewrite CODAP URLs to use the supplied V3 base URL.
+  // This is a no-op when the parameter is absent and for all non-CODAP URLs.
+  const iframeUrl = maybeConvertCodapUrl(rawIframeUrl);
 
   // question numbers are 1-based
   const hasQuestionNumber = (questionNumber || 0) > 0;
