@@ -24,12 +24,18 @@
     padding: 14px 16px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
   }
 
   .instructions {
     color: $font-color;
     font-size: pxToRem(14);
+    margin-bottom: 6px;
+
+    // Separate a second field group (the CODAP override) from the bullet list
+    // of the group above it.
+    &:not(:first-child) {
+      margin-top: 16px;
+    }
   }
 
   textarea {
@@ -43,16 +49,47 @@
     resize: vertical;
   }
 
+  // The main activity-reference input is taller than its 3-row default so long
+  // pasted launch URLs are easier to read and edit.
+  .activity-input {
+    min-height: pxToRem(170);
+  }
+
   .error {
     color: #c0392b;
     font-size: pxToRem(13);
-    min-height: pxToRem(16);
+    margin-top: 4px;
   }
 
-  .accepted-formats {
+  .dialog-note {
+    font-size: pxToRem(13);
+    color: $font-color;
+    background-color: $cc-charcoal-light3;
+    border: solid 1px $cc-charcoal-light2;
+    border-radius: 4px;
+    padding: 6px 8px;
+    margin-top: 16px;
+
+    code {
+      font-size: pxToRem(12);
+      word-break: break-all;
+    }
+
+    p {
+      margin: 0;
+
+      & + p {
+        margin-top: 8px;
+      }
+    }
+  }
+
+  // Bullet lists sit directly beneath their textarea (no gap above), describing
+  // accepted inputs / sample CODAP URLs.
+  .bullets {
     color: $cc-charcoal-hint;
     font-size: pxToRem(12);
-    margin: 6px 0 0;
+    margin: 8px 0 0;
     padding-left: 20px;
 
     li {

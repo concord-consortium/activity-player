@@ -16,6 +16,11 @@ const kWrappedInteractiveParam = "wrappedInteractive";
 // Read once at module load so the converter is a no-op unless the user opted in.
 const codapBaseUrlOverride = queryValue("codap");
 
+// The base URL CODAP links will be rewritten to (from the `codap` query param),
+// or undefined when no override is active. Exposed so UI (e.g. the activity
+// picker dialog) can show the tester which CODAP build will be used.
+export const getCodapBaseUrlOverride = () => codapBaseUrlOverride;
+
 const isCodapUrl = (url: URL) => kCodapHostnames.has(url.hostname);
 
 // Only http(s) bases are accepted. Rejecting other schemes (javascript:, data:,
@@ -29,6 +34,13 @@ const isSafeBase = (base: string): boolean => {
     return false;
   }
 };
+
+/**
+ * True if `base` is an acceptable CODAP override base URL: a parseable http(s)
+ * URL. Used to validate the value entered in the activity picker dialog before
+ * it is applied. (Other schemes are rejected as an XSS defense — see swapBase.)
+ */
+export const isValidCodapBaseUrl = (base: string): boolean => isSafeBase(base);
 
 // Replace the origin+path of a CODAP URL with a user-supplied base URL,
 // preserving the original query string verbatim (so flag-style params like

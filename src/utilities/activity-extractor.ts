@@ -1,8 +1,19 @@
-// Query params that the Activity Player recognizes for loading a resource.
-// When a pasted URL contains these, we carry them over verbatim into the
-// reloaded URL so that activity/sequence context (including page and
-// sequenceActivity) is preserved.
-const kForwardedParams = ["activity", "sequence", "sequenceActivity", "page"] as const;
+// Portal hostnames whose learner data lives in the production report-service
+// firebase app (`report-service-pro`). A student run launched from one of these
+// only loads its saved data when `firebase_app=report-service-pro`, but that is
+// NOT the default off-production: localhost and branch deploys default to
+// `report-service-dev` (see firebaseAppName in portal-api). So when a production
+// launch URL is pasted, we default `firebaseApp` to `report-service-pro` (unless
+// the URL already specifies one) so the run loads as the student everywhere.
+const kProductionPortalHostnames = new Set(["learn.concord.org"]);
+
+const isProductionPortalDomain = (domain: string): boolean => {
+  try {
+    return kProductionPortalHostnames.has(new URL(domain).hostname);
+  } catch {
+    return false;
+  }
+};
 
 // Matches authoring hostnames like `authoring.concord.org` and
 // `authoring.staging.concord.org`.
@@ -30,8 +41,15 @@ const authoringUiParams = (url: URL): Record<string, string> | null => {
  *
  * Accepted inputs:
  * - An Activity Player URL that already carries `?activity=` or `?sequence=`
- *   (e.g. the "Run" URL copied from the authoring system). The relevant
- *   query params are extracted and forwarded.
+ *   (e.g. the "Run" URL copied from the authoring system, or a student's full
+ *   launch URL from learn.concord.org with `domain`, `domain_uid`, `token`,
+ *   etc.). All of its query params are forwarded verbatim — only
+ *   `noDefaultActivity` is dropped — so auth and navigation context is
+ *   preserved and the run loads exactly as it was launched. When the `domain`
+ *   is a production portal (learn.concord.org) and no `firebaseApp` is present,
+ *   `firebaseApp=report-service-pro` is added so the student's data loads even
+ *   off-production (localhost / branch deploys, which otherwise default to
+ *   report-service-dev).
  * - An authoring UI URL such as
  *   `https://authoring.concord.org/activities/14237/edit`. Converted to the
  *   corresponding `/api/v1/<resource>/<id>.json` endpoint; staging and
@@ -54,15 +72,24 @@ export const extractActivityParams = (input: string): Record<string, string> | n
     return { activity: trimmed };
   }
 
-  // If the pasted URL carries any of the Activity Player's own resource
-  // params, forward those (and any associated navigation params) rather
-  // than using the URL itself as the activity source.
-  const forwarded: Record<string, string> = {};
-  for (const key of kForwardedParams) {
-    const value = parsed.searchParams.get(key);
-    if (value) forwarded[key] = value;
+  // If the pasted URL carries one of the Activity Player's own resource params,
+  // treat it as a full AP launch URL and forward all of its query params (auth
+  // and navigation context included, e.g. a student's `domain`/`token`) rather
+  // than using the URL itself as the activity source. `noDefaultActivity` is
+  // dropped so the picker dialog isn't shown again after the reload.
+  if (parsed.searchParams.get("activity") || parsed.searchParams.get("sequence")) {
+    const forwarded: Record<string, string> = {};
+    parsed.searchParams.forEach((value, key) => {
+      if (key !== "noDefaultActivity") forwarded[key] = value;
+    });
+    // A production student run stores data in `report-service-pro`; default to
+    // it so the run loads correctly off-production (localhost / branch deploys),
+    // unless the pasted URL already pins a specific firebase app.
+    if (!forwarded.firebaseApp && forwarded.domain && isProductionPortalDomain(forwarded.domain)) {
+      forwarded.firebaseApp = "report-service-pro";
+    }
+    return forwarded;
   }
-  if (forwarded.activity || forwarded.sequence) return forwarded;
 
   // Authoring UI URLs → convert to the corresponding JSON API endpoint.
   const fromAuthoring = authoringUiParams(parsed);

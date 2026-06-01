@@ -1,4 +1,18 @@
-import { convertCodapUrl } from "./codap-url-utils";
+import { convertCodapUrl, isValidCodapBaseUrl } from "./codap-url-utils";
+
+describe("isValidCodapBaseUrl", () => {
+  it("accepts http(s) URLs", () => {
+    expect(isValidCodapBaseUrl("https://codap2to3.concord.org")).toBe(true);
+    expect(isValidCodapBaseUrl("http://localhost:8080/branch/x")).toBe(true);
+  });
+
+  it("rejects non-http(s) schemes and unparseable values", () => {
+    expect(isValidCodapBaseUrl("javascript:alert(1)")).toBe(false);
+    expect(isValidCodapBaseUrl("file:///etc/passwd")).toBe(false);
+    expect(isValidCodapBaseUrl("codap2to3.concord.org")).toBe(false);
+    expect(isValidCodapBaseUrl("")).toBe(false);
+  });
+});
 
 describe("convertCodapUrl", () => {
   const v3 = "https://codap3.concord.org";
@@ -72,6 +86,14 @@ describe("convertCodapUrl", () => {
     const staleV3 = "https://codap3.concord.org/?url=https%3A%2F%2Fexample.com%2Fdoc.json";
     expect(convertCodapUrl(staleV3, "https://codap3.concord.org/branch/feature-x/"))
       .toBe("https://codap3.concord.org/branch/feature-x/?url=https%3A%2F%2Fexample.com%2Fdoc.json");
+  });
+
+  it("rewrites CODAP V2 and V3 URLs to the codap2to3 test server", () => {
+    const c2to3 = "https://codap2to3.concord.org";
+    const v2 = "https://codap.concord.org/app/static/dg/en/cert/index.html?interactiveApi&documentId=X";
+    expect(convertCodapUrl(v2, c2to3)).toBe("https://codap2to3.concord.org?interactiveApi&documentId=X");
+    const staleV3 = "https://codap3.concord.org/?url=https%3A%2F%2Fexample.com%2Fdoc.json";
+    expect(convertCodapUrl(staleV3, c2to3)).toBe("https://codap2to3.concord.org?url=https%3A%2F%2Fexample.com%2Fdoc.json");
   });
 
   it("returns the input unchanged for non-URL strings", () => {

@@ -112,8 +112,8 @@ Inside of your `package.json` file:
 * mode={mode}:                        sets mode. Values: "teacher-edition"
 * portalReport:                       override default base URL for the student report. `https://activity-player.concord.org/`, `https://activity-player-offline.concord.org/`, `https://activity-player.concord.org/version/*`, and `https://activity-player-offline.concord.org/version/*`, default to a versioned URL defined as a constant in the code `kProductionPortalReportUrl`. Every other url defaults to the master branch of the portal-report.
 * override:locked                     When set to "true" the offering is locked, independent of the portal data value.  Useful for development/testing.
-* codap={url}:                        rewrite CODAP URLs (V2 or V3) to use the given base URL, preserving query params and hash. Also rewrites CODAP URLs nested inside a full-screen question interactive (via its `wrappedInteractive` parameter). Useful for testing an activity against a specific CODAP V3 build without re-authoring. Example: `codap=https://codap3.concord.org`
-* noDefaultActivity:                  when set and neither `activity` nor `sequence` is specified, show a dialog that lets the user paste a URL or activity reference from the authoring system instead of falling back to the default sample activity. Accepts an Activity Player URL (forwards its `activity`/`sequence`/`sequenceActivity`/`page` params), an authoring UI URL (e.g. `https://authoring.concord.org/activities/<id>/edit` — converted to the JSON API endpoint), a direct authoring JSON endpoint, or a sample activity key.
+* codap={url}:                        rewrite CODAP URLs (V2 or V3) to use the given base URL, preserving query params and hash. Also rewrites CODAP URLs nested inside a full-screen question interactive (via its `wrappedInteractive` parameter). Useful for testing an activity against a specific CODAP build without re-authoring, including the v2-to-v3 test server. Examples: `codap=https://codap3.concord.org`, `codap=https://codap2to3.concord.org`
+* noDefaultActivity:                  when set and neither `activity` nor `sequence` is specified, show a dialog that lets the user paste a URL or activity reference instead of falling back to the default sample activity. Accepts a full Activity Player launch URL — including a student's run URL copied from learn.concord.org, whose `domain`/`domain_uid`/`token` and navigation params are all forwarded so the run loads as that student — an authoring UI URL (e.g. `https://authoring.concord.org/activities/<id>/edit`, converted to the JSON API endpoint), a direct authoring JSON endpoint, or a sample activity key. Combine with `codap=` to also rewrite CODAP URLs in the loaded activity (the `codap=` value on the launch URL is preserved across the reload). See "Testing CODAP URL overrides" below.
 
 #### User data loading:
 * firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ and https://activity-player-offline.concord.org/ without a path, defaults to `report-service-pro` every other url defaults to `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
@@ -132,6 +132,28 @@ Inside of your `package.json` file:
 #### Internal parameters (used in Cypress tests)
 * __cypressLoggedIn:  triggers logged in code path for Cypress tests
 * __skipGetApRun:     skip the ap run load when loading a page
+
+### Testing CODAP URL overrides
+
+The `codap=` parameter rewrites every CODAP URL in an activity (V2 or V3, including ones nested inside a full-screen question interactive) to point at a base URL you choose — for example the v2-to-v3 test server at `https://codap2to3.concord.org`. This lets a tester exercise a real student run against a specific CODAP build without re-authoring the activity. There are two ways to use it:
+
+**1. Paste a launch URL into the picker dialog.** Open the Activity Player with the override and the picker dialog enabled:
+
+```
+https://activity-player.concord.org/?noDefaultActivity&codap=https://codap2to3.concord.org
+```
+
+Then paste the student's full launch URL (the one from learn.concord.org, e.g. `https://activity-player.concord.org/?domain=...&domain_uid=...&sequence=...&token=...`) into the dialog and click **Load**. All of the launch URL's params (`domain`, `domain_uid`, `token`, `sequence`/`activity`, `sequenceActivity`, `page`, …) are carried over and merged with the `codap=` override, so the run loads as that student with CODAP rewritten. The dialog shows which CODAP base URL and which firebase app the run will use before you load.
+
+> **Firebase app:** a production student run (launched from `learn.concord.org`) stores its data in the `report-service-pro` firebase app, but Activity Player only defaults to `report-service-pro` when served from the bare production origin — localhost and branch deploys (`/branch/...`) default to `report-service-dev`, which the production portal rejects (`500 Unknown firebase app name`). To make "drop a URL" work everywhere, the picker automatically adds `firebaseApp=report-service-pro` when the pasted launch URL's `domain` is `learn.concord.org` (and no `firebaseApp` is already specified). Runs launched from a staging portal keep the `report-service-dev` default.
+
+**2. Bookmarklet (one click on a live run).** While viewing a student run in the Activity Player, click this bookmarklet to reload the *same* URL with the CODAP override added:
+
+```js
+javascript:(function(){var u=new URL(location.href);u.searchParams.set('codap','https://codap2to3.concord.org');location.href=u.toString();})();
+```
+
+To install it, create a new bookmark and paste the line above as the URL. To target a different build, change the `https://codap2to3.concord.org` value. Note that student launch tokens are short-lived, so use the bookmarklet promptly after the run loads.
 
 ## License
 

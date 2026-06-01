@@ -854,6 +854,10 @@ export class App extends React.PureComponent<IProps, IState> {
   private handleActivityPickerSubmit = (params: Record<string, string>) => {
     const current = queryString.parse(window.location.search);
     delete current.noDefaultActivity;
+    // The dialog's CODAP field is authoritative: drop any `codap` inherited from
+    // the current URL so clearing the field actually removes the override. The
+    // dialog re-adds `codap` in `params` when the field is non-empty.
+    delete current.codap;
     window.location.search = queryString.stringify({ ...current, ...params });
   }
 

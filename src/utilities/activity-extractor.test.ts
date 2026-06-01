@@ -40,9 +40,61 @@ describe("extractActivityParams", () => {
     });
   });
 
-  it("ignores unrelated query params on a pasted Activity Player URL", () => {
+  it("forwards all query params on a pasted Activity Player URL", () => {
     const pasted = "https://activity-player.concord.org/?activity=https://x/a.json" +
       "&preview=true&firebaseApp=report-service-dev";
+    expect(extractActivityParams(pasted)).toEqual({
+      activity: "https://x/a.json",
+      preview: "true",
+      firebaseApp: "report-service-dev"
+    });
+  });
+
+  it("forwards a student's full launch URL (domain, domain_uid, token) so the run loads as that student", () => {
+    const pasted = "https://activity-player.concord.org/?domain=https%3A%2F%2Flearn.concord.org%2F" +
+      "&domain_uid=77701&sequence=https%3A%2F%2Fauthoring.concord.org%2Fapi%2Fv1%2Fsequences%2F429.json" +
+      "&sequenceActivity=0&token=abc.def.ghi";
+    expect(extractActivityParams(pasted)).toEqual({
+      domain: "https://learn.concord.org/",
+      domain_uid: "77701",
+      sequence: "https://authoring.concord.org/api/v1/sequences/429.json",
+      sequenceActivity: "0",
+      token: "abc.def.ghi",
+      // production-portal run → defaulted so it loads off-production too
+      firebaseApp: "report-service-pro"
+    });
+  });
+
+  it("defaults firebaseApp to report-service-pro for a production-portal launch URL", () => {
+    const pasted = "https://activity-player.concord.org/?domain=https%3A%2F%2Flearn.concord.org%2F" +
+      "&sequence=https://x/s.json&token=abc.def.ghi";
+    expect(extractActivityParams(pasted)).toEqual({
+      domain: "https://learn.concord.org/",
+      sequence: "https://x/s.json",
+      token: "abc.def.ghi",
+      firebaseApp: "report-service-pro"
+    });
+  });
+
+  it("does not override an explicit firebaseApp on a production-portal launch URL", () => {
+    const pasted = "https://activity-player.concord.org/?domain=https%3A%2F%2Flearn.concord.org%2F" +
+      "&sequence=https://x/s.json&firebaseApp=report-service-dev";
+    expect(extractActivityParams(pasted)).toMatchObject({ firebaseApp: "report-service-dev" });
+  });
+
+  it("does not add firebaseApp for a non-production (e.g. staging) portal domain", () => {
+    const pasted = "https://activity-player.concord.org/?domain=https%3A%2F%2Flearn.staging.concord.org%2F" +
+      "&sequence=https://x/s.json&token=abc.def.ghi";
+    expect(extractActivityParams(pasted)).not.toHaveProperty("firebaseApp");
+  });
+
+  it("does not add firebaseApp when no domain is present", () => {
+    const pasted = "https://activity-player.concord.org/?sequence=https://x/s.json";
+    expect(extractActivityParams(pasted)).not.toHaveProperty("firebaseApp");
+  });
+
+  it("drops noDefaultActivity when forwarding an AP launch URL so the dialog isn't reshown", () => {
+    const pasted = "https://activity-player.concord.org/?noDefaultActivity&activity=https://x/a.json";
     expect(extractActivityParams(pasted)).toEqual({
       activity: "https://x/a.json"
     });
@@ -62,7 +114,8 @@ describe("extractActivityParams", () => {
     const pasted = "https://activity-player.concord.org/" +
       "?activity=https%3A%2F%2Fauthoring.concord.org%2Fapi%2Fv1%2Factivities%2F14237.json&preview";
     expect(extractActivityParams(pasted)).toEqual({
-      activity: "https://authoring.concord.org/api/v1/activities/14237.json"
+      activity: "https://authoring.concord.org/api/v1/activities/14237.json",
+      preview: ""
     });
   });
 
