@@ -4,7 +4,7 @@
 
 **Status**: **Ready for review**
 
-**Scope**: Activity Player (AP), with required supporting changes in `@concord-consortium/accessibility-tools` and `@concord-consortium/lara-interactive-api`.
+**Scope**: Activity Player (AP), with required supporting changes in `@concord-consortium/accessibility-tools`, `@concord-consortium/lara-interactive-api`, and LARA (to add the content-only authoring flag).
 
 ## Summary
 
@@ -17,7 +17,7 @@ Two paths are supported:
 
 ## For reviewers
 
-This is a high-level, cross-repository design. Detailed implementation specs will be written per-repo (`accessibility-tools`, `lara-interactive-api`, `interactive-api-host`, `activity-player`) as separate follow-ups. For this review please focus on the architectural decisions:
+This is a high-level, cross-repository design. Detailed implementation specs will be written per-repo (`accessibility-tools`, `lara-interactive-api`, `interactive-api-host`, `activity-player`, LARA) as separate follow-ups. For this review please focus on the architectural decisions:
 
 - The cooperating / non-cooperating split and the protocol shape — [§ Background: why a protocol is unavoidable](#background-why-a-protocol-is-unavoidable), [§ The focus-coordination protocol](#the-focus-coordination-protocol), [§ Path 1](#path-1--cooperating-interactive), [§ Path 2](#path-2--non-cooperating-interactive).
 - The library layering across repos and what lives where — [§ Architecture: layers](#architecture-layers), [§ Host code sharing across apps](#host-code-sharing-across-apps-library-layering), [§ Components by repository](#components-by-repository).
@@ -229,6 +229,9 @@ The same focus host-side logic is needed by every app that embeds interactives �
 - Wires the shared `FocusManager` (from `interactive-api-host`) to the `accessibility-tools` trap — AP supplies callbacks, not its own transport implementation.
 - Overlay integration in `managed-interactive.tsx` / `lightbox.tsx`: host the trap, disable react-modal focus management, and add a keyboard-focusable close control as the escape hatch.
 - Capability detection wired to the existing `supportedFeatures` handling.
+
+**LARA** (authoring system)
+- Add the **content-only** flag to the interactive's authored properties: data model (where the flag is stored on the interactive record) and authoring UI (a checkbox or equivalent for authors to set it). AP reads the flag at runtime and applies `tabIndex={-1}` to the iframe when set (see [Content-only setting](#content-only-setting)). This is the only LARA change required for AP-208.
 
 ## iframe element `tabIndex` policy
 
