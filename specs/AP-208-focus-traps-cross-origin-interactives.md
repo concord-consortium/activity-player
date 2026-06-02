@@ -125,7 +125,7 @@ The library's per-slot hooks (`tabHandlers`, `escapeHandlers`) all fire from its
 The library gains an **iframe-slot** abstraction that:
 
 - Accepts element refs for the iframe and its `before`/`after` sentinels (AP renders the sentinel DOM; the library owns their focus *behavior*).
-- Tracks `focusInsideIframe` from the iframe element's `focus`/`blur` (the one cross-origin signal the parent can observe).
+- Tracks `focusInsideIframe` from the iframe element's `focus`/`blur` events. These fire whenever the iframe's document gains or loses focus — regardless of whether focus arrived via native Tab, a click inside the iframe, or programmatic `iframe.focus()` — so click and programmatic focus changes keep `focusInsideIframe` correct without any special handling. The trap's `keydown` handler also reads `document.activeElement` lazily at Tab time rather than caching a "current slot," so non-Tab focus changes can't leave stale state behind.
 - On sentinel `focusin`, drives its own slot cycling (it already owns `cycleOrder`).
 - For cooperating iframes, speaks the protocol through an **injected transport** (`send(msg)` / `onMessage(cb)`), translating protocol messages ↔ trap actions.
 
@@ -257,14 +257,24 @@ Some interactives are pure display content with nothing focusable. Today every i
 - **Cross-browser status:** `tabIndex="-1"` on the iframe element is **fully sufficient in Chrome, Safari, and Firefox (verified empirically)** — it removes the iframe from the parent's tab sequence regardless of inner content, including scrollable elements that would otherwise trigger the [keyboard-focusable scrollers](https://developer.chrome.com/blog/keyboard-focusable-scrollers) rule in Chrome and Firefox (Safari doesn't implement that rule anyway). If a future browser is found to leak inner focusables through `tabIndex="-1"`, a cooperating content-only interactive can additionally suppress its own inner focusables.
 - The setting is an **authoring-system change** (where the flag is stored and surfaced in the authoring UI), not only an AP runtime change.
 
-### Focus ring
+### Focus ring (deferred — not implemented in this version)
 
-AP can draw a focus ring around the iframe when `focusInsideIframe` is true (purely parent-side, no cross-origin dependency). The default is **off**, because for most interactives the goal is a seamless, integrated feel — a ring around the whole iframe signals "separate widget" and breaks that.
+For non-cooperating ∧ not content-only interactives, a keyboard user can lose track of where focus is: AP can't see which inner element is focused, and the interactive may not indicate focus itself. A parent-side ring drawn around the iframe when focus is inside would clarify "focus is somewhere in here."
 
-The ring is shown only for the genuinely ambiguous case: **non-cooperating ∧ not content-only ∧ `focusInsideIframe`**. There, AP can't see which inner element holds focus and the interactive may not indicate focus itself, so the ring clarifies "focus is somewhere in here."
+**This version does not implement the ring.** No single gating condition is both correct cross-browser and consistent with modality conventions:
 
-- **Implementation:** use `outline` (no layout shift); reuse the focus-ring CSS custom properties `accessibility-tools` already ships for visual consistency.
-- **Accepted limitation:** a non-cooperating interactive that *does* show its own focus indicator will display both rings. Busier but still clarifying; AP can't detect the inner indicator cross-origin to avoid it.
+- **Gating on `focusInsideIframe` (the JS-tracked iframe focus/blur signal):** would show the ring whenever focus is inside — including for click-into-iframe. That contradicts the modality convention used by AP's other focus indicators (a focus ring after a mouse click feels wrong).
+- **Gating on `iframe:focus-visible`:** what modality conventions would suggest, but empirically (Chrome / Firefox / Safari, macOS) the iframe element rarely matches `:focus-visible` when focus is inside its *content* — `:focus-visible` matches only when the user keyboard-focused the iframe element *itself*, which essentially doesn't happen because focus descends into content immediately. So this gate would suppress the ring almost always. (The exception is the [Firefox cross-origin `:focus` persistence quirk](#background-how-focus-works-with-iframes-in-browsers); not a basis for design.)
+- **JS-tracked input modality + `focusInsideIframe`:** doable but adds host-side input-modality tracking that AP doesn't otherwise need. Cost vs. benefit isn't obvious without a concrete reported problem to motivate it.
+
+The accessibility benefit remains real, so this is **deferred, not rejected**. Revisit when there's an authoring case where the ambiguity is reported as a real problem; at that point the JS-tracked-modality hybrid is the natural starting point.
+
+**Related browser-behavior findings worth recording even though the ring is deferred:**
+
+- **Input modality propagates cross-document in Chrome and Firefox.** Verified empirically (macOS) that a click inside an iframe switches the parent's modality to pointer (parent loses `:focus-visible` rings) and a Tab keypress anywhere switches it back to keyboard. So AP's own focus indicators (links, buttons, etc.) styled on `:focus-visible` automatically reflect the user's current mode regardless of which document the action occurred in — no special handling required.
+- **Safari caveat: `:focus-visible` does not match elements *inside* iframes** (empirically verified, macOS Safari; related discussion at [w3c/csswg-drafts#11415](https://github.com/w3c/csswg-drafts/issues/11415)). It does match on the parent's iframe element and on parent-document elements. Interactives that style their own focus indicators on `:focus-visible` won't get them inside the iframe in Safari — they'd need to fall back to bare `:focus` styling. Worth flagging for interactive authors.
+
+- **Accepted limitation while deferred:** a non-cooperating interactive that does not show its own focus indicator gives no visible focus state for keyboard users tabbing through it. Mitigations: cooperating interactives show their own focus indicators (recommended); content-only interactives skip the iframe entirely.
 
 ## Host-configured key forwarding (shared protocol; CODAP-driven)
 
