@@ -20,6 +20,7 @@ import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
 import { SinglePageContent } from "./single-page/single-page-content";
 import { WarningBanner } from "./warning-banner";
+import { WildfireBanner } from "./wildfire-banner";
 import { DefunctBanner } from "./defunct-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { deleteQueryValue, queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
@@ -472,6 +473,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   <DynamicTextContext.Provider value={dynamicTextManager}>
                     <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
                       <div className="app" data-cy="app">
+                        <WildfireBanner/>
                         { this.state.showDefunctBanner && <DefunctBanner/> }
                         { this.state.showWarning && <WarningBanner/> }
                         { isOfferingLocked(this.state.portalData) && <LockedBanner isSequence={!!this.state.sequence}/> }

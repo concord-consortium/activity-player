@@ -2,6 +2,7 @@ import { convertLegacyResource } from "./convert-old-lara/convert";
 import { sampleActivities, sampleSequences } from "./data";
 import { Activity, Sequence } from "./types";
 import { queryValue } from "./utilities/url-query";
+import { rewriteWildfireUrlsForActiveBranch } from "./utilities/wildfire";
 
 export const getResourceUrl = () => {
   const sequenceUrl = queryValue("sequence");
@@ -27,14 +28,14 @@ export const getActivityDefinition = (activity: string): Promise<Activity> => {
           return resource;
         }
       })
-      .then(resolve);
+      .then((resource) => resolve(rewriteWildfireUrlsForActiveBranch(resource) as Activity));
     } else {
       if (sampleActivities[activity]) {
         if (sampleActivities[activity].version === 1) {
           const convertedActivityResource = convertLegacyResource(sampleActivities[activity]) as Activity;
-          resolve(convertedActivityResource);
+          resolve(rewriteWildfireUrlsForActiveBranch(convertedActivityResource));
         } else {
-          resolve(sampleActivities[activity]);
+          resolve(rewriteWildfireUrlsForActiveBranch(sampleActivities[activity]));
         }
       } else {
         reject(`No sample activity matches ${activity}`);
@@ -73,14 +74,14 @@ export const getSequenceDefinition = (sequence: string): Promise<Sequence> => {
         } else {
           return resource;
         }
-      }).then(resolve);
+      }).then((resource) => resolve(rewriteWildfireUrlsForActiveBranch(resource) as Sequence));
     } else {
       if (sampleSequences[sequence]) {
         if (sampleSequences[sequence].activities[0].version === 1) {
           const convertedSequenceResource = convertLegacyResource(sampleSequences[sequence]) as Sequence;
-          setTimeout(() => resolve(convertedSequenceResource), 250);
+          setTimeout(() => resolve(rewriteWildfireUrlsForActiveBranch(convertedSequenceResource)), 250);
         } else {
-          setTimeout(() => resolve(sampleSequences[sequence]), 250);
+          setTimeout(() => resolve(rewriteWildfireUrlsForActiveBranch(sampleSequences[sequence])), 250);
         }
       } else {
         reject(`No sample sequence matches ${sequence}`);

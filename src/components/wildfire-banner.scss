@@ -1,0 +1,18 @@
+@import "./vars.scss";
+
+.wildfire-banner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 6px;
+  background-color: $cc-orange;
+  color: black;
+  font-size: pxToRem(18);
+  padding: 8px;
+  width: 100%;
+
+  strong {
+    font-weight: bold;
+  }
+}
