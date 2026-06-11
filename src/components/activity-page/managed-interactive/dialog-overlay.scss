@@ -1,0 +1,29 @@
+.dialog-overlay {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  &__title {
+    font-weight: 600;
+  }
+
+  &__close {
+    background: white;
+    border: 1px solid #888;
+    border-radius: 4px;
+    padding: 4px 12px;
+    cursor: pointer;
+
+    &:hover { background: #f0f0f0; }
+    &:focus-visible { outline: 2px solid orange; outline-offset: 2px; }
+  }
+
+  &__content {
+    /* Wrapper around the IframeRuntime — used by the focus trap's
+       getElements() and excluded from setChildrenNonTabbable. */
+  }
+}
