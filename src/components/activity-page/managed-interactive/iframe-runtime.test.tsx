@@ -61,6 +61,55 @@ describe("IframeRuntime component", () => {
     jest.restoreAllMocks();
   });
 
+  it("renders before/after sentinels around the iframe with tabindex=-1", () => {
+    const mockSetInteractiveState = jest.fn();
+    const mockSetSupportedFeatures = jest.fn();
+    const mockSetNavigation = jest.fn();
+    const mockGetFirebaseJWT = jest.fn(() => Promise.resolve("stub"));
+    const mockSetNewHint = jest.fn();
+    const mockAttachmentUrl = "https://concord.org/attachment/url";
+    const mockGetAttachmentUrl = jest.fn(() => Promise.resolve({ url: mockAttachmentUrl, requestId: 1 }));
+    const mockShowModal = jest.fn();
+    const mockCloseModal = jest.fn();
+    const mockSetAspectRatio = jest.fn();
+    const mockSetHeightFromInteractive = jest.fn();
+    const mockSetSendCustomMessage = jest.fn();
+    const { container } = render(
+      <MediaLibraryTester>
+        <DynamicTextTester>
+          <IframeRuntime
+            url={"https://concord.org/"}
+            id={"123-Interactive"}
+            authoredState={null}
+            initialInteractiveState={{testing: true}}
+            legacyLinkedInteractiveState={null}
+            setInteractiveState={mockSetInteractiveState}
+            setAspectRatio={mockSetAspectRatio}
+            setHeightFromInteractive={mockSetHeightFromInteractive}
+            setSupportedFeatures={mockSetSupportedFeatures}
+            setNewHint={mockSetNewHint}
+            getFirebaseJWT={mockGetFirebaseJWT}
+            getAttachmentUrl={mockGetAttachmentUrl}
+            showModal={mockShowModal}
+            closeModal={mockCloseModal}
+            setSendCustomMessage={mockSetSendCustomMessage}
+            setNavigation={mockSetNavigation}
+            log={mockLog}
+            iframeTitle="Interactive content"
+            showDeleteDataButton={true}
+          />
+        </DynamicTextTester>
+      </MediaLibraryTester>
+    );
+    const sentinels = container.querySelectorAll(".iframe-slot-sentinel");
+    expect(sentinels.length).toBe(2);
+    sentinels.forEach((s) => expect(s.getAttribute("tabindex")).toBe("-1"));
+    const iframe = container.querySelector("iframe");
+    expect(iframe).not.toBeNull();
+    expect(sentinels[0].nextElementSibling).toBe(iframe);
+    expect(sentinels[1].previousElementSibling).toBe(iframe);
+  });
+
   it("renders component", async () => {
     const mockSetInteractiveState = jest.fn();
     const mockSetSupportedFeatures = jest.fn();
@@ -253,9 +302,10 @@ describe("IframeRuntime component", () => {
     // saving a different interactive state results in another call
     expect(mockSetInteractiveState).toHaveBeenCalledTimes(3);
 
-    expect(testIframe.getByTestId("iframe-runtime").children[0].tagName).toBe("IFRAME");
+    const iframeEl = testIframe.getByTestId("iframe-runtime").querySelector("iframe");
+    expect(iframeEl).not.toBeNull();
     // height is the default of 300px
-    expect(testIframe.getByTestId("iframe-runtime").children[0]).toHaveAttribute("height", "300");
+    expect(iframeEl).toHaveAttribute("height", "300");
 
     act(() => {
       dispatchMessageFromChild("supportedFeatures", { features: { aspectRatio: 1.5 } });

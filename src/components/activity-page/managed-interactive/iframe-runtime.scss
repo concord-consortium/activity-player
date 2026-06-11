@@ -27,3 +27,31 @@
     margin-bottom: 20px;
   }
 }
+
+.iframe-slot-sentinel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  outline: none;
+  pointer-events: none;
+
+  .iframe-slot-sentinel-label { display: none; }
+
+  &[data-landing] {
+    width: auto;
+    height: auto;
+    overflow: visible;
+    clip: auto;
+    padding: 8px 12px;
+    background: white;
+    border: 2px solid orange;
+    z-index: 1;
+    pointer-events: auto;
+
+    .iframe-slot-sentinel-label { display: inline; }
+  }
+}
