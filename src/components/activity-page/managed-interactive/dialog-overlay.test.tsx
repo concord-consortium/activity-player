@@ -56,7 +56,7 @@ describe("DialogOverlay component", () => {
 
   it("focuses the close button on mount when not notCloseable", async () => {
     render(<DialogOverlay {...baseProps} />);
-    // useEffect runs after render — wait one microtask tick.
+    // yield once for React commit microtasks.
     await Promise.resolve();
     expect(document.activeElement).toBe(screen.getByTestId("dialog-overlay-close"));
   });

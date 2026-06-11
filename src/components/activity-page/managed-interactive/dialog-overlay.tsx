@@ -1,5 +1,9 @@
-import React, { useCallback, useRef } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import Modal from "react-modal";
+// Note: Jest 27 does not honor package.json `exports` subpaths, so
+// `@concord-consortium/accessibility-tools/hooks` is resolved via a
+// moduleNameMapper entry in package.json that points at the dist CJS file.
+// When the project upgrades to Jest 28+, the mapper can be removed.
 import { useFocusTrap, useIframeSlot, FocusTrapStrategy } from "@concord-consortium/accessibility-tools/hooks";
 import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import "./dialog-overlay.scss";
@@ -47,7 +51,10 @@ export const DialogOverlay: React.FC<IProps> = (props) => {
   const iframeWrapperRef = useRef<HTMLDivElement | null>(null);
 
   // Shared with both useIframeSlot and the trap strategy (DRY).
-  const cycleOrder = notCloseable ? ["content"] : ["close", "content"];
+  const cycleOrder = useMemo(
+    () => (notCloseable ? ["content"] : ["close", "content"]),
+    [notCloseable],
+  );
   const getElements = useCallback(
     () => ({
       ...(notCloseable
@@ -76,14 +83,20 @@ export const DialogOverlay: React.FC<IProps> = (props) => {
     enterLabel: "Press Tab to enter the interactive",
   });
 
-  const strategy: FocusTrapStrategy = {
-    ...strategyFragment,            // provides contentSlot, nativeTabSlots, focusContent, getNativeTabSlotSentinels
-    cycleOrder,
-    getElements,
-    escapeHandlers: notCloseable
-      ? {}
-      : { close: () => { safeOnClose(); return "handled"; } },
-  };
+  const strategy = useMemo<FocusTrapStrategy>(
+    () => {
+      const escapeHandlers: FocusTrapStrategy["escapeHandlers"] = notCloseable
+        ? {}
+        : { close: () => { safeOnClose(); return "handled"; } };
+      return {
+        ...strategyFragment,            // provides contentSlot, nativeTabSlots, focusContent, getNativeTabSlotSentinels
+        cycleOrder,
+        getElements,
+        escapeHandlers,
+      };
+    },
+    [strategyFragment, cycleOrder, getElements, notCloseable, safeOnClose],
+  );
 
   const trap = useFocusTrap({ containerRef, strategy });
   trapRef.current = trap;
@@ -101,6 +114,8 @@ export const DialogOverlay: React.FC<IProps> = (props) => {
     if (el && !enteredRef.current) {
       enteredRef.current = true;
       trapRef.current?.enterTrap();
+    } else if (!el) {
+      enteredRef.current = false;
     }
   }, []);
 
