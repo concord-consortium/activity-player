@@ -8,7 +8,9 @@ configure({ testIdAttribute: "data-cy" });
 import Modal from "react-modal";
 
 jest.mock("./iframe-runtime", () => ({
-  IframeRuntime: React.forwardRef((_: any, _ref: any) => <div data-cy="iframe-runtime-mock" />),
+  IframeRuntime: React.forwardRef<HTMLDivElement, any>(
+    function MockedIframeRuntime() { return <div data-cy="iframe-runtime-mock" />; }
+  ),
 }));
 
 const baseProps = {
