@@ -53,4 +53,19 @@ describe("DialogOverlay component", () => {
     fireEvent.click(btn);
     expect(baseProps.onClose).toHaveBeenCalledTimes(1);
   });
+
+  it("focuses the close button on mount when not notCloseable", async () => {
+    render(<DialogOverlay {...baseProps} />);
+    // useEffect runs after render — wait one microtask tick.
+    await Promise.resolve();
+    expect(document.activeElement).toBe(screen.getByTestId("dialog-overlay-close"));
+  });
+
+  it("dismisses the dialog when Escape is pressed on the close button", async () => {
+    render(<DialogOverlay {...baseProps} />);
+    await Promise.resolve();
+    const btn = screen.getByTestId("dialog-overlay-close");
+    fireEvent.keyDown(btn, { key: "Escape" });
+    expect(baseProps.onClose).toHaveBeenCalledTimes(1);
+  });
 });
