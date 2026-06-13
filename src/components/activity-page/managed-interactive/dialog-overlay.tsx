@@ -72,7 +72,7 @@ export const DialogOverlay: React.FC<IProps> = (props) => {
   // time, breaking the cycle.
   const trapRef = useRef<ReturnType<typeof useFocusTrap> | null>(null);
 
-  const { strategyFragment } = useIframeSlot({
+  const { strategyFragment, beforeSentinelProps, afterSentinelProps } = useIframeSlot({
     slotName: "content",
     iframeRef,
     beforeSentinelRef,
@@ -149,8 +149,8 @@ export const DialogOverlay: React.FC<IProps> = (props) => {
             url={url}
             ref={iframeRuntimeRef}
             iframeRef={iframeRef}
-            beforeSentinelRef={beforeSentinelRef}
-            afterSentinelRef={afterSentinelRef}
+            beforeSentinelRef={beforeSentinelProps.ref}
+            afterSentinelRef={afterSentinelProps.ref}
           />
         </div>
       </div>

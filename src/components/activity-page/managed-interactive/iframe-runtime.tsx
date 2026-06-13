@@ -92,8 +92,8 @@ interface IProps {
   feedback?: QuestionFeedback | null;
   log: (logData: any) => void;
   iframeRef?: React.MutableRefObject<HTMLIFrameElement | null>;
-  beforeSentinelRef?: React.MutableRefObject<HTMLElement | null>;
-  afterSentinelRef?: React.MutableRefObject<HTMLElement | null>;
+  beforeSentinelRef?: React.Ref<HTMLElement | null>;
+  afterSentinelRef?: React.Ref<HTMLElement | null>;
 }
 
 // these are managed outside of the component to persist across component unmount/mount cycles
