@@ -59,7 +59,7 @@ Each is forwarded to the corresponding rendered element via a small `composeRefs
 
 The `IframeRuntimeImperativeAPI` also gains `getIframeElement(): HTMLIFrameElement | null`, used by `managed-interactive` for the temporary focus-restoration fallback on close.
 
-**React stability**: per the library's contract, the host must not also write `tabIndex`, `data-landing`, or `aria-label` on the sentinels. The library is the single imperative writer. The sentinel JSX has a stable key, an unconditional render, and only `className` + `tabIndex={-1}` at the source-level (the library overwrites `tabindex` imperatively when active).
+**React stability**: per the library's contract, the host must not also write `tabIndex`, `data-show-hint`, or `aria-label` on the sentinels. The library is the single imperative writer. The sentinel JSX has a stable key, an unconditional render, and only `className` + `tabIndex={-1}` at the source-level (the library overwrites `tabindex` imperatively when active).
 
 #### Sentinel DOM and styling
 
@@ -81,7 +81,7 @@ The `IframeRuntimeImperativeAPI` also gains `getIframeElement(): HTMLIFrameEleme
 </span>
 ```
 
-The label `<span>` is rendered statically; CSS shows it only when the library sets `[data-landing]` on the sentinel.
+The label `<span>` is rendered statically; CSS shows it only when the library sets `[data-show-hint]` on the sentinel.
 
 `iframe-runtime.scss`:
 
@@ -104,7 +104,7 @@ The label `<span>` is rendered statically; CSS shows it only when the library se
 
   .iframe-slot-sentinel-label { display: none; }
 
-  &[data-landing] {
+  &[data-show-hint] {
     width: auto;
     height: auto;
     overflow: visible;
@@ -120,7 +120,7 @@ The label `<span>` is rendered statically; CSS shows it only when the library se
 }
 ```
 
-Both sentinels anchor at the iframe's top-left; only one is ever in `[data-landing]` at a time, so they don't conflict. The hint **overlays** the iframe's top-left corner — no page reflow when toggling between rest and landing. Brief occlusion of the iframe's top-left content during landing is accepted; the user's next Tab descends and the hint collapses back to zero size.
+Both sentinels anchor at the iframe's top-left; only one is ever in `[data-show-hint]` at a time, so they don't conflict. The hint **overlays** the iframe's top-left corner — no page reflow when toggling between rest and landing. Brief occlusion of the iframe's top-left content during landing is accepted; the user's next Tab descends and the hint collapses back to zero size.
 
 Token (`$cc-orange`) and exact colors are placeholders to settle during implementation.
 

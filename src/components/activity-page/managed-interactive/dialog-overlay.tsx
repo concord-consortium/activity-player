@@ -43,7 +43,6 @@ export const DialogOverlay: React.FC<IProps> = (props) => {
   }, [onClose]);
 
   // Refs the trap and iframe-slot need.
-  const containerRef = useRef<HTMLDivElement | null>(null);
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
   const beforeSentinelRef = useRef<HTMLElement | null>(null);
@@ -98,19 +97,18 @@ export const DialogOverlay: React.FC<IProps> = (props) => {
     [strategyFragment, cycleOrder, getElements, notCloseable, safeOnClose],
   );
 
-  const trap = useFocusTrap({ containerRef, strategy });
+  const trap = useFocusTrap({ strategy });
   trapRef.current = trap;
 
-  // Engage the trap when the container element actually attaches to the DOM.
-  // react-modal's ModalPortal initially renders null (state.isOpen=false) and
-  // only mounts its children after its own componentDidMount → setState. Our
-  // mount useEffect therefore runs BEFORE the dialog content (and its refs)
-  // exists. A callback ref on the container fires exactly when the dialog DOM
-  // is attached; descendant refs (close button, content wrapper) are populated
-  // before the parent's callback ref fires, so the trap can see them.
+  // Wire the trap's container seam and engage the trap on first attach.
+  // The controller's `containerRef` is portal/defer-safe — it attaches its
+  // listeners exactly when the dialog DOM commits (react-modal's ModalPortal
+  // defers its children until after its own componentDidMount). But the
+  // controller does not auto-enter the trap, so we still call enterTrap()
+  // once the element is attached.
   const enteredRef = useRef(false);
   const setContainerRef = useCallback((el: HTMLDivElement | null) => {
-    containerRef.current = el;
+    trapRef.current?.containerRef(el);
     if (el && !enteredRef.current) {
       enteredRef.current = true;
       trapRef.current?.enterTrap();
