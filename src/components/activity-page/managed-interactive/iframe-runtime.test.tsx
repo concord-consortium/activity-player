@@ -351,4 +351,47 @@ describe("IframeRuntime component", () => {
     expect(global.confirm).toHaveBeenCalledTimes(1);
     expect(mockSetInteractiveState).toHaveBeenCalledTimes(5);
   });
+
+  const renderIframeRuntime = (overrides: Record<string, any> = {}) => render(
+    <MediaLibraryTester>
+      <DynamicTextTester>
+        <IframeRuntime
+          url={"https://concord.org/"}
+          id={"123-Interactive"}
+          authoredState={null}
+          initialInteractiveState={null}
+          legacyLinkedInteractiveState={null}
+          setInteractiveState={jest.fn()}
+          setAspectRatio={jest.fn()}
+          setHeightFromInteractive={jest.fn()}
+          setSupportedFeatures={jest.fn()}
+          setNewHint={jest.fn()}
+          getFirebaseJWT={jest.fn(() => Promise.resolve("stub"))}
+          getAttachmentUrl={jest.fn(() => Promise.resolve({ url: "https://concord.org/a", requestId: 1 }))}
+          showModal={jest.fn()}
+          closeModal={jest.fn()}
+          setSendCustomMessage={jest.fn()}
+          setNavigation={jest.fn()}
+          log={mockLog}
+          iframeTitle="Interactive content"
+          {...overrides}
+        />
+      </DynamicTextTester>
+    </MediaLibraryTester>
+  );
+
+  it("does not render the buttons wrapper when there is no reset button or feedback", () => {
+    const { container, queryByTestId } = renderIframeRuntime({ showDeleteDataButton: false, feedback: null });
+    jest.runAllTimers();
+    // the wrapper (and its margins) must be omitted so it doesn't add empty whitespace below the iframe
+    expect(container.querySelector(".iframe-runtime-buttons")).toBeNull();
+    expect(queryByTestId("reset-button")).toBeNull();
+  });
+
+  it("renders the buttons wrapper when the reset button is shown", () => {
+    const { container, queryByTestId } = renderIframeRuntime({ showDeleteDataButton: true });
+    jest.runAllTimers();
+    expect(container.querySelector(".iframe-runtime-buttons")).not.toBeNull();
+    expect(queryByTestId("reset-button")).not.toBeNull();
+  });
 });
