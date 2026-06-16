@@ -112,6 +112,7 @@ Inside of your `package.json` file:
 * mode={mode}:                        sets mode. Values: "teacher-edition"
 * portalReport:                       override default base URL for the student report. `https://activity-player.concord.org/`, `https://activity-player-offline.concord.org/`, `https://activity-player.concord.org/version/*`, and `https://activity-player-offline.concord.org/version/*`, default to a versioned URL defined as a constant in the code `kProductionPortalReportUrl`. Every other url defaults to the master branch of the portal-report.
 * override:locked                     When set to "true" the offering is locked, independent of the portal data value.  Useful for development/testing.
+* qiBranch={branch}:                  For development/testing. When set, rewrites any `https://models-resources.concord.org/question-interactives/(branch|version)/<name>/` URL to use the given branch. Lets a deployed question-interactives branch be tested against a sample activity without editing the activity JSON.
 
 #### User data loading:
 * firebaseApp={id}:  override default firebase app. https://activity-player.concord.org/ and https://activity-player-offline.concord.org/ without a path, defaults to `report-service-pro` every other url defaults to `report-service-dev`. For example https://activity-player.concord.org/branch/foo will use `report-service-dev` by default.
