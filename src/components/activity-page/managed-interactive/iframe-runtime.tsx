@@ -525,15 +525,17 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         title={iframeTitle}
         scrolling="no"
       />
-      <div className="iframe-runtime-buttons">
-        {showDeleteDataButton &&
-          <button className="button reset" data-cy="reset-button" onClick={handleResetButtonClick} onKeyDown={handleResetButtonClick}>
-            Clear &amp; start over
-            <ReloadIcon />
-          </button>
-        }
-        {feedback && <IframeRuntimeFeedback embeddableRefId={id} feedback={feedback} />}
-      </div>
+      {(showDeleteDataButton || feedback) &&
+        <div className="iframe-runtime-buttons">
+          {showDeleteDataButton &&
+            <button className="button reset" data-cy="reset-button" onClick={handleResetButtonClick} onKeyDown={handleResetButtonClick}>
+              Clear &amp; start over
+              <ReloadIcon />
+            </button>
+          }
+          {feedback && <IframeRuntimeFeedback embeddableRefId={id} feedback={feedback} />}
+        </div>
+      }
     </div>
   );
 });
