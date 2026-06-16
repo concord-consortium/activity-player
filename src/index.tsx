@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { App } from "./components/app";
+import { FocusDebugOverlay } from "./components/focus-debug-overlay";
+import { DEBUG_FOCUS } from "./lib/debug";
 import { initializeAuthorization } from "./utilities/auth-utils";
 
 import "./index.sass";
@@ -17,7 +19,10 @@ const redirecting = initializeAuthorization();
 
 if (!redirecting) {
   ReactDOM.render(
-    <App />,
+    <>
+      <App />
+      {DEBUG_FOCUS && <FocusDebugOverlay />}
+    </>,
     document.getElementById("app")
   );
 }
