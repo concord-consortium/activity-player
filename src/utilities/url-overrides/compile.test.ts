@@ -28,9 +28,10 @@ describe("compileRule", () => {
     );
     expect(error).toBeUndefined();
     expect(rule).toBeDefined();
-    expect(rule!.regex.source).toBe(
-      "https:\\/\\/models-resources\\.concord\\.org\\/question-interactives\\/(branch|version)\\/[^\\/]+\\/"
-    );
+    expect(rule!.regex.test("https://models-resources.concord.org/question-interactives/branch/old/multiple-choice/")).toBe(true);
+    expect(rule!.regex.test("https://models-resources.concord.org/question-interactives/version/1.2.3/multiple-choice/")).toBe(true);
+    expect(rule!.regex.test("https://models-resources.concord.org/question-interactives/")).toBe(false);
+    expect(rule!.regex.test("https://other-host.example/question-interactives/branch/x/")).toBe(false);
     expect(rule!.replacement).toBe(
       "https://models-resources.concord.org/question-interactives/branch/foo/"
     );
@@ -96,7 +97,9 @@ describe("compileRule", () => {
       { key: "mr", param: "question-interactives", value: "x" },
       registry
     );
-    expect(rule!.regex.source).toContain("question\\-interactives");
+    // Param injected as a literal — only matches the exact project name.
+    expect(rule!.regex.test("https://models-resources.concord.org/question-interactives/")).toBe(true);
+    expect(rule!.regex.test("https://models-resources.concord.org/question_interactives/")).toBe(false);
   });
 
   it("returns an error when prefix is malformed (cannot be compiled)", () => {

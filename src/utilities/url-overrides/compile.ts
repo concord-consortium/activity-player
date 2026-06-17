@@ -5,12 +5,6 @@ const VALUE_RE = /^[A-Za-z0-9._-]+$/;
 // Escape a string so it matches literally inside a regex pattern.
 export const regexEscape = (s: string): string => s.replace(/[.*+?^${}()|[\]\\/]/g, "\\$&");
 
-// Escape a param string for injection into a regex pattern.  Stricter than
-// regexEscape: also escapes `-` so that a param value such as
-// "question-interactives" cannot accidentally form a character-class range
-// when the surrounding match template uses `[…]`.
-const regexEscapeParam = (s: string): string => s.replace(/[.*+?^${}()|[\]\\/-]/g, "\\$&");
-
 // Escape a string so it is substituted literally by String.prototype.replace.
 // The only special character in a replacement string is `$`.
 export const replaceEscape = (s: string): string => s.replace(/\$/g, "$$$$");
@@ -49,17 +43,13 @@ export const compileRule = (
   let matchBody = entry.match;
   let replaceBody = entry.replace;
   if (param !== undefined) {
-    const escapedParam = regexEscapeParam(param);
+    const escapedParam = regexEscape(param);
     matchBody = matchBody.split(PARAM_PLACEHOLDER).join(escapedParam);
     replaceBody = replaceBody.split(PARAM_PLACEHOLDER).join(replaceEscape(param));
   }
   replaceBody = replaceBody.split(VALUE_PLACEHOLDER).join(replaceEscape(value));
 
-  // Escape literal forward slashes in the match body so the compiled regex source
-  // shows `\/` consistently (forward slashes are not regex metacharacters but we
-  // normalise them for readability and to satisfy the test contract).
-  const escapedMatchBody = matchBody.replace(/\//g, "\\/");
-  const pattern = regexEscape(entry.prefix) + escapedMatchBody;
+  const pattern = regexEscape(entry.prefix) + matchBody;
   let regex: RegExp;
   try {
     regex = new RegExp(pattern);
