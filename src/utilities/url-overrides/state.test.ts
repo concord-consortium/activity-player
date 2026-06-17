@@ -120,4 +120,21 @@ describe("override state module", () => {
     await initializeOverrides({ fetchRegistry, getSearch });
     expect(fetchRegistry).toHaveBeenCalledTimes(1);
   });
+
+  it("captures unexpected throws during compileRule as banner errors", async () => {
+    // A registry entry with no `match` field will cause compileRule to throw
+    // when isParameterized() reads `entry.match.includes(...)`.
+    const malformed = {
+      bad: { prefix: "https://x/", replace: "y" } as any,
+    };
+    await initializeOverrides({
+      fetchRegistry: async () => malformed,
+      getSearch: () => "?override.bad=x",
+    });
+    const info = getOverrideInfo();
+    expect(info.active).toHaveLength(0);
+    expect(info.errors).toHaveLength(1);
+    expect(info.errors[0].key).toBe("bad");
+    expect(info.registryFetchFailed).toBe(false);
+  });
 });

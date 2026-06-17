@@ -1,8 +1,7 @@
 /**
- * Verifies that the applyOverrides integration points in the three iframe-rendering
- * components will correctly rewrite URLs once overrides are initialized.
- * (The heavy component-render tests live in managed-interactive.test.tsx;
- * this file keeps the override-specific assertions fast and dependency-free.)
+ * Exercises the URL override pipeline (registry → parse → compile → apply) end-to-end
+ * via initializeOverrides + applyOverrides, keeping the assertions fast and dependency-free.
+ * (The heavy component-render tests live in managed-interactive.test.tsx.)
  */
 import {
   initializeOverrides,

@@ -470,6 +470,7 @@ export class App extends React.PureComponent<IProps, IState> {
       const idleDetector = new IdleDetector({ idle: Number(kMaxIdleTime), onIdle: this.handleIdleness });
       idleDetector.start();
     } catch (e) {
+      this.setState({ loadingOverrides: false });
       console.warn(e);
     }
   }

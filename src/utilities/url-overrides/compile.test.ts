@@ -63,6 +63,16 @@ describe("compileRule", () => {
     expect(error!.reason).toMatch(/unknown/i);
   });
 
+  it("rejects keys that exist only on Object.prototype", () => {
+    // Reproduces a class of bug where `registry["constructor"]` returns Object.prototype.constructor
+    // (truthy) and the truthy check accidentally allows execution to fall through.
+    for (const protoKey of ["constructor", "toString", "__proto__"]) {
+      const { rule, error } = compileRule({ key: protoKey, value: "x" }, registry);
+      expect(rule).toBeUndefined();
+      expect(error!.reason).toMatch(/unknown/i);
+    }
+  });
+
   it("rejects values that fail charset validation", () => {
     const { error } = compileRule({ key: "qi", value: "has space" }, registry);
     expect(error!.reason).toMatch(/charset/i);
@@ -92,7 +102,7 @@ describe("compileRule", () => {
   it("regex-escapes the param so metacharacters cannot inject pattern semantics", () => {
     // (Won't normally reach this because charset rejects metachars first,
     // but defense-in-depth: if charset were bypassed, the escape still holds.)
-    // Verify by inspecting the compiled regex source.
+    // Behavioral check: the param is treated as a literal, so only the exact string matches.
     const { rule } = compileRule(
       { key: "mr", param: "question-interactives", value: "x" },
       registry

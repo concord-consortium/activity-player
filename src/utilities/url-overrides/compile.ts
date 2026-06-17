@@ -20,10 +20,10 @@ export const compileRule = (
   registry: RegistryJson
 ): { rule?: CompiledRule; error?: OverrideError } => {
   const { key, param, value } = parsed;
-  const entry = registry[key];
-  if (!entry) {
+  if (!Object.prototype.hasOwnProperty.call(registry, key)) {
     return { error: { key, param, value, reason: `Unknown override key: ${key}` } };
   }
+  const entry = registry[key];
   if (!VALUE_RE.test(value)) {
     return { error: { key, param, value, reason: `Value failed charset validation: ${value}` } };
   }

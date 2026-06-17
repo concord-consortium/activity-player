@@ -51,9 +51,18 @@ export const initializeOverrides = (deps: InitDeps = {}): Promise<void> => {
     const active: CompiledRule[] = [];
     const errors: OverrideInfo["errors"] = [];
     for (const override of sorted) {
-      const { rule, error } = compileRule(override, registry);
-      if (rule) active.push(rule);
-      if (error) errors.push(error);
+      try {
+        const { rule, error } = compileRule(override, registry);
+        if (rule) active.push(rule);
+        if (error) errors.push(error);
+      } catch (e) {
+        errors.push({
+          key: override.key,
+          param: override.param,
+          value: override.value,
+          reason: `Compile threw: ${(e as Error).message}`,
+        });
+      }
     }
     info = { active, errors, registryFetchFailed: false };
     initialized = true;
