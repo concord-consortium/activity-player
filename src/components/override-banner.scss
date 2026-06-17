@@ -1,0 +1,21 @@
+@import "./vars.scss";
+
+.override-banner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: $cc-orange;
+  color: black;
+  font-size: pxToRem(14);
+  padding: 10px;
+  width: 100%;
+  gap: 4px;
+
+  .override-banner-row {
+    text-align: center;
+  }
+
+  .override-banner-error {
+    color: darkred;
+  }
+}
