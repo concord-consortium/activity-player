@@ -118,9 +118,9 @@ Both cases are usage errors. Failing with a banner warning is more debuggable th
 
 The Activity Player computes interactive URLs in three places. The override system applies at all three:
 
-1. **`src/components/managed-interactive/managed-interactive.tsx`** — main interactive URL (currently `iframeUrl` near line 349).
-2. **`src/components/iframe-runtime.tsx`** — `showModal`-supplied URLs for dialogs opened by the running interactive (near line 519).
-3. **`src/components/lightbox.tsx`** — `showModal`-supplied URLs for lightbox content (near line 90).
+1. **`src/components/activity-page/managed-interactive/managed-interactive.tsx`** — main interactive URL (currently `iframeUrl` near line 349).
+2. **`src/components/activity-page/managed-interactive/iframe-runtime.tsx`** — `showModal`-supplied URLs for dialogs opened by the running interactive (near line 519).
+3. **`src/components/activity-page/managed-interactive/lightbox.tsx`** — `showModal`-supplied URLs for lightbox content (near line 90).
 
 Sites 2 and 3 receive URLs from the LARA interactive API at runtime — they are not in the activity JSON. We still apply overrides there for consistency: if a developer is testing a new branch of a dialog-popped interactive, they expect the override to take effect when the host interactive opens it.
 
