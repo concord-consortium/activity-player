@@ -222,15 +222,14 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   }, [portalData]);
 
   const { authored_state } = embeddable;
-  const overriddenAuthoredState = typeof authored_state === "string"
-    ? applyOverridesToAuthoredState(authored_state)
-    : authored_state;
   const questionName = embeddable.name || "";
   const url = embeddableData?.base_url || embeddableData?.url || "";
-  const authoredState = useMemo(
-    () => safeJsonParseIfString(overriddenAuthoredState) || {},
-    [overriddenAuthoredState]
-  );
+  const authoredState = useMemo(() => {
+    const overridden = typeof authored_state === "string"
+      ? applyOverridesToAuthoredState(authored_state)
+      : authored_state;
+    return safeJsonParseIfString(overridden) || {};
+  }, [authored_state]);
   const linkedInteractives = useRef(embeddable.linked_interactives?.length
     ? embeddable.linked_interactives.map(link => ({ id: link.ref_id, label: link.label }))
     : undefined);
