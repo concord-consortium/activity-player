@@ -30,6 +30,7 @@ import { isOfferingLocked } from "../../../utilities/portal-data-utils";
 import { queryValue, queryValueBoolean } from "../../../utilities/url-query";
 import { anonymousPortalData } from "../../../portal-api";
 import { composeRefs } from "../../../utilities/compose-refs";
+import { applyOverrides } from "../../../utilities/url-overrides/state";
 
 import "./iframe-runtime.scss";
 
@@ -535,7 +536,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         tabIndex={locked ? -1 : 0}
         key={`${id}-${reloadCount}`}
         ref={composeRefs(iframeRef, externalIframeRef)}
-        src={url}
+        src={applyOverrides(url)}
         id={id}
         width={width}
         height={height}
