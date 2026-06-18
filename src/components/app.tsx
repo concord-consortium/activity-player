@@ -59,6 +59,13 @@ import { QuestionInfoContext } from "./question-info-context";
 import { LockedBanner } from "./locked-banner";
 import { isOfferingLocked } from "../utilities/portal-data-utils";
 import { LogMonitor } from "@concord-consortium/log-monitor";
+import { OverrideBanner } from "./override-banner";
+import {
+  initializeOverrides,
+  getOverrideInfo,
+  hasActiveOverrideParams,
+} from "../utilities/url-overrides/state";
+import { OverrideInfo } from "../utilities/url-overrides/types";
 
 import "./app.scss";
 
@@ -140,6 +147,8 @@ interface IState {
   mediaLibrary: IMediaLibrary;
   scrollToQuestionId?: string;
   showFeedbackPage: boolean;
+  loadingOverrides: boolean;
+  overrideInfo: OverrideInfo;
 }
 interface IProps { }
 
@@ -157,6 +166,8 @@ export class App extends React.PureComponent<IProps, IState> {
       showThemeButtons: false,
       showDefunctBanner: false,
       showWarning: false,
+      loadingOverrides: hasActiveOverrideParams(),
+      overrideInfo: { active: [], errors: [], registryFetchFailed: false },
       username: kAnonymousUserName,
       showModal: false,
       modalLabel: "",
@@ -198,6 +209,8 @@ export class App extends React.PureComponent<IProps, IState> {
 
   async componentDidMount() {
     try {
+      await initializeOverrides();
+      this.setState({ loadingOverrides: false, overrideInfo: getOverrideInfo() });
       const teacherEditionMode = queryValue("mode")?.toLowerCase() === "teacher-edition";
       // Teacher Edition mode is equal to preview mode. RunKey won't be used and the data won't be persisted.
       const preview = queryValueBoolean("preview") || teacherEditionMode;
@@ -457,6 +470,7 @@ export class App extends React.PureComponent<IProps, IState> {
       const idleDetector = new IdleDetector({ idle: Number(kMaxIdleTime), onIdle: this.handleIdleness });
       idleDetector.start();
     } catch (e) {
+      this.setState({ loadingOverrides: false });
       console.warn(e);
     }
   }
@@ -476,6 +490,7 @@ export class App extends React.PureComponent<IProps, IState> {
                         { this.state.showWarning && <WarningBanner/> }
                         { isOfferingLocked(this.state.portalData) && <LockedBanner isSequence={!!this.state.sequence}/> }
                         { this.state.teacherEditionMode && <TeacherEditionBanner/>}
+                        <OverrideBanner info={this.state.overrideInfo}/>
                         { this.state.errorType && !this.state.activity
                           ? <div className={`activity fixed-width-${kDefaultFixedWidthLayout}`}>
                               <Error type={this.state.errorType} />
@@ -486,7 +501,9 @@ export class App extends React.PureComponent<IProps, IState> {
                                 username={this.state.username}
                                 onSelectActivity={this.handleSelectActivity}
                               />
-                            : this.renderActivity() }
+                            : this.state.loadingOverrides
+                              ? <div className="loading">Loading overrides…</div>
+                              : this.renderActivity() }
                         { this.state.showThemeButtons && <ThemeButtons/>}
                         <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
                         <ModalDialog
