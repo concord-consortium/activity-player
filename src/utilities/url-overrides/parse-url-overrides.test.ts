@@ -32,7 +32,7 @@ describe("parseOverrides", () => {
     expect(parseOverrides("?override.a.b.c=x")).toEqual([]);
   });
 
-  it("ignores duplicate keys by taking only the first occurrence (array values)", () => {
+  it("ignores duplicate keys by dropping them entirely (array values)", () => {
     // query-string returns an array when the same key appears twice;
     // we drop those rather than guessing which one the author meant.
     expect(parseOverrides("?override.qi=a&override.qi=b")).toEqual([]);
