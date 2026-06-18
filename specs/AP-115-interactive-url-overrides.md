@@ -156,6 +156,7 @@ Documented as "not supported in v1" rather than blocking the design:
 1. **Wrappers that compute the inner URL in their own JavaScript** (e.g. fetch a config from their own server, or build the URL from user state). The Activity Player never sees the inner URL and cannot rewrite it. No general fix; would require per-wrapper cooperation.
 2. **Inner URLs embedded inside JSON-as-a-query-param** (e.g. `?config=%7B%22url%22%3A%22https%3A%2F%2F...%22%7D`). Neither raw scan nor decoded-param scan catches this. Workaround: the wrapper can be given a registry entry with `scanAuthoredState: true` and the inner URL moved there.
 3. **Overrides on URLs computed entirely client-side after page load** (anything beyond the two iframe-render sites listed). Out of scope.
+4. **`authored_state` overrides require the JSON-encoded-string form.** The implementation only rewrites `authored_state` when it arrives as a string, matching the codebase's `authored_state?: string | null` type declaration. If some upstream code path pre-parses it into an object before it reaches `managed-interactive.tsx`, the override silently skips that interactive. This is consistent with how the activity JSON path delivers `authored_state` today (the same path the existing `safeJsonParseIfString` helper guards against), but worth knowing if that path ever changes.
 
 ## Banner UI
 
