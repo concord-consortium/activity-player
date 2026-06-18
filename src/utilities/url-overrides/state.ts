@@ -56,11 +56,12 @@ export const initializeOverrides = (deps: InitDeps = {}): Promise<void> => {
         if (rule) active.push(rule);
         if (error) errors.push(error);
       } catch (e) {
+        const message = e instanceof Error ? e.message : String(e);
         errors.push({
           key: override.key,
           param: override.param,
           value: override.value,
-          reason: `Compile threw: ${(e as Error).message}`,
+          reason: `Compile threw: ${message}`,
         });
       }
     }

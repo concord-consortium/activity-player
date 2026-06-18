@@ -27,7 +27,7 @@ import { ManagedInteractiveHint } from "./managed-interactive-hint";
 import { ActivityLayouts, hasPluginThatRequiresHeader } from "../../../utilities/activity-utils";
 import { useQuestionInfoContext } from "../../question-info-context";
 import { isOfferingLocked } from "../../../utilities/portal-data-utils";
-import { applyOverrides, applyOverridesToAuthoredState } from "../../../utilities/url-overrides/state";
+import { applyOverridesToAuthoredState } from "../../../utilities/url-overrides/state";
 
 import "./managed-interactive.scss";
 
@@ -353,9 +353,10 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   // Each interactive will be first loaded inline with the url_fragment appended. So it can merge its custom dialog URL
   // with this fragment if necessary. ActivityPlayer doesn't have knowledge about URL format and provided url_fragment
   // to perform this merge automatically.
-  const iframeUrl = applyOverrides(
-    activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url)
-  );
+  // URL overrides for this iframe are applied at the IframeRuntime render site
+  // (src/components/activity-page/managed-interactive/iframe-runtime.tsx), which
+  // is the single place every interactive iframe's src is set.
+  const iframeUrl = activeDialog?.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url);
 
   // question numbers are 1-based
   const hasQuestionNumber = (questionNumber || 0) > 0;

@@ -116,17 +116,16 @@ Both cases are usage errors. Failing with a banner warning is more debuggable th
 
 ## Application sites
 
-The Activity Player computes interactive URLs in three places. The override system applies at all three:
+The Activity Player renders interactive content in two iframe sites; URL overrides apply at both:
 
-1. **`src/components/activity-page/managed-interactive/managed-interactive.tsx`** — main interactive URL (currently `iframeUrl` near line 349).
-2. **`src/components/activity-page/managed-interactive/iframe-runtime.tsx`** — `showModal`-supplied URLs for dialogs opened by the running interactive (near line 519).
-3. **`src/components/activity-page/managed-interactive/lightbox.tsx`** — `showModal`-supplied URLs for lightbox content (near line 90).
+1. **`src/components/activity-page/managed-interactive/iframe-runtime.tsx`** (near line 519) — the iframe that renders every managed interactive. `IframeRuntime` receives the URL as a prop computed by `managed-interactive.tsx` (which appends `url_fragment`, switches in `activeDialog.url`, etc.), but the override rewrite happens here at the single point where the `<iframe src>` is finally set. Doing it here rather than at the parent avoids double-application and ensures any future caller of `IframeRuntime` automatically gets overrides.
+2. **`src/components/activity-page/managed-interactive/lightbox.tsx`** (near line 90) — the iframe used by the lightbox modal, which renders URLs supplied at runtime by the host interactive via the LARA `showModal` API. These URLs do not come from the activity JSON. Overrides apply here for consistency: if a developer is testing a new branch of an interactive that pops a lightbox, the override should take effect when the host interactive opens it.
 
-Sites 2 and 3 receive URLs from the LARA interactive API at runtime — they are not in the activity JSON. We still apply overrides there for consistency: if a developer is testing a new branch of a dialog-popped interactive, they expect the override to take effect when the host interactive opens it.
+`managed-interactive.tsx` does not call `applyOverrides` itself — the URL it computes flows down to `IframeRuntime` and is rewritten there. It does still call `applyOverridesToAuthoredState` on `embeddable.authored_state` before the parsed authored state is consumed (see "`authored_state` application" below), because that pipeline lives entirely in `managed-interactive.tsx`.
 
 ## URL-field application
 
-Applied at all three sites (main interactive URL, `showModal` dialog URL, lightbox URL). For each URL, applying an override is a two-pass operation:
+Applied at both iframe-rendering sites. For each URL, applying an override is a two-pass operation:
 
 1. **Pass A — raw regex on the full URL string.** Catches the common case where the override target appears in the host/path of the URL directly.
 2. **Pass B — decoded query-param scan.** Parse the URL with `new URL(...)`, iterate `searchParams`, apply the compiled regex to each decoded value, and write back with `searchParams.set(...)`. This handles the wrapper-interactive case where the inner URL is passed to the wrapper as a percent-encoded query parameter.
@@ -144,7 +143,7 @@ Some interactives are "wrapper" interactives: an outer iframe that internally lo
 
 When a registry entry has `scanAuthoredState: true`, the Activity Player applies the compiled regex to the interactive's `authored_state` value (which is a JSON-encoded string) before passing it to the wrapper iframe. This is a single pass — `authored_state` is not URL-encoded, so the dual-pass treatment is not needed.
 
-This applies only at the main `managed-interactive` site. `showModal`-supplied dialogs (sites 2 and 3) do not carry an `authored_state` field, so `scanAuthoredState` is meaningless for them.
+This applies only inside `managed-interactive.tsx`, which owns the `authored_state` pipeline. The two iframe-render sites (`iframe-runtime.tsx`, `lightbox.tsx`) only ever see fully-formed URL strings; they have no `authored_state` to scan, so `scanAuthoredState` is meaningless for them.
 
 Because the override happens *before* the wrapper iframe is constructed, the wrapper's runtime behavior — reading its inputs and loading the inner URL — is unaffected. The Activity Player never has to touch the wrapper's JavaScript.
 
@@ -156,7 +155,7 @@ Documented as "not supported in v1" rather than blocking the design:
 
 1. **Wrappers that compute the inner URL in their own JavaScript** (e.g. fetch a config from their own server, or build the URL from user state). The Activity Player never sees the inner URL and cannot rewrite it. No general fix; would require per-wrapper cooperation.
 2. **Inner URLs embedded inside JSON-as-a-query-param** (e.g. `?config=%7B%22url%22%3A%22https%3A%2F%2F...%22%7D`). Neither raw scan nor decoded-param scan catches this. Workaround: the wrapper can be given a registry entry with `scanAuthoredState: true` and the inner URL moved there.
-3. **Overrides on URLs computed entirely client-side after page load** (anything beyond the three application sites listed). Out of scope.
+3. **Overrides on URLs computed entirely client-side after page load** (anything beyond the two iframe-render sites listed). Out of scope.
 
 ## Banner UI
 
@@ -177,7 +176,9 @@ The wildfire-tester branch's banner is the model. Generalize it to handle multip
 | `<value>` or `<param>` fails charset validation | Banner shows warning for that key; that override is not applied. |
 | URL omits `<param>` but the entry is parameterized | Banner shows warning for that key; that override is not applied. |
 | URL supplies `<param>` but the entry is not parameterized | Banner shows warning for that key; that override is not applied. |
+| URL `<key>` shadows an `Object.prototype` name (`constructor`, `toString`, `__proto__`, etc.) | Treated as an unknown key. Banner shows warning; that override is not applied. |
 | Registry entry has a malformed `match` regex (won't compile, after `${param}` substitution if applicable) | Banner shows error for that key; that override is not applied. |
+| Registry entry has a malformed shape (missing `prefix`/`match`/`replace`, non-string field) or any other thrown error during compilation | Banner shows error for that key; that override is not applied. Other overrides and the activity load normally. |
 | Registry JSON contains entries not referenced by any `override.<key>=` parameter | Ignored. Unreferenced entries cost nothing. |
 
 The activity should always render. Override failures are testing-tool failures and must not break the activity itself.
@@ -199,6 +200,7 @@ Specific points:
 3. **The host-pinning of each registry entry (`prefix`) is the structural security control.** Every entry must declare which host/path it can rewrite to. The `prefix` field is structurally visible and is what allows a developer adding an entry to verify at a glance that the rule is scoped to a Concord-owned host before publishing. Because the registry lives in a git repo, any change is also visible in PR review when one is opened.
 4. **Banner mitigates user-facing phishing.** If a user clicks a link with an override parameter and the banner is shown, they have visible evidence that the Activity Player is not loading the default content.
 5. **Value charset validation** (`/^[A-Za-z0-9._-]+$/`) prevents accidental URL corruption, not malicious attacks. It is intentionally not relied on as a security boundary.
+6. **Registry key lookup uses `Object.prototype.hasOwnProperty`**, not a truthy check on `registry[key]`. This prevents URL keys like `?override.constructor=…` or `?override.toString=…` from accidentally resolving to inherited `Object.prototype` methods and triggering downstream type errors. The activity-always-renders guarantee in the failure-modes table holds because of this guard plus a defense-in-depth `try`/`catch` around per-entry compilation: a malformed or pathological entry results in a banner warning for that key, never a broken activity.
 
 ## Migration
 
