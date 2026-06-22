@@ -64,6 +64,9 @@ describe("IframeRuntime component", () => {
   afterEach(() => {
     jest.useRealTimers();
     jest.restoreAllMocks();
+    // Override state is a module-level singleton; reset here so it can't leak
+    // into later tests even if a test throws before its own cleanup.
+    resetOverridesForTesting();
   });
 
   it("renders component", async () => {
@@ -411,7 +414,5 @@ describe("IframeRuntime component", () => {
     const iframe = testIframe.getByTestId("iframe-runtime").children[0] as HTMLIFrameElement;
     expect(iframe.getAttribute("src")).toBe(overriddenUrl);
     expect(iframe.getAttribute("src")).not.toBe(rawUrl);
-
-    resetOverridesForTesting();
   });
 });
