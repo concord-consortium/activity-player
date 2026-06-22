@@ -143,8 +143,13 @@ class ActivityPage {
   getHintText() {
     return this.getInteractive().find('.hint.question-txt');
   }
+  // Returns the hint icon (if any) within the given interactive. The icon is rendered by the
+  // externally-hosted interactive only after its iframe loads, so we rely on Cypress's normal
+  // retry (no { timeout: 0 }) to let ".should('exist')" call sites wait for it to appear.
+  // ".should('not.exist')" call sites still pass immediately when the icon is absent, so they
+  // are not slowed down.
   hasHintIcon(interactive) {
-    return cy.wrap(interactive).find('[data-cy=open-hint]', { timeout: 0 });
+    return cy.wrap(interactive).find('[data-cy=open-hint]');
   }
   verifyHiddenQuestionNumberInteractive() {
     return cy.get('[data-cy="managed-interactive"]').should('not.exist');
