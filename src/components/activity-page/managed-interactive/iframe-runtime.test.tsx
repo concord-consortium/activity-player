@@ -458,7 +458,7 @@ describe("IframeRuntime component", () => {
       jest.runAllTimers();
     });
 
-    const iframe = testIframe.getByTestId("iframe-runtime").children[0] as HTMLIFrameElement;
+    const iframe = testIframe.getByTestId("iframe-runtime").querySelector("iframe") as HTMLIFrameElement;
     expect(iframe.getAttribute("src")).toBe(overriddenUrl);
     expect(iframe.getAttribute("src")).not.toBe(rawUrl);
 
