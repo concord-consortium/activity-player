@@ -444,7 +444,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
               activeDialog && (loadingAnswer || loadingLegacyLinkedInteractiveState
                 ? "Loading..."
                 : <DialogOverlay
-                    url={activeDialog.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url)}
+                    url={iframeUrl}
                     notCloseable={activeDialog.notCloseable}
                     onClose={handleCloseDialog}
                     iframeRuntimeProps={iframeRuntimeProps}

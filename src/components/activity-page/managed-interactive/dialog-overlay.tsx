@@ -126,10 +126,11 @@ export const DialogOverlay: React.FC<IProps> = (props) => {
     <Modal
       isOpen={true}
       appElement={getModalContainer()}
+      contentLabel={title || "Dialog"}
       shouldFocusAfterRender={false}
       shouldReturnFocusAfterClose={false}
       shouldCloseOnEsc={false}
-      onRequestClose={safeOnClose}
+      onRequestClose={notCloseable ? undefined : safeOnClose}
     >
       <div className="dialog-overlay" ref={setContainerRef} tabIndex={-1}>
         <div className="dialog-overlay__header">

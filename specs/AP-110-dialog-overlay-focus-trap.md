@@ -4,7 +4,7 @@
 
 **Parent design**: [AP-108-focus-traps-cross-origin-interactives.md](AP-108-focus-traps-cross-origin-interactives.md) — AP-110 is the first piece of AP-108 work to land in Activity Player.
 
-**Scope**: Activity Player only. Integrate `@concord-consortium/accessibility-tools@0.2.0-pre.0` and apply it to the **dialog** modal that an interactive opens via `showModal({ type: "dialog" })`. Non-cooperating only — the interactive does not yet speak the focus-coordination protocol. The image-question interactive is the verification target.
+**Scope**: Activity Player only. Integrate `@concord-consortium/accessibility-tools@0.2.0-pre.2` and apply it to the **dialog** modal that an interactive opens via `showModal({ type: "dialog" })`. Non-cooperating only — the interactive does not yet speak the focus-coordination protocol. The image-question interactive is the verification target.
 
 ## Goal
 

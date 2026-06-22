@@ -29,7 +29,7 @@ import { IframeRuntimeFeedback } from "../../teacher-feedback/iframe-runtime-fee
 import { isOfferingLocked } from "../../../utilities/portal-data-utils";
 import { queryValue, queryValueBoolean } from "../../../utilities/url-query";
 import { anonymousPortalData } from "../../../portal-api";
-import { composeRefs } from "../../../utilities/compose-refs";
+import { useCompositeRef } from "../../../utilities/use-composite-ref";
 import { applyOverrides } from "../../../utilities/url-overrides/state";
 
 import "./iframe-runtime.scss";
@@ -111,6 +111,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const [reloadCount, setReloadCount] = useState<number>(0);
   const iframePhoneTimeout = useRef<number|undefined>(undefined);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  // Stable composed ref so the iframe isn't detached/reattached every render
+  // (which would churn focus-trap wiring); see useCompositeRef.
+  const composedIframeRef = useCompositeRef(iframeRef, externalIframeRef);
   const phoneRef = useRef<IframePhone>();
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
@@ -535,7 +538,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         className={locked ? "iframe-runtime-locked" : ""}
         tabIndex={locked ? -1 : 0}
         key={`${id}-${reloadCount}`}
-        ref={composeRefs(iframeRef, externalIframeRef)}
+        ref={composedIframeRef}
         src={applyOverrides(url)}
         id={id}
         width={width}

@@ -1,5 +1,6 @@
 import React from "react";
-import { composeRefs } from "./compose-refs";
+import { renderHook } from "@testing-library/react-hooks";
+import { composeRefs, useCompositeRef } from "./use-composite-ref";
 
 describe("composeRefs", () => {
   it("calls callback refs with the node", () => {
@@ -58,5 +59,43 @@ describe("composeRefs", () => {
 
     expect(cb).toHaveBeenLastCalledWith(null);
     expect(ref.current).toBeNull();
+  });
+});
+
+describe("useCompositeRef", () => {
+  it("returns the same callback ref across renders when the refs are stable", () => {
+    const ref1 = React.createRef<HTMLDivElement>();
+    const ref2 = React.createRef<HTMLDivElement>();
+    const { result, rerender } = renderHook(() => useCompositeRef(ref1, ref2));
+
+    const first = result.current;
+    rerender();
+    expect(result.current).toBe(first);
+  });
+
+  it("returns a new callback ref when a supplied ref's identity changes", () => {
+    const ref1 = React.createRef<HTMLDivElement>();
+    const ref2 = React.createRef<HTMLDivElement>();
+    const ref3 = React.createRef<HTMLDivElement>();
+    const { result, rerender } = renderHook(
+      ({ r }) => useCompositeRef(ref1, r),
+      { initialProps: { r: ref2 } },
+    );
+
+    const first = result.current;
+    rerender({ r: ref3 });
+    expect(result.current).not.toBe(first);
+  });
+
+  it("forwards the node to every supplied ref", () => {
+    const cb = jest.fn();
+    const ref = React.createRef<HTMLDivElement>();
+    const { result } = renderHook(() => useCompositeRef(cb, ref));
+    const node = document.createElement("div");
+
+    result.current(node);
+
+    expect(cb).toHaveBeenCalledWith(node);
+    expect(ref.current).toBe(node);
   });
 });
