@@ -4,6 +4,11 @@ import { act, configure, fireEvent, render } from "@testing-library/react";
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { DynamicTextTester } from "../../../test-utils/dynamic-text";
 import { MediaLibraryTester } from "../../../test-utils/media-library";
+import {
+  initializeOverrides,
+  resetOverridesForTesting,
+} from "../../../utilities/url-overrides/state";
+import { RegistryJson } from "../../../utilities/url-overrides/types";
 
 configure({ testIdAttribute: "data-cy" });
 
@@ -400,5 +405,63 @@ describe("IframeRuntime component", () => {
     });
     expect(global.confirm).toHaveBeenCalledTimes(1);
     expect(mockSetInteractiveState).toHaveBeenCalledTimes(5);
+  });
+
+  it("applies an active URL override to the iframe src (AP-115)", async () => {
+    const registry: RegistryJson = {
+      qi: {
+        prefix: "https://models-resources.concord.org/question-interactives/",
+        match: "(branch|version)/[^/]+/",
+        replace: "branch/${value}/",
+      },
+    };
+    resetOverridesForTesting();
+    await initializeOverrides({
+      fetchRegistry: async () => registry,
+      getSearch: () => "?override.qi=toolbar-accessibility",
+    });
+
+    const rawUrl =
+      "https://models-resources.concord.org/question-interactives/branch/master/image-question/index.html";
+    const overriddenUrl =
+      "https://models-resources.concord.org/question-interactives/branch/toolbar-accessibility/image-question/index.html";
+
+    const noop = jest.fn();
+    const testIframe = render(
+      <MediaLibraryTester>
+        <DynamicTextTester>
+          <IframeRuntime
+            url={rawUrl}
+            id={"123-Interactive"}
+            authoredState={null}
+            initialInteractiveState={null}
+            legacyLinkedInteractiveState={null}
+            setInteractiveState={noop}
+            setAspectRatio={noop}
+            setHeightFromInteractive={noop}
+            setSupportedFeatures={noop}
+            setNewHint={noop}
+            getFirebaseJWT={jest.fn(() => Promise.resolve("stub"))}
+            getAttachmentUrl={jest.fn(() => Promise.resolve({ url: "", requestId: 1 }))}
+            showModal={noop}
+            closeModal={noop}
+            setSendCustomMessage={noop}
+            setNavigation={noop}
+            log={noop}
+            iframeTitle="Interactive content"
+          />
+        </DynamicTextTester>
+      </MediaLibraryTester>
+    );
+    // allow the iframe-reload effect (which imperatively sets src) to run
+    act(() => {
+      jest.runAllTimers();
+    });
+
+    const iframe = testIframe.getByTestId("iframe-runtime").children[0] as HTMLIFrameElement;
+    expect(iframe.getAttribute("src")).toBe(overriddenUrl);
+    expect(iframe.getAttribute("src")).not.toBe(rawUrl);
+
+    resetOverridesForTesting();
   });
 });
