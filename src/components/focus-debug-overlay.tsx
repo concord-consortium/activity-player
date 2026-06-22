@@ -1,3 +1,29 @@
+/**
+ * FUTURE WORK — before extending this file, consider folding its unique
+ * features into the accessibility-tools debug sidebar instead.
+ *
+ * @concord-consortium/accessibility-tools ships a much richer debug UI
+ * (`AccessibilityDebugSidebar` from the `/debug` entry, also available as a
+ * hosted standalone bundle / bookmarklet). Its focus-tracker, focus-history,
+ * and keyboard-log panels already duplicate most of what this overlay shows.
+ *
+ * The one thing this overlay does that the library currently does NOT is
+ * detect focus crossing into a cross-origin iframe: the library's focus
+ * stream listens only to `document` `focusin`, which never fires when the
+ * parent loses focus to an iframe. This overlay instead watches the window
+ * `blur`/`focus` events (logging "iframe gained focus" when
+ * `document.activeElement` becomes the iframe) and polls `document.activeElement`.
+ * That iframe signal is the reason this overlay was originally written — it was
+ * needed to track down a tricky Safari focus issue, where the library's
+ * bookmarklet/standalone injection path is also awkward to use.
+ *
+ * The better long-term home for that capability is upstream in
+ * accessibility-tools' focus stream (add a window blur/focus listener +
+ * activeElement poll that emits a synthetic "focus entered iframe" event).
+ * Once that lands, AP can delete this overlay and mount the library sidebar
+ * directly (gated by DEBUG_FOCUS), which also works in Safari since it's the
+ * imported-component path rather than a bookmarklet.
+ */
 import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import "./focus-debug-overlay.scss";
