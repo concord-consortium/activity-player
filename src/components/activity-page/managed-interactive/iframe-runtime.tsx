@@ -424,7 +424,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
     if (iframeRef.current) {
       // Reload the iframe.
-      iframeRef.current.src = url;
+      // Apply URL overrides here too, to match the JSX src={applyOverrides(url)};
+      // otherwise this imperative assignment clobbers the overridden src with the raw url.
+      iframeRef.current.src = applyOverrides(url);
       // Re-init interactive, this time using a new mode (report or runtime).
       phoneRef.current = new iframePhone.ParentEndpoint(iframeRef.current, initInteractive);
       setSendCustomMessage((message: ICustomMessage) => {
