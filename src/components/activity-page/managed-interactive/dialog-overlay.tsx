@@ -45,8 +45,13 @@ export const DialogOverlay: React.FC<IProps> = (props) => {
   // Refs the trap and iframe-slot need.
   const closeButtonRef = useRef<HTMLButtonElement | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
+
+  // These are used internally by the iframe-slot to track the sentinels.
+  // useIframeSlot returns different refs that should actually be attached to the DOM elements.
+  // TODO: Eliminate these here and have useIframeSlot make them itself
   const beforeSentinelRef = useRef<HTMLElement | null>(null);
   const afterSentinelRef = useRef<HTMLElement | null>(null);
+  
   const iframeWrapperRef = useRef<HTMLDivElement | null>(null);
 
   // Shared with both useIframeSlot and the trap strategy (DRY).

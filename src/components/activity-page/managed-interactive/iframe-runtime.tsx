@@ -93,8 +93,8 @@ interface IProps {
   feedback?: QuestionFeedback | null;
   log: (logData: any) => void;
   iframeRef?: React.MutableRefObject<HTMLIFrameElement | null>;
-  beforeSentinelRef?: React.Ref<HTMLElement | null>;
-  afterSentinelRef?: React.Ref<HTMLElement | null>;
+  beforeSentinelRef?: React.Ref<HTMLSpanElement>;
+  afterSentinelRef?: React.Ref<HTMLSpanElement>;
 }
 
 // these are managed outside of the component to persist across component unmount/mount cycles
@@ -111,8 +111,6 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const [reloadCount, setReloadCount] = useState<number>(0);
   const iframePhoneTimeout = useRef<number|undefined>(undefined);
   const iframeRef = useRef<HTMLIFrameElement>(null);
-  const beforeRef = useRef<HTMLSpanElement | null>(null);
-  const afterRef = useRef<HTMLSpanElement | null>(null);
   const phoneRef = useRef<IframePhone>();
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
@@ -524,7 +522,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   return (
     <div className="iframe-runtime" data-cy="iframe-runtime">
       <span
-        ref={composeRefs(beforeRef, beforeSentinelRef)}
+        ref={beforeSentinelRef}
         className="iframe-slot-sentinel"
         tabIndex={-1}
         data-cy="iframe-slot-sentinel-before"
@@ -548,7 +546,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         scrolling="no"
       />
       <span
-        ref={composeRefs(afterRef, afterSentinelRef)}
+        ref={afterSentinelRef}
         className="iframe-slot-sentinel"
         tabIndex={-1}
         data-cy="iframe-slot-sentinel-after"

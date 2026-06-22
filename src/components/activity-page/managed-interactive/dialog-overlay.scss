@@ -22,8 +22,7 @@
     &:focus-visible { outline: 2px solid orange; outline-offset: 2px; }
   }
 
-  &__content {
-    /* Wrapper around the IframeRuntime — used by the focus trap's
-       getElements() and excluded from setChildrenNonTabbable. */
-  }
+  /* &__content is the wrapper around the IframeRuntime — used by the focus
+     trap's getElements() and excluded from setChildrenNonTabbable. It needs no
+     styles of its own, so no ruleset is defined for it. */
 }
