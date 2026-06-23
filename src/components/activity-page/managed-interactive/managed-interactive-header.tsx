@@ -28,7 +28,7 @@ export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, que
           className="question-container"
           onClick={onToggleHint}
           data-cy="open-hint"
-          aria-label={showHint ? "Hide hint" : "Show hint"}
+          aria-label={questionName.trim() ? `Hint for ${questionName}` : "Show hint"}
           aria-expanded={showHint}
           aria-controls={hintPanelId}
         >

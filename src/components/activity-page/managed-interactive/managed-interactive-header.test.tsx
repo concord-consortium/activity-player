@@ -33,9 +33,17 @@ describe("ManagedInteractiveHeader hint trigger", () => {
     expect(trigger?.tagName).toBe("BUTTON");
   });
 
-  it("gives the icon-only trigger an accessible name via aria-label", () => {
-    const { trigger } = renderHeader();
-    expect(trigger?.getAttribute("aria-label")).toBeTruthy();
+  it("gives the trigger a stable, question-contextual accessible name", () => {
+    // The name stays stable across open/closed state; aria-expanded conveys state.
+    const collapsed = renderHeader({ showHint: false }).trigger;
+    expect(collapsed?.getAttribute("aria-label")).toBe("Hint for My question");
+    const expanded = renderHeader({ showHint: true }).trigger;
+    expect(expanded?.getAttribute("aria-label")).toBe("Hint for My question");
+  });
+
+  it("falls back to a generic hint label when there is no question name", () => {
+    const { trigger } = renderHeader({ questionName: "" });
+    expect(trigger?.getAttribute("aria-label")).toBe("Show hint");
   });
 
   it("reflects the collapsed state with aria-expanded='false'", () => {
