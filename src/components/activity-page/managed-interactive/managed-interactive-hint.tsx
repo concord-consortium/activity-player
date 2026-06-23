@@ -6,14 +6,15 @@ import IconArrowUp from "../../../assets/svg-icons/icon-arrow-up.svg";
 interface IProps {
   hint: string;
   showHint: boolean;
+  panelId: string;
   onToggleHint: () => void;
 }
 
-export const ManagedInteractiveHint: React.FC<IProps> = ({hint, showHint, onToggleHint}) => {
+export const ManagedInteractiveHint: React.FC<IProps> = ({hint, showHint, panelId, onToggleHint}) => {
   if (!hint) return null;
 
   return (
-    <div className={`hint-container ${showHint ? "" : "collapsed"}`}>
+    <div id={panelId} className={`hint-container ${showHint ? "" : "collapsed"}`}>
       <DynamicText>
         <div className="hint question-txt" data-cy="hint">
           {renderHTML(hint)}

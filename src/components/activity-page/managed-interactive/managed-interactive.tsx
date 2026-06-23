@@ -15,7 +15,6 @@ import { IManagedInteractive, IMwInteractive, IExportableAnswerMetadata, ILegacy
 import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer, watchQuestionLevelFeedback } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata, getInteractiveInfo, hasLegacyLinkedInteractive, IInteractiveInfo, isQuestion, refIdToAnswersQuestionId } from "../../../utilities/embeddable-utils";
-import { accessibilityClick } from "../../../utilities/accessibility-helper";
 import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 import { Lightbox } from "./lightbox";
 import { Logger, LogEventName } from "../../../lib/logger";
@@ -253,13 +252,11 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     setShowHint(false);
   };
   const handleShowHint = () => {
-    if (accessibilityClick(event)) {
-      Logger.log({
-        event: LogEventName.toggle_hint,
-        parameters: { show_hint: !showHint, hint }
-      });
-      setShowHint(!showHint);
-    }
+    Logger.log({
+      event: LogEventName.toggle_hint,
+      parameters: { show_hint: !showHint, hint }
+    });
+    setShowHint(!showHint);
   };
 
   const handleCloseDialog = () => {
@@ -362,6 +359,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const hasQuestionName = questionName.trim().length > 0;
   const isNotebookLayout = laraData.activity?.layout === ActivityLayouts.Notebook;
   const hideQuestionHeader = (props.hideQuestionNumbers || !hasQuestionNumber) && !hasQuestionName && !hint && !isNotebookLayout && !hasPluginRequiringHeader;
+  const hintPanelId = `hint-panel-${embeddableRefId}`;
 
   const isInteractive = embeddable.type === "MwInteractive";
   const isManagedInteractive = embeddable.type === "ManagedInteractive";
@@ -411,12 +409,15 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         questionNumber={props.hideQuestionNumbers ? undefined : questionNumber}
         questionName={questionName}
         hint={hint}
+        showHint={showHint}
+        hintPanelId={hintPanelId}
         onToggleHint={handleShowHint}
         hideHeader={hideQuestionHeader}
       />
       <ManagedInteractiveHint
         hint={hint}
         showHint={showHint}
+        panelId={hintPanelId}
         onToggleHint={handleHintClose}
       />
       {clickToPlayOptions && !clickedToPlay

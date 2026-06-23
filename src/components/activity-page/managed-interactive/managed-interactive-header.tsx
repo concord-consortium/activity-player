@@ -6,11 +6,13 @@ interface IProps {
   questionNumber?: number;
   questionName: string;
   hint: string;
+  showHint: boolean;
+  hintPanelId: string;
   onToggleHint: () => void;
   hideHeader: boolean;
 }
 
-export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, questionName, hint, onToggleHint, hideHeader }) => {
+export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, questionName, hint, showHint, hintPanelId, onToggleHint, hideHeader }) => {
   if (hideHeader) return null;
 
   return (
@@ -21,14 +23,17 @@ export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, que
         {questionName}
       </DynamicText>
       {hint && (
-        <div
+        <button
+          type="button"
           className="question-container"
           onClick={onToggleHint}
           data-cy="open-hint"
-          tabIndex={0}
+          aria-label={showHint ? "Hide hint" : "Show hint"}
+          aria-expanded={showHint}
+          aria-controls={hintPanelId}
         >
           <IconQuestion className="question" height={22} width={22} />
-        </div>
+        </button>
       )}
     </div>
   );
