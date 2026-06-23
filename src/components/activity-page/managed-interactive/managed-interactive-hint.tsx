@@ -21,15 +21,15 @@ export const ManagedInteractiveHint: React.FC<IProps> = ({hint, showHint, panelI
         </div>
       </DynamicText>
       <div className="close-container">
-        <IconArrowUp
-          className={"close"}
-          width={26}
-          height={26}
+        <button
+          type="button"
+          className="close-button"
           onClick={onToggleHint}
-          onKeyDown={onToggleHint}
           data-cy="close-hint"
-          tabIndex={0}
-        />
+          aria-label="Hide hint"
+        >
+          <IconArrowUp className="close" width={26} height={26} />
+        </button>
       </div>
     </div>
   );
