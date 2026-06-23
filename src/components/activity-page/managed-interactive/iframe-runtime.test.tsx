@@ -37,6 +37,7 @@ const dispatchMessageFromChild = (message: string, data: any) => {
   listener?.(data);
 };
 const mockDisconnect = jest.fn();
+const mockRemoveListener = jest.fn();
 jest.mock("iframe-phone", () => ({
   ParentEndpoint: jest.fn((targetIframe, afterConnectedCallback) => {
     // setTimeout allows phone initialization to complete
@@ -44,6 +45,7 @@ jest.mock("iframe-phone", () => ({
     return {
       post: mockPost,
       addListener: mockAddListener,
+      removeListener: mockRemoveListener,
       disconnect: mockDisconnect
     };
   })
@@ -464,5 +466,62 @@ describe("IframeRuntime component", () => {
     const iframe = testIframe.getByTestId("iframe-runtime").querySelector("iframe") as HTMLIFrameElement;
     expect(iframe.getAttribute("src")).toBe(overriddenUrl);
     expect(iframe.getAttribute("src")).not.toBe(rawUrl);
+  });
+
+  describe("focus transport", () => {
+    const renderWith = (extraProps: Record<string, any> = {}) =>
+      render(
+        <MediaLibraryTester>
+          <DynamicTextTester>
+            <IframeRuntime
+              url={"https://concord.org/"}
+              id={"123-Interactive"}
+              authoredState={null}
+              initialInteractiveState={{ testing: true }}
+              legacyLinkedInteractiveState={null}
+              setInteractiveState={jest.fn()}
+              setAspectRatio={jest.fn()}
+              setHeightFromInteractive={jest.fn()}
+              setSupportedFeatures={jest.fn()}
+              setNewHint={jest.fn()}
+              getFirebaseJWT={jest.fn(() => Promise.resolve("stub"))}
+              getAttachmentUrl={jest.fn(() => Promise.resolve({ url: "u", requestId: 1 }))}
+              showModal={jest.fn()}
+              closeModal={jest.fn()}
+              setSendCustomMessage={jest.fn()}
+              setNavigation={jest.fn()}
+              log={mockLog}
+              iframeTitle="Interactive content"
+              {...extraProps}
+            />
+          </DynamicTextTester>
+        </MediaLibraryTester>
+      );
+
+    it("calls onFocusTransportReady with a transport when the phone is built", () => {
+      const onFocusTransportReady = jest.fn();
+      renderWith({ onFocusTransportReady });
+      expect(onFocusTransportReady).toHaveBeenCalled();
+      const transport = onFocusTransportReady.mock.calls[0][0];
+      expect(typeof transport.send).toBe("function");
+      expect(typeof transport.onMessage).toBe("function");
+    });
+
+    it("destroys the FocusManager and clears the transport on unmount", () => {
+      const onFocusTransportReady = jest.fn();
+      const { unmount } = renderWith({ onFocusTransportReady });
+      mockRemoveListener.mockClear();
+      onFocusTransportReady.mockClear();
+      unmount();
+      // destroy() removes the listeners the FocusManager added to the phone
+      expect(mockRemoveListener).toHaveBeenCalled();
+      // teardown surfaces an undefined transport
+      expect(onFocusTransportReady).toHaveBeenCalledWith(undefined);
+    });
+
+    it("builds the transport even when no callback is provided (inline case)", () => {
+      // Should not throw: FocusManager is built unconditionally; the callback is optional.
+      expect(() => renderWith()).not.toThrow();
+    });
   });
 });
