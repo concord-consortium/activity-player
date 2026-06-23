@@ -11,8 +11,7 @@ import {
   ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState, AttachmentInfoMap,
   IPubSubCreateChannel, IPubSubSubscribe, IPubSubUnsubscribe, IPubSubPublish
 } from "@concord-consortium/lara-interactive-api";
-import { PubSubManager, JobManager, FocusManager } from "@concord-consortium/interactive-api-host";
-import type { FocusTransport } from "@concord-consortium/interactive-api-host";
+import { PubSubManager, JobManager, FocusManager, type FocusTransport } from "@concord-consortium/interactive-api-host";
 import { firebaseJobExecutor, buildJobContext } from "../../../firebase-job-executor";
 import { DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
 import { FirebaseObjectStorageConfig, FirebaseObjectStorageUser } from "@concord-consortium/object-storage";
@@ -437,11 +436,12 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       // otherwise this imperative assignment clobbers the overridden src with the raw url.
       iframeRef.current.src = applyOverrides(url);
       // Re-init interactive, this time using a new mode (report or runtime).
-      phoneRef.current = new iframePhone.ParentEndpoint(iframeRef.current, initInteractive);
+      const phone: IframePhone = new iframePhone.ParentEndpoint(iframeRef.current, initInteractive);
+      phoneRef.current = phone;
       setSendCustomMessage((message: ICustomMessage) => {
         phoneRef.current?.post("customMessage", message);
       });
-      focusManagerRef.current = new FocusManager(phoneRef.current!);
+      focusManagerRef.current = new FocusManager(phone);
       onFocusTransportReady?.(focusManagerRef.current.transport);
     }
 
