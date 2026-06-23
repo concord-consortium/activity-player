@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo, useRef } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import Modal from "react-modal";
 // Note: Jest 27 does not honor package.json `exports` subpaths, so
 // `@concord-consortium/accessibility-tools/hooks` is resolved via a
 // moduleNameMapper entry in package.json that points at the dist CJS file.
 // When the project upgrades to Jest 28+, the mapper can be removed.
 import { useFocusTrap, useIframeSlot, FocusTrapStrategy } from "@concord-consortium/accessibility-tools/hooks";
+import type { FocusTransport } from "@concord-consortium/interactive-api-host";
 import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import "./dialog-overlay.scss";
 
@@ -51,6 +52,8 @@ export const DialogOverlay: React.FC<IProps> = (props) => {
   // TODO: Eliminate these here and have useIframeSlot make them itself
   const beforeSentinelRef = useRef<HTMLElement | null>(null);
   const afterSentinelRef = useRef<HTMLElement | null>(null);
+
+  const [focusTransport, setFocusTransport] = useState<FocusTransport>();
   
   const iframeWrapperRef = useRef<HTMLDivElement | null>(null);
 
@@ -85,6 +88,7 @@ export const DialogOverlay: React.FC<IProps> = (props) => {
     getElements,
     onExit: (direction) => trapRef.current?.cycleToAdjacentSlot(direction),
     enterLabel: "Press Tab to enter the interactive",
+    transport: focusTransport,
   });
 
   const strategy = useMemo<FocusTrapStrategy>(
@@ -154,6 +158,7 @@ export const DialogOverlay: React.FC<IProps> = (props) => {
             iframeRef={iframeRef}
             beforeSentinelRef={beforeSentinelProps.ref}
             afterSentinelRef={afterSentinelProps.ref}
+            onFocusTransportReady={setFocusTransport}
           />
         </div>
       </div>
