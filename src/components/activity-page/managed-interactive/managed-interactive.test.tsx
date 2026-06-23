@@ -106,10 +106,19 @@ jest.mock("@concord-consortium/interactive-api-host", () => {
     onJobUpdate = jest.fn();
   }
 
+  class MockFocusManager {
+    transport = {
+      send: jest.fn(),
+      onMessage: jest.fn(() => jest.fn())
+    };
+    destroy = jest.fn();
+  }
+
   return {
     handleGetAttachmentUrl: (...args: any) => mockHandleGetAttachmentUrl(...args),
     PubSubManager: MockPubSubManager,
-    JobManager: MockJobManager
+    JobManager: MockJobManager,
+    FocusManager: MockFocusManager
   };
 });
 
