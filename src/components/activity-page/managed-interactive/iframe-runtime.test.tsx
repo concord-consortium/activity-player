@@ -66,6 +66,13 @@ describe("IframeRuntime component", () => {
   afterEach(() => {
     jest.useRealTimers();
     jest.restoreAllMocks();
+    // The iframe-phone mock fns are module-level singletons; clear their call
+    // history between tests so per-test assertions (e.g. the focusExit listener
+    // registration) can't see calls left over from a prior test.
+    mockPost.mockClear();
+    mockAddListener.mockClear();
+    mockRemoveListener.mockClear();
+    mockDisconnect.mockClear();
     // Override state is a module-level singleton; reset here so it can't leak
     // into later tests even if a test throws before its own cleanup.
     resetOverridesForTesting();
@@ -520,8 +527,12 @@ describe("IframeRuntime component", () => {
     });
 
     it("builds the transport even when no callback is provided (inline case)", () => {
-      // Should not throw: FocusManager is built unconditionally; the callback is optional.
+      // FocusManager is built unconditionally; the callback is only the (optional)
+      // way to surface its transport. Prove construction happened by the FocusManager
+      // registering its "focusExit" listener on the phone — iframe-runtime never
+      // registers "focusExit" itself.
       expect(() => renderWith()).not.toThrow();
+      expect(mockAddListener).toHaveBeenCalledWith("focusExit", expect.any(Function));
     });
   });
 });

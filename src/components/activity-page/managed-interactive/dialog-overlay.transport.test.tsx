@@ -1,5 +1,5 @@
 import React from "react";
-import { render } from "@testing-library/react";
+import { render, waitFor } from "@testing-library/react";
 import Modal from "react-modal";
 
 // Capture the options passed to useIframeSlot; stub the hooks so this test is
@@ -27,7 +27,7 @@ jest.mock("@concord-consortium/accessibility-tools/hooks", () => ({
 // The mocked IframeRuntime surfaces a known transport via onFocusTransportReady.
 const fakeTransport = { send: jest.fn(), onMessage: jest.fn(() => jest.fn()) };
 jest.mock("./iframe-runtime", () => ({
-  IframeRuntime: React.forwardRef<HTMLDivElement, any>(function MockedIframeRuntime(props) {
+  IframeRuntime: React.forwardRef<HTMLDivElement, any>(function MockedIframeRuntime(props, _ref) {
     React.useEffect(() => {
       props.onFocusTransportReady?.(fakeTransport);
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -57,10 +57,12 @@ describe("DialogOverlay transport wiring", () => {
 
   it("forwards the IframeRuntime transport into useIframeSlot", async () => {
     render(<DialogOverlay {...baseProps} />);
-    // Let the mocked IframeRuntime's effect run -> setTransport -> re-render.
-    await Promise.resolve();
-    const lastOpts = mockUseIframeSlot.mock.calls[mockUseIframeSlot.mock.calls.length - 1][0];
-    expect(lastOpts.transport).toBe(fakeTransport);
+    // The mocked IframeRuntime reports the transport in an effect, which triggers
+    // setTransport -> re-render. waitFor polls until that re-render lands.
+    await waitFor(() => {
+      const lastOpts = mockUseIframeSlot.mock.calls[mockUseIframeSlot.mock.calls.length - 1][0];
+      expect(lastOpts.transport).toBe(fakeTransport);
+    });
   });
 
   it("calls useIframeSlot with no transport before the runtime reports one", () => {
