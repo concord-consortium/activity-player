@@ -8,11 +8,12 @@ interface IProps {
   hint: string;
   showHint: boolean;
   hintPanelId: string;
+  triggerRef?: React.Ref<HTMLButtonElement>;
   onToggleHint: () => void;
   hideHeader: boolean;
 }
 
-export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, questionName, hint, showHint, hintPanelId, onToggleHint, hideHeader }) => {
+export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, questionName, hint, showHint, hintPanelId, triggerRef, onToggleHint, hideHeader }) => {
   if (hideHeader) return null;
 
   const trimmedQuestionName = questionName.trim();
@@ -26,6 +27,7 @@ export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, que
       </DynamicText>
       {hint && (
         <button
+          ref={triggerRef}
           type="button"
           className="question-container"
           onClick={onToggleHint}
@@ -34,7 +36,7 @@ export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, que
           aria-expanded={showHint}
           aria-controls={hintPanelId}
         >
-          <IconQuestion className="question" height={22} width={22} />
+          <IconQuestion className="question" height={22} width={22} aria-hidden="true" focusable="false" />
         </button>
       )}
     </div>

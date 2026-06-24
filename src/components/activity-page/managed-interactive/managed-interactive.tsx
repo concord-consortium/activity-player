@@ -84,6 +84,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const [loadingLegacyLinkedInteractiveState, setLoadingLegacyLinkedInteractiveState] = useState(shouldLoadLegacyLinkedInteractiveState);
   const interactiveInfo = useRef<IInteractiveInfo | undefined>(undefined);
   const headerTarget = React.useRef(null);
+  const hintTriggerRef = useRef<HTMLButtonElement>(null);
   const divTarget = React.useRef<HTMLDivElement>(null);
   const divSize = useSize(divTarget);
   const headerSize = useSize(headerTarget);
@@ -250,6 +251,9 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       parameters: { show_hint: false, hint }
     });
     setShowHint(false);
+    // Return focus to the "?" trigger so keyboard users aren't dropped to <body>
+    // when the panel that contained the close button collapses.
+    hintTriggerRef.current?.focus();
   };
   const handleShowHint = () => {
     Logger.log({
@@ -413,6 +417,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         hint={hint}
         showHint={showHint}
         hintPanelId={hintPanelId}
+        triggerRef={hintTriggerRef}
         onToggleHint={handleShowHint}
         hideHeader={hideQuestionHeader}
       />
@@ -420,6 +425,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         hint={hint}
         showHint={showHint}
         panelId={hintPanelId}
+        questionName={questionName}
         onToggleHint={handleHintClose}
       />
       {clickToPlayOptions && !clickedToPlay

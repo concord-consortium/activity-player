@@ -1,5 +1,5 @@
 import { Credentials, Resource } from "@concord-consortium/token-service";
-import { act, configure, render, screen } from "@testing-library/react";
+import { act, configure, fireEvent, render, screen } from "@testing-library/react";
 import React from "react";
 import { ManagedInteractive } from "./managed-interactive";
 import { EmbeddableType, IMwInteractive } from "../../../types";
@@ -431,6 +431,44 @@ describe("ManagedInteractive component", () => {
 
     // allow initialization to complete
     jest.runAllTimers();
+  });
+
+  it("returns focus to the hint trigger when the hint is closed via the close button", async () => {
+    const sampleEmbeddable: IMwInteractive = {
+      type: "MwInteractive",
+      name: "interactive with a hint",
+      is_hidden: false,
+      ref_id: "hint-focus-test",
+    };
+
+    render(<DynamicTextTester><ManagedInteractive
+              embeddable={sampleEmbeddable}
+              questionNumber={1}
+              setSupportedFeatures={mockSetSupportedFeatures}
+              setSendCustomMessage={mockSetSendCustomMessage}
+              setNavigation={mockSetNavigation}
+              showQuestionPrefix={true}
+              />
+           </DynamicTextTester>);
+    // allow initialization to complete
+    jest.runAllTimers();
+
+    // the interactive reports a hint, which surfaces the "?" trigger and hint panel
+    act(() => {
+      dispatchMessageFromChild("hint", { text: "<p>this is a hint</p>" });
+    });
+
+    const openHint = screen.getByTestId("open-hint");
+    act(() => {
+      fireEvent.click(openHint);
+    });
+
+    act(() => {
+      fireEvent.click(screen.getByTestId("close-hint"));
+    });
+
+    // focus should return to the "?" trigger rather than falling back to <body>
+    expect(document.activeElement).toBe(screen.getByTestId("open-hint"));
   });
 
 });
