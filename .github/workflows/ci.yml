@@ -18,7 +18,7 @@ jobs:
       - name: Run Tests
         run: npm run test:coverage -- --runInBand
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v3
         with:
           flags: jest
   cypress:
@@ -59,7 +59,7 @@ jobs:
           # should be much faster
           CODE_COVERAGE: true
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v3
         with:
           flags: cypress
   s3-deploy:
