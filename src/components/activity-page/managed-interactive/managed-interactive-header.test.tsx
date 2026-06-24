@@ -46,6 +46,11 @@ describe("ManagedInteractiveHeader hint trigger", () => {
     expect(trigger?.getAttribute("aria-label")).toBe("Show hint");
   });
 
+  it("trims surrounding whitespace from the question name in the accessible name", () => {
+    const { trigger } = renderHeader({ questionName: "  My question  " });
+    expect(trigger?.getAttribute("aria-label")).toBe("Hint for My question");
+  });
+
   it("reflects the collapsed state with aria-expanded='false'", () => {
     const { trigger } = renderHeader({ showHint: false });
     expect(trigger?.getAttribute("aria-expanded")).toBe("false");

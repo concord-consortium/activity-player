@@ -256,7 +256,9 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       event: LogEventName.toggle_hint,
       parameters: { show_hint: !showHint, hint }
     });
-    setShowHint(!showHint);
+    // Functional update so the toggle is always derived from the latest state,
+    // independent of render/flush timing (future-proof against batched updates).
+    setShowHint(prevShowHint => !prevShowHint);
   };
 
   const handleCloseDialog = () => {
