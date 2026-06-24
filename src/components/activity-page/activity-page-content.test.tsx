@@ -1,6 +1,6 @@
 import React from "react";
 import { ActivityPageContent } from "./activity-page-content";
-import { configure, render } from "@testing-library/react";
+import { configure, render, screen } from "@testing-library/react";
 import { DefaultTestPage, DefaultTestActivity } from "../../test-utils/model-for-tests";
 import { DynamicTextTester } from "../../test-utils/dynamic-text";
 
@@ -30,6 +30,24 @@ describe("Activity Page Content component", () => {
 
     const notifications = queryAllByTestId("page-change-notification");
     expect(notifications.length).toBe(0);
+  });
+
+  it("exposes a single main landmark", () => {
+    render(
+      <DynamicTextTester>
+        <ActivityPageContent
+          enableReportButton={false}
+          activityLayout={0}
+          page={page}
+          pageNumber={5}
+          activity={DefaultTestActivity}
+          totalPreviousQuestions={5}
+          setNavigation={stubFunction}
+          pluginsLoaded={true}
+        />
+      </DynamicTextTester>
+    );
+    expect(screen.getAllByRole("main")).toHaveLength(1);
   });
 
   describe("with page change notification", () => {

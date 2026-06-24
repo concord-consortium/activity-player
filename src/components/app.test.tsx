@@ -38,6 +38,9 @@ describe("App component", () => {
     expect(wrapper.find('[data-cy="app"]').length).toBe(1);
     wrapper.setState({ activity });
     expect(wrapper.find(ActivityNav).length).toBe(2);
+    // The top and bottom page-nav landmarks must have distinct accessible names (AP-84)
+    expect(wrapper.find(ActivityNav).at(0).prop("ariaLabel")).toBe("Page navigation");
+    expect(wrapper.find(ActivityNav).at(1).prop("ariaLabel")).toBe("Page navigation, bottom");
     expect(wrapper.find(Header).length).toBe(1);
     expect(wrapper.find(Footer).length).toBe(1);
   });
