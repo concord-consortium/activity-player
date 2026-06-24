@@ -23,7 +23,7 @@ jobs:
           flags: jest
   cypress:
     runs-on: ubuntu-latest
-    container: cypress/browsers:node16.14.2-slim-chrome103-ff102
+    container: cypress/browsers:node-22.21.0-chrome-141.0.7390.107-1-ff-144.0-edge-141.0.3537.92-1
     strategy:
       # when one test fails, DO NOT cancel the other
       # containers, because this will kill Cypress processes
@@ -40,7 +40,7 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '18'
-      - uses: cypress-io/github-action@v4
+      - uses: cypress-io/github-action@v6
         with:
           start: npm start
           wait-on: 'http://localhost:8080'
