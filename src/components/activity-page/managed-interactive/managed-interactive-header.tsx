@@ -16,11 +16,13 @@ interface IProps {
 export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, questionName, hint, showHint, hintPanelId, triggerRef, onToggleHint, hideHeader }) => {
   if (hideHeader) return null;
 
+  const trimmedQuestionName = questionName.trim();
+
   return (
     <div className="header">
       <DynamicText>
         {questionNumber && `Question #${questionNumber}`}
-        {questionName.trim().length > 0 && questionNumber && ": "}
+        {trimmedQuestionName.length > 0 && questionNumber && ": "}
         {questionName}
       </DynamicText>
       {hint && (
@@ -30,7 +32,7 @@ export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, que
           className="question-container"
           onClick={onToggleHint}
           data-cy="open-hint"
-          aria-label={questionName.trim() ? `Hint for ${questionName}` : "Show hint"}
+          aria-label={trimmedQuestionName ? `Hint for ${trimmedQuestionName}` : "Show hint"}
           aria-expanded={showHint}
           aria-controls={hintPanelId}
         >
