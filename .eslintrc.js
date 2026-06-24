@@ -67,7 +67,7 @@ module.exports = {
       "prefer-regex-literals": "error",
       "prefer-rest-params": "error",
       "prefer-spread": "error",
-      "quotes": [2, "double", { allowTemplateLiterals: true, avoidEscape: true }],
+      "quotes": "off",
       radix: "error",
       "react/jsx-closing-tag-location": "error",
       "react/jsx-handler-names": "off", // 13 as of 2020-09-13
