@@ -4,9 +4,10 @@ require("@testing-library/jest-dom");
 
 enzyme.configure({ adapter: new Adapter() });
 
-// jsdom does not expose TextEncoder/TextDecoder (they are Node.js globals, not browser Web APIs
-// that jsdom implements). Packages like @noble/hashes (via formidable → cuid2) require them at
-// module load time, so we forward them from Node's `util` before any test modules are loaded.
+// jsdom does not implement TextEncoder/TextDecoder (they are standard Web APIs from the WHATWG
+// Encoding spec that jsdom happens not to provide; Node exposes implementations via `util`).
+// Packages like @noble/hashes (via formidable → cuid2) require them at module load time, so we
+// forward them from Node's `util` before any test modules are loaded.
 const { TextEncoder, TextDecoder } = require("util");
 globalThis.TextEncoder ??= TextEncoder;
 globalThis.TextDecoder ??= TextDecoder;
