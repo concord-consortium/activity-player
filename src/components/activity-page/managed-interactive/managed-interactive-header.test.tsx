@@ -68,6 +68,12 @@ describe("ManagedInteractiveHeader hint trigger", () => {
     expect(onToggleHint).toHaveBeenCalledTimes(1);
   });
 
+  it("hides the decorative question icon from assistive technology", () => {
+    const { trigger } = renderHeader();
+    const icon = trigger?.querySelector("[aria-hidden='true']");
+    expect(icon).not.toBeNull();
+  });
+
   it("does not render a trigger when there is no hint", () => {
     const { trigger } = renderHeader({ hint: "" });
     expect(trigger).toBeNull();

@@ -12,6 +12,7 @@ const renderHint = (props: Partial<React.ComponentProps<typeof ManagedInteractiv
         hint="<p>this is a hint</p>"
         showHint={true}
         panelId={panelId}
+        questionName="My question"
         onToggleHint={jest.fn()}
         {...props}
       />
@@ -37,10 +38,23 @@ describe("ManagedInteractiveHint close control", () => {
     expect(close?.tagName).toBe("BUTTON");
   });
 
-  it("gives the close button an accessible name via aria-label", () => {
+  it("gives the close button a question-contextual accessible name", () => {
     const { container } = renderHint();
     const close = container.querySelector("[data-cy='close-hint']");
-    expect(close?.getAttribute("aria-label")).toBeTruthy();
+    expect(close?.getAttribute("aria-label")).toBe("Hide hint for My question");
+  });
+
+  it("falls back to a generic close label when there is no question name", () => {
+    const { container } = renderHint({ questionName: "" });
+    const close = container.querySelector("[data-cy='close-hint']");
+    expect(close?.getAttribute("aria-label")).toBe("Hide hint");
+  });
+
+  it("hides the decorative chevron icon from assistive technology", () => {
+    const { container } = renderHint();
+    const close = container.querySelector("[data-cy='close-hint']");
+    const icon = close?.querySelector("[aria-hidden='true']");
+    expect(icon).not.toBeNull();
   });
 
   it("calls onToggleHint when the close button is activated", () => {

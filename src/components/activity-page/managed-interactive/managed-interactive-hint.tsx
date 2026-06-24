@@ -7,10 +7,11 @@ interface IProps {
   hint: string;
   showHint: boolean;
   panelId: string;
+  questionName: string;
   onToggleHint: () => void;
 }
 
-export const ManagedInteractiveHint: React.FC<IProps> = ({hint, showHint, panelId, onToggleHint}) => {
+export const ManagedInteractiveHint: React.FC<IProps> = ({hint, showHint, panelId, questionName, onToggleHint}) => {
   if (!hint) return null;
 
   return (
@@ -26,9 +27,9 @@ export const ManagedInteractiveHint: React.FC<IProps> = ({hint, showHint, panelI
           className="close-button"
           onClick={onToggleHint}
           data-cy="close-hint"
-          aria-label="Hide hint"
+          aria-label={questionName.trim() ? `Hide hint for ${questionName}` : "Hide hint"}
         >
-          <IconArrowUp className="close" width={26} height={26} />
+          <IconArrowUp className="close" width={26} height={26} aria-hidden="true" focusable="false" />
         </button>
       </div>
     </div>
