@@ -64,7 +64,7 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
   }, [questionMap]);
 
   return (
-    <div className="sequence-content" data-cy="sequence-page-content">
+    <main className="sequence-content" data-cy="sequence-page-content">
       {isNotebookLayout && <div className="notebookHeader" />}
       <div className="introduction">
         <div className="introduction-content">
@@ -100,6 +100,6 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };

@@ -15,14 +15,15 @@ interface IProps {
   usePageNames?: boolean;
   hideNextPrevButtons?: boolean;
   isSequence?: boolean;
+  ariaLabel?: string;
 }
 
 export class ActivityNav extends React.PureComponent <IProps> {
   render() {
     const { activityId, activityPages, currentPage, fullWidth, lockForwardNav, onPageChange, singlePage, usePageNames,
-            hideNextPrevButtons, isSequence } = this.props;
+            hideNextPrevButtons, isSequence, ariaLabel = "Page navigation" } = this.props;
     return (
-      <div className={`activity-nav ${fullWidth ? "full" : ""}`} data-cy="activity-nav-header">
+      <nav className={`activity-nav ${fullWidth ? "full" : ""}`} aria-label={ariaLabel} data-cy="activity-nav-header">
         { !singlePage &&
           <NavPages
             activityId={activityId}
@@ -35,7 +36,7 @@ export class ActivityNav extends React.PureComponent <IProps> {
             isSequence={isSequence}
           />
         }
-      </div>
+      </nav>
     );
   }
 }
