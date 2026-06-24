@@ -4,6 +4,13 @@ require("@testing-library/jest-dom");
 
 enzyme.configure({ adapter: new Adapter() });
 
+// jsdom does not expose TextEncoder/TextDecoder (they are Node.js globals, not browser Web APIs
+// that jsdom implements). Packages like @noble/hashes (via formidable → cuid2) require them at
+// module load time, so we forward them from Node's `util` before any test modules are loaded.
+const { TextEncoder, TextDecoder } = require("util");
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
 // Suppress known test-environment noise. Each array lists substrings to filter; any match
 // suppresses the message. Everything else passes through so real issues still surface.
 const SUPPRESSED_WARNINGS = [
