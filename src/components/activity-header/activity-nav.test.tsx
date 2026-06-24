@@ -38,4 +38,8 @@ describe("Activity Nav Header component", () => {
     render(<ActivityNav activityPages={activityPages} currentPage={0} onPageChange={stubFunction} singlePage={false} ariaLabel="Page navigation (bottom)" />);
     expect(screen.getByRole("navigation", { name: "Page navigation (bottom)" })).toBeInTheDocument();
   });
+  it("does not emit an (empty) navigation landmark in single-page layouts", () => {
+    render(<ActivityNav activityPages={activityPages} currentPage={0} onPageChange={stubFunction} singlePage={true} />);
+    expect(screen.queryByRole("navigation")).not.toBeInTheDocument();
+  });
 });
