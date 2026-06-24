@@ -14,6 +14,8 @@ interface IProps {
 export const ManagedInteractiveHint: React.FC<IProps> = ({hint, showHint, panelId, questionName, onToggleHint}) => {
   if (!hint) return null;
 
+  const trimmedQuestionName = questionName.trim();
+
   return (
     <div id={panelId} className={`hint-container ${showHint ? "" : "collapsed"}`}>
       <DynamicText>
@@ -27,7 +29,7 @@ export const ManagedInteractiveHint: React.FC<IProps> = ({hint, showHint, panelI
           className="close-button"
           onClick={onToggleHint}
           data-cy="close-hint"
-          aria-label={questionName.trim() ? `Hide hint for ${questionName}` : "Hide hint"}
+          aria-label={trimmedQuestionName ? `Hide hint for ${trimmedQuestionName}` : "Hide hint"}
         >
           <IconArrowUp className="close" width={26} height={26} aria-hidden="true" focusable="false" />
         </button>

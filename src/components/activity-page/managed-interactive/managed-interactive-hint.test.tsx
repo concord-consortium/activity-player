@@ -50,6 +50,12 @@ describe("ManagedInteractiveHint close control", () => {
     expect(close?.getAttribute("aria-label")).toBe("Hide hint");
   });
 
+  it("trims surrounding whitespace from the question name in the accessible name", () => {
+    const { container } = renderHint({ questionName: "  My question  " });
+    const close = container.querySelector("[data-cy='close-hint']");
+    expect(close?.getAttribute("aria-label")).toBe("Hide hint for My question");
+  });
+
   it("hides the decorative chevron icon from assistive technology", () => {
     const { container } = renderHint();
     const close = container.querySelector("[data-cy='close-hint']");
