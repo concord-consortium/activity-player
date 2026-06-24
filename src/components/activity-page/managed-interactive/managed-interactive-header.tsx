@@ -6,29 +6,36 @@ interface IProps {
   questionNumber?: number;
   questionName: string;
   hint: string;
+  showHint: boolean;
+  hintPanelId: string;
   onToggleHint: () => void;
   hideHeader: boolean;
 }
 
-export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, questionName, hint, onToggleHint, hideHeader }) => {
+export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, questionName, hint, showHint, hintPanelId, onToggleHint, hideHeader }) => {
   if (hideHeader) return null;
+
+  const trimmedQuestionName = questionName.trim();
 
   return (
     <div className="header">
       <DynamicText>
         {questionNumber && `Question #${questionNumber}`}
-        {questionName.trim().length > 0 && questionNumber && ": "}
+        {trimmedQuestionName.length > 0 && questionNumber && ": "}
         {questionName}
       </DynamicText>
       {hint && (
-        <div
+        <button
+          type="button"
           className="question-container"
           onClick={onToggleHint}
           data-cy="open-hint"
-          tabIndex={0}
+          aria-label={trimmedQuestionName ? `Hint for ${trimmedQuestionName}` : "Show hint"}
+          aria-expanded={showHint}
+          aria-controls={hintPanelId}
         >
           <IconQuestion className="question" height={22} width={22} />
-        </div>
+        </button>
       )}
     </div>
   );
