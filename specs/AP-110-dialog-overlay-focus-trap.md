@@ -136,7 +136,7 @@ Owns:
 - A wrapper `<div ref={iframeWrapperRef}>` around the rendered `<IframeRuntime>` — the strategy's `content` slot element, used by the library's `setChildrenNonTabbable` exclusion (the wrapper and all descendants — sentinels + iframe — are skipped).
 - The `useIframeSlot` call (returns `strategyFragment` and the sentinel refs/keys).
 - The `useFocusTrap` call with a strategy merging the close-button slot + the iframe-slot fragment.
-- An `enterTrap()` call on mount to auto-engage.
+- An `enterTrap()` call from the container ref callback (on first attach) to auto-engage — see Engagement below.
 
 Inputs (props):
 
@@ -172,7 +172,7 @@ const strategy: FocusTrapStrategy = {
 };
 ```
 
-Engagement: `useEffect(() => { trap?.enterTrap(); }, [])` on mount. With `cycleOrder: ["close", "content"]`, `enterTrap` focuses the close button (programmatic entry into a non-content slot — normal focus, no landing mode needed). The user's first forward Tab cycles to the iframe-slot via the **before-sentinel positioner** (a live-keydown entry — descends natively into the iframe's first focusable). Shift+Tab from the close button **wraps** to the iframe-slot — this is programmatic cycling, so the iframe-slot enters **landing mode** on the **after-sentinel** (top-left overlay hint); the user's next Tab descends to the iframe's last focusable.
+Engagement: the trap is entered from the dialog container's ref callback (`enterTrap()` on first attach), not a mount `useEffect`. react-modal's `ModalPortal` defers committing its children until after its own `componentDidMount`, so the ref callback is the reliable "container DOM is attached" signal; the same callback also wires the trap's `containerRef`. A `useRef` guard ensures `enterTrap()` runs only on the first attach. With `cycleOrder: ["close", "content"]`, `enterTrap` focuses the close button (programmatic entry into a non-content slot — normal focus, no landing mode needed). The user's first forward Tab cycles to the iframe-slot via the **before-sentinel positioner** (a live-keydown entry — descends natively into the iframe's first focusable). Shift+Tab from the close button **wraps** to the iframe-slot — this is programmatic cycling, so the iframe-slot enters **landing mode** on the **after-sentinel** (top-left overlay hint); the user's next Tab descends to the iframe's last focusable.
 
 **Avoiding double-close.** The trap's `strategy.onExit` fires on Escape exit, on `exitTrap()`, **and** on unmount cleanup if still trapped. Every dismiss path here unmounts `DialogOverlay`, so if `onExit` also called `onClose` we'd race the unmount cleanup. Instead: use a slot-specific `escapeHandlers.close` (returns `"handled"` to suppress the default exit) and wire every other dismiss path (close-button click, overlay click) through the same `safeOnClose` — a ref-guarded one-shot wrapper around `onClose`. `strategy.onExit` is left unset; the trap's unmount cleanup is a no-op.
 
@@ -181,7 +181,8 @@ react-modal flags on the `<Modal>`:
 - `shouldFocusAfterRender={false}` — suppress react-modal's auto-focus; `enterTrap()` places focus.
 - `shouldReturnFocusAfterClose={false}` — react-modal won't try to restore on unmount; we own that.
 - `shouldCloseOnEsc={false}` — the trap owns Escape via the `close`-slot `escapeHandlers`.
-- `shouldCloseOnOverlayClick` — leave at default (true); outside click calls `onRequestClose`, wired to `safeOnClose`.
+- `onRequestClose={notCloseable ? undefined : safeOnClose}` — overlay-click stays at react-modal's default (`shouldCloseOnOverlayClick` true), but for `notCloseable` dialogs `onRequestClose` is left undefined so the click is a no-op; closeable dialogs dismiss through `safeOnClose`.
+- `contentLabel={title || "Dialog"}` — accessible name for the modal content.
 
 ### 3. `managed-interactive.tsx` — wire DialogOverlay, restore focus on close
 
