@@ -4,6 +4,19 @@ require("@testing-library/jest-dom");
 
 enzyme.configure({ adapter: new Adapter() });
 
+// Enzyme's static `render()` rasterizes via ReactDOMServer, which logs a "useLayoutEffect
+// does nothing on the server" warning for any component using useLayoutEffect (directly or
+// through a dependency). Under React 16 + enzyme this is unavoidable noise and floods the CI
+// output (100+ lines per run). Filter out only that one message, passing every other
+// console.error through untouched so real errors still surface.
+const originalConsoleError = console.error;
+console.error = (...args) => {
+  if (typeof args[0] === "string" && args[0].includes("useLayoutEffect does nothing on the server")) {
+    return;
+  }
+  originalConsoleError(...args);
+};
+
 // import the abomination that is jQuery as it mocks any attempts to mock it
 const $ = require("jquery");
 window.$ = $;
@@ -27,9 +40,9 @@ require("jquery-ui/ui/unique-id");
 require("jquery-ui/ui/version");
 
 if (typeof crypto === "undefined" || typeof crypto.getRandomValues !== "function") {
-  console.warn(
-    "Insecure crypto.getRandomValues polyfill applied. ONLY for testing purposes."
-  );
+  // Apply a Math.random()-based polyfill for tests. This used to log a warning on every
+  // test file, which flooded the CI output with ~one line per suite; the polyfill is
+  // intentional and test-only, so the warning added noise without value.
 
   // Define a mock crypto object if it doesn"t exist
   if (typeof window.crypto === "undefined") {
