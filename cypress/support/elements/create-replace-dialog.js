@@ -1,6 +1,5 @@
 import ActivityPage from "./activity-page";
-import { getInIframe } from "./iframe";
-import { getInIframeWithIndex } from "./iframe";
+import { getInIframe, getInIframeWithIndex } from "./iframe";
 
 const activityPage = new ActivityPage;
 

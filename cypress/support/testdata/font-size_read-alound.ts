@@ -23,4 +23,4 @@ export const normalFont = {
 
   export const readAlound = {
     backgroundColor: "rgb(248, 255, 0)"
-  }
+  };

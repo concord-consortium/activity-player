@@ -91,9 +91,6 @@ class ActivityPage {
   getActivityTitle() {
     return this.getActivitySummary().find('h1 div');
   }
-  getReadAloudToggle() {
-    return this.getActivitySummary().find('#label-read_aloud_toggle');
-  }
   getIntroText() {
     return this.getActivitySummary().find('.activity-content.intro-txt p');
   }
@@ -101,7 +98,7 @@ class ActivityPage {
     return this.getActivitySummary().find('[data-cy=estimated-time] .estimate');
   }
   getPagesHeader() {
-    return cy.get('[data-cy=activity-page-links] .pages div')
+    return cy.get('[data-cy=activity-page-links] .pages div');
   }
   getPageItemNo() {
     return cy.get('[data-cy=activity-page-links] .page-item span').eq(0);
@@ -171,10 +168,10 @@ class ActivityPage {
 
   //Text Block
   getTextBlockName() {
-    return cy.get('[data-cy=text-box] .text-name')
+    return cy.get('[data-cy=text-box] .text-name');
   }
   getTextBlockContent() {
-    return cy.get('[data-cy=text-box] .content')
+    return cy.get('[data-cy=text-box] .content');
   }
 
   //Summary Page
@@ -210,7 +207,7 @@ class ActivityPage {
     return cy.get('[data-cy=activity-title]');
   }
   getSequenceContent() {
-    return cy.get('[data-cy=sequence-page-content]')
+    return cy.get('[data-cy=sequence-page-content]');
   }
   getSequenceTitle() {
     return this.getSequenceContent().find('.sequence-title div');
