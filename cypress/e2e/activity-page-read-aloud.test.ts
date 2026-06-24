@@ -1,6 +1,6 @@
 import ActivityPage from "../support/elements/activity-page";
 import { getInIframe } from "../support/elements/iframe";
-import { readAlound } from "../support/testdata/font-size_read-alound";
+import { readAloud } from "../support/testdata/font-size_read-aloud";
 
 const activityPage = new ActivityPage;
 
@@ -14,7 +14,7 @@ context("Test the overall app", () => {
     it("verify read aloud in home page",()=>{
       beforeTest();
       activityPage.clickReadAloudToggle();
-      activityPage.getActivityTitle().click().should('have.css', 'background-color',readAlound.backgroundColor);
+      activityPage.getActivityTitle().click().should('have.css', 'background-color',readAloud.backgroundColor);
     });
   });
   describe("Bar Graph",() => {
@@ -23,7 +23,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(0);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".base-app--runtime--question-int p").parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".base-app--runtime--question-int p").parent().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   describe("Carousel",() => {
@@ -32,7 +32,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(1);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".runtime--runtime--question-int p").eq(0).parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".runtime--runtime--question-int p").eq(0).parent().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   describe("Drag & Drop",() => {
@@ -41,7 +41,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(2);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".base-app--runtime--question-int p").eq(0).parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".base-app--runtime--question-int p").eq(0).parent().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   describe("Drawing Tool",() => {
@@ -50,7 +50,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(3);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".base-app--runtime--question-int p").parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".base-app--runtime--question-int p").parent().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   describe("FIB",() => {
@@ -59,7 +59,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(4);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".base-app--runtime--question-int p").parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".base-app--runtime--question-int p").parent().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   describe("Image Interactive",() => {
@@ -68,7 +68,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(5);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".runtime--caption--question-int").parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".runtime--caption--question-int").parent().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   describe("Image Question",() => {
@@ -77,7 +77,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(6);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".base-app--runtime--question-int p").eq(0).parent().parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".base-app--runtime--question-int p").eq(0).parent().parent().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   describe("Labbook",() => {
@@ -86,7 +86,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(7);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".base-app--runtime--question-int p").parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".base-app--runtime--question-int p").parent().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   describe("MCQ",() => {
@@ -95,7 +95,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(8);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".base-app--runtime--question-int p").parent().parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".base-app--runtime--question-int p").parent().parent().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   describe("Open Response",() => {
@@ -104,7 +104,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(9);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".base-app--runtime--question-int p").parent().parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".base-app--runtime--question-int p").parent().parent().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   describe("Scaffolded",() => {
@@ -113,7 +113,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(10);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".runtime--runtime--question-int p").eq(0).parent().parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".runtime--runtime--question-int p").eq(0).parent().parent().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   /*
@@ -126,7 +126,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(11);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".runtime--prompt--question-int p").parent().parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".runtime--prompt--question-int p").parent().parent().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   describe("Side by side",() => {
@@ -135,7 +135,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(12);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".base-app--runtime--question-int p").eq(0).parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".base-app--runtime--question-int p").eq(0).parent().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   describe("Multiselect",() => {
@@ -144,7 +144,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(13);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".base-app--runtime--question-int p").parent().parent().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".base-app--runtime--question-int p").parent().parent().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   describe("Video Interactive",() => {
@@ -153,7 +153,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(14);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      getInIframe("body", ".runtime--caption--question-int").children().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      getInIframe("body", ".runtime--caption--question-int").children().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   describe("Text Block",() => {
@@ -162,7 +162,7 @@ context("Test the overall app", () => {
       activityPage.clickPageItem(15);
       cy.wait(5000);
       activityPage.clickReadAloudToggle();
-      activityPage.getTextBlockContent().children().click().should('have.css', 'background-color', readAlound.backgroundColor);
+      activityPage.getTextBlockContent().children().click().should('have.css', 'background-color', readAloud.backgroundColor);
     });
   });
   */
