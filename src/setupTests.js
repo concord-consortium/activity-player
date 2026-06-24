@@ -4,16 +4,24 @@ require("@testing-library/jest-dom");
 
 enzyme.configure({ adapter: new Adapter() });
 
-// Enzyme's static `render()` rasterizes via ReactDOMServer, which logs a "useLayoutEffect
-// does nothing on the server" warning for any component using useLayoutEffect (directly or
-// through a dependency). Under React 16 + enzyme this is unavoidable noise and floods the CI
-// output (100+ lines per run). Filter out only that one message, passing every other
-// console.error through untouched so real errors still surface.
+// Suppress known test-environment noise. Each array lists substrings to filter; any match
+// suppresses the message. Everything else passes through so real issues still surface.
+const SUPPRESSED_WARNINGS = [
+  "Interactive API is meant to be used in iframe",
+];
+const SUPPRESSED_ERRORS = [
+  "useLayoutEffect does nothing on the server",
+];
+
+const originalConsoleWarn = console.warn;
+console.warn = (...args) => {
+  if (typeof args[0] === "string" && SUPPRESSED_WARNINGS.some(s => args[0].includes(s))) return;
+  originalConsoleWarn(...args);
+};
+
 const originalConsoleError = console.error;
 console.error = (...args) => {
-  if (typeof args[0] === "string" && args[0].includes("useLayoutEffect does nothing on the server")) {
-    return;
-  }
+  if (typeof args[0] === "string" && SUPPRESSED_ERRORS.some(s => args[0].includes(s))) return;
   originalConsoleError(...args);
 };
 
