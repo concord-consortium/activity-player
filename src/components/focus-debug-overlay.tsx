@@ -37,8 +37,10 @@ interface Entry {
 
 const MAX_ENTRIES = 30;
 
-function describe(el: Element | null): string {
-  if (!el) return "(none)";
+function describe(el: EventTarget | null): string {
+  // keydown/focus targets aren't always Elements (e.g. Document/Window when
+  // nothing focusable is focused) — guard so reading tagName can't throw.
+  if (!(el instanceof Element)) return "(none)";
   let s = el.tagName.toLowerCase();
   if (el.id) s += `#${el.id}`;
   const dataCy = el.getAttribute("data-cy");
@@ -47,8 +49,8 @@ function describe(el: Element | null): string {
   return s;
 }
 
-function path(el: Element | null): string {
-  if (!el) return "(none)";
+function path(el: EventTarget | null): string {
+  if (!(el instanceof Element)) return "(none)";
   const parts: string[] = [];
   let cur: Element | null = el;
   while (cur && cur !== document.body && cur !== document.documentElement) {
@@ -78,18 +80,16 @@ export const FocusDebugOverlay: React.FC = () => {
     };
 
     const onFocusIn = (e: FocusEvent) => {
-      const target = e.target as Element | null;
-      push("focusin", path(target));
-      setActiveElPath(path(target));
+      push("focusin", path(e.target));
+      setActiveElPath(path(e.target));
     };
     const onFocusOut = (e: FocusEvent) => {
-      const target = e.target as Element | null;
-      push("focusout", describe(target));
+      push("focusout", describe(e.target));
     };
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== "Tab" && e.key !== "Enter" && e.key !== "Escape") return;
       const mod = e.shiftKey ? "Shift+" : "";
-      push("key", `${mod}${e.key} @ ${describe(e.target as Element)}`);
+      push("key", `${mod}${e.key} @ ${describe(e.target)}`);
     };
     const onWinBlur = () => {
       const ae = document.activeElement;
