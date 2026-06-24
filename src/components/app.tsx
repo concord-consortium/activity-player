@@ -615,7 +615,7 @@ export class App extends React.PureComponent<IProps, IState> {
       <>
         {this.state.sequence && this.renderSequenceNav(fullWidth)}
         {renderTopNav &&
-          this.renderNav(activity, currentPage, fullWidth)
+          this.renderNav(activity, currentPage, fullWidth, "Page navigation")
         }
         {activity.layout === ActivityLayouts.SinglePage
           ? this.renderSinglePageContent(activity)
@@ -642,13 +642,13 @@ export class App extends React.PureComponent<IProps, IState> {
               />
         }
         {renderBottomNav &&
-          this.renderNav(activity, currentPage, fullWidth)
+          this.renderNav(activity, currentPage, fullWidth, "Page navigation (bottom)")
         }
       </>
     );
   }
 
-  private renderNav = (activity: Activity, currentPage: number, fullWidth: boolean) => {
+  private renderNav = (activity: Activity, currentPage: number, fullWidth: boolean, ariaLabel?: string) => {
     const isNotebook = activity.layout === ActivityLayouts.Notebook;
 
     return (
@@ -663,6 +663,7 @@ export class App extends React.PureComponent<IProps, IState> {
         usePageNames={isNotebook}
         hideNextPrevButtons={isNotebook}
         isSequence={!!this.state.sequence}
+        ariaLabel={ariaLabel}
       />
     );
   }

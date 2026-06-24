@@ -1,6 +1,7 @@
 import React from "react";
 import { SinglePageContent } from "./single-page-content";
 import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Activity } from "../../types";
 import { DefaultTestActivity } from "../../test-utils/model-for-tests";
 import _activitySinglePage from "../../data/version-2/sample-new-sections-single-page-layout.json";
@@ -18,5 +19,9 @@ describe("Single Page Content component", () => {
     console.log("wrapper", wrapper.html());
     expect(wrapper.html()).toContain('data-cy="single-page-content"');
     expect(wrapper.html().split('<div class="section').length).toBe(7); // 6 sections = 7 split parts
+  });
+  it("exposes a single main landmark", () => {
+    render(<DynamicTextTester><SinglePageContent activity={DefaultTestActivity} pluginsLoaded={true} /></DynamicTextTester>);
+    expect(screen.getByRole("main")).toBeInTheDocument();
   });
 });

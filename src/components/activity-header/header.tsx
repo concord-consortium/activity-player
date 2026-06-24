@@ -24,7 +24,7 @@ export class Header extends React.PureComponent<IProps> {
     const logo = project?.logo_ap;
     const projectURL = project?.url || ccLogoLink;
     return (
-      <div className={`activity-header ${showSequence ? "in-sequence" : ""}`} data-cy="activity-header">
+      <header className={`activity-header ${showSequence ? "in-sequence" : ""}`} data-cy="activity-header">
         <div className={`inner ${fullWidth ? "full" : ""}`}>
           <div className="header-left">
             <Logo logo={logo} url={projectURL} />
@@ -40,7 +40,7 @@ export class Header extends React.PureComponent<IProps> {
             <AccountOwner userName={userName} />
           </div>
         </div>
-      </div>
+      </header>
     );
   }
 

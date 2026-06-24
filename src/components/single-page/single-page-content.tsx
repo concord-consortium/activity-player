@@ -47,7 +47,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
   };
 
   return (
-    <div className="single-page-content" data-cy="single-page-content">
+    <main className="single-page-content" data-cy="single-page-content">
       <ReadAloudToggle style={{justifyContent: "flex-end"}} />
 
       {activity.pages.filter((page) => !page.is_hidden).map((page, index: number) => (
@@ -55,6 +55,6 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
       ))}
       { activity.related && <RelatedContent relatedContentText={activity.related} /> }
       { activity.show_submit_button && <SubmitButton/> }
-    </div>
+    </main>
   );
 };

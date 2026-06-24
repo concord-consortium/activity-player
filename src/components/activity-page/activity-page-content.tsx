@@ -119,7 +119,7 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
       <>
         {page.is_hidden && this.renderHiddenWarningBanner()}
         {this.renderPageChangeNotification()}
-        <div className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
+        <main className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
           <div className={headerClass}>
             <div className="name"><DynamicText>{pageTitle}</DynamicText></div>
             <ReadAloudToggle />
@@ -134,7 +134,7 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
               onGenerateReport={this.handleReport}
             />
           }
-        </div>
+        </main>
         {this.renderPageChangeNotification()}
       </>
     );
