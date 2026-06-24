@@ -1,7 +1,3 @@
-import ActivityPage from "./activity-page";
-
-const activityPage = new ActivityPage;
-
 class Notebook {
   getNotebookHeader() {
     return cy.get('.notebookHeader');

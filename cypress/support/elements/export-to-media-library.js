@@ -1,7 +1,4 @@
-import ActivityPage from "./activity-page";
 import { getInIframe } from "./iframe";
-
-const activityPage = new ActivityPage;
 
 class ExportToMediaLibrary {
   getUploadImageButton() {

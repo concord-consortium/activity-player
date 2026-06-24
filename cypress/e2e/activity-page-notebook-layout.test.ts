@@ -1,10 +1,8 @@
 import ActivityPage from "../support/elements/activity-page";
-import { getInIframe, getInIframeWithIndex } from "../support/elements/iframe";
-import ReadAloud from "../support/elements/read-aloud";
+import { getInIframeWithIndex } from "../support/elements/iframe";
 import Notebook from "../support/elements/notebook";
 
 const activityPage = new ActivityPage;
-const readAloud = new ReadAloud;
 const fontFamily = "Andika";
 const noteBook = new Notebook;
 

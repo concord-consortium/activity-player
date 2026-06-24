@@ -1,5 +1,4 @@
 import ActivityPage from "../support/elements/activity-page";
-import ReadAloud from "../support/elements/read-aloud";
 import Notebook from "../support/elements/notebook";
 
 const activityPage = new ActivityPage;

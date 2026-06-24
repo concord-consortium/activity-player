@@ -3,13 +3,11 @@ import { v4 as uuidv4 } from "uuid";
 import ActivityPage from "../support/elements/activity-page";
 
 const activityPage = new ActivityPage;
-const portalReportUrl = "https://portal-report.concord.org/branch/master/index.html";
 context("Test Opening Portal Reports from various places", () => {
   describe("As an anonymous user", () => {
     const runKey = uuidv4();
 
     const activityExportUrl = "https://example.com/api/v1/activities/123.json";
-    const activityStructureUrl = "https://example.com/activities/123";
     const activityPlayerUrl = "?" +
       "activity="+activityExportUrl+
       "resourceUrl="+activityExportUrl+

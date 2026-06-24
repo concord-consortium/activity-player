@@ -1,10 +1,8 @@
 import ActivityPage from "../support/elements/activity-page";
-import { getInIframe, getInIframeWithIndex } from "../support/elements/iframe";
+import { getInIframe } from "../support/elements/iframe";
 import { readAlound } from "../support/testdata/font-size_read-alound";
-import ReadAloud from "../support/elements/read-aloud";
 
 const activityPage = new ActivityPage;
-const readAloud = new ReadAloud;
 
 function beforeTest() {
   cy.visit("?activity=https%3A%2F%2Fauthoring.lara.staging.concord.org%2Fapi%2Fv1%2Factivities%2F112.json&preview");
