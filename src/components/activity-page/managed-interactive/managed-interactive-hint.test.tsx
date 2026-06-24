@@ -27,4 +27,11 @@ describe("ManagedInteractiveHint panel", () => {
     expect(panel).not.toBeNull();
     expect(panel?.classList.contains("hint-container")).toBe(true);
   });
+
+  it("preserves the panel id even when showHint is false so aria-controls stays valid", () => {
+    const { container } = renderHint({ showHint: false });
+    const panel = container.querySelector(`#${panelId}`);
+    expect(panel).not.toBeNull();
+    expect(panel?.classList.contains("collapsed")).toBe(true);
+  });
 });
