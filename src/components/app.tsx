@@ -642,7 +642,7 @@ export class App extends React.PureComponent<IProps, IState> {
               />
         }
         {renderBottomNav &&
-          this.renderNav(activity, currentPage, fullWidth, "Page navigation, bottom")
+          this.renderNav(activity, currentPage, fullWidth, "Page navigation (bottom)")
         }
       </>
     );

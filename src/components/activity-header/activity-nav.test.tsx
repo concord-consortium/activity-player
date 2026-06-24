@@ -35,7 +35,7 @@ describe("Activity Nav Header component", () => {
     expect(screen.getByRole("navigation", { name: "Page navigation" })).toBeInTheDocument();
   });
   it("honors a custom ariaLabel (used to distinguish the bottom nav)", () => {
-    render(<ActivityNav activityPages={activityPages} currentPage={0} onPageChange={stubFunction} singlePage={false} ariaLabel="Page navigation, bottom" />);
-    expect(screen.getByRole("navigation", { name: "Page navigation, bottom" })).toBeInTheDocument();
+    render(<ActivityNav activityPages={activityPages} currentPage={0} onPageChange={stubFunction} singlePage={false} ariaLabel="Page navigation (bottom)" />);
+    expect(screen.getByRole("navigation", { name: "Page navigation (bottom)" })).toBeInTheDocument();
   });
 });
