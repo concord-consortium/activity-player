@@ -9,16 +9,13 @@
     border-radius: 4px;
     margin: 0 0 0 10px;
     cursor: pointer;
+    text-decoration: none;
 
     &:hover {
       background-color: $cc-teal-light2;
     }
     &:active {
       background-color: $cc-teal;
-
-      .icon {
-        fill: white;
-      }
     }
 
     &.no-link {
