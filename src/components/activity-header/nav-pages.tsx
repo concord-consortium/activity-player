@@ -105,11 +105,13 @@ export class NavPages extends React.Component <IProps, IState> {
     const { currentPage } = this.props;
     const { pageChangeInProgress } = this.state;
     const disabled = pageChangeInProgress || currentPage === 0;
+    // When hard-disabled the target position is out of range, so point the link
+    // at the current page rather than exposing a misleading destination.
     return (
       <li className="page-button-container">
         <a
           className={`page-button arrow-button ${disabled ? "last-page" : ""}`}
-          href={this.hrefForPosition(currentPage - 1)}
+          href={this.hrefForPosition(disabled ? currentPage : currentPage - 1)}
           onClick={this.handlePageChangeRequest(currentPage - 1)}
           aria-label="Previous page"
           aria-disabled={disabled || undefined}
@@ -138,7 +140,7 @@ export class NavPages extends React.Component <IProps, IState> {
       <li className="page-button-container">
         <a
           className={nextButtonClass}
-          href={this.hrefForPosition(currentPage + 1)}
+          href={this.hrefForPosition(disabled ? currentPage : currentPage + 1)}
           onClick={this.handlePageChangeRequest(currentPage + 1)}
           aria-label="Next page"
           aria-disabled={disabled || undefined}

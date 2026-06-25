@@ -195,6 +195,21 @@ describe("Nav Pages accessibility", () => {
     expect(screen.getByRole("link", { name: "Previous page" })).not.toHaveAttribute("aria-disabled");
   });
 
+  it("points hard-disabled prev/next at the current page rather than an out-of-range destination", () => {
+    // Next is hard-disabled on the last page: its href should be the current
+    // page (page 3), not the home page it would otherwise resolve to.
+    const { rerender } = render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={3} onPageChange={stubFunction} />
+    );
+    expect(screen.getByRole("link", { name: "Next page" }).getAttribute("href")).toBe("?page=page_103");
+
+    // Previous is hard-disabled on the home page: its href stays at home.
+    rerender(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={0} onPageChange={stubFunction} />
+    );
+    expect(screen.getByRole("link", { name: "Previous page" }).getAttribute("href")).toBe("?");
+  });
+
   it("hides decorative icons from assistive technology", () => {
     const { container } = render(
       <NavPages activityId={1} pages={pagesWithIds} currentPage={2} onPageChange={stubFunction} />
