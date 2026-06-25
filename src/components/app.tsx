@@ -476,6 +476,16 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   render() {
+    const { activity, idle, errorType, showSequenceIntro, loadingOverrides, sequence } = this.state;
+    // The skip link only has a target when a #main-content landmark is actually
+    // rendered. This mirrors the content ternary below so the link is never a
+    // dead in-page link on the loading/idle/error screens (which have no
+    // repeated header/nav blocks to bypass anyway).
+    const hasMainContent =
+      (errorType && !activity) ? false
+        : showSequenceIntro ? !!sequence
+          : loadingOverrides ? false
+            : !!activity && !idle && !errorType;
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
@@ -486,7 +496,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   <DynamicTextContext.Provider value={dynamicTextManager}>
                     <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
                       <div className="app" data-cy="app">
-                        <a className="skip-link" href="#main-content" data-cy="skip-link">Skip to main content</a>
+                        {hasMainContent && <a className="skip-link" href="#main-content" data-cy="skip-link">Skip to main content</a>}
                         { this.state.showDefunctBanner && <DefunctBanner/> }
                         { this.state.showWarning && <WarningBanner/> }
                         { isOfferingLocked(this.state.portalData) && <LockedBanner isSequence={!!this.state.sequence}/> }
