@@ -8,9 +8,9 @@ describe("Logo component", () => {
   const projectLogoUrl = "https://static.concord.org/projects/logos/ap/mw-logo.png";
   const projectUrl = "http://mw.concord.org/nextgen";
 
-  // AP-86: the header logo is a semantic <a> link when it has a destination, so
+  // The header logo is a semantic <a> link when it has a destination, so
   // assistive technology announces it as a link and it is keyboard-reachable.
-  describe("semantic link markup (AP-86)", () => {
+  describe("semantic link markup", () => {
     it("renders the logo as a native anchor pointing at the project url", () => {
       render(<Logo logo={projectLogoUrl} url={projectUrl} title="Molecular Workbench" />);
       const link = screen.getByTestId("project-logo");
@@ -55,8 +55,8 @@ describe("Logo component", () => {
     });
   });
 
-  // AP-87: the logo image carries alt text that matches the visible logo.
-  describe("logo image alt text (AP-87)", () => {
+  // The logo image carries alt text that matches the visible logo.
+  describe("logo image alt text", () => {
     it("uses the project title as the alt text of a project-supplied logo", () => {
       render(<Logo logo={projectLogoUrl} url={projectUrl} title="Molecular Workbench" />);
       const img = screen.getByTestId("logo-img");

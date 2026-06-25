@@ -1,6 +1,6 @@
 // The header logo is a semantic link with descriptive alt text:
-//  - WCAG 4.1.2 (AP-86): the logo is a native <a> announced as a link.
-//  - WCAG 1.1.1 (AP-87): the logo image alt matches the visible logo.
+//  - WCAG 4.1.2: the logo is a native <a> announced as a link.
+//  - WCAG 1.1.1: the logo image alt matches the visible logo.
 
 context("header logo link", () => {
   describe("project-supplied logo", () => {
