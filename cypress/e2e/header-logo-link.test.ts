@@ -17,10 +17,8 @@ context("header logo link", () => {
     });
 
     it("renders the logo as an img whose alt matches the project title", () => {
-      cy.get("img[data-cy=logo-img]")
-        .should("have.attr", "alt", "Molecular Workbench")
-        .and("have.attr", "src")
-        .and("contain", "mw-logo");
+      cy.get("img[data-cy=logo-img]").should("have.attr", "alt", "Molecular Workbench");
+      cy.get("img[data-cy=logo-img]").invoke("attr", "src").should("contain", "mw-logo");
     });
   });
 

@@ -6,7 +6,7 @@ describe("Logo component", () => {
   configure({ testIdAttribute: "data-cy" });
 
   const projectLogoUrl = "https://static.concord.org/projects/logos/ap/mw-logo.png";
-  const projectUrl = "http://mw.concord.org/nexgen";
+  const projectUrl = "http://mw.concord.org/nextgen";
 
   // AP-86: the header logo is a semantic <a> link when it has a destination, so
   // assistive technology announces it as a link and it is keyboard-reachable.

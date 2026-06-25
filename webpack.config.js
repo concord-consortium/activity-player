@@ -77,16 +77,12 @@ module.exports = (env, argv) => {
           test: /\.svg$/,
           oneOf: [
             {
-              // Import an SVG as a plain asset URL via an explicit `?url` query
-              // (e.g. `import logoUrl from "./logo.svg?url"`) so it can be used as
-              // an <img src> rather than an inlined SVGR React component.
-              resourceQuery: /url/,
-              type: "asset",
-              parser: {
-                dataUrlCondition: {
-                  maxSize: 8192
-                }
-              }
+              // Import an SVG as a plain asset-file URL via an explicit `?url`
+              // query (e.g. `import logoUrl from "./logo.svg?url"`) so it can be
+              // used as an <img src> rather than an inlined SVGR React component.
+              // `asset/resource` always emits a file (never an inlined data URL).
+              resourceQuery: /[?&]url(?:&|$)/,
+              type: "asset/resource"
             },
             {
               // Do not apply SVGR import in CSS files.
