@@ -30,6 +30,10 @@ export class SidebarTab extends React.PureComponent<IProps>{
 
   private handleSidebarShow = (e: React.MouseEvent | React.KeyboardEvent) => {
     if (accessibilityClick(e)) {
+      // role="button" div: stop Space from also scrolling the page on keyboard activation
+      if (e.type === "keydown") {
+        e.preventDefault();
+      }
       this.props.handleShowSidebarContent(this.props.index, !this.props.sidebarOpen);
     }
   }

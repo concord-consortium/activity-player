@@ -36,6 +36,10 @@ export class SidebarPanel extends React.PureComponent<IProps>{
 
   private handleCloseButton = (e: React.MouseEvent | React.KeyboardEvent) => {
     if (accessibilityClick(e)){
+      // role="button" div: stop Space from also scrolling the page on keyboard activation
+      if (e.type === "keydown") {
+        e.preventDefault();
+      }
       this.props.handleCloseSidebarContent(this.props.index, false);
     }
   }
