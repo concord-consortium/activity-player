@@ -129,7 +129,82 @@ describe("Nav Pages component", () => {
         onPageChange={stubFunction}
       />
     );
-    // back and forward buttons, home button, 2 page buttons
-    expect(screen.getAllByRole("button").length).toBe(5);
+    // back and forward links, home link, 2 page links
+    expect(screen.getAllByRole("link").length).toBe(5);
+  });
+});
+
+describe("Nav Pages accessibility", () => {
+  // Pages with distinct ids/positions so hrefs resolve to specific pages.
+  const pagesWithIds = [
+    {...DefaultTestPage, name: "1", id: 101, position: 1},
+    {...DefaultTestPage, name: "2", id: 102, position: 2},
+    {...DefaultTestPage, name: "3", id: 103, position: 3},
+  ];
+
+  it("renders the controls as a list of links", () => {
+    const { container } = render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={2} onPageChange={stubFunction} />
+    );
+    const list = container.querySelector("ul.nav-pages");
+    expect(list).not.toBeNull();
+    // previous + home + 3 page links + next, each an <a> inside an <li>
+    expect(container.querySelectorAll("li.page-button-container").length).toBe(6);
+    expect(container.querySelectorAll("li.page-button-container > a.page-button").length).toBe(6);
+    expect(screen.getAllByRole("link").length).toBe(6);
+  });
+
+  it("gives each control a page href, with home carrying no page param", () => {
+    render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={2} onPageChange={stubFunction} />
+    );
+    expect(screen.getByRole("link", { name: "Home" }).getAttribute("href")).toBe("?");
+    expect(screen.getByRole("link", { name: "Page 1" }).getAttribute("href")).toBe("?page=page_101");
+    expect(screen.getByRole("link", { name: "Page 2" }).getAttribute("href")).toBe("?page=page_102");
+    expect(screen.getByRole("link", { name: "Previous page" }).getAttribute("href")).toBe("?page=page_101");
+    expect(screen.getByRole("link", { name: "Next page" }).getAttribute("href")).toBe("?page=page_103");
+  });
+
+  it("marks only the current page with aria-current", () => {
+    render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={2} onPageChange={stubFunction} />
+    );
+    expect(screen.getByRole("link", { name: "Page 2" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "Page 1" })).not.toHaveAttribute("aria-current");
+    expect(screen.getByRole("link", { name: "Home" })).not.toHaveAttribute("aria-current");
+  });
+
+  it("marks Home with aria-current on the home page", () => {
+    render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={0} onPageChange={stubFunction} />
+    );
+    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
+  });
+
+  it("sets aria-disabled on previous at home and next at the last page", () => {
+    const { rerender } = render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={0} onPageChange={stubFunction} />
+    );
+    expect(screen.getByRole("link", { name: "Previous page" })).toHaveAttribute("aria-disabled", "true");
+    expect(screen.getByRole("link", { name: "Next page" })).not.toHaveAttribute("aria-disabled");
+
+    rerender(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={3} onPageChange={stubFunction} />
+    );
+    expect(screen.getByRole("link", { name: "Next page" })).toHaveAttribute("aria-disabled", "true");
+    expect(screen.getByRole("link", { name: "Previous page" })).not.toHaveAttribute("aria-disabled");
+  });
+
+  it("hides decorative icons from assistive technology", () => {
+    const { container } = render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={2} onPageChange={stubFunction} />
+    );
+    // SVGs are stubbed in Jest, so assert the icon element carries aria-hidden
+    // rather than matching an <svg> tag.
+    ["previous-page-button", "next-page-button", "home-button"].forEach((dataCy) => {
+      const icon = container.querySelector(`[data-cy="${dataCy}"] > *`);
+      expect(icon).not.toBeNull();
+      expect(icon).toHaveAttribute("aria-hidden", "true");
+    });
   });
 });

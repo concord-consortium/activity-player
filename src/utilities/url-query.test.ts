@@ -1,4 +1,4 @@
-import { deleteQueryValue, setQueryValue, hashValue } from "./url-query";
+import { deleteQueryValue, setQueryValue, hashValue, getPageHref } from "./url-query";
 
 describe("query string functions", () => {
   const oldWindowLocation = window.location;
@@ -52,6 +52,24 @@ describe("query string functions", () => {
       deleteQueryValue("foo", true);
       expect(window.history.replaceState).not.toHaveBeenCalled();
       expect(window.location.search).toBe("?baz=bam");
+    });
+  });
+
+  describe("getPageHref", () => {
+    it("sets the page param to page_<id>, preserving other params", () => {
+      url.href = "https://example.com?activity=foo&page=page_99";
+      expect(getPageHref(123)).toBe("?activity=foo&page=page_123");
+    });
+
+    it("removes the page param for the home page (null id)", () => {
+      url.href = "https://example.com?activity=foo&page=page_99";
+      expect(getPageHref(null)).toBe("?activity=foo");
+    });
+
+    it("does not mutate history", () => {
+      url.href = "https://example.com?activity=foo";
+      getPageHref(5);
+      expect(window.history.replaceState).not.toHaveBeenCalled();
     });
   });
 

@@ -41,6 +41,22 @@ export const setQueryValue = (prop: string, value: any, reload = false) => {
   }
 };
 
+/**
+ * Builds an href for navigating to a page, preserving all other current query
+ * parameters. Pass the target page's id to produce `?…&page=page_<id>`, or
+ * `null` for the activity home page (which carries no `page` parameter). Used
+ * to render the pagination controls as real links without mutating history.
+ */
+export const getPageHref = (pageId: number | null): string => {
+  const parsed = queryString.parse(window.location.search);
+  if (pageId === null) {
+    delete parsed.page;
+  } else {
+    parsed.page = `page_${pageId}`;
+  }
+  return "?" + queryString.stringify(parsed);
+};
+
 export const deleteQueryValue = (prop: string, reload = false) => {
   const parsed = queryString.parse(window.location.search);
   delete parsed[prop];
