@@ -126,6 +126,7 @@ The library gains an **iframe-slot** abstraction that:
 
 - Accepts element refs for the iframe and its `before`/`after` sentinels (AP renders the sentinel DOM; the library owns their focus *behavior*).
 - Tracks `focusInsideIframe` from the iframe element's `focus`/`blur` events. These fire whenever the iframe's document gains or loses focus — regardless of whether focus arrived via native Tab, a click inside the iframe, or programmatic `iframe.focus()` — so click and programmatic focus changes keep `focusInsideIframe` correct without any special handling. The trap's `keydown` handler also reads `document.activeElement` lazily at Tab time rather than caching a "current slot," so non-Tab focus changes can't leave stale state behind.
+- Implements the slot's `focusContent(direction)` callback (the existing strategy hook the trap calls when entering a managed slot), **and extends the strategy contract so that `focusContent` returns a value indicating whether the trap should call `e.preventDefault()`**. For the iframe-slot, `focusContent` calls `.focus()` on the appropriate sentinel (forward → before-sentinel; reverse → after-sentinel) and returns `{ preventDefault: false }`. The trap — which today unconditionally calls `e.preventDefault()` before slot-entry — must be modified to respect this return value. The browser's Tab default action then runs from the now-current activeElement (the sentinel) and descends natively into the iframe's first (forward) or last (reverse) focusable. The sentinel acts as a *positioner* for the browser's Tab default; its `tabindex` doesn't need changing for this path — `.focus()` works on `tabindex=-1` elements. This `focusContent`-returns-signal extension is part of the `accessibility-tools` work in [LARA-215](https://concord-consortium.atlassian.net/browse/LARA-215). Verified empirically with zero-size sentinels across Chrome / Firefox / Safari (macOS).
 - On sentinel `focusin`, drives its own slot cycling (it already owns `cycleOrder`).
 - For cooperating iframes, speaks the protocol through an **injected transport** (`send(msg)` / `onMessage(cb)`), translating protocol messages ↔ trap actions.
 
@@ -159,15 +160,14 @@ The message set is intentionally minimal; optional messages are listed for compl
 ## Path 2 — Non-cooperating interactive
 
 - No messages are exchanged.
-- The AP `iframe-runtime` wrapper renders `[before-sentinel][iframe][after-sentinel]`. The sentinels' tabbability is **toggled on the `focusInsideIframe` transition**: tabbable (`tabindex="0"`) only while focus is inside the iframe, inert (`tabindex="-1"`) at all other times. `focusInsideIframe` is tracked via the iframe element's `focus`/`blur` — the one cross-origin signal the parent can observe.
-- **Entering the iframe is purely native.** The parent *cannot* programmatically place focus on an element inside a cross-origin iframe — `iframe.focus()` focuses only the iframe *element*, and the browser does not descend into content on a programmatic focus (descent happens only via native sequential navigation). Keeping the sentinels inert while focus is outside guarantees entry is delegated to the browser: a forward Tab descends to the iframe's first focusable, a backward Shift+Tab to its last.
-- **Exiting is the only case the sentinels catch.** When focus enters the iframe, AP activates the sentinels. When the user then tabs out:
-  - lands on the **after-sentinel** → forward exit → AP focuses the next trap target (next slot, or wrap to first) and deactivates the sentinels.
-  - lands on the **before-sentinel** → backward exit → AP focuses the previous trap target (or wrap to last) and deactivates.
+- The AP `iframe-runtime` wrapper renders `[before-sentinel][iframe][after-sentinel]`. Sentinels are **zero-size with no accessible name** (silent in screen readers) and have `tabindex=-1` by default — programmatically focusable but not in the sequential Tab order, so users never land on them via normal Tab navigation. They are toggled to `tabindex=0` only while `focusInsideIframe === true`, so native Tab walking out of the iframe lands on one of them for exit detection. `focusInsideIframe` is tracked via the iframe element's `focus`/`blur` — the one cross-origin signal the parent can observe.
+- **Entering the iframe is mediated by the trap, not by native Tab.** The `accessibility-tools` trap intercepts every Tab that crosses a slot boundary — there is no path where native Tab is allowed to advance on its own when the trap is active. When the trap advances into the iframe-slot (forward cycling, wrap-around, or transition between adjacent iframe-slots), it calls the iframe-slot's `focusContent(direction)`. The iframe-slot focuses the appropriate sentinel (forward → before-sentinel; reverse → after-sentinel) and returns `{ preventDefault: false }`. The trap respects this and does *not* call `e.preventDefault()`. The browser's Tab default action then runs from the now-current activeElement (the sentinel) and descends natively into the iframe's first (forward) or last (reverse) focusable. The sentinel works as a *positioner* because `.focus()` succeeds on a `tabindex=-1` element — no toggle needed for entry. See [§ iframe-slot support](#iframe-slot-support-in-accessibility-tools-the-key-extension) for the strategy-contract extension this requires.
+- **Exiting:** when focus is inside the iframe and the user tabs out:
+  - lands on the **after-sentinel** → forward exit → AP focuses the next trap target (next slot, or wraps via the programmatic-entry mechanism above) and deactivates the sentinels' `tabindex=0`.
+  - lands on the **before-sentinel** → backward exit → AP focuses the previous trap target (or wraps).
 
-  The redirect target is always a *parent* element, which the AP can focus. The `focusInsideIframe === true` precondition makes a sentinel firing unambiguously an exit, so direction comes purely from **which sentinel fired** — no reliance on `relatedTarget` (nulled across a cross-origin boundary).
-- **Sentinels are bumpers, never resting spots:** on `focusin` AP synchronously moves focus to the real target. Guard nodes are zero-size with no accessible name (a focusable element cannot be `aria-hidden`).
-- **Programmatic focus into the interactive can only reach the iframe element** (`iframe.focus()`, e.g. for the overlay's initial focus); native Tab descends from there. This is the ceiling for non-cooperating interactives, and is browser-variable — a reason the cooperating `focusEnter { mode }` path is more precise.
+  The redirect target is always a *parent* element, which AP can focus. The `focusInsideIframe === true` precondition makes a sentinel firing unambiguously an exit, so direction comes purely from **which sentinel fired** — no reliance on `relatedTarget` (nulled across a cross-origin boundary). On exit-side `focusin`, AP synchronously moves focus to the real target; the sentinel never rests on the exit path.
+- **`iframe.focus()` alone does not descend into iframe content** (browser-variable: sometimes lands on the iframe element, sometimes on the iframe's `<body>`). This is why the programmatic-entry mechanism uses a *parent-side* sentinel as the positioner rather than focusing the iframe directly — it gives the browser's Tab default a well-defined starting point one step before the iframe in DOM order.
 - **No Escape-to-exit** (impossible without cooperation). The keyboard escape hatch is a host-rendered, focusable close control in the overlay, which this work must add — neither overlay offers one today (see [AP modal/overlay features](#ap-modaloverlay-features-the-focus-surface)). With it, a dumb interactive is never a hard lockout — except a `notCloseable` dialog, which has no exit (see open questions).
 
 ## Focus restoration after AP-owned overlays
@@ -181,7 +181,23 @@ When an interactive opens an **AP-owned modal** (most clearly the `alert`, but t
 Therefore:
 
 - **Cooperating:** AP posts `focusEnter { mode: "restore" }` to the originating interactive when the overlay closes; the interactive refocuses the element it last had focused. The interactive (via its library integration) tracks its own last-focused element, captured when it loses focus as the overlay opens. AP knows which interactive to message because it knows which one called `showModal`.
-- **Non-cooperating:** AP falls back to `iframe.focus()`, returning focus to the iframe *element*; the user resumes by Tabbing. Coarse — the exact inner control is not restored — but not stuck.
+- **Non-cooperating:** AP returns focus toward the iframe with no precise inner target available. Coarse — the exact inner control is not restored — but not stuck.
+
+### Unified restoration via page-level iframe-slots
+
+Both restoration paths route through the **same call** — `requestRestore()` on the originating interactive's iframe-slot — to keep the host code one-path and to give the non-cooperating user better UX than a silent `iframe.focus()`. To do this, **every page-level `iframe-runtime` registers an iframe-slot** (`accessibility-tools`' `useIframeSlot`) even when no containing trap exists. The page-level slot:
+
+- Renders the same `[before-sentinel][iframe][after-sentinel]` DOM as the trap case.
+- Configures `getIntercept: () => ({ forward: false, reverse: false })` — no trap to redirect to, so the sentinels stay `tabindex=-1` and native Tab walks past them undisturbed.
+- Provides a no-op `onExit` (no trap to cycle).
+- Exposes `requestRestore()` to AP.
+
+On dialog close, AP looks up the originating slot (by the interactive id it tracked when `showModal` was called) and calls `requestRestore()`. Inside the library:
+
+- **Cooperating** ⇒ sends `focusEnter { mode: "restore" }` over the transport; the interactive places focus on its last-focused element (the control that opened the dialog).
+- **Non-cooperating** ⇒ invokes `focusContent({ entryMode: "forward", trigger: "programmatic" })`, which uses **landing mode** — the before-sentinel becomes the visible, labeled "Press Tab to enter…" hint at the iframe's top-left, and the user's next Tab descends. Strictly better than a bare `iframe.focus()` (which silently focuses the iframe element with no visible cue).
+
+> **AP-110 fallback (temporary).** [AP-110](https://concord-consortium.atlassian.net/browse/AP-110) lands the dialog trap and iframe-slot only inside the dialog; page-level iframe-runtimes are **not yet** wrapped in an iframe-slot. So on dialog close, AP-110 calls a coarse `iframe.focus()` on the originating iframe element as a placeholder. The follow-up work to add page-level iframe-slots replaces this with the unified `requestRestore()` path described above. See [AP-110-dialog-overlay-focus-trap.md](AP-110-dialog-overlay-focus-trap.md).
 
 While an AP-owned modal is open it runs its own (trivial, pure-AP) focus trap; the alert needs no iframe machinery for trapping — only the restore-on-close path crosses the boundary.
 
@@ -230,9 +246,12 @@ The same focus host-side logic is needed by every app that embeds interactives �
 
 **`activity-player`** (`concord-consortium/activity-player`)
 - `iframe-runtime` wrapper: renders sentinels, owns the iframe element ref, tracks `focusInsideIframe`, and toggles sentinel tabbability on that transition (tabbable only while focus is inside the iframe).
+- **Page-level iframe-slot registration on every `iframe-runtime`** (no trap, no intercept) so AP can call `requestRestore()` on the originating slot when an AP-owned overlay closes — the unified-restoration path (see [§ Unified restoration via page-level iframe-slots](#unified-restoration-via-page-level-iframe-slots)).
 - Wires the shared `FocusManager` (from `interactive-api-host`) to the `accessibility-tools` trap — AP supplies callbacks, not its own transport implementation.
 - Overlay integration in `managed-interactive.tsx` / `lightbox.tsx`: host the trap, disable react-modal focus management, and add a keyboard-focusable close control as the escape hatch.
 - Capability detection wired to the existing `supportedFeatures` handling.
+
+AP-110 carve-out: see [AP-110-dialog-overlay-focus-trap.md](AP-110-dialog-overlay-focus-trap.md) for what lands first (dialog trap + iframe-slot, non-cooperating) and what defers (page-level slots, lightbox, cooperating, alert).
 
 **Demo cooperating interactive** (proposed home: `lara/lara-typescript/src/example-interactives/`)
 - A minimal example interactive that declares `focusProtocol` and implements the cooperating path end-to-end (`focusEnter` / `focusExit` for forward/reverse/escape/restore). Used as the verification target for the iframe-slot work and as reference for real interactive authors.
