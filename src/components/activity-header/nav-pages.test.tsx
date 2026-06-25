@@ -1,7 +1,7 @@
 import React from "react";
 import { NavPages } from "./nav-pages";
 import { shallow } from "enzyme";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { DefaultTestPage } from "../../test-utils/model-for-tests";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
 
@@ -208,6 +208,24 @@ describe("Nav Pages accessibility", () => {
       <NavPages activityId={1} pages={pagesWithIds} currentPage={0} onPageChange={stubFunction} />
     );
     expect(screen.getByRole("link", { name: "Previous page" }).getAttribute("href")).toBe("?");
+  });
+
+  it("does not request a page change when a hard-disabled control is activated", () => {
+    // Hard-disabled controls remain keyboard-activatable (pointer-events:none
+    // only blocks the mouse), so activating them must be inert to avoid
+    // requesting an out-of-range page and locking navigation.
+    const onPageChange = jest.fn();
+    const { rerender } = render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={0} onPageChange={onPageChange} />
+    );
+    fireEvent.click(screen.getByRole("link", { name: "Previous page" }));
+    expect(onPageChange).not.toHaveBeenCalled();
+
+    rerender(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={3} onPageChange={onPageChange} />
+    );
+    fireEvent.click(screen.getByRole("link", { name: "Next page" }));
+    expect(onPageChange).not.toHaveBeenCalled();
   });
 
   it("hides decorative icons from assistive technology", () => {
