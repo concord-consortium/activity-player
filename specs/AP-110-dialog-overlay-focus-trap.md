@@ -131,7 +131,7 @@ Path: `src/components/activity-page/managed-interactive/dialog-overlay.tsx`.
 Owns:
 
 - The `<Modal>` (react-modal) — provides portal, scrim, lifecycle. Focus management disabled (see below).
-- Header bar with optional title + a Close `<button>` (omitted when `notCloseable`).
+- Header bar with a Close `<button>` (omitted when `notCloseable`). The `title` prop is not rendered visibly; it supplies the modal's accessible name (see `contentLabel` below).
 - Refs: `containerRef` (modal content div, the trap container), `closeButtonRef`, `iframeRef`, `beforeSentinelRef`, `afterSentinelRef`, `iframeWrapperRef`.
 - A wrapper `<div ref={iframeWrapperRef}>` around the rendered `<IframeRuntime>` — the strategy's `content` slot element, used by the library's `setChildrenNonTabbable` exclusion (the wrapper and all descendants — sentinels + iframe — are skipped).
 - The `useIframeSlot` call (returns `strategyFragment` and the sentinel refs/keys).
@@ -182,7 +182,7 @@ react-modal flags on the `<Modal>`:
 - `shouldReturnFocusAfterClose={false}` — react-modal won't try to restore on unmount; we own that.
 - `shouldCloseOnEsc={false}` — the trap owns Escape via the `close`-slot `escapeHandlers`.
 - `onRequestClose={notCloseable ? undefined : safeOnClose}` — overlay-click stays at react-modal's default (`shouldCloseOnOverlayClick` true), but for `notCloseable` dialogs `onRequestClose` is left undefined so the click is a no-op; closeable dialogs dismiss through `safeOnClose`.
-- `contentLabel={title || "Dialog"}` — accessible name for the modal content.
+- `contentLabel={title || "Dialog"}` — accessible name for the modal content. `managed-interactive.tsx` passes `iframeRuntimeProps.iframeTitle` (e.g. "Question 3 … content") as `title`, so a screen reader announces a distinguishable name rather than the generic "Dialog".
 
 ### 3. `managed-interactive.tsx` — wire DialogOverlay, restore focus on close
 
@@ -201,6 +201,7 @@ with:
 activeDialog &&
   <DialogOverlay
     url={activeDialog.url || …}
+    title={iframeRuntimeProps.iframeTitle}
     notCloseable={activeDialog.notCloseable}
     onClose={handleCloseDialog}
     iframeRuntimeProps={iframeRuntimeProps}   // same shape as today

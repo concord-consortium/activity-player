@@ -445,6 +445,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
                 ? "Loading..."
                 : <DialogOverlay
                     url={iframeUrl}
+                    title={iframeRuntimeProps.iframeTitle}
                     notCloseable={activeDialog.notCloseable}
                     onClose={handleCloseDialog}
                     iframeRuntimeProps={iframeRuntimeProps}

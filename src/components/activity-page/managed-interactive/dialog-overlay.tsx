@@ -15,7 +15,7 @@ const getModalContainer = (): HTMLElement => {
 interface IProps {
   /** URL the dialog displays (typically the dialog URL the interactive supplied). */
   url: string;
-  /** Optional title shown in the dialog header. */
+  /** Optional accessible name for the dialog, used as the modal's contentLabel. */
   title?: string;
   /** When true, no close button is rendered and the trap's cycleOrder has only the iframe-slot. */
   notCloseable?: boolean;
@@ -134,7 +134,6 @@ export const DialogOverlay: React.FC<IProps> = (props) => {
     >
       <div className="dialog-overlay" ref={setContainerRef} tabIndex={-1}>
         <div className="dialog-overlay__header">
-          <span className="dialog-overlay__title">{title ?? ""}</span>
           {!notCloseable && (
             <button
               type="button"
