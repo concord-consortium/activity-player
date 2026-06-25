@@ -19,7 +19,7 @@ describe("Sequence Page Content component", () => {
     expect(wrapper.find(Footer).length).toBe(1);
     expect(wrapper.find(SequencePageContent).length).toBe(1);
   });
-  it("wraps the sequence content in a focusable main landmark (AP-83)", () => {
+  it("wraps the sequence content in a focusable main landmark", () => {
     const stubFunction = () => {
       // do nothing.
     };

@@ -41,7 +41,7 @@ describe("App component", () => {
     expect(wrapper.find(Header).length).toBe(1);
     expect(wrapper.find(Footer).length).toBe(1);
   });
-  it("renders a skip-to-main-content link as the first focusable element (AP-83)", () => {
+  it("renders a skip-to-main-content link as the first focusable element", () => {
     const wrapper = shallow(<App />);
     wrapper.setState({ activity });
     const skipLink = wrapper.find(".skip-link");
@@ -52,7 +52,7 @@ describe("App component", () => {
     const appChildren = wrapper.find('[data-cy="app"]').children();
     expect(appChildren.first().hasClass("skip-link")).toBe(true);
   });
-  it("does not render the skip link when there is no main-content target (AP-83)", () => {
+  it("does not render the skip link when there is no main-content target", () => {
     // No activity yet (initial loading), so #main-content is not rendered; the
     // skip link must not be a dead in-page link.
     const wrapper = shallow(<App />);
@@ -62,7 +62,7 @@ describe("App component", () => {
     wrapper.setState({ errorType: "auth" });
     expect(wrapper.find(".skip-link").length).toBe(0);
   });
-  it("renders a main landmark targeted by the skip link (AP-83)", () => {
+  it("renders a main landmark targeted by the skip link", () => {
     const wrapper = shallow(<App />);
     wrapper.setState({ activity });
     const main = wrapper.find("main#main-content");

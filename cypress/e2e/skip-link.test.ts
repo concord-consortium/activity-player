@@ -1,5 +1,5 @@
-// AP-83: skip-to-main-content link (WCAG 2.4.1 Bypass Blocks).
-context("AP-83 skip to main content", () => {
+// Skip-to-main-content link (WCAG 2.4.1 Bypass Blocks).
+context("skip to main content", () => {
   beforeEach(() => {
     cy.visit("?activity=sample-activity-1&preview");
   });
