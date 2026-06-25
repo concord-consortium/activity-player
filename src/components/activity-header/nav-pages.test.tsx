@@ -228,6 +228,24 @@ describe("Nav Pages accessibility", () => {
     expect(onPageChange).not.toHaveBeenCalled();
   });
 
+  it("does not request a page change when the control for the current page is activated", () => {
+    // Activating the current page (or Home while on home) would re-navigate to
+    // the same page without changing currentPage, leaving pageChangeInProgress
+    // stuck and locking navigation, so it must be a no-op.
+    const onPageChange = jest.fn();
+    const { rerender } = render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={2} onPageChange={onPageChange} />
+    );
+    fireEvent.click(screen.getByRole("link", { name: "Page 2" }));
+    expect(onPageChange).not.toHaveBeenCalled();
+
+    rerender(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={0} onPageChange={onPageChange} />
+    );
+    fireEvent.click(screen.getByRole("link", { name: "Home" }));
+    expect(onPageChange).not.toHaveBeenCalled();
+  });
+
   it("hides decorative icons from assistive technology", () => {
     const { container } = render(
       <NavPages activityId={1} pages={pagesWithIds} currentPage={2} onPageChange={stubFunction} />

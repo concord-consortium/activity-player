@@ -105,16 +105,17 @@ export class NavPages extends React.Component <IProps, IState> {
     const { currentPage } = this.props;
     const { pageChangeInProgress } = this.state;
     const disabled = pageChangeInProgress || currentPage === 0;
-    // When hard-disabled the target position is out of range, so point both the
-    // link and the click handler at the current page rather than exposing (or
-    // navigating to) a misleading destination.
+    // When hard-disabled the target position is out of range, so clamp both the
+    // link and the click handler to the current page rather than exposing (or
+    // navigating to) a misleading destination. handlePageChangeRequest then
+    // no-ops because the target equals currentPage.
     const targetPage = disabled ? currentPage : currentPage - 1;
     return (
       <li className="page-button-container">
         <a
           className={`page-button arrow-button ${disabled ? "last-page" : ""}`}
           href={this.hrefForPosition(targetPage)}
-          onClick={this.handlePageChangeRequest(targetPage, disabled)}
+          onClick={this.handlePageChangeRequest(targetPage)}
           aria-label="Previous page"
           aria-disabled={disabled || undefined}
           data-cy="previous-page-button"
@@ -138,13 +139,14 @@ export class NavPages extends React.Component <IProps, IState> {
     // aria-disabled mirrors the hard-disabled state only; the soft forward-lock
     // ("disabled" class) stays actionable so the incomplete-question warning fires.
     const disabled = pageChangeInProgress || currentPage === totalPages;
+    // Clamp to currentPage when hard-disabled (see renderPreviousButton).
     const targetPage = disabled ? currentPage : currentPage + 1;
     return (
       <li className="page-button-container">
         <a
           className={nextButtonClass}
           href={this.hrefForPosition(targetPage)}
-          onClick={this.handlePageChangeRequest(targetPage, disabled)}
+          onClick={this.handlePageChangeRequest(targetPage)}
           aria-label="Next page"
           aria-disabled={disabled || undefined}
           data-cy="next-page-button"
@@ -243,20 +245,22 @@ export class NavPages extends React.Component <IProps, IState> {
     );
   }
 
-  private handlePageChangeRequest = (page: number, disabled = false) => (e?: React.MouseEvent) => {
+  private handlePageChangeRequest = (page: number) => (e?: React.MouseEvent) => {
     // Let the browser handle modified clicks (e.g. cmd/ctrl-click to open the
     // page in a new tab) natively via the anchor's href.
     if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) {
       return;
     }
     e?.preventDefault();
-    // Hard-disabled controls (e.g. previous on the home page, next on the last
-    // page) are inert: keyboard/AT activation must not request an out-of-range
-    // page, which could otherwise leave navigation stuck in pageChangeInProgress.
-    if (disabled) {
+    const { currentPage, lockForwardNav } = this.props;
+    // No-op when the control targets the page we're already on: the current
+    // page/Home control, or a hard-disabled prev/next whose target is clamped
+    // to currentPage. These stay keyboard/AT-activatable (pointer-events:none
+    // only blocks the mouse); re-navigating to the same page wouldn't change
+    // currentPage, leaving pageChangeInProgress stuck and locking navigation.
+    if (page === currentPage) {
       return;
     }
-    const { currentPage, lockForwardNav } = this.props;
     const { pageChangeInProgress } = this.state;
     if (!pageChangeInProgress) {
       const allowPageChange = page < currentPage || !lockForwardNav;
