@@ -41,6 +41,24 @@ describe("App component", () => {
     expect(wrapper.find(Header).length).toBe(1);
     expect(wrapper.find(Footer).length).toBe(1);
   });
+  it("renders a skip-to-main-content link as the first focusable element (AP-83)", () => {
+    const wrapper = shallow(<App />);
+    const skipLink = wrapper.find(".skip-link");
+    expect(skipLink.length).toBe(1);
+    expect(skipLink.prop("href")).toBe("#main-content");
+    expect(skipLink.text()).toBe("Skip to main content");
+    // the link must precede the header so it is the first focusable element on the page
+    const appChildren = wrapper.find('[data-cy="app"]').children();
+    expect(appChildren.first().hasClass("skip-link")).toBe(true);
+  });
+  it("renders a main landmark targeted by the skip link (AP-83)", () => {
+    const wrapper = shallow(<App />);
+    wrapper.setState({ activity });
+    const main = wrapper.find("main#main-content");
+    expect(main.length).toBe(1);
+    // tabIndex -1 makes the landmark programmatically focusable for the skip link
+    expect(main.prop("tabIndex")).toBe(-1);
+  });
   it("renders single page activity at the default fixed width", () => {
     const wrapper = shallow(<App />);
     wrapper.setState({ activity: activitySinglePage });

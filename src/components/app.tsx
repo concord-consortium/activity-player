@@ -486,6 +486,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   <DynamicTextContext.Provider value={dynamicTextManager}>
                     <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
                       <div className="app" data-cy="app">
+                        <a className="skip-link" href="#main-content" data-cy="skip-link">Skip to main content</a>
                         { this.state.showDefunctBanner && <DefunctBanner/> }
                         { this.state.showWarning && <WarningBanner/> }
                         { isOfferingLocked(this.state.portalData) && <LockedBanner isSequence={!!this.state.sequence}/> }
@@ -617,30 +618,32 @@ export class App extends React.PureComponent<IProps, IState> {
         {renderTopNav &&
           this.renderNav(activity, currentPage, fullWidth)
         }
-        {activity.layout === ActivityLayouts.SinglePage
-          ? this.renderSinglePageContent(activity)
-          : currentPage === 0
-            ? this.renderIntroductionContent(activity)
-            : pagesVisible[currentPage - 1].is_completion
-              ? this.renderCompletionContent(activity)
-              : <ActivityPageContent
-                ref={this.activityPageContentRef}
-                activityLayout={activity.layout}
-                enableReportButton={currentPage === pagesVisible.length && enableReportButton(activity)}
-                pageNumber={currentPage}
-                page={pagesVisible[currentPage - 1]}
-                activity={activity}
-                totalPreviousQuestions={totalPreviousQuestions}
-                teacherEditionMode={this.state.teacherEditionMode}
-                setNavigation={this.handleSetNavigation}
-                key={`page-${currentPage}`}
-                pluginsLoaded={this.state.pluginsLoaded}
-                pageChangeNotification={this.state.pageChangeNotification}
-                hideReadAloud={this.state.hideReadAloud}
-                hideQuestionNumbers={this.state.hideQuestionNumbers}
-                saveInteractiveStateHistory={this.state.saveInteractiveStateHistory}
-              />
-        }
+        <main id="main-content" tabIndex={-1}>
+          {activity.layout === ActivityLayouts.SinglePage
+            ? this.renderSinglePageContent(activity)
+            : currentPage === 0
+              ? this.renderIntroductionContent(activity)
+              : pagesVisible[currentPage - 1].is_completion
+                ? this.renderCompletionContent(activity)
+                : <ActivityPageContent
+                  ref={this.activityPageContentRef}
+                  activityLayout={activity.layout}
+                  enableReportButton={currentPage === pagesVisible.length && enableReportButton(activity)}
+                  pageNumber={currentPage}
+                  page={pagesVisible[currentPage - 1]}
+                  activity={activity}
+                  totalPreviousQuestions={totalPreviousQuestions}
+                  teacherEditionMode={this.state.teacherEditionMode}
+                  setNavigation={this.handleSetNavigation}
+                  key={`page-${currentPage}`}
+                  pluginsLoaded={this.state.pluginsLoaded}
+                  pageChangeNotification={this.state.pageChangeNotification}
+                  hideReadAloud={this.state.hideReadAloud}
+                  hideQuestionNumbers={this.state.hideQuestionNumbers}
+                  saveInteractiveStateHistory={this.state.saveInteractiveStateHistory}
+                />
+          }
+        </main>
         {renderBottomNav &&
           this.renderNav(activity, currentPage, fullWidth)
         }
