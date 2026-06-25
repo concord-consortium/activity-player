@@ -1,39 +1,71 @@
 import React from "react";
-import { accessibilityClick } from "../../utilities/accessibility-helper";
-import CCLogo from "../../assets/svg-icons/cclogo.svg";
+import ccLogoUrl from "../../assets/svg-icons/cclogo.svg?url";
 
 import "./logo.scss";
 
 interface IProps {
-  logo: any;
+  logo?: string | null;
   url: string | undefined;
+  // The project title, used as the alt text when a project-supplied logo is shown.
+  title?: string | null;
 }
 
 export class Logo extends React.PureComponent<IProps> {
   render() {
-    const { logo, url } = this.props;
-    const linkClass = url ? "" : "no-link";
-    const tIndex = url ? 0 : -1;
+    const { url } = this.props;
+
+    // Render the logo as a native anchor when it has a destination so
+    // assistive technology announces it as a link and it is keyboard-operable
+    // with standard interaction. Fall back to a non-interactive container when
+    // there is no (safe) url to link to. The url originates from author-supplied
+    // project data, so only http(s) destinations are linked — this avoids turning
+    // a malicious scheme (e.g. javascript:) into an executable link.
+    if (this.isLinkableUrl(url)) {
+      return (
+        <a
+          className="project-logo"
+          data-cy="project-logo"
+          href={url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {this.renderLogoImage()}
+        </a>
+      );
+    }
 
     return (
-      <div
-        className={`project-logo ${linkClass}`}
-        data-cy="project-logo"
-        onClick={this.handleProjectLogoLink(url)}
-        onKeyDown={this.handleProjectLogoLink(url)}
-        tabIndex={tIndex}
-      >
-        { logo
-          ? <img data-cy="logo-img" className="logo-img" src={logo} alt="Project website"/>
-          : <CCLogo className="icon" />
-        }
+      <div className="project-logo no-link" data-cy="project-logo">
+        {this.renderLogoImage()}
       </div>
     );
   }
 
-  private handleProjectLogoLink = (url?: string) => (event: any) => {
-    if (url && accessibilityClick(event)) {
-      window.open(url);
+  // Only absolute http(s) urls are treated as links; anything else (a missing
+  // url, or an unsafe scheme such as javascript:/data:) falls back to non-link
+  // rendering.
+  private isLinkableUrl = (url?: string) => {
+    if (!url) return false;
+    try {
+      // No base url, so relative urls throw and are treated as non-linkable —
+      // project urls are always absolute, so only absolute http(s) is linked.
+      const { protocol } = new URL(url);
+      return protocol === "http:" || protocol === "https:";
+    } catch {
+      return false;
     }
+  }
+
+  // Render the logo as an <img> with alt text that matches the visible logo.
+  // A project-supplied logo uses the project title; otherwise the default
+  // Concord Consortium logo is shown with its own descriptive alt text.
+  private renderLogoImage = () => {
+    const { logo, title } = this.props;
+    // The alt text is the link's accessible name, so the project-logo fallback
+    // describes the destination ("Project website") rather than the image when no
+    // title is available; whitespace-only titles are treated as empty.
+    return logo
+      ? <img data-cy="logo-img" className="logo-img" src={logo} alt={title?.trim() || "Project website"} />
+      : <img data-cy="logo-img" className="logo-img cc-logo" src={ccLogoUrl} alt="Concord Consortium" />;
   }
 }

@@ -1,48 +1,85 @@
-import { act, configure, render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { configure, render, screen } from "@testing-library/react";
 import React from "react";
 import { Logo } from "./logo";
-import CCLogo from "../../assets/svg-icons/cclogo.svg";
 
 describe("Logo component", () => {
   configure({ testIdAttribute: "data-cy" });
 
-  const mockOpen = jest.fn();
-  const windowOpen = window.open;
+  const projectLogoUrl = "https://static.concord.org/projects/logos/ap/mw-logo.png";
+  const projectUrl = "http://mw.concord.org/nextgen";
 
-  beforeEach(() => {
-    window.open = mockOpen;
-    mockOpen.mockReset();
-  });
-
-  afterEach(() => {
-    window.open = windowOpen;
-  });
-
-  it("renders logo when logo is specified", () => {
-    render(<Logo logo={CCLogo} url={"https://concord.org/"} />);
-    expect(screen.getByTestId("project-logo")).toHaveClass("project-logo");
-    expect(screen.getByTestId("project-logo")).not.toHaveClass("no-link");
-    expect(screen.getByTestId("logo-img")).toHaveClass("logo-img");
-
-    act(() => {
-      userEvent.click(screen.getByTestId("project-logo"));
+  // The header logo is a semantic <a> link when it has a destination, so
+  // assistive technology announces it as a link and it is keyboard-reachable.
+  describe("semantic link markup", () => {
+    it("renders the logo as a native anchor pointing at the project url", () => {
+      render(<Logo logo={projectLogoUrl} url={projectUrl} title="Molecular Workbench" />);
+      const link = screen.getByTestId("project-logo");
+      expect(link.tagName).toBe("A");
+      expect(link).toHaveAttribute("href", projectUrl);
+      expect(link).toHaveClass("project-logo");
+      expect(link).not.toHaveClass("no-link");
     });
-    expect(mockOpen).toHaveBeenCalled();
 
-    mockOpen.mockReset();
-    expect(mockOpen).not.toHaveBeenCalled();
-
-    act(() => {
-      userEvent.keyboard("{enter}");
+    it("opens the link in a new tab safely", () => {
+      render(<Logo logo={projectLogoUrl} url={projectUrl} title="Molecular Workbench" />);
+      const link = screen.getByTestId("project-logo");
+      expect(link).toHaveAttribute("target", "_blank");
+      expect(link.getAttribute("rel")).toContain("noopener");
     });
-    expect(mockOpen).toHaveBeenCalled();
+
+    it("renders a non-link container when there is no destination url", () => {
+      render(<Logo logo={undefined} url={undefined} />);
+      const logo = screen.getByTestId("project-logo");
+      expect(logo.tagName).not.toBe("A");
+      expect(logo).not.toHaveAttribute("href");
+      expect(logo).toHaveClass("no-link");
+    });
+
+    it("does not render a link for an unsafe url scheme", () => {
+      // Author-supplied urls are only linked when http(s); a javascript: url
+      // must not become an executable link.
+      render(<Logo logo={projectLogoUrl} url={"javascript:alert(1)"} title="Evil" />);
+      const logo = screen.getByTestId("project-logo");
+      expect(logo.tagName).not.toBe("A");
+      expect(logo).not.toHaveAttribute("href");
+      expect(logo).toHaveClass("no-link");
+    });
+
+    it("does not render a link for a relative (non-absolute) url", () => {
+      // Only absolute http(s) urls are linked; a relative url is not.
+      render(<Logo logo={projectLogoUrl} url={"/relative/path"} title="Relative" />);
+      const logo = screen.getByTestId("project-logo");
+      expect(logo.tagName).not.toBe("A");
+      expect(logo).not.toHaveAttribute("href");
+      expect(logo).toHaveClass("no-link");
+    });
   });
 
-  it("renders default logo when no logo is specified", () => {
-    render(<Logo logo={undefined} url={undefined} />);
-    expect(screen.getByTestId("project-logo")).toHaveClass("project-logo");
-    expect(screen.getByTestId("project-logo")).toHaveClass("no-link");
-    expect(screen.queryByTestId("logo-img")).toBeNull();
+  // The logo image carries alt text that matches the visible logo.
+  describe("logo image alt text", () => {
+    it("uses the project title as the alt text of a project-supplied logo", () => {
+      render(<Logo logo={projectLogoUrl} url={projectUrl} title="Molecular Workbench" />);
+      const img = screen.getByTestId("logo-img");
+      expect(img.tagName).toBe("IMG");
+      expect(img).toHaveAttribute("src", projectLogoUrl);
+      expect(img).toHaveAttribute("alt", "Molecular Workbench");
+    });
+
+    it("falls back to a destination-oriented alt when a project logo has no title", () => {
+      // The alt is the link's accessible name, so it should describe the
+      // destination rather than the image when no title is available. A
+      // whitespace-only title is treated as empty.
+      render(<Logo logo={projectLogoUrl} url={projectUrl} title="   " />);
+      expect(screen.getByTestId("logo-img")).toHaveAttribute("alt", "Project website");
+    });
+
+    it("renders the default Concord logo as an img with a matching alt", () => {
+      // No project logo, so the Concord Consortium logo is shown. Its alt must
+      // describe the visible logo, not the project title.
+      render(<Logo logo={undefined} url={projectUrl} title="Some Project" />);
+      const img = screen.getByTestId("logo-img");
+      expect(img.tagName).toBe("IMG");
+      expect(img).toHaveAttribute("alt", "Concord Consortium");
+    });
   });
 });
