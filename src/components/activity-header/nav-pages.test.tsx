@@ -154,6 +154,18 @@ describe("Nav Pages accessibility", () => {
     expect(screen.getAllByRole("link").length).toBe(6);
   });
 
+  it("renders no stray text nodes inside the list when pages are windowed out", () => {
+    // With more pages than fit the window, the out-of-range pages must render
+    // nothing (null), not an empty string, so the <ul> contains only <li>s.
+    const { container } = render(
+      <NavPages activityId={1} pages={activityPages} currentPage={7} onPageChange={stubFunction} />
+    );
+    const list = container.querySelector("ul.nav-pages")!;
+    const textNodeChildren = Array.from(list.childNodes).filter((n) => n.nodeType === Node.TEXT_NODE);
+    expect(textNodeChildren).toHaveLength(0);
+    Array.from(list.children).forEach((child) => expect(child.tagName).toBe("LI"));
+  });
+
   it("gives each control a page href, with home carrying no page param", () => {
     render(
       <NavPages activityId={1} pages={pagesWithIds} currentPage={2} onPageChange={stubFunction} />

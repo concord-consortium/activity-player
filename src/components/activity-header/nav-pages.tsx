@@ -208,7 +208,9 @@ export class NavPages extends React.Component <IProps, IState> {
                 </a>
                 {hasFeedback && <TeacherFeedbackSmallBadge location="nav-pages" />}
               </li>
-            : ""
+            // null (not "") so windowed-out pages render nothing rather than a
+            // stray text node, keeping the <ul> to <li>-only children.
+            : null
         );
       })
     );
