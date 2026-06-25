@@ -185,6 +185,10 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo();
           phoneRef.current.post("decorateContent", textDecorationInfo);
         }
+        // iframe-phone allows a single listener per message, and iframe-runtime
+        // owns "supportedFeatures". Forward the focus-protocol capability to the
+        // FocusManager from here instead of letting it add a competing listener.
+        focusManagerRef.current?.notifyCapability(!!features.focusProtocol);
       });
       addListener("navigation", (options: INavigationOptions) => {
         setNavigation?.(options);

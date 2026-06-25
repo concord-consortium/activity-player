@@ -111,6 +111,7 @@ jest.mock("@concord-consortium/interactive-api-host", () => {
       send: jest.fn(),
       onMessage: jest.fn(() => jest.fn())
     };
+    notifyCapability = jest.fn();
     destroy = jest.fn();
   }
 

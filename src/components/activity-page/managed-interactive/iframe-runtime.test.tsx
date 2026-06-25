@@ -526,6 +526,28 @@ describe("IframeRuntime component", () => {
       expect(onFocusTransportReady).toHaveBeenCalledWith(undefined);
     });
 
+    it("surfaces the interactive's focusProtocol capability through the transport", () => {
+      // iframe-phone keeps a single handler per message type, so iframe-runtime's
+      // own "supportedFeatures" listener and the FocusManager's must not clobber
+      // each other. When the interactive reports focusProtocol, a transport
+      // subscriber must receive the capability — otherwise the cooperating dialog
+      // never learns the interactive cooperates and falls back to the sentinel.
+      const onFocusTransportReady = jest.fn();
+      renderWith({ onFocusTransportReady });
+      // Let the phone connect so initInteractive registers its listeners.
+      act(() => { jest.runAllTimers(); });
+
+      const transport = onFocusTransportReady.mock.calls[0][0];
+      const received: any[] = [];
+      transport.onMessage((m: any) => received.push(m));
+
+      act(() => {
+        dispatchMessageFromChild("supportedFeatures", { features: { focusProtocol: true } });
+      });
+
+      expect(received).toContainEqual({ type: "capability", focusProtocol: true });
+    });
+
     it("builds the transport even when no callback is provided (inline case)", () => {
       // FocusManager is built unconditionally; the callback is only the (optional)
       // way to surface its transport. Prove construction happened by the FocusManager
