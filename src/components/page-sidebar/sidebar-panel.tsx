@@ -34,8 +34,8 @@ export class SidebarPanel extends React.PureComponent<IProps>{
     );
   }
 
-  private handleCloseButton = () => {
-    if (accessibilityClick(event)){
+  private handleCloseButton = (e: React.MouseEvent | React.KeyboardEvent) => {
+    if (accessibilityClick(e)){
       this.props.handleCloseSidebarContent(this.props.index, false);
     }
   }

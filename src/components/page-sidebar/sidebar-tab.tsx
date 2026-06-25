@@ -28,8 +28,8 @@ export class SidebarTab extends React.PureComponent<IProps>{
     );
   }
 
-  private handleSidebarShow = () => {
-    if (accessibilityClick(event)) {
+  private handleSidebarShow = (e: React.MouseEvent | React.KeyboardEvent) => {
+    if (accessibilityClick(e)) {
       this.props.handleShowSidebarContent(this.props.index, !this.props.sidebarOpen);
     }
   }

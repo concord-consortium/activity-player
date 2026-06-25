@@ -5,6 +5,6 @@ import "./sequence-activity-feedback-badge.scss";
 
 export const FeedbackBadge = () => {
   return (
-    <TeacherFeedbackBadge className="feedback-badge" aria-hidden="true" focusable="false" />
+    <TeacherFeedbackBadge className="feedback-badge" role="img" aria-label="Your teacher left feedback on this activity." />
   );
 };
