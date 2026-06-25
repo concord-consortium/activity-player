@@ -44,6 +44,15 @@ describe("Logo component", () => {
       expect(logo).not.toHaveAttribute("href");
       expect(logo).toHaveClass("no-link");
     });
+
+    it("does not render a link for a relative (non-absolute) url", () => {
+      // Only absolute http(s) urls are linked; a relative url is not.
+      render(<Logo logo={projectLogoUrl} url={"/relative/path"} title="Relative" />);
+      const logo = screen.getByTestId("project-logo");
+      expect(logo.tagName).not.toBe("A");
+      expect(logo).not.toHaveAttribute("href");
+      expect(logo).toHaveClass("no-link");
+    });
   });
 
   // AP-87: the logo image carries alt text that matches the visible logo.

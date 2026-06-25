@@ -47,7 +47,9 @@ export class Logo extends React.PureComponent<IProps> {
   private isLinkableUrl = (url?: string) => {
     if (!url) return false;
     try {
-      const { protocol } = new URL(url, window.location.origin);
+      // No base url, so relative urls throw and are treated as non-linkable —
+      // project urls are always absolute, so only absolute http(s) is linked.
+      const { protocol } = new URL(url);
       return protocol === "http:" || protocol === "https:";
     } catch {
       return false;
