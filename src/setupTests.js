@@ -4,6 +4,35 @@ require("@testing-library/jest-dom");
 
 enzyme.configure({ adapter: new Adapter() });
 
+// jsdom does not implement TextEncoder/TextDecoder (they are standard Web APIs from the WHATWG
+// Encoding spec that jsdom happens not to provide; Node exposes implementations via `util`).
+// Packages like @noble/hashes (via formidable → cuid2) require them at module load time, so we
+// forward them from Node's `util` before any test modules are loaded.
+const { TextEncoder, TextDecoder } = require("util");
+globalThis.TextEncoder ??= TextEncoder;
+globalThis.TextDecoder ??= TextDecoder;
+
+// Suppress known test-environment noise. Each array lists substrings to filter; any match
+// suppresses the message. Everything else passes through so real issues still surface.
+const SUPPRESSED_WARNINGS = [
+  "Interactive API is meant to be used in iframe",
+];
+const SUPPRESSED_ERRORS = [
+  "useLayoutEffect does nothing on the server",
+];
+
+const originalConsoleWarn = console.warn;
+console.warn = (...args) => {
+  if (typeof args[0] === "string" && SUPPRESSED_WARNINGS.some(s => args[0].includes(s))) return;
+  originalConsoleWarn(...args);
+};
+
+const originalConsoleError = console.error;
+console.error = (...args) => {
+  if (typeof args[0] === "string" && SUPPRESSED_ERRORS.some(s => args[0].includes(s))) return;
+  originalConsoleError(...args);
+};
+
 // import the abomination that is jQuery as it mocks any attempts to mock it
 const $ = require("jquery");
 window.$ = $;
@@ -27,9 +56,9 @@ require("jquery-ui/ui/unique-id");
 require("jquery-ui/ui/version");
 
 if (typeof crypto === "undefined" || typeof crypto.getRandomValues !== "function") {
-  console.warn(
-    "Insecure crypto.getRandomValues polyfill applied. ONLY for testing purposes."
-  );
+  // Apply a Math.random()-based polyfill for tests. This used to log a warning on every
+  // test file, which flooded the CI output with ~one line per suite; the polyfill is
+  // intentional and test-only, so the warning added noise without value.
 
   // Define a mock crypto object if it doesn"t exist
   if (typeof window.crypto === "undefined") {

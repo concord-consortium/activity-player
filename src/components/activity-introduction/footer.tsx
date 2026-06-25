@@ -33,14 +33,14 @@ export class Footer extends React.PureComponent<IProps> {
     const contactContent = contactEmail ? this.buildContactContent(contactEmail) : null;
 
     return (
-      <div className="footer" data-cy="footer">
+      <footer className="footer" data-cy="footer">
         <div className={`inner ${fullWidth ? "full" : ""}`}>
           <div className="footer-text">
             {mainFooterContent}
             {contactContent}
           </div>
         </div>
-      </div>
+      </footer>
     );
   }
 

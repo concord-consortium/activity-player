@@ -7,23 +7,23 @@ jobs:
     name: Build and Run Jest Tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: '18'
+          node-version: '22'
       - name: Install Dependencies
-        run: npm ci --force
+        run: npm ci
       - name: Build
         run: npm run build
       - name: Run Tests
         run: npm run test:coverage -- --runInBand
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v3
         with:
           flags: jest
   cypress:
     runs-on: ubuntu-latest
-    container: cypress/browsers:node16.14.2-slim-chrome103-ff102
+    container: cypress/browsers:node-22.21.0-chrome-141.0.7390.107-1-ff-144.0-edge-141.0.3537.92-1
     strategy:
       # when one test fails, DO NOT cancel the other
       # containers, because this will kill Cypress processes
@@ -31,16 +31,17 @@ jobs:
       # https://github.com/cypress-io/github-action/issues/48
       fail-fast: false
       matrix:
-        # run 3 copies of the current job in parallel
-        containers: [1, 2, 3]
+        # run 6 copies of the current job in parallel (Cypress Cloud's recommended
+        # runner count to minimize total e2e wall-clock time)
+        containers: [1, 2, 3, 4, 5, 6]
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v5
       - name: Setup Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v5
         with:
-          node-version: '18'
-      - uses: cypress-io/github-action@v4
+          node-version: '22'
+      - uses: cypress-io/github-action@v6
         with:
           start: npm start
           wait-on: 'http://localhost:8080'
@@ -69,10 +70,10 @@ jobs:
       - cypress
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
         with:
-          node-version: '14'
+          node-version: '22'
       - name: Install Dependencies
         run: npm ci
         env:

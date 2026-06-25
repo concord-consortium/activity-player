@@ -30,10 +30,12 @@ export const SequenceIntroduction: React.FC<IProps> = (props) => {
           contentName={sequence.display_title || sequence.title || ""}
           showSequence={true}
         />
-        <SequencePageContent
-          sequence={sequence}
-          onSelectActivity={onSelectActivity}
-        />
+        <main id="main-content" tabIndex={-1}>
+          <SequencePageContent
+            sequence={sequence}
+            onSelectActivity={onSelectActivity}
+          />
+        </main>
         <Footer
           fullWidth={true}
           project={sequence.project}

@@ -1,5 +1,5 @@
 import ActivityPage from "../support/elements/activity-page";
-import { largeFont, normalFont } from "../support/testdata/font-size_read-alound";
+import { largeFont, normalFont } from "../support/testdata/font-size_read-aloud";
 
 const activityPage = new ActivityPage;
 

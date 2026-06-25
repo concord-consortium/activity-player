@@ -7,8 +7,6 @@ import firebase from "firebase/compat/app";
 import { RawClassInfo } from "./portal-api";
 import "firebase/compat/firestore";
 import { IAnonymousPortalData, IPortalData } from "./portal-types";
-import { platform } from "os";
-
 describe("Firestore", () => {
 
   let appMock: any;

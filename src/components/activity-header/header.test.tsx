@@ -2,6 +2,7 @@ import React from "react";
 import { Header } from "./header";
 import { AccountOwner } from "./account-owner";
 import { mount, shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Logo } from "./logo";
 import { DynamicTextTester } from "../../test-utils/dynamic-text";
 
@@ -60,5 +61,9 @@ describe("Header component", () => {
       const wrapperHeader = shallow(<Header project={project1} userName={user} contentName={"test activity"} />);
       expect(wrapperHeader.containsMatchingElement(accountOwner)).toEqual(true);
       expect(wrapperAccountOwner.text()).toContain(user);
+  });
+  it("exposes a banner landmark", () => {
+    render(<DynamicTextTester><Header project={project1} userName={"test student"} contentName={"test activity"} /></DynamicTextTester>);
+    expect(screen.getByRole("banner")).toBeInTheDocument();
   });
 });

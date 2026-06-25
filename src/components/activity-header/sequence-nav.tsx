@@ -16,7 +16,7 @@ export class SequenceNav extends React.PureComponent <IProps> {
   render() {
     const { activities, fullWidth, currentActivity } = this.props;
     return (
-      <div className={`sequence-nav ${fullWidth ? "full" : ""}`} data-cy="sequence-nav-header">
+      <nav className={`sequence-nav ${fullWidth ? "full" : ""}`} aria-label="Activity selection" data-cy="sequence-nav-header">
         <div className="select-label">Activity:</div>
         { activities &&
           <CustomSelect
@@ -26,7 +26,7 @@ export class SequenceNav extends React.PureComponent <IProps> {
             onSelectItem={this.handleSelect}
           />
         }
-      </div>
+      </nav>
     );
   }
 

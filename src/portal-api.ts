@@ -138,7 +138,7 @@ const getPortalJWTWithBearerToken = (basePortalUrl: string, rawToken: string) =>
       .end((err, res) => {
         if (err) {
           reject(getErrorMessage(err, res));
-        } else if (!res.body || !res.body.token) {
+        } else if (!res.body?.token) {
           reject("No token found in JWT request response");
         } else {
           const rawJWT = res.body.token;
@@ -214,7 +214,7 @@ export const getFirebaseJWT = (basePortalUrl: string, rawPortalJWT: string,
         if (err) {
           reject(getErrorMessage(err, res));
         }
-        else if (!res.body || !res.body.token) {
+        else if (!res.body?.token) {
           reject("No Firebase token found in Firebase JWT request response");
         }
         else {
@@ -247,7 +247,7 @@ const getClassInfo = (params: GetClassInfoParams) => {
     .end((err, res) => {
       if (err) {
         reject(getErrorMessage(err, res));
-      } else if (!res.body || !res.body.class_hash) {
+      } else if (!res.body?.class_hash) {
         reject("Invalid class info response");
       } else {
         const rawClassInfo: RawClassInfo = res.body;
@@ -322,7 +322,7 @@ export const getOfferingData = (params: GetOfferingParams) => {
     .end((err, res) => {
       if (err) {
         reject(getErrorMessage(err, res));
-      } else if (!res.body || !res.body.activity_url) {
+      } else if (!res.body?.activity_url) {
         reject("Invalid offering response");
       } else {
         const rawOffering: PartialRawOfferingData = res.body;

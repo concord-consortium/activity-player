@@ -24,7 +24,7 @@ describe("IdleWarning component", () => {
     });
 
     it("calls onTimeout after `timeout` time", () => {
-      jest.useFakeTimers("legacy"); // mock timers
+      jest.useFakeTimers({ legacyFakeTimers: true });
       const props = getProps();
       props.timeout = 1;
       mount(<IdleWarning {...props} />);

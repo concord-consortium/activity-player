@@ -15,7 +15,6 @@ import { IManagedInteractive, IMwInteractive, IExportableAnswerMetadata, ILegacy
 import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer, watchQuestionLevelFeedback } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata, getInteractiveInfo, hasLegacyLinkedInteractive, IInteractiveInfo, isQuestion, refIdToAnswersQuestionId } from "../../../utilities/embeddable-utils";
-import { accessibilityClick } from "../../../utilities/accessibility-helper";
 import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 import { Lightbox } from "./lightbox";
 import { Logger, LogEventName } from "../../../lib/logger";
@@ -81,6 +80,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const [loadingLegacyLinkedInteractiveState, setLoadingLegacyLinkedInteractiveState] = useState(shouldLoadLegacyLinkedInteractiveState);
   const interactiveInfo = useRef<IInteractiveInfo | undefined>(undefined);
   const headerTarget = React.useRef(null);
+  const hintTriggerRef = useRef<HTMLButtonElement>(null);
   const divTarget = React.useRef<HTMLDivElement>(null);
   const divSize = useSize(divTarget);
   const headerSize = useSize(headerTarget);
@@ -259,15 +259,18 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       parameters: { show_hint: false, hint }
     });
     setShowHint(false);
+    // Return focus to the "?" trigger so keyboard users aren't dropped to <body>
+    // when the panel that contained the close button collapses.
+    hintTriggerRef.current?.focus();
   };
   const handleShowHint = () => {
-    if (accessibilityClick(event)) {
-      Logger.log({
-        event: LogEventName.toggle_hint,
-        parameters: { show_hint: !showHint, hint }
-      });
-      setShowHint(!showHint);
-    }
+    Logger.log({
+      event: LogEventName.toggle_hint,
+      parameters: { show_hint: !showHint, hint }
+    });
+    // Functional update so the toggle is always derived from the latest state,
+    // independent of render/flush timing (future-proof against batched updates).
+    setShowHint(prevShowHint => !prevShowHint);
   };
 
   const handleCloseDialog = () => {
@@ -370,6 +373,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const hasQuestionName = questionName.trim().length > 0;
   const isNotebookLayout = laraData.activity?.layout === ActivityLayouts.Notebook;
   const hideQuestionHeader = (props.hideQuestionNumbers || !hasQuestionNumber) && !hasQuestionName && !hint && !isNotebookLayout && !hasPluginRequiringHeader;
+  const hintPanelId = `hint-panel-${embeddableRefId}`;
 
   const isInteractive = embeddable.type === "MwInteractive";
   const isManagedInteractive = embeddable.type === "ManagedInteractive";
@@ -424,12 +428,17 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         questionNumber={props.hideQuestionNumbers ? undefined : questionNumber}
         questionName={questionName}
         hint={hint}
+        showHint={showHint}
+        hintPanelId={hintPanelId}
+        triggerRef={hintTriggerRef}
         onToggleHint={handleShowHint}
         hideHeader={hideQuestionHeader}
       />
       <ManagedInteractiveHint
         hint={hint}
         showHint={showHint}
+        panelId={hintPanelId}
+        questionName={questionName}
         onToggleHint={handleHintClose}
       />
       {clickToPlayOptions && !clickedToPlay
@@ -444,7 +453,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
               activeDialog && (loadingAnswer || loadingLegacyLinkedInteractiveState
                 ? "Loading..."
                 : <DialogOverlay
-                    url={activeDialog.url || (embeddable.url_fragment ? url + embeddable.url_fragment : url)}
+                    url={iframeUrl}
+                    title={iframeRuntimeProps.iframeTitle}
                     notCloseable={activeDialog.notCloseable}
                     onClose={handleCloseDialog}
                     iframeRuntimeProps={iframeRuntimeProps}

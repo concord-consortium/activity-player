@@ -2,13 +2,14 @@
 module.exports = {
     parser: "@typescript-eslint/parser",
     parserOptions: {
-      ecmaVersion: 2018,
+      ecmaVersion: 2020,
       sourceType: "module",
     },
     plugins: ["@typescript-eslint", "json", "react", "react-hooks"],
     env: {
       browser: true,
       es6: true,
+      es2020: true,
       jest: true
     },
     globals: {
@@ -66,7 +67,7 @@ module.exports = {
       "prefer-regex-literals": "error",
       "prefer-rest-params": "error",
       "prefer-spread": "error",
-      "quotes": [2, "double", { allowTemplateLiterals: true, avoidEscape: true }],
+      "quotes": "off",  // enforced for src/ only via override below; left off for cypress/
       radix: "error",
       "react/jsx-closing-tag-location": "error",
       "react/jsx-handler-names": "off", // 13 as of 2020-09-13
@@ -79,6 +80,12 @@ module.exports = {
       semi: ["error", "always"]
     },
     overrides: [
+      { // src/ uses consistent double quotes; cypress/ is intentionally left unenforced
+        files: ["src/**/*"],
+        rules: {
+          "quotes": [2, "double", { allowTemplateLiterals: true, avoidEscape: true }]
+        }
+      },
       { // some rules can be relaxed in tests
         files: ["**/*.test.*"],
         rules: {

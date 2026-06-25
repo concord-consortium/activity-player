@@ -143,14 +143,14 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
 
   return (
     !answers
-      ? <div className="completion-page-content" data-cy="completion-page-content">
+      ? <main className="completion-page-content" data-cy="completion-page-content">
           <div className="progress-container" data-cy="progress-container">
             <div className="progress-text">
               <DynamicText>Fetching your data ...</DynamicText>
             </div>
           </div>
-        </div>
-      : <div className="completion-page-content" data-cy="completion-page-content">
+        </main>
+      : <main className="completion-page-content" data-cy="completion-page-content">
           <div className="banners">
             <div className={`progress-container ${!isActivityComplete ? "incomplete" : ""}`} data-cy="progress-container">
               {isActivityComplete
@@ -191,6 +191,6 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               </div>
             }
           </div>
-        </div>
+        </main>
   );
 };

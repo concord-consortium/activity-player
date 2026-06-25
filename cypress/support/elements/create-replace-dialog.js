@@ -1,8 +1,4 @@
-import ActivityPage from "./activity-page";
 import { getInIframe } from "./iframe";
-import { getInIframeWithIndex } from "./iframe";
-
-const activityPage = new ActivityPage;
 
 class CreateReplaceDialog {
 
