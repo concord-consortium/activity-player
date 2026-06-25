@@ -476,6 +476,16 @@ export class App extends React.PureComponent<IProps, IState> {
   }
 
   render() {
+    const { activity, idle, errorType, showSequenceIntro, loadingOverrides, sequence } = this.state;
+    // The skip link only has a target when a #main-content landmark is actually
+    // rendered. This mirrors the content ternary below so the link is never a
+    // dead in-page link on the loading/idle/error screens (which have no
+    // repeated header/nav blocks to bypass anyway).
+    const hasMainContent =
+      (errorType && !activity) ? false
+        : showSequenceIntro ? !!sequence
+          : loadingOverrides ? false
+            : !!activity && !idle && !errorType;
     return (
       <LaraGlobalContext.Provider value={this.LARA}>
         <PortalDataContext.Provider value={this.state.portalData}>
@@ -486,6 +496,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   <DynamicTextContext.Provider value={dynamicTextManager}>
                     <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
                       <div className="app" data-cy="app">
+                        {hasMainContent && <a className="skip-link" href="#main-content" data-cy="skip-link">Skip to main content</a>}
                         { this.state.showDefunctBanner && <DefunctBanner/> }
                         { this.state.showWarning && <WarningBanner/> }
                         { isOfferingLocked(this.state.portalData) && <LockedBanner isSequence={!!this.state.sequence}/> }
@@ -617,30 +628,32 @@ export class App extends React.PureComponent<IProps, IState> {
         {renderTopNav &&
           this.renderNav(activity, currentPage, fullWidth, "Page navigation")
         }
-        {activity.layout === ActivityLayouts.SinglePage
-          ? this.renderSinglePageContent(activity)
-          : currentPage === 0
-            ? this.renderIntroductionContent(activity)
-            : pagesVisible[currentPage - 1].is_completion
-              ? this.renderCompletionContent(activity)
-              : <ActivityPageContent
-                ref={this.activityPageContentRef}
-                activityLayout={activity.layout}
-                enableReportButton={currentPage === pagesVisible.length && enableReportButton(activity)}
-                pageNumber={currentPage}
-                page={pagesVisible[currentPage - 1]}
-                activity={activity}
-                totalPreviousQuestions={totalPreviousQuestions}
-                teacherEditionMode={this.state.teacherEditionMode}
-                setNavigation={this.handleSetNavigation}
-                key={`page-${currentPage}`}
-                pluginsLoaded={this.state.pluginsLoaded}
-                pageChangeNotification={this.state.pageChangeNotification}
-                hideReadAloud={this.state.hideReadAloud}
-                hideQuestionNumbers={this.state.hideQuestionNumbers}
-                saveInteractiveStateHistory={this.state.saveInteractiveStateHistory}
-              />
-        }
+        <main id="main-content" tabIndex={-1}>
+          {activity.layout === ActivityLayouts.SinglePage
+            ? this.renderSinglePageContent(activity)
+            : currentPage === 0
+              ? this.renderIntroductionContent(activity)
+              : pagesVisible[currentPage - 1].is_completion
+                ? this.renderCompletionContent(activity)
+                : <ActivityPageContent
+                  ref={this.activityPageContentRef}
+                  activityLayout={activity.layout}
+                  enableReportButton={currentPage === pagesVisible.length && enableReportButton(activity)}
+                  pageNumber={currentPage}
+                  page={pagesVisible[currentPage - 1]}
+                  activity={activity}
+                  totalPreviousQuestions={totalPreviousQuestions}
+                  teacherEditionMode={this.state.teacherEditionMode}
+                  setNavigation={this.handleSetNavigation}
+                  key={`page-${currentPage}`}
+                  pluginsLoaded={this.state.pluginsLoaded}
+                  pageChangeNotification={this.state.pageChangeNotification}
+                  hideReadAloud={this.state.hideReadAloud}
+                  hideQuestionNumbers={this.state.hideQuestionNumbers}
+                  saveInteractiveStateHistory={this.state.saveInteractiveStateHistory}
+                />
+          }
+        </main>
         {renderBottomNav &&
           this.renderNav(activity, currentPage, fullWidth, "Page navigation (bottom)")
         }

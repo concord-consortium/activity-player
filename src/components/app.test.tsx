@@ -44,6 +44,35 @@ describe("App component", () => {
     expect(wrapper.find(Header).length).toBe(1);
     expect(wrapper.find(Footer).length).toBe(1);
   });
+  it("renders a skip-to-main-content link as the first focusable element", () => {
+    const wrapper = shallow(<App />);
+    wrapper.setState({ activity });
+    const skipLink = wrapper.find(".skip-link");
+    expect(skipLink.length).toBe(1);
+    expect(skipLink.prop("href")).toBe("#main-content");
+    expect(skipLink.text()).toBe("Skip to main content");
+    // the link must precede the header so it is the first focusable element on the page
+    const appChildren = wrapper.find('[data-cy="app"]').children();
+    expect(appChildren.first().hasClass("skip-link")).toBe(true);
+  });
+  it("does not render the skip link when there is no main-content target", () => {
+    // No activity yet (initial loading), so #main-content is not rendered; the
+    // skip link must not be a dead in-page link.
+    const wrapper = shallow(<App />);
+    expect(wrapper.find(".skip-link").length).toBe(0);
+    expect(wrapper.find("main#main-content").length).toBe(0);
+    // error state with no activity also has no main-content target
+    wrapper.setState({ errorType: "auth" });
+    expect(wrapper.find(".skip-link").length).toBe(0);
+  });
+  it("renders a main landmark targeted by the skip link", () => {
+    const wrapper = shallow(<App />);
+    wrapper.setState({ activity });
+    const main = wrapper.find("main#main-content");
+    expect(main.length).toBe(1);
+    // tabIndex -1 makes the landmark programmatically focusable for the skip link
+    expect(main.prop("tabIndex")).toBe(-1);
+  });
   it("renders single page activity at the default fixed width", () => {
     const wrapper = shallow(<App />);
     wrapper.setState({ activity: activitySinglePage });
