@@ -78,7 +78,7 @@ describe("initializeAuthorization", () => {
       });
 
       it("does not redirect", () => {
-        console.log("das", window.location.href, initializeAuthorization());
+        initializeAuthorization();
         expect(window.location.assign).toHaveBeenCalledTimes(0);
       });
     });

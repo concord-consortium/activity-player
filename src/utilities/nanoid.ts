@@ -10,7 +10,7 @@
 
 const crypto = globalThis.crypto;
 
-if (!crypto || !crypto.getRandomValues) {
+if (typeof crypto?.getRandomValues !== "function") {
   throw new Error(
     "Secure random number generator not found. Ensure you are running in a supported environment.",
   );

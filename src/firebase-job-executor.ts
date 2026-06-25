@@ -243,7 +243,7 @@ class FirebaseJobExecutor implements IJobExecutor {
         snapshot => {
           if (!snapshot.exists) return;
           const job = snapshot.data()?.jobInfo as IJobInfo | undefined;
-          if (!job || !job.status) return;
+          if (!job?.status) return;
           this.updateCallback?.(job);
           // Auto-clean listener once job reaches a final state
           if (job.status !== "queued" && job.status !== "running") {

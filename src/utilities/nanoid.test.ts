@@ -1,4 +1,4 @@
-import { urlAlphabet, customAlphabet, nanoid } from "./nanoid";
+import { urlAlphabet, nanoid } from "./nanoid";
 
 describe("nanoid utilities", () => {
   describe("urlAlphabet", () => {

@@ -21,6 +21,6 @@ export const normalFont = {
   size8: "32px",
   size9: "19px" };
 
-  export const readAlound = {
-    backgroundColor: "rgb(248, 255, 0)"
-  }
+export const readAloud = {
+  backgroundColor: "rgb(248, 255, 0)"
+};
