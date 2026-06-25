@@ -33,7 +33,7 @@ export class Header extends React.PureComponent<IProps> {
           </div>
           <div className="header-center">
             <div className={`title-container ${showSequence && onShowSequence ? "link" : ""}`} onClick={onShowSequence}>
-              {showSequence && onShowSequence && <SequenceBackIcon className="sequence-icon" />}
+              {showSequence && onShowSequence && <SequenceBackIcon className="sequence-icon" aria-hidden="true" focusable="false" />}
               {showSequence && onShowSequence ? this.renderContentTitle() : <DynamicText>{this.renderContentTitle()}</DynamicText>}
             </div>
           </div>

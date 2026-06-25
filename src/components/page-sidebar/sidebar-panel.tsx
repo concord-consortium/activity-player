@@ -22,8 +22,8 @@ export class SidebarPanel extends React.PureComponent<IProps>{
         <div className="sidebar-header">
           <div className="sidebar-title" data-cy="sidebar-title">{this.props.title}</div>
           <div className="icon" onClick={this.handleCloseButton} onKeyDown={this.handleCloseButton}
-               data-cy="sidebar-close-button" tabIndex={0}>
-            <IconClose />
+               data-cy="sidebar-close-button" tabIndex={0} role="button" aria-label="Close">
+            <IconClose aria-hidden="true" focusable="false" />
           </div>
         </div>
         <DynamicText>

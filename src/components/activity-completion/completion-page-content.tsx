@@ -154,8 +154,8 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
           <div className="banners">
             <div className={`progress-container ${!isActivityComplete ? "incomplete" : ""}`} data-cy="progress-container">
               {isActivityComplete
-                ? <IconCheck width={24} height={24} className="check" />
-                : <IconUnfinishedCheck width={24} height={24} className="check incomplete" />
+                ? <IconCheck width={24} height={24} className="check" aria-hidden="true" focusable="false" />
+                : <IconUnfinishedCheck width={24} height={24} className="check incomplete" aria-hidden="true" focusable="false" />
               }
               <div className="progress-text" data-cy="progress-text">
                 <DynamicText>{progressText}</DynamicText>

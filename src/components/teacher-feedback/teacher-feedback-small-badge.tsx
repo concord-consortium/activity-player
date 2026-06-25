@@ -20,7 +20,7 @@ export const TeacherFeedbackSmallBadge = ({location}: IProps) => {
       data-testid="teacher-feedback-small-badge"
       title="Your teacher left feedback on this page."
     >
-      <TeacherFeedbackBadgeIcon className="teacher-feedback-small-badge-icon" />
+      <TeacherFeedbackBadgeIcon className="teacher-feedback-small-badge-icon" aria-hidden="true" focusable="false" />
     </div>
   );
 };
