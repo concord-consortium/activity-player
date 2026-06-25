@@ -46,6 +46,14 @@ describe("Logo component", () => {
       expect(img).toHaveAttribute("alt", "Molecular Workbench");
     });
 
+    it("falls back to a destination-oriented alt when a project logo has no title", () => {
+      // The alt is the link's accessible name, so it should describe the
+      // destination rather than the image when no title is available. A
+      // whitespace-only title is treated as empty.
+      render(<Logo logo={projectLogoUrl} url={projectUrl} title="   " />);
+      expect(screen.getByTestId("logo-img")).toHaveAttribute("alt", "Project website");
+    });
+
     it("renders the default Concord logo as an img with a matching alt", () => {
       // No project logo, so the Concord Consortium logo is shown. Its alt must
       // describe the visible logo, not the project title.

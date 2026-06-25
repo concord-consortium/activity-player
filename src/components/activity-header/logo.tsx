@@ -44,8 +44,11 @@ export class Logo extends React.PureComponent<IProps> {
   // Concord Consortium logo is shown with its own descriptive alt text.
   private renderLogoImage = () => {
     const { logo, title } = this.props;
+    // The alt text is the link's accessible name, so the project-logo fallback
+    // describes the destination ("Project website") rather than the image when no
+    // title is available; whitespace-only titles are treated as empty.
     return logo
-      ? <img data-cy="logo-img" className="logo-img" src={logo} alt={title || "Project logo"} />
+      ? <img data-cy="logo-img" className="logo-img" src={logo} alt={title?.trim() || "Project website"} />
       : <img data-cy="logo-img" className="logo-img cc-logo" src={ccLogoUrl} alt="Concord Consortium" />;
   }
 }

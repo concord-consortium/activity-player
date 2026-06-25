@@ -17,6 +17,12 @@
     &:active {
       background-color: $cc-teal;
     }
+    // Match the app-wide focus ring (see app.scss) so the logo link has a
+    // visible, branded focus indicator instead of relying on the UA default.
+    &:focus-visible {
+      box-shadow: inset 0 0 0 2.5px $cc-button-focus-ring, inset 0 0 0 3.5px white;
+      outline: none;
+    }
 
     &.no-link {
       cursor: auto;
