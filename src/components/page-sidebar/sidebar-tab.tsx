@@ -18,8 +18,8 @@ export class SidebarTab extends React.PureComponent<IProps>{
 
   render() {
     return (
-      <div className="sidebar-tab" onClick={this.handleSidebarShow} onKeyDown={this.handleSidebarShow} 
-           data-cy="sidebar-tab" tabIndex={0}>
+      <div className="sidebar-tab" onClick={this.handleSidebarShow} onKeyDown={this.handleSidebarShow}
+           data-cy="sidebar-tab" tabIndex={0} role="button" aria-expanded={this.props.sidebarOpen}>
         <div className={`icon ${this.props.sidebarOpen ? "open" : ""}`}>
           <IconArrow aria-hidden="true" focusable="false" />
         </div>
