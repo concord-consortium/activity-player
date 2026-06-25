@@ -17,8 +17,10 @@ export class Logo extends React.PureComponent<IProps> {
     // AP-86: render the logo as a native anchor when it has a destination so
     // assistive technology announces it as a link and it is keyboard-operable
     // with standard interaction. Fall back to a non-interactive container when
-    // there is no url to link to.
-    if (url) {
+    // there is no (safe) url to link to. The url originates from author-supplied
+    // project data, so only http(s) destinations are linked — this avoids turning
+    // a malicious scheme (e.g. javascript:) into an executable link.
+    if (this.isLinkableUrl(url)) {
       return (
         <a
           className="project-logo"
@@ -37,6 +39,19 @@ export class Logo extends React.PureComponent<IProps> {
         {this.renderLogoImage()}
       </div>
     );
+  }
+
+  // Only absolute http(s) urls are treated as links; anything else (a missing
+  // url, or an unsafe scheme such as javascript:/data:) falls back to non-link
+  // rendering.
+  private isLinkableUrl = (url?: string) => {
+    if (!url) return false;
+    try {
+      const { protocol } = new URL(url, window.location.origin);
+      return protocol === "http:" || protocol === "https:";
+    } catch {
+      return false;
+    }
   }
 
   // AP-87: render the logo as an <img> with alt text that matches the visible

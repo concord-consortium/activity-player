@@ -34,6 +34,16 @@ describe("Logo component", () => {
       expect(logo).not.toHaveAttribute("href");
       expect(logo).toHaveClass("no-link");
     });
+
+    it("does not render a link for an unsafe url scheme", () => {
+      // Author-supplied urls are only linked when http(s); a javascript: url
+      // must not become an executable link.
+      render(<Logo logo={projectLogoUrl} url={"javascript:alert(1)"} title="Evil" />);
+      const logo = screen.getByTestId("project-logo");
+      expect(logo.tagName).not.toBe("A");
+      expect(logo).not.toHaveAttribute("href");
+      expect(logo).toHaveClass("no-link");
+    });
   });
 
   // AP-87: the logo image carries alt text that matches the visible logo.
