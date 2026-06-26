@@ -105,7 +105,9 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
 
   render() {
     const { enableReportButton, page, totalPreviousQuestions } = this.props;
-    const pageTitle = page.name || "";
+    // Fall back to "Page N" so the page's sole <h1> always has an accessible name
+    // (page names are routinely absent; this mirrors the nav label in activity-page-links).
+    const pageTitle = page.name || `Page ${this.props.pageNumber}`;
     const sections = page.sections.filter(section => !section.is_hidden);
     const responsiveLayoutSections = sections.filter(s => s.layout.includes("responsive"));
     const isResponsiveLayout = responsiveLayoutSections.length > 0;

@@ -25,9 +25,9 @@ export const NextSteps: React.FC<IProps> = (props) => {
             <div className="next">
               <DynamicText>Next Up ...</DynamicText>
             </div>
-            <h2 className="activity-title">
+            <div className="activity-title">
               <DynamicText>{nextActivityTitle}</DynamicText>
-            </h2>
+            </div>
           </div>
         </div>
         <div className="preview-description">

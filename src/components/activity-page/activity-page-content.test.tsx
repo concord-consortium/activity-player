@@ -70,6 +70,26 @@ describe("Activity Page Content component", () => {
     expect(h1).toHaveTextContent("Test Page Title");
   });
 
+  it("falls back to 'Page N' for the h1 when the page has no name (avoids an empty heading)", () => {
+    const unnamedPage = { ...page, name: null };
+    render(
+      <DynamicTextTester>
+        <ActivityPageContent
+          enableReportButton={false}
+          activityLayout={0}
+          page={unnamedPage}
+          pageNumber={5}
+          activity={DefaultTestActivity}
+          totalPreviousQuestions={5}
+          setNavigation={stubFunction}
+          pluginsLoaded={true}
+        />
+      </DynamicTextTester>
+    );
+    const h1 = screen.getByRole("heading", { level: 1 });
+    expect(h1).toHaveTextContent("Page 5");
+  });
+
   describe("with page change notification", () => {
     it("renders page change started notification", () => {
       const { getAllByTestId } = render(
