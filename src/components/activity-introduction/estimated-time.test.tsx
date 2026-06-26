@@ -9,4 +9,11 @@ describe("Estimated Time component", () => {
     const wrapper = mount(<DynamicTextTester><EstimatedTime time={10} /></DynamicTextTester>);
     expect(wrapper.text()).toContain(estimatedTimeText);
   });
+
+  it("marks the decorative clock icon as hidden from assistive technology", () => {
+    const wrapper = mount(<DynamicTextTester><EstimatedTime time={10} /></DynamicTextTester>);
+    const icon = wrapper.find("test-file-stub");
+    expect(icon.length).toBe(1);
+    expect(icon.prop("aria-hidden")).toBe("true");
+  });
 });

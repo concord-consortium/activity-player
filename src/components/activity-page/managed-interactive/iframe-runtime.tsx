@@ -562,7 +562,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         {showDeleteDataButton &&
           <button className="button reset" data-cy="reset-button" onClick={handleResetButtonClick} onKeyDown={handleResetButtonClick}>
             Clear &amp; start over
-            <ReloadIcon />
+            <ReloadIcon aria-hidden="true" focusable="false" />
           </button>
         }
         {feedback && <IframeRuntimeFeedback embeddableRefId={id} feedback={feedback} />}

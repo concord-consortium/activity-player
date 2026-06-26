@@ -6,7 +6,7 @@ import "./sequence-intro-feedback-banner.scss";
 export const SequenceIntroFeedbackBanner = () => {
   return (
     <div data-cy="intro-feedback-banner" className="intro-feedback-banner">
-      <TeacherFeedbackIcon className="teacher-feedback-icon" />
+      <TeacherFeedbackIcon className="teacher-feedback-icon" aria-hidden="true" focusable="false" />
       Your teacher has provided feedback.
     </div>
   );

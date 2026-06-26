@@ -11,7 +11,7 @@ interface IProps {
 export const SummaryPageQuestionFeedback = ({ teacherFeedback }: IProps) => {
   return (
     <div className="summary-page-question-feedback" data-testid="summary-page-question-feedback">
-      <TeacherFeedbackIcon className="teacher-feedback-icon" />
+      <TeacherFeedbackIcon className="teacher-feedback-icon" aria-hidden="true" focusable="false" />
       <div className="summary-page-question-feedback-content" data-testid="summary-page-question-feedback-content">
         <strong>Teacher Feedback:</strong> {teacherFeedback.content}
       </div>

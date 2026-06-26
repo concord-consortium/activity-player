@@ -24,4 +24,17 @@ describe("Summary Table component", () => {
     expect(wrapperComplete.find('[data-testid="question-page-and-number"]').at(2).text()).toContain("Page 2: Question 3.");
     expect(wrapperComplete.find('[data-testid="question-prompt"]').at(2).text()).toContain("Where are we going?");
   });
+
+  it("gives the meaningful complete/incomplete status icons accessible names", () => {
+    const wrapper = mount(
+      <DynamicTextTester><SummaryTable questionsStatus={questionsStatus} onPageChange={mockOnPageChange} /></DynamicTextTester>
+    );
+    // One status icon per question; these convey answered/unanswered state with no adjacent text,
+    // so they must be exposed to assistive technology with a name rather than hidden.
+    const icons = wrapper.find("test-file-stub");
+    expect(icons.length).toBe(3);
+    icons.forEach((icon) => expect(icon.prop("role")).toBe("img"));
+    expect(icons.at(0).prop("aria-label")).toBe("Complete");   // answered: true
+    expect(icons.at(2).prop("aria-label")).toBe("Incomplete");  // answered: false
+  });
 });

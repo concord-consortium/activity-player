@@ -20,7 +20,7 @@ export const ActivityLevelFeedbackBanner = ({ teacherFeedback }: IProps) => {
 
   return (
     <div className={bannerClass} data-testid="activity-level-feedback-banner">
-      <TeacherFeedbackIcon className="teacher-feedback-icon" />
+      <TeacherFeedbackIcon className="teacher-feedback-icon" aria-hidden="true" focusable="false" />
       {shouldRenderRubric && (
         <div className="activity-level-feedback-title">
           <DynamicText><strong>Overall Teacher Feedback for This Activity:</strong></DynamicText>

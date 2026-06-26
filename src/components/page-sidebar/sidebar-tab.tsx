@@ -18,18 +18,22 @@ export class SidebarTab extends React.PureComponent<IProps>{
 
   render() {
     return (
-      <div className="sidebar-tab" onClick={this.handleSidebarShow} onKeyDown={this.handleSidebarShow} 
-           data-cy="sidebar-tab" tabIndex={0}>
+      <div className="sidebar-tab" onClick={this.handleSidebarShow} onKeyDown={this.handleSidebarShow}
+           data-cy="sidebar-tab" tabIndex={0} role="button" aria-expanded={this.props.sidebarOpen}>
         <div className={`icon ${this.props.sidebarOpen ? "open" : ""}`}>
-          <IconArrow />
+          <IconArrow aria-hidden="true" focusable="false" />
         </div>
         <div className="tab-name" data-cy="sidebar-tab-title">{this.props.title}</div>
       </div>
     );
   }
 
-  private handleSidebarShow = () => {
-    if (accessibilityClick(event)) {
+  private handleSidebarShow = (e: React.MouseEvent | React.KeyboardEvent) => {
+    if (accessibilityClick(e)) {
+      // role="button" div: stop Space from also scrolling the page on keyboard activation
+      if (e.type === "keydown") {
+        e.preventDefault();
+      }
       this.props.handleShowSidebarContent(this.props.index, !this.props.sidebarOpen);
     }
   }

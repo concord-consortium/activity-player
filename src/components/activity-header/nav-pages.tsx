@@ -120,7 +120,7 @@ export class NavPages extends React.Component <IProps, IState> {
           aria-disabled={disabled || undefined}
           data-cy="previous-page-button"
         >
-          <ArrowPrevious className="icon" aria-hidden={true} />
+          <ArrowPrevious className="icon" aria-hidden={true} focusable="false" />
         </a>
       </li>
     );
@@ -151,7 +151,7 @@ export class NavPages extends React.Component <IProps, IState> {
           aria-disabled={disabled || undefined}
           data-cy="next-page-button"
         >
-          <ArrowNext className="icon" aria-hidden={true} />
+          <ArrowNext className="icon" aria-hidden={true} focusable="false" />
         </a>
       </li>
     );
@@ -187,9 +187,9 @@ export class NavPages extends React.Component <IProps, IState> {
         const completionClass = page.is_completion ? "completion-page-button" : "";
         const disabledClass = (pageChangeInProgress || lockForwardNav && currentPage < pageNum) ? "disabled" : "";
         const buttonContent = page.is_hidden
-                                ? <HiddenIcon className={`icon ${currentClass}`} width={28} height={28} aria-hidden={true} />
+                                ? <HiddenIcon className={`icon ${currentClass}`} width={28} height={28} aria-hidden={true} focusable="false" />
                                 : page.is_completion
-                                    ? <IconCompletion className={`icon ${currentClass}`} width={28} height={28} aria-hidden={true} />
+                                    ? <IconCompletion className={`icon ${currentClass}`} width={28} height={28} aria-hidden={true} focusable="false" />
                                     : pageLabel;
 
         return (
@@ -239,6 +239,7 @@ export class NavPages extends React.Component <IProps, IState> {
             width={28}
             height={28}
             aria-hidden={true}
+            focusable="false"
           />
           {this.props.usePageNames && "Home"}
         </a>

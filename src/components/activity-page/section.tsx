@@ -173,11 +173,15 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
           width={32}
           height={32}
           fill={"white"}
+          aria-hidden="true"
+          focusable="false"
         />
         : <IconChevronRight
           width={32}
           height={32}
           fill={"white"}
+          aria-hidden="true"
+          focusable="false"
         />
     );
   };

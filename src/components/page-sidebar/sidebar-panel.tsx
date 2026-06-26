@@ -22,8 +22,8 @@ export class SidebarPanel extends React.PureComponent<IProps>{
         <div className="sidebar-header">
           <div className="sidebar-title" data-cy="sidebar-title">{this.props.title}</div>
           <div className="icon" onClick={this.handleCloseButton} onKeyDown={this.handleCloseButton}
-               data-cy="sidebar-close-button" tabIndex={0}>
-            <IconClose />
+               data-cy="sidebar-close-button" tabIndex={0} role="button" aria-label="Close">
+            <IconClose aria-hidden="true" focusable="false" />
           </div>
         </div>
         <DynamicText>
@@ -34,8 +34,12 @@ export class SidebarPanel extends React.PureComponent<IProps>{
     );
   }
 
-  private handleCloseButton = () => {
-    if (accessibilityClick(event)){
+  private handleCloseButton = (e: React.MouseEvent | React.KeyboardEvent) => {
+    if (accessibilityClick(e)){
+      // role="button" div: stop Space from also scrolling the page on keyboard activation
+      if (e.type === "keydown") {
+        e.preventDefault();
+      }
       this.props.handleCloseSidebarContent(this.props.index, false);
     }
   }

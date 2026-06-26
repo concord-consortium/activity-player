@@ -46,7 +46,9 @@ export const SummaryTable: React.FC<IProps> = (props) => {
       <tbody>
       {questionsStatus.map((question: IQuestionStatus, index) => {
         const refId = question.embeddableId && answersQuestionIdToRefId(question.embeddableId);
-          const questionAnswered = question.answered ? <IconComplete className="complete" /> : <IconIncomplete className="incomplete" />;
+          const questionAnswered = question.answered
+            ? <IconComplete className="complete" role="img" aria-label="Complete" focusable="false" />
+            : <IconIncomplete className="incomplete" role="img" aria-label="Incomplete" focusable="false" />;
           // Remove all the HTML tags to avoid unnecessary formatting and whitespace in the summary table.
           // `renderHTML()` is still necessary to render encoded characters like &quot; => ", etc.
           const questionPrompt = question.prompt ? renderHTML(question.prompt.replace(/<\/?[^>]+(>|$)/g, "")) : "";
