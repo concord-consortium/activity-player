@@ -17,14 +17,24 @@ export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, que
   if (hideHeader) return null;
 
   const trimmedQuestionName = questionName.trim();
+  const hasHeadingText = !!questionNumber || trimmedQuestionName.length > 0;
+
+  const headingContent = (
+    <DynamicText>
+      {questionNumber && `Question #${questionNumber}`}
+      {trimmedQuestionName.length > 0 && questionNumber && ": "}
+      {questionName}
+    </DynamicText>
+  );
 
   return (
     <div className="header">
-      <DynamicText>
-        {questionNumber && `Question #${questionNumber}`}
-        {trimmedQuestionName.length > 0 && questionNumber && ": "}
-        {questionName}
-      </DynamicText>
+      {/* Use a semantic heading when there is title text; otherwise keep the bare
+          (empty) DynamicText so the header still occupies the layout slot for the
+          hint button without introducing an empty heading. */}
+      {hasHeadingText
+        ? <h2 className="embeddable-header-text">{headingContent}</h2>
+        : headingContent}
       {hint && (
         <button
           ref={triggerRef}

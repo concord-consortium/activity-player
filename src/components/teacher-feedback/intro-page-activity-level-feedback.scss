@@ -2,4 +2,10 @@
 
 .intro-page-activity-level-feedback {
   flex: 1 1 100%;
+
+  // Preserve the previous visual size now that this is an <h2> rather than an <h1>
+  h2 {
+    margin: 0.67em 0;
+    font-size: pxToRem(32);
+  }
 }

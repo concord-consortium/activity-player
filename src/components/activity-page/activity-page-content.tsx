@@ -121,7 +121,7 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
         {this.renderPageChangeNotification()}
         <main className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
           <div className={headerClass}>
-            <div className="name"><DynamicText>{pageTitle}</DynamicText></div>
+            <h1 className="name"><DynamicText>{pageTitle}</DynamicText></h1>
             <ReadAloudToggle />
           </div>
           {isNotebookLayout && <div className="notebookHeader" />}

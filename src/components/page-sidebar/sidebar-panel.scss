@@ -11,8 +11,10 @@
     height: 40px;
 
     .sidebar-title{
+      margin: 0;
       color: white;
       font-size: pxToRem(20);
+      font-weight: normal;
       width: 100%;
       text-align: center;
     }

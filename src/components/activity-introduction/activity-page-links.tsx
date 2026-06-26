@@ -59,7 +59,7 @@ export class ActivityPageLinks extends React.PureComponent <IProps, IState> {
   render() {
     return (
       <div className="activity-page-links" data-cy="activity-page-links">
-        <div className="pages"><DynamicText>Pages in this Activity</DynamicText></div>
+        <h2 className="pages"><DynamicText>Pages in this Activity</DynamicText></h2>
         <div className="separator" />
         { this.props.activityPages.filter((page) => !page.is_hidden).map((page, index: number) => {
             const hasFeedback = pageHasFeedback(page, this.state.pagesWithFeedback, this.state.hasActivityLevelFeedback);

@@ -15,9 +15,12 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
+    margin: 0;
     padding: 0 0 0 10px;
     color: white;
     background-color: $cc-teal-dark1;
+    font-size: inherit;
+    font-weight: inherit;
   }
   .related-content-text {
     padding: 20px;
