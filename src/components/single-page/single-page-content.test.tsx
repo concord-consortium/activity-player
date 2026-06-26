@@ -23,4 +23,9 @@ describe("Single Page Content component", () => {
     render(<DynamicTextTester><SinglePageContent activity={DefaultTestActivity} pluginsLoaded={true} /></DynamicTextTester>);
     expect(screen.getByRole("main")).toBeInTheDocument();
   });
+  it("renders the activity name as the page h1", () => {
+    render(<DynamicTextTester><SinglePageContent activity={DefaultTestActivity} pluginsLoaded={true} /></DynamicTextTester>);
+    const h1 = screen.getByRole("heading", { level: 1 });
+    expect(h1).toHaveTextContent("name");
+  });
 });

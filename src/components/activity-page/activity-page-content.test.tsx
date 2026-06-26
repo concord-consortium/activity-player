@@ -50,6 +50,26 @@ describe("Activity Page Content component", () => {
     expect(screen.getAllByRole("main")).toHaveLength(1);
   });
 
+  it("renders the page title as an h1", () => {
+    const namedPage = { ...page, name: "Test Page Title" };
+    render(
+      <DynamicTextTester>
+        <ActivityPageContent
+          enableReportButton={false}
+          activityLayout={0}
+          page={namedPage}
+          pageNumber={5}
+          activity={DefaultTestActivity}
+          totalPreviousQuestions={5}
+          setNavigation={stubFunction}
+          pluginsLoaded={true}
+        />
+      </DynamicTextTester>
+    );
+    const h1 = screen.getByRole("heading", { level: 1 });
+    expect(h1).toHaveTextContent("Test Page Title");
+  });
+
   describe("with page change notification", () => {
     it("renders page change started notification", () => {
       const { getAllByTestId } = render(
