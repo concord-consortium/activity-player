@@ -1,7 +1,7 @@
 import React from "react";
 import { NavPages } from "./nav-pages";
 import { shallow } from "enzyme";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { DefaultTestPage } from "../../test-utils/model-for-tests";
 import IconHome from "../../assets/svg-icons/icon-home.svg";
 
@@ -129,7 +129,145 @@ describe("Nav Pages component", () => {
         onPageChange={stubFunction}
       />
     );
-    // back and forward buttons, home button, 2 page buttons
-    expect(screen.getAllByRole("button").length).toBe(5);
+    // back and forward links, home link, 2 page links
+    expect(screen.getAllByRole("link").length).toBe(5);
+  });
+});
+
+describe("Nav Pages accessibility", () => {
+  // Pages with distinct ids/positions so hrefs resolve to specific pages.
+  const pagesWithIds = [
+    {...DefaultTestPage, name: "1", id: 101, position: 1},
+    {...DefaultTestPage, name: "2", id: 102, position: 2},
+    {...DefaultTestPage, name: "3", id: 103, position: 3},
+  ];
+
+  it("renders the controls as a list of links", () => {
+    const { container } = render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={2} onPageChange={stubFunction} />
+    );
+    const list = container.querySelector("ul.nav-pages");
+    expect(list).not.toBeNull();
+    // previous + home + 3 page links + next, each an <a> inside an <li>
+    expect(container.querySelectorAll("li.page-button-container").length).toBe(6);
+    expect(container.querySelectorAll("li.page-button-container > a.page-button").length).toBe(6);
+    expect(screen.getAllByRole("link").length).toBe(6);
+  });
+
+  it("renders no stray text nodes inside the list when pages are windowed out", () => {
+    // With more pages than fit the window, the out-of-range pages must render
+    // nothing (null), not an empty string, so the <ul> contains only <li>s.
+    const { container } = render(
+      <NavPages activityId={1} pages={activityPages} currentPage={7} onPageChange={stubFunction} />
+    );
+    const list = container.querySelector("ul.nav-pages")!;
+    const textNodeChildren = Array.from(list.childNodes).filter((n) => n.nodeType === Node.TEXT_NODE);
+    expect(textNodeChildren).toHaveLength(0);
+    Array.from(list.children).forEach((child) => expect(child.tagName).toBe("LI"));
+  });
+
+  it("gives each control a page href, with home carrying no page param", () => {
+    render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={2} onPageChange={stubFunction} />
+    );
+    expect(screen.getByRole("link", { name: "Home" }).getAttribute("href")).toBe("?");
+    expect(screen.getByRole("link", { name: "Page 1" }).getAttribute("href")).toBe("?page=page_101");
+    expect(screen.getByRole("link", { name: "Page 2" }).getAttribute("href")).toBe("?page=page_102");
+    expect(screen.getByRole("link", { name: "Previous page" }).getAttribute("href")).toBe("?page=page_101");
+    expect(screen.getByRole("link", { name: "Next page" }).getAttribute("href")).toBe("?page=page_103");
+  });
+
+  it("marks only the current page with aria-current", () => {
+    render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={2} onPageChange={stubFunction} />
+    );
+    expect(screen.getByRole("link", { name: "Page 2" })).toHaveAttribute("aria-current", "page");
+    expect(screen.getByRole("link", { name: "Page 1" })).not.toHaveAttribute("aria-current");
+    expect(screen.getByRole("link", { name: "Home" })).not.toHaveAttribute("aria-current");
+  });
+
+  it("marks Home with aria-current on the home page", () => {
+    render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={0} onPageChange={stubFunction} />
+    );
+    expect(screen.getByRole("link", { name: "Home" })).toHaveAttribute("aria-current", "page");
+  });
+
+  it("sets aria-disabled on previous at home and next at the last page", () => {
+    const { rerender } = render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={0} onPageChange={stubFunction} />
+    );
+    expect(screen.getByRole("link", { name: "Previous page" })).toHaveAttribute("aria-disabled", "true");
+    expect(screen.getByRole("link", { name: "Next page" })).not.toHaveAttribute("aria-disabled");
+
+    rerender(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={3} onPageChange={stubFunction} />
+    );
+    expect(screen.getByRole("link", { name: "Next page" })).toHaveAttribute("aria-disabled", "true");
+    expect(screen.getByRole("link", { name: "Previous page" })).not.toHaveAttribute("aria-disabled");
+  });
+
+  it("points hard-disabled prev/next at the current page rather than an out-of-range destination", () => {
+    // Next is hard-disabled on the last page: its href should be the current
+    // page (page 3), not the home page it would otherwise resolve to.
+    const { rerender } = render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={3} onPageChange={stubFunction} />
+    );
+    expect(screen.getByRole("link", { name: "Next page" }).getAttribute("href")).toBe("?page=page_103");
+
+    // Previous is hard-disabled on the home page: its href stays at home.
+    rerender(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={0} onPageChange={stubFunction} />
+    );
+    expect(screen.getByRole("link", { name: "Previous page" }).getAttribute("href")).toBe("?");
+  });
+
+  it("does not request a page change when a hard-disabled control is activated", () => {
+    // Hard-disabled controls remain keyboard-activatable (pointer-events:none
+    // only blocks the mouse), so activating them must be inert to avoid
+    // requesting an out-of-range page and locking navigation.
+    const onPageChange = jest.fn();
+    const { rerender } = render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={0} onPageChange={onPageChange} />
+    );
+    fireEvent.click(screen.getByRole("link", { name: "Previous page" }));
+    expect(onPageChange).not.toHaveBeenCalled();
+
+    rerender(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={3} onPageChange={onPageChange} />
+    );
+    fireEvent.click(screen.getByRole("link", { name: "Next page" }));
+    expect(onPageChange).not.toHaveBeenCalled();
+  });
+
+  it("does not request a page change when the control for the current page is activated", () => {
+    // Activating the current page (or Home while on home) would re-navigate to
+    // the same page without changing currentPage, leaving pageChangeInProgress
+    // stuck and locking navigation, so it must be a no-op.
+    const onPageChange = jest.fn();
+    const { rerender } = render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={2} onPageChange={onPageChange} />
+    );
+    fireEvent.click(screen.getByRole("link", { name: "Page 2" }));
+    expect(onPageChange).not.toHaveBeenCalled();
+
+    rerender(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={0} onPageChange={onPageChange} />
+    );
+    fireEvent.click(screen.getByRole("link", { name: "Home" }));
+    expect(onPageChange).not.toHaveBeenCalled();
+  });
+
+  it("hides decorative icons from assistive technology", () => {
+    const { container } = render(
+      <NavPages activityId={1} pages={pagesWithIds} currentPage={2} onPageChange={stubFunction} />
+    );
+    // SVGs are stubbed in Jest, so assert the icon element carries aria-hidden
+    // rather than matching an <svg> tag.
+    ["previous-page-button", "next-page-button", "home-button"].forEach((dataCy) => {
+      const icon = container.querySelector(`[data-cy="${dataCy}"] > *`);
+      expect(icon).not.toBeNull();
+      expect(icon).toHaveAttribute("aria-hidden", "true");
+    });
   });
 });
