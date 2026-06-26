@@ -98,7 +98,7 @@ body {
     text-align: center;
     // Renders on the teal --theme-primary-color (#0592af) #app background. #bbb
     // failed WCAG 1.4.3 contrast there. #1f1f1f clears 4.5:1 but only exactly;
-    // since --theme-primary-color is themeable, #1a1a1a (~4.6:1) keeps headroom.
+    // since --theme-primary-color is themeable, #1a1a1a (4.75:1) keeps headroom.
     color: #1a1a1a;
   }
 
