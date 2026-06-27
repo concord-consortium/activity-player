@@ -44,6 +44,9 @@
     cursor: pointer;
     color: inherit;
     text-decoration: none;
+    &:visited {
+      color: inherit;
+    }
     &:hover {
       background-color: $cc-teal-light4;
       .page-link {
