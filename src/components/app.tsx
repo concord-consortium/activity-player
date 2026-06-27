@@ -628,7 +628,10 @@ export class App extends React.PureComponent<IProps, IState> {
         {renderTopNav &&
           this.renderNav(activity, currentPage, fullWidth, "Page navigation")
         }
-        <main id="main-content" tabIndex={-1}>
+        {/* Skip-link focus target (WCAG 2.4.1). This is a plain <div>, not a
+            <main>, because each layout rendered inside already provides its own
+            single <main> landmark; a <main> here would nest landmarks. */}
+        <div id="main-content" tabIndex={-1}>
           {activity.layout === ActivityLayouts.SinglePage
             ? this.renderSinglePageContent(activity)
             : currentPage === 0
@@ -653,7 +656,7 @@ export class App extends React.PureComponent<IProps, IState> {
                   saveInteractiveStateHistory={this.state.saveInteractiveStateHistory}
                 />
           }
-        </main>
+        </div>
         {renderBottomNav &&
           this.renderNav(activity, currentPage, fullWidth, "Page navigation (bottom)")
         }

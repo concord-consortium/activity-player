@@ -60,18 +60,20 @@ describe("App component", () => {
     // skip link must not be a dead in-page link.
     const wrapper = shallow(<App />);
     expect(wrapper.find(".skip-link").length).toBe(0);
-    expect(wrapper.find("main#main-content").length).toBe(0);
+    expect(wrapper.find("#main-content").length).toBe(0);
     // error state with no activity also has no main-content target
     wrapper.setState({ errorType: "auth" });
     expect(wrapper.find(".skip-link").length).toBe(0);
   });
-  it("renders a main landmark targeted by the skip link", () => {
+  it("renders a focusable skip-link target wrapping the main content", () => {
     const wrapper = shallow(<App />);
     wrapper.setState({ activity });
-    const main = wrapper.find("main#main-content");
-    expect(main.length).toBe(1);
-    // tabIndex -1 makes the landmark programmatically focusable for the skip link
-    expect(main.prop("tabIndex")).toBe(-1);
+    // The target is a plain <div>, not a <main>: the layout rendered inside
+    // provides the single <main> landmark, so a <main> here would nest landmarks.
+    const target = wrapper.find("div#main-content");
+    expect(target.length).toBe(1);
+    // tabIndex -1 makes the target programmatically focusable for the skip link
+    expect(target.prop("tabIndex")).toBe(-1);
   });
   it("renders single page activity at the default fixed width", () => {
     const wrapper = shallow(<App />);

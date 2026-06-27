@@ -19,15 +19,17 @@ describe("Sequence Page Content component", () => {
     expect(wrapper.find(Footer).length).toBe(1);
     expect(wrapper.find(SequencePageContent).length).toBe(1);
   });
-  it("wraps the sequence content in a focusable main landmark", () => {
+  it("wraps the sequence content in a focusable skip-link target", () => {
     const stubFunction = () => {
       // do nothing.
     };
     const wrapper = shallow(<SequenceIntroduction sequence={sequence} username="test" onSelectActivity={stubFunction} />);
-    const main = wrapper.find("main#main-content");
-    expect(main.length).toBe(1);
-    expect(main.prop("tabIndex")).toBe(-1);
-    expect(main.find(SequencePageContent).length).toBe(1);
+    // The target is a plain <div>, not a <main>: SequencePageContent provides
+    // the single <main> landmark, so a <main> here would nest landmarks.
+    const target = wrapper.find("div#main-content");
+    expect(target.length).toBe(1);
+    expect(target.prop("tabIndex")).toBe(-1);
+    expect(target.find(SequencePageContent).length).toBe(1);
   });
   it("renders empty component", () => {
     const stubFunction = () => {
