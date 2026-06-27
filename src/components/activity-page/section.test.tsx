@@ -1,6 +1,6 @@
 import React from "react";
 import { Section } from "./section";
-import { configure, render } from "@testing-library/react";
+import { configure, fireEvent, render } from "@testing-library/react";
 import { DefaultTestPage, DefaultTestSection, DefaultXhtmlComponent } from "../../test-utils/model-for-tests";
 import { IEmbeddableXhtml } from "../../types";
 
@@ -130,6 +130,66 @@ describe("Section component", () => {
 
       const collapsibleHeader = getByTestId("collapsible-header");
       expect(collapsibleHeader.classList.contains("left")).toBe(true);
+    });
+  });
+
+  describe("collapsible secondary column accessibility (AP-95)", () => {
+    const createXhtmlEmbeddable = (refId: string, column: "primary" | "secondary"): IEmbeddableXhtml => ({
+      ...DefaultXhtmlComponent,
+      column,
+      ref_id: refId
+    });
+
+    const renderCollapsibleSection = () => {
+      const page = {...DefaultTestPage};
+      const section = {
+        ...DefaultTestSection,
+        embeddables: [
+          createXhtmlEmbeddable("primary-1", "primary"),
+          createXhtmlEmbeddable("secondary-1", "secondary")
+        ],
+        layout: "responsive-50-50",
+        secondary_column_collapsible: true
+      };
+      return render(<Section
+        activityLayout={0}
+        section={section}
+        page={page}
+        pluginsLoaded={true}
+        questionNumberStart={1}
+        setNavigation={stubFunction}
+      />);
+    };
+
+    it("renders the collapsible trigger as a native button", () => {
+      const { getByTestId } = renderCollapsibleSection();
+      const trigger = getByTestId("collapsible-header");
+      expect(trigger.tagName).toBe("BUTTON");
+    });
+
+    it("exposes an accessible name on the trigger", () => {
+      const { getByTestId } = renderCollapsibleSection();
+      const trigger = getByTestId("collapsible-header");
+      // accessible name must contain the visible word ("Hide") for WCAG Label in Name
+      expect(trigger.getAttribute("aria-label")).toMatch(/hide/i);
+    });
+
+    it("reflects the expanded state and toggles aria-expanded on activation", () => {
+      const { getByTestId } = renderCollapsibleSection();
+      const trigger = getByTestId("collapsible-header");
+      expect(trigger.getAttribute("aria-expanded")).toBe("true");
+      fireEvent.click(trigger);
+      expect(getByTestId("collapsible-header").getAttribute("aria-expanded")).toBe("false");
+      fireEvent.click(getByTestId("collapsible-header"));
+      expect(getByTestId("collapsible-header").getAttribute("aria-expanded")).toBe("true");
+    });
+
+    it("references the controlled panel via aria-controls", () => {
+      const { getByTestId, container } = renderCollapsibleSection();
+      const trigger = getByTestId("collapsible-header");
+      const panelId = trigger.getAttribute("aria-controls");
+      expect(panelId).toBeTruthy();
+      expect(container.querySelector(`#${panelId}`)).not.toBeNull();
     });
   });
 });
