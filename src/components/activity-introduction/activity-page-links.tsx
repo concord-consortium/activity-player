@@ -4,7 +4,7 @@ import { DynamicText } from "@concord-consortium/dynamic-text";
 import { ActivityFeedback, Page } from "../../types";
 import { pageHasFeedback, subscribeToActivityLevelFeedback, subscribeToQuestionLevelFeedback } from "../../utilities/feedback-utils";
 import { TeacherFeedbackSmallBadge } from "../teacher-feedback/teacher-feedback-small-badge";
-import { accessibilityClick } from "../../utilities/accessibility-helper";
+import { getPageHref } from "../../utilities/url-query";
 import { QuestionInfoContext } from "../question-info-context";
 
 import "./activity-page-links.scss";
@@ -61,27 +61,28 @@ export class ActivityPageLinks extends React.PureComponent <IProps, IState> {
       <div className="activity-page-links" data-cy="activity-page-links">
         <div className="pages"><DynamicText>Pages in this Activity</DynamicText></div>
         <div className="separator" />
-        { this.props.activityPages.filter((page) => !page.is_hidden).map((page, index: number) => {
-            const hasFeedback = pageHasFeedback(page, this.state.pagesWithFeedback, this.state.hasActivityLevelFeedback);
-            return (
-              <div
-                className="page-item"
-                key={`index ${index}`}
-                onClick={this.handlePageChange(index + 1)}
-                onKeyDown={this.handlePageChange(index + 1)}
-                tabIndex={0}
-              >
-                <span>{`${index + 1}:`}</span>
-                <span className="page-link">{`${page.name ? page.name : "Page " + (index + 1)}`}</span>
-                {hasFeedback && <TeacherFeedbackSmallBadge location="page-links" />}
-              </div>
-            );
-        })
-        }
+        <ul className="page-list">
+          { this.props.activityPages.filter((page) => !page.is_hidden).map((page, index: number) => {
+              const hasFeedback = pageHasFeedback(page, this.state.pagesWithFeedback, this.state.hasActivityLevelFeedback);
+              return (
+                <li className="page-item-container" key={`index ${index}`}>
+                  <a
+                    className="page-item"
+                    href={getPageHref(page.id)}
+                    onClick={this.handlePageChange(index + 1)}
+                  >
+                    <span>{`${index + 1}: `}</span>
+                    <span className="page-link">{`${page.name ? page.name : "Page " + (index + 1)}`}</span>
+                  </a>
+                  {hasFeedback && <TeacherFeedbackSmallBadge location="page-links" />}
+                </li>
+              );
+          })
+          }
+        </ul>
         <button
           className="button begin"
           onClick={this.handlePageChange(1)}
-          onKeyDown={this.handlePageChange(1)}
         >
           Begin Activity
         </button>
@@ -89,10 +90,14 @@ export class ActivityPageLinks extends React.PureComponent <IProps, IState> {
     );
   }
 
-  private handlePageChange = (page: number) => () => {
-    if (accessibilityClick(event)) {
-      this.props.onPageChange(page);
+  private handlePageChange = (page: number) => (e?: React.MouseEvent) => {
+    // Let the browser handle modified clicks (e.g. cmd/ctrl-click to open the
+    // page in a new tab) natively via the anchor's href.
+    if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) {
+      return;
     }
+    e?.preventDefault();
+    this.props.onPageChange(page);
   }
 
   private unsubscribeActivityLevelFeedback: (() => void) | undefined = undefined;
