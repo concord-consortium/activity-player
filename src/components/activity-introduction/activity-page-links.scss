@@ -28,6 +28,11 @@
 
   .page-item-container {
     position: relative;
+    // The absolutely-positioned feedback badge overlaps the link's top-left
+    // corner; let clicks fall through to the link rather than being swallowed.
+    .teacher-feedback-small-badge {
+      pointer-events: none;
+    }
   }
 
   .page-item {

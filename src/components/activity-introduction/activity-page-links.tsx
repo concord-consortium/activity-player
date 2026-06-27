@@ -65,11 +65,11 @@ export class ActivityPageLinks extends React.PureComponent <IProps, IState> {
           { this.props.activityPages.filter((page) => !page.is_hidden).map((page, index: number) => {
               const hasFeedback = pageHasFeedback(page, this.state.pagesWithFeedback, this.state.hasActivityLevelFeedback);
               return (
-                <li className="page-item-container" key={`index ${index}`}>
+                <li className="page-item-container" key={page.id}>
                   <a
                     className="page-item"
                     href={getPageHref(page.id)}
-                    onClick={this.handlePageChange(index + 1)}
+                    onClick={this.handlePageChange(page.position)}
                   >
                     <span>{`${index + 1}: `}</span>
                     <span className="page-link">{`${page.name ? page.name : "Page " + (index + 1)}`}</span>
