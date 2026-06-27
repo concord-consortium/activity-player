@@ -70,7 +70,7 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
         <div className="introduction-content">
           <div className="sequence-header">
             <div className="sequence-title">
-              <h1><DynamicText>{sequence.display_title || sequence.title || ""}</DynamicText></h1>
+              <h1><DynamicText>{sequence.display_title || sequence.title || "Sequence"}</DynamicText></h1>
             </div>
             <ReadAloudToggle />
           </div>
