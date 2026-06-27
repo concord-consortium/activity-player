@@ -240,6 +240,13 @@
     top: 0;
     z-index: 3;
 
+    // Explicit, high-contrast focus ring (the sticky dark header can clip or wash out the
+    // browser default). Inset so the sticky/clipped edges don't hide it.
+    &:focus-visible {
+      outline: 2px solid white;
+      outline-offset: -2px;
+    }
+
     &.right {
       justify-content: flex-start;
     }
