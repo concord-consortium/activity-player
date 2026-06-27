@@ -115,6 +115,7 @@ describe("Activity Page Links accessibility", () => {
     fireEvent.click(link, { metaKey: true });
     fireEvent.click(link, { ctrlKey: true });
     fireEvent.click(link, { shiftKey: true });
+    fireEvent.click(link, { altKey: true });
     expect(onPageChange).not.toHaveBeenCalled();
   });
 
