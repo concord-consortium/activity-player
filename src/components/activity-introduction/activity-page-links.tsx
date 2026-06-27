@@ -69,7 +69,7 @@ export class ActivityPageLinks extends React.PureComponent <IProps, IState> {
                   <a
                     className="page-item"
                     href={getPageHref(page.id)}
-                    onClick={this.handlePageChange(page.position)}
+                    onClick={this.handlePageChange(index + 1)}
                   >
                     <span>{`${index + 1}: `}</span>
                     <span className="page-link">{`${page.name ? page.name : "Page " + (index + 1)}`}</span>

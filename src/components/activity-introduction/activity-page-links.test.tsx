@@ -81,10 +81,11 @@ describe("Activity Page Links accessibility", () => {
     expect(screen.queryByRole("link", { name: /Hidden/ })).toBeNull();
   });
 
-  it("navigates by page position, not visible index, so href and click stay aligned", () => {
-    // A hidden page at position 2 shifts the visible indices: the second visible
-    // page lives at position 3 / id 303, even though its display ordinal is "2".
-    // Both the href (by id) and the click (by position) must resolve to it.
+  it("navigates by 1-based visible page index while linking by page id", () => {
+    // The app renders pages by visible index (pagesVisible[currentPage - 1]), so
+    // onPageChange must receive that index, not page.position. A hidden page does
+    // not get a link, so the second *visible* page is index 2 even though its
+    // page.position is 3. The href, by contrast, is built from the page id.
     const onPageChange = jest.fn();
     const pages = [
       {...DefaultTestPage, name: "First", id: 301, position: 1},
@@ -95,7 +96,7 @@ describe("Activity Page Links accessibility", () => {
     const thirdLink = screen.getByRole("link", { name: "2: Third" });
     expect(thirdLink.getAttribute("href")).toBe("?page=page_303");
     fireEvent.click(thirdLink);
-    expect(onPageChange).toHaveBeenCalledWith(3);
+    expect(onPageChange).toHaveBeenCalledWith(2);
   });
 
   it("requests the page change on a plain click", () => {
