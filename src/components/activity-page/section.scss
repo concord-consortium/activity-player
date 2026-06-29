@@ -214,6 +214,12 @@
     }
   }
 
+  // The collapsible panel groups the secondary embeddables so the trigger's aria-controls
+  // can reference it; `display: contents` keeps the embeddables as direct layout children.
+  .collapsible-panel {
+    display: contents;
+  }
+
   .collapsible-header {
     display: flex;
     justify-content: flex-end;
@@ -221,7 +227,11 @@
     box-sizing: border-box;
     padding: 20px;
     margin-bottom: 10px;
+    width: 100%;
     height: 35px;
+    border: none;
+    font: inherit;
+    text-align: inherit;
     background-color: $cc-charcoal;
     color: $cc-charcoal-light2;
     transition-duration: .25s;
@@ -229,6 +239,13 @@
     position: sticky;
     top: 0;
     z-index: 3;
+
+    // Explicit, high-contrast focus ring (the sticky dark header can clip or wash out the
+    // browser default). Inset so the sticky/clipped edges don't hide it.
+    &:focus-visible {
+      outline: 2px solid white;
+      outline-offset: -2px;
+    }
 
     &.right {
       justify-content: flex-start;

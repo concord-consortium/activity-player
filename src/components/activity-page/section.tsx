@@ -9,6 +9,7 @@ import { EmbeddableType, Page, SectionType } from "../../types";
 import { Logger, LogEventName } from "../../lib/logger";
 import { IGetInteractiveState, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import useResizeObserver from "@react-hook/resize-observer";
+import { nanoid } from "../../utilities/nanoid";
 
 import "./section.scss";
 
@@ -37,6 +38,10 @@ const left = "left";
 export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { activityLayout, page, section, questionNumberStart, hiddenTab, addRefToQuestionMap } = props;
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
+
+  // Stable id wiring the collapsible "Hide/Show" trigger to the panel it controls,
+  // referenced by the trigger's aria-controls for the disclosure ARIA relationship.
+  const collapsiblePanelId = useRef(`secondary-column-panel-${nanoid()}`).current;
 
   const sectionDivRef = useRef<HTMLDivElement>(null);
   const primaryDivRef = useRef<HTMLDivElement>(null);
@@ -140,7 +145,11 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
     return (
       <div className={containerClass} ref={secondaryDivRef} data-cy="section-column-secondary">
         {secondaryEmbeddablesToRender.length > 0 && collapsible && renderCollapsibleHeader()}
-        {!isSecondaryCollapsed && renderEmbeddables(secondaryEmbeddablesToRender, questionNumStart)}
+        {/* The panel wrapper carries the id referenced by the trigger's aria-controls. It uses
+            `display: contents` so the embeddables remain direct layout children of the column. */}
+        <div id={collapsiblePanelId} className="collapsible-panel">
+          {!isSecondaryCollapsed && renderEmbeddables(secondaryEmbeddablesToRender, questionNumStart)}
+        </div>
       </div>
     );
   };
@@ -149,8 +158,12 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
     const collapsibleColumnOnLeft = section.layout === "30-70" || section.layout === "40-60" || section.layout === "responsive-30-70" || section.layout === "responsive-50-50";
     const headerClass = `collapsible-header ${isSecondaryCollapsed ? "collapsed" : ""} ${collapsibleColumnOnLeft ? left : right}`;
     return (
-      <div className={headerClass} data-cy="collapsible-header" tabIndex={0}
-            onClick={handleCollapseHeader} onKeyDown={handleCollapseHeader} >
+      // A native <button> gives the disclosure its semantics and keyboard support (Enter/Space)
+      // for free. aria-expanded reflects the open state; aria-controls points at the panel.
+      <button type="button" className={headerClass} data-cy="collapsible-header"
+            aria-expanded={!isSecondaryCollapsed} aria-controls={collapsiblePanelId}
+            aria-label={isSecondaryCollapsed ? "Show content" : "Hide content"}
+            onClick={handleCollapseHeader} >
         {isSecondaryCollapsed
           ? <React.Fragment>
               {renderCollapseArrow(collapsibleColumnOnLeft ? right : left)}
@@ -162,7 +175,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
               {collapsibleColumnOnLeft && <div>Hide</div>}
             </React.Fragment>
         }
-      </div>
+      </button>
     );
   };
 
@@ -186,7 +199,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
     );
   };
 
-  const handleCollapseHeader = (e: React.MouseEvent<HTMLDivElement> | React.KeyboardEvent<HTMLDivElement>) => {
+  const handleCollapseHeader = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (accessibilityClick(e))  {
       Logger.log({
         event: LogEventName.toggle_collapsible_column,

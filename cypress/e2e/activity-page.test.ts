@@ -43,15 +43,22 @@ context("Test the overall app", () => {
 
       cy.log("verify collapsible column");
       activityPage.getNavPage(2).click();
+      // The trigger is a semantic disclosure button: aria-expanded tracks the open state and
+      // aria-controls references the panel it shows/hides (AP-95).
+      activityPage.getCollapsibleHeader().should("have.prop", "tagName", "BUTTON");
+      activityPage.getCollapsibleHeader().should("have.attr", "aria-controls");
       activityPage.getCollapsibleHeader().should("contain", "Hide");
+      activityPage.getCollapsibleHeader().should("have.attr", "aria-expanded", "true");
       activityPage.getCollapsibleHeader().click();
       // Clicking the header re-renders it (class + label both change), so keep each assertion
       // on its own statement to re-query and avoid asserting against a detached element.
       activityPage.getCollapsibleHeader().should("have.class", "collapsed");
       activityPage.getCollapsibleHeader().should("contain", "Show");
+      activityPage.getCollapsibleHeader().should("have.attr", "aria-expanded", "false");
       activityPage.getCollapsibleHeader().click();
       activityPage.getCollapsibleHeader().should("have.not.class", "collapsed");
       activityPage.getCollapsibleHeader().should("contain", "Hide");
+      activityPage.getCollapsibleHeader().should("have.attr", "aria-expanded", "true");
 
       cy.log("Required questions");
       cy.log("verify locked navigation");
