@@ -4,7 +4,7 @@ import { SidebarPanel } from "./sidebar-panel";
 import { Sidebar } from "./sidebar";
 import { shallow } from "enzyme";
 
-describe("SidebarTab component", () => {
+describe("SidebarTab and SidebarPanel components", () => {
   it("renders tab component", () => {
     const stubFunction = () => {
       // do nothing.

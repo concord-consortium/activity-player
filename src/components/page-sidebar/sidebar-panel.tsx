@@ -32,20 +32,25 @@ const setBackgroundInert = (): (() => void) => {
   const container = document.getElementById("expandable-container");
   const parent = container?.parentElement;
   if (!container || !parent) return () => undefined;
-  const hidden: HTMLElement[] = [];
+  const restores: Array<() => void> = [];
   Array.from(parent.children).forEach((child) => {
-    if (child !== container && child instanceof HTMLElement && !child.hasAttribute("inert")) {
-      child.setAttribute("inert", "");
-      child.setAttribute("aria-hidden", "true");
-      hidden.push(child);
-    }
-  });
-  return () => {
-    hidden.forEach((el) => {
-      el.removeAttribute("inert");
-      el.removeAttribute("aria-hidden");
+    // Leave the sidebar container and anything already inert untouched.
+    if (child === container || !(child instanceof HTMLElement) || child.hasAttribute("inert")) return;
+    // Capture the prior aria-hidden so a value set for other reasons is restored
+    // exactly on close, rather than blanket-removed.
+    const priorAriaHidden = child.getAttribute("aria-hidden");
+    child.setAttribute("inert", "");
+    child.setAttribute("aria-hidden", "true");
+    restores.push(() => {
+      child.removeAttribute("inert");
+      if (priorAriaHidden === null) {
+        child.removeAttribute("aria-hidden");
+      } else {
+        child.setAttribute("aria-hidden", priorAriaHidden);
+      }
     });
-  };
+  });
+  return () => restores.forEach((restore) => restore());
 };
 
 export const SidebarPanel: React.FC<IProps> = (props) => {
