@@ -35,6 +35,17 @@
       }
     }
 
+    // The base .sidebar-title is full-width so the empty no-title placeholder still
+    // pushes the close button to the right. For an actual heading, shrink the box to
+    // its text and center it with auto margins, so the keyboard focus ring hugs the
+    // title text instead of spanning the full header width. Text position is
+    // unchanged (the auto margins center it in the same space).
+    h2.sidebar-title {
+      width: fit-content;
+      max-width: 100%;
+      margin-inline: auto;
+    }
+
     .icon {
       // Reset native <button> chrome so the close control renders identically to the former div.
       border: none;
