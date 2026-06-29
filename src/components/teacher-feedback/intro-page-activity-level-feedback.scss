@@ -4,11 +4,12 @@
   flex: 1 1 100%;
 
   // Preserve the previous visual size and color now that this is an <h2> rather
-  // than an <h1>. The global `.app h2 { color: $cc-charcoal }` rule would
-  // otherwise shift this heading from the themeable secondary color it had as an
-  // <h1> to charcoal; restore the original `--theme-secondary-color` so the
-  // div->heading conversion stays visually neutral.
-  h2 {
+  // than an <h1>. The global `.app h2` rule would otherwise shift this heading to
+  // charcoal at pxToRem(18); restore the original `--theme-secondary-color` and
+  // size so the div->heading conversion stays visually neutral. The `.app &`
+  // prefix raises specificity to (0,2,1) so it reliably beats the equal-specificity
+  // global `.app h2` rule regardless of CSS injection order.
+  .app & h2 {
     margin: 0.67em 0;
     font-size: pxToRem(32);
     color: var(--theme-secondary-color);
