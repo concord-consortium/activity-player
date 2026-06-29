@@ -16,6 +16,32 @@ describe("SidebarTab component", () => {
       sidebarOpen={false} />);
     expect(wrapper.find('[data-cy="sidebar-tab-title"]').text()).toContain(title);
   });
+  it("renders the tab trigger as a semantic button that announces it opens a dialog", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarTab
+      title={"Did you know?"}
+      handleShowSidebarContent={stubFunction}
+      index={0}
+      sidebarOpen={false} />);
+    const button = wrapper.find('button[data-cy="sidebar-tab"]');
+    expect(button.length).toBe(1);
+    expect(button.prop("type")).toBe("button");
+    expect(button.prop("aria-haspopup")).toBe("dialog");
+    expect(button.prop("aria-expanded")).toBe(false);
+  });
+  it("reflects the open state on the tab trigger's aria-expanded", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarTab
+      title={"Did you know?"}
+      handleShowSidebarContent={stubFunction}
+      index={0}
+      sidebarOpen={true} />);
+    expect(wrapper.find('button[data-cy="sidebar-tab"]').prop("aria-expanded")).toBe(true);
+  });
   it("renders panel component", () => {
     const stubFunction = () => {
       // do nothing.

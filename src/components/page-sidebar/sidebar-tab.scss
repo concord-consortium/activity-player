@@ -1,6 +1,10 @@
 @import "../vars.scss";
 
 .sidebar-tab {
+  // Reset native <button> chrome so the trigger renders identically to the former div.
+  border: none;
+  font: inherit;
+  color: inherit;
   cursor: pointer;
   width: 75px;
   min-height: 70px;

@@ -18,22 +18,21 @@ export class SidebarTab extends React.PureComponent<IProps>{
 
   render() {
     return (
-      <div className="sidebar-tab" onClick={this.handleSidebarShow} onKeyDown={this.handleSidebarShow}
-           data-cy="sidebar-tab" tabIndex={0} role="button" aria-expanded={this.props.sidebarOpen}>
+      // A native <button> gives the trigger its semantics and Enter/Space activation for free.
+      // aria-haspopup="dialog" announces that it opens the sidebar panel; aria-expanded reflects
+      // the open state. The visible "tab-name" text supplies the button's accessible name.
+      <button type="button" className="sidebar-tab" onClick={this.handleSidebarShow}
+           data-cy="sidebar-tab" aria-haspopup="dialog" aria-expanded={this.props.sidebarOpen}>
         <div className={`icon ${this.props.sidebarOpen ? "open" : ""}`}>
           <IconArrow aria-hidden="true" focusable="false" />
         </div>
         <div className="tab-name" data-cy="sidebar-tab-title">{this.props.title}</div>
-      </div>
+      </button>
     );
   }
 
-  private handleSidebarShow = (e: React.MouseEvent | React.KeyboardEvent) => {
+  private handleSidebarShow = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (accessibilityClick(e)) {
-      // role="button" div: stop Space from also scrolling the page on keyboard activation
-      if (e.type === "keydown") {
-        e.preventDefault();
-      }
       this.props.handleShowSidebarContent(this.props.index, !this.props.sidebarOpen);
     }
   }
