@@ -12,7 +12,8 @@
 
     .sidebar-title{
       margin: 0;
-      color: white;
+      // Charcoal on the orange header meets WCAG 1.4.3 AA contrast (was white).
+      color: $cc-charcoal;
       font-size: pxToRem(20);
       font-weight: normal;
       width: 100%;
