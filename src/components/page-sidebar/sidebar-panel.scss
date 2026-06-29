@@ -20,11 +20,18 @@
       text-align: center;
 
       // The heading receives focus only programmatically when the dialog opens
-      // (it carries tabIndex -1 and is not a Tab stop), so the ring would read as
-      // a stray outline. Suppressing it does not affect focus visibility on the
-      // dialog's actual controls, which keep their own indicators.
+      // (it carries tabIndex -1 and is not a Tab stop). Suppress the ring for a
+      // mouse-opened dialog (where a ring on a heading reads as a stray outline),
+      // but show a contrast-safe ring when the dialog is opened via keyboard
+      // (:focus-visible) so keyboard users get a visible focus indicator on open
+      // (WCAG 2.4.7). The charcoal ring matches the close button: 5.32:1 on the
+      // orange header, and theme-independent / forced-colors-safe.
       &:focus {
         outline: none;
+      }
+      &:focus-visible {
+        outline: 2px solid $cc-charcoal;
+        outline-offset: 2px;
       }
     }
 

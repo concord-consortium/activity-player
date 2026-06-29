@@ -9,7 +9,10 @@
   right: -500px;
   border-radius: 0 0 0 8px;
   width: 500px;
-  transition: 0.4s right, 0.4s z-index, 1.0s opacity, 0.20s 0.05s ease box-shadow;
+  // z-index is intentionally NOT transitioned: it is a discrete property, and animating it
+  // lets the container momentarily stack below the overlay (z 1999) during the open
+  // animation, so clicks on the dialog could register as overlay clicks and dismiss it.
+  transition: 0.4s right, 1.0s opacity, 0.20s 0.05s ease box-shadow;
 
   &.expanded {
     right: 0 !important;
