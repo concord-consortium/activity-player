@@ -17,6 +17,37 @@ interface IProps {
   triggerRef?: React.RefObject<HTMLButtonElement>;
 }
 
+/**
+ * While the dialog is open, take the rest of the page out of the pointer, focus,
+ * and assistive-tech trees by marking the siblings of #expandable-container (the
+ * header, activity content, footer, plugins) inert + aria-hidden. This is the
+ * robust complement to aria-modal for assistive tech (e.g. a screen reader's
+ * browse/virtual-cursor mode, which aria-modal alone doesn't reliably confine);
+ * the overlay still handles the pointer/visual side and click-to-dismiss. The
+ * sidebar container itself stays interactive, so the open dialog (and its
+ * trigger) remain reachable. Bounded to one level of siblings — no tree walk.
+ * Returns a function that restores the previous state.
+ */
+const setBackgroundInert = (): (() => void) => {
+  const container = document.getElementById("expandable-container");
+  const parent = container?.parentElement;
+  if (!container || !parent) return () => undefined;
+  const hidden: HTMLElement[] = [];
+  Array.from(parent.children).forEach((child) => {
+    if (child !== container && child instanceof HTMLElement && !child.hasAttribute("inert")) {
+      child.setAttribute("inert", "");
+      child.setAttribute("aria-hidden", "true");
+      hidden.push(child);
+    }
+  });
+  return () => {
+    hidden.forEach((el) => {
+      el.removeAttribute("inert");
+      el.removeAttribute("aria-hidden");
+    });
+  };
+};
+
 export const SidebarPanel: React.FC<IProps> = (props) => {
   const { content, handleCloseSidebarContent, index, panelId, show, title, triggerRef } = props;
   const innerContent = content ? content : "";
@@ -73,6 +104,17 @@ export const SidebarPanel: React.FC<IProps> = (props) => {
     }
     wasShown.current = show;
   }, [show, trap, triggerRef]);
+
+  // While open, take the rest of the page (everything outside the sidebar
+  // container) out of the pointer/focus/AT trees; restore it on close/unmount.
+  useEffect(() => {
+    if (!show) return;
+    // setBackgroundInert() applies the inert/aria-hidden attributes now and
+    // returns the function that undoes them, which we hand back as the effect's
+    // cleanup so React runs it when the dialog closes or the panel unmounts.
+    const restoreBackground = setBackgroundInert();
+    return restoreBackground;
+  }, [show]);
 
   return (
     <div

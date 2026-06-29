@@ -41,10 +41,18 @@ context("Test the overall app", () => {
       cy.focused().should("have.attr", "data-cy", "sidebar-title");
       cy.focused().closest("[data-cy=sidebar-panel]").should("exist");
 
+      cy.log("verify the open dialog makes background content inert for AT/pointer");
+      // Siblings of the sidebar container (header, activity content, footer) are
+      // marked inert + aria-hidden while the dialog is open so AT can't reach them.
+      cy.get("#expandable-container").siblings().first().should("have.attr", "inert");
+      cy.get("#expandable-container").siblings().first().should("have.attr", "aria-hidden", "true");
+
       cy.log("verify Escape closes the dialog and returns focus to the trigger");
       cy.focused().type("{esc}");
       activityPage.getSidebarContent().should("not.be.visible");
       cy.focused().should("have.attr", "data-cy", "sidebar-tab");
+      // Background is interactive again once the dialog closes.
+      cy.get("#expandable-container").siblings().first().should("not.have.attr", "inert");
 
       cy.log("verify clicking the overlay closes the dialog");
       activityPage.getSidebarTab().click();
