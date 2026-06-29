@@ -49,7 +49,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
 
   return (
     <main className="single-page-content" data-cy="single-page-content">
-      <h1 className="activity-name"><DynamicText>{activity.name}</DynamicText></h1>
+      <h1 className="activity-name"><DynamicText>{activity.name || "Activity"}</DynamicText></h1>
       <ReadAloudToggle style={{justifyContent: "flex-end"}} />
 
       {activity.pages.filter((page) => !page.is_hidden).map((page, index: number) => (

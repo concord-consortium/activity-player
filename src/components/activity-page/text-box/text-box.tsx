@@ -16,9 +16,10 @@ interface IProps {
 
 export const TextBox: React.FC<IProps> = (props) => {
   const { embeddable} = props;
+  const trimmedName = embeddable.name?.trim();
   return(
     <div className={`textbox ${embeddable.is_callout ? "callout" : ""}`} data-cy="text-box">
-      { embeddable.name && <h2 className="text-name"><DynamicText context={dynamicTextManager}>{embeddable.name}</DynamicText></h2> }
+      { trimmedName && <h2 className="text-name"><DynamicText context={dynamicTextManager}>{trimmedName}</DynamicText></h2> }
       <div className="content">
         <DynamicText context={dynamicTextManager}>
           <div className="question-txt">
