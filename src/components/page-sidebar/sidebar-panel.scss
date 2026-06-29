@@ -21,6 +21,10 @@
     }
 
     .icon {
+      // Reset native <button> chrome so the close control renders identically to the former div.
+      border: none;
+      background: none;
+      padding: 0;
       // Charcoal fill meets WCAG 1.4.11 non-text contrast against the orange header (was white).
       fill: $cc-charcoal;
       width: 24px;

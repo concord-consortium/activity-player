@@ -31,6 +31,21 @@ describe("SidebarTab component", () => {
     expect(wrapper.find('[data-cy="sidebar-title"]').text()).toContain(title);
     expect(wrapper.find('[data-cy="sidebar-content"]').length).toBe(1);
   });
+  it("renders the close control as a semantic button with an accessible name", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarPanel
+      title={"Did you know?"}
+      index={0}
+      content={"content"}
+      show={true}
+      handleCloseSidebarContent={stubFunction} />);
+    const closeButton = wrapper.find('button[data-cy="sidebar-close-button"]');
+    expect(closeButton.length).toBe(1);
+    expect(closeButton.prop("type")).toBe("button");
+    expect(closeButton.prop("aria-label")).toBe("Close");
+  });
   it("renders the panel title as an h2 heading when present", () => {
     const stubFunction = () => {
       // do nothing.

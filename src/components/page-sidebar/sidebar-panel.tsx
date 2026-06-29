@@ -26,10 +26,12 @@ export class SidebarPanel extends React.PureComponent<IProps>{
           {hasTitle
             ? <h2 className="sidebar-title" data-cy="sidebar-title">{this.props.title}</h2>
             : <div className="sidebar-title" data-cy="sidebar-title" />}
-          <div className="icon" onClick={this.handleCloseButton} onKeyDown={this.handleCloseButton}
-               data-cy="sidebar-close-button" tabIndex={0} role="button" aria-label="Close">
+          {/* A native <button> gives the close control its semantics and Enter/Space activation
+              for free; aria-label supplies its accessible name since the "x" icon is decorative. */}
+          <button type="button" className="icon" onClick={this.handleCloseButton}
+               data-cy="sidebar-close-button" aria-label="Close">
             <IconClose aria-hidden="true" focusable="false" />
-          </div>
+          </button>
         </div>
         <DynamicText>
           <div className="sidebar-content help-content" data-cy="sidebar-content">{renderHTML(innerContent)}
@@ -39,12 +41,8 @@ export class SidebarPanel extends React.PureComponent<IProps>{
     );
   }
 
-  private handleCloseButton = (e: React.MouseEvent | React.KeyboardEvent) => {
+  private handleCloseButton = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (accessibilityClick(e)){
-      // role="button" div: stop Space from also scrolling the page on keyboard activation
-      if (e.type === "keydown") {
-        e.preventDefault();
-      }
       this.props.handleCloseSidebarContent(this.props.index, false);
     }
   }
