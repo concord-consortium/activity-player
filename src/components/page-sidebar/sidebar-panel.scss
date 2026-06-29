@@ -41,6 +41,13 @@
       &:active {
         background-color: $cc-orange-light2;
       }
+      // Theme-independent focus indicator matching .version-info in app.scss: a solid charcoal
+      // outline reads 5.32:1 on the orange header and survives forced-colors mode, where the
+      // themed box-shadow ring used by .button can drop below contrast under the orange theme.
+      &:focus-visible {
+        outline: 2px solid $cc-charcoal;
+        outline-offset: 2px;
+      }
     }
   }
 
