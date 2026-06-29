@@ -3,8 +3,14 @@
 .intro-page-activity-level-feedback {
   flex: 1 1 100%;
 
+  // Preserve the previous visual size and color now that this is an <h2> rather
+  // than an <h1>. The global `.app h2 { color: $cc-charcoal }` rule would
+  // otherwise shift this heading from the themeable secondary color it had as an
+  // <h1> to charcoal; restore the original `--theme-secondary-color` so the
+  // div->heading conversion stays visually neutral.
   h2 {
     margin: 0.67em 0;
     font-size: pxToRem(32);
+    color: var(--theme-secondary-color);
   }
 }
