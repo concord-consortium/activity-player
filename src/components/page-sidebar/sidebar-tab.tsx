@@ -30,7 +30,7 @@ export class SidebarTab extends React.PureComponent<IProps>{
       <button type="button" className="sidebar-tab" onClick={this.handleSidebarShow}
            ref={this.props.triggerRef}
            data-cy="sidebar-tab" aria-haspopup="dialog" aria-expanded={this.props.sidebarOpen}
-           aria-controls={this.props.panelId}
+           aria-controls={this.props.panelId ?? `sidebar-panel-${this.props.index}`}
            aria-label={hasTitle ? undefined : "Show sidebar"}>
         <div className={`icon ${this.props.sidebarOpen ? "open" : ""}`}>
           <IconArrow aria-hidden="true" focusable="false" />

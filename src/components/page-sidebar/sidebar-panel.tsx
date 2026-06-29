@@ -23,7 +23,12 @@ export const SidebarPanel: React.FC<IProps> = (props) => {
   // Only use a heading when there is title text; otherwise keep a non-heading
   // placeholder so the close button stays positioned without an empty heading.
   const hasTitle = !!title?.trim();
-  const titleId = panelId ? `${panelId}-title` : undefined;
+  // `index` is always supplied, so fall back to the same `sidebar-panel-${index}`
+  // id that Sidebar passes — this guarantees the dialog always has an id (for the
+  // trigger's aria-controls) and an accessible name (aria-labelledby), even if a
+  // future caller omits panelId.
+  const resolvedPanelId = panelId ?? `sidebar-panel-${index}`;
+  const titleId = `${resolvedPanelId}-title`;
 
   const panelRef = useRef<HTMLDivElement | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
@@ -72,7 +77,7 @@ export const SidebarPanel: React.FC<IProps> = (props) => {
   return (
     <div
       ref={setPanelRef}
-      id={panelId}
+      id={resolvedPanelId}
       role="dialog"
       aria-modal={true}
       aria-labelledby={hasTitle ? titleId : undefined}

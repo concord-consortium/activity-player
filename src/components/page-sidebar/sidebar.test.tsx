@@ -185,6 +185,23 @@ describe("SidebarTab component", () => {
     expect(panel.prop("aria-labelledby")).toBeUndefined();
     expect(panel.prop("aria-label")).toBe("Sidebar");
   });
+  it("derives the dialog id and accessible name from index when panelId is omitted", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarPanel
+      title={"Did you know?"}
+      index={3}
+      content={"content"}
+      show={true}
+      handleCloseSidebarContent={stubFunction} />);
+    const panel = wrapper.find('[data-cy="sidebar-panel"]');
+    // The dialog id and aria-labelledby must resolve even without an explicit panelId,
+    // so the trigger's aria-controls and the dialog's accessible name never break.
+    expect(panel.prop("id")).toBe("sidebar-panel-3");
+    expect(wrapper.find("h2.sidebar-title").prop("id")).toBe("sidebar-panel-3-title");
+    expect(panel.prop("aria-labelledby")).toBe("sidebar-panel-3-title");
+  });
 });
 
 describe("Sidebar component", () => {
@@ -219,5 +236,16 @@ describe("SidebarTab dialog linkage", () => {
       panelId={"sidebar-panel-0"}
       sidebarOpen={false} />);
     expect(wrapper.find('button[data-cy="sidebar-tab"]').prop("aria-controls")).toBe("sidebar-panel-0");
+  });
+  it("falls back aria-controls to the index-derived panel id when panelId is omitted", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarTab
+      title={"Did you know?"}
+      handleShowSidebarContent={stubFunction}
+      index={3}
+      sidebarOpen={false} />);
+    expect(wrapper.find('button[data-cy="sidebar-tab"]').prop("aria-controls")).toBe("sidebar-panel-3");
   });
 });
