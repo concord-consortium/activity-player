@@ -17,3 +17,13 @@
     box-shadow: -3px 2px 15px rgba(0,0,0,0.3), 0 0 0 8000px rgba(68,68,68,0.1), 0 0 0 8000px rgba(255,255,255,0.7);
   }
 }
+
+// Transparent, full-viewport overlay that makes the page behind the open dialog
+// inert to pointer input and dismisses it on an outside click. It sits one
+// z-index below the expanded container (2000); the container's box-shadow
+// supplies the visual dimming, so this overlay stays transparent.
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1999;
+}

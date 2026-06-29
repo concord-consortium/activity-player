@@ -9,6 +9,9 @@ interface IProps {
   index: number;
   title: string | null;
   sidebarOpen: boolean
+  panelId?: string;
+  /** Forwarded to the trigger <button> so the dialog can return focus here on close. */
+  triggerRef?: React.RefObject<HTMLButtonElement>;
 }
 
 export class SidebarTab extends React.PureComponent<IProps>{
@@ -23,9 +26,11 @@ export class SidebarTab extends React.PureComponent<IProps>{
     return (
       // A native <button> gives the trigger its semantics and Enter/Space activation for free.
       // aria-haspopup="dialog" announces that it opens the sidebar panel; aria-expanded reflects
-      // the open state.
+      // the open state; aria-controls links it to the dialog panel it opens.
       <button type="button" className="sidebar-tab" onClick={this.handleSidebarShow}
+           ref={this.props.triggerRef}
            data-cy="sidebar-tab" aria-haspopup="dialog" aria-expanded={this.props.sidebarOpen}
+           aria-controls={this.props.panelId}
            aria-label={hasTitle ? undefined : "Show sidebar"}>
         <div className={`icon ${this.props.sidebarOpen ? "open" : ""}`}>
           <IconArrow aria-hidden="true" focusable="false" />

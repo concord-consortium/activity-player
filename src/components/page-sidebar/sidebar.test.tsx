@@ -1,6 +1,7 @@
 import React from "react";
 import { SidebarTab } from "./sidebar-tab";
 import { SidebarPanel } from "./sidebar-panel";
+import { Sidebar } from "./sidebar";
 import { shallow } from "enzyme";
 
 describe("SidebarTab component", () => {
@@ -119,5 +120,104 @@ describe("SidebarTab component", () => {
     expect(wrapper.find("h2").length).toBe(0);
     // The placeholder keeps the data-cy hook so layout/selectors are preserved.
     expect(wrapper.find('[data-cy="sidebar-title"]').length).toBe(1);
+  });
+  it("marks the panel as a modal dialog with the supplied id", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarPanel
+      title={"Did you know?"}
+      index={0}
+      panelId={"sidebar-panel-0"}
+      content={"content"}
+      show={true}
+      handleCloseSidebarContent={stubFunction} />);
+    const panel = wrapper.find('[data-cy="sidebar-panel"]');
+    expect(panel.prop("role")).toBe("dialog");
+    expect(panel.prop("aria-modal")).toBe(true);
+    expect(panel.prop("id")).toBe("sidebar-panel-0");
+  });
+  it("names the dialog via aria-labelledby pointing at the title heading when a title exists", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarPanel
+      title={"Did you know?"}
+      index={0}
+      panelId={"sidebar-panel-0"}
+      content={"content"}
+      show={true}
+      handleCloseSidebarContent={stubFunction} />);
+    const panel = wrapper.find('[data-cy="sidebar-panel"]');
+    const heading = wrapper.find("h2.sidebar-title");
+    const headingId = heading.prop("id");
+    expect(headingId).toBeTruthy();
+    expect(panel.prop("aria-labelledby")).toBe(headingId);
+    expect(panel.prop("aria-label")).toBeUndefined();
+  });
+  it("makes the title heading programmatically focusable so it can receive initial dialog focus", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarPanel
+      title={"Did you know?"}
+      index={0}
+      panelId={"sidebar-panel-0"}
+      content={"content"}
+      show={true}
+      handleCloseSidebarContent={stubFunction} />);
+    // tabIndex -1 keeps the heading out of the Tab sequence while still allowing
+    // the dialog to move initial focus there programmatically when it opens.
+    expect(wrapper.find("h2.sidebar-title").prop("tabIndex")).toBe(-1);
+  });
+  it("falls back to an aria-label on the dialog when there is no title", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarPanel
+      title={null}
+      index={0}
+      panelId={"sidebar-panel-0"}
+      content={"content"}
+      show={true}
+      handleCloseSidebarContent={stubFunction} />);
+    const panel = wrapper.find('[data-cy="sidebar-panel"]');
+    expect(panel.prop("aria-labelledby")).toBeUndefined();
+    expect(panel.prop("aria-label")).toBe("Sidebar");
+  });
+});
+
+describe("Sidebar component", () => {
+  it("links the trigger to the panel with a shared id (aria-controls)", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<Sidebar
+      content={"content"}
+      handleShowSidebar={stubFunction}
+      index={2}
+      show={false}
+      title={"Did you know?"} />);
+    const tab = wrapper.find(SidebarTab);
+    const panel = wrapper.find(SidebarPanel);
+    const panelId = panel.prop("panelId");
+    expect(panelId).toBeTruthy();
+    // Both the trigger and the panel share the same id so aria-controls resolves.
+    expect(tab.prop("panelId")).toBe(panelId);
+  });
+});
+
+describe("SidebarTab dialog linkage", () => {
+  it("points aria-controls at the panel it opens", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarTab
+      title={"Did you know?"}
+      handleShowSidebarContent={stubFunction}
+      index={0}
+      panelId={"sidebar-panel-0"}
+      sidebarOpen={false} />);
+    expect(wrapper.find('button[data-cy="sidebar-tab"]').prop("aria-controls")).toBe("sidebar-panel-0");
   });
 });

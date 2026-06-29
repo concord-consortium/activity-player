@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import { useFocusTrap, FocusTrapStrategy } from "@concord-consortium/accessibility-tools/hooks";
 import IconClose from "../../assets/svg-icons/icon-close.svg";
 import { renderHTML } from "../../utilities/render-html";
-import { accessibilityClick } from "../../utilities/accessibility-helper";
 
 import "./sidebar-panel.scss";
 import { DynamicText } from "@concord-consortium/dynamic-text";
@@ -12,38 +12,90 @@ interface IProps {
   content: string | null;
   title: string | null;
   show: boolean;
+  panelId?: string;
+  /** Ref to the trigger that opened the panel, so focus can return there on close. */
+  triggerRef?: React.RefObject<HTMLButtonElement>;
 }
 
-export class SidebarPanel extends React.PureComponent<IProps>{
-  render() {
-    const innerContent = this.props.content ? this.props.content : "";
-    // Only use a heading when there is title text; otherwise keep a non-heading
-    // placeholder so the close button stays positioned without an empty heading.
-    const hasTitle = !!this.props.title?.trim();
-    return (
-      <div className={`sidebar-panel ${this.props.show ? "visible " : "hidden"}`}>
-        <div className="sidebar-header">
-          {hasTitle
-            ? <h2 className="sidebar-title" data-cy="sidebar-title">{this.props.title}</h2>
-            : <div className="sidebar-title" data-cy="sidebar-title" />}
-          {/* A native <button> gives the close control its semantics and Enter/Space activation
-              for free; aria-label supplies its accessible name since the "x" icon is decorative. */}
-          <button type="button" className="icon" onClick={this.handleCloseButton}
-               data-cy="sidebar-close-button" aria-label="Close">
-            <IconClose aria-hidden="true" focusable="false" />
-          </button>
-        </div>
-        <DynamicText>
-          <div className="sidebar-content help-content" data-cy="sidebar-content">{renderHTML(innerContent)}
-          </div>
-        </DynamicText>
-      </div>
-    );
-  }
+export const SidebarPanel: React.FC<IProps> = (props) => {
+  const { content, handleCloseSidebarContent, index, panelId, show, title, triggerRef } = props;
+  const innerContent = content ? content : "";
+  // Only use a heading when there is title text; otherwise keep a non-heading
+  // placeholder so the close button stays positioned without an empty heading.
+  const hasTitle = !!title?.trim();
+  const titleId = panelId ? `${panelId}-title` : undefined;
 
-  private handleCloseButton = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (accessibilityClick(e)){
-      this.props.handleCloseSidebarContent(this.props.index, false);
+  const panelRef = useRef<HTMLDivElement | null>(null);
+  const headingRef = useRef<HTMLHeadingElement | null>(null);
+
+  const handleClose = useCallback(() => {
+    handleCloseSidebarContent(index, false);
+  }, [handleCloseSidebarContent, index]);
+
+  // A single "panel" slot holds the whole dialog. Listing it in tabWithinSlots
+  // makes Tab move through the panel's focusable children (close button, links)
+  // and wrap at the boundaries instead of escaping to the page behind; Escape
+  // closes the dialog.
+  const strategy = useMemo<FocusTrapStrategy>(() => ({
+    getElements: () => ({ panel: panelRef.current ?? undefined }),
+    cycleOrder: ["panel"],
+    tabWithinSlots: ["panel"],
+    escapeHandlers: {
+      panel: () => { handleClose(); return "handled"; },
+    },
+  }), [handleClose]);
+
+  const trap = useFocusTrap({ strategy, enabled: show });
+
+  // Wire the trap's container seam onto the panel and keep our own ref in sync.
+  const setPanelRef = useCallback((el: HTMLDivElement | null) => {
+    panelRef.current = el;
+    trap.containerRef(el);
+  }, [trap]);
+
+  // Move focus into the dialog on open; return it to the trigger on close.
+  const wasShown = useRef(false);
+  useEffect(() => {
+    if (show && !wasShown.current) {
+      // enterTrap activates the trap (and lands focus on the first control);
+      // override that to land on the dialog heading so a screen reader announces
+      // the dialog's name before the user tabs to its controls. Fall back to the
+      // panel container (which carries the aria-label) when there is no heading.
+      trap.enterTrap();
+      (headingRef.current ?? panelRef.current)?.focus();
+    } else if (!show && wasShown.current) {
+      triggerRef?.current?.focus();
     }
-  }
-}
+    wasShown.current = show;
+  }, [show, trap, triggerRef]);
+
+  return (
+    <div
+      ref={setPanelRef}
+      id={panelId}
+      role="dialog"
+      aria-modal={true}
+      aria-labelledby={hasTitle ? titleId : undefined}
+      aria-label={hasTitle ? undefined : "Sidebar"}
+      tabIndex={-1}
+      data-cy="sidebar-panel"
+      className={`sidebar-panel ${show ? "visible " : "hidden"}`}
+    >
+      <div className="sidebar-header">
+        {hasTitle
+          ? <h2 className="sidebar-title" id={titleId} data-cy="sidebar-title" ref={headingRef} tabIndex={-1}>{title}</h2>
+          : <div className="sidebar-title" data-cy="sidebar-title" />}
+        {/* A native <button> gives the close control its semantics and Enter/Space activation
+            for free; aria-label supplies its accessible name since the "x" icon is decorative. */}
+        <button type="button" className="icon" onClick={handleClose}
+             data-cy="sidebar-close-button" aria-label="Close">
+          <IconClose aria-hidden="true" focusable="false" />
+        </button>
+      </div>
+      <DynamicText>
+        <div className="sidebar-content help-content" data-cy="sidebar-content">{renderHTML(innerContent)}
+        </div>
+      </DynamicText>
+    </div>
+  );
+};

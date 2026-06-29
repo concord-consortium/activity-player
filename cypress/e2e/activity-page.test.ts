@@ -33,6 +33,25 @@ context("Test the overall app", () => {
       activityPage.getSidebarCloseButton().click();
       activityPage.getSidebarContent().should("not.be.visible");
 
+      cy.log("verify opening the dialog moves focus to its heading");
+      activityPage.getSidebarTab().click();
+      activityPage.getSidebarContent().should("be.visible");
+      // Initial focus lands on the dialog heading so a screen reader announces the
+      // dialog name; the heading sits within the panel, so focus is trapped inside.
+      cy.focused().should("have.attr", "data-cy", "sidebar-title");
+      cy.focused().closest("[data-cy=sidebar-panel]").should("exist");
+
+      cy.log("verify Escape closes the dialog and returns focus to the trigger");
+      cy.focused().type("{esc}");
+      activityPage.getSidebarContent().should("not.be.visible");
+      cy.focused().should("have.attr", "data-cy", "sidebar-tab");
+
+      cy.log("verify clicking the overlay closes the dialog");
+      activityPage.getSidebarTab().click();
+      activityPage.getSidebarContent().should("be.visible");
+      cy.get("[data-cy=sidebar-overlay]").click("topLeft");
+      activityPage.getSidebarContent().should("not.be.visible");
+
       cy.log("Info/Assess (secondary embeddables)");
       cy.log("verify textbox");
       activityPage.getNavPage(3).click();

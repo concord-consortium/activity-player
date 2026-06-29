@@ -18,6 +18,14 @@
       font-weight: normal;
       width: 100%;
       text-align: center;
+
+      // The heading receives focus only programmatically when the dialog opens
+      // (it carries tabIndex -1 and is not a Tab stop), so the ring would read as
+      // a stray outline. Suppressing it does not affect focus visibility on the
+      // dialog's actual controls, which keep their own indicators.
+      &:focus {
+        outline: none;
+      }
     }
 
     .icon {
