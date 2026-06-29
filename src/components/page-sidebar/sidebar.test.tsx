@@ -31,4 +31,30 @@ describe("SidebarTab component", () => {
     expect(wrapper.find('[data-cy="sidebar-title"]').text()).toContain(title);
     expect(wrapper.find('[data-cy="sidebar-content"]').length).toBe(1);
   });
+  it("renders the panel title as an h2 heading when present", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarPanel
+      title={"Did you know?"}
+      index={0}
+      content={"content"}
+      show={true}
+      handleCloseSidebarContent={stubFunction} />);
+    expect(wrapper.find("h2.sidebar-title").length).toBe(1);
+  });
+  it("renders no heading element when the sidebar has no title (avoids an empty heading)", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarPanel
+      title={null}
+      index={0}
+      content={"content"}
+      show={true}
+      handleCloseSidebarContent={stubFunction} />);
+    expect(wrapper.find("h2").length).toBe(0);
+    // The placeholder keeps the data-cy hook so layout/selectors are preserved.
+    expect(wrapper.find('[data-cy="sidebar-title"]').length).toBe(1);
+  });
 });

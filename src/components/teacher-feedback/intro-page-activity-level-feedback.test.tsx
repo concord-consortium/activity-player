@@ -13,4 +13,10 @@ describe("Activity Level Feedback component", () => {
     const wrapper = shallow(<IntroPageActivityLevelFeedback teacherFeedback={mockFeedback} />);
     expect(wrapper.find('[data-testid="intro-page-activity-level-feedback"]').length).toBe(1);
   });
+
+  it("renders the 'Teacher Feedback' label as an h2 (not an h1, to avoid a duplicate page h1)", () => {
+    const wrapper = shallow(<IntroPageActivityLevelFeedback teacherFeedback={mockFeedback} />);
+    expect(wrapper.find("h2").length).toBe(1);
+    expect(wrapper.find("h1").length).toBe(0);
+  });
 });

@@ -1,4 +1,5 @@
 import React from "react";
+import { DynamicText } from "@concord-consortium/dynamic-text";
 
 import { numQuestionsOnPreviousSections, numQuestionsOnPreviousPages } from "../../utilities/activity-utils";
 import { RelatedContent } from "./related-content";
@@ -48,6 +49,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
 
   return (
     <main className="single-page-content" data-cy="single-page-content">
+      <h1 className="activity-name"><DynamicText>{activity.name || "Activity"}</DynamicText></h1>
       <ReadAloudToggle style={{justifyContent: "flex-end"}} />
 
       {activity.pages.filter((page) => !page.is_hidden).map((page, index: number) => (

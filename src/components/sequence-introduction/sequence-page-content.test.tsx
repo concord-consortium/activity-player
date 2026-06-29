@@ -30,4 +30,12 @@ describe("Sequence Page Content component", () => {
     render(<DynamicTextTester><SequencePageContent sequence={sequence} onSelectActivity={stubFunction} /></DynamicTextTester>);
     expect(screen.getByRole("main")).toBeInTheDocument();
   });
+  it("renders the sequence title as an h1", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    render(<DynamicTextTester><SequencePageContent sequence={sequence} onSelectActivity={stubFunction} /></DynamicTextTester>);
+    const h1 = screen.getByRole("heading", { level: 1 });
+    expect(h1).toHaveTextContent(sequence.display_title || sequence.title || "Sequence");
+  });
 });

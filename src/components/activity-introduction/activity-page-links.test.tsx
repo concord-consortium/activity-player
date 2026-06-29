@@ -25,4 +25,12 @@ describe("Activity Page Links component", () => {
     expect(wrapper.containsMatchingElement(<span>Page 3</span>)).toEqual(true);
     expect(wrapper.containsMatchingElement(<button>Begin Activity</button>)).toEqual(true);
   });
+
+  it("renders the 'Pages in this Activity' label as an h2 heading", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<ActivityPageLinks activityPages={[]} onPageChange={stubFunction} />);
+    expect(wrapper.find("h2.pages").length).toBe(1);
+  });
 });

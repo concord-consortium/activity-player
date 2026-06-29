@@ -84,3 +84,29 @@ describe("ManagedInteractiveHeader hint trigger", () => {
     expect(trigger).toBeNull();
   });
 });
+
+describe("ManagedInteractiveHeader heading semantics", () => {
+  it("renders the question title as an h2 heading", () => {
+    const { container } = renderHeader();
+    const heading = container.querySelector("h2.embeddable-header-text");
+    expect(heading).not.toBeNull();
+    expect(heading?.textContent).toContain("Question #1: My question");
+  });
+
+  it("uses the interactive name (with no number) as the heading when question numbers are hidden", () => {
+    const { container } = renderHeader({ questionNumber: undefined, questionName: "Drawing Tool Name" });
+    const heading = container.querySelector("h2.embeddable-header-text");
+    expect(heading).not.toBeNull();
+    expect(heading?.textContent).toContain("Drawing Tool Name");
+    expect(heading?.textContent).not.toContain("Question #");
+  });
+
+  it("renders no heading element when the header exists only for a hint", () => {
+    // Hidden question number + no name, but a hint is present: the header bar must
+    // still render for the hint trigger, but must NOT introduce an empty heading.
+    const { container, trigger } = renderHeader({ questionNumber: undefined, questionName: "" });
+    expect(container.querySelector("h2")).toBeNull();
+    expect(container.querySelector(".header")).not.toBeNull();
+    expect(trigger).not.toBeNull();
+  });
+});
