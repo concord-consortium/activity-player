@@ -29,6 +29,10 @@ context("skip to main content", () => {
     // Activating the link moves keyboard focus to the main content region.
     cy.get('[data-cy="skip-link"]').click();
     cy.focused().should("have.attr", "id", "main-content");
-    cy.get("main#main-content").should("have.attr", "tabindex", "-1");
+    cy.get("#main-content").should("have.attr", "tabindex", "-1");
+
+    // The skip-link target is a wrapper that must contain exactly one <main>
+    // landmark (AP-83 regression: nested <main>s confuse AT landmark nav).
+    cy.get("main").should("have.length", 1);
   });
 });

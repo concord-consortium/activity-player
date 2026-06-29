@@ -163,8 +163,8 @@ body {
   }
 }
 
-/* The main landmark is focused programmatically via the skip link; it should
-   not show a focus outline since it is not an interactive control. */
-main#main-content:focus {
+/* The skip-link target is focused programmatically via the skip link; it
+   should not show a focus outline since it is not an interactive control. */
+#main-content:focus {
   outline: none;
 }
