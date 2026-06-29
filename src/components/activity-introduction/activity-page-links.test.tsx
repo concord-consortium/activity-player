@@ -133,4 +133,13 @@ describe("Activity Page Links accessibility", () => {
     fireEvent.click(screen.getByRole("button", { name: "Begin Activity" }));
     expect(onPageChange).toHaveBeenCalledWith(1);
   });
+
+  it("navigates from the Begin Activity button even with a modifier key held", () => {
+    // The button is not a link, so a modified click should still start the
+    // activity rather than being deferred to the browser like the anchors are.
+    const onPageChange = jest.fn();
+    renderPageLinks(pagesWithIds, onPageChange);
+    fireEvent.click(screen.getByRole("button", { name: "Begin Activity" }), { metaKey: true });
+    expect(onPageChange).toHaveBeenCalledWith(1);
+  });
 });

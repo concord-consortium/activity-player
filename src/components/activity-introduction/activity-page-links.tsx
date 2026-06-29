@@ -69,7 +69,7 @@ export class ActivityPageLinks extends React.PureComponent <IProps, IState> {
                   <a
                     className="page-item"
                     href={getPageHref(page.id)}
-                    onClick={this.handlePageChange(index + 1)}
+                    onClick={this.handlePageLinkClick(index + 1)}
                     title={hasFeedback ? "Your teacher left feedback on this page." : undefined}
                   >
                     <span>{`${index + 1}: `}</span>
@@ -83,7 +83,7 @@ export class ActivityPageLinks extends React.PureComponent <IProps, IState> {
         </ul>
         <button
           className="button begin"
-          onClick={this.handlePageChange(1)}
+          onClick={this.handleBeginClick}
         >
           Begin Activity
         </button>
@@ -91,14 +91,20 @@ export class ActivityPageLinks extends React.PureComponent <IProps, IState> {
     );
   }
 
-  private handlePageChange = (page: number) => (e?: React.MouseEvent) => {
+  private handlePageLinkClick = (page: number) => (e: React.MouseEvent) => {
     // Let the browser handle modified clicks (e.g. cmd/ctrl-click to open the
     // page in a new tab) natively via the anchor's href.
-    if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey)) {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
       return;
     }
-    e?.preventDefault();
+    e.preventDefault();
     this.props.onPageChange(page);
+  }
+
+  // The Begin Activity button is not a link (no href), so it always navigates
+  // in-app regardless of any modifier key the user happens to be holding.
+  private handleBeginClick = () => {
+    this.props.onPageChange(1);
   }
 
   private unsubscribeActivityLevelFeedback: (() => void) | undefined = undefined;
