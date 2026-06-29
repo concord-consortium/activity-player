@@ -42,6 +42,28 @@ describe("SidebarTab component", () => {
       sidebarOpen={true} />);
     expect(wrapper.find('button[data-cy="sidebar-tab"]').prop("aria-expanded")).toBe(true);
   });
+  it("gives the tab trigger a fallback accessible name when there is no title", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarTab
+      title={null}
+      handleShowSidebarContent={stubFunction}
+      index={0}
+      sidebarOpen={false} />);
+    expect(wrapper.find('button[data-cy="sidebar-tab"]').prop("aria-label")).toBe("Show sidebar");
+  });
+  it("uses the visible title as the trigger's accessible name when present (no redundant aria-label)", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarTab
+      title={"Did you know?"}
+      handleShowSidebarContent={stubFunction}
+      index={0}
+      sidebarOpen={false} />);
+    expect(wrapper.find('button[data-cy="sidebar-tab"]').prop("aria-label")).toBeUndefined();
+  });
   it("renders panel component", () => {
     const stubFunction = () => {
       // do nothing.
