@@ -26,4 +26,14 @@
   position: fixed;
   inset: 0;
   z-index: 1999;
+
+  // In forced-colors (high-contrast) mode the .expanded box-shadow that supplies
+  // the visual dimming is dropped, so the modal's separation from the page would
+  // be lost. Give the overlay a translucent system-color backdrop there to restore
+  // it. (opacity is honored in forced-colors; background colors are forced to
+  // system colors, so an rgba() alone would not read as translucent.)
+  @media (forced-colors: active) {
+    background-color: Canvas;
+    opacity: 0.7;
+  }
 }
