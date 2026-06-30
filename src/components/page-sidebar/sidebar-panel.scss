@@ -12,29 +12,80 @@
 
     .sidebar-title{
       margin: 0;
-      color: white;
+      // Charcoal on the orange header meets WCAG 1.4.3 AA contrast (was white).
+      color: $cc-charcoal;
       font-size: pxToRem(20);
       font-weight: normal;
       width: 100%;
       text-align: center;
       line-height: 1; // tight heading line-height
+
+      // The heading receives focus only programmatically when the dialog opens
+      // (it carries tabIndex -1 and is not a Tab stop). Suppress the ring for a
+      // mouse-opened dialog (where a ring on a heading reads as a stray outline),
+      // but show a contrast-safe ring when the dialog is opened via keyboard
+      // (:focus-visible) so keyboard users get a visible focus indicator on open
+      // (WCAG 2.4.7). The charcoal ring matches the close button: 5.32:1 on the
+      // orange header, and theme-independent / forced-colors-safe.
+      &:focus {
+        outline: none;
+      }
+      &:focus-visible {
+        outline: 2px solid $cc-charcoal;
+        outline-offset: 2px;
+      }
+    }
+
+    // The base .sidebar-title is full-width so the empty no-title placeholder still
+    // pushes the close button to the right. For an actual heading, shrink the box to
+    // its text and center it with auto margins, so the keyboard focus ring hugs the
+    // title text instead of spanning the full header width. Text position is
+    // unchanged (the auto margins center it in the same space).
+    h2.sidebar-title {
+      width: fit-content;
+      max-width: 100%;
+      margin-inline: auto;
     }
 
     .icon {
-      fill: white;
-      width: 24px;
-      height: 18px;
+      // Reset native <button> chrome so the close control renders identically to the former div.
+      border: none;
+      background: none;
+      padding: 0;
+      // Charcoal fill meets WCAG 1.4.11 non-text contrast against the orange header (was white).
+      fill: $cc-charcoal;
+      // Box the glyph tightly and don't let the flex header squeeze it. Height is
+      // driven by the glyph's aspect ratio (height: auto on a fixed width) so the
+      // button matches the glyph exactly and the focus ring wraps it concentrically
+      // — the icon's viewBox is cropped to its content so there is no stray padding.
+      flex: 0 0 auto;
+      width: 22px;
+      height: auto;
       margin-right: 9px;
       border-radius: 5px;
       cursor: pointer;
 
+      // Fill the button width; height follows the glyph's intrinsic aspect ratio.
+      svg {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      // Keep the charcoal fill in hover/active (only the background shifts) so the "x" stays
+      // above 3:1 non-text contrast throughout interaction: 8.77:1 on hover, 6.64:1 on active.
       &:hover {
         background-color: $cc-orange-light4;
-        fill: $cc-orange-light2;
       }
       &:active {
         background-color: $cc-orange-light2;
-        fill: $cc-orange;
+      }
+      // Theme-independent focus indicator matching .version-info in app.scss: a solid charcoal
+      // outline reads 5.32:1 on the orange header and survives forced-colors mode, where the
+      // themed box-shadow ring used by .button can drop below contrast under the orange theme.
+      &:focus-visible {
+        outline: 2px solid $cc-charcoal;
+        outline-offset: 2px;
       }
     }
   }

@@ -9,6 +9,9 @@ interface IProps {
   index: number;
   title: string | null;
   sidebarOpen: boolean
+  panelId?: string;
+  /** Forwarded to the trigger <button> so the dialog can return focus here on close. */
+  triggerRef?: React.RefObject<HTMLButtonElement>;
 }
 
 export class SidebarTab extends React.PureComponent<IProps>{
@@ -17,23 +20,30 @@ export class SidebarTab extends React.PureComponent<IProps>{
   }
 
   render() {
+    // The visible "tab-name" text is the button's accessible name when a title exists; fall back
+    // to a static aria-label only when there is none, so the button is never unnamed.
+    const hasTitle = !!this.props.title?.trim();
     return (
-      <div className="sidebar-tab" onClick={this.handleSidebarShow} onKeyDown={this.handleSidebarShow}
-           data-cy="sidebar-tab" tabIndex={0} role="button" aria-expanded={this.props.sidebarOpen}>
-        <div className={`icon ${this.props.sidebarOpen ? "open" : ""}`}>
+      // A native <button> gives the trigger its semantics and Enter/Space activation for free.
+      // aria-haspopup="dialog" announces that it opens the sidebar panel; aria-expanded reflects
+      // the open state; aria-controls links it to the dialog panel it opens.
+      <button type="button" className="sidebar-tab" onClick={this.handleSidebarShow}
+           ref={this.props.triggerRef}
+           data-cy="sidebar-tab" aria-haspopup="dialog" aria-expanded={this.props.sidebarOpen}
+           aria-controls={this.props.panelId ?? `sidebar-panel-${this.props.index}`}
+           aria-label={hasTitle ? undefined : "Show sidebar"}>
+        {/* A <button> may only contain phrasing content, so these are <span>s, not <div>s;
+            the parent's display:flex blockifies them, so layout is unchanged. */}
+        <span className={`icon ${this.props.sidebarOpen ? "open" : ""}`}>
           <IconArrow aria-hidden="true" focusable="false" />
-        </div>
-        <div className="tab-name" data-cy="sidebar-tab-title">{this.props.title}</div>
-      </div>
+        </span>
+        <span className="tab-name" data-cy="sidebar-tab-title">{this.props.title}</span>
+      </button>
     );
   }
 
-  private handleSidebarShow = (e: React.MouseEvent | React.KeyboardEvent) => {
+  private handleSidebarShow = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (accessibilityClick(e)) {
-      // role="button" div: stop Space from also scrolling the page on keyboard activation
-      if (e.type === "keydown") {
-        e.preventDefault();
-      }
       this.props.handleShowSidebarContent(this.props.index, !this.props.sidebarOpen);
     }
   }
