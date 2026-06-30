@@ -7,15 +7,8 @@
   padding: 20px;
   margin-bottom: 20px;
 
-  // Style the heading explicitly now that the global `.app h1` rule is scoped to
-  // authored content (AP-122). Values match the retired global rule. Covers the
-  // error screen and the idle-warning, which share the `.error` container.
-  h1 {
-    color: var(--theme-secondary-color);
-    font-size: pxToRem(32);
-    font-weight: 900;
-    line-height: 1;
-  }
+  // Heading for the error screen and the idle-warning, which share this container.
+  h1 { @include app-primary-heading; }
 
   li {
     margin-top: 5px;

@@ -40,14 +40,11 @@ body {
   }
 }
 
-// Element-level heading defaults for *authored* rich-text content — renderHTML
+// Element-level heading defaults for authored rich-text content — renderHTML
 // output (text blocks, hints, footers, descriptions, related/next-step content)
-// that has no classes to hook. These were previously global `.app h1` / `.app h2`
-// rules that silently restyled every semantic heading after AP-91's div->heading
-// conversion (and caused the AP-120 regressions). AP-122 scopes them to the
-// authored-content containers so chrome (app UI) headings, which now style
-// themselves locally, are unaffected. Specificity (0,1,1) matches the retired
-// global rules so authored headings render identically.
+// whose headings carry no classes to target. Scoped to the authored-content
+// containers so these defaults reach authored headings without matching the
+// app's own chrome headings, which style themselves.
 .question-txt,
 .intro-txt,
 .related-content-text,
@@ -55,18 +52,8 @@ body {
 .footer-text,
 .help-content,
 .preview-description {
-  h1 {
-    color: var(--theme-secondary-color);
-    font-size: pxToRem(32);
-    font-weight: 900;
-    line-height: 1;
-  }
-  h2 {
-    color: $cc-charcoal;
-    font-size: pxToRem(18);
-    font-weight: 700;
-    line-height: 1;
-  }
+  h1 { @include app-primary-heading; }
+  h2 { @include app-secondary-heading; }
 }
 
 .app {

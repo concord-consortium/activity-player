@@ -16,13 +16,10 @@
     align-items: center;
 
     .name {
+      @include app-activity-title;
       flex-grow: 1;
       margin: 0;
-      font-size: pxToRem(24);
-      font-weight: bold;
       max-width: 850px;
-      color: var(--theme-secondary-color);
-      line-height: 1; // preserved from the retired global `.app h1` rule (AP-122)
     }
   }
 

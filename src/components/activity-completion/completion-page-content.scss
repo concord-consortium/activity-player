@@ -98,14 +98,9 @@
       gap: 10px;
 
       h1 {
+        @include app-primary-heading;
         flex-grow: 1;
         margin: 0;
-        // Heading appearance, previously inherited from the global `.app h1`
-        // rule now scoped to authored content (AP-122).
-        color: var(--theme-secondary-color);
-        font-size: pxToRem(32);
-        font-weight: 900;
-        line-height: 1;
 
         .activity-title {
           font-weight: 500;

@@ -66,3 +66,33 @@ $line-height: 1.35;
   $remValue: math.div($value, 16) + rem;
   @return $remValue;
 }
+
+// Shared heading appearance tokens. Applied explicitly to the headings that
+// need them so the styles stay scoped rather than matching every heading by
+// element type.
+
+// Large themed page heading: the default for authored-content h1s and for the
+// chrome page titles that share its look (error, completion summary,
+// activity-summary, sequence intro).
+@mixin app-primary-heading {
+  color: var(--theme-secondary-color);
+  font-size: pxToRem(32);
+  font-weight: 900;
+  line-height: 1;
+}
+
+// Default authored-content h2.
+@mixin app-secondary-heading {
+  color: $cc-charcoal;
+  font-size: pxToRem(18);
+  font-weight: 700;
+  line-height: 1;
+}
+
+// Per-page activity title (activity-page and single-page layouts).
+@mixin app-activity-title {
+  color: var(--theme-secondary-color);
+  font-size: pxToRem(24);
+  font-weight: bold;
+  line-height: 1;
+}
