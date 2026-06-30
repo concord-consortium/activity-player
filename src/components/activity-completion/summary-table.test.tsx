@@ -31,9 +31,10 @@ describe("Summary Table component", () => {
     );
     // One status icon per question; these convey answered/unanswered state with no adjacent text,
     // so they must be exposed to assistive technology with a name rather than hidden.
-    const icons = wrapper.find("test-file-stub");
+    // Select by the role the icons are asserted to expose, rather than the Jest SVG stub tag;
+    // matching exactly three confirms all the status icons are exposed as images to the AT.
+    const icons = wrapper.find('[role="img"]');
     expect(icons.length).toBe(3);
-    icons.forEach((icon) => expect(icon.prop("role")).toBe("img"));
     // Labelled but not in the tab order: the name is for the AT, the icon is not interactive.
     icons.forEach((icon) => expect(icon.prop("focusable")).toBe("false"));
     expect(icons.at(0).prop("aria-label")).toBe("Complete");   // answered: true

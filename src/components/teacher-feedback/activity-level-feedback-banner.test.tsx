@@ -59,7 +59,9 @@ describe("Activity Level Feedback component", () => {
         <ActivityLevelFeedbackBanner teacherFeedback={mockFeedback} />
       </DynamicTextContext.Provider>
     );
-    const icons = container.querySelectorAll(TeacherFeedbackIcon);
+    const banner = container.querySelector('[data-testid="activity-level-feedback-banner"]');
+    expect(banner).not.toBeNull();
+    const icons = banner!.querySelectorAll(TeacherFeedbackIcon);
     expect(icons).toHaveLength(1);
     expect(icons[0]).toHaveAttribute("aria-hidden", "true");
     expect(icons[0]).toHaveAttribute("focusable", "false");

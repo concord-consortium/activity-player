@@ -73,10 +73,13 @@ describe("Completion Page Content component", () => {
     // Deliver answers so the component leaves its "Fetching your data" state and renders the
     // status banner. With no questions in the activity it is "complete", showing the check icon.
     // The adjacent progress text conveys completion, so the icon itself is decorative.
+    expect(mockAnswersCallback).toBeDefined();
     act(() => {
       mockAnswersCallback?.([]);
     });
-    const icons = container.querySelectorAll(IconCheck);
+    const banner = container.querySelector('[data-cy="progress-container"]');
+    expect(banner).not.toBeNull();
+    const icons = banner!.querySelectorAll(IconCheck);
     expect(icons).toHaveLength(1);
     expect(icons[0]).toHaveAttribute("aria-hidden", "true");
     expect(icons[0]).toHaveAttribute("focusable", "false");
