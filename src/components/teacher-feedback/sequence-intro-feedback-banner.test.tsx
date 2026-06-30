@@ -7,7 +7,7 @@ describe("Intro Feedback Banner component", () => {
   it("renders component for a sequence", () => {
     const wrapper = shallow(<SequenceIntroFeedbackBanner />);
     expect(wrapper.find('[data-cy="intro-feedback-banner"]').length).toBe(1);
-    expect(wrapper.find('[data-cy="intro-feedback-banner"]').contains("Your teacher has provided feedback."));
+    expect(wrapper.find('[data-cy="intro-feedback-banner"]').contains("Your teacher has provided feedback.")).toBe(true);
   });
 
   it("hides the decorative feedback icon from assistive technology", () => {
