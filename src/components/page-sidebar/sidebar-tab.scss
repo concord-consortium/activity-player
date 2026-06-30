@@ -2,6 +2,10 @@
 
 .sidebar-tab {
   // Reset native <button> chrome so the trigger renders identically to the former div.
+  // box-sizing: content-box is part of that reset — a native <button> defaults to border-box,
+  // which would subtract the 5px padding from the 75px width and leave a gap between the tab's
+  // right edge and the viewport (the former div was content-box).
+  box-sizing: content-box;
   border: none;
   font: inherit;
   color: inherit;

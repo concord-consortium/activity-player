@@ -27,10 +27,12 @@ export class SidebarTab extends React.PureComponent<IProps>{
       <button type="button" className="sidebar-tab" onClick={this.handleSidebarShow}
            data-cy="sidebar-tab" aria-haspopup="dialog" aria-expanded={this.props.sidebarOpen}
            aria-label={hasTitle ? undefined : "Show sidebar"}>
-        <div className={`icon ${this.props.sidebarOpen ? "open" : ""}`}>
+        {/* A <button> may only contain phrasing content, so these are <span>s, not <div>s;
+            the parent's display:flex blockifies them, so layout is unchanged. */}
+        <span className={`icon ${this.props.sidebarOpen ? "open" : ""}`}>
           <IconArrow aria-hidden="true" focusable="false" />
-        </div>
-        <div className="tab-name" data-cy="sidebar-tab-title">{this.props.title}</div>
+        </span>
+        <span className="tab-name" data-cy="sidebar-tab-title">{this.props.title}</span>
       </button>
     );
   }
