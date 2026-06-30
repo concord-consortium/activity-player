@@ -5,6 +5,7 @@ import { act, render, screen } from "@testing-library/react";
 import { Activity } from "../../types";
 import _activityPlugins from "../../data/version-2/sample-new-sections-multiple-layout-types.json";
 import { DynamicTextTester } from "../../test-utils/dynamic-text";
+import IconCheck from "../../assets/svg-icons/icon-check-circle.svg";
 
 // The full RTL render runs the answer/feedback watcher effects, so stub
 // firebase-db (same approach as nav-pages.test.tsx). The answers watcher's callback
@@ -19,6 +20,11 @@ jest.mock("../../firebase-db", () => ({
 const activityPlugins = _activityPlugins as unknown as Activity;
 
 describe("Completion Page Content component", () => {
+  // Each test re-renders and re-registers the watcher, but reset the captured callback so the
+  // suite never depends on a callback left over from a prior test.
+  beforeEach(() => {
+    mockAnswersCallback = undefined;
+  });
   it("renders component", () => {
     const stubFunction = () => {
       // do nothing.
@@ -70,9 +76,9 @@ describe("Completion Page Content component", () => {
     act(() => {
       mockAnswersCallback?.([]);
     });
-    const icon = container.querySelector("test-file-stub");
-    expect(icon).not.toBeNull();
-    expect(icon?.getAttribute("aria-hidden")).toBe("true");
-    expect(icon?.getAttribute("focusable")).toBe("false");
+    const icons = container.querySelectorAll(IconCheck);
+    expect(icons).toHaveLength(1);
+    expect(icons[0]).toHaveAttribute("aria-hidden", "true");
+    expect(icons[0]).toHaveAttribute("focusable", "false");
   });
 });

@@ -3,6 +3,7 @@ import { render, screen } from "@testing-library/react";
 import { DynamicTextContext } from "@concord-consortium/dynamic-text";
 import { ActivityLevelFeedbackBanner } from "./activity-level-feedback-banner";
 import { ActivityFeedback } from "../../types";
+import TeacherFeedbackIcon from "../../assets/svg-icons/teacher-feedback-icon.svg";
 
 jest.mock("./rubric", () => ({
   RubricComponent: () => <div data-testid="mock-rubric" />
@@ -58,10 +59,10 @@ describe("Activity Level Feedback component", () => {
         <ActivityLevelFeedbackBanner teacherFeedback={mockFeedback} />
       </DynamicTextContext.Provider>
     );
-    const icon = container.querySelector("test-file-stub");
-    expect(icon).not.toBeNull();
-    expect(icon?.getAttribute("aria-hidden")).toBe("true");
-    expect(icon?.getAttribute("focusable")).toBe("false");
+    const icons = container.querySelectorAll(TeacherFeedbackIcon);
+    expect(icons).toHaveLength(1);
+    expect(icons[0]).toHaveAttribute("aria-hidden", "true");
+    expect(icons[0]).toHaveAttribute("focusable", "false");
   });
   it("renders component without a rubric when `hideRubricFromStudentsInStudentReport` is true", () => {
     const mockFeedbackWithHiddenRubric = {
