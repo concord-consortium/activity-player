@@ -8,4 +8,14 @@ describe("Intro Feedback Banner component", () => {
     expect(wrapper.find('[data-cy="intro-feedback-banner"]').length).toBe(1);
     expect(wrapper.find('[data-cy="intro-feedback-banner"]').contains("Your teacher has provided feedback."));
   });
+
+  it("hides the decorative feedback icon from assistive technology", () => {
+    // The adjacent "Your teacher has provided feedback." text already conveys the meaning,
+    // so the icon is decorative and must not be announced.
+    const wrapper = shallow(<SequenceIntroFeedbackBanner />);
+    const icon = wrapper.find("test-file-stub");
+    expect(icon.length).toBe(1);
+    expect(icon.prop("aria-hidden")).toBe("true");
+    expect(icon.prop("focusable")).toBe("false");
+  });
 });

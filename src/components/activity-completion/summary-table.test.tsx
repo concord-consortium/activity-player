@@ -34,6 +34,8 @@ describe("Summary Table component", () => {
     const icons = wrapper.find("test-file-stub");
     expect(icons.length).toBe(3);
     icons.forEach((icon) => expect(icon.prop("role")).toBe("img"));
+    // Labelled but not in the tab order: the name is for the AT, the icon is not interactive.
+    icons.forEach((icon) => expect(icon.prop("focusable")).toBe("false"));
     expect(icons.at(0).prop("aria-label")).toBe("Complete");   // answered: true
     expect(icons.at(2).prop("aria-label")).toBe("Incomplete");  // answered: false
   });

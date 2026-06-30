@@ -50,6 +50,19 @@ describe("Activity Level Feedback component", () => {
     renderComponent(mockFeedbackWithRubric);
     expect(screen.queryByTestId("mock-rubric")).not.toBeNull();
   });
+  it("hides the decorative feedback icon from assistive technology", () => {
+    // The banner's "Overall Teacher Feedback for This Activity:" heading conveys the meaning,
+    // so the icon is decorative and must not be announced.
+    const { container } = render(
+      <DynamicTextContext.Provider value={mockDynamicTextContextValue}>
+        <ActivityLevelFeedbackBanner teacherFeedback={mockFeedback} />
+      </DynamicTextContext.Provider>
+    );
+    const icon = container.querySelector("test-file-stub");
+    expect(icon).not.toBeNull();
+    expect(icon?.getAttribute("aria-hidden")).toBe("true");
+    expect(icon?.getAttribute("focusable")).toBe("false");
+  });
   it("renders component without a rubric when `hideRubricFromStudentsInStudentReport` is true", () => {
     const mockFeedbackWithHiddenRubric = {
       ...mockFeedback,
