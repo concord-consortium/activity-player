@@ -26,6 +26,7 @@
           font-weight: 900;
           margin: 0;
           color: var(--theme-secondary-color);
+          line-height: 1; // preserved from the retired global `.app h1` rule (AP-122)
         }
       }
     }

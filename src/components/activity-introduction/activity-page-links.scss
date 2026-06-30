@@ -11,6 +11,7 @@
     font-size: pxToRem(18);
     font-weight: bold;
     margin: 4px 10px;
+    line-height: 1; // preserved from the retired global `.app h2` rule (AP-122)
   }
 
   .separator {

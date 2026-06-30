@@ -3,16 +3,14 @@
 .intro-page-activity-level-feedback {
   flex: 1 1 100%;
 
-  // Preserve the previous visual size and color now that this is an <h2> rather
-  // than an <h1>. The global `.app h2` rule (specificity 0,1,1) would otherwise
-  // shift this heading to charcoal at pxToRem(18); restore the original
-  // `--theme-secondary-color` and size so the div->heading conversion stays
-  // visually neutral. Without the `.app &` prefix this selector would tie that
-  // global rule and lose by source order; the prefix raises it to (0,2,1) so it
-  // reliably wins regardless of CSS injection order.
-  .app & h2 {
+  // Preserve the previous visual size and color from when this was an <h1>: the
+  // themeable secondary color at pxToRem(32). The global `.app h1/h2` rules that
+  // used to supply this were retired in AP-122, so this heading styles itself
+  // fully here. (line-height matches the value the global rule provided.)
+  h2 {
     margin: 0.67em 0;
     font-size: pxToRem(32);
     color: var(--theme-secondary-color);
+    line-height: 1;
   }
 }
