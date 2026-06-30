@@ -1,6 +1,14 @@
 @import "../vars.scss";
 
 .sidebar-tab {
+  // Reset native <button> chrome so the trigger renders identically to the former div.
+  // box-sizing: content-box is part of that reset — a native <button> defaults to border-box,
+  // which would subtract the 5px padding from the 75px width and leave a gap between the tab's
+  // right edge and the viewport (the former div was content-box).
+  box-sizing: content-box;
+  border: none;
+  font: inherit;
+  color: inherit;
   cursor: pointer;
   width: 75px;
   min-height: 70px;
@@ -20,6 +28,13 @@
   }
   &:active {
     background-color: $cc-orange-light3;
+  }
+  // Theme-independent focus indicator matching .version-info in app.scss: a solid charcoal
+  // outline reads 5.32:1 on the orange tab and survives forced-colors mode, where the themed
+  // box-shadow ring used by .button can drop below the required contrast under the orange theme.
+  &:focus-visible {
+    outline: 2px solid $cc-charcoal;
+    outline-offset: 2px;
   }
 
   .icon {

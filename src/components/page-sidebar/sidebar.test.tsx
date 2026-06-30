@@ -16,6 +16,54 @@ describe("SidebarTab component", () => {
       sidebarOpen={false} />);
     expect(wrapper.find('[data-cy="sidebar-tab-title"]').text()).toContain(title);
   });
+  it("renders the tab trigger as a semantic button that announces it opens a dialog", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarTab
+      title={"Did you know?"}
+      handleShowSidebarContent={stubFunction}
+      index={0}
+      sidebarOpen={false} />);
+    const button = wrapper.find('button[data-cy="sidebar-tab"]');
+    expect(button.length).toBe(1);
+    expect(button.prop("type")).toBe("button");
+    expect(button.prop("aria-haspopup")).toBe("dialog");
+    expect(button.prop("aria-expanded")).toBe(false);
+  });
+  it("reflects the open state on the tab trigger's aria-expanded", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarTab
+      title={"Did you know?"}
+      handleShowSidebarContent={stubFunction}
+      index={0}
+      sidebarOpen={true} />);
+    expect(wrapper.find('button[data-cy="sidebar-tab"]').prop("aria-expanded")).toBe(true);
+  });
+  it("gives the tab trigger a fallback accessible name when there is no title", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarTab
+      title={null}
+      handleShowSidebarContent={stubFunction}
+      index={0}
+      sidebarOpen={false} />);
+    expect(wrapper.find('button[data-cy="sidebar-tab"]').prop("aria-label")).toBe("Show sidebar");
+  });
+  it("uses the visible title as the trigger's accessible name when present (no redundant aria-label)", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarTab
+      title={"Did you know?"}
+      handleShowSidebarContent={stubFunction}
+      index={0}
+      sidebarOpen={false} />);
+    expect(wrapper.find('button[data-cy="sidebar-tab"]').prop("aria-label")).toBeUndefined();
+  });
   it("renders panel component", () => {
     const stubFunction = () => {
       // do nothing.
@@ -30,6 +78,21 @@ describe("SidebarTab component", () => {
       handleCloseSidebarContent={stubFunction} />);
     expect(wrapper.find('[data-cy="sidebar-title"]').text()).toContain(title);
     expect(wrapper.find('[data-cy="sidebar-content"]').length).toBe(1);
+  });
+  it("renders the close control as a semantic button with an accessible name", () => {
+    const stubFunction = () => {
+      // do nothing.
+    };
+    const wrapper = shallow(<SidebarPanel
+      title={"Did you know?"}
+      index={0}
+      content={"content"}
+      show={true}
+      handleCloseSidebarContent={stubFunction} />);
+    const closeButton = wrapper.find('button[data-cy="sidebar-close-button"]');
+    expect(closeButton.length).toBe(1);
+    expect(closeButton.prop("type")).toBe("button");
+    expect(closeButton.prop("aria-label")).toBe("Close");
   });
   it("renders the panel title as an h2 heading when present", () => {
     const stubFunction = () => {
