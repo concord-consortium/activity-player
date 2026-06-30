@@ -17,12 +17,11 @@
 
     .embeddable-header-text {
       margin: 0;
-      // Inherit the header bar's white text. As an <h2> this element is otherwise
-      // caught by the global `.app h2 { color: $cc-charcoal }` rule, which would
-      // render the question header dark on the teal bar (AP-120). This targeted
-      // exception keeps only question/interactive headers white; other h2s (e.g.
-      // text-block headers) intentionally remain charcoal. The global element-level
-      // h1/h2 rules are legacy and slated for cleanup in a follow-up story.
+      // Inherit the header bar's white text. Without this, the header would pick up
+      // the charcoal color that `.app` sets on its content, rendering the question
+      // header dark on the teal bar. This targeted exception keeps only
+      // question/interactive headers white; other headings intentionally remain
+      // charcoal.
       color: inherit;
       font-size: inherit;
       font-weight: inherit;

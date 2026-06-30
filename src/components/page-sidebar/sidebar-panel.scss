@@ -18,6 +18,7 @@
       font-weight: normal;
       width: 100%;
       text-align: center;
+      line-height: 1; // tight heading line-height
 
       // The heading receives focus only programmatically when the dialog opens
       // (it carries tabIndex -1 and is not a Tab stop). Suppress the ring for a
