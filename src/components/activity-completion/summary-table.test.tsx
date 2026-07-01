@@ -43,7 +43,7 @@ describe("Summary Table component", () => {
       <DynamicTextTester><SummaryTable questionsStatus={questionsStatus} onPageChange={mockOnPageChange} /></DynamicTextTester>
     );
     const preventDefault = jest.fn();
-    wrapper.find('a[data-testid="question-link"]').at(2).simulate("click", { preventDefault });
+    wrapper.find('a[data-testid="question-link"]').at(2).simulate("click", { button: 0, preventDefault });
     expect(preventDefault).toHaveBeenCalled();
     expect(mockOnPageChange).toHaveBeenCalledWith(2, undefined);
   });
@@ -54,7 +54,18 @@ describe("Summary Table component", () => {
       <DynamicTextTester><SummaryTable questionsStatus={questionsStatus} onPageChange={mockOnPageChange} /></DynamicTextTester>
     );
     const preventDefault = jest.fn();
-    wrapper.find('a[data-testid="question-link"]').at(0).simulate("click", { metaKey: true, preventDefault });
+    wrapper.find('a[data-testid="question-link"]').at(0).simulate("click", { button: 0, metaKey: true, preventDefault });
+    expect(preventDefault).not.toHaveBeenCalled();
+    expect(mockOnPageChange).not.toHaveBeenCalled();
+  });
+
+  it("lets non-primary (e.g. middle) button clicks fall through to the browser", () => {
+    mockOnPageChange.mockClear();
+    const wrapper = mount(
+      <DynamicTextTester><SummaryTable questionsStatus={questionsStatus} onPageChange={mockOnPageChange} /></DynamicTextTester>
+    );
+    const preventDefault = jest.fn();
+    wrapper.find('a[data-testid="question-link"]').at(0).simulate("click", { button: 1, preventDefault });
     expect(preventDefault).not.toHaveBeenCalled();
     expect(mockOnPageChange).not.toHaveBeenCalled();
   });

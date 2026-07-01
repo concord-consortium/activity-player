@@ -30,9 +30,10 @@ export const SummaryTable: React.FC<IProps> = (props) => {
   const { questionsStatus, onPageChange } = props;
 
   const handleQuestionLinkClick = (page: number, refId?: string) => (e: React.MouseEvent) => {
-    // Let the browser handle modified clicks (e.g. cmd/ctrl-click to open the
-    // question's page in a new tab) natively via the anchor's href.
-    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+    // Let the browser handle native navigation for modified clicks (e.g. cmd/ctrl-click)
+    // and non-primary buttons (e.g. middle-click to open the page in a new tab) via the
+    // anchor's href, rather than intercepting them for in-app navigation.
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
       return;
     }
     e.preventDefault();
