@@ -6,7 +6,7 @@ import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-ci
 import { Sequence, Activity, ActivityFeedback, QuestionFeedback } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers, watchQuestionLevelFeedback, WrappedDBAnswer } from "../../firebase-db";
-import { getEmbeddable, getPageNumberFromEmbeddable, isQuestion, isSequenceFinished } from "../../utilities/activity-utils";
+import { getEmbeddable, getPageIDFromPosition, getPageNumberFromEmbeddable, isQuestion, isSequenceFinished } from "../../utilities/activity-utils";
 import { answerHasResponse, answersQuestionIdToRefId, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
 import { SequenceIntroFeedbackBanner } from "../teacher-feedback/sequence-intro-feedback-banner";
@@ -88,11 +88,13 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
         const authoredState = embeddable?.authored_state ? JSON.parse(embeddable.authored_state) : {};
         const answered = answer ? answerHasResponse(answer, authoredState) : false;
         const page = getPageNumberFromEmbeddable(activity, embeddableId) || 0;
+        const pageId = getPageIDFromPosition(activity, page);
 
         summaries.push({
           embeddableId,
           number: idx + 1,
           page,
+          pageId,
           prompt: authoredState.prompt,
           answered,
           feedback
