@@ -15,7 +15,7 @@ export interface IQuestionStatus {
   embeddableId?: string;
   number: number;
   page: number;
-  pageId?: number | null;
+  pageId: number | null;
   prompt: string;
   answered: boolean;
   feedback?: QuestionFeedback;
@@ -66,7 +66,7 @@ export const SummaryTable: React.FC<IProps> = (props) => {
                 <div className="question-meta">
                   <div className="question-page-and-number" data-testid="question-page-and-number">
                     <a
-                      href={getPageHref(question.pageId ?? null)}
+                      href={getPageHref(question.pageId)}
                       onClick={handleQuestionLinkClick(question.page, refId)}
                       data-testid="question-link"
                     >
