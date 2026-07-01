@@ -6,6 +6,7 @@ import { renderHTML } from "../../utilities/render-html";
 import { QuestionFeedback } from "../../types";
 import { SummaryPageQuestionFeedback } from "../teacher-feedback/summary-page-question-feedback";
 import { answersQuestionIdToRefId } from "../../utilities/embeddable-utils";
+import { getPageHref } from "../../utilities/url-query";
 import { LogEventName, Logger } from "../../lib/logger";
 
 import "./summary-table.scss";
@@ -14,6 +15,7 @@ export interface IQuestionStatus {
   embeddableId?: string;
   number: number;
   page: number;
+  pageId: number | null;
   prompt: string;
   answered: boolean;
   feedback?: QuestionFeedback;
@@ -27,7 +29,14 @@ interface IProps {
 export const SummaryTable: React.FC<IProps> = (props) => {
   const { questionsStatus, onPageChange } = props;
 
-  const handleQuestionLinkClick = (page: number, refId?: string) => {
+  const handleQuestionLinkClick = (page: number, refId?: string) => (e: React.MouseEvent) => {
+    // Let the browser handle native navigation for modified clicks (e.g. cmd/ctrl-click)
+    // and non-primary buttons (e.g. middle-click to open the page in a new tab) via the
+    // anchor's href, rather than intercepting them for in-app navigation.
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+      return;
+    }
+    e.preventDefault();
     onPageChange(page, refId);
     Logger.log({
       event: LogEventName.click_summary_page_question_link,
@@ -57,9 +66,13 @@ export const SummaryTable: React.FC<IProps> = (props) => {
               <td>
                 <div className="question-meta">
                   <div className="question-page-and-number" data-testid="question-page-and-number">
-                    <button onClick={() => handleQuestionLinkClick(question.page, refId)} data-testid="question-link">
+                    <a
+                      href={getPageHref(question.pageId)}
+                      onClick={handleQuestionLinkClick(question.page, refId)}
+                      data-testid="question-link"
+                    >
                       <DynamicText>Page {question.page}: Question {question.number}.</DynamicText>
-                    </button>
+                    </a>
                   </div>
                   <div className="question-prompt" data-testid="question-prompt">
                     {questionPrompt && <DynamicText><em>{questionPrompt}</em></DynamicText>}

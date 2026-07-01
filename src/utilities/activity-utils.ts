@@ -302,6 +302,21 @@ export const getPageNumberFromEmbeddable = (activity: Activity, embeddableRefId:
   return undefined;
 };
 
+// Returns the id of the page that contains the given embeddable, or null if not found.
+// Prefer this over mapping a page number through getPageIDFromPosition: the visible page
+// number (which skips hidden pages) does not match a page's absolute `position`, so that
+// round-trip resolves to the wrong page when hidden pages precede the target.
+export const getPageIdFromEmbeddable = (activity: Activity, embeddableRefId: string): number | null => {
+  for (const page of activity.pages) {
+    for (const section of page.sections) {
+      if (section.embeddables.some((e: EmbeddableType) => e.ref_id === embeddableRefId)) {
+        return page.id;
+      }
+    }
+  }
+  return null;
+};
+
 export const getVisiblePages = (activity: Activity) => {
   return activity.pages.filter(page => !page.is_hidden);
 };

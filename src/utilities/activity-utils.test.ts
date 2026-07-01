@@ -1,5 +1,5 @@
 import { Activity } from "../types";
-import { isQuestion, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isSectionHidden, numQuestionsOnPreviousSections, getPageIDFromPosition, getPageNumberFromEmbeddable } from "./activity-utils";
+import { isQuestion, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isSectionHidden, numQuestionsOnPreviousSections, getPageIDFromPosition, getPageIdFromEmbeddable, getPageNumberFromEmbeddable } from "./activity-utils";
 import _activityHidden from "../data/version-2/sample-new-sections-hidden-content.json";
 import _activity from "../data/version-2/sample-new-sections-activity-1.json";
 import { DefaultTestActivity } from "../test-utils/model-for-tests";
@@ -81,5 +81,19 @@ describe("Activity utility functions", () => {
     // make sure the page number of the third page is 2 since the second page is hidden
     expect(pages[2].sections[0].embeddables[0]).toBeDefined();
     expect(getPageNumberFromEmbeddable(activityHidden, pages[2].sections[0].embeddables[0].ref_id)).toBe(2);
+  });
+  it("gets a page id directly from an embeddable, even when hidden pages precede it", () => {
+    const { pages } = activityHidden;
+    const refId = pages[2].sections[0].embeddables[0].ref_id;
+
+    // The embeddable lives on the page with id 3000 (absolute position 3), but its
+    // visible page number is 2 (the hidden page is skipped). Mapping that visible
+    // number through getPageIDFromPosition wrongly resolves to the hidden page (2000),
+    // which is exactly why deriving the id straight from the embeddable is necessary.
+    expect(getPageNumberFromEmbeddable(activityHidden, refId)).toBe(2);
+    expect(getPageIDFromPosition(activityHidden, 2)).toBe(2000);
+
+    expect(getPageIdFromEmbeddable(activityHidden, refId)).toBe(3000);
+    expect(getPageIdFromEmbeddable(activityHidden, "does-not-exist")).toBe(null);
   });
 });
