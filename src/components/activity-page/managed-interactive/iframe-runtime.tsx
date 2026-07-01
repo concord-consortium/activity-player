@@ -11,7 +11,7 @@ import {
   ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState, AttachmentInfoMap,
   IPubSubCreateChannel, IPubSubSubscribe, IPubSubUnsubscribe, IPubSubPublish
 } from "@concord-consortium/lara-interactive-api";
-import { PubSubManager, JobManager } from "@concord-consortium/interactive-api-host";
+import { PubSubManager, JobManager, FocusManager, type FocusTransport } from "@concord-consortium/interactive-api-host";
 import { firebaseJobExecutor, buildJobContext } from "../../../firebase-job-executor";
 import { DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
 import { FirebaseObjectStorageConfig, FirebaseObjectStorageUser } from "@concord-consortium/object-storage";
@@ -95,6 +95,7 @@ interface IProps {
   iframeRef?: React.MutableRefObject<HTMLIFrameElement | null>;
   beforeSentinelRef?: React.Ref<HTMLSpanElement>;
   afterSentinelRef?: React.Ref<HTMLSpanElement>;
+  onFocusTransportReady?: (transport: FocusTransport | undefined) => void;
 }
 
 // these are managed outside of the component to persist across component unmount/mount cycles
@@ -106,7 +107,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
     setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo,
     showDeleteDataButton, setAspectRatio, setHeightFromInteractive, feedback, log,
-    iframeRef: externalIframeRef, beforeSentinelRef, afterSentinelRef } = props;
+    iframeRef: externalIframeRef, beforeSentinelRef, afterSentinelRef, onFocusTransportReady } = props;
 
   const [reloadCount, setReloadCount] = useState<number>(0);
   const iframePhoneTimeout = useRef<number|undefined>(undefined);
@@ -115,6 +116,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   // (which would churn focus-trap wiring); see useCompositeRef.
   const composedIframeRef = useCompositeRef(iframeRef, externalIframeRef);
   const phoneRef = useRef<IframePhone>();
+  const focusManagerRef = useRef<FocusManager>();
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
   const interactiveStateRef = useRef(initialInteractiveState);
@@ -183,6 +185,10 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo();
           phoneRef.current.post("decorateContent", textDecorationInfo);
         }
+        // iframe-phone allows a single listener per message, and iframe-runtime
+        // owns "supportedFeatures". Forward the focus-protocol capability to the
+        // FocusManager from here instead of letting it add a competing listener.
+        focusManagerRef.current?.notifyCapability(!!features.focusProtocol);
       });
       addListener("navigation", (options: INavigationOptions) => {
         setNavigation?.(options);
@@ -437,10 +443,13 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       // otherwise this imperative assignment clobbers the overridden src with the raw url.
       iframeRef.current.src = applyOverrides(url);
       // Re-init interactive, this time using a new mode (report or runtime).
-      phoneRef.current = new iframePhone.ParentEndpoint(iframeRef.current, initInteractive);
+      const phone: IframePhone = new iframePhone.ParentEndpoint(iframeRef.current, initInteractive);
+      phoneRef.current = phone;
       setSendCustomMessage((message: ICustomMessage) => {
         phoneRef.current?.post("customMessage", message);
       });
+      focusManagerRef.current = new FocusManager(phone);
+      onFocusTransportReady?.(focusManagerRef.current.transport);
     }
 
     // Cleanup.
@@ -458,6 +467,11 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       jobManager.removeInteractive(id);
       firebaseJobExecutor.removeInteractive(id);
 
+      if (focusManagerRef.current) {
+        focusManagerRef.current.destroy();
+        focusManagerRef.current = undefined;
+        onFocusTransportReady?.(undefined);
+      }
       if (phoneRef.current) {
         phoneRef.current.disconnect();
       }
