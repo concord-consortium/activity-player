@@ -4,6 +4,7 @@ import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
 import { Activity, EmbeddableType, IEmbeddablePlugin, Plugin, ApprovedScript } from "../types";
 import { getResourceUrl } from "../lara-api";
+import { isHttpUrl } from "./url-utils";
 
 export interface UsedApprovedScriptInfo {
   id: number;
@@ -71,6 +72,14 @@ export const findUsedApprovedScripts = (activities: Activity[]) => {
 export const loadPluginScripts = (LARA: LaraGlobalType, activities: Activity[], handleLoadScripts: () => void) => {
   const scripts = findUsedApprovedScripts(activities);
   scripts.forEach((usedScriptInfo) => {
+    if (!isHttpUrl(usedScriptInfo.approvedScript.url)) {
+      // Skip plugin scripts whose url does not use a supported (http/https) scheme.
+      usedScriptInfo.loaded = true;
+      if (scripts.filter((p) => !p.loaded).length === 0) {
+        handleLoadScripts();
+      }
+      return;
+    }
     // set plugin label
     const pluginLabel = "plugin" + usedScriptInfo.id;
     LARA.Plugins.setNextPluginLabel(pluginLabel);

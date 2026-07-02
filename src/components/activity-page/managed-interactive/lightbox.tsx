@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { IShowLightbox } from "@concord-consortium/lara-interactive-api";
 import ReactModal from "react-modal";
 import { applyOverrides } from "../../../utilities/url-overrides/state";
+import { isHttpUrl } from "../../../utilities/url-utils";
 import "./lightbox.scss";
 
 export interface IProps extends IShowLightbox {
@@ -88,7 +89,7 @@ export const Lightbox: React.FC<IProps> = (props) => {
       {
         isImage ?
         <img ref={imgRef} src={url} onLoad={imgLoaded} style={{ width: imgWidth, height: imgHeight, visibility: imgWidth === undefined ? "hidden" : "visible" }} data-testid="lightbox-image" /> :
-        <iframe src={applyOverrides(url)} width={iframeSizeOpts.width} height={iframeSizeOpts.height} title="Image lightbox" data-testid="lightbox-iframe" />
+        <iframe src={isHttpUrl(url) ? applyOverrides(url) : "about:blank"} width={iframeSizeOpts.width} height={iframeSizeOpts.height} title="Image lightbox" data-testid="lightbox-iframe" />
       }
       </div>
     </ReactModal>
