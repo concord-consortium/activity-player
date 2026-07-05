@@ -35,6 +35,20 @@ const interactiveStateHistoryPath = (historyId?: string) =>
 const interactiveStateHistoryStatePath = (historyId?: string) =>
   `sources/${portalData?.database.sourceKey}/interactive_state_history_states${historyId ? "/" + historyId : ""}`;
 
+// Chat: per-page conversation paths (mirrors the `answersPath` style). `{source}` is the
+// same `database.sourceKey`; `{key}` = learnerKey ?? runKey; `{activityId}` + `{pageId}` scope the
+// conversation to one page (page ids collide across a sequence, so the activity id is required).
+const chatPageBasePath = (key: string, activityId: string | number, pageId: string | number) =>
+  `sources/${portalData?.database.sourceKey}/chats/${key}/activities/${activityId}/pages/${pageId}`;
+
+export const getChatParentRef = (key: string, activityId: string | number, pageId: string | number) =>
+  getFirestoreDb().doc(chatPageBasePath(key, activityId, pageId));
+
+export const getChatMessagesRef = (key: string, activityId: string | number, pageId: string | number) =>
+  getFirestoreDb().collection(`${chatPageBasePath(key, activityId, pageId)}/messages`);
+
+export const chatServerTimestamp = () => firebase.firestore.FieldValue.serverTimestamp();
+
 const teacherFeedbackPath = (level: "activity" | "question") => {
   if (!isPortalData(portalData)) {
     throw new Error("Teacher feedback is only available for authenticated users.");

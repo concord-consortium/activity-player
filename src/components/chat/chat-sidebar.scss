@@ -1,0 +1,88 @@
+@import "../vars.scss";
+
+$chat-width: 25vw;
+$chat-min-width: 320px;
+$chat-max-width: 420px;
+
+// ---- Launcher (shown when the chat is closed) --------------------------------------------------
+.chat-launcher {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 1900;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: $cc-teal;
+  color: white;
+  border: none;
+  border-radius: 22px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+
+  &:hover { background: $cc-teal-dark1; }
+  &:focus-visible { outline: 2px solid $cc-button-focus-ring; outline-offset: 2px; }
+
+  .chat-launcher-unread {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: $cc-orange;
+  }
+}
+
+// ---- Panel (shown when open) -------------------------------------------------------------------
+.chat-sidebar {
+  z-index: 1950;
+  background: white;
+  box-sizing: border-box;
+
+  &:focus-visible { outline: none; }
+
+  // OVERLAY (fixed-width activities): a right-edge drawer that does not touch the activity, so its
+  // interactives don't break. Reuses the page-sidebar fixed-overlay pattern.
+  &.overlay {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: $chat-width;
+    min-width: $chat-min-width;
+    max-width: $chat-max-width;
+    border-left: 1px solid $cc-charcoal-light2;
+    box-shadow: -3px 0 15px rgba(0, 0, 0, 0.2);
+  }
+
+  // PUSH (responsive activities): a fixed 25% right column; the activity reflows to 75% via the
+  // body-class rules below.
+  &.push {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: $chat-width;
+    min-width: $chat-min-width;
+    max-width: $chat-max-width;
+    border-left: 1px solid $cc-charcoal-light2;
+  }
+
+  .chat { height: 100%; }
+}
+
+// ---- Push reflow (only while a push chat is open) ----------------------------------------------
+// The responsive activity's primary column is width:100% and flex-shrinks, so reserving
+// space on the right reflows it to ~75% without breaking interactives (they resize natively via the
+// LARA resize protocol). We shift the activity content and offset AP's viewport-fixed sidebars.
+body.ap-chat-push-open {
+  .activity.responsive {
+    padding-right: $chat-width;
+  }
+
+  // Offset the "Did you know?" page-sidebar + expandable container so they don't render OVER the
+  // reserved chat strip (they are position:fixed to the viewport right edge).
+  .sidebar-container { right: $chat-width; }
+  .expandable-container { right: $chat-width; }
+}

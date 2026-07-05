@@ -46,6 +46,10 @@ import { getAttachmentsManagerOptions } from "../utilities/get-attachments-manag
 import { IdleDetector } from "../utilities/idle-detector";
 import { initializeAttachmentsManager } from "@concord-consortium/interactive-api-host";
 import { LaraDataContext } from "./lara-data-context";
+import { ChatSidebar } from "./chat/chat-sidebar";
+import { resolveChatEnabled } from "../utilities/chat-flag";
+import { getChatIdentity } from "./chat/chat-eligibility";
+import { OrientationHints } from "../utilities/chat-context";
 import { __closeAllPopUps } from "../lara-plugin/plugin-api/popup";
 import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChangeNotificationStartTimeout } from "./activity-page/page-change-notification";
 import { getBearerToken } from "../utilities/auth-utils";
@@ -156,6 +160,15 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private LARA: LaraGlobalType;
   private activityPageContentRef = React.createRef<ActivityPageContent>();
+  // Resolved once (lazily) — resolveChatEnabled write-throughs to localStorage, so it must not run
+  // on every render.
+  private chatEnabledCache?: boolean;
+  private get chatEnabled(): boolean {
+    if (this.chatEnabledCache === undefined) {
+      this.chatEnabledCache = resolveChatEnabled();
+    }
+    return this.chatEnabledCache;
+  }
 
   public constructor(props: IProps) {
     super(props);
@@ -547,6 +560,23 @@ export class App extends React.PureComponent<IProps, IState> {
     // create a key so when activities switch within a sequence React knows to update the DOM
     const key = `activity-${activityIndex || 0}`;
 
+    // Chat sidebar gating: flag on, a concrete content page (not intro / single-page /
+    // completion), and a learner/anonymous identity with a usable key.
+    const currentPageObj = currentPage > 0 ? pagesVisible[currentPage - 1] : undefined;
+    const chatIdentity = getChatIdentity(getPortalData());
+    const showChat = this.chatEnabled
+      && !idle && !errorType
+      && activity.layout !== ActivityLayouts.SinglePage
+      && !!currentPageObj
+      && !currentPageObj.is_completion
+      && !!chatIdentity;
+    const chatHints: OrientationHints = {
+      sequenceTitle: sequence ? (sequence.display_title || sequence.title) : undefined,
+      activityTitle: activity.name,
+      activityIndex: sequence ? activityIndex : undefined,
+      activityCount: sequence ? sequence.activities.length : undefined,
+    };
+
     return (
       <div key={key} className={activityClasses} data-cy="activity">
         <Header
@@ -598,6 +628,16 @@ export class App extends React.PureComponent<IProps, IState> {
               isActivityLevelPlugin={true}
             />;
           })
+        }
+        {showChat && currentPageObj && chatIdentity &&
+          <ChatSidebar
+            fullWidth={fullWidth}
+            activity={activity}
+            page={currentPageObj}
+            pageNumber={currentPage}
+            hints={chatHints}
+            identity={chatIdentity}
+          />
         }
       </div>
     );

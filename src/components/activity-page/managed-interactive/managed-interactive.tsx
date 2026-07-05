@@ -28,6 +28,7 @@ import { ActivityLayouts, hasPluginThatRequiresHeader } from "../../../utilities
 import { useQuestionInfoContext } from "../../question-info-context";
 import { isOfferingLocked } from "../../../utilities/portal-data-utils";
 import { applyOverridesToAuthoredState } from "../../../utilities/url-overrides/state";
+import { forwardInteractiveLog } from "../../chat/chat-log-forwarder";
 
 import "./managed-interactive.scss";
 
@@ -334,6 +335,9 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       interactive_url: url,
       interactiveStateHistoryId: saveInteractiveStateHistory ? interactiveStateHistoryIdRef.current : undefined
     });
+    // Forward the log into the active page chat (if a tutor sidebar is mounted).
+    // Spam-dropped + MC choice-map enriched in the pure builder; a no-op when no chat is present.
+    forwardInteractiveLog({ logData, interactiveId: embeddableRefId, interactiveUrl: url, authoredState });
   };
 
   useImperativeHandle(ref, () => ({

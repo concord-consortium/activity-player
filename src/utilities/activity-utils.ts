@@ -3,6 +3,7 @@ import { SidebarConfiguration } from "../components/page-sidebar/sidebar-wrapper
 import { answerHasResponse, isQuestion as isEmbeddableQuestion, refIdToAnswersQuestionId } from "./embeddable-utils";
 import { queryValue } from "./url-query";
 import { WrappedDBAnswer } from "../firebase-db";
+import { getVisiblePages, getVisibleSections, getVisibleEmbeddables } from "./page-walk";
 
 export enum ActivityLayouts {
   MultiplePages = 0,
@@ -302,17 +303,10 @@ export const getPageNumberFromEmbeddable = (activity: Activity, embeddableRefId:
   return undefined;
 };
 
-export const getVisiblePages = (activity: Activity) => {
-  return activity.pages.filter(page => !page.is_hidden);
-};
-
-export const getVisibleSections = (page: Page) => {
-  return page.sections.filter(section => !section.is_hidden);
-};
-
-export const getVisibleEmbeddables = (section: any) => {
-  return section.embeddables.filter((embeddable: any) => !embeddable.is_hidden);
-};
+// The visible-content walk helpers moved to the pure `./page-walk` module (imports only
+// `../types`) so the chat-context assembler that also uses them stays liftable into report-service.
+// Imported (for local use below) and re-exported so existing call sites are unaffected.
+export { getVisiblePages, getVisibleSections, getVisibleEmbeddables };
 
 export const isSequenceFinished = (sequence: Sequence, answers: WrappedDBAnswer[]|undefined): boolean => {
   return sequence.activities.every((activity) => {
