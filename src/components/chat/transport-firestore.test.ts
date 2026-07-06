@@ -7,7 +7,6 @@ let parentExists = false;
 const parentSet = jest.fn(async (data: any) => { parentSetData = data; parentExists = true; });
 let parentSetData: any;
 let messagesSnapshotCb: ((snap: any) => void) | undefined;
-let messagesErrorCb: ((err: any) => void) | undefined;
 let parentSnapshotCb: ((doc: any) => void) | undefined;
 let parentErrorCb: ((err: any) => void) | undefined;
 // Records the where() constraints applied to the messages query, so a test can assert the read is
@@ -19,9 +18,9 @@ jest.mock("../../firebase-db", () => {
   const query: any = {
     orderBy: () => query,
     where: (field: string, op: string, value: any) => { messagesWhere.push([field, op, value]); return query; },
-    onSnapshot: (cb: (snap: any) => void, err: (e: any) => void) => {
-      messagesSnapshotCb = cb; messagesErrorCb = err;
-      return () => { messagesSnapshotCb = undefined; messagesErrorCb = undefined; };
+    onSnapshot: (cb: (snap: any) => void, _err: (e: any) => void) => {
+      messagesSnapshotCb = cb;
+      return () => { messagesSnapshotCb = undefined; };
     },
   };
   return {

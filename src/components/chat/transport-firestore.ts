@@ -82,7 +82,6 @@ export class FirestoreTransport implements ChatTransport, ChatLogSink {
   // "tutor unavailable". Any other code (network `unavailable`, etc.) is a real read failure worth
   // showing. Logged either way so a genuine rules regression is diagnosable without a network trace.
   private onReadError(where: string, err: { code?: string; message?: string }) {
-    // eslint-disable-next-line no-console
     console.warn(`[chat] ${where} read error (${err.code}):`, err.message);
     this.parentStatus = err.code === "permission-denied" ? "idle" : "error";
     this.emitStatus();
@@ -210,7 +209,6 @@ export class FirestoreTransport implements ChatTransport, ChatLogSink {
         });
       } catch (e) {
         // Log forwarding is best-effort; never surface it on the student-facing error line.
-        // eslint-disable-next-line no-console
         console.warn("[chat] log forward failed:", (e as Error)?.message);
       }
     })();

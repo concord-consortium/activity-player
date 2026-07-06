@@ -7,8 +7,10 @@
 // So live chat is for authenticated learners and real online anonymous runs ONLY.
 import { IPortalData, IAnonymousPortalData } from "../../portal-types";
 
-// Owner fields carried on every browser-written chat doc — the same identity fields `answers` docs
-// carry (snake_case, value-checked against the auth token by the Firestore rules).
+// Owner fields carried on every browser-written chat doc — the subset of the identity fields `answers`
+// docs carry that chat scopes/ownership-checks on (snake_case, value-checked against the auth token by
+// the Firestore rules). `answers` docs carry additional context fields (e.g. `resource_link_id`) that
+// chat does not need.
 export interface ChatOwnerFields {
   run_key?: string;
   platform_user_id?: string;

@@ -1,14 +1,13 @@
 import { resolveChatEnabled, kChatEnabledStorageKey } from "./chat-flag";
+import { queryValue, queryValueBoolean } from "./url-query";
 
 jest.mock("./url-query", () => ({
   queryValue: jest.fn(),
   queryValueBoolean: jest.fn(),
 }));
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const urlQuery = require("./url-query");
-const mockQueryValue = urlQuery.queryValue as jest.Mock;
-const mockQueryValueBoolean = urlQuery.queryValueBoolean as jest.Mock;
+const mockQueryValue = queryValue as jest.Mock;
+const mockQueryValueBoolean = queryValueBoolean as jest.Mock;
 
 // Model the real url-query semantics for the `chat` param:
 //   absent      → queryValue undefined, queryValueBoolean false

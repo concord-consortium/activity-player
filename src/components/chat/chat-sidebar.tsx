@@ -34,7 +34,7 @@ interface IProps {
 const kForceOverlay = true;
 
 export const ChatSidebar: React.FC<IProps> = (props) => {
-  const { fullWidth, activity, page, hints, identity } = props;
+  const { fullWidth, activity, page, pageNumber, hints, identity } = props;
   const push = fullWidth && !kForceOverlay;
   const [open, setOpen] = useState(false);
   const launcherRef = useRef<HTMLButtonElement>(null);
@@ -58,14 +58,27 @@ export const ChatSidebar: React.FC<IProps> = (props) => {
       activityUrl: identity.activityUrl,
       hints,
     });
+    // Depend on the PRIMITIVE hint/owner-field values (not the object identities) so the transport
+    // rebuilds and picks up fresh orientation metadata when it loads asynchronously (e.g. sequence
+    // title/index arriving after mount) — while still hard-swapping the conversation on page nav.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [useDebug, identity.source, identity.key, activityId, page.id]);
+  }, [
+    useDebug, identity.source, identity.key, activityId, page.id,
+    identity.ownerFields.run_key, identity.ownerFields.platform_user_id,
+    identity.ownerFields.platform_id, identity.ownerFields.context_id,
+    hints.sequenceTitle, hints.activityTitle, hints.activityIndex, hints.activityCount,
+  ]);
 
   // Note: teardown (Firestore unsubscribe + log-sink unregister) happens via the cleanup returned
   // from transport.subscribe(), which useChat calls on transport change / unmount — no separate
   // dispose effect is needed here.
 
-  const header = "Ask the Tutor";
+  // Scoped header makes the per-page conversation boundary explicit (each page is its own
+  // conversation). Falls back to "Chat about: Page N" when the page is untitled.
+  const pageTitle = page.name?.trim();
+  const header = pageTitle
+    ? `Chat about: Page ${pageNumber} — ${pageTitle}`
+    : `Chat about: Page ${pageNumber}`;
   const chat = useChat({ transport, header });
 
   // Default to closed whenever the conversation swaps (page nav) or the wrapper changes. Mark the
