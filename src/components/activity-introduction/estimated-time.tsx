@@ -13,7 +13,7 @@ export class EstimatedTime extends React.PureComponent <IProps> {
   render() {
     return (
       <div className="estimated-time" data-cy="estimated-time">
-        <IconClock />
+        <IconClock aria-hidden="true" focusable="false" />
         <DynamicText>
           <div className="label">
             <div className="estimate">Estimated Time to Complete This Module:</div>

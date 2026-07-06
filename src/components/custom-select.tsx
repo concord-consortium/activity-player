@@ -54,9 +54,9 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
     return (
       <div className={`header ${showListClass} ${disabled}`} data-cy="custom-select-header"
             onClick={this.handleHeaderClick} tabIndex={0}>
-        { HeaderIcon && <HeaderIcon className={`icon ${showListClass}`} /> }
+        { HeaderIcon && <HeaderIcon className={`icon ${showListClass}`} aria-hidden="true" focusable="false" /> }
         <div className="current">{currentItem && currentItem}</div>
-        { <ArrowIcon className={`arrow ${showListClass} ${disabled}`} /> }
+        { <ArrowIcon className={`arrow ${showListClass} ${disabled}`} aria-hidden="true" focusable="false" /> }
       </div>
     );
   }
@@ -76,7 +76,7 @@ export class CustomSelect extends React.PureComponent<IProps, IState> {
                 onClick={this.handleChange(item)}
                 data-cy={`list-item-${item.toLowerCase().replace(" ", "-")}`}
               >
-                { <CheckIcon className={`check ${currentClass}`} /> }
+                { <CheckIcon className={`check ${currentClass}`} aria-hidden="true" focusable="false" /> }
                 <div className="label">{item}</div>
               </div>
             );})

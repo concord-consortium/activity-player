@@ -15,9 +15,16 @@
   height: 26px;
   width: 26px;
   margin: 5px;
+  padding: 0;
+  border: none;
   border-radius: 50%;
   background-color: white;
   cursor: pointer;
+
+  &:focus-visible {
+    outline: 2px solid $cc-button-focus-ring;
+    outline-offset: 2px;
+  }
 
   .question {
     fill: $cc-charcoal;
@@ -43,9 +50,20 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+    .close-button {
+      display: flex;
+      padding: 0;
+      border: none;
+      background: none;
+      cursor: pointer;
+
+      &:focus-visible {
+        outline: 2px solid $cc-button-focus-ring;
+        outline-offset: 2px;
+      }
+    }
     .close {
       fill: $cc-charcoal;
-      cursor: pointer;
     }
   }
 }

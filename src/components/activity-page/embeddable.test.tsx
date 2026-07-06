@@ -52,7 +52,10 @@ describe("Embeddable component", () => {
 
   it("renders a managed interactive", () => {
     iframePhone.ParentEndpoint = jest.fn().mockImplementation(() => ({
-      disconnect: jest.fn()
+      disconnect: jest.fn(),
+      post: jest.fn(),
+      addListener: jest.fn(),
+      removeListener: jest.fn()
     }));
 
     const embeddable: EmbeddableType = {
@@ -74,7 +77,10 @@ describe("Embeddable component", () => {
 
   it("renders a managed interactive with click to play and a plugin", () => {
     iframePhone.ParentEndpoint = jest.fn().mockImplementation(() => ({
-      disconnect: jest.fn()
+      disconnect: jest.fn(),
+      post: jest.fn(),
+      addListener: jest.fn(),
+      removeListener: jest.fn()
     }));
 
     const embeddable: EmbeddableType = {

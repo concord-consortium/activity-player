@@ -4,7 +4,10 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: $cc-orange-dark1;
+  // Label text color. Uses an accessible gray (#757575 >= 4.5:1 on white) rather
+  // than $cc-orange-dark1, which failed WCAG 1.4.3 contrast. The switch and hover
+  // styles below keep the orange via explicit $cc-orange-dark1 references.
+  color: #757575;
 
   &.disabled {
     color: rgba(121, 121, 121, 0.35);

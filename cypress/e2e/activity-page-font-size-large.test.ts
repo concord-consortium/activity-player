@@ -1,6 +1,6 @@
 import ActivityPage from "../support/elements/activity-page";
 import { getInIframe, getInIframeWithIndex } from "../support/elements/iframe";
-import { largeFont } from "../support/testdata/font-size_read-alound";
+import { largeFont } from "../support/testdata/font-size_read-aloud";
 import FontSize from "../support/elements/font-size";
 
 const activityPage = new ActivityPage;

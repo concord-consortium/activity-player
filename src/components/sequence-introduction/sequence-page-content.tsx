@@ -64,13 +64,13 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
   }, [questionMap]);
 
   return (
-    <div className="sequence-content" data-cy="sequence-page-content">
+    <main className="sequence-content" data-cy="sequence-page-content">
       {isNotebookLayout && <div className="notebookHeader" />}
       <div className="introduction">
         <div className="introduction-content">
           <div className="sequence-header">
             <div className="sequence-title">
-              <h2><DynamicText>{sequence.display_title || sequence.title || ""}</DynamicText></h2>
+              <h1><DynamicText>{sequence.display_title || sequence.title || "Sequence"}</DynamicText></h1>
             </div>
             <ReadAloudToggle />
           </div>
@@ -100,6 +100,6 @@ export const SequencePageContent: React.FC<IProps> = (props) => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };

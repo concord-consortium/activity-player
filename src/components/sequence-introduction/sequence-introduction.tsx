@@ -30,10 +30,15 @@ export const SequenceIntroduction: React.FC<IProps> = (props) => {
           contentName={sequence.display_title || sequence.title || ""}
           showSequence={true}
         />
-        <SequencePageContent
-          sequence={sequence}
-          onSelectActivity={onSelectActivity}
-        />
+        {/* Skip-link focus target (WCAG 2.4.1). A plain <div>, not a <main>:
+            SequencePageContent already renders its own single <main> landmark,
+            so a <main> here would nest landmarks. */}
+        <div id="main-content" tabIndex={-1}>
+          <SequencePageContent
+            sequence={sequence}
+            onSelectActivity={onSelectActivity}
+          />
+        </div>
         <Footer
           fullWidth={true}
           project={sequence.project}

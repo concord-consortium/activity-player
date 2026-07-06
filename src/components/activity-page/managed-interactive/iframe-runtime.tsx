@@ -11,7 +11,7 @@ import {
   ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState, AttachmentInfoMap,
   IPubSubCreateChannel, IPubSubSubscribe, IPubSubUnsubscribe, IPubSubPublish
 } from "@concord-consortium/lara-interactive-api";
-import { PubSubManager, JobManager } from "@concord-consortium/interactive-api-host";
+import { PubSubManager, JobManager, FocusManager, type FocusTransport } from "@concord-consortium/interactive-api-host";
 import { firebaseJobExecutor, buildJobContext } from "../../../firebase-job-executor";
 import { DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
 import { FirebaseObjectStorageConfig, FirebaseObjectStorageUser } from "@concord-consortium/object-storage";
@@ -29,6 +29,7 @@ import { IframeRuntimeFeedback } from "../../teacher-feedback/iframe-runtime-fee
 import { isOfferingLocked } from "../../../utilities/portal-data-utils";
 import { queryValue, queryValueBoolean } from "../../../utilities/url-query";
 import { anonymousPortalData } from "../../../portal-api";
+import { useCompositeRef } from "../../../utilities/use-composite-ref";
 import { applyOverrides } from "../../../utilities/url-overrides/state";
 
 import "./iframe-runtime.scss";
@@ -58,6 +59,7 @@ const createTextDecorationInfo = () => {
 
 export interface IframeRuntimeImperativeAPI {
   requestInteractiveState: (options?: IGetInteractiveState) => Promise<void>;
+  getIframeElement: () => HTMLIFrameElement | null;
 }
 
 interface IProps {
@@ -90,6 +92,10 @@ interface IProps {
   hasHeader?: boolean;
   feedback?: QuestionFeedback | null;
   log: (logData: any) => void;
+  iframeRef?: React.MutableRefObject<HTMLIFrameElement | null>;
+  beforeSentinelRef?: React.Ref<HTMLSpanElement>;
+  afterSentinelRef?: React.Ref<HTMLSpanElement>;
+  onFocusTransportReady?: (transport: FocusTransport | undefined) => void;
 }
 
 // these are managed outside of the component to persist across component unmount/mount cycles
@@ -100,12 +106,17 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
     setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo,
-    showDeleteDataButton, setAspectRatio, setHeightFromInteractive, feedback, log } = props;
+    showDeleteDataButton, setAspectRatio, setHeightFromInteractive, feedback, log,
+    iframeRef: externalIframeRef, beforeSentinelRef, afterSentinelRef, onFocusTransportReady } = props;
 
   const [reloadCount, setReloadCount] = useState<number>(0);
   const iframePhoneTimeout = useRef<number|undefined>(undefined);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  // Stable composed ref so the iframe isn't detached/reattached every render
+  // (which would churn focus-trap wiring); see useCompositeRef.
+  const composedIframeRef = useCompositeRef(iframeRef, externalIframeRef);
   const phoneRef = useRef<IframePhone>();
+  const focusManagerRef = useRef<FocusManager>();
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
   const interactiveStateRef = useRef(initialInteractiveState);
@@ -174,6 +185,10 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           const textDecorationInfo: ITextDecorationInfo = createTextDecorationInfo();
           phoneRef.current.post("decorateContent", textDecorationInfo);
         }
+        // iframe-phone allows a single listener per message, and iframe-runtime
+        // owns "supportedFeatures". Forward the focus-protocol capability to the
+        // FocusManager from here instead of letting it add a competing listener.
+        focusManagerRef.current?.notifyCapability(!!features.focusProtocol);
       });
       addListener("navigation", (options: INavigationOptions) => {
         setNavigation?.(options);
@@ -428,10 +443,13 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       // otherwise this imperative assignment clobbers the overridden src with the raw url.
       iframeRef.current.src = applyOverrides(url);
       // Re-init interactive, this time using a new mode (report or runtime).
-      phoneRef.current = new iframePhone.ParentEndpoint(iframeRef.current, initInteractive);
+      const phone: IframePhone = new iframePhone.ParentEndpoint(iframeRef.current, initInteractive);
+      phoneRef.current = phone;
       setSendCustomMessage((message: ICustomMessage) => {
         phoneRef.current?.post("customMessage", message);
       });
+      focusManagerRef.current = new FocusManager(phone);
+      onFocusTransportReady?.(focusManagerRef.current.transport);
     }
 
     // Cleanup.
@@ -449,6 +467,11 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       jobManager.removeInteractive(id);
       firebaseJobExecutor.removeInteractive(id);
 
+      if (focusManagerRef.current) {
+        focusManagerRef.current.destroy();
+        focusManagerRef.current = undefined;
+        onFocusTransportReady?.(undefined);
+      }
       if (phoneRef.current) {
         phoneRef.current.disconnect();
       }
@@ -490,7 +513,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           });
       }
       return interactiveStateRequest.promise.current;
-    }
+    },
+    getIframeElement: () => iframeRef.current,
   }));
 
   const handleResetButtonClick = (event: any) => {
@@ -514,11 +538,21 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   return (
     <div className="iframe-runtime" data-cy="iframe-runtime">
+      <span
+        ref={beforeSentinelRef}
+        className="iframe-slot-sentinel"
+        tabIndex={-1}
+        data-cy="iframe-slot-sentinel-before"
+      >
+        <span className="iframe-slot-sentinel-label">
+          Press Tab to enter the interactive
+        </span>
+      </span>
       <iframe
         className={locked ? "iframe-runtime-locked" : ""}
         tabIndex={locked ? -1 : 0}
         key={`${id}-${reloadCount}`}
-        ref={iframeRef}
+        ref={composedIframeRef}
         src={applyOverrides(url)}
         id={id}
         width={width}
@@ -528,11 +562,21 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         title={iframeTitle}
         scrolling="no"
       />
+      <span
+        ref={afterSentinelRef}
+        className="iframe-slot-sentinel"
+        tabIndex={-1}
+        data-cy="iframe-slot-sentinel-after"
+      >
+        <span className="iframe-slot-sentinel-label">
+          Press Tab to enter the interactive
+        </span>
+      </span>
       <div className="iframe-runtime-buttons">
         {showDeleteDataButton &&
           <button className="button reset" data-cy="reset-button" onClick={handleResetButtonClick} onKeyDown={handleResetButtonClick}>
             Clear &amp; start over
-            <ReloadIcon />
+            <ReloadIcon aria-hidden="true" focusable="false" />
           </button>
         }
         {feedback && <IframeRuntimeFeedback embeddableRefId={id} feedback={feedback} />}

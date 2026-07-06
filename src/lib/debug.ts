@@ -6,3 +6,4 @@ if (debug.length > 0) {
 const debugContains = (key: string) => debug.indexOf(key) !== -1;
 
 export const DEBUG_LOGGER = debugContains("logger");
+export const DEBUG_FOCUS = debugContains("focus");

@@ -12,7 +12,7 @@ interface IProps {
 export const IntroPageActivityLevelFeedback = ({ teacherFeedback }: IProps) => {
   return (
     <div className="intro-page-activity-level-feedback" data-testid="intro-page-activity-level-feedback">
-      <h1><DynamicText>Teacher Feedback</DynamicText></h1>
+      <h2><DynamicText>Teacher Feedback</DynamicText></h2>
       <ActivityLevelFeedbackBanner teacherFeedback={teacherFeedback} />
     </div>
   );

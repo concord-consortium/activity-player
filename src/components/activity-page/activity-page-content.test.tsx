@@ -1,6 +1,6 @@
 import React from "react";
 import { ActivityPageContent } from "./activity-page-content";
-import { configure, render } from "@testing-library/react";
+import { configure, render, screen } from "@testing-library/react";
 import { DefaultTestPage, DefaultTestActivity } from "../../test-utils/model-for-tests";
 import { DynamicTextTester } from "../../test-utils/dynamic-text";
 
@@ -30,6 +30,64 @@ describe("Activity Page Content component", () => {
 
     const notifications = queryAllByTestId("page-change-notification");
     expect(notifications.length).toBe(0);
+  });
+
+  it("exposes a single main landmark", () => {
+    render(
+      <DynamicTextTester>
+        <ActivityPageContent
+          enableReportButton={false}
+          activityLayout={0}
+          page={page}
+          pageNumber={5}
+          activity={DefaultTestActivity}
+          totalPreviousQuestions={5}
+          setNavigation={stubFunction}
+          pluginsLoaded={true}
+        />
+      </DynamicTextTester>
+    );
+    expect(screen.getAllByRole("main")).toHaveLength(1);
+  });
+
+  it("renders the page title as an h1", () => {
+    const namedPage = { ...page, name: "Test Page Title" };
+    render(
+      <DynamicTextTester>
+        <ActivityPageContent
+          enableReportButton={false}
+          activityLayout={0}
+          page={namedPage}
+          pageNumber={5}
+          activity={DefaultTestActivity}
+          totalPreviousQuestions={5}
+          setNavigation={stubFunction}
+          pluginsLoaded={true}
+        />
+      </DynamicTextTester>
+    );
+    const h1 = screen.getByRole("heading", { level: 1 });
+    expect(h1).toHaveTextContent("Test Page Title");
+  });
+
+  it("falls back to 'Page N' for the h1 when the page has no name (avoids an empty heading)", () => {
+    const unnamedPage = { ...page, name: null };
+    render(
+      <DynamicTextTester>
+        <ActivityPageContent
+          enableReportButton={false}
+          activityLayout={0}
+          page={unnamedPage}
+          pageNumber={5}
+          activity={DefaultTestActivity}
+          totalPreviousQuestions={5}
+          setNavigation={stubFunction}
+          pluginsLoaded={true}
+        />
+      </DynamicTextTester>
+    );
+    const h1 = screen.getByRole("heading", { level: 1 });
+    expect(h1).toHaveTextContent("Page 5");
   });
 
   describe("with page change notification", () => {

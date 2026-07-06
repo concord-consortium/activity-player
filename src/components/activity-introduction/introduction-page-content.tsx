@@ -31,7 +31,7 @@ export const IntroductionPageContent: React.FC<IProps> = (props) => {
   }, [activity.id, isSequence]);
 
   return (
-    <div className="intro-content" data-cy="intro-page-content">
+    <main className="intro-content" data-cy="intro-page-content">
       <div className="introduction">
         <ActivitySummary
           activityName={activity.name}
@@ -51,6 +51,6 @@ export const IntroductionPageContent: React.FC<IProps> = (props) => {
           <IntroPageActivityLevelFeedback teacherFeedback={feedback} />
         )
       }
-    </div>
+    </main>
   );
 };

@@ -32,7 +32,7 @@ export const IframeRuntimeFeedback: React.FC<IProps> = ({feedback, embeddableRef
     showFeedback ?
     <div className="teacher-feedback" data-testid="teacher-feedback">
       <div>
-        <TeacherFeedbackIcon/>
+        <TeacherFeedbackIcon aria-hidden="true" focusable="false" />
       </div>
       <DynamicText>
           <strong>Teacher Feedback:</strong> {feedback.content}
@@ -41,7 +41,7 @@ export const IframeRuntimeFeedback: React.FC<IProps> = ({feedback, embeddableRef
     <button className="feedback-button" onClick={handleShowFeedback} data-testid="feedback-button">
       <div className="feedback-button-content">
         <div className="button-icon">
-          <TeacherFeedbackIcon/>
+          <TeacherFeedbackIcon aria-hidden="true" focusable="false" />
         </div>
         <div className="feedback-button-text">
           <DynamicText>

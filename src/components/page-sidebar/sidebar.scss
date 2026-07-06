@@ -9,11 +9,34 @@
   right: -500px;
   border-radius: 0 0 0 8px;
   width: 500px;
-  transition: 0.4s right, 0.4s z-index, 1.0s opacity, 0.20s 0.05s ease box-shadow;
+  // z-index is intentionally NOT transitioned: it is a discrete property, and animating it
+  // lets the container momentarily stack below the overlay (z 1999) during the open
+  // animation, so clicks on the dialog could register as overlay clicks and dismiss it.
+  transition: 0.4s right, 1.0s opacity, 0.20s 0.05s ease box-shadow;
 
   &.expanded {
     right: 0 !important;
     z-index: 2000;
     box-shadow: -3px 2px 15px rgba(0,0,0,0.3), 0 0 0 8000px rgba(68,68,68,0.1), 0 0 0 8000px rgba(255,255,255,0.7);
+  }
+}
+
+// Transparent, full-viewport overlay that makes the page behind the open dialog
+// inert to pointer input and dismisses it on an outside click. It sits one
+// z-index below the expanded container (2000); the container's box-shadow
+// supplies the visual dimming, so this overlay stays transparent.
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1999;
+
+  // In forced-colors (high-contrast) mode the .expanded box-shadow that supplies
+  // the visual dimming is dropped, so the modal's separation from the page would
+  // be lost. Give the overlay a translucent system-color backdrop there to restore
+  // it. (opacity is honored in forced-colors; background colors are forced to
+  // system colors, so an rgba() alone would not read as translucent.)
+  @media (forced-colors: active) {
+    background-color: Canvas;
+    opacity: 0.7;
   }
 }

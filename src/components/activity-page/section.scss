@@ -214,6 +214,12 @@
     }
   }
 
+  // The collapsible panel groups the secondary embeddables so the trigger's aria-controls
+  // can reference it; `display: contents` keeps the embeddables as direct layout children.
+  .collapsible-panel {
+    display: contents;
+  }
+
   .collapsible-header {
     display: flex;
     justify-content: flex-end;
@@ -221,7 +227,11 @@
     box-sizing: border-box;
     padding: 20px;
     margin-bottom: 10px;
+    width: 100%;
     height: 35px;
+    border: none;
+    font: inherit;
+    text-align: inherit;
     background-color: $cc-charcoal;
     color: $cc-charcoal-light2;
     transition-duration: .25s;
@@ -229,6 +239,23 @@
     position: sticky;
     top: 0;
     z-index: 3;
+
+    // Focus ring using the app-wide double-ring idiom (see app.scss), but with the white
+    // band outermost so it stays high-contrast against the dark header and its near-white
+    // text — the blue brand ring alone is too low-contrast on charcoal. Inset box-shadow so
+    // the sticky header's clipped edges can't hide it.
+    &:focus-visible {
+      outline: none;
+      box-shadow: inset 0 0 0 2px white, inset 0 0 0 4px $cc-button-focus-ring;
+
+      // box-shadow is dropped in forced-colors mode; restore an outline (which is rendered
+      // there) so keyboard focus stays visible. Inset so the sticky header's clipped edges
+      // don't hide it.
+      @media (forced-colors: active) {
+        outline: 2px solid Highlight;
+        outline-offset: -2px;
+      }
+    }
 
     &.right {
       justify-content: flex-start;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useRef } from "react";
 import { SidebarTab } from "./sidebar-tab";
 import { SidebarPanel } from "./sidebar-panel";
 
@@ -13,34 +13,45 @@ interface IProps {
   title: string | null;
 }
 
-interface IState {
-  showSidebarContent: boolean;
-}
+export const Sidebar: React.FC<IProps> = (props) => {
+  const { content, handleShowSidebar, index, show, style, title } = props;
+  // Shared id links the trigger (aria-controls) to the dialog panel.
+  const panelId = `sidebar-panel-${index}`;
+  // Lets the panel return focus to the trigger when the dialog closes.
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
-export class Sidebar extends React.PureComponent<IProps, IState> {
-  constructor(props: IProps) {
-    super(props);
-    // eslint-disable-next-line react/no-unused-state
-    this.state = { showSidebarContent: false };
-  }
-  render() {
-    const { content, handleShowSidebar, index, show, style, title } = this.props;
-    return (
+  const handleOverlayClick = useCallback(() => {
+    handleShowSidebar(index, false);
+  }, [handleShowSidebar, index]);
+
+  return (
+    <React.Fragment>
+      {/* While the dialog is open this transparent overlay (a sibling of the container,
+          so it sits one z-index below it) makes the page behind it inert to pointer
+          input and dismisses the dialog on an outside click. The container's .expanded
+          box-shadow supplies the visual dimming, so the overlay stays transparent. */}
+      {show &&
+        <div className="sidebar-overlay" data-cy="sidebar-overlay" aria-hidden="true" onClick={handleOverlayClick} />
+      }
       <div className={`sidebar-container ${show ? "expanded" : ""}`} style={style} data-cy="sidebar">
         <SidebarTab
           handleShowSidebarContent={handleShowSidebar}
           index={index}
+          panelId={panelId}
           sidebarOpen={show}
           title={title}
+          triggerRef={triggerRef}
         />
         <SidebarPanel
           content={content}
           handleCloseSidebarContent={handleShowSidebar}
           index={index}
+          panelId={panelId}
           title={title}
           show={show}
+          triggerRef={triggerRef}
         />
       </div>
-    );
-  }
-}
+    </React.Fragment>
+  );
+};

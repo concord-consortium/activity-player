@@ -7,6 +7,9 @@
   padding: 20px;
   margin-bottom: 20px;
 
+  // Heading for the error screen and the idle-warning, which share this container.
+  h1 { @include app-primary-heading; }
+
   li {
     margin-top: 5px;
   }

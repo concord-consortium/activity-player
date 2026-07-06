@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useContext, useMemo, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
-import Modal from "react-modal";
 import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
+import { DialogOverlay } from "./dialog-overlay";
 import {
   ICloseModal, INavigationOptions,
   ICustomMessage, IShowDialog, IShowLightbox, IShowModal, ISupportedFeatures, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState
@@ -15,7 +15,6 @@ import { IManagedInteractive, IMwInteractive, IExportableAnswerMetadata, ILegacy
 import { createOrUpdateAnswer, watchAnswer, getLegacyLinkedInteractiveInfo, getAnswer, watchQuestionLevelFeedback } from "../../../firebase-db";
 import { handleGetFirebaseJWT } from "../../../portal-utils";
 import { getAnswerWithMetadata, getInteractiveInfo, hasLegacyLinkedInteractive, IInteractiveInfo, isQuestion, refIdToAnswersQuestionId } from "../../../utilities/embeddable-utils";
-import { accessibilityClick } from "../../../utilities/accessibility-helper";
 import { safeJsonParseIfString } from "../../../utilities/safe-json-parse";
 import { Lightbox } from "./lightbox";
 import { Logger, LogEventName } from "../../../lib/logger";
@@ -54,10 +53,6 @@ export interface IClickToPlayOptions {
   imageUrl?: string | null;
 }
 
-const getModalContainer = (): HTMLElement => {
-  return document.getElementById("app") || document.body;
-};
-
 export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation, saveInteractiveStateHistory } = props;
   const { scrollToQuestionId } = useQuestionInfoContext();
@@ -86,6 +81,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const [loadingLegacyLinkedInteractiveState, setLoadingLegacyLinkedInteractiveState] = useState(shouldLoadLegacyLinkedInteractiveState);
   const interactiveInfo = useRef<IInteractiveInfo | undefined>(undefined);
   const headerTarget = React.useRef(null);
+  const hintTriggerRef = useRef<HTMLButtonElement>(null);
   const divTarget = React.useRef<HTMLDivElement>(null);
   const divSize = useSize(divTarget);
   const headerSize = useSize(headerTarget);
@@ -175,6 +171,18 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     : undefined);
   }, [embeddableData]);
 
+  const previousActiveDialogRef = useRef(activeDialog);
+  useEffect(() => {
+    const previous = previousActiveDialogRef.current;
+    if (previous && !activeDialog) {
+      // Dialog just closed. Phase 1 fallback: coarse focus restore on the
+      // originating iframe element. Replaced in follow-up AP-108 work by
+      // page-level iframe-slot + requestRestore().
+      iframeRuntimeRef.current?.getIframeElement()?.focus();
+    }
+    previousActiveDialogRef.current = activeDialog;
+  }, [activeDialog]);
+
   const handleNewInteractiveState = (state: any) => {
     // Keep interactive state in sync if iFrame is opened in modal popup
     interactiveState.current = state;
@@ -252,15 +260,18 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       parameters: { show_hint: false, hint }
     });
     setShowHint(false);
+    // Return focus to the "?" trigger so keyboard users aren't dropped to <body>
+    // when the panel that contained the close button collapses.
+    hintTriggerRef.current?.focus();
   };
   const handleShowHint = () => {
-    if (accessibilityClick(event)) {
-      Logger.log({
-        event: LogEventName.toggle_hint,
-        parameters: { show_hint: !showHint, hint }
-      });
-      setShowHint(!showHint);
-    }
+    Logger.log({
+      event: LogEventName.toggle_hint,
+      parameters: { show_hint: !showHint, hint }
+    });
+    // Functional update so the toggle is always derived from the latest state,
+    // independent of render/flush timing (future-proof against batched updates).
+    setShowHint(prevShowHint => !prevShowHint);
   };
 
   const handleCloseDialog = () => {
@@ -366,11 +377,44 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const hasQuestionName = questionName.trim().length > 0;
   const isNotebookLayout = laraData.activity?.layout === ActivityLayouts.Notebook;
   const hideQuestionHeader = (props.hideQuestionNumbers || !hasQuestionNumber) && !hasQuestionName && !hint && !isNotebookLayout && !hasPluginRequiringHeader;
+  const hintPanelId = `hint-panel-${embeddableRefId}`;
 
   const isInteractive = embeddable.type === "MwInteractive";
   const isManagedInteractive = embeddable.type === "ManagedInteractive";
   const hasBorder = isManagedInteractive || (isInteractive && !hideQuestionHeader);
   const className = classNames("runtime-container", {"has-question-number": hasQuestionNumber, "has-border": hasBorder});
+
+  // Common props for IframeRuntime, used by both the inline render and the dialog overlay.
+  const iframeRuntimeProps = {
+    id: embeddableRefId,
+    authoredState,
+    initialInteractiveState: interactiveState.current,
+    legacyLinkedInteractiveState: legacyLinkedInteractiveState.current,
+    setInteractiveState: handleNewInteractiveState,
+    setSupportedFeatures,
+    linkedInteractives: linkedInteractives.current,
+    proposedHeight,
+    containerWidth,
+    setNewHint,
+    getFirebaseJWT,
+    getAttachmentUrl: handleGetAttachmentUrlRequest,
+    showModal,
+    closeModal,
+    setSendCustomMessage,
+    setNavigation,
+    iframeTitle: questionNumber
+      ? `Question ${questionNumber} ${questionName} content`
+      : embeddable.name || "Interactive content",
+    portalData,
+    answerMetadata: answerMeta.current,
+    interactiveInfo: interactiveInfo.current,
+    showDeleteDataButton,
+    setAspectRatio: setARFromSupportedFeatures,
+    setHeightFromInteractive,
+    hasHeader: !hideQuestionHeader,
+    feedback,
+    log: handleLog,
+  };
 
   const interactiveIframeRuntime =
     loadingAnswer || loadingLegacyLinkedInteractiveState ?
@@ -378,34 +422,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
       <IframeRuntime
         ref={iframeRuntimeRef}
         url={iframeUrl}
-        id={embeddableRefId}
-        authoredState={authoredState}
-        initialInteractiveState={interactiveState.current}
-        legacyLinkedInteractiveState={legacyLinkedInteractiveState.current}
-        setInteractiveState={handleNewInteractiveState}
-        setSupportedFeatures={setSupportedFeatures}
-        linkedInteractives={linkedInteractives.current}
-        proposedHeight={proposedHeight}
-        containerWidth={containerWidth}
-        setNewHint={setNewHint}
-        getFirebaseJWT={getFirebaseJWT}
-        getAttachmentUrl={handleGetAttachmentUrlRequest}
-        showModal={showModal}
-        closeModal={closeModal}
-        setSendCustomMessage={setSendCustomMessage}
-        setNavigation={setNavigation}
-        iframeTitle={questionNumber
-                    ? `Question ${questionNumber} ${questionName} content`
-                    : embeddable.name || "Interactive content"}
-        portalData={portalData}
-        answerMetadata={answerMeta.current}
-        interactiveInfo={interactiveInfo.current}
-        showDeleteDataButton={showDeleteDataButton}
-        setAspectRatio={setARFromSupportedFeatures}
-        setHeightFromInteractive={setHeightFromInteractive}
-        hasHeader={!hideQuestionHeader}
-        feedback={feedback}
-        log={handleLog}
+        {...iframeRuntimeProps}
       />;
 
   return (
@@ -415,12 +432,17 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         questionNumber={props.hideQuestionNumbers ? undefined : questionNumber}
         questionName={questionName}
         hint={hint}
+        showHint={showHint}
+        hintPanelId={hintPanelId}
+        triggerRef={hintTriggerRef}
         onToggleHint={handleShowHint}
         hideHeader={hideQuestionHeader}
       />
       <ManagedInteractiveHint
         hint={hint}
         showHint={showHint}
+        panelId={hintPanelId}
+        questionName={questionName}
         onToggleHint={handleHintClose}
       />
       {clickToPlayOptions && !clickedToPlay
@@ -432,10 +454,16 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         : <>
             { !activeDialog && interactiveIframeRuntime }
             {
-              activeDialog &&
-              <Modal isOpen={true} appElement={getModalContainer()} onRequestClose={activeDialog.notCloseable ? undefined : handleCloseDialog}>
-                { interactiveIframeRuntime }
-              </Modal>
+              activeDialog && (loadingAnswer || loadingLegacyLinkedInteractiveState
+                ? "Loading..."
+                : <DialogOverlay
+                    url={iframeUrl}
+                    title={iframeRuntimeProps.iframeTitle}
+                    notCloseable={activeDialog.notCloseable}
+                    onClose={handleCloseDialog}
+                    iframeRuntimeProps={iframeRuntimeProps}
+                    iframeRuntimeRef={iframeRuntimeRef}
+                  />)
             }
             {
               activeLightbox && <Lightbox onClose={handleCloseLightbox} {...activeLightbox} />

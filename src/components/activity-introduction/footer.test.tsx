@@ -1,6 +1,7 @@
 import React from "react";
 import { Footer } from "./footer";
 import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 describe("Footer component", () => {
   const aboutText = "This is a test project.";
@@ -70,5 +71,9 @@ describe("Footer component", () => {
     const defaultFooterText = `Copyright © ${currentYear} The Concord Consortium. All rights reserved. This material is licensed under a Creative Commons Attribution 4.0 License. The software is licensed under Simplified BSD, MIT or Apache 2.0 licenses. Please provide attribution to the Concord Consortium and the URL https://concord.org.`;
     const wrapper = shallow(<Footer fullWidth={true} project={null} />);
     expect(wrapper.text()).toContain(defaultFooterText);
+  });
+  it("exposes a contentinfo landmark", () => {
+    render(<Footer fullWidth={true} project={null} />);
+    expect(screen.getByRole("contentinfo")).toBeInTheDocument();
   });
 });

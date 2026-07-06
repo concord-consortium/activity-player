@@ -16,7 +16,12 @@ context("Test the overall app", () => {
       cy.log("verify sidebar opens");
       const content="Lorem ipsum dolor sit amet, consectetur adipiscing elit.";
       activityPage.getSidebarTab().click();
-      activityPage.getSidebarContent().should("be.visible").and("contain", content);
+      // Split assertions onto separate statements so each re-queries the element. Chaining
+      // .should().and() reuses one subject, which detaches from the DOM when the sidebar
+      // re-renders between the two assertions, causing intermittent "subject is no longer
+      // attached to the DOM" failures.
+      activityPage.getSidebarContent().should("be.visible");
+      activityPage.getSidebarContent().should("contain", content);
 
       cy.log("verify sidebar closes when tab is clicked");
       activityPage.getSidebarTab().click();
@@ -28,20 +33,59 @@ context("Test the overall app", () => {
       activityPage.getSidebarCloseButton().click();
       activityPage.getSidebarContent().should("not.be.visible");
 
+      cy.log("verify opening the dialog moves focus to its heading");
+      activityPage.getSidebarTab().click();
+      activityPage.getSidebarContent().should("be.visible");
+      // Initial focus lands on the dialog heading so a screen reader announces the
+      // dialog name; the heading sits within the panel, so focus is trapped inside.
+      cy.focused().should("have.attr", "data-cy", "sidebar-title");
+      cy.focused().closest("[data-cy=sidebar-panel]").should("exist");
+
+      cy.log("verify the open dialog makes background content inert for AT/pointer");
+      // Siblings of the sidebar container (header, activity content, footer) are
+      // marked inert + aria-hidden while the dialog is open so AT can't reach them.
+      cy.get("#expandable-container").siblings().first().should("have.attr", "inert");
+      cy.get("#expandable-container").siblings().first().should("have.attr", "aria-hidden", "true");
+
+      cy.log("verify Escape closes the dialog and returns focus to the trigger");
+      cy.focused().type("{esc}");
+      activityPage.getSidebarContent().should("not.be.visible");
+      cy.focused().should("have.attr", "data-cy", "sidebar-tab");
+      // Background is interactive again once the dialog closes.
+      cy.get("#expandable-container").siblings().first().should("not.have.attr", "inert");
+
+      cy.log("verify clicking the overlay closes the dialog");
+      activityPage.getSidebarTab().click();
+      activityPage.getSidebarContent().should("be.visible");
+      cy.get("[data-cy=sidebar-overlay]").click("topLeft");
+      activityPage.getSidebarContent().should("not.be.visible");
+
       cy.log("Info/Assess (secondary embeddables)");
       cy.log("verify textbox");
       activityPage.getNavPage(3).click();
       cy.wait(1);
-      activityPage.getSecondaryEmbeddable("text-box").eq(1).scrollIntoView()
-        .should("be.visible").and("contain","Duis vitae ultrices augue, eu fermentum elit.");
+      activityPage.getSecondaryEmbeddable("text-box").eq(1).scrollIntoView();
+      activityPage.getSecondaryEmbeddable("text-box").eq(1).should("be.visible");
+      activityPage.getSecondaryEmbeddable("text-box").eq(1).should("contain", "Duis vitae ultrices augue, eu fermentum elit.");
 
       cy.log("verify collapsible column");
       activityPage.getNavPage(2).click();
+      // The trigger is a semantic disclosure button: aria-expanded tracks the open state and
+      // aria-controls references the panel it shows/hides (AP-95).
+      activityPage.getCollapsibleHeader().should("have.prop", "tagName", "BUTTON");
+      activityPage.getCollapsibleHeader().should("have.attr", "aria-controls");
       activityPage.getCollapsibleHeader().should("contain", "Hide");
+      activityPage.getCollapsibleHeader().should("have.attr", "aria-expanded", "true");
       activityPage.getCollapsibleHeader().click();
-      activityPage.getCollapsibleHeader().should("have.class", "collapsed").and("contain", "Show");
+      // Clicking the header re-renders it (class + label both change), so keep each assertion
+      // on its own statement to re-query and avoid asserting against a detached element.
+      activityPage.getCollapsibleHeader().should("have.class", "collapsed");
+      activityPage.getCollapsibleHeader().should("contain", "Show");
+      activityPage.getCollapsibleHeader().should("have.attr", "aria-expanded", "false");
       activityPage.getCollapsibleHeader().click();
-      activityPage.getCollapsibleHeader().should("have.not.class", "collapsed").and("contain", "Hide");
+      activityPage.getCollapsibleHeader().should("have.not.class", "collapsed");
+      activityPage.getCollapsibleHeader().should("contain", "Hide");
+      activityPage.getCollapsibleHeader().should("have.attr", "aria-expanded", "true");
 
       cy.log("Required questions");
       cy.log("verify locked navigation");

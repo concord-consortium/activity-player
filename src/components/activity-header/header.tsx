@@ -23,16 +23,17 @@ export class Header extends React.PureComponent<IProps> {
     const { fullWidth, project, userName, showSequence, onShowSequence } = this.props;
     const logo = project?.logo_ap;
     const projectURL = project?.url || ccLogoLink;
+    const projectTitle = project?.title;
     return (
-      <div className={`activity-header ${showSequence ? "in-sequence" : ""}`} data-cy="activity-header">
+      <header className={`activity-header ${showSequence ? "in-sequence" : ""}`} data-cy="activity-header">
         <div className={`inner ${fullWidth ? "full" : ""}`}>
           <div className="header-left">
-            <Logo logo={logo} url={projectURL} />
+            <Logo logo={logo} url={projectURL} title={projectTitle} />
             <div className="separator" />
           </div>
           <div className="header-center">
             <div className={`title-container ${showSequence && onShowSequence ? "link" : ""}`} onClick={onShowSequence}>
-              {showSequence && onShowSequence && <SequenceBackIcon className="sequence-icon" />}
+              {showSequence && onShowSequence && <SequenceBackIcon className="sequence-icon" aria-hidden="true" focusable="false" />}
               {showSequence && onShowSequence ? this.renderContentTitle() : <DynamicText>{this.renderContentTitle()}</DynamicText>}
             </div>
           </div>
@@ -40,7 +41,7 @@ export class Header extends React.PureComponent<IProps> {
             <AccountOwner userName={userName} />
           </div>
         </div>
-      </div>
+      </header>
     );
   }
 

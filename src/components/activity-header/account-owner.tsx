@@ -10,7 +10,7 @@ export class AccountOwner extends React.PureComponent <IProps> {
   render() {
     return (
       <div className="account-owner" data-cy="account-owner">
-        <AccountOwnerIcon className="icon" />
+        <AccountOwnerIcon className="icon" aria-hidden="true" focusable="false" />
         <div className="account-owner-name">{this.props.userName}</div>
       </div>
     );

@@ -1,0 +1,24 @@
+.dialog-overlay {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  &__close {
+    background: white;
+    border: 1px solid #888;
+    border-radius: 4px;
+    padding: 4px 12px;
+    cursor: pointer;
+
+    &:hover { background: #f0f0f0; }
+    &:focus-visible { outline: 2px solid orange; outline-offset: 2px; }
+  }
+
+  /* &__content is the wrapper around the IframeRuntime — used by the focus
+     trap's getElements() and excluded from setChildrenNonTabbable. It needs no
+     styles of its own, so no ruleset is defined for it. */
+}

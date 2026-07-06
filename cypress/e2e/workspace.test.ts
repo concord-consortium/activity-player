@@ -35,10 +35,12 @@ context("Test the overall app", () => {
       activityPage.getSidebarTab().should("be.visible");
 
       cy.log("go to correct page when tabbed and keydown enter from page list");
-      cy.get("[data-cy=nav-pages] button").eq(1).type("{enter}");
+      cy.get("[data-cy=nav-pages] a").eq(1).type("{enter}");
       cy.get("[data-cy=intro-page-content]").should("be.visible");
+      // realPress dispatches a trusted Enter so the native <a> activates the way
+      // it does for a real keyboard user; synthetic .type("{enter}") cannot.
       cy.get(".page-item").eq(1).focus();
-      cy.focused().type("{enter}");
+      cy.realPress("Enter");
       activityPage.getSidebarTab().should("be.visible");
     });
   });

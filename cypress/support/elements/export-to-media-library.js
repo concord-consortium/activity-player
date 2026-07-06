@@ -1,7 +1,4 @@
-import ActivityPage from "./activity-page";
 import { getInIframe } from "./iframe";
-
-const activityPage = new ActivityPage;
 
 class ExportToMediaLibrary {
   getUploadImageButton() {
@@ -49,7 +46,7 @@ class ExportToMediaLibrary {
   clickUploadFromActivityButton() {
     this.getMediaLibraryPickerBottomButtons().find('.helpers--interactiveButton--question-int').eq(0).click();
   }
-  clickCancelButton() {
+  clickMediaLibraryPickerCancelButton() {
     this.getMediaLibraryPickerBottomButtons().find('.media-library-picker--cancelButton--question-int').click();
   }
   getDrawingToolContainer() {

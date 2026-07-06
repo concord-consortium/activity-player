@@ -6,7 +6,7 @@ import IconUnfinishedCheck from "../../assets/svg-icons/icon-unfinished-check-ci
 import { Sequence, Activity, ActivityFeedback, QuestionFeedback } from "../../types";
 import { renderHTML } from "../../utilities/render-html";
 import { watchAllAnswers, watchQuestionLevelFeedback, WrappedDBAnswer } from "../../firebase-db";
-import { getEmbeddable, getPageNumberFromEmbeddable, isQuestion, isSequenceFinished } from "../../utilities/activity-utils";
+import { getEmbeddable, getPageIdFromEmbeddable, getPageNumberFromEmbeddable, isQuestion, isSequenceFinished } from "../../utilities/activity-utils";
 import { answerHasResponse, answersQuestionIdToRefId, refIdToAnswersQuestionId } from "../../utilities/embeddable-utils";
 import { SummaryTable, IQuestionStatus } from "./summary-table";
 import { SequenceIntroFeedbackBanner } from "../teacher-feedback/sequence-intro-feedback-banner";
@@ -88,11 +88,13 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
         const authoredState = embeddable?.authored_state ? JSON.parse(embeddable.authored_state) : {};
         const answered = answer ? answerHasResponse(answer, authoredState) : false;
         const page = getPageNumberFromEmbeddable(activity, embeddableId) || 0;
+        const pageId = getPageIdFromEmbeddable(activity, embeddableId);
 
         summaries.push({
           embeddableId,
           number: idx + 1,
           page,
+          pageId,
           prompt: authoredState.prompt,
           answered,
           feedback
@@ -143,19 +145,19 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
 
   return (
     !answers
-      ? <div className="completion-page-content" data-cy="completion-page-content">
+      ? <main className="completion-page-content" data-cy="completion-page-content">
           <div className="progress-container" data-cy="progress-container">
             <div className="progress-text">
               <DynamicText>Fetching your data ...</DynamicText>
             </div>
           </div>
-        </div>
-      : <div className="completion-page-content" data-cy="completion-page-content">
+        </main>
+      : <main className="completion-page-content" data-cy="completion-page-content">
           <div className="banners">
             <div className={`progress-container ${!isActivityComplete ? "incomplete" : ""}`} data-cy="progress-container">
               {isActivityComplete
-                ? <IconCheck width={24} height={24} className="check" />
-                : <IconUnfinishedCheck width={24} height={24} className="check incomplete" />
+                ? <IconCheck width={24} height={24} className="check" aria-hidden="true" focusable="false" />
+                : <IconUnfinishedCheck width={24} height={24} className="check incomplete" aria-hidden="true" focusable="false" />
               }
               <div className="progress-text" data-cy="progress-text">
                 <DynamicText>{progressText}</DynamicText>
@@ -191,6 +193,6 @@ export const CompletionPageContent: React.FC<IProps> = (props) => {
               </div>
             }
           </div>
-        </div>
+        </main>
   );
 };

@@ -14,6 +14,19 @@
     padding: 0 0 0 10px;
     color: white;
     background-color: $cc-teal-dark1;
+
+    .embeddable-header-text {
+      margin: 0;
+      // Inherit the header bar's white text. Without this, the header would pick up
+      // the charcoal color that `.app` sets on its content, rendering the question
+      // header dark on the teal bar. This targeted exception keeps only
+      // question/interactive headers white; other headings intentionally remain
+      // charcoal.
+      color: inherit;
+      font-size: inherit;
+      font-weight: inherit;
+      line-height: inherit;
+    }
   }
   &.hidden {
     display: none;

@@ -21,11 +21,9 @@
         flex-grow: 1;
 
 
-        h2 {
-          font-size: pxToRem(32);
-          font-weight: 900;
+        h1 {
+          @include app-primary-heading;
           margin: 0;
-          color: var(--theme-secondary-color);
         }
       }
     }
