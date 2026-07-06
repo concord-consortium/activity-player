@@ -34,7 +34,7 @@ interface IProps {
 const kForceOverlay = true;
 
 export const ChatSidebar: React.FC<IProps> = (props) => {
-  const { fullWidth, activity, page, pageNumber, hints, identity } = props;
+  const { fullWidth, activity, page, hints, identity } = props;
   const push = fullWidth && !kForceOverlay;
   const [open, setOpen] = useState(false);
   const launcherRef = useRef<HTMLButtonElement>(null);
@@ -73,12 +73,7 @@ export const ChatSidebar: React.FC<IProps> = (props) => {
   // from transport.subscribe(), which useChat calls on transport change / unmount — no separate
   // dispose effect is needed here.
 
-  // Scoped header makes the per-page conversation boundary explicit (each page is its own
-  // conversation). Falls back to "Chat about: Page N" when the page is untitled.
-  const pageTitle = page.name?.trim();
-  const header = pageTitle
-    ? `Chat about: Page ${pageNumber} — ${pageTitle}`
-    : `Chat about: Page ${pageNumber}`;
+  const header = "Ask the Tutor";
   const chat = useChat({ transport, header });
 
   // Default to closed whenever the conversation swaps (page nav) or the wrapper changes. Mark the

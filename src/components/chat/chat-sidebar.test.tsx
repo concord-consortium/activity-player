@@ -37,27 +37,11 @@ describe("ChatSidebar", () => {
     expect(screen.queryByTestId("chat-sidebar")).toBeNull();
   });
 
-  it("opens the panel and shows the per-page scoped header", () => {
+  it("opens the panel and shows the tutor header", () => {
     renderSidebar(true);
     act(() => { fireEvent.click(screen.getByTestId("chat-launcher")); });
     expect(screen.getByTestId("chat-sidebar")).toBeInTheDocument();
-    // The fixture page is untitled (name: null), so the header falls back to "Chat about: Page N".
-    expect(screen.getByTestId("chat-header")).toHaveTextContent("Chat about: Page 2");
-  });
-
-  it("includes the page title in the header when the page is named", () => {
-    render(
-      <ChatSidebar
-        fullWidth={true}
-        activity={activity}
-        page={{ ...page, name: "Wildfires" }}
-        pageNumber={3}
-        hints={{ activityTitle: activity.name }}
-        identity={identity}
-      />
-    );
-    act(() => { fireEvent.click(screen.getByTestId("chat-launcher")); });
-    expect(screen.getByTestId("chat-header")).toHaveTextContent("Chat about: Page 3 — Wildfires");
+    expect(screen.getByTestId("chat-header")).toHaveTextContent("Ask the Tutor");
   });
 
   // Push/reflow mode is temporarily forced off (kForceOverlay) — every activity uses the overlay
