@@ -160,8 +160,8 @@ export class App extends React.PureComponent<IProps, IState> {
 
   private LARA: LaraGlobalType;
   private activityPageContentRef = React.createRef<ActivityPageContent>();
-  // Resolved once (lazily) — resolveChatEnabled write-throughs to localStorage, so it must not run
-  // on every render.
+  // Resolved once (lazily) and cached — the `?chat` flag is fixed for the page load, so there's no
+  // need to re-parse the query string on every render.
   private chatEnabledCache?: boolean;
   private get chatEnabled(): boolean {
     if (this.chatEnabledCache === undefined) {

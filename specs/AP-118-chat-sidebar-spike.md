@@ -59,8 +59,9 @@ onSnapshot renders new docs ◀──────────────── 
 - **Sidebar UI & enablement.** Right-side sidebar in one of two layout modes chosen by the activity's
   layout type (shared chat component, only the wrapper differs): responsive activities → **push/reflow**
   (25% column, activity reflows to 75%); fixed-width activities → **overlay drawer** (`position: fixed`,
-  activity untouched). Off by default, enabled via a localStorage-backed query param (`?chat=true`;
-  resolution order query param → localStorage → default off). Desktop/laptop viewport assumed. *(The
+  activity untouched). Off by default, enabled purely by the URL (`?chat=true` / bare `?chat` → on;
+  absent or `?chat=false` → off) with no persistence, so the flag never lingers across loads or leaks
+  to other paths on the origin. Desktop/laptop viewport assumed. *(The
   overlay's thin-rail state was a Phase-1 stretch goal, not required for DoD.)*
 - **Per-page conversation & transport.** Scoped to the current page, keyed by `activityId` + `page.id`.
   Sending **writes a `user` message doc**; the sidebar **subscribes (`onSnapshot`)** to that page's
@@ -328,7 +329,11 @@ concrete spec changes.
 
 **Layout / Frontend / Accessibility**
 - **FE-1 — `?chat` presence vs value.** `queryValueBoolean("chat")` returns `false` for both `?chat=false`
-  and a missing param; detect presence with `queryValue("chat") !== undefined` first, then read the value.
+  and a missing param. This originally mattered for the `query → localStorage → default off` precedence,
+  but **post-spike the localStorage persistence was removed** — the flag is now purely URL-driven (bare
+  `?chat`/`?chat=true` → on; absent/`?chat=false` → off), so no persistence lingers across loads or leaks
+  to other paths on the `activity-player.concord.org` origin. `resolveChatEnabled()` is now just
+  `queryValueBoolean("chat")`.
 - **UX-1 / EXT-2 — Mode flip on navigation.** With chat gated to concrete content pages, the flip is
   hidden ↔ push (responsive) or a consistent overlay (fixed-width); default the chat closed and move
   focus to the new wrapper's control on any appear/disappear, riding the AP-3 conversation re-key.
