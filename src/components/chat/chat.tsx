@@ -17,7 +17,27 @@ interface IProps {
   // Optional close/collapse affordance rendered in the header (wired by the wrapper).
   onClose?: () => void;
   closeLabel?: string;
+  // Optional scope line ("<Activity>, Page N: <title>") prepended as a heading to the copied
+  // transcript so a pasted conversation is self-describing. Purely for the copy output.
+  transcriptTitle?: string;
 }
+
+// Build a plain-markdown transcript of the visible conversation for copy-to-clipboard: an optional
+// scope heading (which page/activity this conversation is about) followed by each real turn labeled
+// by speaker. Debug dry-run turns and empty turns are excluded; message bodies are copied verbatim so
+// any formatting the tutor emits is preserved and the text still reads cleanly where markdown isn't
+// rendered.
+export const buildChatTranscript = (turns: ChatTurn[], title?: string): string => {
+  const lines: string[] = [];
+  if (title) lines.push(`### Tutor chat — ${title}`, "");
+  for (const turn of turns) {
+    if (turn.variant === "debug") continue;
+    const text = turn.text.trim();
+    if (!text) continue;
+    lines.push(`**${turn.sender === "user" ? "You" : "Tutor"}:** ${text}`, "");
+  }
+  return lines.join("\n").trimEnd();
+};
 
 // A DebugTransport dry-run turn (would-be system prompt / forwarded log): rendered as a distinct
 // diagnostic panel whose (often long) body is collapsed by default behind a toggle, so it doesn't
@@ -86,14 +106,37 @@ const DebugTurn: React.FC<{ turn: ChatTurn }> = ({ turn }) => {
   );
 };
 
-export const Chat: React.FC<IProps> = ({ chat, onClose, closeLabel }) => {
+export const Chat: React.FC<IProps> = ({ chat, onClose, closeLabel, transcriptTitle }) => {
   const { turns, error, pending, sendMessage, header } = chat;
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
+  const [copied, setCopied] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   // Unique id so a <label htmlFor> stays valid even if two chat instances ever coexist.
   const inputId = useMemo(() => `chat-input-${uuidv4()}`, []);
+
+  // Copy-to-clipboard: only offer it when there's real conversation to copy (skip debug/empty turns).
+  const hasCopyableTurns = useMemo(
+    () => turns.some(t => t.variant !== "debug" && t.text.trim()), [turns]);
+
+  // Briefly confirm a successful copy, then revert to the icon.
+  useEffect(() => {
+    if (!copied) return;
+    const t = setTimeout(() => setCopied(false), 1500);
+    return () => clearTimeout(t);
+  }, [copied]);
+
+  const handleCopy = async () => {
+    const transcript = buildChatTranscript(turns, transcriptTitle);
+    if (!transcript) return;
+    try {
+      await navigator.clipboard.writeText(transcript);
+      setCopied(true);
+    } catch {
+      // clipboard API unavailable (older browser / insecure context) — no-op
+    }
+  };
 
   // Auto-scroll to the newest content.
   useEffect(() => {
@@ -147,16 +190,35 @@ export const Chat: React.FC<IProps> = ({ chat, onClose, closeLabel }) => {
           <span className="chat-header-icon" aria-hidden="true">💬</span>
           {header}
         </span>
-        {onClose &&
-          <button
-            type="button"
-            className="chat-close"
-            onClick={onClose}
-            aria-label={closeLabel || "Close chat"}
-            data-cy="chat-close"
-          >
-            ×
-          </button>}
+        <span className="chat-header-actions">
+          {hasCopyableTurns &&
+            <button
+              type="button"
+              className="chat-copy"
+              onClick={handleCopy}
+              aria-label={copied ? "Copied" : "Copy conversation"}
+              title={copied ? "Copied" : "Copy conversation"}
+              data-cy="chat-copy"
+            >
+              {copied
+                ? <span className="chat-copied" aria-hidden="true">✓</span>
+                : <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
+                       strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect x="9" y="9" width="13" height="13" rx="2" />
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                  </svg>}
+            </button>}
+          {onClose &&
+            <button
+              type="button"
+              className="chat-close"
+              onClick={onClose}
+              aria-label={closeLabel || "Close chat"}
+              data-cy="chat-close"
+            >
+              ×
+            </button>}
+        </span>
       </header>
 
       <div className="chat-messages" ref={listRef} data-cy="chat-messages">

@@ -49,6 +49,33 @@
       }
     }
 
+    .chat-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex: 0 0 auto;
+    }
+
+    .chat-copy {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+
+      .chat-copied {
+        font-size: 14px;
+        line-height: 1;
+      }
+
+      &:hover { background: $cc-teal-dark1; }
+      &:focus-visible { outline: 2px solid white; outline-offset: 1px; }
+    }
+
     .chat-close {
       background: transparent;
       border: none;

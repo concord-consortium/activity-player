@@ -1,6 +1,6 @@
 import React from "react";
 import { act, configure, fireEvent, render, screen } from "@testing-library/react";
-import { Chat } from "./chat";
+import { Chat, buildChatTranscript } from "./chat";
 import { UseChatResult } from "./use-chat";
 import { ChatTurn } from "./transport";
 
@@ -130,5 +130,53 @@ describe("Chat component", () => {
     expect(close).toHaveAttribute("aria-label", "Collapse chat");
     fireEvent.click(close);
     expect(onClose).toHaveBeenCalled();
+  });
+
+  it("shows no copy control when there is no real conversation to copy", () => {
+    // empty conversation
+    const { rerender } = render(<Chat chat={makeChat()} />);
+    expect(screen.queryByTestId("chat-copy")).not.toBeInTheDocument();
+    // a debug-only conversation is still nothing to copy
+    rerender(<Chat chat={makeChat({ turns: [
+      { id: "d1", sender: "assistant", variant: "debug", text: "would send: {}" },
+    ] })} />);
+    expect(screen.queryByTestId("chat-copy")).not.toBeInTheDocument();
+  });
+
+  it("copies the conversation as a markdown transcript from the header", async () => {
+    const writeText = jest.fn().mockResolvedValue(undefined);
+    Object.defineProperty(navigator, "clipboard", { value: { writeText }, configurable: true });
+    const turns: ChatTurn[] = [
+      { id: "u1", sender: "user", text: "How do I read the graph?" },
+      { id: "a1", sender: "assistant", text: "Each line is one zone." },
+    ];
+    render(<Chat chat={makeChat({ turns })} transcriptTitle="Wildfire, Page 3: Zones" />);
+    const copy = screen.getByTestId("chat-copy");
+    expect(copy).toHaveAttribute("aria-label", "Copy conversation");
+    await act(async () => { fireEvent.click(copy); });
+    expect(writeText).toHaveBeenCalledWith(
+      "### Tutor chat — Wildfire, Page 3: Zones\n\n" +
+      "**You:** How do I read the graph?\n\n" +
+      "**Tutor:** Each line is one zone.");
+    expect(copy).toHaveAttribute("aria-label", "Copied");
+  });
+});
+
+describe("buildChatTranscript", () => {
+  it("labels speakers, skips debug/empty turns, and includes the scope heading", () => {
+    const turns: ChatTurn[] = [
+      { id: "u1", sender: "user", text: "How do I read the graph?" },
+      { id: "a1", sender: "assistant", text: "Each line is one zone." },
+      { id: "d1", sender: "assistant", variant: "debug", text: "would send: {}" },
+      { id: "a2", sender: "assistant", text: "   " },
+    ];
+    expect(buildChatTranscript(turns, "Wildfire, Page 3: Zones")).toBe(
+      "### Tutor chat — Wildfire, Page 3: Zones\n\n" +
+      "**You:** How do I read the graph?\n\n" +
+      "**Tutor:** Each line is one zone.");
+  });
+
+  it("omits the heading when no title is given", () => {
+    expect(buildChatTranscript([{ id: "u1", sender: "user", text: "hi" }])).toBe("**You:** hi");
   });
 });

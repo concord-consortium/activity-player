@@ -34,7 +34,7 @@ interface IProps {
 const kForceOverlay = true;
 
 export const ChatSidebar: React.FC<IProps> = (props) => {
-  const { fullWidth, activity, page, hints, identity } = props;
+  const { fullWidth, activity, page, pageNumber, hints, identity } = props;
   const push = fullWidth && !kForceOverlay;
   const [open, setOpen] = useState(false);
   const launcherRef = useRef<HTMLButtonElement>(null);
@@ -75,6 +75,13 @@ export const ChatSidebar: React.FC<IProps> = (props) => {
 
   const header = "Ask the Tutor";
   const chat = useChat({ transport, header });
+
+  // Scope line prepended to the copied transcript so a pasted conversation is self-describing.
+  // (Only used for copy output; the visible header stays "Ask the Tutor".)
+  const pageTitle = page.name?.trim();
+  const transcriptTitle = pageTitle
+    ? `${activity.name}, Page ${pageNumber}: ${pageTitle}`
+    : `${activity.name}, Page ${pageNumber}`;
 
   // Default to closed whenever the conversation swaps (page nav) or the wrapper changes. Mark the
   // close as nav-driven so focus is NOT yanked to the launcher (see the focus effect).
@@ -135,7 +142,7 @@ export const ChatSidebar: React.FC<IProps> = (props) => {
       aria-label="Activity tutor chat"
       data-cy="chat-sidebar"
     >
-      <Chat chat={chat} onClose={() => setOpen(false)} closeLabel="Close chat" />
+      <Chat chat={chat} onClose={() => setOpen(false)} closeLabel="Close chat" transcriptTitle={transcriptTitle} />
     </div>
   );
 };
