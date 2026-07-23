@@ -165,8 +165,18 @@ export class FirestoreTransport implements ChatTransport, ChatLogSink {
           await this.parentRef().set({ ...this.opts.ownerFields }, { merge: true });
         }
       })();
-      // Don't memoize a rejected attempt — clear it so a later send can retry.
-      this.parentEnsured = attempt.catch(() => { this.parentEnsured = undefined; });
+      // Don't memoize a rejected attempt — clear it so a later send can retry. The rejection is
+      // deliberately NOT rethrown: the expected failure here is the benign race above (the parent
+      // already exists, so the rules reject our `create`), where the message `add()` that follows is
+      // perfectly valid and must not be blocked by a "tutor unavailable" error. A genuine failure
+      // (wrong owner fields, expired auth, network) fails that `add()` too, and THAT rejection
+      // propagates out of `sendUserMessage()` to the UI error line — so callers still get a
+      // deterministic error, raised by the write that actually matters. Warn so a real rules
+      // regression is still diagnosable.
+      this.parentEnsured = attempt.catch(e => {
+        this.parentEnsured = undefined;
+        console.warn("[chat] parent ensure failed (will retry on next send):", (e as Error)?.message);
+      });
     }
     return this.parentEnsured;
   }

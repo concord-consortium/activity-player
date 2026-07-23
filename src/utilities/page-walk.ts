@@ -1,12 +1,14 @@
-// PURE page-walk helpers. This module imports ONLY `../types` (compile-time,
-// erased at build) — no React, no firebase-db, no url-query, no lara-interactive-api — so
+// PURE page-walk helpers. This module imports ONLY `../types`, and does so with a type-only
+// `import type` so the import is guaranteed erased at build (`../types` does carry a few value
+// exports, so a plain import would be a real runtime edge) — no React, no firebase-db, no
+// url-query, no lara-interactive-api — so
 // `chat-context.ts` (which imports these) has a genuinely liftable import graph and can be
 // copied verbatim into the report-service Firebase Function. Do NOT add impure imports here.
 //
 // The bodies below are the single source of truth for the visible-content walk + question
 // detection; `activity-utils.ts` and `embeddable-utils.ts` re-export them so existing call
 // sites are unaffected.
-import { Activity, Page, SectionType, EmbeddableType } from "../types";
+import type { Activity, Page, SectionType, EmbeddableType } from "../types";
 
 export const getVisiblePages = (activity: Activity) => {
   return activity.pages.filter(page => !page.is_hidden);

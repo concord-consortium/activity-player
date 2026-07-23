@@ -3,13 +3,14 @@
 // Turns (activity, page, orientationHints) into the PAGE-DERIVED portion of the tutor system
 // prompt (orientation block + page body). This module is intentionally pure and dependency-light
 // so it can be lifted verbatim into the report-service Firebase Function (the same trick used for
-// convert.ts): it imports ONLY `../types` (compile-time, erased) and `./page-walk` (pure). Do NOT
+// convert.ts): it imports ONLY `../types` (via a type-only `import type`, so it is guaranteed
+// erased at build even though `../types` carries a few value exports) and `./page-walk` (pure). Do NOT
 // import React, firebase-db, url-query, activity-utils, or embeddable-utils here — those carry
 // browser/React/Firebase deps that would break the Node lift.
 //
 // It deliberately contains NO generic tutor prompt and NO sim-prompt map — those are server-only
 // and concatenated in the function around this output.
-import { Activity, Page, EmbeddableType } from "../types";
+import type { Activity, Page, EmbeddableType } from "../types";
 import { getVisiblePages, getVisibleSections, getVisibleEmbeddables, isQuestion } from "./page-walk";
 
 export type PageContextBodyItem =
