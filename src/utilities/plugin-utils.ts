@@ -4,7 +4,7 @@ import { LaraGlobalType } from "../lara-plugin";
 import { IEmbeddableContextOptions, IPluginRuntimeContextOptions } from "../lara-plugin/plugins/plugin-context";
 import { Activity, EmbeddableType, IEmbeddablePlugin, Plugin, ApprovedScript } from "../types";
 import { getResourceUrl } from "../lara-api";
-import { isHttpUrl } from "./url-utils";
+import { isAllowedPluginScriptUrl } from "./url-utils";
 
 export interface UsedApprovedScriptInfo {
   id: number;
@@ -72,8 +72,13 @@ export const findUsedApprovedScripts = (activities: Activity[]) => {
 export const loadPluginScripts = (LARA: LaraGlobalType, activities: Activity[], handleLoadScripts: () => void) => {
   const scripts = findUsedApprovedScripts(activities);
   scripts.forEach((usedScriptInfo) => {
-    if (!isHttpUrl(usedScriptInfo.approvedScript.url)) {
-      // Skip plugin scripts whose url does not use a supported (http/https) scheme.
+    if (!isAllowedPluginScriptUrl(usedScriptInfo.approvedScript.url)) {
+      // Skip plugin scripts that do not use a supported (http/https) scheme or that
+      // are not served from an allowed host. These run in the Activity Player origin,
+      // so an activity must not be able to point them at arbitrary JavaScript.
+      // eslint-disable-next-line no-console
+      console.warn(`plugin${usedScriptInfo.id} script not loaded, url is not allowed:`,
+                   usedScriptInfo.approvedScript.url);
       usedScriptInfo.loaded = true;
       if (scripts.filter((p) => !p.loaded).length === 0) {
         handleLoadScripts();
@@ -89,10 +94,6 @@ export const loadPluginScripts = (LARA: LaraGlobalType, activities: Activity[], 
     script.src = usedScriptInfo.approvedScript.url;
     script.setAttribute("data-id", pluginLabel);
     script.onload = function() {
-      if (typeof window.jest === undefined) {
-        // eslint-disable-next-line no-console
-        console.log(`plugin${usedScriptInfo.id} script loaded`);
-      }
       usedScriptInfo.loaded = true;
       if (scripts.filter((p) => !p.loaded).length === 0) {
         handleLoadScripts();
