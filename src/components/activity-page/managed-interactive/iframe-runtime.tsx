@@ -28,6 +28,7 @@ import { useMediaLibrary } from "../../media-library-context";
 import { IframeRuntimeFeedback } from "../../teacher-feedback/iframe-runtime-feedback";
 import { isOfferingLocked } from "../../../utilities/portal-data-utils";
 import { queryValue, queryValueBoolean } from "../../../utilities/url-query";
+import { isHttpUrl } from "../../../utilities/url-utils";
 import { anonymousPortalData } from "../../../portal-api";
 import { useCompositeRef } from "../../../utilities/use-composite-ref";
 import { applyOverrides } from "../../../utilities/url-overrides/state";
@@ -441,7 +442,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       // Reload the iframe.
       // Apply URL overrides here too, to match the JSX src={applyOverrides(url)};
       // otherwise this imperative assignment clobbers the overridden src with the raw url.
-      iframeRef.current.src = applyOverrides(url);
+      iframeRef.current.src = isHttpUrl(url) ? applyOverrides(url) : "about:blank";
       // Re-init interactive, this time using a new mode (report or runtime).
       const phone: IframePhone = new iframePhone.ParentEndpoint(iframeRef.current, initInteractive);
       phoneRef.current = phone;
@@ -553,7 +554,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         tabIndex={locked ? -1 : 0}
         key={`${id}-${reloadCount}`}
         ref={composedIframeRef}
-        src={applyOverrides(url)}
+        src={isHttpUrl(url) ? applyOverrides(url) : "about:blank"}
         id={id}
         width={width}
         height={height}

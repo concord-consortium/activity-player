@@ -98,6 +98,18 @@ describe("Plugin utility functions", () => {
       expect(MockLARA.Plugins.setNextPluginLabel).toHaveBeenCalledTimes(2);
       expect(handleLoadPlugins).toHaveBeenCalledTimes(1);
     });
+
+    it("does not load a script served from a host that is not allowed", () => {
+      const warnSpy = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+      // the plugin url is https://example.com/plugin.js, which is not an allowed host
+      const activityWithDisallowedPlugin = { ...activity, plugins: [plugin], pages: [] } as Activity;
+      loadPluginScripts(MockLARA, [activityWithDisallowedPlugin], handleLoadPlugins);
+      expect(MockLARA.Plugins.setNextPluginLabel).not.toHaveBeenCalled();
+      expect(document.body.appendChild).not.toHaveBeenCalled();
+      // the skipped script must still settle so the remaining plugins are not blocked
+      expect(handleLoadPlugins).toHaveBeenCalledTimes(1);
+      warnSpy.mockRestore();
+    });
   });
 
   describe("#validateEmbeddablePluginContextForPlugin", () => {
