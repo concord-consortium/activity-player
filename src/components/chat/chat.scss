@@ -1,0 +1,322 @@
+@import "../vars.scss";
+
+// Accessibility utility: content available to assistive tech but visually hidden.
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  background: white;
+  font-size: 14px;
+  color: $font-color;
+  box-sizing: border-box;
+
+  .chat-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 12px;
+    background: $cc-teal;
+    color: white;
+    flex: 0 0 auto;
+
+    .chat-header-title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 1.3;
+
+      .chat-header-icon {
+        position: relative;
+        top: 1px;
+        font-size: 15px;
+        line-height: 1;
+      }
+    }
+
+    .chat-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      flex: 0 0 auto;
+    }
+
+    .chat-copy {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 4px;
+
+      .chat-copied {
+        font-size: 14px;
+        line-height: 1;
+      }
+
+      &:hover { background: $cc-teal-dark1; }
+      &:focus-visible { outline: 2px solid white; outline-offset: 1px; }
+    }
+
+    .chat-close {
+      background: transparent;
+      border: none;
+      color: white;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0 4px;
+      border-radius: 4px;
+
+      &:hover { background: $cc-teal-dark1; }
+      &:focus-visible { outline: 2px solid white; outline-offset: 1px; }
+    }
+  }
+
+  .chat-messages {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .chat-empty {
+      color: $cc-charcoal-hint;
+      text-align: center;
+      margin: auto 0;
+      font-style: italic;
+    }
+  }
+
+  .chat-row {
+    display: flex;
+
+    // Sender color/alignment. The bubble-color rules live here (nested under the sender class)
+    // rather than under `.chat-bubble`: a `.chat-row.user &` there would resolve to
+    // `.chat-row.user .chat .chat-bubble` (an unmatchable descendant) and never apply.
+    &.user {
+      justify-content: flex-end;
+
+      .chat-bubble {
+        background: $cc-teal;
+        color: white;
+        border-bottom-right-radius: 4px;
+      }
+    }
+    &.assistant {
+      justify-content: flex-start;
+
+      .chat-bubble {
+        background: $cc-charcoal-light3;
+        color: $font-color;
+        border-bottom-left-radius: 4px;
+      }
+    }
+  }
+
+  .chat-bubble {
+    max-width: 85%;
+    padding: 8px 12px;
+    border-radius: 14px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    line-height: 1.4;
+
+    &.pending { opacity: 0.6; }
+    &.typing { padding: 10px 14px; }
+  }
+
+  // Animated typing indicator: three dots that strobe in sequence so it reads as "something is
+  // happening." Staggered opacity keyframes give a left-to-right pulse. Motion is suppressed under
+  // prefers-reduced-motion (the dots stay visible, just static).
+  .chat-typing-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    .chat-typing-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.3;
+      animation: chat-typing-strobe 1.2s infinite ease-in-out;
+
+      &:nth-child(2) { animation-delay: 0.2s; }
+      &:nth-child(3) { animation-delay: 0.4s; }
+    }
+  }
+
+  @keyframes chat-typing-strobe {
+    0%, 60%, 100% { opacity: 0.3; }
+    30% { opacity: 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .chat-typing-dots .chat-typing-dot {
+      animation: none;
+      opacity: 0.6;
+    }
+  }
+
+  // Diagnostic dry-run output from DebugTransport (would-be system prompt / forwarded log). Reads as
+  // a full-width developer panel, deliberately distinct from tutor/student bubbles.
+  .chat-debug {
+    align-self: stretch;
+    border: 1px solid $cc-charcoal-light2;
+    border-left: 3px solid $cc-teal;
+    border-radius: 6px;
+    background: $cc-charcoal-light3;
+    overflow: hidden;
+
+    // Title bar: a toggle (show/hide the collapsed-by-default body) plus a copy-to-clipboard control.
+    .chat-debug-header {
+      display: flex;
+      align-items: stretch;
+      background: $cc-charcoal-light2;
+      color: $medium-font-color;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .chat-debug-toggle,
+    .chat-debug-copy {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: inherit;
+
+      &:hover { background: darken($cc-charcoal-light2, 6%); }
+      &:focus-visible { outline: 2px solid $cc-button-focus-ring; outline-offset: -2px; }
+    }
+
+    .chat-debug-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 4px 10px;
+      text-align: left;
+      font: inherit;
+      letter-spacing: inherit;
+      text-transform: inherit;
+
+      .chat-debug-caret {
+        font-size: 9px;
+        line-height: 1;
+      }
+    }
+
+    .chat-debug-copy {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      padding: 0 8px;
+      border-left: 1px solid $cc-charcoal-light1;
+
+      svg { display: block; }
+      .chat-debug-copied { font-size: 12px; line-height: 1; }
+    }
+
+    .chat-debug-body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 0;
+      padding: 10px;
+      max-height: 320px;
+      overflow: auto;
+      font-size: 11.5px;
+      line-height: 1.5;
+      color: $cc-charcoal;
+
+      .chat-debug-seg {
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      // Explanatory wrapper prose: the panel's normal (sans) font, muted.
+      .chat-debug-seg.note {
+        color: $cc-charcoal-hint;
+      }
+
+      // Verbatim server-bound content: monospace + boxed so it reads as data, distinct from the prose.
+      .chat-debug-seg.payload {
+        padding: 8px;
+        background: white;
+        border: 1px solid $cc-charcoal-light2;
+        border-radius: 4px;
+        font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+        color: $cc-charcoal;
+        tab-size: 2;
+      }
+    }
+  }
+
+  .chat-error {
+    padding: 8px 12px;
+    margin: 0 12px 8px;
+    background: $cc-orange-light5;
+    color: $medium-font-color;
+    border: 1px solid $cc-orange-light2;
+    border-radius: 8px;
+    font-size: 13px;
+  }
+
+  .chat-composer {
+    display: flex;
+    gap: 8px;
+    padding: 10px 12px;
+    border-top: 1px solid $cc-charcoal-light2;
+    flex: 0 0 auto;
+
+    .chat-input {
+      flex: 1;
+      min-width: 0;
+      padding: 9px 12px;
+      border: 1px solid $cc-charcoal-light2;
+      border-radius: 8px;
+      font-size: 14px;
+
+      &:focus-visible { outline: 2px solid $cc-button-focus-ring; outline-offset: 1px; }
+    }
+
+    .chat-send {
+      padding: 9px 16px;
+      background: $cc-teal;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+
+      &:hover:not([disabled]) { background: $cc-teal-dark1; }
+      &:focus-visible { outline: 2px solid $cc-button-focus-ring; outline-offset: 1px; }
+      &[disabled] { opacity: 0.5; cursor: default; }
+    }
+  }
+}
