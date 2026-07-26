@@ -17,6 +17,10 @@ export interface UseChatResult {
   header: string;
 }
 
+// The authoritative-status error text. Named so the status effect can tell its own message apart from
+// a `sendMessage` failure and retract only the former.
+export const kTutorUnavailable = "The tutor is currently unavailable. Please try again.";
+
 export interface UseChatOptions {
   transport: ChatTransport;
   // "Chat about: Page N — <title>" — makes the per-page scoping legible.
@@ -40,10 +44,19 @@ export function useChat({ transport, header }: UseChatOptions): UseChatResult {
     return unsubscribe;
   }, [transport]);
 
-  // Surface an authoritative `status:"error"` as a visible error (rather than an infinite spinner).
+  // Surface an authoritative `status:"error"` as a visible error (rather than an infinite spinner),
+  // and RETRACT it once the conversation recovers. Without the retraction the banner latched for the
+  // life of the page: a conversation that had errored (the parent doc keeps `status:"error"` until a
+  // later drain succeeds) showed the error on the first snapshot after load, then kept showing it
+  // underneath the tutor's own successful replies once the backend recovered.
+  //
+  // Only the message THIS effect owns is retracted — a `sendMessage` failure writes its own text and
+  // must survive an unrelated status transition, so it is left alone.
   useEffect(() => {
     if (status === "error") {
-      setError("The tutor is currently unavailable. Please try again.");
+      setError(kTutorUnavailable);
+    } else {
+      setError(prev => (prev === kTutorUnavailable ? null : prev));
     }
   }, [status]);
 

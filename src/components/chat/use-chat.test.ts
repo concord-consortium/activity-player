@@ -77,4 +77,44 @@ describe("useChat with DebugTransport", () => {
     act(() => { emitStatus("error"); });
     expect(result.current.error).toContain("unavailable");
   });
+
+  it("retracts the unavailable error once the conversation recovers", () => {
+    let emitStatus: (s: ChatStatus) => void = () => undefined;
+    const transport: ChatTransport = {
+      subscribe: (onTurns, onStatus) => { emitStatus = onStatus; onTurns([]); onStatus("idle"); return () => undefined; },
+      sendUserMessage: async () => undefined,
+    };
+    const { result } = renderHook(() => useChat({ transport, header: "h" }));
+
+    // A conversation whose parent doc still carries status:"error" from an earlier failure shows the
+    // banner on its first snapshot...
+    act(() => { emitStatus("error"); });
+    expect(result.current.error).toContain("unavailable");
+
+    // ...and must clear it once a later drain succeeds, rather than leaving a stale error sitting
+    // underneath the tutor's own replies for the life of the page.
+    act(() => { emitStatus("generating"); });
+    expect(result.current.error).toBeNull();
+
+    act(() => { emitStatus("error"); });
+    expect(result.current.error).toContain("unavailable");
+    act(() => { emitStatus("idle"); });
+    expect(result.current.error).toBeNull();
+  });
+
+  it("does not retract a sendMessage failure when the status changes", async () => {
+    let emitStatus: (s: ChatStatus) => void = () => undefined;
+    const transport: ChatTransport = {
+      subscribe: (onTurns, onStatus) => { emitStatus = onStatus; onTurns([]); onStatus("idle"); return () => undefined; },
+      sendUserMessage: async () => { throw new Error("write rejected"); },
+    };
+    const { result } = renderHook(() => useChat({ transport, header: "h" }));
+
+    await act(async () => { await result.current.sendMessage("hi").catch(() => undefined); });
+    expect(result.current.error).toBe("write rejected");
+
+    // the status effect owns only its own message — an unrelated transition must leave this one alone
+    act(() => { emitStatus("generating"); });
+    expect(result.current.error).toBe("write rejected");
+  });
 });
