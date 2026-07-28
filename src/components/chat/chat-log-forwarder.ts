@@ -68,6 +68,41 @@ export const buildForwardedLog = (params: {
   return { interactive_id: interactiveId, interactive_url: interactiveUrl, action, value: logData?.value, data };
 };
 
+// Trailing-edge coalesce window. The spec lists a client-side spam drop AND debounce as required cost
+// controls; only the drop above had shipped. Server-side coalescing bounds the token cost but not the
+// per-log Firestore write and function invocation, and a steady trickle at idle bills a turn each time.
+export const kLogCoalesceMs = 3000;
+
+// Keyed by interactive AND action: a burst of the same action (a slider dragged across its range)
+// collapses to one forwarded doc carrying the latest state, while two genuinely different actions
+// from the same interactive both survive. Keying on the interactive alone would silently discard the
+// earlier of two distinct actions.
+const coalesceKey = (payload: ChatLogPayload): string => `${payload.interactive_id}::${payload.action}`;
+
+interface PendingLog {
+  payload: ChatLogPayload;
+  timer: ReturnType<typeof setTimeout>;
+}
+
+const pendingLogs = new Map<string, PendingLog>();
+
+// Trailing edge of a FIXED window opened by the first log of a burst — later logs in the window
+// replace the payload but do not push the deadline out. (A restart-on-every-log debounce would let a
+// continuous stream starve forever and never forward anything.)
+const flushPendingLog = (key: string): void => {
+  const entry = pendingLogs.get(key);
+  if (!entry) return;
+  pendingLogs.delete(key);
+  activeSink?.forwardLog(entry.payload);
+};
+
+// Drop anything still in flight. Called on any sink change: a queued payload belongs to the
+// conversation that was active when it was built, and must never land in a different one.
+const discardPendingLogs = (): void => {
+  pendingLogs.forEach(entry => clearTimeout(entry.timer));
+  pendingLogs.clear();
+};
+
 // Convenience for callers (managed-interactive): build + forward to the active sink, if any.
 export const forwardInteractiveLog = (params: {
   logData: any;
@@ -78,19 +113,30 @@ export const forwardInteractiveLog = (params: {
   const sink = getChatLogSink();
   if (!sink) return;
   const payload = buildForwardedLog(params);
-  if (payload) sink.forwardLog(payload);
+  if (!payload) return;
+  const key = coalesceKey(payload);
+  const entry = pendingLogs.get(key);
+  if (entry) {
+    entry.payload = payload; // newest state wins; the window's deadline is untouched
+    return;
+  }
+  pendingLogs.set(key, { payload, timer: setTimeout(() => flushPendingLog(key), kLogCoalesceMs) });
 };
 
 let activeSink: ChatLogSink | null = null;
 
 export const registerChatLogSink = (sink: ChatLogSink): void => {
+  if (activeSink !== sink) discardPendingLogs();
   activeSink = sink;
 };
 
 // Only clear if the caller is still the registered sink (avoids a late unmount clobbering a newer
 // sink that registered during a page swap).
 export const unregisterChatLogSink = (sink: ChatLogSink): void => {
-  if (activeSink === sink) activeSink = null;
+  if (activeSink === sink) {
+    discardPendingLogs();
+    activeSink = null;
+  }
 };
 
 export const getChatLogSink = (): ChatLogSink | null => activeSink;

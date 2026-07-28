@@ -42,6 +42,11 @@ export interface ChatTransport {
   subscribe(onTurns: (turns: ChatTurn[]) => void, onStatus: (status: ChatStatus) => void): () => void;
   // Write a user message (live path) / render what would be sent (debug path).
   sendUserMessage(text: string): Promise<void>;
+  // Start/stop forwarding interactive logs into THIS conversation. Deliberately separate from
+  // subscribe(): the sidebar keeps the subscription alive while closed (the launcher's pending dot
+  // needs it) but must NOT forward logs then — a closed panel that still wrote a log doc per
+  // interactive log billed an OpenAI turn for a conversation nobody was reading.
+  setLogForwarding(enabled: boolean): void;
 }
 
 export interface DebugTransportOptions {
@@ -114,9 +119,6 @@ export class DebugTransport implements ChatTransport, ChatLogSink {
   }
 
   subscribe(onTurns: (turns: ChatTurn[]) => void, onStatus: (status: ChatStatus) => void): () => void {
-    // Register so log forwarding surfaces the would-be log payload in the dry-run view; the
-    // returned cleanup unregisters it, tying the sink to the subscription lifecycle.
-    registerChatLogSink(this);
     this.turnListeners.add(onTurns);
     this.statusListeners.add(onStatus);
     onTurns([...this.turns]);
@@ -124,8 +126,20 @@ export class DebugTransport implements ChatTransport, ChatLogSink {
     return () => {
       this.turnListeners.delete(onTurns);
       this.statusListeners.delete(onStatus);
+      // Belt-and-braces: the sidebar disables forwarding on close, but an unmount must never leave
+      // a stale sink registered.
       unregisterChatLogSink(this);
     };
+  }
+
+  // Registered only while the panel is open, so the dry-run view surfaces the would-be log payload
+  // exactly when the live path would actually write one.
+  setLogForwarding(enabled: boolean): void {
+    if (enabled) {
+      registerChatLogSink(this);
+    } else {
+      unregisterChatLogSink(this);
+    }
   }
 
   private emitTurns() {

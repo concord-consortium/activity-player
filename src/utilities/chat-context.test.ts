@@ -52,6 +52,21 @@ describe("chat-context assembler", () => {
     expect(ctx.orientation.activityTitle).toBe("My Activity");
   });
 
+  // App derives Page N of M from its OWN visible-page list, which keeps hidden pages under
+  // ?author-preview. Deriving again here disagreed with it: `getVisiblePages` always filters hidden
+  // pages, so a hidden page the student was really on gave findIndex -1 → "Page 1 of M".
+  it("prefers the caller's page numbering over its own derivation", () => {
+    const hiddenPage = syntheticActivity.pages[2] as unknown as Page; // is_hidden: true
+    // without hints: not in the visible list at all → the misleading 1-of-2 fallback
+    const derived = assemblePageContext(syntheticActivity, hiddenPage);
+    expect(derived.orientation.pageNumber).toBe(1);
+    // with hints from App (author-preview numbering): the page the student is actually on
+    const passed = assemblePageContext(syntheticActivity, hiddenPage, { pageNumber: 3, pageCount: 3 });
+    expect(passed.orientation.pageNumber).toBe(3);
+    expect(passed.orientation.pageCount).toBe(3);
+    expect(renderPageContext(passed)).toContain("Page 3 of 3");
+  });
+
   it("falls back to activity.name for the title and omits sequence/activity lines when standalone", () => {
     const page = getVisiblePages(activity)[1];
     const ctx = assemblePageContext(activity, page);

@@ -84,7 +84,7 @@ onSnapshot renders new docs ◀──────────────── 
   attribution in the DOM, a single `aria-live="polite"` region announced on assistant-message
   completion, AT-exposed "…" indicator, and keyboard focus management for the overlay drawer.
 
-### Phase 2 — live sim-awareness: log forwarding + sim prompts *(specced; see Not Yet Implemented)*
+### Phase 2 — live sim-awareness: log forwarding + sim prompts *(implemented)*
 
 - **Log forwarding.** Interactive log messages forwarded into the conversation as `kind:"log"` docs
   (dropping mouse-move/-button spam), fed to the model as **`developer`-role telemetry** wrapped in a
@@ -165,15 +165,27 @@ onSnapshot renders new docs ◀──────────────── 
   project + test/pilot data, never real PII); production needs per-requester scoping or authenticated-only
   chat.
 
+## What Shipped
+
+**Both phases are implemented.** Phase 1 (per-page chat loop, page-context system prompt, dual-mode
+sidebar) and Phase 2 (live sim-awareness) are all on the live path as of the AP-118 merge:
+
+- **Log forwarding** — `handleLog` in `managed-interactive` → `chat-log-forwarder` (spam drop,
+  trailing-edge coalesce, MC choice-map enrichment) → a `kind:"log"` doc, consumed by the
+  report-service log branch with drain-step coalescing (`functions/src/chat/drain.ts`).
+- **URL-keyed sim prompts** — `functions/src/chat/sim-prompts.ts`, matched host/subdomain-first.
+
+**Where page context is assembled.** The live path assembles it **server-side**, and only there.
+`FirestoreTransport.sendUserMessage` writes ids, the activity URL and display-only orientation hints —
+**no page body and no `authored_state` ever leave the browser** (this is the point of ENG-8: the
+answer-bearing `authored_state` stays server-side). The client-side `assemblePageContext` is used by
+`DebugTransport` alone, to render "what would be sent" in the no-backend dry run; the function
+re-derives the same context from the activity it fetches.
+
 ## Not Yet Implemented
 
-The spec covers two phases plus a set of intentionally-deferred later tiers. As of closing, the spec and
-the de-risking spikes are complete; the following were **specced but explicitly deferred** rather than
-sliced into Phase-1-fine build steps:
+The following remain **specced but explicitly deferred**:
 
-- **Phase 2 (live sim-awareness)** — log forwarding from `handleLog`, the report-service log branch +
-  coalescing, the client-side MC choice-map enrichment, and the URL-keyed sim-prompt map. Specced at
-  file level but "not sliced into Phase-1-fine commits"; it is the deferred follow-on.
 - **Later Tiers (design preserved, not lost):** global/cross-page conversation & memory; streaming via a
   2nd-gen HTTP/callable function; LARA authoring of per-question tutoring guidance; an `authored_state`
   answer-key-stripping transform (fallback if the raw approach leaks answers); a one-time "current

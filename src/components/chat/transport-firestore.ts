@@ -7,6 +7,11 @@
 // Receive: onSnapshot on the messages subcollection (ordered by createdAt); render `user` +
 //          non-null `assistant` docs. Reload restores history via the same subscription.
 // Status:  onSnapshot on the parent doc's `status` — authoritative generating|idle|error.
+//
+// Both listeners are re-attachable. Firestore TERMINATES an onSnapshot listener after invoking its
+// error callback, so a listener attached once in subscribe() is gone for the life of the mount after
+// the first error — including the denied read of a not-yet-created parent doc, which happens on
+// EVERY fresh page. See attachParent()/scheduleReattach().
 import { getChatMessagesRef, getChatParentRef, chatServerTimestamp } from "../../firebase-db";
 import { OrientationHints } from "../../utilities/chat-context";
 import { ChatStatus, ChatTransport, ChatTurn } from "./transport";
@@ -22,6 +27,14 @@ export interface FirestoreTransportOptions {
   hints: OrientationHints;
 }
 
+// Bounded re-subscribe. Without it a single transient `unavailable` permanently kills the
+// conversation until the student navigates away.
+export const kMaxResubscribeAttempts = 5;
+export const kResubscribeBaseMs = 1000;
+// How long an unanswered `user` doc may sit before the wait is called a failure. Long enough to clear
+// a cold start plus a slow generation, short enough that the student isn't left watching dots.
+export const kReplyTimeoutMs = 75000;
+
 export class FirestoreTransport implements ChatTransport, ChatLogSink {
   private unsubMessages?: () => void;
   private unsubParent?: () => void;
@@ -33,6 +46,22 @@ export class FirestoreTransport implements ChatTransport, ChatLogSink {
   private parentStatus: ChatStatus = "idle";
   private awaitingReply = false;
   private onStatus?: (status: ChatStatus) => void;
+  private onTurns?: (turns: ChatTurn[]) => void;
+  // Per-listener read-failure flags (kept separate so a recovered listener clears only its own).
+  private messagesReadError = false;
+  private parentReadError = false;
+  // False from the moment the parent listener errors (Firestore has torn it down) until it is
+  // re-attached, so ensureParent() knows whether it needs to revive it.
+  private parentListenerLive = false;
+  private messagesAttempts = 0;
+  private parentAttempts = 0;
+  private retryTimers = new Set<ReturnType<typeof setTimeout>>();
+  private replyTimer?: ReturnType<typeof setTimeout>;
+  private replyTimedOut = false;
+  // Id of the unanswered `user` doc the reply timeout is currently running against, so a NEW
+  // unanswered message restarts the clock while an unchanged wait leaves it alone.
+  private pendingUserId?: string;
+  private disposed = false;
 
   constructor(private readonly opts: FirestoreTransportOptions) {}
 
@@ -43,9 +72,13 @@ export class FirestoreTransport implements ChatTransport, ChatLogSink {
     // function also flips status→"generating" while SILENTLY processing forwarded interactive logs
     // (e.g. "scrolled out of view" telemetry) that yield a `userText:null` non-reply; keying the
     // indicator off that made "..." flash on open with no question asked. `error` stays authoritative.
-    const effective: ChatStatus =
-      this.parentStatus === "error" ? "error"
-        : this.awaitingReply ? "generating" : "idle";
+    //
+    // A failed read and a timed-out wait are both surfaced as `error` rather than left as a healthy
+    // -looking idle/generating: a chat that will never render anything, and a wait that will never
+    // end, are both tutor failures from the student's point of view.
+    const failed = this.parentStatus === "error" || this.messagesReadError
+      || this.parentReadError || this.replyTimedOut;
+    const effective: ChatStatus = failed ? "error" : this.awaitingReply ? "generating" : "idle";
     this.onStatus(effective);
   }
 
@@ -74,42 +107,75 @@ export class FirestoreTransport implements ChatTransport, ChatLogSink {
     return getChatParentRef(this.opts.key, this.opts.activityId, this.opts.pageId);
   }
 
-  // Snapshot read errors are NOT tutor failures — the authoritative tutor `error` arrives via the
-  // parent doc's `status` field (the success path). A `permission-denied` here is the EXPECTED benign
-  // case for a conversation that doesn't exist yet: on a fresh page the parent doc is absent until the
-  // function creates it (first send), and the rules deny an anonymous read of a missing doc — the same
-  // denial `ensureParent()` swallows. Treat it as `idle` (no conversation yet) rather than surfacing
-  // "tutor unavailable". Any other code (network `unavailable`, etc.) is a real read failure worth
-  // showing. Logged either way so a genuine rules regression is diagnosable without a network trace.
-  private onReadError(where: string, err: { code?: string; message?: string }) {
-    console.warn(`[chat] ${where} read error (${err.code}):`, err.message);
-    this.parentStatus = err.code === "permission-denied" ? "idle" : "error";
+  // The messages subscription is a `list`, so there is no "the doc doesn't exist yet" case here: a
+  // `permission-denied` always means the rules rejected the QUERY. Mapping it to `idle` (as the
+  // shared handler used to) presented a chat that looked healthy and would never render anything,
+  // evidenced only by a console warning. Treat every messages read failure as an error and retry.
+  private onMessagesError(err: { code?: string; message?: string }) {
+    console.warn(`[chat] messages read error (${err.code}):`, err.message);
+    this.messagesReadError = true;
     this.emitStatus();
+    this.scheduleReattach("messages");
   }
 
-  subscribe(onTurns: (turns: ChatTurn[]) => void, onStatus: (status: ChatStatus) => void): () => void {
-    this.onStatus = onStatus;
-    // Emit the reset current state synchronously (per the ChatTransport contract) so a subscriber
-    // that swapped from another conversation doesn't briefly show the previous one's status.
-    this.parentStatus = "idle";
-    this.awaitingReply = false;
-    onTurns([]);
+  // The parent read is a single-doc `get`, where `permission-denied` IS the expected benign case: on a
+  // fresh page the parent doc is absent until the function creates it (first send), and the rules deny
+  // an anonymous read of a missing doc — the same denial `ensureParent()` swallows. Treat that as
+  // `idle` (no conversation yet) rather than "tutor unavailable"; any other code (network `unavailable`,
+  // etc.) is a real read failure worth showing. Either way the listener is now dead, so re-attach:
+  // otherwise the authoritative `status:"error"` is unreachable for the rest of this mount.
+  private onParentError(err: { code?: string; message?: string }) {
+    console.warn(`[chat] parent read error (${err.code}):`, err.message);
+    this.parentListenerLive = false;
+    if (err.code === "permission-denied") {
+      this.parentStatus = "idle";
+    } else {
+      this.parentReadError = true;
+    }
     this.emitStatus();
-    // Register as the active log sink so handleLog forwarding reaches THIS page conversation while
-    // it is mounted; dispose() (the returned cleanup) unregisters it.
-    registerChatLogSink(this);
+    this.scheduleReattach("parent");
+  }
+
+  // Exponential backoff, bounded so a genuinely broken conversation doesn't retry forever. A delivered
+  // snapshot resets the counter, so only *consecutive* failures count toward the cap.
+  private scheduleReattach(which: "messages" | "parent") {
+    if (this.disposed) return;
+    const attempts = which === "messages" ? ++this.messagesAttempts : ++this.parentAttempts;
+    if (attempts > kMaxResubscribeAttempts) {
+      console.warn(`[chat] ${which} listener gave up after ${kMaxResubscribeAttempts} attempts`);
+      return;
+    }
+    const timer = setTimeout(() => {
+      this.retryTimers.delete(timer);
+      if (this.disposed) return;
+      if (which === "messages") {
+        this.attachMessages();
+      } else {
+        this.attachParent();
+      }
+    }, kResubscribeBaseMs * Math.pow(2, attempts - 1));
+    this.retryTimers.add(timer);
+  }
+
+  private attachMessages() {
+    if (this.disposed) return;
+    this.unsubMessages?.();
     // Estimate pending serverTimestamps so a just-sent doc orders correctly before the server
     // resolves it (otherwise it can momentarily sort to the top as null).
     this.unsubMessages = this.messagesQuery().onSnapshot(
       snapshot => {
+        this.messagesAttempts = 0;
+        this.messagesReadError = false;
         const turns: ChatTurn[] = [];
         let idx = 0;
         let lastUserIdx = -1;
         let lastAssistantIdx = -1;
+        let lastUserId: string | undefined;
         snapshot.forEach(doc => {
           const d = doc.data({ serverTimestamps: "estimate" }) as any;
           if (d.kind === "user") {
             lastUserIdx = idx;
+            lastUserId = doc.id;
             turns.push({ id: doc.id, sender: "user", text: d.text ?? "", pending: doc.metadata.hasPendingWrites });
           } else if (d.kind === "assistant") {
             lastAssistantIdx = idx;
@@ -124,22 +190,84 @@ export class FirestoreTransport implements ChatTransport, ChatLogSink {
         // trailing `log` doc (forwarded telemetry) neither clears it during a real wait nor pins it on
         // after a completed reply.
         this.awaitingReply = lastUserIdx > lastAssistantIdx;
-        onTurns(turns);
+        this.updateReplyTimeout(this.awaitingReply ? lastUserId : undefined);
+        this.onTurns?.(turns);
         this.emitStatus();
       },
-      err => this.onReadError("messages", err)
+      err => this.onMessagesError(err)
     );
+  }
 
+  private attachParent() {
+    if (this.disposed) return;
+    this.unsubParent?.();
+    this.parentListenerLive = true;
     this.unsubParent = this.parentRef().onSnapshot(
       doc => {
+        this.parentAttempts = 0;
+        this.parentReadError = false;
         const status = doc.exists ? (doc.data() as any)?.status : undefined;
         this.parentStatus = status === "generating" ? "generating" : status === "error" ? "error" : "idle";
         this.emitStatus();
       },
-      err => this.onReadError("parent", err)
+      err => this.onParentError(err)
     );
+  }
 
+  // A turn can be lost server-side with no `status:"error"` ever written — the function never fired, a
+  // cold start timed out, or it crashed before the status commit. The newest doc is then an unanswered
+  // `user` doc, so `awaitingReply` stays true and the typing indicator spins with no error and no
+  // recovery; the 5-minute stale-lock reclaim doesn't help, because nothing re-triggers the function.
+  // Time the wait out and surface an error so the student can retry.
+  private updateReplyTimeout(pendingUserId?: string) {
+    // An unchanged wait keeps its running clock; only a new (or cleared) unanswered message resets it.
+    if (pendingUserId === this.pendingUserId) return;
+    this.pendingUserId = pendingUserId;
+    if (this.replyTimer) {
+      clearTimeout(this.replyTimer);
+      this.replyTimer = undefined;
+    }
+    this.replyTimedOut = false;
+    if (!pendingUserId) return;
+    this.replyTimer = setTimeout(() => {
+      this.replyTimer = undefined;
+      if (this.disposed || !this.awaitingReply) return;
+      this.replyTimedOut = true;
+      this.emitStatus();
+    }, kReplyTimeoutMs);
+  }
+
+  subscribe(onTurns: (turns: ChatTurn[]) => void, onStatus: (status: ChatStatus) => void): () => void {
+    this.onStatus = onStatus;
+    this.onTurns = onTurns;
+    this.disposed = false;
+    // Emit the reset current state synchronously (per the ChatTransport contract) so a subscriber
+    // that swapped from another conversation doesn't briefly show the previous one's status.
+    this.parentStatus = "idle";
+    this.awaitingReply = false;
+    this.messagesReadError = false;
+    this.parentReadError = false;
+    this.replyTimedOut = false;
+    this.pendingUserId = undefined;
+    this.messagesAttempts = 0;
+    this.parentAttempts = 0;
+    onTurns([]);
+    this.emitStatus();
+    this.attachMessages();
+    this.attachParent();
     return () => this.dispose();
+  }
+
+  // Registered only while the panel is OPEN (driven by the sidebar), never merely because we are
+  // subscribed. The subscription stays alive while closed so the launcher's pending dot works, but a
+  // closed panel that also forwarded logs wrote a Firestore doc and billed an OpenAI turn per
+  // interactive log, for a conversation nobody was reading.
+  setLogForwarding(enabled: boolean): void {
+    if (enabled) {
+      registerChatLogSink(this);
+    } else {
+      unregisterChatLogSink(this);
+    }
   }
 
   // Create the parent doc once, with owner fields ONLY. The security rules disallow a client
@@ -164,6 +292,11 @@ export class FirestoreTransport implements ChatTransport, ChatLogSink {
           // clears the memo so a later send retries the read (which will then see it exists).
           await this.parentRef().set({ ...this.opts.ownerFields }, { merge: true });
         }
+        // The parent doc now exists, so a read of it is permitted. If the listener died on the
+        // fresh-page denial (the common case — the doc was absent when subscribe() ran), revive it
+        // here; otherwise the authoritative `status:"error"` would stay unreachable for this mount
+        // and a failed turn would show as an endless typing indicator instead of an error.
+        if (!this.parentListenerLive) this.attachParent();
       })();
       // Don't memoize a rejected attempt — clear it so a later send can retry. The rejection is
       // deliberately NOT rethrown: the expected failure here is the benign race above (the parent
@@ -202,7 +335,7 @@ export class FirestoreTransport implements ChatTransport, ChatLogSink {
   }
 
   // Forward an interactive log as a `kind:"log"` doc on the same per-page path. The
-  // payload is already MC-enriched + spam-filtered by handleLog (managed-interactive).
+  // payload is already MC-enriched, spam-filtered and debounced by the forwarder.
   forwardLog(payload: ChatLogPayload): void {
     void (async () => {
       try {
@@ -225,11 +358,21 @@ export class FirestoreTransport implements ChatTransport, ChatLogSink {
   }
 
   dispose(): void {
+    this.disposed = true;
     this.unsubMessages?.();
     this.unsubParent?.();
     this.unsubMessages = undefined;
     this.unsubParent = undefined;
+    this.parentListenerLive = false;
+    this.retryTimers.forEach(t => clearTimeout(t));
+    this.retryTimers.clear();
+    if (this.replyTimer) {
+      clearTimeout(this.replyTimer);
+      this.replyTimer = undefined;
+    }
+    this.pendingUserId = undefined;
     this.onStatus = undefined;
+    this.onTurns = undefined;
     unregisterChatLogSink(this);
   }
 }
