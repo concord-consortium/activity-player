@@ -356,6 +356,26 @@ describe("FirestoreTransport", () => {
     transport.dispose();
   });
 
+  // The denial schedules a retry AND ensureParent() revives the listener on the first send, so on a
+  // fresh page both race to re-attach. Whichever loses must not tear down the live listener: that is an
+  // unsubscribe plus a fresh Firestore listen, and a re-delivered snapshot that can bounce the status.
+  it("does not re-attach the parent listener when ensureParent already revived it", async () => {
+    jest.useFakeTimers();
+    const transport = makeTransport();
+    transport.subscribe(() => undefined, () => undefined);
+    expect(parentAttachCount).toBe(1);
+
+    emitParentError({ code: "permission-denied", message: "denied" }); // schedules a retry
+    await transport.sendUserMessage("what is this?");                  // revives it first
+    expect(parentAttachCount).toBe(2);
+
+    jest.advanceTimersByTime(kResubscribeBaseMs * 4); // the pending retry fires...
+    expect(parentAttachCount).toBe(2);                // ...and finds the listener already live
+    expect(parentSnapshotCb).toBeDefined();           // the live listener was left intact
+    transport.dispose();
+    jest.useRealTimers();
+  });
+
   it("does not re-create the parent when it already exists", async () => {
     parentExists = true;
     const transport = makeTransport();

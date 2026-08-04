@@ -150,9 +150,14 @@ export class FirestoreTransport implements ChatTransport, ChatLogSink {
       if (this.disposed) return;
       if (which === "messages") {
         this.attachMessages();
-      } else {
+      } else if (!this.parentListenerLive) {
         this.attachParent();
       }
+      // else: ensureParent() already revived the parent listener before this timer fired. That is the
+      // COMMON fresh-page ordering — the denial schedules this retry, then the student's first send
+      // creates the doc and re-attaches immediately. Re-attaching a live listener is pure churn: an
+      // unsubscribe plus a fresh Firestore listen, and a re-delivered snapshot that can bounce the
+      // status in the UI. The messages listener has no equivalent revival path, so it has no guard.
     }, kResubscribeBaseMs * Math.pow(2, attempts - 1));
     this.retryTimers.add(timer);
   }
