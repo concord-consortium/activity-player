@@ -198,9 +198,17 @@ describe("Section component", () => {
     const pinnedColumn = (primaryHeight?: number, secondaryHeight?: number, secondaryPinnable = true) =>
       getPinnedColumn({ primaryHeight, secondaryHeight, screenHeight, secondaryPinnable });
 
-    it("pins nothing until both columns have been measured", () => {
+    it("pins nothing until the primary column has been measured", () => {
       expect(pinnedColumn(undefined, undefined)).toBeUndefined();
+      // the secondary column cannot be pinned on its own: the decision needs both heights
       expect(pinnedColumn(undefined, 300)).toBeUndefined();
+    });
+
+    it("pins the primary column without waiting for the secondary column to be measured", () => {
+      expect(pinnedColumn(500, undefined)).toBe("primary");
+      // but a primary column that cannot be pinned leaves nothing pinned until the
+      // secondary column has been measured too
+      expect(pinnedColumn(3000, undefined)).toBeUndefined();
     });
 
     it("pins the primary column when it fits in the window", () => {

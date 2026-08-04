@@ -188,7 +188,8 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
       <div className={containerClass} ref={secondaryDivRef} data-cy="section-column-secondary">
         {secondaryEmbeddablesToRender.length > 0 && collapsible && renderCollapsibleHeader()}
         {/* The panel wrapper carries the id referenced by the trigger's aria-controls. It uses
-            `display: contents` so the embeddables remain direct layout children of the column. */}
+            `display: contents` so it adds no box of its own: the embeddable wrapper below stays
+            a direct layout child of the column, which is what lets it stick to the column. */}
         <div id={collapsiblePanelId} className="collapsible-panel">
           <div className={wrapperClass} ref={secondaryWrapperDivRef}>
             {!isSecondaryCollapsed && renderEmbeddables(secondaryEmbeddablesToRender, questionNumStart)}

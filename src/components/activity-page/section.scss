@@ -232,7 +232,8 @@
   }
 
   // The collapsible panel groups the secondary embeddables so the trigger's aria-controls
-  // can reference it; `display: contents` keeps the embeddables as direct layout children.
+  // can reference it; `display: contents` means it adds no box of its own, so the wrapper it
+  // holds stays a direct layout child of the column and can stick to it.
   .collapsible-panel {
     display: contents;
   }
