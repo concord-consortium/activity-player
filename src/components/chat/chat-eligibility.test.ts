@@ -11,6 +11,12 @@ const anon = (runKey: string): IAnonymousPortalData => ({
   database: { appName: "report-service-dev", sourceKey: "auth.concord.org" },
 } as unknown as IAnonymousPortalData);
 
+// The offering's activityUrl here is the LAUNCH url the Portal actually stores, copied from a real
+// report-service-pro chat doc. The previous fixture used an authoring URL, which no production
+// offering ever supplies, and that is what hid the bug the resourceUrl regression test below covers.
+const kLaunchUrl =
+  "https://activity-player.concord.org/?activity=https%3A%2F%2Fauthoring.concord.org%2Fapi%2Fv1%2Factivities%2F9.json";
+
 const authed = (userType: "teacher" | "learner", learnerKey?: string): IPortalData => ({
   type: "authenticated",
   userType,
@@ -19,8 +25,9 @@ const authed = (userType: "teacher" | "learner", learnerKey?: string): IPortalDa
   platformUserId: "555",
   contextId: "class-hash",
   resourceLinkId: "offering-1",
+  resourceUrl: "https://authoring.concord.org/activities/9",
   database: { appName: "report-service-dev", sourceKey: "portal.concord.org" },
-  offering: { id: 1, activityUrl: "https://authoring.concord.org/activities/9.json", rubricUrl: "", locked: false },
+  offering: { id: 1, activityUrl: kLaunchUrl, rubricUrl: "", locked: false },
 } as unknown as IPortalData);
 
 describe("getChatIdentity", () => {
@@ -52,7 +59,17 @@ describe("getChatIdentity", () => {
       platform_id: "https://portal.concord.org",
       context_id: "class-hash",
     });
-    expect(identity!.activityUrl).toBe("https://authoring.concord.org/activities/9.json");
+    expect(identity!.activityUrl).toBe("https://authoring.concord.org/activities/9");
+  });
+
+  it("sends the learner's resourceUrl, never the offering launch url the function would reject", () => {
+    // Regression: the function's AUTHORING_HOSTS allowlist rejects activity-player.concord.org, so
+    // sending the launch url killed the first turn of every authenticated conversation that opened with
+    // a typed message ("disallowed activity host"). A log-first turn resolves the activity from the
+    // trusted default host instead, which is why this survived staging and only bit real learners.
+    const identity = getChatIdentity(authed("learner", "learner-key-1"));
+    expect(identity!.activityUrl).not.toBe(kLaunchUrl);
+    expect(new URL(identity!.activityUrl!).hostname).toBe("authoring.concord.org");
   });
 
   it("rejects authenticated teachers and learners with no learner key", () => {

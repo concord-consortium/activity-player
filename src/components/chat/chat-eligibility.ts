@@ -54,7 +54,14 @@ export function getChatIdentity(
       platform_id: portalData.platformId,
       context_id: portalData.contextId,
     },
-    activityUrl: portalData.offering?.activityUrl,
+    // resourceUrl, NOT offering.activityUrl. The offering's `activity_url` is the Portal's LAUNCH url
+    // (`https://activity-player.concord.org/?activity=<encoded authoring url>`), whose host is not on the
+    // function's AUTHORING_HOSTS allowlist, so resolveActivityUrl rejects it with "disallowed activity
+    // host" and the turn dies with status:"error". That only shows up when the FIRST turn of a
+    // conversation is a typed message: a log-first turn installs the prompt via the trusted default host
+    // and never validates this field, which is what masked it in production. resourceUrl is the same
+    // getResourceUrl() value the anonymous branch sends, and it resolves to the authoring URL.
+    activityUrl: portalData.resourceUrl,
   };
 }
 
