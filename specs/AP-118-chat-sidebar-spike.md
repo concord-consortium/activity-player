@@ -191,9 +191,10 @@ The following remain **specced but explicitly deferred**:
   answer-key-stripping transform (fallback if the raw approach leaks answers); a one-time "current
   answers" snapshot on chat-open (fallback if logs prove too blind — e.g. chat opened after working, or
   sim outcomes that never hit the log stream); image vision; broader (non-log) proactive triggers.
-- **Spike-code cleanup before deploy** — the emulator-spike triggers (`chatSpikeOnWrite`,
-  `chatTutorSpikeOnWrite`) are registered in report-service `index.ts` and must be removed (or evolved
-  into the real RS-2/RS-3/RS-4 trigger) before `firebase deploy --only functions`.
+
+Spike-code cleanup is **done**, not deferred: the emulator-spike triggers (`chatSpikeOnWrite`,
+`chatTutorSpikeOnWrite`) were evolved into the single real `chatTutorOnWrite` trigger, which is the
+only chat trigger report-service `index.ts` registers and is deployed on both projects.
 
 ## Decisions
 
