@@ -214,6 +214,23 @@
     }
   }
 
+  // The secondary column sticks under the same rules as the primary one (see AP-129): when
+  // the primary column is too tall to stick, a short secondary column keeps its content, a
+  // graph or table the questions refer to, in view while the questions scroll past.
+  .column.secondary {
+    .embeddableWrapper {
+      top: 10px;
+      align-self: flex-start;
+      &.pinned {
+        position: sticky;
+      }
+      // Clear the collapsible header, which is sticky at the top of the column and 35px tall.
+      &.below-collapsible-header.pinned {
+        top: 45px;
+      }
+    }
+  }
+
   // The collapsible panel groups the secondary embeddables so the trigger's aria-controls
   // can reference it; `display: contents` keeps the embeddables as direct layout children.
   .collapsible-panel {

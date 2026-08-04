@@ -1,5 +1,5 @@
 import React from "react";
-import { Section } from "./section";
+import { getPinnedColumn, Section } from "./section";
 import { configure, fireEvent, render } from "@testing-library/react";
 import { DefaultTestPage, DefaultTestSection, DefaultXhtmlComponent } from "../../test-utils/model-for-tests";
 import { IEmbeddableXhtml } from "../../types";
@@ -190,6 +190,38 @@ describe("Section component", () => {
       const panelId = trigger.getAttribute("aria-controls");
       expect(panelId).toBeTruthy();
       expect(container.querySelector(`#${panelId}`)).not.toBeNull();
+    });
+  });
+
+  describe("getPinnedColumn (AP-129)", () => {
+    const screenHeight = 900;
+    const pinnedColumn = (primaryHeight?: number, secondaryHeight?: number, secondaryPinnable = true) =>
+      getPinnedColumn({ primaryHeight, secondaryHeight, screenHeight, secondaryPinnable });
+
+    it("pins nothing until both columns have been measured", () => {
+      expect(pinnedColumn(undefined, undefined)).toBeUndefined();
+      expect(pinnedColumn(undefined, 300)).toBeUndefined();
+    });
+
+    it("pins the primary column when it fits in the window", () => {
+      expect(pinnedColumn(500, 2000)).toBe("primary");
+      // it keeps the primary column pinned even when the secondary column is shorter
+      expect(pinnedColumn(500, 100)).toBe("primary");
+    });
+
+    it("pins the secondary column when the primary column is too tall and the secondary fits", () => {
+      expect(pinnedColumn(3000, 400)).toBe("secondary");
+    });
+
+    it("pins nothing when both columns are taller than the window", () => {
+      expect(pinnedColumn(3000, 1200)).toBeUndefined();
+    });
+
+    it("pins nothing when the secondary column is not shorter than the primary, or is unpinnable", () => {
+      // a secondary column no shorter than the primary has nothing to stay in view for
+      expect(pinnedColumn(1000, 1000)).toBeUndefined();
+      // empty or collapsed secondary columns have nothing worth pinning
+      expect(pinnedColumn(3000, 400, false)).toBeUndefined();
     });
   });
 });

@@ -35,6 +35,43 @@ export interface SectionImperativeAPI {
 const right = "right";
 const left = "left";
 
+export type PinnedColumn = "primary" | "secondary" | undefined;
+
+interface IGetPinnedColumnOptions {
+  primaryHeight?: number;
+  secondaryHeight?: number;
+  screenHeight: number;
+  secondaryPinnable: boolean;
+}
+
+/**
+ * Decides which of the two columns, if either, sticks to the top of the window while the
+ * section scrolls past. Only one column can stick: the wrapper it is applied to is the one
+ * that stays put while the taller column scrolls.
+ *
+ * The primary column keeps the rule it has always had (it sticks whenever its content fits
+ * in the window). What is new is that the secondary column is now eligible too, but only
+ * when the primary column cannot stick, so no section that behaves correctly today changes.
+ * That covers the reported case: a long stack of questions in the primary column, with the
+ * graph or table the questions refer to sitting in the short secondary column.
+ *
+ * When both columns are taller than the window nothing sticks, which is the current
+ * behavior. See AP-129.
+ */
+export const getPinnedColumn = (options: IGetPinnedColumnOptions): PinnedColumn => {
+  const { primaryHeight, secondaryHeight, screenHeight, secondaryPinnable } = options;
+  // Heights are undefined until the ResizeObserver first fires, so nothing is pinned on the
+  // first paint.
+  if (primaryHeight !== undefined && primaryHeight < screenHeight) {
+    return "primary";
+  }
+  if (secondaryPinnable && secondaryHeight !== undefined && secondaryHeight < screenHeight &&
+      primaryHeight !== undefined && secondaryHeight < primaryHeight) {
+    return "secondary";
+  }
+  return undefined;
+};
+
 export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { activityLayout, page, section, questionNumberStart, hiddenTab, addRefToQuestionMap } = props;
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
@@ -115,6 +152,8 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
 
     const embeddableWrapperDivRef = React.useRef(null);
     const wrapperSize: any = useSize(embeddableWrapperDivRef);
+    const secondaryWrapperDivRef = React.useRef(null);
+    const secondaryWrapperSize: any = useSize(secondaryWrapperDivRef);
 
     const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
     const maxAspectRatioEmbeddables = primaryEmbeddablesToRender.filter(e => {
@@ -128,8 +167,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
     const hasMaxAspectRatio = maxAspectRatioEmbeddables.length > 0;
     const containerClass = classNames("column", layout, "primary", {"expand": isSecondaryCollapsed},
                                       {"max-aspect-ratio": hasMaxAspectRatio});
-    const isPinned = wrapperSize?.height < screenHeight.dynamicHeight;
-    const wrapperClass = classNames ("embeddableWrapper", {"pinned": isPinned});
+    const wrapperClass = classNames ("embeddableWrapper", {"pinned": pinnedColumn === "primary"});
     return (
       <div className={containerClass} ref={primaryDivRef} data-cy="section-column-primary">
         <div className={wrapperClass} ref={embeddableWrapperDivRef}>
@@ -142,13 +180,19 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   const renderSecondaryEmbeddables = (secondaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
     const collapsible = section.secondary_column_collapsible;
     const containerClass = classNames("column", layout, "secondary", {"collapsed": isSecondaryCollapsed});
+    // When this column sticks it has to clear the collapsible header, which is itself sticky
+    // at the top of the column, so the offset differs depending on whether the header is there.
+    const wrapperClass = classNames("embeddableWrapper", {"pinned": pinnedColumn === "secondary"},
+                                    {"below-collapsible-header": collapsible});
     return (
       <div className={containerClass} ref={secondaryDivRef} data-cy="section-column-secondary">
         {secondaryEmbeddablesToRender.length > 0 && collapsible && renderCollapsibleHeader()}
         {/* The panel wrapper carries the id referenced by the trigger's aria-controls. It uses
             `display: contents` so the embeddables remain direct layout children of the column. */}
         <div id={collapsiblePanelId} className="collapsible-panel">
-          {!isSecondaryCollapsed && renderEmbeddables(secondaryEmbeddablesToRender, questionNumStart)}
+          <div className={wrapperClass} ref={secondaryWrapperDivRef}>
+            {!isSecondaryCollapsed && renderEmbeddables(secondaryEmbeddablesToRender, questionNumStart)}
+          </div>
         </div>
       </div>
     );
@@ -243,6 +287,13 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   const responsiveDirection  = singleColumn ? "column" : "row";
   const responsiveDirectionStyle = { flexDirection: responsiveDirection } as React.CSSProperties;
   const leftPrimary = layout === "60-40" || layout === "70-30";
+  // A collapsed secondary column has nothing showing, so there is nothing worth sticking.
+  const pinnedColumn = getPinnedColumn({
+    primaryHeight: wrapperSize?.height,
+    secondaryHeight: secondaryWrapperSize?.height,
+    screenHeight: screenHeight.dynamicHeight,
+    secondaryPinnable: secondaryEmbeddables.length > 0 && !isSecondaryCollapsed
+  });
   const getNumQuestionsLeftColumn = () => {
     const column = leftPrimary ? primaryEmbeddables : secondaryEmbeddables;
     let numQuestions = 0;
