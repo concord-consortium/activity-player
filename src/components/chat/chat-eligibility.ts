@@ -54,6 +54,40 @@ export function getChatIdentity(
       platform_id: portalData.platformId,
       context_id: portalData.contextId,
     },
-    activityUrl: portalData.offering?.activityUrl,
+    // resourceUrl, NOT offering.activityUrl. The offering's `activity_url` is the Portal's LAUNCH url
+    // (`https://activity-player.concord.org/?activity=<encoded authoring url>`), whose host is not on the
+    // function's AUTHORING_HOSTS allowlist, so resolveActivityUrl rejects it with "disallowed activity
+    // host" and the turn dies with status:"error". That only shows up when the FIRST turn of a
+    // conversation is a typed message: a log-first turn installs the prompt via the trusted default host
+    // and never validates this field, which is what masked it in production. resourceUrl is the same
+    // getResourceUrl() value the anonymous branch sends, and it resolves to the authoring URL.
+    activityUrl: portalData.resourceUrl,
   };
+}
+
+// Inputs to the chat mount gate, as plain booleans plus the resolved identity, so the composed
+// decision is testable on its own. It lived inline in App.renderActivity, where the individual
+// helpers had unit tests but the assembled gate — the thing that actually enforces EXT-2 (no chat on
+// single-page activities) and EXT-7 (no chat on the completion page) — had none.
+export interface ChatGateInputs {
+  chatEnabled: boolean;           // the ?chat / localStorage flag
+  idle: boolean;                  // the idle-timeout screen is showing
+  hasError: boolean;              // an app-level error screen is showing
+  isSinglePageActivity: boolean;  // EXT-2 — a single-page layout has no per-page scoping to chat about
+  isContentPage: boolean;         // false on the activity intro page (currentPage === 0)
+  isCompletionPage: boolean;      // EXT-7 — the completion page is not a content page to tutor on
+  identity: ChatIdentity | null;  // learner/anonymous identity with a usable conversation key
+}
+
+export function shouldShowChat(inputs: ChatGateInputs): boolean {
+  const {
+    chatEnabled, idle, hasError, isSinglePageActivity, isContentPage, isCompletionPage, identity,
+  } = inputs;
+  return chatEnabled
+    && !idle
+    && !hasError
+    && !isSinglePageActivity
+    && isContentPage
+    && !isCompletionPage
+    && !!identity;
 }

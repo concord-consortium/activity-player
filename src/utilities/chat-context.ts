@@ -43,6 +43,10 @@ export interface OrientationHints {
   activityTitle?: string;          // falls back to activity.name
   activityIndex?: number;          // 0-based index into the sequence; only in a sequence
   activityCount?: number;          // M, only in a sequence
+  // 1-based page number / total over the page list the STUDENT is actually paging through. Supplied
+  // by the caller so the whole app derives it ONCE (see the fallback note in assemblePageContext).
+  pageNumber?: number;
+  pageCount?: number;
 }
 
 const imagePathRegex = /\.(png|jpe?g|gif|svg|webp|bmp)$/i;
@@ -73,7 +77,14 @@ export function assemblePageContext(
 ): PageContext {
   const visiblePages = getVisiblePages(activity);
   const pageIdx = visiblePages.findIndex(p => p.id === page.id);
-  const pageNumber = pageIdx >= 0 ? pageIdx + 1 : 1;
+  // Prefer the caller's numbering. `getVisiblePages` here ALWAYS filters hidden pages, whereas App's
+  // own visible-page list keeps them under `?author-preview` — so deriving locally reported "Page 1 of
+  // M" (findIndex → -1) for a hidden page the student was really on, and could disagree with the
+  // number the same app state showed elsewhere. The local derivation stays as the fallback: it keeps
+  // this module self-sufficient for the report-service lift, where there is no author-preview and
+  // filtering hidden pages is exactly right.
+  const pageNumber = hints.pageNumber ?? (pageIdx >= 0 ? pageIdx + 1 : 1);
+  const pageCount = hints.pageCount ?? visiblePages.length;
 
   const body: PageContextBodyItem[] = [];
   // Authored order: visible sections, then visible embeddables within each section.
@@ -102,7 +113,7 @@ export function assemblePageContext(
       activityIndex: hints.activityIndex,
       activityCount: hints.activityCount,
       pageNumber,
-      pageCount: visiblePages.length,
+      pageCount,
       pageTitle: page.name ?? null,
     },
     body,

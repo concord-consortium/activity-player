@@ -1,15 +1,26 @@
 @import "../vars.scss";
 
-$chat-width: 25vw;
-$chat-min-width: 320px;
-$chat-max-width: 420px;
+// ONE source of truth for the drawer's rendered width. It has to be a single clamped value rather
+// than width + min-width + max-width, because the body-class rules below offset AP's fixed right-edge
+// UI by exactly this much: with a separate 25vw plus a 320px min-width, a narrow viewport rendered a
+// 320px drawer but only shifted the UI 25vw, leaving it partly covered.
+$chat-width: clamp(320px, 25vw, 420px);
+
+// AP's page-sidebar occupies a 1999 (transparent full-viewport overlay) / 2000 (expanded dialog)
+// band. The chat drawer sits just above it: at its old 1950 the transparent overlay covered the
+// drawer whenever the "Did you know?" dialog was open, so the chat rendered but was inert and clicks
+// on it dismissed the dialog instead. The launcher shares the band for the same reason.
+$chat-z: 2001;
+// The page-sidebar's parked offscreen offset (see page-sidebar/sidebar.scss `.sidebar-container`).
+// Duplicated deliberately: the offset below has to be relative to it.
+$page-sidebar-parked-right: -500px;
 
 // ---- Launcher (shown when the chat is closed) --------------------------------------------------
 .chat-launcher {
   position: fixed;
   right: 16px;
   bottom: 16px;
-  z-index: 1900;
+  z-index: $chat-z;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -36,8 +47,14 @@ $chat-max-width: 420px;
 
 // ---- Panel (shown when open) -------------------------------------------------------------------
 .chat-sidebar {
-  z-index: 1950;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: $chat-width;
+  z-index: $chat-z;
   background: white;
+  border-left: 1px solid $cc-charcoal-light2;
   box-sizing: border-box;
 
   &:focus-visible { outline: none; }
@@ -45,44 +62,58 @@ $chat-max-width: 420px;
   // OVERLAY (fixed-width activities): a right-edge drawer that does not touch the activity, so its
   // interactives don't break. Reuses the page-sidebar fixed-overlay pattern.
   &.overlay {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: $chat-width;
-    min-width: $chat-min-width;
-    max-width: $chat-max-width;
-    border-left: 1px solid $cc-charcoal-light2;
     box-shadow: -3px 0 15px rgba(0, 0, 0, 0.2);
   }
 
-  // PUSH (responsive activities): a fixed 25% right column; the activity reflows to 75% via the
-  // body-class rules below.
+  // PUSH (responsive activities): geometrically identical to the overlay, but the activity reflows
+  // around it (see the body-class rules below) rather than sliding underneath, so no drop shadow is
+  // needed — nothing is being covered.
   &.push {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: $chat-width;
-    min-width: $chat-min-width;
-    max-width: $chat-max-width;
-    border-left: 1px solid $cc-charcoal-light2;
+    box-shadow: none;
   }
 
   .chat { height: 100%; }
 }
 
+// ---- Right-edge reflow (while a chat is open) --------------------------------------------------
+// BOTH modes: AP's viewport-fixed right-edge UI has to move out from under the drawer. These rules
+// previously lived under the push-only body class, and push was disabled, so they never applied —
+// the drawer painted over the expandable container's tabs (making them unclickable) and over the
+// page-sidebar.
+body.ap-chat-open {
+  .expandable-container { right: $chat-width; }
+
+  // Collapsed: the 500px panel stays parked offscreen and only its tab (absolutely positioned at the
+  // container's left edge) is visible, so shift `right` by the drawer width to move that tab clear
+  // rather than setting it outright, which would drag the whole parked panel into view.
+  .sidebar-container { right: calc(#{$page-sidebar-parked-right} + #{$chat-width}); }
+
+  // Expanded: the dialog itself must clear the drawer. Its own `right: 0 !important` (which exists to
+  // beat the inline animation style) can only be overridden on the same terms.
+  .sidebar-container.expanded { right: $chat-width !important; }
+
+  // NOTE: the page-sidebar's transparent dismiss overlay is deliberately left spanning the full
+  // viewport, so it still covers the drawer. While that dialog is open the chat is inert anyway —
+  // `setBackgroundInert()` in page-sidebar/sidebar-panel.tsx marks every sibling of
+  // #expandable-container inert + aria-hidden, and the drawer is one of those siblings (that is the
+  // modal's intended behaviour, not a stacking bug). Insetting the overlay to the drawer's edge would
+  // therefore only turn the drawer into a dead zone; leaving it covered keeps the ordinary
+  // click-outside-to-dismiss, after which the chat is interactive again.
+}
+
 // ---- Push reflow (only while a push chat is open) ----------------------------------------------
 // The responsive activity's primary column is width:100% and flex-shrinks, so reserving
 // space on the right reflows it to ~75% without breaking interactives (they resize natively via the
-// LARA resize protocol). We shift the activity content and offset AP's viewport-fixed sidebars.
+// LARA resize protocol). Overlay mode deliberately does NOT do this: a fixed-width activity has no
+// reflow to give, and narrowing it would break its interactives.
 body.ap-chat-push-open {
   .activity.responsive {
+    // `.app .activity.responsive` is `width: 100%` and content-box, so padding alone GREW the box
+    // past the viewport instead of reflowing it — the activity kept its full width and simply ran on
+    // underneath the drawer, which is why push mode never actually pushed. Switching to border-box
+    // for the duration of the open chat makes the reserved strip come out of the 100% instead of
+    // being added to it. Scoped to this body class, so the closed-chat box model is untouched.
+    box-sizing: border-box;
     padding-right: $chat-width;
   }
-
-  // Offset the "Did you know?" page-sidebar + expandable container so they don't render OVER the
-  // reserved chat strip (they are position:fixed to the viewport right edge).
-  .sidebar-container { right: $chat-width; }
-  .expandable-container { right: $chat-width; }
 }

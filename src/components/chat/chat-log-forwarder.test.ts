@@ -4,6 +4,7 @@ import {
   registerChatLogSink,
   unregisterChatLogSink,
   getChatLogSink,
+  kLogCoalesceMs,
   ChatLogPayload,
 } from "./chat-log-forwarder";
 
@@ -64,22 +65,76 @@ describe("buildForwardedLog", () => {
 });
 
 describe("chat log sink registry", () => {
+  beforeEach(() => jest.useFakeTimers());
   afterEach(() => {
     const s = getChatLogSink();
     if (s) unregisterChatLogSink(s);
+    jest.useRealTimers();
   });
 
-  it("forwards a built payload to the registered sink", () => {
-    const forwarded: ChatLogPayload[] = [];
-    const sink = { forwardLog: (p: ChatLogPayload) => forwarded.push(p) };
-    registerChatLogSink(sink);
+  const logOnce = (action: string, value?: unknown, interactiveId = "int-2") =>
     forwardInteractiveLog({
-      logData: { action: "did thing", value: 1 },
-      interactiveId: "int-2",
+      logData: { action, value },
+      interactiveId,
       interactiveUrl: "https://flood.concord.org/",
     });
+
+  it("forwards a built payload to the registered sink once the coalesce window closes", () => {
+    const forwarded: ChatLogPayload[] = [];
+    registerChatLogSink({ forwardLog: (p: ChatLogPayload) => forwarded.push(p) });
+    logOnce("did thing", 1);
+    // nothing written yet — the window is still open
+    expect(forwarded).toHaveLength(0);
+    jest.advanceTimersByTime(kLogCoalesceMs);
     expect(forwarded).toHaveLength(1);
     expect(forwarded[0].action).toBe("did thing");
+  });
+
+  // Every forwarded log is a Firestore write plus a report-service function invocation that bills its
+  // own tutor turn, so a burst (a slider dragged across its range) must collapse to one doc.
+  it("coalesces a burst of the same action into a single forward carrying the latest value", () => {
+    const forwarded: ChatLogPayload[] = [];
+    registerChatLogSink({ forwardLog: (p: ChatLogPayload) => forwarded.push(p) });
+    logOnce("changed model", 1);
+    jest.advanceTimersByTime(kLogCoalesceMs / 3);
+    logOnce("changed model", 2);
+    jest.advanceTimersByTime(kLogCoalesceMs / 3);
+    logOnce("changed model", 3);
+    // the window runs from the FIRST log and is not pushed out by later ones, so a continuous stream
+    // still flushes on schedule rather than starving
+    jest.advanceTimersByTime(kLogCoalesceMs);
+    expect(forwarded).toHaveLength(1);
+    expect(forwarded[0].value).toBe(3);
+  });
+
+  it("keeps two genuinely different actions from the same interactive", () => {
+    const forwarded: ChatLogPayload[] = [];
+    registerChatLogSink({ forwardLog: (p: ChatLogPayload) => forwarded.push(p) });
+    logOnce("changed model", 1);
+    logOnce("submit answer", "b");
+    jest.advanceTimersByTime(kLogCoalesceMs);
+    expect(forwarded.map(p => p.action).sort()).toEqual(["changed model", "submit answer"]);
+  });
+
+  it("starts a fresh window after the previous one flushes", () => {
+    const forwarded: ChatLogPayload[] = [];
+    registerChatLogSink({ forwardLog: (p: ChatLogPayload) => forwarded.push(p) });
+    logOnce("changed model", 1);
+    jest.advanceTimersByTime(kLogCoalesceMs);
+    logOnce("changed model", 2);
+    jest.advanceTimersByTime(kLogCoalesceMs);
+    expect(forwarded.map(p => p.value)).toEqual([1, 2]);
+  });
+
+  // A queued payload belongs to the conversation that was active when it was built. Closing the panel
+  // (or navigating pages) must drop it rather than land it in the next conversation.
+  it("discards a pending log when the sink is unregistered", () => {
+    const sink = { forwardLog: jest.fn() };
+    registerChatLogSink(sink);
+    logOnce("did thing", 1);
+    unregisterChatLogSink(sink);
+    jest.advanceTimersByTime(kLogCoalesceMs);
+    expect(sink.forwardLog).not.toHaveBeenCalled();
   });
 
   it("is a no-op when no sink is registered", () => {

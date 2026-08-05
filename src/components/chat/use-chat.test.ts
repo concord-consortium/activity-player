@@ -51,6 +51,7 @@ describe("useChat with DebugTransport", () => {
         return () => undefined;
       },
       sendUserMessage: async () => undefined,
+      setLogForwarding: () => undefined,
     };
     const { result } = renderHook(() => useChat({ transport, header: "h" }));
     expect(result.current.pending).toBe(false);
@@ -71,6 +72,7 @@ describe("useChat with DebugTransport", () => {
     const transport: ChatTransport = {
       subscribe: (onTurns, onStatus) => { emitStatus = onStatus; onTurns([]); onStatus("idle"); return () => undefined; },
       sendUserMessage: async () => undefined,
+      setLogForwarding: () => undefined,
     };
     const { result } = renderHook(() => useChat({ transport, header: "h" }));
     expect(result.current.error).toBeNull();
@@ -83,6 +85,7 @@ describe("useChat with DebugTransport", () => {
     const transport: ChatTransport = {
       subscribe: (onTurns, onStatus) => { emitStatus = onStatus; onTurns([]); onStatus("idle"); return () => undefined; },
       sendUserMessage: async () => undefined,
+      setLogForwarding: () => undefined,
     };
     const { result } = renderHook(() => useChat({ transport, header: "h" }));
 
@@ -107,6 +110,7 @@ describe("useChat with DebugTransport", () => {
     const transport: ChatTransport = {
       subscribe: (onTurns, onStatus) => { emitStatus = onStatus; onTurns([]); onStatus("idle"); return () => undefined; },
       sendUserMessage: async () => { throw new Error("write rejected"); },
+      setLogForwarding: () => undefined,
     };
     const { result } = renderHook(() => useChat({ transport, header: "h" }));
 

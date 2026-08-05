@@ -1,18 +1,5 @@
 @import "../vars.scss";
 
-// Accessibility utility: content available to assistive tech but visually hidden.
-.visually-hidden {
-  position: absolute !important;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 .chat {
   display: flex;
   flex-direction: column;
@@ -22,6 +9,22 @@
   font-size: 14px;
   color: $font-color;
   box-sizing: border-box;
+
+  // Accessibility utility: content available to assistive tech but visually hidden. Scoped to `.chat`
+  // rather than declared globally — this stylesheet ships in the main bundle whether or not the chat
+  // flag is on, so a bare `.visually-hidden` here was a global utility owned by a feature. Nesting it
+  // also lifts the specificity enough that the `!important` on `position` is no longer needed.
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
   .chat-header {
     display: flex;

@@ -48,7 +48,7 @@ import { initializeAttachmentsManager } from "@concord-consortium/interactive-ap
 import { LaraDataContext } from "./lara-data-context";
 import { ChatSidebar } from "./chat/chat-sidebar";
 import { resolveChatEnabled } from "../utilities/chat-flag";
-import { getChatIdentity } from "./chat/chat-eligibility";
+import { getChatIdentity, shouldShowChat } from "./chat/chat-eligibility";
 import { OrientationHints } from "../utilities/chat-context";
 import { __closeAllPopUps } from "../lara-plugin/plugin-api/popup";
 import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChangeNotificationStartTimeout } from "./activity-page/page-change-notification";
@@ -575,17 +575,25 @@ export class App extends React.PureComponent<IProps, IState> {
     // completion), and a learner/anonymous identity with a usable key.
     const currentPageObj = currentPage > 0 ? pagesVisible[currentPage - 1] : undefined;
     const chatIdentity = getChatIdentity(getPortalData());
-    const showChat = this.chatEnabled
-      && !idle && !errorType
-      && activity.layout !== ActivityLayouts.SinglePage
-      && !!currentPageObj
-      && !currentPageObj.is_completion
-      && !!chatIdentity;
+    const showChat = shouldShowChat({
+      chatEnabled: this.chatEnabled,
+      idle: !!idle,
+      hasError: !!errorType,
+      isSinglePageActivity: activity.layout === ActivityLayouts.SinglePage,
+      isContentPage: !!currentPageObj,
+      isCompletionPage: !!currentPageObj?.is_completion,
+      identity: chatIdentity,
+    });
     const chatHints: OrientationHints = {
       sequenceTitle: sequence ? (sequence.display_title || sequence.title) : undefined,
       activityTitle: activity.name,
       activityIndex: sequence ? activityIndex : undefined,
       activityCount: sequence ? sequence.activities.length : undefined,
+      // Page N of M derived HERE, once, from the same `pagesVisible` the student is paging through
+      // (which honours ?author-preview), and passed down. chat-context falls back to deriving it
+      // from the activity only when these are absent, which is the report-service lift's case.
+      pageNumber: currentPage,
+      pageCount: pagesVisible.length,
     };
 
     return (
@@ -645,7 +653,6 @@ export class App extends React.PureComponent<IProps, IState> {
             fullWidth={fullWidth}
             activity={activity}
             page={currentPageObj}
-            pageNumber={currentPage}
             hints={chatHints}
             identity={chatIdentity}
           />
