@@ -443,12 +443,72 @@ describe("ManagedInteractive component", () => {
     jest.runAllTimers();
   });
 
+  describe("closing a dialog", () => {
+    const renderWithDialog = async (dialogUrl: string) => {
+      const sampleEmbeddable: IMwInteractive = {
+        type: "MwInteractive",
+        name: "interactive that opens a dialog",
+        is_hidden: false,
+        ref_id: "dialog-close-test",
+        url: "https://models-resources.concord.org/interactive/index.html",
+      };
+      render(<DynamicTextTester><ManagedInteractive
+                embeddable={sampleEmbeddable}
+                questionNumber={1}
+                setSupportedFeatures={mockSetSupportedFeatures}
+                setSendCustomMessage={mockSetSendCustomMessage}
+                setNavigation={mockSetNavigation}
+                showQuestionPrefix={true}
+                />
+             </DynamicTextTester>);
+      jest.runAllTimers();
+      act(() => {
+        dispatchMessageFromChild("showModal", { type: "dialog", url: dialogUrl });
+      });
+      jest.runAllTimers();
+      expect(screen.getByTestId("dialog-overlay-close")).toBeInTheDocument();
+    };
+
+    const clickCloseAndSettle = async () => {
+      act(() => {
+        fireEvent.click(screen.getByTestId("dialog-overlay-close"));
+      });
+      // the close waits on the state request, which settles as a microtask
+      await act(async () => { await Promise.resolve(); });
+    };
+
+    it("closes a dialog whose interactive could not be loaded", async () => {
+      // Such an interactive has no iframe-phone connection, so nothing will ever answer the
+      // state request the close asks for. The dialog still has to let the learner out.
+      await renderWithDialog("javascript:alert(1)");
+      await clickCloseAndSettle();
+      expect(screen.queryByTestId("dialog-overlay-close")).toBeNull();
+    });
+
+    it("closes a dialog whose interactive answers nochange", async () => {
+      // "nochange" is a LARA reply that carries no state, so nothing is saved, but the state
+      // request is still answered and the dialog must close on it.
+      await renderWithDialog("https://models-resources.concord.org/interactive/index.html");
+      act(() => {
+        fireEvent.click(screen.getByTestId("dialog-overlay-close"));
+      });
+      act(() => {
+        dispatchMessageFromChild("interactiveState", "nochange");
+      });
+      await act(async () => { await Promise.resolve(); });
+      expect(screen.queryByTestId("dialog-overlay-close")).toBeNull();
+    });
+  });
+
   it("returns focus to the hint trigger when the hint is closed via the close button", async () => {
     const sampleEmbeddable: IMwInteractive = {
       type: "MwInteractive",
       name: "interactive with a hint",
       is_hidden: false,
       ref_id: "hint-focus-test",
+      // the hint arrives over the iframe-phone connection, which is only made for an
+      // interactive whose url the browser can load
+      url: "https://models-resources.concord.org/interactive/index.html",
     };
 
     render(<DynamicTextTester><ManagedInteractive

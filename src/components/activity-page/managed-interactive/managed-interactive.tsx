@@ -73,7 +73,6 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const [loadingAnswer, setLoadingAnswer] = useState(shouldWatchAnswer);
 
   const iframeRuntimeRef = useRef<IframeRuntimeImperativeAPI>(null);
-  const onSetInteractiveStateCallback = useRef<() => void>();
   const interactiveState = useRef<any>();
   const legacyLinkedInteractiveState = useRef<ILegacyLinkedInteractiveState | null>(null);
   const answerMeta = useRef<IExportableAnswerMetadata>();
@@ -194,10 +193,6 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         interactiveStateHistoryIdRef.current = nanoid();
       }
     }
-    // Custom callback set internally. Used by the modal dialog to close itself after the most recent
-    // interactive state is received.
-    onSetInteractiveStateCallback.current?.();
-    onSetInteractiveStateCallback.current = undefined;
   };
 
   const setNewHint = useCallback((newHint: string) => {
@@ -275,9 +270,16 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   };
 
   const handleCloseDialog = () => {
-    // Request current interactive state in the dialog before closing it.
-    iframeRuntimeRef.current?.requestInteractiveState();
-    onSetInteractiveStateCallback.current = () => setActiveDialog(null);
+    // Request the dialog interactive's current state before closing, but close on either
+    // outcome: an interactive that cannot be reached, or that answers "nochange", must not
+    // leave the learner shut inside the dialog.
+    const close = () => setActiveDialog(null);
+    const request = iframeRuntimeRef.current?.requestInteractiveState();
+    if (request) {
+      void request.then(close, close);
+    } else {
+      close();
+    }
   };
 
   const handleCloseLightbox = () => {
