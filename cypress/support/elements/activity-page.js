@@ -53,8 +53,10 @@ class ActivityPage {
   getActivityNavHeader() {
     return cy.get("[data-cy=activity-nav-header]");
   }
-  getNavPageButton(index) {
-    return cy.get('[data-cy=nav-pages-button]').eq(index);
+  getNavPageButton(index, options) {
+    // One query rather than .eq(index), so a timeout in options governs the caller's assertion:
+    // a .eq() in between takes its own, and the wait silently reverts to defaultCommandTimeout.
+    return cy.get(`[data-cy=nav-pages-button]:eq(${index})`, options);
   }
   // A page change is finished when the nav marks that page current. Gate every navigation on
   // this: nav-pages drops a click that arrives while a page change is still in progress, and
@@ -62,9 +64,7 @@ class ActivityPage {
   // on asserting against the page it never left. `index` is a button position, which is the
   // page number only until an activity has more pages than the nav shows buttons for.
   verifyCurrentPage(index) {
-    // One query, so the timeout belongs to the assertion's retry: a .eq() in between takes its
-    // own, and the wait silently reverts to defaultCommandTimeout.
-    return cy.get(`[data-cy=nav-pages-button]:eq(${index})`, { timeout: kPageChangeTimeout })
+    return this.getNavPageButton(index, { timeout: kPageChangeTimeout })
       .should("have.attr", "aria-current", "page");
   }
   //Header
