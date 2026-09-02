@@ -1,7 +1,7 @@
 // A url that begins with "//" inherits the scheme of the page that loads it, so resolve it
 // against the current location the way the browser does. Everything else is parsed without
 // a base, so relative paths are rejected.
-const parseUrl = (url?: string): URL | undefined => {
+export const parseUrl = (url?: string): URL | undefined => {
   if (!url) return undefined;
   try {
     // The URL parser ignores leading whitespace, so the scheme-relative test must too.
