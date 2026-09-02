@@ -506,8 +506,38 @@ describe("IframeRuntime component", () => {
     expect(iframe.getAttribute("src")).not.toBe(rawUrl);
   });
 
-  describe("focus transport", () => {
+  it("blanks an unsupported scheme without opening an iframe-phone connection", () => {
+    // iframe-phone derives its target origin from the iframe src and throws on
+    // about:blank, which fails the render of the whole page.
+    const { container } = renderWith({ url: "javascript:alert(1)" });
+    act(() => { jest.runAllTimers(); });
+    const iframe = container.querySelector("iframe") as HTMLIFrameElement;
+    expect(iframe.getAttribute("src")).toBe("about:blank");
+    expect(iframePhone.ParentEndpoint).not.toHaveBeenCalled();
+  });
 
+  it("resolves a state request for an interactive that never got a phone", async () => {
+    // Nothing can answer a getInteractiveState post that was never sent, so without an
+    // early return the request runs out its timeout and reports a save failure.
+    const ref = React.createRef<IframeRuntimeImperativeAPI>();
+    renderWith({ url: "javascript:alert(1)", ref });
+    act(() => { jest.runAllTimers(); });
+    const request = ref.current!.requestInteractiveState();
+    act(() => { jest.runAllTimers(); });
+    await expect(request).resolves.toBeUndefined();
+  });
+
+  it("loads an interactive embedded with a scheme-relative url", () => {
+    // Older LARA content was authored with "//host/path", which the browser loads using
+    // the scheme of the page it is on.
+    const url = "//models-resources.concord.org/interactive/index.html";
+    const { container } = renderWith({ url });
+    act(() => { jest.runAllTimers(); });
+    const iframe = container.querySelector("iframe") as HTMLIFrameElement;
+    expect(iframe.getAttribute("src")).toBe(url);
+  });
+
+  describe("focus transport", () => {
     it("calls onFocusTransportReady with a transport when the phone is built", () => {
       const onFocusTransportReady = jest.fn();
       renderWith({ onFocusTransportReady });
@@ -559,36 +589,5 @@ describe("IframeRuntime component", () => {
       expect(() => renderWith()).not.toThrow();
       expect(mockAddListener).toHaveBeenCalledWith("focusExit", expect.any(Function));
     });
-  });
-
-  it("blanks an unsupported scheme without opening an iframe-phone connection", () => {
-    // iframe-phone derives its target origin from the iframe src and throws on
-    // about:blank, which fails the render of the whole page.
-    const { container } = renderWith({ url: "javascript:alert(1)" });
-    act(() => { jest.runAllTimers(); });
-    const iframe = container.querySelector("iframe") as HTMLIFrameElement;
-    expect(iframe.getAttribute("src")).toBe("about:blank");
-    expect(iframePhone.ParentEndpoint).not.toHaveBeenCalled();
-  });
-
-  it("resolves a state request for an interactive that never got a phone", async () => {
-    // Nothing can answer a getInteractiveState post that was never sent, so without an
-    // early return the request runs out its timeout and reports a save failure.
-    const ref = React.createRef<IframeRuntimeImperativeAPI>();
-    renderWith({ url: "javascript:alert(1)", ref });
-    act(() => { jest.runAllTimers(); });
-    const request = ref.current!.requestInteractiveState();
-    act(() => { jest.runAllTimers(); });
-    await expect(request).resolves.toBeUndefined();
-  });
-
-  it("loads an interactive embedded with a scheme-relative url", () => {
-    // Older LARA content was authored with "//host/path", which the browser loads using
-    // the scheme of the page it is on.
-    const url = "//models-resources.concord.org/interactive/index.html";
-    const { container } = renderWith({ url });
-    act(() => { jest.runAllTimers(); });
-    const iframe = container.querySelector("iframe") as HTMLIFrameElement;
-    expect(iframe.getAttribute("src")).toBe(url);
   });
 });
