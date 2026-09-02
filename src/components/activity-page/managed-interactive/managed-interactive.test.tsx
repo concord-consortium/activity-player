@@ -449,6 +449,9 @@ describe("ManagedInteractive component", () => {
       name: "interactive with a hint",
       is_hidden: false,
       ref_id: "hint-focus-test",
+      // the hint arrives over the iframe-phone connection, which is only made for an
+      // interactive whose url the browser can load
+      url: "https://models-resources.concord.org/interactive/index.html",
     };
 
     render(<DynamicTextTester><ManagedInteractive

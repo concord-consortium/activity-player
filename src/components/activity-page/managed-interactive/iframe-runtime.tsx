@@ -103,6 +103,11 @@ interface IProps {
 const pubSubManager = new PubSubManager();
 const jobManager = new JobManager(firebaseJobExecutor);
 
+const blankIframeSrc = "about:blank";
+
+// The iframe src, with any url overrides applied; about:blank when the url is not loadable.
+const interactiveIframeSrc = (url: string) => isHttpUrl(url) ? applyOverrides(url) : blankIframeSrc;
+
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
@@ -440,17 +445,23 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
     if (iframeRef.current) {
       // Reload the iframe.
-      // Apply URL overrides here too, to match the JSX src={applyOverrides(url)};
-      // otherwise this imperative assignment clobbers the overridden src with the raw url.
-      iframeRef.current.src = isHttpUrl(url) ? applyOverrides(url) : "about:blank";
-      // Re-init interactive, this time using a new mode (report or runtime).
-      const phone: IframePhone = new iframePhone.ParentEndpoint(iframeRef.current, initInteractive);
-      phoneRef.current = phone;
-      setSendCustomMessage((message: ICustomMessage) => {
-        phoneRef.current?.post("customMessage", message);
-      });
-      focusManagerRef.current = new FocusManager(phone);
-      onFocusTransportReady?.(focusManagerRef.current.transport);
+      const src = interactiveIframeSrc(url);
+      iframeRef.current.src = src;
+      if (src === blankIframeSrc) {
+        // A blank iframe has no interactive to talk to, and iframe-phone throws when it
+        // tries to derive a target origin from about:blank, which would take down the
+        // whole page rather than just this interactive.
+        phoneRef.current = undefined;
+      } else {
+        // Re-init interactive, this time using a new mode (report or runtime).
+        const phone: IframePhone = new iframePhone.ParentEndpoint(iframeRef.current, initInteractive);
+        phoneRef.current = phone;
+        setSendCustomMessage((message: ICustomMessage) => {
+          phoneRef.current?.post("customMessage", message);
+        });
+        focusManagerRef.current = new FocusManager(phone);
+        onFocusTransportReady?.(focusManagerRef.current.transport);
+      }
     }
 
     // Cleanup.
@@ -492,6 +503,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
   useImperativeHandle(ref, () => ({
     requestInteractiveState: (options?: IGetInteractiveState) => {
+      // An iframe that never loaded an interactive has no state to request, and nothing
+      // would arrive to resolve the request, so it would time out and report a save failure.
+      if (!phoneRef.current) return Promise.resolve();
       if (!interactiveStateRequest.promise.current) {
         phoneRef.current?.post("getInteractiveState", options);
         interactiveStateRequest.promise.current = new Promise<void>((resolve, reject) => {
@@ -554,7 +568,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         tabIndex={locked ? -1 : 0}
         key={`${id}-${reloadCount}`}
         ref={composedIframeRef}
-        src={isHttpUrl(url) ? applyOverrides(url) : "about:blank"}
+        src={interactiveIframeSrc(url)}
         id={id}
         width={width}
         height={height}

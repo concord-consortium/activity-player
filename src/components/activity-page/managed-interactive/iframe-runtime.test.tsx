@@ -1,5 +1,6 @@
 import React from "react";
-import { IframeRuntime } from "./iframe-runtime";
+import iframePhone from "iframe-phone";
+import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import { act, configure, fireEvent, render } from "@testing-library/react";
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { DynamicTextTester } from "../../../test-utils/dynamic-text";
@@ -73,6 +74,7 @@ describe("IframeRuntime component", () => {
     mockAddListener.mockClear();
     mockRemoveListener.mockClear();
     mockDisconnect.mockClear();
+    (iframePhone.ParentEndpoint as unknown as jest.Mock).mockClear();
     // Override state is a module-level singleton; reset here so it can't leak
     // into later tests even if a test throws before its own cleanup.
     resetOverridesForTesting();
@@ -557,6 +559,27 @@ describe("IframeRuntime component", () => {
       expect(() => renderWith()).not.toThrow();
       expect(mockAddListener).toHaveBeenCalledWith("focusExit", expect.any(Function));
     });
+  });
+
+  it("blanks an unsupported scheme without opening an iframe-phone connection", () => {
+    // iframe-phone derives its target origin from the iframe src and throws on
+    // about:blank, which fails the render of the whole page.
+    const { container } = renderWith({ url: "javascript:alert(1)" });
+    act(() => { jest.runAllTimers(); });
+    const iframe = container.querySelector("iframe") as HTMLIFrameElement;
+    expect(iframe.getAttribute("src")).toBe("about:blank");
+    expect(iframePhone.ParentEndpoint).not.toHaveBeenCalled();
+  });
+
+  it("resolves a state request for an interactive that never got a phone", async () => {
+    // Nothing can answer a getInteractiveState post that was never sent, so without an
+    // early return the request runs out its timeout and reports a save failure.
+    const ref = React.createRef<IframeRuntimeImperativeAPI>();
+    renderWith({ url: "javascript:alert(1)", ref });
+    act(() => { jest.runAllTimers(); });
+    const request = ref.current!.requestInteractiveState();
+    act(() => { jest.runAllTimers(); });
+    await expect(request).resolves.toBeUndefined();
   });
 
   it("loads an interactive embedded with a scheme-relative url", () => {
