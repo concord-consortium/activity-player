@@ -52,6 +52,16 @@ class ActivityPage {
   getNavPageButton(index) {
     return cy.get('[data-cy=nav-pages-button]').eq(index);
   }
+  // A page change is finished when the nav marks that page current. Gate every navigation on
+  // this: nav-pages drops a click that arrives while a page change is still in progress, and
+  // page content selectors match the outgoing page, so a test that clicks again too early goes
+  // on asserting against the page it never left.
+  // The wait outlasts the interactive state request the page change waits on, which times out
+  // after 20s, so a slow interactive delays this rather than failing it.
+  verifyCurrentPage(index) {
+    return cy.get('[data-cy=nav-pages-button]', { timeout: 25000 }).eq(index)
+      .should("have.attr", "aria-current", "page");
+  }
   //Header
   getHeaderActivityTitle() {
     return cy.get('[data-cy=activity-title]');
