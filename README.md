@@ -14,7 +14,7 @@ This is a single page React and Typescript application intended to provide a pla
 
 ### Building
 
-If you want to build a local version run `npm build`, it will create the files in the `dist` folder.
+If you want to build a local version run `npm run build`, it will create the files in the `dist` folder.
 You *do not* need to build to deploy the code, that is automatic.  See more info in the Deployment section below.
 
 ### Notes
@@ -49,17 +49,24 @@ Testing this is complicated. Here is one approach:
 
 Deployment is handled by GitHub Actions using OIDC for AWS authentication. The `s3-deploy` job in
 [`ci.yml`](.github/workflows/ci.yml) runs on every push, branches and tags alike, and writes to
-`models-resources/activity-player/`. You do not need to build locally to deploy.
+`models-resources/activity-player/`. It `needs` the build and Cypress jobs, so a failing test stops
+the deploy and nothing is published for that push. You do not need to build locally to deploy.
 
 Branches are published at `https://activity-player.concord.org/branch/<name>/` and tags at
 `https://activity-player.concord.org/version/<name>/`.
 
-Note that a branch's `<name>` is not always the branch name: the deploy action strips a leading
-`<word>-<number>-` prefix. `AP-134-no-phone-for-blank-iframe` publishes to
-`/branch/no-phone-for-blank-iframe/`, while `readme-release-process` keeps its full name, because
-`readme` is not followed by a number. Check the deployment's URL rather than assuming.
+Note that a branch's `<name>` is not always the branch name. `s3-deploy-action` strips, in order, a
+leading Jira-style `<letters>-<digits>-` prefix, a leading Pivotal-style run of 8 or more digits, or
+the same digits as a *suffix*. So `AP-134-no-phone-for-blank-iframe` publishes to
+`/branch/no-phone-for-blank-iframe/` and `173944477-completion-page-state` to
+`/branch/completion-page-state/`, while `readme-release-process` keeps its full name, because
+`readme` is not followed by digits. The suffix rule is the one nobody guesses. Check the
+deployment's URL rather than assuming.
 
 You can view the status of all the branch and tag deploys [here](https://github.com/concord-consortium/activity-player/actions).
+
+Pushes to `master` additionally publish `https://activity-player.concord.org/index-master.html`,
+which is the master build at the top level rather than under `/branch/`.
 
 The production release is available at `https://activity-player.concord.org`, which serves
 `models-resources/activity-player/` — the paths above and the `s3://` paths below are the same files.
@@ -76,22 +83,25 @@ The version number comes from the release's Jira fix version rather than from se
 merged. Check the unreleased version in the AP project and use that, even when the release contains
 only bug fixes: `2.16.1` and `2.17.1` were patches, but the number is whatever Jira already says.
 
-1. Bump the version in `package.json` and `package-lock.json`, and commit to `master`:
+1. Verify, then bump the version in `package.json` and `package-lock.json` and commit to `master`.
+
+   Verify before you push, not after: `master` is unprotected and the bump goes straight to it, so
+   there is no PR gate to catch a bad release commit once it is public.
 
    ```sh
+   npm run lint && npm run build && npm test
    npm version <version> --no-git-tag-version
    git commit package.json package-lock.json -m "build: Update version to v<version>"
    git push origin master
    ```
 
-   `master` is unprotected and the bump goes straight to it; there is no `release-<version>` branch
-   and no PR. The commit message is a bare subject with no body and no ticket id.
+   CI repeats the build and the jest tests on the push, and runs Cypress, but it never runs
+   `npm run lint`: the only linting it does is the `lint:build` step inside `npm run build`, which is
+   scoped to `src` and uses the build eslint configs. `npm run lint` additionally covers `cypress/**`,
+   so skipping it locally means nothing checks those files.
 
-   Verify first with `npm run lint && npm run build && npm test`. CI repeats the build and the jest
-   tests on the push, and runs Cypress, but it never runs `npm run lint`: the only linting it does is
-   the `lint:build` step inside `npm run build`, which is scoped to `src` and uses the build eslint
-   configs. `npm run lint` additionally covers `cypress/**`, so skipping it locally means nothing
-   checks those files.
+   There is no `release-<version>` branch and no PR. The commit message is a bare subject with no
+   body and no ticket id.
 
 2. Tag that commit, annotated, and push the tag:
 
@@ -114,14 +124,21 @@ only bug fixes: `2.16.1` and `2.17.1` were patches, but the number is whatever J
 
    Run it from `scripts/`. `JIRA_USER` and `JIRA_TOKEN` are read from a `.env` in that folder, and
    `dotenv` loads it relative to the working directory, so invoking the script by path from the repo
-   root fails with "Both the JIRA_USER and JIRA_TOKEN environment variables are required".
+   root fails with "Both the JIRA_USER and JIRA_TOKEN environment variables are required". Pull
+   dev-templates first: the script's query has changed, and a stale checkout behaves differently.
 
    Stories become *Features & Improvements*, bugs become *Bug Fixes*, and chores, tasks and anything
    labeled `under-the-hood` become *Under the Hood*. It queries
-   `fixVersion in ("<version>") AND issuetype in (Story, Bug, Chore, Task) AND status in (Done, Closed)`,
-   so the release's issues have to carry the fix version, and the per-release *Release* tracking issue
-   is skipped by the issue-type filter rather than appearing in the notes. With no matching issues the
+   `project=AP AND fixVersion in ("<version>") AND issuetype in (Story, Bug, Chore, Task)`, so the
+   release's issues have to carry the fix version, and the per-release *Release* tracking issue is
+   skipped by the issue-type filter rather than appearing in the notes. With no matching issues the
    script reports "No stories found" and exits.
+
+   **There is no status filter**, so an issue carrying the fix version is written into the notes
+   whatever state it is in. The script surfaces two things for you to resolve rather than dropping
+   them silently: it ends with `⚠️ N story(ies) not yet done: <keys>`, and it marks an issue that
+   carries both the fix version and a `no-release` label inline with
+   `⚠️ (has no-release label — conflict)`. Read the output before pasting it.
 
    Paste the output into a new GitHub release on the tag, titled
    `Version <version> - released <Month> <D>, <YYYY>`. Pass `slack` as a third argument for a
@@ -131,6 +148,9 @@ only bug fixes: `2.16.1` and `2.17.1` were patches, but the number is whatever J
    [`ci.yml`](.github/workflows/ci.yml) is `on: push` and that matches tags, and that run deployed
    the build to `.../activity-player/version/v<version>/`. **Nothing is live yet**: promoting that
    build to the top-level `index.html` is a separate manual step.
+
+   Wait for that run to finish **successfully**. The deploy needs the build and Cypress jobs, so a
+   failed run publishes nothing and the copy below has no source to read.
 
    From the CLI:
 
@@ -142,8 +162,11 @@ only bug fixes: `2.16.1` and `2.17.1` were patches, but the number is whatever J
    **Run workflow**, enter the tag (e.g. `v2.17.1`) in the *version* field, **Run workflow**.
 
    Either way it copies `s3://models-resources/activity-player/version/v<version>/index-top.html`
-   over `s3://models-resources/activity-player/index.html`, so the tag's CI run must have finished
-   first or there is nothing to copy.
+   over `s3://models-resources/activity-player/index.html`.
+
+   Then load https://activity-player.concord.org and confirm the version in the footer. Both files
+   are served `cache-control: no-cache, max-age=0`, so the change is visible immediately with no
+   cache to wait out.
 
 There is also a [Release Staging](.github/workflows/release-staging.yml) workflow, which writes
 `index-staging.html` for testing at https://activity-player.concord.org/index-staging.html. It has
@@ -153,7 +176,7 @@ never been run and is not part of the process above.
 
 Run `npm test` to run jest tests. Run `npm run test:full` to run jest and Cypress tests.
 
-##### Cypress Run Options
+### Cypress Run Options
 
 Inside of your `package.json` file:
 1. `--browser browser-name`: define browser for running tests
@@ -165,7 +188,7 @@ Inside of your `package.json` file:
 7. `--key`: specify your secret record key
 8. `--reporter`: specify a mocha reporter
 
-##### Cypress Run Examples
+### Cypress Run Examples
 
 1. `cypress run --browser chrome` will run cypress in a chrome browser
 2. `cypress run --headed --no-exit` will open cypress test runner when tests begin to run, and it will remain open when tests are finished running.
