@@ -41,6 +41,18 @@ describe("applyRuleToUrl", () => {
     expect(u.searchParams.get("inner")).toBe(expectedInner);
   });
 
+  it("rewrites a URL embedded in a scheme-relative wrapper (decoded pass)", () => {
+    // Old ITSI content authors the wrapper without a scheme and carries the inner URL as a
+    // percent-encoded query param, so the decoded pass has to run on it too.
+    const inner = "https://models-resources.concord.org/question-interactives/branch/old/multiple-choice/";
+    const wrapper = `//wrapper.example/?inner=${encodeURIComponent(inner)}`;
+    const result = applyRuleToUrl(qiRule, wrapper);
+    const expectedInner = "https://models-resources.concord.org/question-interactives/branch/my-branch/multiple-choice/";
+    expect(new URL(result).searchParams.get("inner")).toBe(expectedInner);
+    // the rewritten wrapper comes back resolved against the page, as the browser would load it
+    expect(result.startsWith("https://wrapper.example/")).toBe(true);
+  });
+
   it("rewrites a URL that adds a branch where there was none (optional group)", () => {
     const input = "https://wildfire.concord.org/index.html";
     const expected = "https://wildfire.concord.org/branch/master/index.html";

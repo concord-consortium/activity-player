@@ -1,14 +1,23 @@
-// Returns true only for absolute http(s) URLs. Values that use another scheme,
-// or that do not parse as an absolute URL (e.g. a relative path), return false
-// so callers can fall back to a safe default.
-export const isHttpUrl = (url?: string): boolean => {
-  if (!url) return false;
+// A url that begins with "//" inherits the scheme of the page that loads it, so resolve it
+// against the current location the way the browser does. Everything else is parsed without
+// a base, so relative paths are rejected.
+export const parseUrl = (url?: string): URL | undefined => {
+  if (!url) return undefined;
   try {
-    const { protocol } = new URL(url);
-    return protocol === "http:" || protocol === "https:";
+    // The URL parser ignores leading whitespace, so the scheme-relative test must too.
+    return new URL(url, /^\s*\/\//.test(url) ? window.location.href : undefined);
   } catch {
-    return false;
+    return undefined;
   }
+};
+
+const isHttpProtocol = ({ protocol }: URL): boolean => protocol === "http:" || protocol === "https:";
+
+// Returns true only for urls the browser will load over http(s). Values that use another
+// scheme, or that do not parse, return false so callers can fall back to a safe default.
+export const isHttpUrl = (url?: string): boolean => {
+  const parsed = parseUrl(url);
+  return !!parsed && isHttpProtocol(parsed);
 };
 
 // Domains that may serve plugin scripts, matched exactly or as a dot-suffix.
@@ -24,8 +33,9 @@ const allowedPluginScriptHosts = ["localhost", "127.0.0.1"];
 // execute. Matching is done on the parsed hostname rather than on the url text, so
 // lookalikes such as evilconcord.org or concord.org.example.com are rejected.
 export const isAllowedPluginScriptUrl = (url?: string): boolean => {
-  if (!url || !isHttpUrl(url)) return false;
-  const { hostname } = new URL(url);
+  const parsed = parseUrl(url);
+  if (!parsed || !isHttpProtocol(parsed)) return false;
+  const { hostname } = parsed;
   if (allowedPluginScriptHosts.includes(hostname)) return true;
   return allowedPluginScriptDomains.some((domain) => hostname === domain || hostname.endsWith(`.${domain}`));
 };

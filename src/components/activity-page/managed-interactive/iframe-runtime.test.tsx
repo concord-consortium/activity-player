@@ -78,6 +78,35 @@ describe("IframeRuntime component", () => {
     resetOverridesForTesting();
   });
 
+  const renderWith = (extraProps: Record<string, any> = {}) =>
+    render(
+      <MediaLibraryTester>
+        <DynamicTextTester>
+          <IframeRuntime
+            url={"https://concord.org/"}
+            id={"123-Interactive"}
+            authoredState={null}
+            initialInteractiveState={{ testing: true }}
+            legacyLinkedInteractiveState={null}
+            setInteractiveState={jest.fn()}
+            setAspectRatio={jest.fn()}
+            setHeightFromInteractive={jest.fn()}
+            setSupportedFeatures={jest.fn()}
+            setNewHint={jest.fn()}
+            getFirebaseJWT={jest.fn(() => Promise.resolve("stub"))}
+            getAttachmentUrl={jest.fn(() => Promise.resolve({ url: "u", requestId: 1 }))}
+            showModal={jest.fn()}
+            closeModal={jest.fn()}
+            setSendCustomMessage={jest.fn()}
+            setNavigation={jest.fn()}
+            log={mockLog}
+            iframeTitle="Interactive content"
+            {...extraProps}
+          />
+        </DynamicTextTester>
+      </MediaLibraryTester>
+    );
+
   it("renders before/after sentinels around the iframe with tabindex=-1", () => {
     const mockSetInteractiveState = jest.fn();
     const mockSetSupportedFeatures = jest.fn();
@@ -476,34 +505,6 @@ describe("IframeRuntime component", () => {
   });
 
   describe("focus transport", () => {
-    const renderWith = (extraProps: Record<string, any> = {}) =>
-      render(
-        <MediaLibraryTester>
-          <DynamicTextTester>
-            <IframeRuntime
-              url={"https://concord.org/"}
-              id={"123-Interactive"}
-              authoredState={null}
-              initialInteractiveState={{ testing: true }}
-              legacyLinkedInteractiveState={null}
-              setInteractiveState={jest.fn()}
-              setAspectRatio={jest.fn()}
-              setHeightFromInteractive={jest.fn()}
-              setSupportedFeatures={jest.fn()}
-              setNewHint={jest.fn()}
-              getFirebaseJWT={jest.fn(() => Promise.resolve("stub"))}
-              getAttachmentUrl={jest.fn(() => Promise.resolve({ url: "u", requestId: 1 }))}
-              showModal={jest.fn()}
-              closeModal={jest.fn()}
-              setSendCustomMessage={jest.fn()}
-              setNavigation={jest.fn()}
-              log={mockLog}
-              iframeTitle="Interactive content"
-              {...extraProps}
-            />
-          </DynamicTextTester>
-        </MediaLibraryTester>
-      );
 
     it("calls onFocusTransportReady with a transport when the phone is built", () => {
       const onFocusTransportReady = jest.fn();
@@ -556,5 +557,15 @@ describe("IframeRuntime component", () => {
       expect(() => renderWith()).not.toThrow();
       expect(mockAddListener).toHaveBeenCalledWith("focusExit", expect.any(Function));
     });
+  });
+
+  it("loads an interactive embedded with a scheme-relative url", () => {
+    // Older LARA content was authored with "//host/path", which the browser loads using
+    // the scheme of the page it is on.
+    const url = "//models-resources.concord.org/interactive/index.html";
+    const { container } = renderWith({ url });
+    act(() => { jest.runAllTimers(); });
+    const iframe = container.querySelector("iframe") as HTMLIFrameElement;
+    expect(iframe.getAttribute("src")).toBe(url);
   });
 });
