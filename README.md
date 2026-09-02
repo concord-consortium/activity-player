@@ -86,8 +86,11 @@ only bug fixes: `2.16.1` and `2.17.1` were patches, but the number is whatever J
    `master` is unprotected and the bump goes straight to it; there is no `release-<version>` branch
    and no PR. The commit message is a bare subject with no body and no ticket id.
 
-   Optionally verify the build first with `npm run lint && npm run build && npm test`. CI runs all
-   three on the push anyway, so this only buys an earlier failure.
+   Verify first with `npm run lint && npm run build && npm test`. CI repeats the build and the jest
+   tests on the push, and runs Cypress, but it never runs `npm run lint`: the only linting it does is
+   the `lint:build` step inside `npm run build`, which is scoped to `src` and uses the build eslint
+   configs. `npm run lint` additionally covers `cypress/**`, so skipping it locally means nothing
+   checks those files.
 
 2. Tag that commit, annotated, and push the tag:
 
