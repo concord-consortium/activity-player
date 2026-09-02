@@ -45,6 +45,15 @@ describe("Logo component", () => {
       expect(logo).toHaveClass("no-link");
     });
 
+    it("renders a link for a scheme-relative url", () => {
+      // A "//host/path" url is loaded by the browser using the page's own scheme,
+      // so the anchor is safe and the logo stays operable.
+      render(<Logo logo={projectLogoUrl} url={"//learn.concord.org/itsi"} title="ITSI" />);
+      const link = screen.getByTestId("project-logo");
+      expect(link.tagName).toBe("A");
+      expect(link).toHaveAttribute("href", "//learn.concord.org/itsi");
+    });
+
     it("does not render a link for a relative (non-absolute) url", () => {
       // Only absolute http(s) urls are linked; a relative url is not.
       render(<Logo logo={projectLogoUrl} url={"/relative/path"} title="Relative" />);

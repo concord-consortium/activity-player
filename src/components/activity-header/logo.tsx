@@ -1,5 +1,6 @@
 import React from "react";
 import ccLogoUrl from "../../assets/svg-icons/cclogo.svg?url";
+import { isHttpUrl } from "../../utilities/url-utils";
 
 import "./logo.scss";
 
@@ -20,7 +21,7 @@ export class Logo extends React.PureComponent<IProps> {
     // there is no (safe) url to link to. The url originates from author-supplied
     // project data, so only http(s) destinations are linked — this avoids turning
     // a malicious scheme (e.g. javascript:) into an executable link.
-    if (this.isLinkableUrl(url)) {
+    if (isHttpUrl(url)) {
       return (
         <a
           className="project-logo"
@@ -39,21 +40,6 @@ export class Logo extends React.PureComponent<IProps> {
         {this.renderLogoImage()}
       </div>
     );
-  }
-
-  // Only absolute http(s) urls are treated as links; anything else (a missing
-  // url, or an unsafe scheme such as javascript:/data:) falls back to non-link
-  // rendering.
-  private isLinkableUrl = (url?: string) => {
-    if (!url) return false;
-    try {
-      // No base url, so relative urls throw and are treated as non-linkable —
-      // project urls are always absolute, so only absolute http(s) is linked.
-      const { protocol } = new URL(url);
-      return protocol === "http:" || protocol === "https:";
-    } catch {
-      return false;
-    }
   }
 
   // Render the logo as an <img> with alt text that matches the visible logo.

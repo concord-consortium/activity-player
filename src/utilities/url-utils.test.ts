@@ -12,6 +12,12 @@ describe("isHttpUrl", () => {
     expect(isHttpUrl("ftp://example.com/file")).toBe(false);
   });
 
+  it("accepts scheme-relative urls, which the browser loads using the page's own scheme", () => {
+    expect(isHttpUrl("//models-resources.concord.org/interactive/index.html")).toBe(true);
+    // the URL parser ignores leading whitespace, so a padded url loads the same way
+    expect(isHttpUrl(" //models-resources.concord.org/interactive/index.html")).toBe(true);
+  });
+
   it("rejects empty, missing, or relative values", () => {
     expect(isHttpUrl(undefined)).toBe(false);
     expect(isHttpUrl("")).toBe(false);
@@ -44,6 +50,11 @@ describe("isAllowedPluginScriptUrl", () => {
   it("accepts concord.org itself and any subdomain", () => {
     expect(isAllowedPluginScriptUrl("https://concord.org/plugin.js")).toBe(true);
     expect(isAllowedPluginScriptUrl("https://a.b.concord.org/plugin.js")).toBe(true);
+  });
+
+  it("handles scheme-relative urls, allowing only allowed hosts", () => {
+    expect(isAllowedPluginScriptUrl("//models-resources.concord.org/glossary-plugin/plugin.js")).toBe(true);
+    expect(isAllowedPluginScriptUrl("//evil.example.com/plugin.js")).toBe(false);
   });
 
   it("accepts locally served scripts on any port", () => {
