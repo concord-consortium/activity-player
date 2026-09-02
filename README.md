@@ -55,14 +55,15 @@ Branches are published at `https://activity-player.concord.org/branch/<name>/` a
 `https://activity-player.concord.org/version/<name>/`.
 
 Note that a branch's `<name>` is not always the branch name: the deploy action strips a leading
-story-id-shaped prefix, so `AP-134-no-phone-for-blank-iframe` publishes to
-`/branch/no-phone-for-blank-iframe/`. A branch whose first segment has no number keeps its full name.
-Check the deployment's URL rather than assuming.
+`<word>-<number>-` prefix. `AP-134-no-phone-for-blank-iframe` publishes to
+`/branch/no-phone-for-blank-iframe/`, while `readme-release-process` keeps its full name, because
+`readme` is not followed by a number. Check the deployment's URL rather than assuming.
 
 You can view the status of all the branch and tag deploys [here](https://github.com/concord-consortium/activity-player/actions).
 
-The production release is available at `https://activity-player.concord.org`. Deploying a tag does
-not change it; see [Releasing](#releasing) below.
+The production release is available at `https://activity-player.concord.org`, which serves
+`models-resources/activity-player/` — the paths above and the `s3://` paths below are the same files.
+Deploying a tag does not change production; see [Releasing](#releasing) below.
 
 See the CLUE [docs/deploy.md](https://github.com/concord-consortium/collaborative-learning/blob/master/docs/deploy.md) for more details (it uses the same process).
 
@@ -106,13 +107,21 @@ only bug fixes: `2.16.1` and `2.17.1` were patches, but the number is whatever J
    from [dev-templates](https://github.com/concord-consortium/dev-templates), rather than by hand:
 
    ```sh
-   # in a dev-templates checkout, with JIRA_USER and JIRA_TOKEN set
-   node scripts/release-notes-jira.mjs AP "<version>"
+   # from inside dev-templates/scripts, not the repo root
+   npm install                                  # once; the deps are declared here, not at the root
+   npm run release-notes-jira AP "<version>"    # e.g. "2.18.0" — the bare version, no "AP v" prefix
    ```
 
+   Run it from `scripts/`. `JIRA_USER` and `JIRA_TOKEN` are read from a `.env` in that folder, and
+   `dotenv` loads it relative to the working directory, so invoking the script by path from the repo
+   root fails with "Both the JIRA_USER and JIRA_TOKEN environment variables are required".
+
    Stories become *Features & Improvements*, bugs become *Bug Fixes*, and chores, tasks and anything
-   labeled `under-the-hood` become *Under the Hood*. It selects on the Jira fix version, so the
-   release's issues have to carry it; with none set the script reports "No stories found" and exits.
+   labeled `under-the-hood` become *Under the Hood*. It queries
+   `fixVersion in ("<version>") AND issuetype in (Story, Bug, Chore, Task) AND status in (Done, Closed)`,
+   so the release's issues have to carry the fix version, and the per-release *Release* tracking issue
+   is skipped by the issue-type filter rather than appearing in the notes. With no matching issues the
+   script reports "No stories found" and exits.
 
    Paste the output into a new GitHub release on the tag, titled
    `Version <version> - released <Month> <D>, <YYYY>`. Pass `slack` as a third argument for a
@@ -140,7 +149,7 @@ There is also a [Release Staging](.github/workflows/release-staging.yml) workflo
 `index-staging.html` for testing at https://activity-player.concord.org/index-staging.html. It has
 never been run and is not part of the process above.
 
-### Testing
+## Testing
 
 Run `npm test` to run jest tests. Run `npm run test:full` to run jest and Cypress tests.
 
