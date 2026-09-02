@@ -1,3 +1,7 @@
+// Longer than the 20s interactive state request that a page change waits on in app.tsx, so a
+// slow interactive delays the wait below rather than failing it.
+const kPageChangeTimeout = 25000;
+
 class ActivityPage {
   getActivity() {
     return cy.get("[data-cy=activity]");
@@ -55,11 +59,12 @@ class ActivityPage {
   // A page change is finished when the nav marks that page current. Gate every navigation on
   // this: nav-pages drops a click that arrives while a page change is still in progress, and
   // page content selectors match the outgoing page, so a test that clicks again too early goes
-  // on asserting against the page it never left.
-  // The wait outlasts the interactive state request the page change waits on, which times out
-  // after 20s, so a slow interactive delays this rather than failing it.
+  // on asserting against the page it never left. `index` is a button position, which is the
+  // page number only until an activity has more pages than the nav shows buttons for.
   verifyCurrentPage(index) {
-    return cy.get('[data-cy=nav-pages-button]', { timeout: 25000 }).eq(index)
+    // One query, so the timeout belongs to the assertion's retry: a .eq() in between takes its
+    // own, and the wait silently reverts to defaultCommandTimeout.
+    return cy.get(`[data-cy=nav-pages-button]:eq(${index})`, { timeout: kPageChangeTimeout })
       .should("have.attr", "aria-current", "page");
   }
   //Header
