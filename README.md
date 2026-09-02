@@ -47,37 +47,95 @@ Testing this is complicated. Here is one approach:
 
 ## Deployment
 
-Deployments are based on the contents of the /dist folder and are built automatically by GitHub Actions for each branch and tag pushed to GitHub.
+Deployment is handled by GitHub Actions using OIDC for AWS authentication. The `s3-deploy` job in
+[`ci.yml`](.github/workflows/ci.yml) runs on every push, branches and tags alike, and writes to
+`models-resources/activity-player/`. You do not need to build locally to deploy.
 
-Branches are deployed to `https://activity-player.concord.org/branch/<name>/`.
+Branches are published at `https://activity-player.concord.org/branch/<name>/` and tags at
+`https://activity-player.concord.org/version/<name>/`.
 
-Tags are deployed to `https://activity-player.concord.org/version/<name>/`
+Note that a branch's `<name>` is not always the branch name: the deploy action strips a leading
+story-id-shaped prefix, so `AP-134-no-phone-for-blank-iframe` publishes to
+`/branch/no-phone-for-blank-iframe/`. A branch whose first segment has no number keeps its full name.
+Check the deployment's URL rather than assuming.
 
 You can view the status of all the branch and tag deploys [here](https://github.com/concord-consortium/activity-player/actions).
 
-The production release is available at `https://activity-player.concord.org`.
-
-Production releases are done using a manual GitHub Actions workflow. You specify which tag you want to release to production and the workflow copies that tag's `index-top.html` to `https://activity-player.concord.org/index.html`.
+The production release is available at `https://activity-player.concord.org`. Deploying a tag does
+not change it; see [Releasing](#releasing) below.
 
 See the CLUE [docs/deploy.md](https://github.com/concord-consortium/collaborative-learning/blob/master/docs/deploy.md) for more details (it uses the same process).
 
-To deploy a production release:
+## Releasing
 
-1. Update the version number in `package.json` and `package-lock.json`
-    - `npm version --no-git-tag-version [patch|minor|major]`
-1. Update the `CHANGELOG.md` with a description of the new version
-1. Verify that everything builds correctly
-    - `npm run lint && npm run build && npm run test`
-1. Copy asset size markdown table from previous release and change sizes to match new sizes in `dist`
-    - `cd dist`
-    - `ls -lhS *.js | awk '{print "|", $9, "|", $5, "|"}'`
-    - `ls -lhS *.css | awk '{print "|", $9, "|", $5, "|"}'`
-1. Create `release-<version>` branch and commit changes, push to GitHub, create PR and merge
-1. Test the master build at: https://activity-player.concord.org/index-master.html
-1. Push a version tag to GitHub and/or use https://github.com/concord-consortium/activity-player/releases to create a new GitHub release
-1. Stage the release by running the [Release Staging Workflow](https://github.com/concord-consortium/activity-player/actions/workflows/release-staging.yml) and entering the version tag you just pushed.
-1. Test the staged release at https://activity-player.concord.org/index-staging.html
-1. Update production by running the [Release Workflow](https://github.com/concord-consortium/activity-player/actions/workflows/release.yml) and entering the release version tag.
+Four steps. The release notes live in the [GitHub releases](https://github.com/concord-consortium/activity-player/releases);
+`CHANGES-template.md` is an unused template and is not part of this process.
+
+The version number comes from the release's Jira fix version rather than from semver applied to what
+merged. Check the unreleased version in the AP project and use that, even when the release contains
+only bug fixes: `2.16.1` and `2.17.1` were patches, but the number is whatever Jira already says.
+
+1. Bump the version in `package.json` and `package-lock.json`, and commit to `master`:
+
+   ```sh
+   npm version <version> --no-git-tag-version
+   git commit package.json package-lock.json -m "build: Update version to v<version>"
+   git push origin master
+   ```
+
+   `master` is unprotected and the bump goes straight to it; there is no `release-<version>` branch
+   and no PR. The commit message is a bare subject with no body and no ticket id.
+
+   Optionally verify the build first with `npm run lint && npm run build && npm test`. CI runs all
+   three on the push anyway, so this only buys an earlier failure.
+
+2. Tag that commit, annotated, and push the tag:
+
+   ```sh
+   git tag -a v<version> -m "Version v<version>"
+   git push origin v<version>
+   ```
+
+   Create the tag locally rather than from the GitHub releases UI, which produces a lightweight tag.
+
+3. Generate the release notes with
+   [`release-notes-jira.mjs`](https://github.com/concord-consortium/dev-templates/blob/main/scripts/release-notes-jira.mjs)
+   from [dev-templates](https://github.com/concord-consortium/dev-templates), rather than by hand:
+
+   ```sh
+   # in a dev-templates checkout, with JIRA_USER and JIRA_TOKEN set
+   node scripts/release-notes-jira.mjs AP "<version>"
+   ```
+
+   Stories become *Features & Improvements*, bugs become *Bug Fixes*, and chores, tasks and anything
+   labeled `under-the-hood` become *Under the Hood*. It selects on the Jira fix version, so the
+   release's issues have to carry it; with none set the script reports "No stories found" and exits.
+
+   Paste the output into a new GitHub release on the tag, titled
+   `Version <version> - released <Month> <D>, <YYYY>`. Pass `slack` as a third argument for a
+   Slack-formatted version to share.
+
+4. Publish it. Pushing the tag in step 2 triggered a second CI run, because
+   [`ci.yml`](.github/workflows/ci.yml) is `on: push` and that matches tags, and that run deployed
+   the build to `.../activity-player/version/v<version>/`. **Nothing is live yet**: promoting that
+   build to the top-level `index.html` is a separate manual step.
+
+   From the CLI:
+
+   ```sh
+   gh workflow run release_production.yml -f version=v<version>
+   ```
+
+   Or from the web UI: **Actions** tab, **Release Production** workflow in the left sidebar,
+   **Run workflow**, enter the tag (e.g. `v2.17.1`) in the *version* field, **Run workflow**.
+
+   Either way it copies `s3://models-resources/activity-player/version/v<version>/index-top.html`
+   over `s3://models-resources/activity-player/index.html`, so the tag's CI run must have finished
+   first or there is nothing to copy.
+
+There is also a [Release Staging](.github/workflows/release-staging.yml) workflow, which writes
+`index-staging.html` for testing at https://activity-player.concord.org/index-staging.html. It has
+never been run and is not part of the process above.
 
 ### Testing
 
