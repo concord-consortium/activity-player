@@ -72,7 +72,10 @@ class ActivityPage {
   // page number only until an activity has more pages than the nav shows buttons for.
   verifyCurrentPage(index) {
     return this.getNavPageButton(index, { timeout: kPageChangeTimeout })
-      .should("have.attr", "aria-current", "page");
+      .should("have.attr", "aria-current", "page")
+      // aria-current comes from the currentPage prop and the disabled class from the state that
+      // drops clicks, so assert both: the second is what makes the next click land.
+      .and("not.have.class", "disabled");
   }
   //Header
   getHeaderActivityTitle() {
