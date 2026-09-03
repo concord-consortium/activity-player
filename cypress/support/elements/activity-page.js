@@ -4,6 +4,11 @@
 // delays the wait below rather than failing it.
 const kPageChangeTimeout = 30000;
 
+// Both the top and bottom nav render [data-cy=nav-pages-button], so a page button has to be picked
+// within one nav: :eq(index) across both walks into the bottom nav once index passes the top nav's
+// last button. Only the aria-label tells the two apart; data-cy=activity-nav-header is on both.
+const kTopNavPageButtons = 'nav[aria-label="Page navigation"] [data-cy=nav-pages-button]';
+
 class ActivityPage {
   getActivity() {
     return cy.get("[data-cy=activity]");
@@ -58,7 +63,7 @@ class ActivityPage {
   getNavPageButton(index, options) {
     // One query rather than .eq(index), so a timeout in options governs the caller's assertion:
     // a .eq() in between takes its own, and the wait silently reverts to defaultCommandTimeout.
-    return cy.get(`[data-cy=nav-pages-button]:eq(${index})`, options);
+    return cy.get(`${kTopNavPageButtons}:eq(${index})`, options);
   }
   // A page change is finished when the nav marks that page current. Gate every navigation on
   // this: nav-pages drops a click that arrives while a page change is still in progress, and
@@ -77,10 +82,10 @@ class ActivityPage {
     return cy.get('.account-owner-name');
   }
   getPageButton() {
-    return cy.get('[data-cy=nav-pages-button]').eq(0);
+    return this.getNavPageButton(0);
   }
   clickPageButton(index){
-    cy.get('[data-cy=nav-pages-button]').eq(index).click();
+    this.getNavPageButton(index).click();
   }
   clickHomePage() {
     return cy.get('[data-cy=home-button]').eq(0).click();
