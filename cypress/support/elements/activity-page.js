@@ -1,6 +1,8 @@
-// Longer than the 20s interactive state request that a page change waits on in app.tsx, so a
-// slow interactive delays the wait below rather than failing it.
-const kPageChangeTimeout = 25000;
+// Longer than the slowest path from click to page change: a page change waits up to 20s for each
+// interactive's state (kInteractiveStateRequestTimeout), then shows the error notification for
+// another 3s (PageChangeNotificationErrorTimeout) before navigating away. A slow interactive
+// delays the wait below rather than failing it.
+const kPageChangeTimeout = 30000;
 
 class ActivityPage {
   getActivity() {
