@@ -1,3 +1,14 @@
+// Longer than the slowest path from click to page change: a page change waits up to 20s for each
+// interactive's state (kInteractiveStateRequestTimeout), then shows the error notification for
+// another 3s (PageChangeNotificationErrorTimeout) before navigating away. A slow interactive
+// delays the wait below rather than failing it.
+const kPageChangeTimeout = 30000;
+
+// Both the top and bottom nav render [data-cy=nav-pages-button], so a page button has to be picked
+// within one nav: :eq(index) across both walks into the bottom nav once index passes the top nav's
+// last button. Only the aria-label tells the two apart; data-cy=activity-nav-header is on both.
+const kTopNavPageButtons = 'nav[aria-label="Page navigation"] [data-cy=nav-pages-button]';
+
 class ActivityPage {
   getActivity() {
     return cy.get("[data-cy=activity]");
@@ -49,8 +60,22 @@ class ActivityPage {
   getActivityNavHeader() {
     return cy.get("[data-cy=activity-nav-header]");
   }
-  getNavPageButton(index) {
-    return cy.get('[data-cy=nav-pages-button]').eq(index);
+  getNavPageButton(index, options) {
+    // One query rather than .eq(index), so a timeout in options governs the caller's assertion:
+    // a .eq() in between takes its own, and the wait silently reverts to defaultCommandTimeout.
+    return cy.get(`${kTopNavPageButtons}:eq(${index})`, options);
+  }
+  // A page change is finished when the nav marks that page current. Gate every navigation on
+  // this: nav-pages drops a click that arrives while a page change is still in progress, and
+  // page content selectors match the outgoing page, so a test that clicks again too early goes
+  // on asserting against the page it never left. `index` is a button position, which is the
+  // page number only until an activity has more pages than the nav shows buttons for.
+  verifyCurrentPage(index) {
+    return this.getNavPageButton(index, { timeout: kPageChangeTimeout })
+      .should("have.attr", "aria-current", "page")
+      // aria-current comes from the currentPage prop and the disabled class from the state that
+      // drops clicks, so assert both: the second is what makes the next click land.
+      .and("not.have.class", "disabled");
   }
   //Header
   getHeaderActivityTitle() {
@@ -60,10 +85,10 @@ class ActivityPage {
     return cy.get('.account-owner-name');
   }
   getPageButton() {
-    return cy.get('[data-cy=nav-pages-button]').eq(0);
+    return this.getNavPageButton(0);
   }
   clickPageButton(index){
-    cy.get('[data-cy=nav-pages-button]').eq(index).click();
+    this.getNavPageButton(index).click();
   }
   clickHomePage() {
     return cy.get('[data-cy=home-button]').eq(0).click();

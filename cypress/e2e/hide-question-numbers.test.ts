@@ -10,23 +10,24 @@ context("Activity hide question numbers checked", () => {
   describe("Hide question numbers checked in activity",() => {
     it("verify question numbers are hidden in activity",()=>{
       activityPage.clickPageItem(0);
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(0);
       activityPage.getInteractive().find(".has-question-number .header div").should("not.exist");
       activityPage.clickPageButton(1);
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(1);
       activityPage.getQuestionHeader().should("exist");
       activityPage.getQuestionHeader().should("not.contain", "Question #");
       activityPage.clickPageButton(2);
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(2);
       activityPage.getQuestionHeader().should("exist");
       activityPage.getQuestionHeader().should("not.contain", "Question #");
       activityPage.getHintIcon().should("exist");
       activityPage.clickPageButton(3);
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(3);
       activityPage.getRuntimeContainer()
         .should("exist") // Check the container exists
         .and("not.have.class", "has-question-number"); // Verify it doesn't have the question number class 
       activityPage.clickPageButton(4);
+      activityPage.verifyCurrentPage(4);
       activityPage.getRuntimeContainer()
         .should("exist")
         .and("have.class", "has-question-number"); // Check it has the question number class
@@ -48,15 +49,15 @@ context("Activity hide question numbers unchecked", () => {
   describe("Hide question numbers unchecked in activity",() => {
     it("verify question numbers are not hidden in activity",()=>{
       activityPage.clickPageItem(0);
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(0);
       activityPage.getQuestionHeader().should("exist");
       activityPage.getQuestionHeader().should("contain", "Question #");
       activityPage.clickPageButton(1);
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(1);
       activityPage.getQuestionHeader().should("exist");
       activityPage.getQuestionHeader().should("contain", "Question #");
       activityPage.clickPageButton(2);
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(2);
       activityPage.getQuestionHeader().should("exist");
       activityPage.getQuestionHeader().should("contain", "Question #");
       activityPage.getHintIcon().should("exist");
@@ -74,24 +75,22 @@ context("Sequence hide question numbers checked", () => {
   describe("Hide question numbers checked in sequence",() => {
     it("verify question numbers are hidden in sequence",()=>{
       activityPage.clickSequenceThumb(1);
-      cy.wait(1000);
       activityPage.getActivityTitle().should("contain", "Automation Activity For Hide Question Numbers Checked");
       activityPage.clickPageItem(0);
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(0);
       activityPage.getInteractive().find(".has-question-number .header div").should("not.exist");
       activityPage.clickPageButton(1);
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(1);
       activityPage.getQuestionHeader().should("exist");
       activityPage.getQuestionHeader().should("not.contain", "Question #");
       activityPage.getHeaderActivityTitle().click();
       activityPage.clickSequenceThumb(3);
-      cy.wait(1000);
       activityPage.getActivityTitle().should("contain", "Automation Activity For Hide Question Numbers Unchecked");
       activityPage.clickPageItem(0);
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(0);
       activityPage.getInteractive().find(".has-question-number .header div").should("not.exist");
       activityPage.clickPageButton(1);
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(1);
       activityPage.getQuestionHeader().should("exist");
       activityPage.getQuestionHeader().should("not.contain", "Question #");
     });
@@ -106,18 +105,16 @@ context("Sequence hide question numbers unchecked", () => {
   describe("Hide question numbers unchecked in sequence",() => {
     it("verify question numbers are not hidden in sequence",()=>{
       activityPage.clickSequenceThumb(1);
-      cy.wait(1000);
       activityPage.getActivityTitle().should("contain", "Automation Activity For Hide Question Numbers Checked");
       activityPage.clickPageItem(0);
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(0);
       activityPage.getQuestionHeader().should("exist");
       activityPage.getQuestionHeader().should("contain", "Question #");
       activityPage.getHeaderActivityTitle().click();
       activityPage.clickSequenceThumb(3);
-      cy.wait(1000);
       activityPage.getActivityTitle().should("contain", "Automation Activity For Hide Question Numbers Unchecked");
       activityPage.clickPageItem(0);
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(0);
       activityPage.getQuestionHeader().should("exist");
       activityPage.getQuestionHeader().should("contain", "Question #");
     });
@@ -132,15 +129,15 @@ context("Notebook layout hide question numbers checked", () => {
   describe("Notebook layout hide question numbers checked in activity",() => {
     it("verify question headers are displayed in activity for notebook layout",()=>{
       activityPage.getNavPageButton(0).click();
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(0);
       activityPage.getQuestionHeader().should("exist");
       activityPage.getQuestionHeader().should("not.contain", "Question #");
       activityPage.getNavPageButton(1).click();
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(1);
       activityPage.getQuestionHeader().should("exist");
       activityPage.getQuestionHeader().should("not.contain", "Question #");
       activityPage.getNavPageButton(2).click();
-      cy.wait(2000);
+      activityPage.verifyCurrentPage(2);
       activityPage.getQuestionHeader().should("exist");
       activityPage.getQuestionHeader().should("not.contain", "Question #");
       activityPage.clickCompletionPageButton();
