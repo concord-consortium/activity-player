@@ -34,7 +34,6 @@ const makeConfig = (type: "authenticated" | "anonymous" = "authenticated") => ({
         contextId: "ctx-1",
         resourceLinkId: "rl-1",
         runRemoteEndpoint: "http://example.com/runs/1",
-        rawPortalJWT: "raw-jwt",
         basePortalUrl: "https://learn.concord.org",
         learnerKey: "lk-1",
         offering: { id: 1, activityUrl: "", rubricUrl: "", locked: false },

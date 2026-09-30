@@ -1,5 +1,6 @@
 import { RawClassInfo } from "../portal-api";
 import { IAnonymousPortalData, IPortalData } from "../portal-types";
+import { initializePortalJWTManager, PortalJWTManager } from "../portal-jwt-manager";
 import { getAttachmentsManagerOptions } from "./get-attachments-manager-options";
 
 const mockBasePortalUrl = "https://learn.concord.org";
@@ -64,11 +65,19 @@ describe("getAttachmentsManagerOptions", () => {
         rawFirebaseJWT: mockRawFirebaseJWT
       },
       basePortalUrl: mockBasePortalUrl,
-      rawPortalJWT: mockRawPortalJWT,
       runRemoteEndpoint: mockRunRemoteEndpoint,
       rawClassInfo: {} as RawClassInfo,
       collaboratorsDataUrl: "https://example.com/collaborations/1234",
     };
+
+    let manager: PortalJWTManager;
+    beforeEach(() => {
+      const iat = Math.floor(Date.now() / 1000);
+      manager = initializePortalJWTManager({
+        rawPortalJWT: mockRawPortalJWT, portalJWT: { iat, exp: iat + 3600 } as any, mint: jest.fn()
+      });
+    });
+    afterEach(() => manager.dispose());
 
     it("returns correct options based on Portal data", async () => {
       expect(await getAttachmentsManagerOptions(kAuthenticatedPortalData)).toEqual({

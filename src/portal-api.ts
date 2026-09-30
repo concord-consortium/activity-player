@@ -426,7 +426,6 @@ export const fetchPortalData = async (rawPortalJWT: string, portalJWT: PortalJWT
                   ? getStudentLearnerKey(portalJWT, firebaseJWT)
                   : undefined,
     basePortalUrl,
-    rawPortalJWT,
     portalJWT,
     database: {
       appName: firebaseAppName(),
