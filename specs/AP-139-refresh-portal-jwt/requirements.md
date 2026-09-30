@@ -85,7 +85,7 @@ The Jira story's Cause section is the authoritative account and is not repeated 
 - **How each surface stringifies a rejection (verified by throwaway test).** `iframe-runtime.tsx`'s `getFirebaseJWT` listener reports `e.toString()`, and `createJob`'s catch-all reports `String(error)`. Both turn `new Error(msg)` into `"Error: msg"`, and both leave a string rejection unchanged. For R8's text to arrive exactly, each surface has to recognize the session-expired failure and report its bare message.
 - **Timeout shape (verified by throwaway test).** `superagent.timeout(ms)` fails with an `Error` whose `code` is `ECONNABORTED` and whose response is `undefined`, so `getErrorMessage` passes the `Error` itself through. It carries no portal message, so it is a transient failure under R7, not an expiry.
 - **No new exposure from renewal.** A holder of a valid portal JWT could already call `api/v1/jwt/portal` to extend it; AP now uses that existing capability. The token stays in memory only and is not written to storage or logs.
-- **Existing tests that seed `rawPortalJWT`** in portal data (`portal-utils.test.ts`, `plugin-context.spec.ts`, `get-attachments-manager-options.test.ts`, `firebase-job-executor.test.ts` fixtures) will need to follow R1.
+- **Existing tests that seed `rawPortalJWT`** in portal data (`portal-utils.test.ts`, `get-attachments-manager-options.test.ts`, `firebase-db.test.ts`, `firebase-job-executor.test.ts` fixtures) will need to follow R1.
 - **Firestore save path.** `signInWithToken` (`src/firebase-db.ts`) signs in once with the custom token, and the Firebase SDK refreshes the ID token hourly with its refresh token. It does not touch the portal JWT.
 
 ## Out of Scope

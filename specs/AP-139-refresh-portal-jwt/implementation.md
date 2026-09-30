@@ -60,7 +60,7 @@ export const isSessionExpiredError = (e: unknown): e is Error =>
 // The message ruby-jwt's JWT::ExpiredSignature carries, which the portal returns as the 400 body's message.
 const isPortalExpiredRejection = (e: unknown) => String(e).includes("Signature has expired");
 
-export const kStaleFraction = 0.8;
+const kStaleFraction = 0.8;
 const kRetryMs = 60 * 1000;
 const kIdentityClaims = ["uid", "user_type", "learner_id", "offering_id", "class_info_url"] as const;
 
@@ -101,8 +101,7 @@ export class PortalJWTManager {
     return this.raw;
   }
 
-  // Runs a portal request with the current token. The portal refusing that token as expired
-  // is authoritative, whatever the local measure says.
+  // The portal refusing the token as expired is authoritative, whatever the local measure says.
   async withToken<T>(request: (rawPortalJWT: string) => Promise<T>): Promise<T> {
     const raw = await this.getToken();
     try {
@@ -120,8 +119,7 @@ export class PortalJWTManager {
     window.clearTimeout(this.timer);
   }
 
-  // Lifetime is the token's own exp - iat, counted from receipt, so the device clock's
-  // absolute time never enters into it.
+  // Lifetime is exp - iat counted from receipt, so the device's absolute clock never matters.
   private hold(raw: string, decoded: PortalJWT) {
     this.raw = raw;
     this.decoded = decoded;
@@ -220,8 +218,9 @@ Test (`src/portal-api.test.ts`), with `jest.mock("superagent", () => ({ get: jes
 ```ts
 const { basePortalUrl, rawPortalJWT, portalJWT } = await fetchPortalJWT(bearerToken);
 if (portalJWT.user_type === "learner") {
+  // ...existing comment describing the learner branch, unchanged
   initializePortalJWTManager({ rawPortalJWT, portalJWT, mint: raw => refreshPortalJWT(basePortalUrl, raw) });
-  // ...existing comment and fetchPortalData(rawPortalJWT, portalJWT) unchanged
+  const portalData = await fetchPortalData(rawPortalJWT, portalJWT);
 ```
 
 The teacher branch and the anonymous branch create no manager (R10). `configureJobExecutor`'s `getFirebaseJWT` is unchanged; it already goes through `handleGetFirebaseJWT`.
@@ -247,6 +246,7 @@ export const handleGetFirebaseJWT = async (params: IHandleGetFirebaseJWTParams, 
 Tests. `portal-utils.test.ts` initializes a manager per test with a fixture raw token and `{ iat, exp: iat + 3600 }`, and its `getFirebaseJWT` mock switches on the raw token as it does today. Cases:
 
 - resolves with the manager's current token (the mock resolves only for that token);
+- resolves without `learnerKey` in portal data (the existing case, kept, with a copy of the fixture rather than a mutation);
 - a failing Firebase request rejects with its own message;
 - the mock rejecting `"Signature has expired"` rejects with `kSessionExpiredMessage`;
 - no portal data means the existing `Error retrieving Firebase JWT!` rejection.
@@ -289,7 +289,7 @@ Tests. Each one feeds `sessionExpiredError()` into the surface and asserts both 
 
 - `firebase-job-executor.test.ts`: reset `config` (the executor's `configure` ignores a second call), configure with `getFirebaseJWT` rejecting `sessionExpiredError()`, then assert `result.message` is `kSessionExpiredMessage` and `fetch` was not called. The existing "returns failure job on network error" case asserts only `status`, so it gains `expect(result.result?.message).toBe("Unexpected error: Error: Network failure")`. Without that, the ternary's other branch is untested.
 - `iframe-runtime.test.tsx`: next to the existing "handles errors from getFirebaseJWT()" case, `mockGetFirebaseJWT.mockImplementation(() => Promise.reject(sessionExpiredError()))`, then assert `lastPostData().message`.
-- `plugin-context.spec.ts`: a new `describe` that mocks `../../portal-api`'s `getFirebaseJWT` (spreading `jest.requireActual`) to reject `"Signature has expired"`, sets `portalDataMock` to `{ type: "authenticated", basePortalUrl }`, initializes a manager, and asserts `rejects.toBe(kSessionExpiredMessage)` and the `(basePortalUrl, raw, { firebase_app })` call. This goes through the real `withToken`, so it also covers the portal-refusal mapping end to end. The file's existing `#getFirebaseJwt` block stays commented out; it targets LARA's fetch-based API and is not this story's concern.
+- `plugin-context.spec.ts`: mocks `../../portal-api`'s `getFirebaseJWT` (spreading `jest.requireActual`), and adds `describe("#getFirebaseJwt from the portal")` inside `describe("Plugin runtime context helper")`, after the commented-out block, so it reuses the typed `pluginContext` fixture. It sets `portalDataMock` to `{ type: "authenticated", basePortalUrl }`, initializes a manager, has the mock `mockRejectedValue("Signature has expired")`, and asserts `rejects.toBe(kSessionExpiredMessage)` and the `(basePortalUrl, raw, { firebase_app })` call. This goes through the real `withToken`, so it also covers the portal-refusal mapping end to end. The file's existing `#getFirebaseJwt` block stays commented out; it targets LARA's fetch-based API and is not this story's concern.
 
 ---
 
@@ -406,8 +406,7 @@ useEffect(() => {
     };
 
     if (objectStorageUser.type === "authenticated") {
-      // Object storage signs in with this token when the interactive starts, which can be long
-      // after launch, so it gets a current one. Failing that, the launch token is still sent.
+      // Object storage signs in when the interactive starts, possibly long after launch, so it needs a current token.
       const launchJWT = objectStorageUser.jwt;
       (getObjectStorageJWT()?.get() ?? Promise.resolve(launchJWT))
         .catch(() => launchJWT)
@@ -527,7 +526,7 @@ The `errorType` checks on the learner and teacher launches are what make the res
 
 ## Self-Review
 
-Roles: Senior Engineer, commit reviewer, test runner, operator. The whole plan was built in a throwaway worktree, and each item below is a defect that build surfaced. All were fixed in place. The final build, all five steps included, type-checked with no errors in `src` (the 16 `node_modules` declaration errors are present on master too), passed `eslint src`, and passed the full Jest suite (104 suites, 608 passed, 9 skipped). Each new test was checked against a mutation of the line it guards, and each mutation failed it. The mutations: each surface's `isSessionExpiredError` branch; the manager's portal-refusal mapping and its refresh-when-expired path; the cache's staleness check and its expiry fallback; `iframe-runtime`'s token assignment and its `disposed` guard; creating the manager on the teacher path; dropping the object-storage seed; and switching the app to the `auth` screen when a caller's session expires.
+Roles: Senior Engineer, commit reviewer, test runner, operator. The whole plan was built in a throwaway worktree, and each item below is a defect that build surfaced. All were fixed in place. The final build, all five steps included, type-checked with no errors in `src` (the 16 `node_modules` declaration errors are present on master too), passed `eslint src`, and passed the full Jest suite (104 suites, 609 passed, 9 skipped). Each new test was checked against a mutation of the line it guards, and each mutation failed it. The mutations: each surface's `isSessionExpiredError` branch; the manager's portal-refusal mapping and its refresh-when-expired path; the cache's staleness check and its expiry fallback; `iframe-runtime`'s token assignment and its `disposed` guard; creating the manager on the teacher path; dropping the object-storage seed; and switching the app to the `auth` screen when a caller's session expires.
 
 ### Senior Engineer
 
