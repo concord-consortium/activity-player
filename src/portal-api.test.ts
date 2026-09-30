@@ -1,4 +1,26 @@
-import { firebaseAppName, clearFirebaseAppName } from "./portal-api";
+import jwt from "jsonwebtoken";
+import superagent from "superagent";
+import { firebaseAppName, clearFirebaseAppName, refreshPortalJWT } from "./portal-api";
+
+const mockRequest: Record<string, jest.Mock> = {
+  set: jest.fn(() => mockRequest),
+  timeout: jest.fn(() => mockRequest),
+  end: jest.fn()
+};
+jest.mock("superagent", () => ({ get: jest.fn(() => mockRequest) }));
+
+describe("refreshPortalJWT", () => {
+  it("re-mints with the current portal JWT, a Bearer/JWT header and a timeout", async () => {
+    const token = jwt.sign({ uid: 7 }, "secret");
+    mockRequest.end.mockImplementation((cb: any) => cb(null, { body: { token } }));
+    const [raw, decoded] = await refreshPortalJWT("https://portal", "abc");
+    expect(superagent.get).toHaveBeenCalledWith("https://portal/api/v1/jwt/portal");
+    expect(mockRequest.set).toHaveBeenCalledWith("Authorization", "Bearer/JWT abc");
+    expect(mockRequest.timeout).toHaveBeenCalledWith(10000);
+    expect(raw).toBe(token);
+    expect(decoded.uid).toBe(7);
+  });
+});
 
 describe("firebaseAppName", () => {
 
