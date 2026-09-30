@@ -18,6 +18,7 @@ import { FirebaseObjectStorageConfig, FirebaseObjectStorageUser } from "@concord
 import Shutterbug from "shutterbug";
 import { getConfiguration, watchAnswer } from "../../../firebase-db";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
+import { isSessionExpiredError } from "../../../portal-jwt-manager";
 import { IPortalData } from "../../../portal-types";
 import { IInteractiveInfo, refIdToAnswersQuestionId } from "../../../utilities/embeddable-utils";
 import { getReportUrl } from "../../../utilities/report-utils";
@@ -208,7 +209,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           errorMessage = "";
         }
         catch(e) {
-          errorMessage = e.toString();
+          errorMessage = isSessionExpiredError(e) ? e.message : e.toString();
         }
         if (errorMessage) {
           post("firebaseJWT", { requestId, response_type: "ERROR", message: errorMessage });

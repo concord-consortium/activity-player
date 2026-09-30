@@ -9,7 +9,7 @@ import $ from "jquery";
 import { Logger } from "../../lib/logger";
 import { getPortalData, setLearnerPluginState } from "../../firebase-db";
 import { getFirebaseJWT } from "../../portal-api";
-import { getPortalJWTManager } from "../../portal-jwt-manager";
+import { getPortalJWTManager, isSessionExpiredError } from "../../portal-jwt-manager";
 import { EmbeddableBase } from "../../types";
 
 export type IPluginContextOptions = IPluginRuntimeContextOptions | IPluginAuthoringContextOptions;
@@ -149,7 +149,7 @@ const getFirebaseJwtFromPortal = (appName: string): Promise<IJwtResponse> => {
           resolve({token, claims: firebaseJWT as unknown as IJwtClaims});
           // reject("test login");
         })
-        .catch(reject);
+        .catch(e => reject(isSessionExpiredError(e) ? e.message : e));
     } else {
       reject(`Unable to get Firebase JWT for ${appName}, not logged in.`);
     }

@@ -1,5 +1,7 @@
 import { firebaseJobExecutor, configure } from "./firebase-job-executor";
 import { IJobInfo } from "@concord-consortium/interactive-api-host";
+import { kSessionExpiredMessage } from "./components/error/error-messages";
+import { sessionExpiredError } from "./portal-jwt-manager";
 
 const mockUnsubscribe = jest.fn();
 const mockOnSnapshot = jest.fn((successCb, _errorCb) => {
@@ -144,6 +146,18 @@ describe("FirebaseJobExecutor", () => {
       (fetch as jest.Mock).mockRejectedValue(new Error("Network failure"));
       const result = await firebaseJobExecutor.createJob({ task: "success" });
       expect(result.status).toBe("failure");
+      expect(result.result?.message).toBe("Unexpected error: Error: Network failure");
+    });
+
+    it("reports the session-expired message without a prefix when the portal session is gone", async () => {
+      (firebaseJobExecutor as any).config = null;
+      const config = makeConfig();
+      config.getFirebaseJWT.mockRejectedValue(sessionExpiredError());
+      configure(config);
+      const result = await firebaseJobExecutor.createJob({ task: "success" });
+      expect(result.status).toBe("failure");
+      expect(result.result?.message).toBe(kSessionExpiredMessage);
+      expect(fetch).not.toHaveBeenCalled();
     });
   });
 

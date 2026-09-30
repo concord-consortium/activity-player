@@ -1,6 +1,8 @@
 import React from "react";
 import iframePhone from "iframe-phone";
 import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
+import { kSessionExpiredMessage } from "../../error/error-messages";
+import { sessionExpiredError } from "../../../portal-jwt-manager";
 import { act, configure, fireEvent, render } from "@testing-library/react";
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { DynamicTextTester } from "../../../test-utils/dynamic-text";
@@ -385,6 +387,14 @@ describe("IframeRuntime component", () => {
     await Promise.resolve("foo");
     expect(lastPost()).toBe("firebaseJWT");
     expect(lastPostData().response_type).toBe("ERROR");
+
+    mockGetFirebaseJWT.mockImplementation(() => Promise.reject(sessionExpiredError()));
+    act(() => {
+      dispatchMessageFromChild("getFirebaseJWT", {});
+    });
+    await Promise.resolve("foo");
+    expect(lastPost()).toBe("firebaseJWT");
+    expect(lastPostData().message).toBe(kSessionExpiredMessage);
 
     const mockSnapshotUrl = "https://concord.org/snapshot/url";
     mockSnapshot.mockImplementation((options: any) => {
