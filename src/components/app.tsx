@@ -23,7 +23,8 @@ import { WarningBanner } from "./warning-banner";
 import { DefunctBanner } from "./defunct-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { deleteQueryValue, queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
-import { fetchPortalData, fetchPortalJWT, firebaseAppName, getBasePortalUrl, refreshPortalJWT } from "../portal-api";
+import { fetchPortalData, fetchPortalJWT, firebaseAppName, getBasePortalUrl, refreshPortalJWT, getActivityPlayerFirebaseJWT } from "../portal-api";
+import { initializeObjectStorageJWT } from "../firebase-jwt-cache";
 import { initializePortalJWTManager } from "../portal-jwt-manager";
 import { IPortalData, IPortalDataUnion } from "../portal-types";
 import {
@@ -250,8 +251,13 @@ export class App extends React.PureComponent<IProps, IState> {
             // As of 08/2022, portalJWT doesn't provide user_type when JWT is obtained using token coming from OAuth.
             // It works for students because they use short-lived tokens instead. Portal saves learner info in the
             // student's AccessGrant right before generating AP URL with the token.
-            initializePortalJWTManager({ rawPortalJWT, portalJWT, mint: raw => refreshPortalJWT(basePortalUrl, raw) });
+            const portalJWTManager = initializePortalJWTManager({ rawPortalJWT, portalJWT, mint: raw => refreshPortalJWT(basePortalUrl, raw) });
             const portalData = await fetchPortalData(rawPortalJWT, portalJWT);
+            initializeObjectStorageJWT({
+              rawFirebaseJWT: portalData.database.rawFirebaseJWT,
+              mint: () => portalJWTManager.withToken(raw => getActivityPlayerFirebaseJWT(basePortalUrl, raw, portalData.contextId))
+                .then(([rawFirebaseJWT]) => rawFirebaseJWT)
+            });
             if (portalData.fullName) {
               newState.username = portalData.fullName;
             }

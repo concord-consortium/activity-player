@@ -16,7 +16,7 @@ export const isSessionExpiredError = (e: unknown): e is Error =>
 // The message ruby-jwt's JWT::ExpiredSignature carries, which the portal returns as the 400 body's message.
 const isPortalExpiredRejection = (e: unknown) => String(e).includes("Signature has expired");
 
-const kStaleFraction = 0.8;
+export const kStaleFraction = 0.8;
 const kRetryMs = 60 * 1000;
 const kIdentityClaims = ["uid", "user_type", "learner_id", "offering_id", "class_info_url"] as const;
 
