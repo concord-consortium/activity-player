@@ -310,7 +310,6 @@ describe("Firestore", () => {
           fullName: "Test Testerson",
           learnerKey: "bar",
           basePortalUrl: "http://example.com/",
-          rawPortalJWT: "",
           portalJWT: {
             alg: "1",
             iat: 2,
@@ -417,7 +416,6 @@ describe("AP run functions", () => {
     fullName: "Test Testerson",
     learnerKey: "bar",
     basePortalUrl: "http://example.com/",
-    rawPortalJWT: "",
     portalJWT: {
       alg: "1",
       iat: 2,

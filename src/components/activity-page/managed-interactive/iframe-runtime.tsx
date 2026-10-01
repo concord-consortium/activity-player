@@ -18,6 +18,8 @@ import { FirebaseObjectStorageConfig, FirebaseObjectStorageUser } from "@concord
 import Shutterbug from "shutterbug";
 import { getConfiguration, watchAnswer } from "../../../firebase-db";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
+import { isSessionExpiredError } from "../../../portal-jwt-manager";
+import { getObjectStorageJWT } from "../../../firebase-jwt-cache";
 import { IPortalData } from "../../../portal-types";
 import { IInteractiveInfo, refIdToAnswersQuestionId } from "../../../utilities/embeddable-utils";
 import { getReportUrl } from "../../../utilities/report-utils";
@@ -141,6 +143,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const mediaLibrary = useMediaLibrary();
 
   useEffect(() => {
+    let disposed = false;
     const initInteractive = () => {
       const phone = phoneRef.current;
       if (!phone) {
@@ -208,7 +211,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           errorMessage = "";
         }
         catch(e) {
-          errorMessage = e.toString();
+          errorMessage = isSessionExpiredError(e) ? e.message : e.toString();
         }
         if (errorMessage) {
           post("firebaseJWT", { requestId, response_type: "ERROR", message: errorMessage });
@@ -435,12 +438,26 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                   mediaLibrary
                 };
 
-      // to support legacy interactives first post the deprecated loadInteractive message as LARA does
-      // but only when there is initialInteractiveState (also as LARA does)
-      if (initialInteractiveState) {
-        phone.post("loadInteractive", initialInteractiveState);
+      const postInitInteractive = () => {
+        // to support legacy interactives first post the deprecated loadInteractive message as LARA does
+        // but only when there is initialInteractiveState (also as LARA does)
+        if (initialInteractiveState) {
+          phone.post("loadInteractive", initialInteractiveState);
+        }
+        phone.post("initInteractive", initInteractiveMsg);
+      };
+
+      if (objectStorageUser.type === "authenticated") {
+        // Object storage signs in when the interactive starts, possibly long after launch, so it needs a current token.
+        (getObjectStorageJWT()?.get() ?? Promise.resolve(objectStorageUser.jwt))
+          .then(jwt => {
+            if (disposed) return;
+            objectStorageUser.jwt = jwt;
+            postInitInteractive();
+          });
+      } else {
+        postInitInteractive();
       }
-      phone.post("initInteractive", initInteractiveMsg);
     };
 
     if (iframeRef.current) {
@@ -466,6 +483,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
     // Cleanup.
     return () => {
+      disposed = true;
       // Unregister all components that were proxied through this iframe handler so
       // we don't leave dangling registered components and so the current component is
       // silenced if it is being read when the iframe unloads

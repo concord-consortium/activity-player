@@ -1,5 +1,6 @@
 import React from "react";
-import { Error, errorMsg } from "./error";
+import { Error } from "./error";
+import { errorMsg } from "./error-messages";
 import { shallow } from "enzyme";
 
 describe("Error component", () => {

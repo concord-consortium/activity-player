@@ -1,18 +1,12 @@
 import React from "react";
 import { ErrorType } from "../app";
+import { errorMsg, kRelaunchInstruction } from "./error-messages";
 import "./error.scss";
 
 interface IProps {
   type: ErrorType;
   onExit?: () => void;
 }
-
-export const errorMsg: Record<ErrorType, string> = {
-  auth: "Your session is no longer valid.",
-  network: "Your network connection has been lost or interrupted.",
-  timeout: "Your session has expired."
-};
-
 
 export const Error: React.FC<IProps> = ({ type, onExit }) => {
   const isAuth = type === "auth";
@@ -21,7 +15,7 @@ export const Error: React.FC<IProps> = ({ type, onExit }) => {
       <h1>Hmm... we&apos;re having trouble connecting.</h1>
       <p className={isAuth ? "auth-message" : undefined}>{ errorMsg[type] }</p>
       {isAuth
-        ? <p className="auth-instruction">Please close this tab and relaunch the activity.</p>
+        ? <p className="auth-instruction">{kRelaunchInstruction}</p>
         : <>
             <p>Try:</p>
             <ul>

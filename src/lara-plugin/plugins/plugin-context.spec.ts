@@ -7,9 +7,17 @@ import { generateRuntimePluginContext,
 import fetch from "jest-fetch-mock";
 import $ from "jquery";
 import { EmbeddableBase } from "../../types";
+import { kSessionExpiredMessage } from "../../components/error/error-messages";
+import { initializePortalJWTManager } from "../../portal-jwt-manager";
 // LARA_CODE import * as fetch from "jest-fetch-mock";
 // LARA_CODE import * as $ from "jquery";
 (window as any).fetch = fetch;
+
+const mockGetFirebaseJWT = jest.fn();
+jest.mock("../../portal-api", () => ({
+  ...jest.requireActual("../../portal-api"),
+  getFirebaseJWT: (...args: any[]) => mockGetFirebaseJWT(...args)
+}));
 
 let portalDataMock: any = {};
 jest.mock("../../firebase-db", () => ({
@@ -144,6 +152,19 @@ describe("Plugin runtime context helper", () => {
     });
   });
   */
+
+  describe("#getFirebaseJwt from the portal", () => {
+    it("rejects with the session-expired message when the portal refuses the token as expired", async () => {
+      portalDataMock = { type: "authenticated", basePortalUrl: "https://portal/" };
+      const iat = Math.floor(Date.now() / 1000);
+      const manager = initializePortalJWTManager({ rawPortalJWT: "raw", portalJWT: { iat, exp: iat + 3600 } as any, mint: jest.fn() });
+      mockGetFirebaseJWT.mockRejectedValue("Signature has expired");
+      const runtimeContext = generateRuntimePluginContext(pluginContext);
+      await expect(runtimeContext.getFirebaseJwt("app")).rejects.toBe(kSessionExpiredMessage);
+      expect(mockGetFirebaseJWT).toHaveBeenCalledWith("https://portal/", "raw", { firebase_app: "app" });
+      manager.dispose();
+    });
+  });
 
   describe("#wrappedEmbeddable", () => {
     it("is null when context is not provided", () => {

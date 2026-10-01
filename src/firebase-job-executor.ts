@@ -1,6 +1,7 @@
 import { IJobExecutor, IJobInfo } from "@concord-consortium/interactive-api-host";
 import { IPortalData, IAnonymousPortalData } from "./portal-types";
 import { getFirestoreDb } from "./firebase-db";
+import { isSessionExpiredError } from "./portal-jwt-manager";
 
 const useEmulator =
   typeof window !== "undefined"
@@ -124,7 +125,8 @@ class FirebaseJobExecutor implements IJobExecutor {
 
       return job;
     } catch (error) {
-      return this.makeFailureJob(request, `Unexpected error: ${String(error)}`);
+      const message = isSessionExpiredError(error) ? error.message : `Unexpected error: ${String(error)}`;
+      return this.makeFailureJob(request, message);
     }
   }
 

@@ -128,13 +128,23 @@ const getStudentLearnerKey = (portalJWT: PortalJWT, firebaseJWT: PortalFirebaseJ
   return firebaseJWT?.returnUrl.split("/").pop();
 };
 
-const getPortalJWTWithBearerToken = (basePortalUrl: string, rawToken: string) => {
+interface IPortalJWTRequestOptions {
+  scheme?: "Bearer" | "Bearer/JWT";
+  timeoutMs?: number;
+}
+
+const getPortalJWTWithBearerToken = (basePortalUrl: string, rawToken: string,
+                                     { scheme = "Bearer", timeoutMs }: IPortalJWTRequestOptions = {}) => {
   return new Promise<[string, PortalJWT]>((resolve, reject) => {
     const basePortalUrlWithTrailingSlash = basePortalUrl.endsWith("/") ? basePortalUrl : `${basePortalUrl}/`;
     const url = `${basePortalUrlWithTrailingSlash}${PORTAL_JWT_URL_SUFFIX}`;
-    superagent
+    const request = superagent
       .get(url)
-      .set("Authorization", `Bearer ${rawToken}`)
+      .set("Authorization", `${scheme} ${rawToken}`);
+    if (timeoutMs) {
+      request.timeout(timeoutMs);
+    }
+    request
       .end((err, res) => {
         if (err) {
           reject(getErrorMessage(err, res));
@@ -196,20 +206,25 @@ export const clearFirebaseAppName = () => {
   _firebaseAppName = null;
 };
 
-const getActivityPlayerFirebaseJWT = (basePortalUrl: string, rawPortalJWT: string, classHash?: string) => {
+export const getActivityPlayerFirebaseJWT = (basePortalUrl: string, rawPortalJWT: string, classHash?: string,
+                                            timeoutMs?: number) => {
   const _classHash = classHash ? { class_hash: classHash } : undefined;
   const queryParams = { firebase_app: firebaseAppName(), ..._classHash };
-  return getFirebaseJWT(basePortalUrl, rawPortalJWT, queryParams);
+  return getFirebaseJWT(basePortalUrl, rawPortalJWT, queryParams, timeoutMs);
 };
 
 export const getFirebaseJWT = (basePortalUrl: string, rawPortalJWT: string,
-                                queryParams: Record<string, string>) => {
+                                queryParams: Record<string, string>, timeoutMs?: number) => {
   return new Promise<[string, PortalFirebaseJWT]>((resolve, reject) => {
     const url = `${basePortalUrl}${FIREBASE_JWT_URL_SUFFIX}`;
-    superagent
+    const request = superagent
       .get(url)
       .query(queryParams)
-      .set("Authorization", `Bearer/JWT ${rawPortalJWT}`)
+      .set("Authorization", `Bearer/JWT ${rawPortalJWT}`);
+    if (timeoutMs) {
+      request.timeout(timeoutMs);
+    }
+    request
       .end((err, res) => {
         if (err) {
           reject(getErrorMessage(err, res));
@@ -350,8 +365,18 @@ export const fetchPortalJWT = async (bearerToken: string) => {
   }
 
   const [rawPortalJWT, portalJWT] = await getPortalJWTWithBearerToken(basePortalUrl, bearerToken);
-  return { rawPortalJWT, portalJWT };
+  return { basePortalUrl, rawPortalJWT, portalJWT };
 };
+
+// Renewals that a caller waits on are bounded, since superagent sets no timeout of its own.
+const kRenewalTimeoutMs = 10 * 1000;
+
+export const refreshPortalJWT = (basePortalUrl: string, rawPortalJWT: string) =>
+  getPortalJWTWithBearerToken(basePortalUrl, rawPortalJWT,
+    { scheme: "Bearer/JWT", timeoutMs: kRenewalTimeoutMs });
+
+export const refreshActivityPlayerFirebaseJWT = (basePortalUrl: string, rawPortalJWT: string, classHash?: string) =>
+  getActivityPlayerFirebaseJWT(basePortalUrl, rawPortalJWT, classHash, kRenewalTimeoutMs);
 
 export const fetchPortalData = async (rawPortalJWT: string, portalJWT: PortalJWT): Promise<IPortalData> => {
   if (portalJWT.user_type !== "learner") {
@@ -410,7 +435,6 @@ export const fetchPortalData = async (rawPortalJWT: string, portalJWT: PortalJWT
                   ? getStudentLearnerKey(portalJWT, firebaseJWT)
                   : undefined,
     basePortalUrl,
-    rawPortalJWT,
     portalJWT,
     database: {
       appName: firebaseAppName(),

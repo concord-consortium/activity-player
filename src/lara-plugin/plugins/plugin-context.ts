@@ -9,6 +9,7 @@ import $ from "jquery";
 import { Logger } from "../../lib/logger";
 import { getPortalData, setLearnerPluginState } from "../../firebase-db";
 import { getFirebaseJWT } from "../../portal-api";
+import { getPortalJWTManager, isSessionExpiredError } from "../../portal-jwt-manager";
 import { EmbeddableBase } from "../../types";
 
 export type IPluginContextOptions = IPluginRuntimeContextOptions | IPluginAuthoringContextOptions;
@@ -140,13 +141,15 @@ export const saveAuthoredPluginState = (authoringSaveStateUrl: string, authorDat
 const getFirebaseJwtFromPortal = (appName: string): Promise<IJwtResponse> => {
   return new Promise<IJwtResponse>((resolve, reject) => {
     const portalData = getPortalData();
-    if (portalData && (portalData.type === "authenticated") && portalData.basePortalUrl && portalData.rawPortalJWT) {
-      return getFirebaseJWT(portalData.basePortalUrl, portalData.rawPortalJWT, {firebase_app: appName})
+    const portalJWTManager = getPortalJWTManager();
+    if (portalData && (portalData.type === "authenticated") && portalData.basePortalUrl && portalJWTManager) {
+      const { basePortalUrl } = portalData;
+      return portalJWTManager.withToken(rawPortalJWT => getFirebaseJWT(basePortalUrl, rawPortalJWT, {firebase_app: appName}))
         .then(([token, firebaseJWT]) => {
           resolve({token, claims: firebaseJWT as unknown as IJwtClaims});
           // reject("test login");
         })
-        .catch(reject);
+        .catch(e => reject(isSessionExpiredError(e) ? e.message : e));
     } else {
       reject(`Unable to get Firebase JWT for ${appName}, not logged in.`);
     }

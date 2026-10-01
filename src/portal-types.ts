@@ -48,7 +48,6 @@ export interface IPortalData extends ILTIPartial {
   fullName?: string;
   learnerKey?: string;
   basePortalUrl?: string;
-  rawPortalJWT?: string;
   portalJWT?: PortalJWT;
   runRemoteEndpoint: string;
   rawClassInfo: RawClassInfo;

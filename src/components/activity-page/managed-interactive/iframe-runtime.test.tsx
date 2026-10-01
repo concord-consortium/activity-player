@@ -1,6 +1,10 @@
 import React from "react";
+import jwt from "jsonwebtoken";
 import iframePhone from "iframe-phone";
 import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
+import { kSessionExpiredMessage } from "../../error/error-messages";
+import { sessionExpiredError } from "../../../portal-jwt-manager";
+import { initializeObjectStorageJWT } from "../../../firebase-jwt-cache";
 import { act, configure, fireEvent, render } from "@testing-library/react";
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { DynamicTextTester } from "../../../test-utils/dynamic-text";
@@ -386,6 +390,14 @@ describe("IframeRuntime component", () => {
     expect(lastPost()).toBe("firebaseJWT");
     expect(lastPostData().response_type).toBe("ERROR");
 
+    mockGetFirebaseJWT.mockImplementation(() => Promise.reject(sessionExpiredError()));
+    act(() => {
+      dispatchMessageFromChild("getFirebaseJWT", {});
+    });
+    await Promise.resolve("foo");
+    expect(lastPost()).toBe("firebaseJWT");
+    expect(lastPostData().message).toBe(kSessionExpiredMessage);
+
     const mockSnapshotUrl = "https://concord.org/snapshot/url";
     mockSnapshot.mockImplementation((options: any) => {
       options.done(mockSnapshotUrl);
@@ -591,3 +603,92 @@ describe("IframeRuntime component", () => {
     });
   });
 });
+
+describe("IframeRuntime object storage token", () => {
+  const authenticatedPortalData: any = {
+    type: "authenticated",
+    contextId: "class-hash",
+    platformId: "https://portal",
+    platformUserId: "7",
+    resourceLinkId: "3",
+    offering: { id: 3, activityUrl: "", rubricUrl: "", locked: false },
+    runRemoteEndpoint: "https://portal/learners/5",
+    database: { appName: "report-service-dev", sourceKey: "source", rawFirebaseJWT: "launch-jwt" }
+  };
+  const renderRuntime = () => render(
+    <MediaLibraryTester>
+      <DynamicTextTester>
+        <IframeRuntime
+          url={"https://concord.org/"}
+          id={"123-Interactive"}
+          authoredState={null}
+          initialInteractiveState={null}
+          legacyLinkedInteractiveState={null}
+          setInteractiveState={jest.fn()}
+          setAspectRatio={jest.fn()}
+          setHeightFromInteractive={jest.fn()}
+          setSupportedFeatures={jest.fn()}
+          setNewHint={jest.fn()}
+          getFirebaseJWT={jest.fn()}
+          getAttachmentUrl={jest.fn()}
+          showModal={jest.fn()}
+          closeModal={jest.fn()}
+          setSendCustomMessage={jest.fn()}
+          log={jest.fn()}
+          iframeTitle="Interactive content"
+          portalData={authenticatedPortalData}
+        />
+      </DynamicTextTester>
+    </MediaLibraryTester>
+  );
+  const flush = async () => { for (let i = 0; i < 5; i++) await Promise.resolve(); };
+
+  beforeEach(() => {
+    jest.useFakeTimers();
+    mockPost.mockClear();
+  });
+  afterEach(() => jest.useRealTimers());
+
+  const launchJWT = jwt.sign({ iat: 1_000_000, exp: 1_000_000 + 3600 }, "secret");
+
+  it("sends the current object storage token, not the launch token", async () => {
+    const mint = jest.fn().mockResolvedValue("fresh-jwt");
+    let clock = 0;
+    initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint, now: () => clock });
+    // past 80% of the launch token's hour, so it is stale on first use
+    clock = 48 * 60 * 1000;
+    renderRuntime();
+    jest.runAllTimers();
+    await act(flush);
+    expect(mint).toHaveBeenCalledTimes(1);
+    expect(lastPost()).toBe("initInteractive");
+    expect(lastPostData().objectStorageConfig.user.jwt).toBe("fresh-jwt");
+  });
+
+  it("starts with the held token when no current one can be had", async () => {
+    const mint = jest.fn().mockRejectedValue("Timeout of 10000ms exceeded");
+    let clock = 0;
+    initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint, now: () => clock });
+    clock = 2 * 60 * 60 * 1000;
+    renderRuntime();
+    jest.runAllTimers();
+    await act(flush);
+    expect(mint).toHaveBeenCalledTimes(1);
+    expect(lastPost()).toBe("initInteractive");
+    expect(lastPostData().objectStorageConfig.user.jwt).toBe(launchJWT);
+  });
+
+  it("does not post initInteractive after unmounting while the token is pending", async () => {
+    let resolve!: (jwt: string) => void;
+    let clock = 0;
+    initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint: () => new Promise(r => { resolve = r; }), now: () => clock });
+    clock = 48 * 60 * 1000;
+    const view = renderRuntime();
+    jest.runAllTimers();
+    view.unmount();
+    resolve("fresh-jwt");
+    await act(flush);
+    expect(mockPost.mock.calls.map(c => c[0])).not.toContain("initInteractive");
+  });
+});
+
