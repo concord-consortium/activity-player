@@ -80,6 +80,23 @@ describe("PortalJWTManager", () => {
     await expect(m.getToken()).rejects.toMatchObject({ message: kSessionExpiredMessage });
   });
 
+  it("retries with the current token when an older token is refused after a refresh", async () => {
+    m = make(jest.fn().mockResolvedValue(tok(1)));
+    let rejectFirst!: (e: unknown) => void;
+    const request = jest.fn((raw: string) => raw === "raw0"
+      ? new Promise<string>((_resolve, reject) => { rejectFirst = reject; })
+      : Promise.resolve(`ok with ${raw}`));
+    clock += 47 * 60 * 1000;
+    const pending = m.withToken(request);
+    await flush();
+    clock += 3 * 60 * 1000;
+    await expect(m.getToken()).resolves.toBe("raw1");
+    rejectFirst("Signature has expired");
+    await expect(pending).resolves.toBe("ok with raw1");
+    expect(request.mock.calls.map(c => c[0])).toEqual(["raw0", "raw1"]);
+    await expect(m.getToken()).resolves.toBe("raw1");
+  });
+
   it("retries a failed timer refresh after a minute", async () => {
     const mint = jest.fn().mockRejectedValueOnce(new Error("net")).mockResolvedValue(tok(1));
     m = make(mint);

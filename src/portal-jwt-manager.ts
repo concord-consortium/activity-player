@@ -57,13 +57,15 @@ export class PortalJWTManager {
     return this.raw;
   }
 
-  // The portal refusing the token as expired is authoritative, whatever the local measure says.
+  // The portal refusing the held token as expired is authoritative, whatever the local measure says.
   async withToken<T>(request: (rawPortalJWT: string) => Promise<T>): Promise<T> {
     const raw = await this.getToken();
     try {
       return await request(raw);
     } catch (e) {
       if (isPortalExpiredRejection(e)) {
+        // A refresh can replace the token while this request is in flight.
+        if (raw !== this.raw) return this.withToken(request);
         this.expiredByPortal = true;
         throw sessionExpiredError();
       }
