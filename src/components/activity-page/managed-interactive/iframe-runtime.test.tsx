@@ -1,4 +1,5 @@
 import React from "react";
+import jwt from "jsonwebtoken";
 import iframePhone from "iframe-phone";
 import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import { kSessionExpiredMessage } from "../../error/error-messages";
@@ -648,24 +649,40 @@ describe("IframeRuntime object storage token", () => {
   });
   afterEach(() => jest.useRealTimers());
 
+  const launchJWT = jwt.sign({ iat: 1_000_000, exp: 1_000_000 + 3600 }, "secret");
+
   it("sends the current object storage token, not the launch token", async () => {
     const mint = jest.fn().mockResolvedValue("fresh-jwt");
-    // a clock past the stale point makes the held launch token stale on first use
     let clock = 0;
-    initializeObjectStorageJWT({ rawFirebaseJWT: "launch-jwt", mint, now: () => clock });
-    clock = Number.MAX_SAFE_INTEGER;
+    initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint, now: () => clock });
+    // past 80% of the launch token's hour, so it is stale on first use
+    clock = 48 * 60 * 1000;
     renderRuntime();
     jest.runAllTimers();
     await act(flush);
+    expect(mint).toHaveBeenCalledTimes(1);
     expect(lastPost()).toBe("initInteractive");
     expect(lastPostData().objectStorageConfig.user.jwt).toBe("fresh-jwt");
+  });
+
+  it("starts with the held token when no current one can be had", async () => {
+    const mint = jest.fn().mockRejectedValue("Timeout of 10000ms exceeded");
+    let clock = 0;
+    initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint, now: () => clock });
+    clock = 2 * 60 * 60 * 1000;
+    renderRuntime();
+    jest.runAllTimers();
+    await act(flush);
+    expect(mint).toHaveBeenCalledTimes(1);
+    expect(lastPost()).toBe("initInteractive");
+    expect(lastPostData().objectStorageConfig.user.jwt).toBe(launchJWT);
   });
 
   it("does not post initInteractive after unmounting while the token is pending", async () => {
     let resolve!: (jwt: string) => void;
     let clock = 0;
-    initializeObjectStorageJWT({ rawFirebaseJWT: "launch-jwt", mint: () => new Promise(r => { resolve = r; }), now: () => clock });
-    clock = Number.MAX_SAFE_INTEGER;
+    initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint: () => new Promise(r => { resolve = r; }), now: () => clock });
+    clock = 48 * 60 * 1000;
     const view = renderRuntime();
     jest.runAllTimers();
     view.unmount();

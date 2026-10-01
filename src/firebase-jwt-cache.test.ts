@@ -28,12 +28,15 @@ describe("FirebaseJWTCache", () => {
     expect(mint).toHaveBeenCalledTimes(1);
   });
 
-  it("keeps the held token when a mint fails before expiry, and rejects after it", async () => {
-    const mint = jest.fn().mockRejectedValue(new Error("net"));
+  it("answers with the newest held token when a mint fails, before and after expiry", async () => {
+    const mint = jest.fn().mockResolvedValueOnce(token("fresh")).mockRejectedValue(new Error("net"));
     const cache = new FirebaseJWTCache({ rawFirebaseJWT: token("launch"), mint, now });
+    clock += 48 * 60 * 1000;
+    await expect(cache.get()).resolves.toBe(token("fresh"));
     clock += 50 * 60 * 1000;
-    await expect(cache.get()).resolves.toBe(token("launch"));
+    await expect(cache.get()).resolves.toBe(token("fresh"));
     clock += 11 * 60 * 1000;
-    await expect(cache.get()).rejects.toThrow("net");
+    await expect(cache.get()).resolves.toBe(token("fresh"));
+    expect(mint).toHaveBeenCalledTimes(3);
   });
 });

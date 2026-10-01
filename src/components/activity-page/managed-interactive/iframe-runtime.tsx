@@ -449,9 +449,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
 
       if (objectStorageUser.type === "authenticated") {
         // Object storage signs in when the interactive starts, possibly long after launch, so it needs a current token.
-        const launchJWT = objectStorageUser.jwt;
-        (getObjectStorageJWT()?.get() ?? Promise.resolve(launchJWT))
-          .catch(() => launchJWT)
+        (getObjectStorageJWT()?.get() ?? Promise.resolve(objectStorageUser.jwt))
           .then(jwt => {
             if (disposed) return;
             objectStorageUser.jwt = jwt;

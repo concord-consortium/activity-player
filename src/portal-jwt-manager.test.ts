@@ -45,9 +45,11 @@ describe("PortalJWTManager", () => {
   });
 
   it("keeps the current token when a refresh fails before expiry", async () => {
-    m = make(jest.fn().mockRejectedValue(new Error("Timeout of 10000ms exceeded")));
+    const mint = jest.fn().mockRejectedValue(new Error("Timeout of 10000ms exceeded"));
+    m = make(mint);
     clock += 50 * 60 * 1000;
     await expect(m.getToken()).resolves.toBe("raw0");
+    expect(mint).toHaveBeenCalledWith("raw0");
   });
 
   it("refreshes on demand when the token is locally expired and the portal still accepts it", async () => {
@@ -66,8 +68,8 @@ describe("PortalJWTManager", () => {
     expect(e.message).toBe(kSessionExpiredMessage);
   });
 
-  it("rejects a refreshed token whose identity claims differ", async () => {
-    m = make(jest.fn().mockResolvedValue(tok(1, 2_000_000, { learner_id: 99 })));
+  it.each(["uid", "user_type", "learner_id", "offering_id", "class_info_url"])("rejects a refreshed token whose %s differs", async claim => {
+    m = make(jest.fn().mockResolvedValue(tok(1, 2_000_000, { [claim]: "changed" })));
     clock += 50 * 60 * 1000;
     await expect(m.getToken()).resolves.toBe("raw0");
     clock += 11 * 60 * 1000;
@@ -106,5 +108,32 @@ describe("PortalJWTManager", () => {
     await flush();
     expect(mint).toHaveBeenCalledTimes(2);
     await expect(m.getToken()).resolves.toBe("raw1");
+  });
+
+  it("schedules the next timer refresh after a successful one", async () => {
+    const mint = jest.fn().mockResolvedValueOnce(tok(1)).mockResolvedValue(tok(2));
+    m = make(mint);
+    clock += 48 * 60 * 1000; jest.advanceTimersByTime(48 * 60 * 1000);
+    await flush();
+    clock += 48 * 60 * 1000; jest.advanceTimersByTime(48 * 60 * 1000);
+    await flush();
+    expect(mint.mock.calls.map(c => c[0])).toEqual(["raw0", "raw1"]);
+  });
+
+  it("stops the timer once the portal refuses the token", async () => {
+    const mint = jest.fn().mockRejectedValue("Signature has expired");
+    m = make(mint);
+    clock += 48 * 60 * 1000; jest.advanceTimersByTime(48 * 60 * 1000);
+    await flush();
+    expect(mint).toHaveBeenCalledTimes(1);
+    expect(jest.getTimerCount()).toBe(0);
+  });
+
+  it("stops the timer on dispose", () => {
+    const mint = jest.fn();
+    m = make(mint);
+    m.dispose();
+    jest.advanceTimersByTime(2 * H * 1000);
+    expect(mint).not.toHaveBeenCalled();
   });
 });

@@ -9,7 +9,8 @@ interface IFirebaseJWTCacheOptions {
 
 // Holds a Firebase JWT and re-mints it when a caller asks after it has gone stale, sharing one
 // mint between concurrent callers. As in PortalJWTManager, lifetime is the token's own
-// exp - iat counted from receipt.
+// exp - iat counted from receipt. A failed mint answers with the held token, the newest there is,
+// even once it has expired: its consumer has no way to report the failure.
 export class FirebaseJWTCache {
   private raw: string;
   private receivedAt: number;
@@ -31,18 +32,14 @@ export class FirebaseJWTCache {
         .then(raw => { this.hold(raw); return raw; })
         .finally(() => { this.inflight = null; });
     }
-    try {
-      return await this.inflight;
-    } catch (e) {
-      if (this.elapsed() < this.lifetimeMs) return this.raw;
-      throw e;
-    }
+    return this.inflight.catch(() => this.raw);
   }
 
   private hold(raw: string) {
     const decoded = jwt.decode(raw) as { iat?: number; exp?: number } | null;
     this.raw = raw;
     this.receivedAt = this.now();
+    // A token without iat and exp is treated as already stale, so every get() re-mints.
     this.lifetimeMs = decoded?.iat && decoded?.exp ? (decoded.exp - decoded.iat) * 1000 : 0;
   }
 

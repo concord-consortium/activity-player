@@ -30,7 +30,7 @@ A student who keeps an activity open for more than an hour can no longer submit 
 
 **Object storage**
 
-- R12. An interactive that starts after its launch-time report-service Firebase JWT has gone stale gets a current one in `objectStorageConfig.user.jwt`. One re-mint, made through the portal JWT owner (R1), serves every interactive that starts while it is fresh. If no current token can be had, the interactive still starts, with the launch token. An interactive that unmounts while its token is pending is never sent `initInteractive`.
+- R12. An interactive that starts after its launch-time report-service Firebase JWT has gone stale gets a current one in `objectStorageConfig.user.jwt`. One re-mint, made through the portal JWT owner (R1), serves every interactive that starts while it is fresh. Every interactive starts, including those that do not use object storage, so the wait is bounded: the re-mint's Firebase JWT request has the same timeout as the refresh in R3. If no current token can be had, the interactive starts with the newest token held, even an expired one, and gets no relaunch message (see the decision below). An interactive that unmounts while its token is pending is never sent `initInteractive`.
 
 **Scope guards**
 
@@ -50,8 +50,8 @@ A student who keeps an activity open for more than an hour can no longer submit 
   - skew independence, with a device clock offset from `iat`;
   - on-demand refresh of a locally expired token that the portal still accepts;
   - the readable message at each of the three surfaces in R8, which must no longer contain `Signature has expired`;
-  - at the app level: a learner launch creates the token owner and the object-storage token; teacher and anonymous runs create neither (R10); and an expired session reported to a caller leaves `errorType` unset (R9);
-  - R12: a stale object-storage token is re-minted once for concurrent callers and then reused; the interactive receives the new token; a failed re-mint falls back to the held token before expiry; no `initInteractive` is sent after unmount.
+  - at the app level: a learner launch creates the token owner and the object-storage token, whose re-mint goes through the owner with the class hash; a failed learner setup stops the owner's timer; teacher and anonymous runs create neither (R10); and an expired session reported to a caller leaves `errorType` unset (R9);
+  - R12: a stale object-storage token is re-minted once for concurrent callers and then reused; the interactive receives the new token; the re-mint request has a timeout; a failed re-mint falls back to the newest held token, before and after expiry; no `initInteractive` is sent after unmount.
 
 ## Technical Notes
 
@@ -132,7 +132,17 @@ A student who keeps an activity open for more than an hour can no longer submit 
 - A) Require a bounded refresh timeout that falls through to R7.
 - B) Leave the request unbounded.
 
-**Decision**: A. The refresh has a 10-second timeout (rather than 30): after a timeout callers get the still-valid current token, so a short bound costs nothing and "I'm Done!" never waits more than 10 seconds on it.
+**Decision**: A. The refresh has a 10-second timeout (rather than 30): after a timeout callers get the still-valid current token, so a short bound costs nothing and "I'm Done!" never waits more than 10 seconds on it. The object-storage re-mint (R12) shares the bound, since every interactive's `initInteractive` waits on it and a stalled request held by the shared cache would block every later interactive too.
+
+---
+
+### No relaunch message when object storage cannot get a current token
+**Context**: R8's surfaces are all answers to a request AP serves. Object storage signs in from inside the interactive with the token in `initInteractive`, and that message has no field for an error, so AP has nowhere to put the message without a new UI surface.
+**Options considered**:
+- A) Start the interactive with the newest held token and show nothing.
+- B) Add a new AP-level banner for this case.
+
+**Decision**: A (Doug, 2026-10-01, from PR review). The newest held token, not the launch token, so a renewal that succeeded earlier is not thrown away. If the session has truly expired, the student sees the relaunch message at the next R8 surface they reach, such as "I'm Done!".
 
 ---
 

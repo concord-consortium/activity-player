@@ -77,7 +77,7 @@ export class PortalJWTManager {
     window.clearTimeout(this.timer);
   }
 
-  // Lifetime is exp - iat counted from receipt, so the device's absolute clock never matters.
+  // Lifetime is exp - iat counted from receipt, so a device clock that is wrong at receipt does not matter.
   private hold(raw: string, decoded: PortalJWT) {
     this.raw = raw;
     this.decoded = decoded;

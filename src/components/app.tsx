@@ -23,9 +23,9 @@ import { WarningBanner } from "./warning-banner";
 import { DefunctBanner } from "./defunct-banner";
 import { CompletionPageContent } from "./activity-completion/completion-page-content";
 import { deleteQueryValue, queryValue, queryValueBoolean, setQueryValue } from "../utilities/url-query";
-import { fetchPortalData, fetchPortalJWT, firebaseAppName, getBasePortalUrl, refreshPortalJWT, getActivityPlayerFirebaseJWT } from "../portal-api";
+import { fetchPortalData, fetchPortalJWT, firebaseAppName, getBasePortalUrl, refreshPortalJWT, refreshActivityPlayerFirebaseJWT } from "../portal-api";
 import { initializeObjectStorageJWT } from "../firebase-jwt-cache";
-import { initializePortalJWTManager } from "../portal-jwt-manager";
+import { getPortalJWTManager, initializePortalJWTManager } from "../portal-jwt-manager";
 import { IPortalData, IPortalDataUnion } from "../portal-types";
 import {
   signInWithToken, initializeDB, setPortalData, initializeAnonymousDB,
@@ -255,7 +255,7 @@ export class App extends React.PureComponent<IProps, IState> {
             const portalData = await fetchPortalData(rawPortalJWT, portalJWT);
             initializeObjectStorageJWT({
               rawFirebaseJWT: portalData.database.rawFirebaseJWT,
-              mint: () => portalJWTManager.withToken(raw => getActivityPlayerFirebaseJWT(basePortalUrl, raw, portalData.contextId))
+              mint: () => portalJWTManager.withToken(raw => refreshActivityPlayerFirebaseJWT(basePortalUrl, raw, portalData.contextId))
                 .then(([rawFirebaseJWT]) => rawFirebaseJWT)
             });
             if (portalData.fullName) {
@@ -291,6 +291,7 @@ export class App extends React.PureComponent<IProps, IState> {
             await initializeAnonymousDB(preview);
           }
         } catch (err) {
+          getPortalJWTManager()?.dispose();
           this.setError("auth", err);
           return;
         }
