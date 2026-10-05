@@ -22,8 +22,7 @@ The tracker never looks the embeddables up in the DOM. Each `Embeddable` registe
 
 ```ts
 // src/utilities/embeddable-visibility.ts
-// Pure helpers for embeddable-visibility logging, kept free of React and the DOM so the math and
-// the params assembly are unit-tested without mounting a page. Modeled on CLUE's tile-visibility.ts.
+// Pure visibility math and log params, free of React and the DOM; modeled on CLUE's tile-visibility.ts.
 
 export type VisibilityCause =
   "scroll" | "windowResize" | "pageChange" | "tabChange" | "columnToggle" | "embeddableResize"
@@ -161,8 +160,7 @@ export class EmbeddableVisibilityTracker implements IEmbeddableVisibilityTracker
   private resizeObserver?: ResizeObserver;
   private pendingCause?: VisibilityCause;
   private timer?: number;
-  // The last snapshot logged, so a resize that changes nothing is skipped and a hidden tab only
-  // closes a view that was actually reported.
+  // Lets an unchanged resize be skipped and pageHidden close only a view that was reported.
   private lastLogged?: IVisibleEmbeddable[];
   private disposed = false;
 
@@ -240,8 +238,7 @@ export class EmbeddableVisibilityTracker implements IEmbeddableVisibilityTracker
 
   private handleVisibilityChange = () => {
     if (document.visibilityState === "hidden") {
-      // Record the view the student left before marking it hidden; logged immediately since a
-      // hidden tab throttles timers.
+      // Logged now rather than debounced, since a hidden tab throttles timers.
       this.settle();
       if (this.lastLogged?.length) {
         const { viewportHeight, embeddableCount } = this.measure();
@@ -288,15 +285,15 @@ Tests (`embeddable-visibility-tracker.test.ts`) use jest fake timers, an injecte
 - `start()` then 499ms: no log; 500ms: one log with cause `pageChange` and the expected entries (pins the settle delay and the initial snapshot).
 - Two scrolls 300ms apart log once, 500ms after the second (pins the trailing debounce rather than a throttle).
 - `pageChange` pending, then a resize trigger and a scroll: one log, cause `pageChange`. `embeddableResize` pending, then a scroll: cause `scroll` (pins the rank wiring end to end; the 3×3 table lives in the helper tests).
-- A scroll event whose target is an unrelated scroller (a sibling `div` that does not contain the page) does not queue; one whose target contains the page does (pins the target filter).
+- A scroll event whose target is an unrelated scroller (a sibling `div` that does not contain the page) does not queue; one whose target contains the page, or is `document`, does (pins the target filter).
 - An element inside a `.hidden-tab` ancestor is excluded from both `visibleEmbeddables` and `embeddableCount`; assert `embeddableCount` is 2 of 3 registered, not just that the entry is missing.
 - Entries come out in document order when registered in reverse order (pins the sort).
 - Viewport from a container stubbed at 0 to 969 with `innerHeight` 800: an element at 850 to 900 is omitted and `viewportHeight` is 800 (pins the window clip).
 - A resize that leaves the snapshot unchanged logs nothing; one that changes a percentage logs `embeddableResize` (assert the call count goes 1 → 1 → 2).
 - No visible element: no log.
 - `visibilitychange` to hidden with a scroll pending: two logs in order, the scroll snapshot then `pageHidden` with `visibleEmbeddables: []`, synchronously and with no timer advance. Hidden again with nothing logged since: no second `pageHidden`. Back to visible: a `pageVisible` snapshot after 500ms. Triggers while hidden queue nothing.
-- `dispose()` with a scroll pending logs it immediately; with `columnToggle` pending logs nothing, and advancing timers afterwards still logs nothing. After `dispose()`, `register` returns a no-op and scroll events queue nothing (listener removed).
-- `document.visibilityState` is mocked with `jest.spyOn(document, "visibilityState", "get")`.
+- `dispose()` with a scroll pending logs it immediately; with `columnToggle` pending logs nothing, and advancing timers afterwards still logs nothing. After `dispose()`, `register` returns a no-op, and scroll (dispatched on `document`, since `dispose` clears the elements the target filter checks), window resize and `visibilitychange` events reach no `queue` (listeners removed).
+- `document.visibilityState` is mocked with `jest.spyOn(document, "visibilityState", "get")`; its type is written as `"hidden" | "visible"`, since TypeScript 4.5's DOM lib has no `DocumentVisibilityState`.
 
 ---
 
@@ -314,7 +311,7 @@ Tests (`embeddable-visibility-tracker.test.ts`) use jest fake timers, an injecte
 - `src/components/activity-page/activity-page-content.tsx`: wrap the page's `<main>` contents
 - `src/components/single-page/single-page-content.tsx`: wrap the `<main>` contents
 - `src/components/activity-page/embeddable-visibility-provider.test.tsx`: new
-- `src/components/activity-page/embeddable.test.tsx`, `section.test.tsx`, `src/utilities/activity-utils.test.ts`: new cases
+- `src/components/activity-page/embeddable.test.tsx`, `section.test.tsx`, `activity-page-content.test.tsx`, `src/components/single-page/single-page-content.test.tsx`, `src/utilities/activity-utils.test.ts`: new cases
 
 **Estimated diff size**: ~260 lines
 
@@ -323,9 +320,9 @@ Tests (`embeddable-visibility-tracker.test.ts`) use jest fake timers, an injecte
 import React from "react";
 import { IEmbeddableVisibilityTracker } from "../utilities/embeddable-visibility-tracker";
 
-// Undefined outside a page root (intro, completion and sequence pages, and component tests), where
-// embeddables are not measured.
+// Undefined outside a page root, where embeddables are not measured.
 export const EmbeddableVisibilityContext = React.createContext<IEmbeddableVisibilityTracker | undefined>(undefined);
+EmbeddableVisibilityContext.displayName = "EmbeddableVisibilityContext";
 ```
 
 ```tsx
@@ -396,8 +393,9 @@ and in `handleCollapseHeader`, after `setIsSecondaryCollapsed(...)`, `visibility
 
 Tests:
 - `embeddable-visibility-provider.test.tsx`: render the provider around a component that registers an element, with `Logger.log` spied and fake timers. After 500ms, one `Logger.log` call with `event: LogEventName.EMBEDDABLE_VISIBILITY_CHANGE` and `parameters.cause` `pageChange` (pins that `Logger.log` is the sink and the event name). Unmount with a scroll pending: logged synchronously.
-- `embeddable.test.tsx`: inside a context with a mock tracker, an Xhtml embeddable registers its `data-cy="embeddable"` element with `{ embeddableId: ref_id, embeddableTitle: <trimmed name> }`, and the returned unregister is called on unmount; an interactive rendered with `questionNumber={3}` registers `questionNumber: 3`, the same interactive with `hideQuestionNumbers` registers without the key (assert with `not.toHaveProperty("questionNumber")`), and the Xhtml registration has no `questionNumber`; an `is_hidden` embeddable does not register; a windowShade plugin outside teacher edition does not register; with no context, rendering still works (existing tests cover this already, since none of them provide one).
+- `embeddable.test.tsx`: inside a context with a mock tracker, an Xhtml embeddable registers its `data-cy="embeddable"` element with `{ embeddableId: ref_id, embeddableTitle: <trimmed name> }`, and the returned unregister is called on unmount; an interactive rendered with `questionNumber={3}` registers `questionNumber: 3`, the same interactive with `hideQuestionNumbers` registers without the key (assert with `not.toHaveProperty("questionNumber")`), and the Xhtml registration has no `questionNumber`; a re-render with an equal but new `embeddable` object keeps the one registration; an `is_hidden` embeddable does not register; a windowShade plugin outside teacher edition does not register; with no context, rendering still works (existing tests cover this already, since none of them provide one).
 - `activity-utils.test.ts`: `displayedQuestionNumber(3)` is 3, `displayedQuestionNumber(3, true)` is undefined, `displayedQuestionNumber(undefined)` is undefined.
+- `activity-page-content.test.tsx` and `single-page-content.test.tsx`: rendering the root calls `EmbeddableVisibilityTracker.prototype.start` once and unmounting it calls `dispose` once (pins that both roots mount the provider).
 - `section.test.tsx`: clicking the collapsible header queues `columnToggle` once; re-rendering with `hiddenTab` flipped queues `tabChange` once, and re-rendering with it unchanged queues nothing.
 
 ## Expected behavior in the running app
