@@ -6,6 +6,8 @@ import { EmbeddableType, IEmbeddablePlugin, IManagedInteractive } from "../../ty
 import { DefaultManagedInteractive, DefaultXhtmlComponent, DefaultTEWindowshadeComponent, DefaultLibraryInteractive } from "../../test-utils/model-for-tests";
 import { LaraGlobalContext } from "../lara-global-context";
 import { DynamicTextTester } from "../../test-utils/dynamic-text";
+import { EmbeddableVisibilityContext } from "../embeddable-visibility-context";
+import { IEmbeddableVisibilityTracker } from "../../utilities/embeddable-visibility-tracker";
 
 jest.mock("../../firebase-db", () => ({
   getAnswer: () => { return { answerType: "multiple_choice_answer", selectedChoiceIds: []}; }
@@ -158,5 +160,97 @@ describe("Embeddable component", () => {
     expect(wrapper.html()).not.toBe(null);
     expect(wrapper.html()).toContain("embeddable");
     expect(wrapper.html()).toContain("plugin-container");
+  });
+
+  describe("visibility registration", () => {
+    const unregister = jest.fn();
+    const tracker: IEmbeddableVisibilityTracker = { register: jest.fn(() => unregister), queue: jest.fn() };
+    const register = tracker.register as jest.Mock;
+
+    beforeEach(() => {
+      register.mockClear();
+      unregister.mockClear();
+      iframePhone.ParentEndpoint = jest.fn().mockImplementation(() => ({
+        disconnect: jest.fn(),
+        post: jest.fn(),
+        addListener: jest.fn(),
+        removeListener: jest.fn()
+      }));
+    });
+
+    const mountWithTracker = (embeddable: EmbeddableType, props: Partial<React.ComponentProps<typeof Embeddable>> = {}) =>
+      mount(
+        <EmbeddableVisibilityContext.Provider value={tracker}>
+          <DynamicTextTester>
+            <Embeddable embeddable={embeddable} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true}
+              {...props} />
+          </DynamicTextTester>
+        </EmbeddableVisibilityContext.Provider>
+      );
+
+    const interactive = (): EmbeddableType => ({
+      ...DefaultManagedInteractive,
+      library_interactive: {
+        ...DefaultLibraryInteractive,
+        data: { ...DefaultLibraryInteractive.data, enable_learner_state: false }
+      },
+      authored_state: `{"version":1,"questionType":"open_response","prompt":"<p>Write something:</p>"}`,
+      ref_id: "123-ManagedInteractive",
+      name: "Question name",
+      column: "primary"
+    });
+
+    it("registers a text block's outer element with its id and trimmed title, and unregisters on unmount", () => {
+      const embeddable: EmbeddableType = { ...DefaultXhtmlComponent, name: "  Intro text  ", column: null };
+      const wrapper = mountWithTracker(embeddable);
+      expect(register).toHaveBeenCalledTimes(1);
+      const [element, info] = register.mock.calls[0];
+      expect(element.getAttribute("data-cy")).toBe("embeddable");
+      expect(info).toEqual({ embeddableId: "123-Embeddable::Xhtml", embeddableTitle: "Intro text" });
+      expect(unregister).not.toHaveBeenCalled();
+      wrapper.unmount();
+      expect(unregister).toHaveBeenCalledTimes(1);
+    });
+
+    it("keeps its registration when re-rendered with an equal embeddable object", () => {
+      const embeddable: EmbeddableType = { ...DefaultXhtmlComponent, column: null };
+      const wrapper = mountWithTracker(embeddable);
+      wrapper.setProps({ children: (
+        <DynamicTextTester>
+          <Embeddable embeddable={{ ...embeddable }} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} />
+        </DynamicTextTester>
+      ) });
+      expect(register).toHaveBeenCalledTimes(1);
+      expect(unregister).not.toHaveBeenCalled();
+    });
+
+    it("registers an untitled embeddable with an empty title", () => {
+      const embeddable = { ...DefaultXhtmlComponent, column: null, name: undefined } as unknown as EmbeddableType;
+      mountWithTracker(embeddable);
+      expect(register.mock.calls[0][1].embeddableTitle).toBe("");
+    });
+
+    it("registers the question number the header shows", () => {
+      mountWithTracker(interactive(), { questionNumber: 3 });
+      expect(register.mock.calls[0][1]).toEqual({
+        embeddableId: "123-ManagedInteractive", embeddableTitle: "Question name", questionNumber: 3
+      });
+    });
+
+    it("registers no question number when question numbers are hidden", () => {
+      mountWithTracker(interactive(), { questionNumber: 3, hideQuestionNumbers: true });
+      expect(register).toHaveBeenCalledTimes(1);
+      expect(register.mock.calls[0][1]).not.toHaveProperty("questionNumber");
+    });
+
+    it("does not register a hidden embeddable", () => {
+      mountWithTracker({ ...DefaultXhtmlComponent, column: null, is_hidden: true });
+      expect(register).not.toHaveBeenCalled();
+    });
+
+    it("does not register a teacher edition window shade outside teacher edition", () => {
+      mountWithTracker({ ...DefaultTEWindowshadeComponent, column: null });
+      expect(register).not.toHaveBeenCalled();
+    });
   });
 });

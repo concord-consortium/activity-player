@@ -3,6 +3,8 @@ import { Section } from "./section";
 import { configure, fireEvent, render } from "@testing-library/react";
 import { DefaultTestPage, DefaultTestSection, DefaultXhtmlComponent } from "../../test-utils/model-for-tests";
 import { IEmbeddableXhtml } from "../../types";
+import { EmbeddableVisibilityContext } from "../embeddable-visibility-context";
+import { IEmbeddableVisibilityTracker } from "../../utilities/embeddable-visibility-tracker";
 
 describe("Section component", () => {
   const stubFunction = () => {
@@ -190,6 +192,53 @@ describe("Section component", () => {
       const panelId = trigger.getAttribute("aria-controls");
       expect(panelId).toBeTruthy();
       expect(container.querySelector(`#${panelId}`)).not.toBeNull();
+    });
+  });
+
+  describe("visibility causes", () => {
+    const tracker: IEmbeddableVisibilityTracker = { register: jest.fn(() => jest.fn()), queue: jest.fn() };
+    const queue = tracker.queue as jest.Mock;
+
+    beforeEach(() => queue.mockClear());
+
+    const section = {
+      ...DefaultTestSection,
+      embeddables: [
+        { ...DefaultXhtmlComponent, column: "primary", ref_id: "1-Embeddable::Xhtml" } as IEmbeddableXhtml,
+        { ...DefaultXhtmlComponent, column: "secondary", ref_id: "2-Embeddable::Xhtml" } as IEmbeddableXhtml
+      ],
+      layout: "responsive-50-50",
+      secondary_column_collapsible: true
+    };
+
+    const renderSection = (hiddenTab: boolean) => (
+      <EmbeddableVisibilityContext.Provider value={tracker}>
+        <Section
+          activityLayout={2}
+          section={section}
+          page={{...DefaultTestPage}}
+          pluginsLoaded={true}
+          questionNumberStart={1}
+          setNavigation={stubFunction}
+          hiddenTab={hiddenTab}
+        />
+      </EmbeddableVisibilityContext.Provider>
+    );
+
+    it("queues columnToggle when the collapsible header is clicked", () => {
+      const { getByTestId } = render(renderSection(false));
+      expect(queue).not.toHaveBeenCalled();
+      fireEvent.click(getByTestId("collapsible-header"));
+      expect(queue.mock.calls).toEqual([["columnToggle"]]);
+    });
+
+    it("queues tabChange only when hiddenTab changes", () => {
+      const { rerender } = render(renderSection(true));
+      expect(queue).not.toHaveBeenCalled();
+      rerender(renderSection(true));
+      expect(queue).not.toHaveBeenCalled();
+      rerender(renderSection(false));
+      expect(queue.mock.calls).toEqual([["tabChange"]]);
     });
   });
 });

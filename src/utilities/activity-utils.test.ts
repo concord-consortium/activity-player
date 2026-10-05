@@ -1,5 +1,5 @@
 import { Activity } from "../types";
-import { isQuestion, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isSectionHidden, numQuestionsOnPreviousSections, getPageIDFromPosition, getPageIdFromEmbeddable, getPageNumberFromEmbeddable } from "./activity-utils";
+import { displayedQuestionNumber, isQuestion, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isSectionHidden, numQuestionsOnPreviousSections, getPageIDFromPosition, getPageIdFromEmbeddable, getPageNumberFromEmbeddable } from "./activity-utils";
 import _activityHidden from "../data/version-2/sample-new-sections-hidden-content.json";
 import _activity from "../data/version-2/sample-new-sections-activity-1.json";
 import { DefaultTestActivity } from "../test-utils/model-for-tests";
@@ -8,6 +8,13 @@ const activityHidden = _activityHidden as unknown as Activity;
 const activity = _activity as unknown as Activity;
 
 describe("Activity utility functions", () => {
+  it("returns the question number a header shows", () => {
+    expect(displayedQuestionNumber(3)).toBe(3);
+    expect(displayedQuestionNumber(3, false)).toBe(3);
+    expect(displayedQuestionNumber(3, true)).toBeUndefined();
+    expect(displayedQuestionNumber(undefined)).toBeUndefined();
+  });
+
   it("determines if embeddable is a question", () => {
     const isE0Question = isQuestion(activity.pages[0].sections[0].embeddables[0]);
     const isE1Question = isQuestion(activity.pages[0].sections[1].embeddables[0]);

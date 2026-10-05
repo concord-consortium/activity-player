@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useRef, useState } from "react";
+import React, { forwardRef, useContext, useEffect, useImperativeHandle, useRef, useState } from "react";
 import classNames from "classnames";
 import { Embeddable, EmbeddableImperativeAPI } from "./embeddable";
 import { isQuestion,  getLinkedPluginEmbeddable, ActivityLayouts } from "../../utilities/activity-utils";
@@ -10,6 +10,7 @@ import { Logger, LogEventName } from "../../lib/logger";
 import { IGetInteractiveState, INavigationOptions } from "@concord-consortium/lara-interactive-api";
 import useResizeObserver from "@react-hook/resize-observer";
 import { nanoid } from "../../utilities/nanoid";
+import { EmbeddableVisibilityContext } from "../embeddable-visibility-context";
 
 import "./section.scss";
 
@@ -38,6 +39,15 @@ const left = "left";
 export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { activityLayout, page, section, questionNumberStart, hiddenTab, addRefToQuestionMap } = props;
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
+
+  const visibility = useContext(EmbeddableVisibilityContext);
+  // A notebook tab switch shows one section and hides another; both report it, which coalesces.
+  const prevHiddenTab = useRef(hiddenTab);
+  useEffect(() => {
+    if (prevHiddenTab.current === hiddenTab) return;
+    prevHiddenTab.current = hiddenTab;
+    visibility?.queue("tabChange");
+  }, [hiddenTab, visibility]);
 
   // Stable id wiring the collapsible "Hide/Show" trigger to the panel it controls,
   // referenced by the trigger's aria-controls for the disclosure ARIA relationship.
@@ -206,6 +216,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
         parameters:{ hide_column: !isSecondaryCollapsed }
       });
       setIsSecondaryCollapsed( !isSecondaryCollapsed );
+      visibility?.queue("columnToggle");
     }
   };
 

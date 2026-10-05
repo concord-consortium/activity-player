@@ -15,6 +15,7 @@ import { showReport } from "../../utilities/report-utils";
 import { IPageChangeNotification, PageChangeNotification } from "./page-change-notification";
 import { ReadAloudToggle } from "../read-aloud-toggle";
 import { TeacherFeedbackSmallBadge } from "../teacher-feedback/teacher-feedback-small-badge";
+import { EmbeddableVisibilityProvider } from "./embeddable-visibility-provider";
 
 import "./activity-page-content.scss";
 
@@ -122,20 +123,22 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
         {page.is_hidden && this.renderHiddenWarningBanner()}
         {this.renderPageChangeNotification()}
         <main className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
-          <div className={headerClass}>
-            <h1 className="name"><DynamicText>{pageTitle}</DynamicText></h1>
-            <ReadAloudToggle />
-          </div>
-          {isNotebookLayout && <div className="notebookHeader" />}
-          <div className="sections">
-            {renderTabs && this.renderTabs(sections)}
-            {this.renderSections(sections, totalPreviousQuestions, renderTabs)}
-          </div>
-          {enableReportButton &&
-            <BottomButtons
-              onGenerateReport={this.handleReport}
-            />
-          }
+          <EmbeddableVisibilityProvider>
+            <div className={headerClass}>
+              <h1 className="name"><DynamicText>{pageTitle}</DynamicText></h1>
+              <ReadAloudToggle />
+            </div>
+            {isNotebookLayout && <div className="notebookHeader" />}
+            <div className="sections">
+              {renderTabs && this.renderTabs(sections)}
+              {this.renderSections(sections, totalPreviousQuestions, renderTabs)}
+            </div>
+            {enableReportButton &&
+              <BottomButtons
+                onGenerateReport={this.handleReport}
+              />
+            }
+          </EmbeddableVisibilityProvider>
         </main>
         {this.renderPageChangeNotification()}
       </>
