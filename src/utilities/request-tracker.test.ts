@@ -34,7 +34,7 @@ describe("RequestTracker", () => {
     expect(successAfterTimeoutHandler).not.toHaveBeenCalled();
   });
 
-  it("doesn't calls timeout handler when the request has finished within max time", async () => {
+  it("doesn't call timeout handler when the request has finished within max time", async () => {
     rt.registerRequest(resolveAfter(TEST_TIMEOUT - 1));
     rt.registerRequest(resolveAfter(TEST_TIMEOUT - 1));
 
