@@ -83,7 +83,8 @@ export enum LogEventName {
   read_aloud,
   read_aloud_canceled,
   click_summary_page_question_link,
-  click_show_feedback_button
+  click_show_feedback_button,
+  EMBEDDABLE_VISIBILITY_CHANGE
 }
 
 export interface ILoggerOptions {
