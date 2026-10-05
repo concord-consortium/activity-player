@@ -23,18 +23,30 @@ describe("IdleWarning component", () => {
       expect(wrapper.text()).toContain("and 0 seconds");
     });
 
-    it("calls onTimeout after `timeout` time", () => {
-      jest.useFakeTimers({ legacyFakeTimers: true });
-      const props = getProps();
-      props.timeout = 1;
-      mount(<IdleWarning {...props} />);
-
-      act(() => {
-        jest.advanceTimersByTime(100);
+    describe("with fake timers", () => {
+      beforeEach(() => {
+        jest.useFakeTimers();
       });
 
-      expect(props.onTimeout).toHaveBeenCalled();
-      jest.useRealTimers();
+      afterEach(() => {
+        jest.useRealTimers();
+      });
+
+      it("calls onTimeout after `timeout` time", () => {
+        const props = getProps();
+        props.timeout = 2000;
+        mount(<IdleWarning {...props} />);
+
+        act(() => {
+          jest.advanceTimersByTime(props.timeout - 1);
+        });
+        expect(props.onTimeout).not.toHaveBeenCalled();
+
+        act(() => {
+          jest.advanceTimersByTime(1);
+        });
+        expect(props.onTimeout).toHaveBeenCalledTimes(1);
+      });
     });
 
     it("calls onContinue when user clicks the continue button", () => {
