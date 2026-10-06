@@ -189,7 +189,7 @@ Switching pages remounts the interactive, which requests the attachment URL agai
 
 4. Pass: after the jump, the attachment request makes a portal JWT refresh (`api/v1/jwt/portal`) and a new `firebase_app=token-service` request, and the token service answers that token's `credentials` call with 200; after the reset, the next request makes no mint, sends the same token, and S3 serves the attachment. While the clock is ahead, S3 rejects the read (Chrome reports `net::ERR_BLOCKED_BY_ORB`) because the URL is signed with the advanced browser clock; that failure is expected and is why the clock goes back.
 
-This procedure passed on 2026-10-05 against a yalc build of `0.13.0-pre.0` made before LARA `2701046a`, which changed how the manager tracks stale times and resets a pending call. It has to pass again on the npm package.
+This procedure passed on 2026-10-06 against a staging learner launch, with `8e67401` on the dev server and `0.13.0-pre.0` from npm. The first attachment read minted the first token-service JWT. After the 56-minute jump, the next read refreshed the portal JWT, minted with the refreshed portal JWT, and the token service accepted the new token. After the reset, the next read made no mint, sent the same token on `credentials`, and S3 served the recording (206). An existing recording was enough: every check is a read, so the fake-media flags were not needed.
 
 ## Open Questions
 
@@ -250,7 +250,7 @@ Verified without a finding: the plan's R9 and `refreshTokenServiceJWT` tests, wr
 
 #### RESOLVED: R10 and the first-round verification ran on a different build than the one published
 The yalc build linked on 2026-10-05 predates LARA `2701046a` ("keep a repeated token's stale time and avoid Promise.finally"). The published `index.js` differs from it in exactly the code R10 exercises: stale times kept per token in a `Map` rather than one value, and the pending-call reset rewritten without `.finally`. So "This procedure passed on 2026-10-05" (verification step) and the first round's "real linked `AttachmentsManager`" result describe a build no one will ship. Suggested resolution: re-run R10 on the npm package (step 3 of the release sequence already calls for it) and replace both statements with that result; drop the first round's test counts, which describe throwaway code.
-**Resolved**: the verification step now says the 2026-10-05 pass used the earlier build and has to be repeated; the first round's yalc-era manager check and test counts are removed. Replace the line with the re-run's result once it passes.
+**Resolved**: the verification step now says the 2026-10-05 pass used the earlier build and has to be repeated; the first round's yalc-era manager check and test counts are removed. The re-run passed on 2026-10-06 and the step records its result.
 
 #### RESOLVED: release-state prose is out of date
 `requirements.md` Technical Notes still says "Implementation is blocked until LARA-223 publishes at least `0.13.0-pre.0`", and the bump step still says "Until then, development runs against the yalc link". The pre-release is on npm and the link is gone. The first round's `app.tsx:492` for the idle detector becomes `app.tsx:490` with this change. Suggested resolution: delete the two yalc/blocked sentences and drop the line number.
