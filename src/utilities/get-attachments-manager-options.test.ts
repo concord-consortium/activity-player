@@ -4,20 +4,18 @@ import { initializePortalJWTManager, PortalJWTManager } from "../portal-jwt-mana
 import { getAttachmentsManagerOptions } from "./get-attachments-manager-options";
 
 const mockBasePortalUrl = "https://learn.concord.org";
-const mockRawPortalJWT = "rawPortalJWT";
 const mockRawFirebaseJWT = "rawFirebaseJWT";
 const mockFirebaseAppName = jest.fn(() => "report-service-dev");
-const mockFirebaseJwtRejectMessage = "No JWT for you!";
+const mockRefreshTokenServiceJWT = jest.fn((basePortalUrl: string, rawPortalJWT: string) =>
+  Promise.resolve([`token-service-jwt-for-${rawPortalJWT}`, {}]));
 jest.mock("../portal-api", () => ({
   ...jest.requireActual("../portal-api"),
   firebaseAppName: () => mockFirebaseAppName(),
-  getFirebaseJWT: (basePortalUrl: string, rawPortalJWT: string) => {
-    if (rawPortalJWT === mockRawPortalJWT) {
-      return Promise.resolve([mockRawFirebaseJWT]);
-    }
-    throw new Error(mockFirebaseJwtRejectMessage);
-  }
+  refreshTokenServiceJWT: (basePortalUrl: string, rawPortalJWT: string) =>
+    mockRefreshTokenServiceJWT(basePortalUrl, rawPortalJWT)
 }));
+
+beforeEach(() => mockRefreshTokenServiceJWT.mockClear());
 
 describe("getAttachmentsManagerOptions", () => {
   describe("when anonymous", () => {
@@ -35,9 +33,9 @@ describe("getAttachmentsManagerOptions", () => {
       }
     };
 
-    it("returns correct options based on Portal data", async () => {
-      expect(await getAttachmentsManagerOptions(kAnonymousPortalData)).toEqual({
-        tokenServiceFirestoreJWT: undefined,
+    it("passes no token or token source", () => {
+      expect(getAttachmentsManagerOptions(kAnonymousPortalData)).toStrictEqual({
+        getTokenServiceFirestoreJWT: undefined,
         tokenServiceEnv: "staging",
         writeOptions: {
           runKey: mockRunKey,
@@ -70,24 +68,52 @@ describe("getAttachmentsManagerOptions", () => {
       collaboratorsDataUrl: "https://example.com/collaborations/1234",
     };
 
+    const iat = 1000;
+    let now: number;
+    let mint: jest.Mock;
     let manager: PortalJWTManager;
     beforeEach(() => {
-      const iat = Math.floor(Date.now() / 1000);
+      now = 1_000_000;
+      mint = jest.fn(() => Promise.resolve(["refreshedPortalJWT", { iat, exp: iat + 3600 }]));
       manager = initializePortalJWTManager({
-        rawPortalJWT: mockRawPortalJWT, portalJWT: { iat, exp: iat + 3600 } as any, mint: jest.fn()
+        rawPortalJWT: "launchPortalJWT", portalJWT: { iat, exp: iat + 3600 } as any, mint, now: () => now
       });
     });
     afterEach(() => manager.dispose());
 
-    it("returns correct options based on Portal data", async () => {
-      expect(await getAttachmentsManagerOptions(kAuthenticatedPortalData)).toEqual({
-        tokenServiceFirestoreJWT: mockRawFirebaseJWT,
+    const getSource = () => {
+      const source = getAttachmentsManagerOptions(kAuthenticatedPortalData).getTokenServiceFirestoreJWT;
+      if (!source) throw new Error("no token source");
+      return source;
+    };
+
+    it("passes a token source and no token, without minting", () => {
+      expect(getAttachmentsManagerOptions(kAuthenticatedPortalData)).toStrictEqual({
+        getTokenServiceFirestoreJWT: expect.any(Function),
         tokenServiceEnv: "staging",
         writeOptions: {
           runKey: undefined,
           runRemoteEndpoint: mockRunRemoteEndpoint
         }
       });
+      expect(mockRefreshTokenServiceJWT).not.toHaveBeenCalled();
+    });
+
+    it("mints a new token-service JWT with the current portal JWT on every call", async () => {
+      const source = getSource();
+      await expect(source()).resolves.toBe("token-service-jwt-for-launchPortalJWT");
+      now += 49 * 60 * 1000;
+      await expect(source()).resolves.toBe("token-service-jwt-for-refreshedPortalJWT");
+      expect(mockRefreshTokenServiceJWT.mock.calls).toEqual([
+        [mockBasePortalUrl, "launchPortalJWT"],
+        [mockBasePortalUrl, "refreshedPortalJWT"]
+      ]);
+      expect(mint).toHaveBeenCalledTimes(1);
+    });
+
+    it("rejects when the mint fails", async () => {
+      mockRefreshTokenServiceJWT.mockImplementationOnce(() => Promise.reject("Portal error"));
+      await expect(getSource()()).rejects.toBe("Portal error");
     });
   });
 });

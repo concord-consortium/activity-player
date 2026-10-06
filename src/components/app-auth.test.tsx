@@ -93,7 +93,6 @@ describe("App portal token handling", () => {
     jest.clearAllMocks();
     mockJobExecutorConfig = null;
     mockCreatedManager = null;
-    mockGetFirebaseJWT.mockResolvedValue(["token-service-jwt"]);
     mockFetchPortalData.mockResolvedValue(mockPortalData);
   });
   afterEach(() => {

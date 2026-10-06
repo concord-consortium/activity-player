@@ -378,6 +378,9 @@ export const refreshPortalJWT = (basePortalUrl: string, rawPortalJWT: string) =>
 export const refreshActivityPlayerFirebaseJWT = (basePortalUrl: string, rawPortalJWT: string, classHash?: string) =>
   getActivityPlayerFirebaseJWT(basePortalUrl, rawPortalJWT, classHash, kRenewalTimeoutMs);
 
+export const refreshTokenServiceJWT = (basePortalUrl: string, rawPortalJWT: string) =>
+  getFirebaseJWT(basePortalUrl, rawPortalJWT, { firebase_app: "token-service" }, kRenewalTimeoutMs);
+
 export const fetchPortalData = async (rawPortalJWT: string, portalJWT: PortalJWT): Promise<IPortalData> => {
   if (portalJWT.user_type !== "learner") {
     throw new Error("Only student logins are currently supported");
