@@ -3,6 +3,7 @@ import { ActivityPageContent } from "./activity-page-content";
 import { configure, render, screen } from "@testing-library/react";
 import { DefaultTestPage, DefaultTestActivity } from "../../test-utils/model-for-tests";
 import { DynamicTextTester } from "../../test-utils/dynamic-text";
+import { EmbeddableVisibilityTracker } from "../../utilities/embeddable-visibility-tracker";
 
 describe("Activity Page Content component", () => {
   const stubFunction = () => {
@@ -30,6 +31,31 @@ describe("Activity Page Content component", () => {
 
     const notifications = queryAllByTestId("page-change-notification");
     expect(notifications.length).toBe(0);
+  });
+
+  it("tracks embeddable visibility while mounted", () => {
+    const start = jest.spyOn(EmbeddableVisibilityTracker.prototype, "start");
+    const dispose = jest.spyOn(EmbeddableVisibilityTracker.prototype, "dispose");
+    const { unmount } = render(
+      <DynamicTextTester>
+        <ActivityPageContent
+          enableReportButton={false}
+          activityLayout={0}
+          page={page}
+          pageNumber={5}
+          activity={DefaultTestActivity}
+          totalPreviousQuestions={5}
+          setNavigation={stubFunction}
+          pluginsLoaded={true}
+        />
+      </DynamicTextTester>
+    );
+    expect(start).toHaveBeenCalledTimes(1);
+    expect(dispose).not.toHaveBeenCalled();
+    unmount();
+    expect(dispose).toHaveBeenCalledTimes(1);
+    start.mockRestore();
+    dispose.mockRestore();
   });
 
   it("exposes a single main landmark", () => {

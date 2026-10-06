@@ -28,6 +28,10 @@ export enum SectionLayouts {
 
 export const isQuestion = (embeddable: EmbeddableType) => isEmbeddableQuestion(embeddable);
 
+/** The number a question's header shows as "Question #N", or undefined when it shows none. */
+export const displayedQuestionNumber = (questionNumber: number | undefined, hideQuestionNumbers?: boolean) =>
+  hideQuestionNumbers ? undefined : questionNumber;
+
 export interface PageSectionQuestionCount {
   Header: number;
   InfoAssessment: number;

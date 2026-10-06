@@ -7,6 +7,7 @@ import { SubmitButton } from "./submit-button";
 import { Activity, Page } from "../../types";
 import { Section } from "../activity-page/section";
 import { ReadAloudToggle } from "../read-aloud-toggle";
+import { EmbeddableVisibilityProvider } from "../activity-page/embeddable-visibility-provider";
 
 import "./single-page-content.scss";
 
@@ -49,14 +50,16 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
 
   return (
     <main className="single-page-content" data-cy="single-page-content">
-      <h1 className="activity-name"><DynamicText>{activity.name || "Activity"}</DynamicText></h1>
-      <ReadAloudToggle style={{justifyContent: "flex-end"}} />
+      <EmbeddableVisibilityProvider>
+        <h1 className="activity-name"><DynamicText>{activity.name || "Activity"}</DynamicText></h1>
+        <ReadAloudToggle style={{justifyContent: "flex-end"}} />
 
-      {activity.pages.filter((page) => !page.is_hidden).map((page, index: number) => (
-        renderPageContent(page, index)
-      ))}
-      { activity.related && <RelatedContent relatedContentText={activity.related} /> }
-      { activity.show_submit_button && <SubmitButton/> }
+        {activity.pages.filter((page) => !page.is_hidden).map((page, index: number) => (
+          renderPageContent(page, index)
+        ))}
+        { activity.related && <RelatedContent relatedContentText={activity.related} /> }
+        { activity.show_submit_button && <SubmitButton/> }
+      </EmbeddableVisibilityProvider>
     </main>
   );
 };

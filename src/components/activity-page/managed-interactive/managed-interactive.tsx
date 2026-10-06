@@ -23,7 +23,7 @@ import { LaraDataContext } from "../../lara-data-context";
 import { ClickToPlay } from "./click-to-play";
 import { ManagedInteractiveHeader } from "./managed-interactive-header";
 import { ManagedInteractiveHint } from "./managed-interactive-hint";
-import { ActivityLayouts, hasPluginThatRequiresHeader } from "../../../utilities/activity-utils";
+import { ActivityLayouts, displayedQuestionNumber, hasPluginThatRequiresHeader } from "../../../utilities/activity-utils";
 import { useQuestionInfoContext } from "../../question-info-context";
 import { isOfferingLocked } from "../../../utilities/portal-data-utils";
 import { applyOverridesToAuthoredState } from "../../../utilities/url-overrides/state";
@@ -431,7 +431,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     <div ref={divTarget} className="managed-interactive" data-cy="managed-interactive">
       <div className={className} style={{width:containerWidth}}>
       <ManagedInteractiveHeader
-        questionNumber={props.hideQuestionNumbers ? undefined : questionNumber}
+        questionNumber={displayedQuestionNumber(questionNumber, props.hideQuestionNumbers)}
         questionName={questionName}
         hint={hint}
         showHint={showHint}

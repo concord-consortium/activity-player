@@ -3,7 +3,7 @@ import classNames from "classnames";
 import { TextBox } from "./text-box/text-box";
 import { LaraGlobalContext } from "../lara-global-context";
 import { ManagedInteractive, ManagedInteractiveImperativeAPI } from "./managed-interactive/managed-interactive";
-import { ActivityLayouts, isNotVisibleEmbeddable } from "../../utilities/activity-utils";
+import { ActivityLayouts, displayedQuestionNumber, isNotVisibleEmbeddable } from "../../utilities/activity-utils";
 import { EmbeddablePlugin } from "./plugins/embeddable-plugin";
 import { initializePlugin, IPartialEmbeddablePluginContext, validateEmbeddablePluginContextForWrappedEmbeddable
         } from "../../utilities/plugin-utils";
@@ -11,6 +11,7 @@ import { EmbeddableType, IEmbeddablePlugin } from "../../types";
 import { IInteractiveSupportedFeaturesEvent } from "../../lara-plugin/events";
 import { ICustomMessage, ISupportedFeatures, INavigationOptions, IGetInteractiveState } from "@concord-consortium/lara-interactive-api";
 import { SpikeMediaLibrary } from "./spike-media-library/spike-media-library";
+import { EmbeddableVisibilityContext } from "../embeddable-visibility-context";
 
 import "./embeddable.scss";
 
@@ -67,6 +68,18 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
       initializePlugin(validPluginContext);
     }
   }, [LARA, linkedPluginEmbeddable, embeddable, pluginsLoaded]);
+
+  const visibility = useContext(EmbeddableVisibilityContext);
+  useEffect(() => {
+    const element = targetDiv.current;
+    if (!visibility || !element || embeddable.is_hidden) return;
+    const shownQuestionNumber = displayedQuestionNumber(questionNumber, hideQuestionNumbers);
+    return visibility.register(element, {
+      embeddableId: embeddable.ref_id,
+      embeddableTitle: embeddable.name?.trim() ?? "",
+      ...(shownQuestionNumber ? { questionNumber: shownQuestionNumber } : {})
+    });
+  }, [visibility, embeddable.ref_id, embeddable.name, embeddable.is_hidden, questionNumber, hideQuestionNumbers]);
 
   useImperativeHandle(ref, () => ({
     requestInteractiveState: (options?: IGetInteractiveState) => managedInteractiveRef.current?.requestInteractiveState(options) || Promise.resolve()
