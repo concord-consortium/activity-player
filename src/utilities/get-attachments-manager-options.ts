@@ -1,20 +1,17 @@
 import { IAttachmentsManagerInitOptions } from "@concord-consortium/interactive-api-host";
 import { EnvironmentName } from "@concord-consortium/token-service";
-import { firebaseAppName, getFirebaseJWT, isAnonymousPortalData } from "../portal-api";
+import { firebaseAppName, isAnonymousPortalData, refreshTokenServiceJWT } from "../portal-api";
 import { getPortalJWTManager } from "../portal-jwt-manager";
 import { IPortalData, IPortalDataUnion } from "../portal-types";
 
-export const getAttachmentsManagerOptions = async (portalData: IPortalDataUnion): Promise<IAttachmentsManagerInitOptions> => {
-
+export const getAttachmentsManagerOptions = (portalData: IPortalDataUnion): IAttachmentsManagerInitOptions => {
   const { basePortalUrl } = portalData as IPortalData;
   const portalJWTManager = getPortalJWTManager();
-  let firebaseJwt: string | undefined;
-  if (basePortalUrl && portalJWTManager) {
-    const queryParams = { firebase_app: "token-service" };
-    [firebaseJwt] = await portalJWTManager.withToken(rawPortalJWT => getFirebaseJWT(basePortalUrl, rawPortalJWT, queryParams));
-  }
+  const getTokenServiceFirestoreJWT = basePortalUrl && portalJWTManager
+    ? () => portalJWTManager.withToken(raw => refreshTokenServiceJWT(basePortalUrl, raw)).then(([token]) => token)
+    : undefined;
   return {
-    tokenServiceFirestoreJWT: firebaseJwt,
+    getTokenServiceFirestoreJWT,
     tokenServiceEnv: firebaseAppName() === "report-service-pro" ? "production" : "staging" as EnvironmentName,
     writeOptions: {
       runKey: isAnonymousPortalData(portalData) ? portalData.runKey : undefined,

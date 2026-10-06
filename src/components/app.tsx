@@ -309,9 +309,7 @@ export class App extends React.PureComponent<IProps, IState> {
         }
       }
 
-      getAttachmentsManagerOptions(getPortalData() as IPortalDataUnion).then(options => {
-        initializeAttachmentsManager(options);
-      });
+      initializeAttachmentsManager(getAttachmentsManagerOptions(getPortalData() as IPortalDataUnion));
 
       if (!preview) {
         // Notify user about network issues. Note that in preview mode Firestore network is disabled, so it doesn't

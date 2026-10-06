@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import superagent from "superagent";
-import { firebaseAppName, clearFirebaseAppName, refreshPortalJWT, refreshActivityPlayerFirebaseJWT } from "./portal-api";
+import { firebaseAppName, clearFirebaseAppName, refreshPortalJWT, refreshActivityPlayerFirebaseJWT, refreshTokenServiceJWT } from "./portal-api";
 
 const mockRequest: Record<string, jest.Mock> = {
   set: jest.fn(() => mockRequest),
@@ -32,6 +32,19 @@ describe("refreshActivityPlayerFirebaseJWT", () => {
     const [raw] = await refreshActivityPlayerFirebaseJWT("https://portal/", "abc", "class-hash");
     expect(superagent.get).toHaveBeenCalledWith("https://portal/api/v1/jwt/firebase");
     expect(mockRequest.query).toHaveBeenCalledWith({ firebase_app: firebaseAppName(), class_hash: "class-hash" });
+    expect(mockRequest.set).toHaveBeenCalledWith("Authorization", "Bearer/JWT abc");
+    expect(mockRequest.timeout).toHaveBeenCalledWith(10000);
+    expect(raw).toBe(token);
+  });
+});
+
+describe("refreshTokenServiceJWT", () => {
+  it("mints the token-service Firebase JWT with the current portal JWT and a timeout", async () => {
+    const token = jwt.sign({ uid: "user" }, "secret");
+    mockRequest.end.mockImplementation((cb: any) => cb(null, { body: { token } }));
+    const [raw] = await refreshTokenServiceJWT("https://portal/", "abc");
+    expect(superagent.get).toHaveBeenCalledWith("https://portal/api/v1/jwt/firebase");
+    expect(mockRequest.query).toHaveBeenCalledWith({ firebase_app: "token-service" });
     expect(mockRequest.set).toHaveBeenCalledWith("Authorization", "Bearer/JWT abc");
     expect(mockRequest.timeout).toHaveBeenCalledWith(10000);
     expect(raw).toBe(token);
