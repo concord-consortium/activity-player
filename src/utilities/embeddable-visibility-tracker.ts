@@ -5,6 +5,8 @@ import {
 } from "./embeddable-visibility";
 
 export const kVisibilitySettleMs = 500;
+// Bounds the debounce, so triggers arriving faster than the settle time (an animating interactive) still log.
+export const kVisibilityMaxWaitMs = 2000;
 
 type VisibilityLogger = (parameters: ReturnType<typeof buildVisibilityLogParams>) => void;
 
@@ -34,11 +36,15 @@ export class EmbeddableVisibilityTracker implements IEmbeddableVisibilityTracker
   private resizeObserver?: ResizeObserver;
   private pendingCause?: VisibilityCause;
   private timer?: number;
+  private burstStart = 0;
   // Lets an unchanged resize be skipped and pageHidden close only a view that was reported.
   private lastLogged?: IVisibleEmbeddable[];
   private disposed = false;
 
-  constructor(private log: VisibilityLogger = logVisibility, private settleMs = kVisibilitySettleMs) {
+  constructor(
+    private log: VisibilityLogger = logVisibility, private settleMs = kVisibilitySettleMs,
+    private maxWaitMs = kVisibilityMaxWaitMs
+  ) {
     if (typeof window.ResizeObserver !== "undefined") {
       this.resizeObserver = new window.ResizeObserver(() => this.queue("embeddableResize"));
     }
@@ -64,9 +70,12 @@ export class EmbeddableVisibilityTracker implements IEmbeddableVisibilityTracker
 
   queue = (cause: VisibilityCause) => {
     if (this.disposed || document.visibilityState === "hidden") return;
+    const now = Date.now();
+    if (this.timer === undefined) this.burstStart = now;
     this.pendingCause = nextVisibilityCause(this.pendingCause, cause);
     window.clearTimeout(this.timer);
-    this.timer = window.setTimeout(this.settle, this.settleMs);
+    const delay = Math.min(this.settleMs, this.burstStart + this.maxWaitMs - now);
+    this.timer = window.setTimeout(this.settle, Math.max(0, delay));
   };
 
   /**

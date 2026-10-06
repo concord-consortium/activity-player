@@ -103,6 +103,19 @@ describe("EmbeddableVisibilityTracker", () => {
     expect(loggedCauses()).toEqual(["scroll"]);
   });
 
+  it("logs within 2000ms of the first trigger while resizes keep arriving", () => {
+    tracker.register(addElement(0, 200), info("1-Embeddable::Xhtml"));
+    startAndSettle();
+    scrollContainer();
+    for (let elapsed = 100; elapsed < 2000; elapsed += 100) {
+      jest.advanceTimersByTime(100);
+      resizeObserver().trigger();
+    }
+    expect(log).not.toHaveBeenCalled();
+    jest.advanceTimersByTime(100);
+    expect(loggedCauses()).toEqual(["scroll"]);
+  });
+
   it("keeps a higher-ranked pending cause and lets a scroll replace a pending resize", () => {
     tracker.register(addElement(0, 200), info("1-Embeddable::Xhtml"));
     tracker.start();

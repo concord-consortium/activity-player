@@ -9,7 +9,9 @@ const Registrant: React.FC = () => {
   const ref = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const element = ref.current!;
-    jest.spyOn(element, "getBoundingClientRect").mockReturnValue({ top: 0, bottom: 100, height: 100 } as DOMRect);
+    // A detached element measures zero, as in a browser, so a flush after DOM removal logs nothing.
+    jest.spyOn(element, "getBoundingClientRect").mockImplementation(() =>
+      (element.isConnected ? { top: 0, bottom: 100, height: 100 } : { top: 0, bottom: 0, height: 0 }) as DOMRect);
     return visibility?.register(element, { embeddableId: "1-Embeddable::Xhtml", embeddableTitle: "" });
   }, [visibility]);
   return <div ref={ref} />;

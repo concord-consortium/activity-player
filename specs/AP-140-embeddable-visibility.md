@@ -45,7 +45,7 @@ Before this, the only visibility signal came from the question interactives, whi
   - `embeddableResize`: an embeddable's rendered height changed (an interactive reporting a new height, an image loading, a font change).
   - `pageHidden`: the browser tab became hidden (`document.visibilityState` is `hidden`).
   - `pageVisible`: the browser tab became visible again.
-- Triggers are coalesced with a trailing debounce: one event is logged 500ms after the last trigger, measuring the view at that moment.
+- Triggers are coalesced with a trailing debounce: one event is logged 500ms after the last trigger, measuring the view at that moment. The wait is capped at 2000ms after the first trigger of a burst, so triggers that keep arriving (an interactive animating its height) cannot postpone the event indefinitely.
 - When triggers coalesce, the reported cause is decided by rank: `embeddableResize` is lowest, `scroll` next, and every other cause highest. An incoming cause replaces the pending one when its rank is equal or higher, so the newest cause wins within a rank.
 - An `embeddableResize` snapshot whose `visibleEmbeddables` is identical to the last logged one is not logged.
 - No event is logged when no embeddable is visible, except `pageHidden`.
@@ -71,7 +71,7 @@ Before this, the only visibility signal came from the question interactives, whi
 - **Delivery.** `Logger.log` posts with an asynchronous `XMLHttpRequest`, so a `pageHidden` caused by closing the tab can be canceled with the page, like any unload-time event.
 - **Not forwarded to the chat.** Logs reach the page chat only through `managed-interactive.tsx` `handleLog`; this event is logged directly through `Logger.log`, so the tutor never sees it.
 - **No `ResizeObserver`, no `embeddableResize`.** The tracker feature-detects `window.ResizeObserver`; every supported browser has it, and the check exists for jsdom.
-- **Volume.** At most one event per 500ms of quiet; a long continuous scroll produces one event at its end. A page load typically logs `pageChange` followed by one or two `embeddableResize` corrections as interactives settle their heights.
+- **Volume.** At most one event per 500ms of quiet, plus one every 2000ms during a continuous burst; a scroll shorter than 2000ms produces one event at its end. A page load typically logs `pageChange` followed by one or two `embeddableResize` corrections as interactives settle their heights.
 
 ## Out of Scope
 
@@ -208,7 +208,7 @@ Before this, the only visibility signal came from the question interactives, whi
 
 ### No lodash
 **Context**: CLUE uses lodash `debounce`; AP has no direct lodash dependency.
-**Decision**: A single `setTimeout` restarted in `queue`. The tracker needs flush and cancel, which are two lines each, and adding a dependency for them is not worth it.
+**Decision**: A single `setTimeout` restarted in `queue`, with its delay capped by the time since the burst's first trigger (lodash's `maxWait`). The tracker needs flush and cancel, which are two lines each, and adding a dependency for them is not worth it.
 
 ---
 
