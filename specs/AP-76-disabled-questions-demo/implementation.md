@@ -15,6 +15,7 @@ A gating item reaches to the end of the page, and "after" follows question-numbe
 **Files affected**:
 - `src/utilities/section-columns.ts` (new) and `section-columns.test.ts` (new)
 - `src/components/activity-page/section.tsx`: use the helper in place of its inline layout booleans and column filters
+- `src/components/activity-page/section.test.tsx`: column order and numbering in split layouts
 
 **Estimated diff size**: ~170 lines
 
@@ -61,9 +62,9 @@ export const embeddablesInNumberingOrder = (section: SectionType, activityLayout
 };
 ```
 
-`Section`'s `responsiveIsSingleColumn` is dropped rather than moved: it requires `responsive-full-width`, which `singleColumn` already covers, so it never changes the result. `Section` keeps its class names and rendering; it reads `stacked` where it tested `singleColumn || singlePage`, passes `singleColumn` to `renderEmbeddables` as now, and takes the left and right lists and `leftIsPrimary` from the helper. `getNumQuestionsLeftColumn` counts `left`.
+`Section`'s `responsiveIsSingleColumn` is dropped rather than moved: it requires `responsive-full-width`, which `singleColumn` already covers, so it never changes the result. `Section` keeps its class names and rendering; it reads `stacked` where it tested `singleColumn || singlePage`, passes `singleColumn` to `renderEmbeddables` as now, and takes the left and right lists and `leftIsPrimary` from the helper. The right column's first question number counts the questions in `left`.
 
-Tests (`section-columns.test.ts`), each over a section with distinct embeddables in both columns: `60-40` and `70-30` put primary on the left; `40-60`, `30-70`, `responsive-30-70`, `responsive-2-column`, `responsive-50-50` and `responsive` put secondary on the left; `full-width` and `responsive-full-width` are `stacked` and `singleColumn`; a split layout in a single-page activity is `stacked` but not `singleColumn`; hidden embeddables are left out of `left` and `right`; `embeddablesInNumberingOrder` returns left then right for a split section and the array for a stacked one. The existing `section.test.tsx` cases (layout classes, collapsible column side) run unchanged and guard the refactor.
+Tests (`section-columns.test.ts`), each over a section with distinct embeddables in both columns: `60-40` and `70-30` put primary on the left; `40-60`, `30-70`, `responsive-30-70`, `responsive-2-column`, `responsive-50-50` and `responsive` put secondary on the left; `full-width` and `responsive-full-width` are `stacked` and `singleColumn`; a split layout in a single-page activity is `stacked` but not `singleColumn`; hidden embeddables are left out of `left` and `right`; `embeddablesInNumberingOrder` returns left then right for a split section and the array for a stacked one. The existing `section.test.tsx` cases (layout classes, collapsible column side) run unchanged; none of them checks column order, so new cases render a `40-60` and a `60-40` section with a question in each column and assert which column comes first in the DOM and how the two questions are numbered.
 
 ---
 
@@ -87,16 +88,16 @@ export const kDisableQuestionsAfterParam = "override:disableQuestionsAfter";
 /** Gating item ref_id to the ref_ids of the questions it disables, in page order. */
 export type DisabledQuestionsPlan = Record<string, string[]>;
 
-// Interactives that save learner state, whether or not their question number is shown.
-const savesLearnerState = (embeddable: EmbeddableType) => isQuestion(embeddable, { ignoreHideQuestionNumber: true });
-
-/** The values of LARA's per-item `question_gating` setting (LARA-226) that this Activity Player acts on. */
+/** The values of LARA's per-item `question_gating` setting that this Activity Player acts on. */
 export type QuestionGating = "none" | "disable_following_on_page";
 
 /** Item ref_id to its `question_gating` value. */
 export type QuestionGatingSettings = Record<string, QuestionGating>;
 
-/** The URL parameter sets `question_gating: "disable_following_on_page"` on each item it names, over any authored value. */
+// Interactives that save learner state, whether or not their question number is shown.
+const savesLearnerState = (embeddable: EmbeddableType) => isQuestion(embeddable, { ignoreHideQuestionNumber: true });
+
+/** The URL parameter sets `question_gating: "disable_following_on_page"` on each item it names. */
 export const parseQuestionGatingParam = (value: string | undefined): QuestionGatingSettings => {
   const refIds = (value ?? "").split(",").map(refId => refId.trim()).filter(refId => refId.length > 0);
   return Object.fromEntries(refIds.map(refId => [refId, "disable_following_on_page" as QuestionGating]));
@@ -105,7 +106,6 @@ export const parseQuestionGatingParam = (value: string | undefined): QuestionGat
 export const planDisabledQuestions = (page: Page, activityLayout: number, settings: QuestionGatingSettings): DisabledQuestionsPlan => {
   const plan: DisabledQuestionsPlan = {};
   if (Object.keys(settings).length === 0) return plan;
-  // Every visible embeddable on the page, in question-numbering order.
   const embeddables = getVisibleSections(page)
     .flatMap(section => embeddablesInNumberingOrder(section, activityLayout))
     .filter(embeddable => !embeddable.is_hidden);
@@ -171,6 +171,7 @@ Tests (`disabled-questions.test.ts`), each built from a fixture page whose items
 **Files affected**:
 - `src/components/activity-page/disabled-questions-context.tsx` (new): context, provider, `useQuestionLock`, `useTabBanner`
 - `src/components/activity-page/disabled-questions-context.test.tsx` (new)
+- `src/test-utils/answer-watchers.ts` (new): the shared multi-subscriber `firebase-db` mock, used here and by the page-level tests in the banner step
 - `src/components/activity-page/activity-page-content.tsx`: wrap the sections in the provider
 - `src/components/single-page/single-page-content.tsx`: wrap each page's sections in their own provider
 
@@ -210,6 +211,9 @@ const readQuestionGatingSettings = () => {
     return {};
   }
 };
+
+const bannerFor = (status: GateStatus): BannerState | undefined =>
+  status === "locked" ? "locked" : status === "unlockedDuringVisit" ? "unlocked" : undefined;
 
 interface IDisabledQuestions {
   getLock: (refId: string) => IQuestionLock;
@@ -257,8 +261,6 @@ export const DisabledQuestionsProvider: React.FC<IProps> = ({ page, activityLayo
   }, [gatingKey]);
 
   const value = useMemo((): IDisabledQuestions => {
-    const bannerFor = (status: GateStatus): BannerState | undefined =>
-      status === "locked" ? "locked" : status === "unlockedDuringVisit" ? "unlocked" : undefined;
     const locks: Record<string, IQuestionLock> = {};
     const tabStatuses = new Map<SectionType, GateStatus[]>();
     Object.entries(plan).forEach(([gatingRefId, questionRefIds]) => {
@@ -267,18 +269,17 @@ export const DisabledQuestionsProvider: React.FC<IProps> = ({ page, activityLayo
       const isLocked = status === "locked";
       const gateTabs = tabs[gatingRefId] ?? [];
       gateTabs.forEach(tab => tabStatuses.set(tab, [...(tabStatuses.get(tab) ?? []), status]));
-      const firstInLaterTab = gateTabs.some(tab => tab.embeddables.some(e => e.ref_id === questionRefIds[0]));
+      const firstInTabWithBanner = gateTabs.some(tab => tab.embeddables.some(e => e.ref_id === questionRefIds[0]));
       questionRefIds.forEach((refId, index) => {
         const lock = locks[refId] ?? { ...kUnlocked };
         lock.disabled = lock.disabled || isLoading || isLocked;
         lock.locked = lock.locked || isLocked;
-        if (index === 0 && !firstInLaterTab) {
+        if (index === 0 && !firstInTabWithBanner) {
           lock.banner = bannerFor(status) ?? lock.banner;
         }
         locks[refId] = lock;
       });
     });
-    // One banner per tab, whichever gating items reach it: locked while any of them is locked.
     const tabBanners = new Map<SectionType, BannerState | undefined>();
     tabStatuses.forEach((tabGateStatuses, tab) => {
       tabBanners.set(tab, tabGateStatuses.includes("locked")
@@ -318,14 +319,14 @@ In `SinglePageContent.renderPageContent`, the `React.Fragment` around a page's s
 </DisabledQuestionsProvider>
 ```
 
-Tests (`disabled-questions-context.test.tsx`) mock `../../firebase-db` with a `watchAnswer` that records each callback by ref id, set the query per test with `window.history.replaceState({}, "", "/?override:disableQuestionsAfter=...")` (jsdom does not navigate on a `location.search` assignment) and reset it in `afterEach`, and render a probe component that prints `useQuestionLock` for three ref ids (a question before the gate, the first question after it, a later question after it):
+Tests (`disabled-questions-context.test.tsx`) mock `../../firebase-db` with `firebaseDbMock` from the new `src/test-utils/answer-watchers.ts`, whose `watchAnswer` keeps every callback per ref id and whose `report` sends an answer to all of them, set the query per test with `window.history.replaceState({}, "", "/?override:disableQuestionsAfter=...")` (jsdom does not navigate on a `location.search` assignment) and reset it in `afterEach`, and render a probe component that prints `useQuestionLock` for three ref ids (a question before the gate, the first question after it, a later question after it):
 - No parameter: all three unlocked, `watchAnswer` never called.
 - Parameter, before any report: the two later questions are `disabled` but not `locked`, no banner; the earlier question is untouched.
 - Report `null`: both later questions `disabled` and `locked`, banner `locked` on the first only.
 - Then report saved state: all unlocked, banner `unlocked` on the first.
 - Report saved state first: all unlocked with no banner, and a later `null` report changes nothing.
 - Teacher Edition, and a locked offering (portal data with `offering.locked`): no `watchAnswer` call, nothing disabled.
-- Unmount calls each unsubscribe.
+- Unmount removes the provider's subscription.
 - Notebook layout, three tabs `[m, q1] [q2] [q3]` with a probe that also prints `useTabBanner` for each tab: after a `null` report, tabs 2 and 3 show `locked` and tab 1 none, and `q1` carries the question banner; after a saved-state report, tabs 2 and 3 show `unlocked`. With `m` last in tab 1 (`[m] [q1] [q2]`), `q1` carries no question banner because tab 2's banner covers it.
 - A second gating item inside a covered tab (`[a, q1] [b, q2] [q3]`): with `a` unlocked during the visit and `b` locked, tab 2 shows `locked`, not `unlocked`, and `q2` carries no question banner, so tab 2 has one banner and it does not say "unlocked" above a locked question.
 - Two gating items reaching the same tab: `locked` while either is locked, `unlocked` once both are open and one opened during the visit, and no banner when both had saved state on load.
@@ -342,7 +343,7 @@ Tests (`disabled-questions-context.test.tsx`) mock `../../firebase-db` with a `w
 - `src/utilities/use-inert.ts` (new) and `use-inert.test.tsx` (new)
 - `src/components/activity-page/embeddable.tsx`: read `useQuestionLock`, add the `disabled-question` class, pass `disabled` and `locked` to `ManagedInteractive`
 - `src/components/activity-page/embeddable.scss`: grayed style
-- `managed-interactive/managed-interactive.tsx`: accept `disabled` and `locked`, pass them on
+- `managed-interactive/managed-interactive.tsx`: accept `disabled` and `locked`, pass them to the header, click-to-play and the inline iframe runtime (not the dialog overlay's runtime, which opens only at the interactive's request)
 - `managed-interactive/managed-interactive-header.tsx`: hint button `disabled`; visually hidden " (locked)" in the heading
 - `managed-interactive/iframe-runtime.tsx`: `useInert` on the root `.iframe-runtime` element
 - `managed-interactive/click-to-play.tsx`: `useInert` on its root
@@ -354,7 +355,7 @@ Tests (`disabled-questions-context.test.tsx`) mock `../../firebase-db` with a `w
 ```ts
 import { RefObject, useEffect } from "react";
 
-/** Sets the `inert` attribute on the referenced element while `active`. */
+/** Sets the `inert` attribute on the referenced element while `active`; React 16 does not know the `inert` prop. */
 export const useInert = (ref: RefObject<HTMLElement>, active: boolean) => {
   useEffect(() => {
     const element = ref.current;
@@ -474,7 +475,7 @@ A max-aspect-ratio question in a primary column has a cell fixed at `98vh` whose
 
 The SCSS uses `$cc-charcoal` (`#3f3f3f`) text on `$cc-charcoal-light3` (`#F4F4F4`), 9.6:1, with a 32px icon filled `$cc-charcoal`, the same colors in both states. The locked text is the ticket's Hazbot wording, standing in for LARA-226's authored text.
 
-Tests (`disabled-questions-banner.test.tsx` and `embeddable.test.tsx`): the locked and unlocked texts (asserted against the exported constants); one `role="status"` element whose text changes on rerender from locked to unlocked without remounting (same DOM node); the icon is `aria-hidden`; the banner's class changes from `locked` to `unlocked` (Jest maps every `.svg` import to one file stub, so the icon swap itself is checked in the browser, not asserted); an `Embeddable` whose lock has `banner: "locked"` renders the banner as the first child of its `[data-cy="embeddable"]` element, outside `.embeddable-sub-two`, and one without renders none; with `useTabBanner` mocked to `"locked"`, a split-layout and a single-column `Section` each render a banner with the `tab` class as the section element's first child, and with it returning `undefined` they render none. In `activity-page-content.test.tsx`, with `?override:disableQuestionsAfter=<model ref_id>` set through `history.replaceState`, a page `[model, q1]` shows the locked banner and an inert iframe runtime for q1 after a `null` report, then the unlocked banner and no `inert` after a saved-state report. Neither page-level test file mocks `firebase-db` today, so the mock is new: `watchAnswer` keeps a list of callbacks per ref id and a report goes to all of them, because the model's id has two subscribers (the provider and the model's own `ManagedInteractive`). Each test also reports `null` for q1 before asserting on it, since `ManagedInteractive` renders "Loading..." and no iframe runtime until its own answer arrives. This is the only test that fails if the provider is not wired into `ActivityPageContent`, since the `Embeddable` tests mock the hook. `single-page-content.test.tsx` does the same for a two-page single-page activity, gating an item on the first page: the question after it locks and the question on the second page does not, which fails if the providers are missing or if one provider spans the whole activity.
+Tests (`disabled-questions-banner.test.tsx` and `embeddable.test.tsx`): the locked and unlocked texts (asserted against the exported constants); one `role="status"` element whose text changes on rerender from locked to unlocked without remounting (same DOM node); the icon is `aria-hidden`; the banner's class changes from `locked` to `unlocked` (Jest maps every `.svg` import to one file stub, so the icon swap itself is checked in the browser, not asserted); an `Embeddable` whose lock has `banner: "locked"` renders the banner as the first child of its `[data-cy="embeddable"]` element, outside `.embeddable-sub-two`, and one without renders none; with `useTabBanner` mocked to `"locked"`, a split-layout and a single-column `Section` each render a banner with the `tab` class as the section element's first child, and with it returning `undefined` they render none. In `activity-page-content.test.tsx`, with `?override:disableQuestionsAfter=<model ref_id>` set through `history.replaceState`, a page `[model, q1]` shows the locked banner and an inert iframe runtime for q1 after a `null` report, then the unlocked banner and no `inert` after a saved-state report. Neither page-level test file mocked `firebase-db`, so both use the shared `firebaseDbMock` from the provider step: `watchAnswer` keeps a list of callbacks per ref id and a report goes to all of them, because the model's id has two subscribers (the provider and the model's own `ManagedInteractive`). Each test also reports `null` for q1 before asserting on it, since `ManagedInteractive` renders "Loading..." and no iframe runtime until its own answer arrives. This is the only test that fails if the provider is not wired into `ActivityPageContent`, since the `Embeddable` tests mock the hook. `single-page-content.test.tsx` does the same for a two-page single-page activity, gating an item on the first page: the question after it locks and the question on the second page does not, which fails if the providers are missing or if one provider spans the whole activity.
 
 ---
 
@@ -487,7 +488,7 @@ Tests (`disabled-questions-banner.test.tsx` and `embeddable.test.tsx`): the lock
 - `src/data/index.ts`: register it as `sample-disabled-questions`
 - `src/utilities/disabled-questions.test.ts`: plan the sample's pages
 
-**Estimated diff size**: ~350 lines, almost all JSON
+**Estimated diff size**: ~800 lines, almost all JSON (each copied question carries its library interactive's data)
 
 The activity is a version 2 (sections) export with `layout: 0`. Its Wildfire items are `MwInteractive`s copied from `211760-MwInteractive` in `sample-new-sections.json`, with `url` set to `https://models-resources.concord.org/wildfire-model/branch/master/index.html` and `enable_learner_state: true`; its questions copy the Open Response (`4343-ManagedInteractive`) and Multiple Choice (`4340-ManagedInteractive`) embeddables from the same file. Every copy gets a new `ref_id` in the `9100` range so nothing collides with other samples.
 
@@ -515,7 +516,7 @@ A test in `disabled-questions.test.ts` loads the sample from `src/data` and asse
 **Estimated diff size**: ~5 lines
 
 ```
-* override:disableQuestionsAfter={ref_id[,ref_id]}: treats each named interactive as authored with "questions after this item start disabled" (AP-76), in addition to any authored setting. Useful for development/testing. On the page holding each named interactive, the questions after it are disabled under a banner until that interactive has saved state; for the Wildfire model that is the end of its first run. In a single-page activity the reach ends with the authored page. Not applied in Teacher Edition or on a locked offering. The `sample-disabled-questions` activity is built for it.
+* override:disableQuestionsAfter={ref_id[,ref_id]}: treats each named interactive as authored with "questions after this item start disabled", in addition to any authored setting. On the page holding each named interactive, the questions after it are disabled under a banner until that interactive has saved state; for the Wildfire model that is the end of its first run. In a single-page activity the reach ends with the authored page. Not applied in Teacher Edition or on a locked offering. The `sample-disabled-questions` activity is built for it. Useful for development/testing.
 ```
 
 The review link (the one-link demo above, plus the layout pages from the requirements' Demo pages table) goes in the pull request description, with the note that the demo unlocks when a run ends, Hazbot analysis or not.
