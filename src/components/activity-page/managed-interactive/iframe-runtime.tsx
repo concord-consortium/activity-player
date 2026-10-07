@@ -110,6 +110,9 @@ const blankIframeSrc = "about:blank";
 // The iframe src, with any url overrides applied; about:blank when the url is not loadable.
 const interactiveIframeSrc = (url: string) => isHttpUrl(url) ? applyOverrides(url) : blankIframeSrc;
 
+// AP 1.0.0 saved the special "nochange" message as state, which interactives cannot parse, so it means no state.
+const withoutLegacyNoChange = (state: any) => state === "nochange" ? undefined : state;
+
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
@@ -132,9 +135,10 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     promise: useRef<Promise<void>>(),
     resolveAndCleanup: useRef<() => void>(),
   };
-  // The latest interactive state, sent by every initInteractive.
-  // AP 1.0.0 saved the special "nochange" message as state, which interactives cannot parse, so it means no state.
-  const currentInteractiveState = useRef<any>(initialInteractiveState === "nochange" ? undefined : initialInteractiveState);
+  // The latest interactive state, sent by every initInteractive. The interactiveState listener updates it,
+  // Clear & start over clears it, and a url change takes the parent's, which includes saves made elsewhere.
+  const currentInteractiveState = useRef<any>(withoutLegacyNoChange(initialInteractiveState));
+  const currentInteractiveStateUrl = useRef(url);
 
   const dynamicText = useDynamicTextContext();
   const dynamicTextComponentIds = useRef<Set<string>>(new Set());
@@ -327,8 +331,6 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         pubSubManager.unsubscribe(id, message.channelId, message.subscriptionId);
       });
 
-      const latestInteractiveState = currentInteractiveState.current;
-
       // create attachments map
       const attachments: AttachmentInfoMap = {};
       Object.keys(answerMetadata?.attachments || {}).forEach((key) => {
@@ -382,7 +384,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           domain: window.location.hostname
         },
         authoredState,
-        interactiveState: latestInteractiveState,
+        interactiveState: currentInteractiveState.current,
         themeInfo: {
           colors: {
             colorA: "",
@@ -433,6 +435,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                 };
 
       const postInitInteractive = () => {
+        // new state can arrive while the object storage token is pending
+        const latestInteractiveState = currentInteractiveState.current;
+        initInteractiveMsg.interactiveState = latestInteractiveState;
         // to support legacy interactives first post the deprecated loadInteractive message as LARA does
         // but only when there is interactive state (also as LARA does)
         if (latestInteractiveState) {
@@ -453,6 +458,11 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         postInitInteractive();
       }
     };
+
+    if (url !== currentInteractiveStateUrl.current) {
+      currentInteractiveStateUrl.current = url;
+      currentInteractiveState.current = withoutLegacyNoChange(initialInteractiveState);
+    }
 
     if (iframeRef.current) {
       // Reload the iframe.
