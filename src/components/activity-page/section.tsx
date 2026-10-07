@@ -257,9 +257,8 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   } else {
     const numQuestionsLeftColumn = leftColumnEmbeddables.filter(embeddable => isQuestion(embeddable)).length;
     const rightColumnQuestionNumberStart = questionNumberStart + numQuestionsLeftColumn;
-    return (
-      <div className={sectionClass} ref={sectionDivRef} data-cy="section-split-layout">
-        { tabBanner && <DisabledQuestionsBanner state={tabBanner} tab /> }
+    const columns = (
+      <>
         {leftPrimary
           ? renderPrimaryEmbeddables(leftColumnEmbeddables, questionNumberStart)
           : renderSecondaryEmbeddables(leftColumnEmbeddables, questionNumberStart)
@@ -267,6 +266,17 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
         {leftPrimary
           ? renderSecondaryEmbeddables(rightColumnEmbeddables, rightColumnQuestionNumberStart)
           : renderPrimaryEmbeddables(rightColumnEmbeddables, rightColumnQuestionNumberStart)
+        }
+      </>
+    );
+    return (
+      <div className={classNames(sectionClass, { "with-tab-banner": tabBanner })} ref={sectionDivRef} data-cy="section-split-layout">
+        { tabBanner
+          ? <>
+              <DisabledQuestionsBanner state={tabBanner} tab />
+              <div className="section-columns">{columns}</div>
+            </>
+          : columns
         }
       </div>
     );

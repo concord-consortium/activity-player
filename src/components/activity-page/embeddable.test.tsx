@@ -262,21 +262,26 @@ describe("Embeddable component", () => {
   describe("disabled questions", () => {
     afterEach(() => { mockQuestionLock = { disabled: false, locked: false }; });
 
-    const mountInteractive = () => {
+    const plugin: IEmbeddablePlugin = { type: "Embeddable::EmbeddablePlugin", is_hidden: false, ref_id: "1234" };
+
+    const mountInteractive = (linkedPluginEmbeddable?: IEmbeddablePlugin) => {
       iframePhone.ParentEndpoint = jest.fn().mockImplementation(() => ({
         disconnect: jest.fn(),
         post: jest.fn(),
         addListener: jest.fn(),
         removeListener: jest.fn()
       }));
+      // The lock comes from the mocked hook; turning learner state off only lets the runtime render without a saved answer.
       const embeddable: IManagedInteractive = {
         ...DefaultManagedInteractive,
         library_interactive: { ...DefaultLibraryInteractive, data: { ...DefaultLibraryInteractive.data, enable_learner_state: false } },
         ref_id: "123-ManagedInteractive",
         column: "primary"
       };
-      return mount(<DynamicTextTester><Embeddable embeddable={embeddable} questionNumber={1} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} /></DynamicTextTester>);
+      return mount(<DynamicTextTester><Embeddable embeddable={embeddable} questionNumber={1} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} linkedPluginEmbeddable={linkedPluginEmbeddable} /></DynamicTextTester>);
     };
+    const pluginWrapperIsInert = (wrapper: ReturnType<typeof mountInteractive>) =>
+      wrapper.find(".embeddable-sub-one").getDOMNode().hasAttribute("inert");
     const runtimeIsInert = (wrapper: ReturnType<typeof mountInteractive>) =>
       wrapper.find('[data-cy="iframe-runtime"]').getDOMNode().hasAttribute("inert");
 
@@ -285,6 +290,20 @@ describe("Embeddable component", () => {
       const wrapper = mountInteractive();
       expect(wrapper.find('[data-cy="embeddable"]').hasClass("disabled-question")).toBe(true);
       expect(runtimeIsInert(wrapper)).toBe(true);
+    });
+
+    it("makes a question inert but not grayed while its gate is loading", () => {
+      mockQuestionLock = { disabled: true, locked: false };
+      const wrapper = mountInteractive();
+      expect(wrapper.find('[data-cy="embeddable"]').hasClass("disabled-question")).toBe(false);
+      expect(runtimeIsInert(wrapper)).toBe(true);
+    });
+
+    it("makes a linked plugin's wrapper inert only while the question is disabled", () => {
+      mockQuestionLock = { disabled: true, locked: true };
+      expect(pluginWrapperIsInert(mountInteractive(plugin))).toBe(true);
+      mockQuestionLock = { disabled: false, locked: false };
+      expect(pluginWrapperIsInert(mountInteractive(plugin))).toBe(false);
     });
 
     it("leaves an unlocked question alone", () => {

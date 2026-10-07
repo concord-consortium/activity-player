@@ -420,6 +420,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     hasHeader: !hideQuestionHeader,
     feedback,
     log: handleLog,
+    disabled,
   };
 
   const interactiveIframeRuntime =
@@ -429,7 +430,6 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         ref={iframeRuntimeRef}
         url={iframeUrl}
         {...iframeRuntimeProps}
-        disabled={disabled}
       />;
 
   return (

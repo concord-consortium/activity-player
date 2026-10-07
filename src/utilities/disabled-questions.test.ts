@@ -78,6 +78,13 @@ describe("planDisabledQuestions", () => {
     expect(plan(page(sixtyForty), gate("model"))).toEqual({ model: ["qB", "qA"] });
   });
 
+  it("never lets gates in different columns of one section disable each other", () => {
+    const sideBySide = section([
+      question("gateL", "secondary"), question("qL", "secondary"), question("gateR", "primary"), question("qR", "primary")
+    ], "40-60");
+    expect(plan(page(sideBySide), gate("gateL", "gateR"))).toEqual({ gateL: ["qL", "qR"], gateR: ["qL", "qR"] });
+  });
+
   it("uses authored order when a split section is stacked in a single-page activity", () => {
     const fortySixty = section([question("qA", "secondary"), question("model", "primary"), question("qB", "secondary")], "40-60");
     expect(plan(page(fortySixty), gate("model"), ActivityLayouts.SinglePage)).toEqual({ model: ["qB"] });

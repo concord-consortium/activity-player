@@ -91,6 +91,16 @@ describe("DisabledQuestionsProvider", () => {
     expect(read()).toEqual({ q0: unlocked, q1: unlocked, q2: unlocked });
   });
 
+  it("shows a gate as locked when its saved state cannot be read", () => {
+    setQuery("?override:disableQuestionsAfter=model");
+    const warn = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+    const { read } = renderProbe({ page, refIds });
+    act(() => answerWatchers.fail("model", new Error("permission-denied")));
+    expect(read()).toEqual({ q0: unlocked, q1: { ...locked, banner: "locked" }, q2: locked });
+    expect(warn).toHaveBeenCalled();
+    warn.mockRestore();
+  });
+
   it("disables nothing in Teacher Edition or on a locked offering", () => {
     setQuery("?override:disableQuestionsAfter=model");
     expect(renderProbe({ page, refIds, teacherEditionMode: true }).read()).toEqual({ q0: unlocked, q1: unlocked, q2: unlocked });
@@ -191,7 +201,7 @@ describe("DisabledQuestionsProvider", () => {
       expect(announcer(container)).toBeNull();
     });
 
-    it("announces each unlock during the visit from one region outside the questions", () => {
+    it("announces each unlock during the visit from the page's live region", () => {
       const twoGates = pageOf(section(question("m1"), question("q1"), question("m2"), question("q2")));
       setQuery("?override:disableQuestionsAfter=m1,m2");
       const { container } = renderProbe({ page: twoGates, refIds: [] });

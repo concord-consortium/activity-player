@@ -13,7 +13,7 @@ import { kUnlockedBannerText } from "./disabled-questions-banner";
 export type BannerState = "locked" | "unlocked";
 
 export interface IQuestionLock {
-  /** Out of reach of pointer, keyboard and assistive technology. */
+  /** Out of reach of pointer, keyboard and assistive technology, except for its heading. */
   disabled: boolean;
   /** Shown grayed out with its heading marked locked. False while the gate is still loading. */
   locked: boolean;
@@ -74,10 +74,17 @@ export const DisabledQuestionsProvider: React.FC<IProps> = ({ page, activityLayo
     if (!gatingKey) return;
     const gatingRefIds = gatingKey.split(",");
     setStatuses(Object.fromEntries(gatingRefIds.map(refId => [refId, "loading" as GateStatus])));
-    const unsubscribes = gatingRefIds.map(refId => watchAnswer(refId, wrappedAnswer => {
-      const hasSavedState = wrappedAnswer?.interactiveState != null;
+    const report = (refId: string, hasSavedState: boolean) =>
       setStatuses(prev => ({ ...prev, [refId]: nextGateStatus(prev[refId] ?? "loading", hasSavedState) }));
-    }));
+    // A gate whose answer cannot be read shows as locked, so its questions are explained rather than stuck loading.
+    const unsubscribes = gatingRefIds.map(refId => watchAnswer(
+      refId,
+      wrappedAnswer => report(refId, wrappedAnswer?.interactiveState != null),
+      error => {
+        console.warn(`Could not read the saved state of ${refId}: ${error.message}`);
+        report(refId, false);
+      }
+    ));
     return () => unsubscribes.forEach(unsubscribe => unsubscribe());
   }, [gatingKey]);
 

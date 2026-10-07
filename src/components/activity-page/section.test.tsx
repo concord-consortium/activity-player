@@ -317,6 +317,21 @@ describe("Section component", () => {
       }
     );
 
+    it("puts a responsive section's columns in their own row under the tab banner", () => {
+      mockTabBanner = "locked";
+      const sectionElement = renderSection("responsive-50-50").getByTestId("section-split-layout");
+      expect(sectionElement.classList.contains("with-tab-banner")).toBe(true);
+      expect(sectionElement.firstElementChild?.getAttribute("data-cy")).toBe("disabled-questions-banner");
+      const columns = sectionElement.querySelector(":scope > .section-columns");
+      expect(columns?.querySelectorAll(":scope > .column")).toHaveLength(2);
+    });
+
+    it("leaves a section's columns as direct children without a tab banner", () => {
+      const sectionElement = renderSection("responsive-50-50").getByTestId("section-split-layout");
+      expect(sectionElement.querySelector(".section-columns")).toBeNull();
+      expect(sectionElement.querySelectorAll(":scope > .column")).toHaveLength(2);
+    });
+
     it("renders no tab banner without one", () => {
       const { queryByTestId } = renderSection("40-60");
       expect(queryByTestId("disabled-questions-banner")).toBeNull();

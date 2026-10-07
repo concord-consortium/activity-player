@@ -49,18 +49,23 @@ const pageItems = (page: Page, activityLayout: number): IPlannedItem[] =>
 
 /**
  * A gating item disables the questions below it in its own column and, in a split section, every question
- * in the other column, since columns sit side by side and their relative heights change as the page reflows.
- * `"disable_following_on_page"` also disables every question in the page's later sections.
+ * in the other column except another gating item, since columns sit side by side and their relative heights
+ * change as the page reflows. `"disable_following_on_page"` also disables every question in later sections.
  */
 export const planDisabledQuestions = (page: Page, activityLayout: number, settings: QuestionGatingSettings): DisabledQuestionsPlan => {
   const plan: DisabledQuestionsPlan = {};
   if (Object.keys(settings).length === 0) return plan;
   const items = pageItems(page, activityLayout);
+  const isGate = ({ embeddable }: IPlannedItem) => {
+    const gating = settings[embeddable.ref_id];
+    return (gating === "disable_following_on_page" || gating === "disable_following_in_section") && savesLearnerState(embeddable);
+  };
   items.forEach((gate, gateIndex) => {
+    if (!isGate(gate)) return;
     const gating = settings[gate.embeddable.ref_id];
-    if ((gating !== "disable_following_on_page" && gating !== "disable_following_in_section") || !savesLearnerState(gate.embeddable)) return;
+    // Two gates side by side would otherwise disable each other, and neither could ever be used to unlock.
     const reaches = (item: IPlannedItem, index: number) => item.sectionIndex === gate.sectionIndex
-      ? index !== gateIndex && (item.column !== gate.column || index > gateIndex)
+      ? index !== gateIndex && (item.column !== gate.column ? !isGate(item) : index > gateIndex)
       : item.sectionIndex > gate.sectionIndex && gating === "disable_following_on_page";
     plan[gate.embeddable.ref_id] = items
       .filter(reaches)

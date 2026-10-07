@@ -283,3 +283,17 @@
     }
   }
 }
+
+// A notebook tab banner sits above the section's columns; this keeps the columns laid out as the section lays them out.
+.section-columns {
+  display: contents;
+}
+
+.section.responsive.with-tab-banner {
+  flex-direction: column;
+
+  .section-columns {
+    display: flex;
+    gap: inherit;
+  }
+}

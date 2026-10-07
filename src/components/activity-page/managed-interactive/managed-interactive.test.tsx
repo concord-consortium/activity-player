@@ -444,7 +444,7 @@ describe("ManagedInteractive component", () => {
   });
 
   describe("closing a dialog", () => {
-    const renderWithDialog = async (dialogUrl: string) => {
+    const renderWithDialog = async (dialogUrl: string, disabled = false) => {
       const sampleEmbeddable: IMwInteractive = {
         type: "MwInteractive",
         name: "interactive that opens a dialog",
@@ -459,6 +459,7 @@ describe("ManagedInteractive component", () => {
                 setSendCustomMessage={mockSetSendCustomMessage}
                 setNavigation={mockSetNavigation}
                 showQuestionPrefix={true}
+                disabled={disabled}
                 />
              </DynamicTextTester>);
       jest.runAllTimers();
@@ -476,6 +477,17 @@ describe("ManagedInteractive component", () => {
       // the close waits on the state request, which settles as a microtask
       await act(async () => { await Promise.resolve(); });
     };
+
+    it("keeps a disabled question's interactive inert inside a dialog it opens", async () => {
+      const dialogRuntime = () => document.querySelector('.dialog-overlay [data-cy="iframe-runtime"]');
+      await renderWithDialog("https://models-resources.concord.org/interactive/index.html", true);
+      expect(dialogRuntime()?.hasAttribute("inert")).toBe(true);
+    });
+
+    it("leaves the dialog's interactive usable when the question is not disabled", async () => {
+      await renderWithDialog("https://models-resources.concord.org/interactive/index.html");
+      expect(document.querySelector('.dialog-overlay [data-cy="iframe-runtime"]')?.hasAttribute("inert")).toBe(false);
+    });
 
     it("closes a dialog whose interactive could not be loaded", async () => {
       // Such an interactive has no iframe-phone connection, so nothing will ever answer the

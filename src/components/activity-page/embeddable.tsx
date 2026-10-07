@@ -14,6 +14,7 @@ import { SpikeMediaLibrary } from "./spike-media-library/spike-media-library";
 import { EmbeddableVisibilityContext } from "../embeddable-visibility-context";
 import { useQuestionLock } from "./disabled-questions-context";
 import { DisabledQuestionsBanner } from "./disabled-questions-banner";
+import { useInert } from "../../utilities/use-inert";
 
 import "./embeddable.scss";
 
@@ -55,6 +56,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   }, []);
   const LARA = useContext(LaraGlobalContext);
   const lock = useQuestionLock(embeddable.ref_id);
+  useInert(embeddableWrapperDivTarget, lock.disabled);
 
   useEffect(() => {
     const sendCustomMessage = (message: ICustomMessage) => sendCustomMessageRef.current?.(message);
