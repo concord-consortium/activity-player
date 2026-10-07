@@ -192,6 +192,8 @@
     &.max-aspect-ratio {
       .embeddable.primary {
         height: 98vh;
+        display: flex;
+        flex-direction: column;
         .embeddable.primary, .embeddable-sub-two, .managed-interactive, .runtime-container, .iframe-runtime {
           display: flex;
           flex-direction: column;

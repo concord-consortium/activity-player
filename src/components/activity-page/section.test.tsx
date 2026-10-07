@@ -13,6 +13,12 @@ jest.mock("../../firebase-db", () => ({
   watchQuestionLevelFeedback: () => () => undefined
 }));
 
+let mockTabBanner: "locked" | "unlocked" | undefined;
+jest.mock("./disabled-questions-context", () => ({
+  useQuestionLock: () => ({ disabled: false, locked: false }),
+  useTabBanner: () => mockTabBanner
+}));
+
 describe("Section component", () => {
   const stubFunction = () => {
     // do nothing.
@@ -284,6 +290,36 @@ describe("Section component", () => {
       expect(precedes(getByTestId("section-column-primary"), getByTestId("section-column-secondary"))).toBe(true);
       expect(getByRole("heading", { name: "Question #1: primary-q" })).toBeDefined();
       expect(getByRole("heading", { name: "Question #2: secondary-q" })).toBeDefined();
+    });
+  });
+
+  describe("notebook tab banner", () => {
+    afterEach(() => { mockTabBanner = undefined; });
+
+    const renderSection = (layout: string) => render(
+      <Section
+        activityLayout={2}
+        page={{...DefaultTestPage}}
+        pluginsLoaded={true}
+        questionNumberStart={0}
+        section={{ ...DefaultTestSection, layout, embeddables: [{ ...DefaultXhtmlComponent, column: "primary" }] }}
+        setNavigation={stubFunction}
+      />
+    );
+
+    it.each([["split", "40-60", "section-split-layout"], ["single-column", "full-width", "section-single-column-layout"]])(
+      "renders the tab banner as the first child of a %s section", (_, layout, testId) => {
+        mockTabBanner = "locked";
+        const sectionElement = renderSection(layout).getByTestId(testId);
+        const banner = sectionElement.firstElementChild;
+        expect(banner?.getAttribute("data-cy")).toBe("disabled-questions-banner");
+        expect(banner?.classList.contains("tab")).toBe(true);
+      }
+    );
+
+    it("renders no tab banner without one", () => {
+      const { queryByTestId } = renderSection("40-60");
+      expect(queryByTestId("disabled-questions-banner")).toBeNull();
     });
   });
 });

@@ -5,21 +5,12 @@ import { DefaultManagedInteractive, DefaultTestPage, DefaultTestSection } from "
 import { ActivityLayouts } from "../../utilities/activity-utils";
 import { PortalDataContext } from "../portal-data-context";
 import { DisabledQuestionsProvider, useQuestionLock, useTabBanner } from "./disabled-questions-context";
+import type { WrappedDBAnswer } from "../../firebase-db";
+import { answerWatchers, kSavedAnswer } from "../../test-utils/answer-watchers";
 
-const mockSubscribers: Record<string, Array<(answer: any) => void>> = {};
-const mockUnsubscribe = jest.fn();
-const mockWatchAnswer = jest.fn((refId: string, callback: (answer: any) => void) => {
-  (mockSubscribers[refId] = mockSubscribers[refId] ?? []).push(callback);
-  return mockUnsubscribe;
-});
-jest.mock("../../firebase-db", () => ({
-  watchAnswer: (refId: string, callback: (answer: any) => void) => mockWatchAnswer(refId, callback)
-}));
+jest.mock("../../firebase-db", () => jest.requireActual("../../test-utils/answer-watchers").firebaseDbMock);
 
-const report = (refId: string, answer: any) => act(() => {
-  (mockSubscribers[refId] ?? []).forEach(callback => callback(answer));
-});
-const kSavedState = { meta: {}, interactiveState: { run: 1 } };
+const report = (refId: string, answer: WrappedDBAnswer | null) => act(() => answerWatchers.report(refId, answer));
 
 const question = (refId: string): EmbeddableType => ({ ...DefaultManagedInteractive, ref_id: refId, column: null });
 const section = (...embeddables: EmbeddableType[]): SectionType =>
@@ -65,18 +56,14 @@ describe("DisabledQuestionsProvider", () => {
   const page = pageOf(section(question("q0"), question("model"), question("q1"), question("q2")));
   const refIds = ["q0", "q1", "q2"];
 
-  beforeEach(() => {
-    Object.keys(mockSubscribers).forEach(refId => delete mockSubscribers[refId]);
-    mockWatchAnswer.mockClear();
-    mockUnsubscribe.mockClear();
-  });
+  beforeEach(() => answerWatchers.reset());
 
   afterEach(() => setQuery(""));
 
   it("changes nothing without the parameter", () => {
     const { read } = renderProbe({ page, refIds });
     expect(read()).toEqual({ q0: unlocked, q1: unlocked, q2: unlocked });
-    expect(mockWatchAnswer).not.toHaveBeenCalled();
+    expect(answerWatchers.watchAnswer).not.toHaveBeenCalled();
   });
 
   it("disables without graying while the gate is loading", () => {
@@ -90,14 +77,14 @@ describe("DisabledQuestionsProvider", () => {
     const { read } = renderProbe({ page, refIds });
     report("model", null);
     expect(read()).toEqual({ q0: unlocked, q1: { ...locked, banner: "locked" }, q2: locked });
-    report("model", kSavedState);
+    report("model", kSavedAnswer);
     expect(read()).toEqual({ q0: unlocked, q1: { ...unlocked, banner: "unlocked" }, q2: unlocked });
   });
 
   it("shows no banner when the gate is already unlocked on load, and stays unlocked", () => {
     setQuery("?override:disableQuestionsAfter=model");
     const { read } = renderProbe({ page, refIds });
-    report("model", kSavedState);
+    report("model", kSavedAnswer);
     expect(read()).toEqual({ q0: unlocked, q1: unlocked, q2: unlocked });
     report("model", null);
     expect(read()).toEqual({ q0: unlocked, q1: unlocked, q2: unlocked });
@@ -108,15 +95,15 @@ describe("DisabledQuestionsProvider", () => {
     expect(renderProbe({ page, refIds, teacherEditionMode: true }).read()).toEqual({ q0: unlocked, q1: unlocked, q2: unlocked });
     const lockedOffering = { offering: { id: 1, activityUrl: "", rubricUrl: "", locked: true } };
     expect(renderProbe({ page, refIds, portalData: lockedOffering }).read()).toEqual({ q0: unlocked, q1: unlocked, q2: unlocked });
-    expect(mockWatchAnswer).not.toHaveBeenCalled();
+    expect(answerWatchers.watchAnswer).not.toHaveBeenCalled();
   });
 
   it("unsubscribes on unmount", () => {
     setQuery("?override:disableQuestionsAfter=model");
     const { unmount } = renderProbe({ page, refIds });
-    expect(mockWatchAnswer).toHaveBeenCalledTimes(1);
+    expect(answerWatchers.subscriberCount("model")).toBe(1);
     unmount();
-    expect(mockUnsubscribe).toHaveBeenCalledTimes(1);
+    expect(answerWatchers.subscriberCount("model")).toBe(0);
   });
 
   it("warns and disables nothing when the parameter is repeated", () => {
@@ -135,7 +122,7 @@ describe("DisabledQuestionsProvider", () => {
       const { read } = renderProbe({ page: pageOf(...tabs), refIds: ["q1"], activityLayout: ActivityLayouts.Notebook, probeSections: tabs });
       report("m", null);
       expect(read()).toEqual({ q1: { ...locked, banner: "locked" }, tab1: "none", tab2: "locked", tab3: "locked" });
-      report("m", kSavedState);
+      report("m", kSavedAnswer);
       expect(read()).toEqual({ q1: { ...unlocked, banner: "unlocked" }, tab1: "none", tab2: "unlocked", tab3: "unlocked" });
     });
 
@@ -153,7 +140,7 @@ describe("DisabledQuestionsProvider", () => {
       const { read } = renderProbe({ page: pageOf(...tabs), refIds: ["q2"], activityLayout: ActivityLayouts.Notebook, probeSections: tabs });
       report("a", null);
       report("b", null);
-      report("a", kSavedState);
+      report("a", kSavedAnswer);
       expect(read()).toEqual({ q2: locked, tab1: "none", tab2: "locked", tab3: "locked" });
     });
 
@@ -163,16 +150,15 @@ describe("DisabledQuestionsProvider", () => {
       const first = renderProbe({ page: pageOf(...tabs), refIds: [], activityLayout: ActivityLayouts.Notebook, probeSections: tabs });
       report("a", null);
       report("b", null);
-      report("a", kSavedState);
+      report("a", kSavedAnswer);
       expect(first.read()).toEqual({ tab1: "none", tab2: "locked" });
-      report("b", kSavedState);
+      report("b", kSavedAnswer);
       expect(first.read()).toEqual({ tab1: "none", tab2: "unlocked" });
       first.unmount();
 
-      Object.keys(mockSubscribers).forEach(refId => delete mockSubscribers[refId]);
       const second = renderProbe({ page: pageOf(...tabs), refIds: [], activityLayout: ActivityLayouts.Notebook, probeSections: tabs });
-      report("a", kSavedState);
-      report("b", kSavedState);
+      report("a", kSavedAnswer);
+      report("b", kSavedAnswer);
       expect(second.read()).toEqual({ tab1: "none", tab2: "none" });
     });
 

@@ -12,6 +12,8 @@ import useResizeObserver from "@react-hook/resize-observer";
 import { nanoid } from "../../utilities/nanoid";
 import { EmbeddableVisibilityContext } from "../embeddable-visibility-context";
 import { getSectionColumns } from "../../utilities/section-columns";
+import { useTabBanner } from "./disabled-questions-context";
+import { DisabledQuestionsBanner } from "./disabled-questions-banner";
 
 import "./section.scss";
 
@@ -42,6 +44,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   const [isSecondaryCollapsed, setIsSecondaryCollapsed] = useState(false);
 
   const visibility = useContext(EmbeddableVisibilityContext);
+  const tabBanner = useTabBanner(section);
   // A notebook tab switch shows one section and hides another; both report it, which coalesces.
   const prevHiddenTab = useRef(hiddenTab);
   useEffect(() => {
@@ -247,6 +250,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   if (stacked) {
     return (
       <div className={sectionClass} ref={sectionDivRef} style={responsiveDirectionStyle} data-cy="section-single-column-layout">
+        { tabBanner && <DisabledQuestionsBanner state={tabBanner} tab /> }
         { renderEmbeddables(section.embeddables, questionNumberStart, singleColumn) }
       </div>
     );
@@ -255,6 +259,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
     const rightColumnQuestionNumberStart = questionNumberStart + numQuestionsLeftColumn;
     return (
       <div className={sectionClass} ref={sectionDivRef} data-cy="section-split-layout">
+        { tabBanner && <DisabledQuestionsBanner state={tabBanner} tab /> }
         {leftPrimary
           ? renderPrimaryEmbeddables(leftColumnEmbeddables, questionNumberStart)
           : renderSecondaryEmbeddables(leftColumnEmbeddables, questionNumberStart)

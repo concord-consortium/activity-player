@@ -13,7 +13,7 @@ jest.mock("../../firebase-db", () => ({
   getAnswer: () => { return { answerType: "multiple_choice_answer", selectedChoiceIds: []}; }
 }));
 
-let mockQuestionLock: { disabled: boolean, locked: boolean } = { disabled: false, locked: false };
+let mockQuestionLock: { disabled: boolean, locked: boolean, banner?: "locked" | "unlocked" } = { disabled: false, locked: false };
 jest.mock("./disabled-questions-context", () => ({
   useQuestionLock: () => mockQuestionLock
 }));
@@ -291,6 +291,20 @@ describe("Embeddable component", () => {
       const wrapper = mountInteractive();
       expect(wrapper.find('[data-cy="embeddable"]').hasClass("disabled-question")).toBe(false);
       expect(runtimeIsInert(wrapper)).toBe(false);
+    });
+
+    it("renders the banner as the embeddable's first child, outside the grayed body", () => {
+      mockQuestionLock = { disabled: true, locked: true, banner: "locked" };
+      const root = mountInteractive().find('[data-cy="embeddable"]').getDOMNode();
+      const banner = root.querySelector('[data-cy="disabled-questions-banner"]');
+      expect(root.firstElementChild).toBe(banner);
+      expect(banner?.closest(".embeddable-sub-two")).toBeNull();
+    });
+
+    it("renders no banner without one in the lock", () => {
+      mockQuestionLock = { disabled: true, locked: true };
+      const root = mountInteractive().find('[data-cy="embeddable"]').getDOMNode();
+      expect(root.querySelector('[data-cy="disabled-questions-banner"]')).toBeNull();
     });
   });
 });

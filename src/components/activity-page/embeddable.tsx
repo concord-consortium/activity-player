@@ -13,6 +13,7 @@ import { ICustomMessage, ISupportedFeatures, INavigationOptions, IGetInteractive
 import { SpikeMediaLibrary } from "./spike-media-library/spike-media-library";
 import { EmbeddableVisibilityContext } from "../embeddable-visibility-context";
 import { useQuestionLock } from "./disabled-questions-context";
+import { DisabledQuestionsBanner } from "./disabled-questions-banner";
 
 import "./embeddable.scss";
 
@@ -179,6 +180,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
       key={embeddable.ref_id}
       ref={targetDiv}
     >
+      { lock.banner && <DisabledQuestionsBanner state={lock.banner} /> }
       { linkedPluginEmbeddable && <div className={"embeddable-sub-one"} ref={embeddableWrapperDivTarget}></div> }
       <div className={"embeddable-sub-two"} ref={embeddableDivTarget}>
         { qComponent }
