@@ -8,6 +8,7 @@ import sampleNewSectionsHiddenContent from "../data/version-2/sample-new-section
 import sampleNewSectionsMultipleLayoutTypes from "../data/version-2/sample-new-sections-multiple-layout-types.json";
 import sampleNewSectionsSinglePageLayout from "../data/version-2/sample-new-sections-single-page-layout.json";
 import sampleNewSectionsInteractiveSharing from "../data/version-2/sample-new-sections-interactive-sharing.json";
+import sampleNewSectionsDisabledQuestions from "../data/version-2/sample-new-sections-disabled-questions.json";
 import sampleActivity2 from "../data/sample-activity-2.json";
 import sampleActivityCbio from "../data/sample-activity-CBIO.json";
 import sampleActivityHas from "../data/sample-activity-HAS.json";
@@ -49,6 +50,7 @@ const sampleActivities: {[name: string]: Activity} = {
   "sample-new-sections-multiple-layout-types": sampleNewSectionsMultipleLayoutTypes as Activity,
   "sample-new-sections-single-page-layout": sampleNewSectionsSinglePageLayout as Activity,
   "sample-new-sections-interactive-sharing": sampleNewSectionsInteractiveSharing as Activity,
+  "sample-disabled-questions": sampleNewSectionsDisabledQuestions as Activity,
   "sample-activity-2": sampleActivity2 as unknown as Activity,
   "sample-activity-cbio": sampleActivityCbio as unknown as Activity,
   "sample-activity-has": sampleActivityHas as unknown as Activity,

@@ -1,6 +1,7 @@
 import { EmbeddableType, IManagedInteractive, IMwInteractive, Page, SectionType } from "../types";
 import { DefaultManagedInteractive, DefaultTestPage, DefaultTestSection, DefaultXhtmlComponent } from "../test-utils/model-for-tests";
 import { ActivityLayouts } from "./activity-utils";
+import { sampleActivities } from "../data";
 import {
   GateStatus, nextGateStatus, parseQuestionGatingParam, planDisabledQuestions, planTabBanners, QuestionGatingSettings
 } from "./disabled-questions";
@@ -118,3 +119,38 @@ describe("nextGateStatus", () => {
     expect(nextGateStatus(status, hasSavedState)).toBe(expected);
   });
 });
+
+describe("the sample-disabled-questions activity", () => {
+  const activity = sampleActivities["sample-disabled-questions"];
+  const allModels = gate("9101-MwInteractive", "9102-MwInteractive", "9103-MwInteractive", "9104-MwInteractive", "9105-MwInteractive");
+  const planPage = (position: number) =>
+    planDisabledQuestions(activity.pages[position - 1], activity.layout, allModels);
+
+  it("locks both questions after the full-width model", () => {
+    expect(planPage(1)).toEqual({ "9101-MwInteractive": ["9106-ManagedInteractive", "9107-ManagedInteractive"] });
+  });
+
+  it("locks the questions in both columns when the model is on the left", () => {
+    expect(planPage(2)).toEqual({ "9102-MwInteractive": ["9108-ManagedInteractive", "9109-ManagedInteractive", "9110-ManagedInteractive"] });
+  });
+
+  it("leaves the left-column question open when the model is on the right", () => {
+    expect(planPage(3)).toEqual({ "9103-MwInteractive": ["9112-ManagedInteractive", "9113-ManagedInteractive"] });
+  });
+
+  it("makes the last question wait for both models", () => {
+    expect(planPage(4)).toEqual({
+      "9104-MwInteractive": ["9114-ManagedInteractive", "9105-MwInteractive", "9115-ManagedInteractive"],
+      "9105-MwInteractive": ["9115-ManagedInteractive"]
+    });
+  });
+
+  it("repeats no ref_id on a page", () => {
+    expect(activity.pages).toHaveLength(4);
+    activity.pages.forEach(p => {
+      const refIds = p.sections.flatMap(s => s.embeddables.map(e => e.ref_id));
+      expect(new Set(refIds).size).toBe(refIds.length);
+    });
+  });
+});
+
