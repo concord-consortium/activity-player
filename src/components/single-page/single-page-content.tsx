@@ -8,6 +8,7 @@ import { Activity, Page } from "../../types";
 import { Section } from "../activity-page/section";
 import { ReadAloudToggle } from "../read-aloud-toggle";
 import { EmbeddableVisibilityProvider } from "../activity-page/embeddable-visibility-provider";
+import { DisabledQuestionsProvider } from "../activity-page/disabled-questions-context";
 
 import "./single-page-content.scss";
 
@@ -25,7 +26,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
     // Even though this renders as a single page, the authored JSON still has pages
     const totalPreviousQuestions = numQuestionsOnPreviousPages(page.position, activity);
     return (
-      <React.Fragment key={index}>
+      <DisabledQuestionsProvider key={index} page={page} activityLayout={activity.layout} teacherEditionMode={teacherEditionMode}>
         { page.sections.map((section, idx) => {
             const questionCount = numQuestionsOnPreviousSections(idx, page.sections) || 0;
             const embeddableQuestionNumberStart = questionCount + totalPreviousQuestions;
@@ -44,7 +45,7 @@ export const SinglePageContent: React.FC<IProps> = (props) => {
             );
           })
         }
-      </React.Fragment>
+      </DisabledQuestionsProvider>
     );
   };
 

@@ -16,6 +16,7 @@ import { IPageChangeNotification, PageChangeNotification } from "./page-change-n
 import { ReadAloudToggle } from "../read-aloud-toggle";
 import { TeacherFeedbackSmallBadge } from "../teacher-feedback/teacher-feedback-small-badge";
 import { EmbeddableVisibilityProvider } from "./embeddable-visibility-provider";
+import { DisabledQuestionsProvider } from "./disabled-questions-context";
 
 import "./activity-page-content.scss";
 
@@ -129,10 +130,12 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
               <ReadAloudToggle />
             </div>
             {isNotebookLayout && <div className="notebookHeader" />}
-            <div className="sections">
-              {renderTabs && this.renderTabs(sections)}
-              {this.renderSections(sections, totalPreviousQuestions, renderTabs)}
-            </div>
+            <DisabledQuestionsProvider page={page} activityLayout={this.props.activityLayout} teacherEditionMode={this.props.teacherEditionMode}>
+              <div className="sections">
+                {renderTabs && this.renderTabs(sections)}
+                {this.renderSections(sections, totalPreviousQuestions, renderTabs)}
+              </div>
+            </DisabledQuestionsProvider>
             {enableReportButton &&
               <BottomButtons
                 onGenerateReport={this.handleReport}
