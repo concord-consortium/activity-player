@@ -549,6 +549,88 @@ describe("IframeRuntime component", () => {
     expect(iframe.getAttribute("src")).toBe(url);
   });
 
+  describe("re-init after the interactive reloads its own page", () => {
+    // iframe-phone calls the after-connected callback on every "hello", and an interactive
+    // that reloads its own page says "hello" again without the runtime remounting.
+    const helloAgain = () => {
+      const [, afterConnectedCallback] = lastCall(iframePhone.ParentEndpoint as unknown as jest.Mock);
+      act(() => { afterConnectedCallback(); });
+    };
+    const postsOf = (type: string) => mockPost.mock.calls.filter(([t]) => t === type).map(([, data]) => data);
+
+    it("re-inits with the latest state the interactive sent", () => {
+      renderWith({ initialInteractiveState: { run: 0 } });
+      act(() => { jest.runAllTimers(); });
+      act(() => { dispatchMessageFromChild("interactiveState", { run: 1 }); });
+      mockPost.mockClear();
+
+      helloAgain();
+
+      expect(postsOf("initInteractive")).toHaveLength(1);
+      expect(postsOf("initInteractive")[0].interactiveState).toStrictEqual({ run: 1 });
+      expect(postsOf("loadInteractive")).toStrictEqual([{ run: 1 }]);
+    });
+
+    it("re-inits with no state after Clear & start over", () => {
+      const setInteractiveState = jest.fn();
+      const { getByTestId } = renderWith({
+        initialInteractiveState: { run: 0 }, setInteractiveState, showDeleteDataButton: true
+      });
+      act(() => { jest.runAllTimers(); });
+      act(() => { dispatchMessageFromChild("interactiveState", { run: 1 }); });
+      mockPost.mockClear();
+
+      act(() => { fireEvent.click(getByTestId("reset-button")); });
+      act(() => { jest.runAllTimers(); });
+
+      expect(postsOf("initInteractive")).toHaveLength(1);
+      expect(postsOf("initInteractive")[0].interactiveState).toBeUndefined();
+      expect(postsOf("loadInteractive")).toHaveLength(0);
+
+      // the cleared state no longer counts as current, so sending it again saves it
+      setInteractiveState.mockClear();
+      act(() => { dispatchMessageFromChild("interactiveState", { run: 1 }); });
+      expect(setInteractiveState).toHaveBeenCalledWith({ run: 1 });
+    });
+
+    it("never sends or saves a legacy \"nochange\" initial state", () => {
+      const setInteractiveState = jest.fn();
+      renderWith({ initialInteractiveState: "nochange", setInteractiveState });
+      act(() => { jest.runAllTimers(); });
+      helloAgain();
+
+      const inits = postsOf("initInteractive");
+      expect(inits).toHaveLength(2);
+      inits.forEach(init => expect(init.interactiveState).toBeUndefined());
+      expect(postsOf("loadInteractive")).toHaveLength(0);
+
+      act(() => { dispatchMessageFromChild("interactiveState", "touch"); });
+      expect(setInteractiveState).not.toHaveBeenCalled();
+    });
+
+    it("re-saves only the current state on \"touch\"", () => {
+      const setInteractiveState = jest.fn();
+      const { getByTestId } = renderWith({
+        initialInteractiveState: { run: 0 }, setInteractiveState, showDeleteDataButton: true
+      });
+      act(() => { jest.runAllTimers(); });
+      act(() => { dispatchMessageFromChild("interactiveState", { run: 1 }); });
+      helloAgain();
+      setInteractiveState.mockClear();
+
+      act(() => { dispatchMessageFromChild("interactiveState", "touch"); });
+      expect(setInteractiveState).toHaveBeenCalledTimes(1);
+      expect(setInteractiveState).toHaveBeenCalledWith({ run: 1 });
+
+      // after Clear & start over there is no current state for "touch" to bring back
+      act(() => { fireEvent.click(getByTestId("reset-button")); });
+      act(() => { jest.runAllTimers(); });
+      setInteractiveState.mockClear();
+      act(() => { dispatchMessageFromChild("interactiveState", "touch"); });
+      expect(setInteractiveState).not.toHaveBeenCalled();
+    });
+  });
+
   describe("focus transport", () => {
     it("calls onFocusTransportReady with a transport when the phone is built", () => {
       const onFocusTransportReady = jest.fn();
