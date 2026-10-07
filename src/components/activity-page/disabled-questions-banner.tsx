@@ -2,7 +2,7 @@ import React from "react";
 import classNames from "classnames";
 import IconBlock from "../../assets/svg-icons/icon-block.svg";
 import IconCheckCircle from "../../assets/svg-icons/icon-check-circle.svg";
-import { BannerState } from "./disabled-questions-context";
+import type { BannerState } from "./disabled-questions-context";
 
 import "./disabled-questions-banner.scss";
 
@@ -18,7 +18,7 @@ interface IProps {
 export const DisabledQuestionsBanner: React.FC<IProps> = ({ state, tab }) => {
   const Icon = state === "locked" ? IconBlock : IconCheckCircle;
   return (
-    <div className={classNames("disabled-questions-banner", state, { tab })} role="status" data-cy="disabled-questions-banner">
+    <div className={classNames("disabled-questions-banner", state, { tab })} data-cy="disabled-questions-banner">
       <Icon className="icon" aria-hidden="true" focusable="false" />
       <span>{state === "locked" ? kLockedBannerText : kUnlockedBannerText}</span>
     </div>

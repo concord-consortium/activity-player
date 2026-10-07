@@ -64,7 +64,7 @@ describe("Single Page Content component", () => {
         container.querySelector(`iframe[id="${refId}"]`)?.closest('[data-cy="iframe-runtime"]')?.hasAttribute("inert");
       expect(runtimeIsInert("q1")).toBe(true);
       expect(runtimeIsInert("q2")).toBe(false);
-      expect(screen.getAllByRole("status")).toHaveLength(1);
+      expect(container.querySelectorAll('[data-cy="disabled-questions-banner"]')).toHaveLength(1);
     });
   });
 });

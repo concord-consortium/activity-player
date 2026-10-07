@@ -8,6 +8,7 @@ import { PortalDataContext } from "../portal-data-context";
 import {
   GateStatus, kDisableQuestionsAfterParam, nextGateStatus, parseQuestionGatingParam, planDisabledQuestions, planTabBanners
 } from "../../utilities/disabled-questions";
+import { kUnlockedBannerText } from "./disabled-questions-banner";
 
 export type BannerState = "locked" | "unlocked";
 
@@ -104,7 +105,7 @@ export const DisabledQuestionsProvider: React.FC<IProps> = ({ page, activityLayo
     tabStatuses.forEach((tabGateStatuses, tab) => {
       tabBanners.set(tab, tabGateStatuses.includes("locked")
         ? "locked"
-        : tabGateStatuses.includes("unlockedDuringVisit") ? "unlocked" : undefined);
+        : !tabGateStatuses.includes("loading") && tabGateStatuses.includes("unlockedDuringVisit") ? "unlocked" : undefined);
     });
     return {
       getLock: (refId: string) => locks[refId] ?? kUnlocked,
@@ -112,5 +113,18 @@ export const DisabledQuestionsProvider: React.FC<IProps> = ({ page, activityLayo
     };
   }, [plan, tabs, statuses]);
 
-  return <DisabledQuestionsContext.Provider value={value}>{children}</DisabledQuestionsContext.Provider>;
+  // A banner can sit in a hidden notebook tab or a collapsed column, so unlocks are announced from here.
+  const unlockCount = Object.entries(statuses)
+    .filter(([refId, status]) => status === "unlockedDuringVisit" && (plan[refId]?.length ?? 0) > 0).length;
+
+  return (
+    <DisabledQuestionsContext.Provider value={value}>
+      {children}
+      {gatingKey &&
+        <div className="disabled-questions-announcer" role="status" data-cy="disabled-questions-announcer">
+          {unlockCount > 0 && <span key={unlockCount}>{kUnlockedBannerText}</span>}
+        </div>
+      }
+    </DisabledQuestionsContext.Provider>
+  );
 };

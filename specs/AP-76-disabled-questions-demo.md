@@ -37,10 +37,10 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
 ### Banner
 
 - While a gating item is locked, a banner sits immediately before the first question it disables, in the same column as that question.
-- In the notebook layout, each tab after the gating item's tab that holds a question it disables also shows the banner, full width under the tabs. The banner before the first disabled question appears only when that question is in the gating item's own tab and that tab has no tab banner; otherwise the gating item joins that tab's banner, so no tab shows two. A tab reached by several gating items shows one banner: locked while any is locked, unlocked once none is locked and one unlocked during the visit, and absent if all were unlocked when the page loaded.
+- In the notebook layout, each tab after the gating item's tab that holds a question it disables also shows the banner, full width under the tabs. The banner before the first disabled question appears only when that question is in the gating item's own tab and that tab has no tab banner; otherwise the gating item joins that tab's banner, so no tab shows two. A tab reached by several gating items shows one banner: locked while any is locked, unlocked once none is locked or still loading and one unlocked during the visit, and absent if all were unlocked when the page loaded.
 - Locked text: "Run the Wildfire Explorer and Hazbot Analysis, then answer these questions!", beside a block icon (a circle with a slash). The icon is not authored.
 - When the gating item unlocks during the visit, its questions become usable at once, the text changes to "The questions are now unlocked!" and the icon to a check in a circle. That banner stays until the student leaves the page.
-- The banner is announced to screen readers when its text changes.
+- Each unlock during the visit is announced to screen readers from one live region per page, outside the questions and the notebook tabs, so it is heard even when the banner sits in a hidden tab or a collapsed column. The banners themselves are not live regions, so an unlock is announced once.
 - Banner text meets WCAG AA contrast in both forms, and the locked state is conveyed by the text, not by color or the icon alone; the icon is decorative to assistive technology.
 - A gating item that is already unlocked when the page loads shows no banner and never shows the locked state.
 
@@ -64,8 +64,8 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
 ## Technical Notes
 
 - **Code.** `getSectionColumns` (`src/utilities/section-columns.ts`) is the one source of a section's column order, shared by `Section` and the planner. `planDisabledQuestions`, `planTabBanners` and `nextGateStatus` (`src/utilities/disabled-questions.ts`) are pure and kept out of `page-walk.ts`, which must stay liftable into the report service. `DisabledQuestionsProvider` (`src/components/activity-page/disabled-questions-context.tsx`) watches each gate with `watchAnswer` and wraps `ActivityPageContent`'s sections, and each authored page in `SinglePageContent`. `Embeddable` reads `useQuestionLock`; `Section` reads `useTabBanner`. `useInert` sets the `inert` attribute, which React 16 does not know as a prop.
-- **Where things go.** The banner is the first child of the first disabled question's cell, so it takes the question's width in every layout and a taller cell fires the visibility tracker's existing `ResizeObserver`. The tab banner is the first child of the tab's section with `grid-column: 1 / -1`. `inert` goes on the iframe runtime root and the click-to-play root; the hint button is natively disabled; the heading keeps a visually hidden " (locked)". The dialog overlay's runtime is not made inert, since it opens only at the interactive's request.
-- **Saved state.** `watchAnswer` reports the answer document or `null`; `preview` runs Firestore offline. Wildfire master's `saveRun` is called only when a started run ends (burn-out, Restart, Clear All, reload), so the demo unlocks when a run ends, with or without Hazbot analysis. `wildfire.concord.org/index.html` serves `v1.6.0`, which never saves state.
+- **Where things go.** The banner is the first child of the first disabled question's cell, so it takes the question's width in every layout and a taller cell fires the visibility tracker's existing `ResizeObserver`. The tab banner is the first child of the tab's section with `grid-column: 1 / -1`. The provider renders the page's live region, visually hidden, only when the page has gating items. `inert` goes on the iframe runtime root and the click-to-play root; the hint button is natively disabled; the heading keeps a visually hidden " (locked)". The dialog overlay's runtime is not made inert, since it opens only at the interactive's request.
+- **Saved state.** `watchAnswer` reports the answer document or `null`; `preview` runs Firestore offline. Firestore raises an empty cached snapshot first only when the client is offline (`shouldRaiseInitialEvent` in `@firebase/firestore` 3.4.9), so an online returning student never sees the locked state flash. Wildfire master's `saveRun` is called only when a started run ends (burn-out, Restart, Clear All, reload), so the demo unlocks when a run ends, with or without Hazbot analysis. `wildfire.concord.org/index.html` serves `v1.6.0`, which never saves state.
 - **Repeated parameter.** `queryValue` throws on a repeated parameter and the app has no error boundary, so the provider catches it, warns, and disables nothing.
 - **Banner icon.** LARA authoring has no image upload, so the banner uses Activity Player icons. A lock icon was ruled out because the multiple-choice interactive already uses one for answers that cannot change.
 - **Collapsed columns.** A collapsed secondary column renders none of its embeddables, so collapsing one that holds a gate's first disabled question hides that banner. Accepted for the demo; design review can revisit.
@@ -95,7 +95,7 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
 
 ## Not Yet Implemented
 
-- A shared `visually-hidden` SCSS mixin. The new rule is nested under `.managed-interactive .header` like `chat.scss`'s; a mixin is left for a change that also converts the existing copies in `app.scss`, `chat.scss` and `iframe-runtime.scss`.
+- Converting the older copies of the visually hidden pattern in `app.scss`, `chat.scss` and `iframe-runtime.scss` to the new `visually-hidden` mixin in `vars.scss`, which this change's two rules use.
 - `SinglePageContent` renders hidden sections while the planner walks visible sections only. The mismatch predates this work and no built-in sample hits it, so it is left for a separate fix.
 - `Section.renderCollapsibleHeader` keeps its own list of layouts with the collapsible column on the left, which disagrees with `getSectionColumns` for `responsive-2-column` and `responsive`. It only sets the arrow direction and predates this work; folding it in would change behavior.
 
@@ -253,6 +253,16 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
 
 ### How are repeated parameters and parameter-free pages handled?
 **Decision**: A repeated parameter is caught, warned about, and ignored, since `queryValue` throws during render and the app has no error boundary. With no gating items the provider sets no state, so pages without the parameter render once, as before.
+
+---
+
+### Where are unlocks announced?
+**Context**: In a notebook, a gate whose questions are all on later tabs has every banner in a hidden tab, so a live-region banner announced nothing while the student stayed on the gate's tab.
+**Options considered**:
+- A) Keep each banner a live region and mirror the update into the selected tab.
+- B) One live region per page, outside the tabs, with the banners as plain text.
+
+**Decision**: B. It announces each unlock once wherever the banners are, including a collapsed column, and keeps tab state out of the provider.
 
 ---
 

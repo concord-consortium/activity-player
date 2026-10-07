@@ -197,10 +197,13 @@ describe("Activity Page Content component", () => {
         answerWatchers.report(model.ref_id, null);
         answerWatchers.report(q1.ref_id, null);
       });
-      expect(screen.getByRole("status").textContent).toBe(kLockedBannerText);
+      const banner = () => container.querySelector('[data-cy="disabled-questions-banner"]')?.textContent;
+      expect(banner()).toBe(kLockedBannerText);
+      expect(screen.getByRole("status").textContent).toBe("");
       expect(q1Runtime(container)?.hasAttribute("inert")).toBe(true);
 
       act(() => answerWatchers.report(model.ref_id, kSavedAnswer));
+      expect(banner()).toBe(kUnlockedBannerText);
       expect(screen.getByRole("status").textContent).toBe(kUnlockedBannerText);
       expect(q1Runtime(container)?.hasAttribute("inert")).toBe(false);
     });
