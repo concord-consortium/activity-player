@@ -12,6 +12,7 @@ import { IInteractiveSupportedFeaturesEvent } from "../../lara-plugin/events";
 import { ICustomMessage, ISupportedFeatures, INavigationOptions, IGetInteractiveState } from "@concord-consortium/lara-interactive-api";
 import { SpikeMediaLibrary } from "./spike-media-library/spike-media-library";
 import { EmbeddableVisibilityContext } from "../embeddable-visibility-context";
+import { useQuestionLock } from "./disabled-questions-context";
 
 import "./embeddable.scss";
 
@@ -52,6 +53,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
     sendCustomMessageRef.current = sender;
   }, []);
   const LARA = useContext(LaraGlobalContext);
+  const lock = useQuestionLock(embeddable.ref_id);
 
   useEffect(() => {
     const sendCustomMessage = (message: ICustomMessage) => sendCustomMessageRef.current?.(message);
@@ -117,6 +119,8 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                     showQuestionPrefix={showQuestionPrefix}
                     hideQuestionNumbers={hideQuestionNumbers}
                     saveInteractiveStateHistory={saveInteractiveStateHistory}
+                    disabled={lock.disabled}
+                    locked={lock.locked}
                  />;
   } else if (embeddable.type === "ManagedInteractive" && !embeddable.library_interactive) {
     qComponent = <div>Content type not supported</div>;
@@ -164,7 +168,8 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                                               : "secondary",
                                         {"half-width":  embeddable.is_half_width && !singlePageLayout},
                                         {"hidden": embeddable.is_hidden},
-                                        {"max-aspect-ratio": isFullWidthLayout && hasMaxAspectRatio}
+                                        {"max-aspect-ratio": isFullWidthLayout && hasMaxAspectRatio},
+                                        {"disabled-question": lock.locked}
                                       );
 
   return (

@@ -13,6 +13,11 @@ jest.mock("../../firebase-db", () => ({
   getAnswer: () => { return { answerType: "multiple_choice_answer", selectedChoiceIds: []}; }
 }));
 
+let mockQuestionLock: { disabled: boolean, locked: boolean } = { disabled: false, locked: false };
+jest.mock("./disabled-questions-context", () => ({
+  useQuestionLock: () => mockQuestionLock
+}));
+
 describe("Embeddable component", () => {
   it("renders a non-callout text component", () => {
     const embeddable: EmbeddableType = {
@@ -251,6 +256,41 @@ describe("Embeddable component", () => {
     it("does not register a teacher edition window shade outside teacher edition", () => {
       mountWithTracker({ ...DefaultTEWindowshadeComponent, column: null });
       expect(register).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("disabled questions", () => {
+    afterEach(() => { mockQuestionLock = { disabled: false, locked: false }; });
+
+    const mountInteractive = () => {
+      iframePhone.ParentEndpoint = jest.fn().mockImplementation(() => ({
+        disconnect: jest.fn(),
+        post: jest.fn(),
+        addListener: jest.fn(),
+        removeListener: jest.fn()
+      }));
+      const embeddable: IManagedInteractive = {
+        ...DefaultManagedInteractive,
+        library_interactive: { ...DefaultLibraryInteractive, data: { ...DefaultLibraryInteractive.data, enable_learner_state: false } },
+        ref_id: "123-ManagedInteractive",
+        column: "primary"
+      };
+      return mount(<DynamicTextTester><Embeddable embeddable={embeddable} questionNumber={1} sectionLayout={"responsive"} displayMode={"stacked"} pluginsLoaded={true} /></DynamicTextTester>);
+    };
+    const runtimeIsInert = (wrapper: ReturnType<typeof mountInteractive>) =>
+      wrapper.find('[data-cy="iframe-runtime"]').getDOMNode().hasAttribute("inert");
+
+    it("grays a locked question and makes its interactive inert", () => {
+      mockQuestionLock = { disabled: true, locked: true };
+      const wrapper = mountInteractive();
+      expect(wrapper.find('[data-cy="embeddable"]').hasClass("disabled-question")).toBe(true);
+      expect(runtimeIsInert(wrapper)).toBe(true);
+    });
+
+    it("leaves an unlocked question alone", () => {
+      const wrapper = mountInteractive();
+      expect(wrapper.find('[data-cy="embeddable"]').hasClass("disabled-question")).toBe(false);
+      expect(runtimeIsInert(wrapper)).toBe(false);
     });
   });
 });

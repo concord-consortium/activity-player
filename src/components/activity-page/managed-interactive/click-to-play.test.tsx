@@ -28,4 +28,10 @@ describe("ClickToPlay component", () => {
     expect(el.outerHTML).toBe(`<div class="click-to-play" data-cy="click-to-play"><img src="http://example.com/test.png"><div>Test Prompt</div></div>`);
   });
 
+  it("is inert only while disabled", () => {
+    const { rerender } = render(<ClickToPlay onClick={jest.fn()} disabled={true} />);
+    expect(screen.getByTestId("click-to-play").hasAttribute("inert")).toBe(true);
+    rerender(<ClickToPlay onClick={jest.fn()} />);
+    expect(screen.getByTestId("click-to-play").hasAttribute("inert")).toBe(false);
+  });
 });

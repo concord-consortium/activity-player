@@ -1,4 +1,4 @@
-import { fireEvent, render } from "@testing-library/react";
+import { fireEvent, getByRole, render } from "@testing-library/react";
 import React from "react";
 import { ManagedInteractiveHeader } from "./managed-interactive-header";
 import { DynamicTextTester } from "../../../test-utils/dynamic-text";
@@ -13,6 +13,8 @@ const baseProps = {
   hintPanelId,
   onToggleHint: jest.fn(),
   hideHeader: false,
+  disabled: false,
+  locked: false,
 };
 
 const renderHeader = (props: Partial<typeof baseProps> = {}) => {
@@ -108,5 +110,23 @@ describe("ManagedInteractiveHeader heading semantics", () => {
     expect(container.querySelector("h2")).toBeNull();
     expect(container.querySelector(".header")).not.toBeNull();
     expect(trigger).not.toBeNull();
+  });
+});
+
+describe("ManagedInteractiveHeader disabled question", () => {
+  it("says the question is locked and disables the hint trigger when locked", () => {
+    const { container, trigger } = renderHeader({ disabled: true, locked: true });
+    expect(getByRole(container, "heading", { name: "Question #1: My question (locked)" })).toBeDefined();
+    expect(trigger?.hasAttribute("disabled")).toBe(true);
+  });
+
+  it("disables the hint trigger without the locked suffix while only disabled", () => {
+    const { container, trigger } = renderHeader({ disabled: true });
+    expect(getByRole(container, "heading", { name: "Question #1: My question" })).toBeDefined();
+    expect(trigger?.hasAttribute("disabled")).toBe(true);
+  });
+
+  it("leaves the hint trigger enabled otherwise", () => {
+    expect(renderHeader().trigger?.hasAttribute("disabled")).toBe(false);
   });
 });

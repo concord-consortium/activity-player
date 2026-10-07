@@ -33,6 +33,7 @@ import { queryValue, queryValueBoolean } from "../../../utilities/url-query";
 import { isHttpUrl } from "../../../utilities/url-utils";
 import { anonymousPortalData } from "../../../portal-api";
 import { useCompositeRef } from "../../../utilities/use-composite-ref";
+import { useInert } from "../../../utilities/use-inert";
 import { applyOverrides } from "../../../utilities/url-overrides/state";
 
 import "./iframe-runtime.scss";
@@ -99,6 +100,7 @@ interface IProps {
   beforeSentinelRef?: React.Ref<HTMLSpanElement>;
   afterSentinelRef?: React.Ref<HTMLSpanElement>;
   onFocusTransportReady?: (transport: FocusTransport | undefined) => void;
+  disabled?: boolean;
 }
 
 // these are managed outside of the component to persist across component unmount/mount cycles
@@ -115,7 +117,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
     setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo,
     showDeleteDataButton, setAspectRatio, setHeightFromInteractive, feedback, log,
-    iframeRef: externalIframeRef, beforeSentinelRef, afterSentinelRef, onFocusTransportReady } = props;
+    iframeRef: externalIframeRef, beforeSentinelRef, afterSentinelRef, onFocusTransportReady, disabled = false } = props;
 
   const [reloadCount, setReloadCount] = useState<number>(0);
   const iframePhoneTimeout = useRef<number|undefined>(undefined);
@@ -123,6 +125,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   // Stable composed ref so the iframe isn't detached/reattached every render
   // (which would churn focus-trap wiring); see useCompositeRef.
   const composedIframeRef = useCompositeRef(iframeRef, externalIframeRef);
+  const rootRef = useRef<HTMLDivElement>(null);
+  useInert(rootRef, disabled);
   const phoneRef = useRef<IframePhone>();
   const focusManagerRef = useRef<FocusManager>();
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
@@ -570,7 +574,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const locked = isOfferingLocked(portalData);
 
   return (
-    <div className="iframe-runtime" data-cy="iframe-runtime">
+    <div className="iframe-runtime" data-cy="iframe-runtime" ref={rootRef}>
       <span
         ref={beforeSentinelRef}
         className="iframe-slot-sentinel"
