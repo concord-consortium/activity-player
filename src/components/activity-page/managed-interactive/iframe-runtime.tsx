@@ -110,6 +110,9 @@ const blankIframeSrc = "about:blank";
 // The iframe src, with any url overrides applied; about:blank when the url is not loadable.
 const interactiveIframeSrc = (url: string) => isHttpUrl(url) ? applyOverrides(url) : blankIframeSrc;
 
+// AP 1.0.0 saved the special "nochange" message as state, which interactives cannot parse, so it means no state.
+const withoutLegacyNoChange = (state: any) => state === "nochange" ? undefined : state;
+
 export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
   const { url, id, authoredState, initialInteractiveState, legacyLinkedInteractiveState, setInteractiveState, linkedInteractives, report,
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
@@ -127,13 +130,15 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const focusManagerRef = useRef<FocusManager>();
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
-  const interactiveStateRef = useRef(initialInteractiveState);
   const linkedInteractivesRef = useRef(linkedInteractives?.length ? { linkedInteractives } : { linkedInteractives: [] });
   const interactiveStateRequest = {
     promise: useRef<Promise<void>>(),
     resolveAndCleanup: useRef<() => void>(),
   };
-  const currentInteractiveState = useRef<any>(initialInteractiveState);
+  // The latest interactive state, sent by every initInteractive. The interactiveState listener updates it,
+  // Clear & start over clears it, and a url change takes the parent's, which includes saves made elsewhere.
+  const currentInteractiveState = useRef<any>(withoutLegacyNoChange(initialInteractiveState));
+  const currentInteractiveStateUrl = useRef(url);
 
   const dynamicText = useDynamicTextContext();
   const dynamicTextComponentIds = useRef<Set<string>>(new Set());
@@ -326,15 +331,6 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         pubSubManager.unsubscribe(id, message.channelId, message.subscriptionId);
       });
 
-      // Legacy bug fix: In the 1.0.0 release of the AP the special 'nochange'
-      // message wasn't handled correctly and it was saved as the interactive state
-      // If we see that here we just use undefined instead. The problem is that
-      // sending this state to interactives that don't expect it, will have JSON
-      // parse errors trying to parse "nochange"
-      if (interactiveStateRef.current === "nochange") {
-        interactiveStateRef.current = undefined;
-      }
-
       // create attachments map
       const attachments: AttachmentInfoMap = {};
       Object.keys(answerMetadata?.attachments || {}).forEach((key) => {
@@ -388,7 +384,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           domain: window.location.hostname
         },
         authoredState,
-        interactiveState: interactiveStateRef.current,
+        interactiveState: currentInteractiveState.current,
         themeInfo: {
           colors: {
             colorA: "",
@@ -439,10 +435,13 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
                 };
 
       const postInitInteractive = () => {
+        // new state can arrive while the object storage token is pending
+        const latestInteractiveState = currentInteractiveState.current;
+        initInteractiveMsg.interactiveState = latestInteractiveState;
         // to support legacy interactives first post the deprecated loadInteractive message as LARA does
-        // but only when there is initialInteractiveState (also as LARA does)
-        if (initialInteractiveState) {
-          phone.post("loadInteractive", initialInteractiveState);
+        // but only when there is interactive state (also as LARA does)
+        if (latestInteractiveState) {
+          phone.post("loadInteractive", latestInteractiveState);
         }
         phone.post("initInteractive", initInteractiveMsg);
       };
@@ -460,6 +459,11 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       }
     };
 
+    if (url !== currentInteractiveStateUrl.current) {
+      currentInteractiveStateUrl.current = url;
+      currentInteractiveState.current = withoutLegacyNoChange(initialInteractiveState);
+    }
+
     if (iframeRef.current) {
       // Reload the iframe.
       const src = interactiveIframeSrc(url);
@@ -470,7 +474,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         // whole page rather than just this interactive.
         phoneRef.current = undefined;
       } else {
-        // Re-init interactive, this time using a new mode (report or runtime).
+        // The endpoint calls initInteractive on every "hello", including the one an interactive
+        // sends after reloading its own page.
         const phone: IframePhone = new iframePhone.ParentEndpoint(iframeRef.current, initInteractive);
         phoneRef.current = phone;
         setSendCustomMessage((message: ICustomMessage) => {
@@ -559,7 +564,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       phoneRef.current?.disconnect();
       setInteractiveStateRef.current(null);
       setInteractiveState(null);
-      interactiveStateRef.current = undefined;
+      currentInteractiveState.current = undefined;
       // incrementing reloadCount modifies the iframe's key, causing the iframe to reload.
       setReloadCount(reloadCount + 1);
     }

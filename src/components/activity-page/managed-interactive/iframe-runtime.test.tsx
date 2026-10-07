@@ -84,8 +84,7 @@ describe("IframeRuntime component", () => {
     resetOverridesForTesting();
   });
 
-  const renderWith = (extraProps: Record<string, any> = {}) =>
-    render(
+  const runtimeWith = (extraProps: Record<string, any> = {}) =>
       <MediaLibraryTester>
         <DynamicTextTester>
           <IframeRuntime
@@ -110,8 +109,8 @@ describe("IframeRuntime component", () => {
             {...extraProps}
           />
         </DynamicTextTester>
-      </MediaLibraryTester>
-    );
+      </MediaLibraryTester>;
+  const renderWith = (extraProps: Record<string, any> = {}) => render(runtimeWith(extraProps));
 
   it("renders before/after sentinels around the iframe with tabindex=-1", () => {
     const mockSetInteractiveState = jest.fn();
@@ -549,6 +548,103 @@ describe("IframeRuntime component", () => {
     expect(iframe.getAttribute("src")).toBe(url);
   });
 
+  describe("re-init after the interactive reloads its own page", () => {
+    // iframe-phone calls the after-connected callback on every "hello", and an interactive
+    // that reloads its own page says "hello" again without the runtime remounting.
+    const helloAgain = () => {
+      const [, afterConnectedCallback] = lastCall(iframePhone.ParentEndpoint as unknown as jest.Mock);
+      act(() => { afterConnectedCallback(); });
+    };
+    const postsOf = (type: string) => mockPost.mock.calls.filter(([t]) => t === type).map(([, data]) => data);
+
+    it("re-inits with the latest state the interactive sent", () => {
+      renderWith({ initialInteractiveState: { run: 0 } });
+      act(() => { jest.runAllTimers(); });
+      act(() => { dispatchMessageFromChild("interactiveState", { run: 1 }); });
+      mockPost.mockClear();
+
+      helloAgain();
+
+      expect(postsOf("initInteractive")).toHaveLength(1);
+      expect(postsOf("initInteractive")[0].interactiveState).toStrictEqual({ run: 1 });
+      expect(postsOf("loadInteractive")).toStrictEqual([{ run: 1 }]);
+    });
+
+    it("takes the parent's state when the url changes", () => {
+      // the parent's state includes saves made elsewhere, such as in another tab
+      const { rerender } = renderWith({ initialInteractiveState: { run: 0 } });
+      act(() => { jest.runAllTimers(); });
+      act(() => { dispatchMessageFromChild("interactiveState", { run: 1 }); });
+      mockPost.mockClear();
+
+      rerender(runtimeWith({ url: "https://concord.org/other", initialInteractiveState: { run: 2 } }));
+      act(() => { jest.runAllTimers(); });
+
+      expect(postsOf("initInteractive")).toHaveLength(1);
+      expect(postsOf("initInteractive")[0].interactiveState).toStrictEqual({ run: 2 });
+      expect(postsOf("loadInteractive")).toStrictEqual([{ run: 2 }]);
+    });
+
+    it("re-inits with no state after Clear & start over", () => {
+      const setInteractiveState = jest.fn();
+      const { getByTestId } = renderWith({
+        initialInteractiveState: { run: 0 }, setInteractiveState, showDeleteDataButton: true
+      });
+      act(() => { jest.runAllTimers(); });
+      act(() => { dispatchMessageFromChild("interactiveState", { run: 1 }); });
+      mockPost.mockClear();
+
+      act(() => { fireEvent.click(getByTestId("reset-button")); });
+      act(() => { jest.runAllTimers(); });
+
+      expect(postsOf("initInteractive")).toHaveLength(1);
+      expect(postsOf("initInteractive")[0].interactiveState).toBeUndefined();
+      expect(postsOf("loadInteractive")).toHaveLength(0);
+
+      // the cleared state no longer counts as current, so sending it again saves it
+      setInteractiveState.mockClear();
+      act(() => { dispatchMessageFromChild("interactiveState", { run: 1 }); });
+      expect(setInteractiveState).toHaveBeenCalledWith({ run: 1 });
+    });
+
+    it("never sends or saves a legacy \"nochange\" initial state", () => {
+      const setInteractiveState = jest.fn();
+      renderWith({ initialInteractiveState: "nochange", setInteractiveState });
+      act(() => { jest.runAllTimers(); });
+      helloAgain();
+
+      const inits = postsOf("initInteractive");
+      expect(inits).toHaveLength(2);
+      inits.forEach(init => expect(init.interactiveState).toBeUndefined());
+      expect(postsOf("loadInteractive")).toHaveLength(0);
+
+      act(() => { dispatchMessageFromChild("interactiveState", "touch"); });
+      expect(setInteractiveState).not.toHaveBeenCalled();
+    });
+
+    it("re-saves only the current state on \"touch\"", () => {
+      const setInteractiveState = jest.fn();
+      const { getByTestId } = renderWith({
+        initialInteractiveState: { run: 0 }, setInteractiveState, showDeleteDataButton: true
+      });
+      act(() => { jest.runAllTimers(); });
+      act(() => { dispatchMessageFromChild("interactiveState", { run: 1 }); });
+      helloAgain();
+      setInteractiveState.mockClear();
+
+      act(() => { dispatchMessageFromChild("interactiveState", "touch"); });
+      expect(setInteractiveState).toHaveBeenCalledTimes(1);
+      expect(setInteractiveState).toHaveBeenCalledWith({ run: 1 });
+
+      // after Clear & start over there is no current state for "touch" to bring back
+      act(() => { fireEvent.click(getByTestId("reset-button")); });
+      act(() => { jest.runAllTimers(); });
+      setInteractiveState.mockClear();
+      act(() => { dispatchMessageFromChild("interactiveState", "touch"); });
+      expect(setInteractiveState).not.toHaveBeenCalled();
+    });
+  });
+
   describe("focus transport", () => {
     it("calls onFocusTransportReady with a transport when the phone is built", () => {
       const onFocusTransportReady = jest.fn();
@@ -676,6 +772,23 @@ describe("IframeRuntime object storage token", () => {
     expect(mint).toHaveBeenCalledTimes(1);
     expect(lastPost()).toBe("initInteractive");
     expect(lastPostData().objectStorageConfig.user.jwt).toBe(launchJWT);
+  });
+
+  it("sends state that arrives while the token is pending", async () => {
+    let resolve!: (jwt: string) => void;
+    let clock = 0;
+    initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint: () => new Promise(r => { resolve = r; }), now: () => clock });
+    clock = 48 * 60 * 1000;
+    renderRuntime();
+    jest.runAllTimers();
+    act(() => { dispatchMessageFromChild("interactiveState", { run: 1 }); });
+    resolve("fresh-jwt");
+    await act(flush);
+
+    const posts = (type: string) => mockPost.mock.calls.filter(([t]) => t === type).map(([, data]) => data);
+    expect(posts("loadInteractive")).toStrictEqual([{ run: 1 }]);
+    expect(posts("initInteractive")).toHaveLength(1);
+    expect(posts("initInteractive")[0].interactiveState).toStrictEqual({ run: 1 });
   });
 
   it("does not post initInteractive after unmounting while the token is pending", async () => {
