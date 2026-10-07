@@ -11,6 +11,7 @@ import { IGetInteractiveState, INavigationOptions } from "@concord-consortium/la
 import useResizeObserver from "@react-hook/resize-observer";
 import { nanoid } from "../../utilities/nanoid";
 import { EmbeddableVisibilityContext } from "../embeddable-visibility-context";
+import { getSectionColumns } from "../../utilities/section-columns";
 
 import "./section.scss";
 
@@ -226,12 +227,6 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   const responsiveFullWidth = layout === "responsive-full-width";
   const responsive3070Column = layout === "responsive-30-70" || layout === "responsive-2-column";
   const responsive5050 = layout === "responsive-50-50";
-  const splitLayout = layout === "60-40" ||
-                      layout === "40-60" ||
-                      layout === "70-30" ||
-                      layout === "30-70" ||
-                      responsive3070Column ||
-                      responsive5050;
   const responsiveSection = responsive3070Column || responsive5050 || responsiveFullWidth || layout === "responsive";
   const sectionClass = classNames("section",
                                   {"full-width": layout === "full-width" || singlePage},
@@ -245,33 +240,18 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
                                   {"hidden-tab": hiddenTab},
                                   {"tab-contents": activityLayout === ActivityLayouts.Notebook}
                                 );
-  const embeddables = section.embeddables;
-
-  const primaryEmbeddables = splitLayout || layout === "responsive" ? embeddables.filter(e => e.column === "primary" && !e.is_hidden) : [];
-  const secondaryEmbeddables = splitLayout || layout === "responsive" ? embeddables.filter(e => e.column === "secondary" && !e.is_hidden) : [];
-  const responsiveIsSingleColumn = (responsiveFullWidth && (embeddables.length > 0 && primaryEmbeddables.length === 0 && secondaryEmbeddables.length === 0));
-  const singleColumn = layout === "full-width" || responsiveFullWidth || responsiveIsSingleColumn;
+  const { stacked, singleColumn, left: leftColumnEmbeddables, right: rightColumnEmbeddables, leftIsPrimary: leftPrimary } =
+    getSectionColumns(section, activityLayout);
   const responsiveDirection  = singleColumn ? "column" : "row";
   const responsiveDirectionStyle = { flexDirection: responsiveDirection } as React.CSSProperties;
-  const leftPrimary = layout === "60-40" || layout === "70-30";
-  const getNumQuestionsLeftColumn = () => {
-    const column = leftPrimary ? primaryEmbeddables : secondaryEmbeddables;
-    let numQuestions = 0;
-      column.forEach(embeddable => {
-         isQuestion(embeddable) && numQuestions++;
-      });
-    return numQuestions;
-  };
-  if (singleColumn || singlePage) {
+  if (stacked) {
     return (
       <div className={sectionClass} ref={sectionDivRef} style={responsiveDirectionStyle} data-cy="section-single-column-layout">
-        { renderEmbeddables(embeddables, questionNumberStart, singleColumn) }
+        { renderEmbeddables(section.embeddables, questionNumberStart, singleColumn) }
       </div>
     );
   } else {
-    const leftColumnEmbeddables = leftPrimary ? primaryEmbeddables : secondaryEmbeddables;
-    const rightColumnEmbeddables = leftPrimary ? secondaryEmbeddables : primaryEmbeddables;
-    const numQuestionsLeftColumn = getNumQuestionsLeftColumn();
+    const numQuestionsLeftColumn = leftColumnEmbeddables.filter(embeddable => isQuestion(embeddable)).length;
     const rightColumnQuestionNumberStart = questionNumberStart + numQuestionsLeftColumn;
     return (
       <div className={sectionClass} ref={sectionDivRef} data-cy="section-split-layout">

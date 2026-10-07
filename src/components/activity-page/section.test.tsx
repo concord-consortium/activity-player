@@ -1,10 +1,17 @@
 import React from "react";
 import { Section } from "./section";
 import { configure, fireEvent, render } from "@testing-library/react";
-import { DefaultTestPage, DefaultTestSection, DefaultXhtmlComponent } from "../../test-utils/model-for-tests";
-import { IEmbeddableXhtml } from "../../types";
+import { DefaultManagedInteractive, DefaultTestPage, DefaultTestSection, DefaultXhtmlComponent } from "../../test-utils/model-for-tests";
+import { IEmbeddableXhtml, IManagedInteractive } from "../../types";
 import { EmbeddableVisibilityContext } from "../embeddable-visibility-context";
 import { IEmbeddableVisibilityTracker } from "../../utilities/embeddable-visibility-tracker";
+import { DynamicTextTester } from "../../test-utils/dynamic-text";
+
+jest.mock("../../firebase-db", () => ({
+  watchAnswer: (id: string, callback: (answer: null) => void) => { callback(null); return () => undefined; },
+  getAnswer: () => Promise.resolve(null),
+  watchQuestionLevelFeedback: () => () => undefined
+}));
 
 describe("Section component", () => {
   const stubFunction = () => {
@@ -239,6 +246,44 @@ describe("Section component", () => {
       expect(queue).not.toHaveBeenCalled();
       rerender(renderSection(false));
       expect(queue.mock.calls).toEqual([["tabChange"]]);
+    });
+  });
+
+  describe("split layout column order", () => {
+    const question = (refId: string, column: "primary" | "secondary"): IManagedInteractive => ({
+      ...DefaultManagedInteractive,
+      ref_id: refId,
+      name: refId,
+      column
+    });
+
+    const renderSplitSection = (layout: string) => render(
+      <DynamicTextTester>
+        <Section
+          activityLayout={0}
+          page={{...DefaultTestPage}}
+          pluginsLoaded={true}
+          questionNumberStart={0}
+          section={{ ...DefaultTestSection, layout, embeddables: [question("primary-q", "primary"), question("secondary-q", "secondary")] }}
+          setNavigation={stubFunction}
+        />
+      </DynamicTextTester>
+    );
+
+    const precedes = (a: HTMLElement, b: HTMLElement) => !!(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING);
+
+    it("renders and numbers the secondary column first in 40-60", () => {
+      const { getByTestId, getByRole } = renderSplitSection("40-60");
+      expect(precedes(getByTestId("section-column-secondary"), getByTestId("section-column-primary"))).toBe(true);
+      expect(getByRole("heading", { name: "Question #1: secondary-q" })).toBeDefined();
+      expect(getByRole("heading", { name: "Question #2: primary-q" })).toBeDefined();
+    });
+
+    it("renders and numbers the primary column first in 60-40", () => {
+      const { getByTestId, getByRole } = renderSplitSection("60-40");
+      expect(precedes(getByTestId("section-column-primary"), getByTestId("section-column-secondary"))).toBe(true);
+      expect(getByRole("heading", { name: "Question #1: primary-q" })).toBeDefined();
+      expect(getByRole("heading", { name: "Question #2: secondary-q" })).toBeDefined();
     });
   });
 });
