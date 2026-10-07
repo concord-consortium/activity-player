@@ -14,7 +14,7 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
 
 ### Marking an item (demo stand-in)
 
-- An `override:disableQuestionsAfter` URL parameter holds one or more embeddable `ref_id` values, comma-separated (for example `?override:disableQuestionsAfter=693-MwInteractive`). Each named embeddable is treated as having `question_gating: "disable_following_on_page"` and is a **gating item**.
+- An `override:disableQuestionsAfter` URL parameter holds one or more embeddable `ref_id` values, comma-separated (for example `?override:disableQuestionsAfter=693-MwInteractive`). Each named embeddable is treated as having `question_gating: "disable_following_on_page"` and is a **gating item**. A `ref_id` with a `:section` suffix (for example `693-MwInteractive:section`) is treated as `"disable_following_in_section"` instead.
 - A gating item must be a visible interactive that saves learner state (an `MwInteractive` or a library `ManagedInteractive` with learner state enabled). A `ref_id` that is not on the current page, is hidden, or does not save learner state is ignored and disables nothing.
 - Without the parameter, every page renders exactly as it does today.
 
@@ -23,6 +23,7 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
 - On the page holding a gating item, every question after it in page order is disabled while the gating item is locked. "Question" means an interactive that saves learner state, including ones whose question number is hidden.
 - Page order is question-numbering order: visible sections in order, and within a split-layout section the left column and then the right. A gating item in the right column of a split section therefore disables nothing in that section's left column.
 - A gating item's reach runs to the end of the page, across later sections (and, in the notebook layout, later tabs). In a single-page activity it still ends with the authored page the gating item is on.
+- With `"disable_following_in_section"`, the reach ends with the gating item's own section (in the notebook layout, its own tab), still in question-numbering order within that section. It can only name the item's own section, since an authored reference to another section would break when items move or sections are deleted.
 - Text boxes, images, and interactives that do not save learner state are never disabled.
 - The gating item itself and everything before it are never disabled by that gating item.
 - When a page has more than one gating item, a question is disabled while any gating item before it on the page is locked.
@@ -54,7 +55,7 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
 ### Documentation
 
 - The README's URL parameter list documents `override:disableQuestionsAfter`.
-- A built-in sample activity, `sample-disabled-questions`, demonstrates the feature in full-width, 60-40, and 40-60 layouts and with two gating items, using Wildfire master (which saves state when a run ends) on every page.
+- A built-in sample activity, `sample-disabled-questions`, demonstrates the feature in full-width, 60-40, and 40-60 layouts, with two gating items, and with a gate limited to its section, using Wildfire master (which saves state when a run ends) on every page.
 
 ### Modes
 
@@ -70,7 +71,7 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
 - **Banner icon.** LARA authoring has no image upload, so the banner uses Activity Player icons. A lock icon was ruled out because the multiple-choice interactive already uses one for answers that cannot change.
 - **Collapsed columns.** A collapsed secondary column renders none of its embeddables, so collapsing one that holds a gate's first disabled question hides that banner. Accepted for the demo; design review can revisit.
 - **Repeated ref_ids.** Locks are keyed by `ref_id`, so a page that repeats an id locks every copy after the gate. Real LARA exports have unique ids; some built-in samples (`sample-new-sections` pages 6 and 9) do not.
-- **Demo pages.** `?activity=sample-disabled-questions&preview&override:disableQuestionsAfter=9101-MwInteractive,9102-MwInteractive,9103-MwInteractive,9104-MwInteractive,9105-MwInteractive` opens the whole demo. Other layouts, with `&page=<n>&preview&override:disableQuestionsAfter=<ref_id>`:
+- **Demo pages.** `?activity=sample-disabled-questions&preview&override:disableQuestionsAfter=9101-MwInteractive,9102-MwInteractive,9103-MwInteractive,9104-MwInteractive,9105-MwInteractive,9116-MwInteractive:section` opens the whole demo; page 5 shows the section limit. Other layouts, with `&page=<n>&preview&override:disableQuestionsAfter=<ref_id>`:
 
   | Layout | Sample, page | Gating item | Expected |
   |---|---|---|---|
@@ -84,11 +85,11 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
 
 ## Out of Scope
 
-- The LARA authoring control for `question_gating` and reading it from the activity JSON (LARA-226, then a later AP-76 pull request). That pull request treats a missing field, `null`, and any unknown value as `"none"`. `override:disableQuestionsAfter` stays and adds `"disable_following_on_page"` on top of the authored values; that pull request updates its README entry.
+- The LARA authoring control for `question_gating`, with its three values, and reading it from the activity JSON (LARA-226, then a later AP-76 pull request). That pull request treats a missing field, `null`, and any unknown value as `"none"`. `override:disableQuestionsAfter` stays and adds `"disable_following_on_page"` on top of the authored values; that pull request updates its README entry.
 - The interactive-to-host unlock message and the `@concord-consortium/interactive-api-host` / `lara-interactive-api` bumps to `0.14.0` / `1.15.0` (LARA-226, then a later AP-76 pull request).
-- Wildfire's unlock rule and sending the message (WM-66).
+- Wildfire's unlock rule (the PIs chose "ran the model and clicked Hazbot at least once") and sending the message (WM-66).
 - Linked interactives watching each other's state.
-- Final visual design of the disabled state and banner, pending design review of this demo.
+- Final visual design of the unlocked banner (a green treatment or a lock and unlock icon), pending Michael Tirenin. Any green must keep the 4.5:1 text contrast, and a lock must not be confused with the multiple-choice interactive's lock on answers that cannot change.
 - The authored banner text fields (LARA-226) and the Activity Player's default wording for empty fields.
 - Logging lock and unlock events; worth adding with the real message.
 - Portal and teacher reports.
@@ -110,7 +111,7 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
 - B) To the end of the gating item's section.
 - C) Both, with a second URL parameter.
 
-**Decision**: A (Doug Martin, 2026-10-06). Simpler to explain; later behaviors such as section scope can be new `question_gating` values.
+**Decision**: A by default (Doug Martin, 2026-10-06). After the PIs reviewed the demo (Trudi Lord, 2026-10-07), authors also get "only this section" as a third `question_gating` value, `"disable_following_in_section"`, limited to the gating item's own section because an authored link to another section would break when items move or sections are deleted. The enum absorbed it with no new field.
 
 ---
 

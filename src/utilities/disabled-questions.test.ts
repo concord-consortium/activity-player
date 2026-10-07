@@ -33,6 +33,13 @@ describe("parseQuestionGatingParam", () => {
     expect(parseQuestionGatingParam("a")).toEqual({ a: "disable_following_on_page" });
     expect(parseQuestionGatingParam(" a, b ,,")).toEqual({ a: "disable_following_on_page", b: "disable_following_on_page" });
   });
+
+  it("limits a ref id ending in :section to its own section", () => {
+    expect(parseQuestionGatingParam("9101-MwInteractive:section,b")).toEqual({
+      "9101-MwInteractive": "disable_following_in_section",
+      b: "disable_following_on_page"
+    });
+  });
 });
 
 describe("planDisabledQuestions", () => {
@@ -77,6 +84,18 @@ describe("planDisabledQuestions", () => {
     expect(plan(p, gate("noState"))).toEqual({});
   });
 
+  it("stops at the end of the gating item's section for disable_following_in_section", () => {
+    const p = page(section([question("q0"), embed("model", true), question("q1"), text("t"), question("q2")]), section([question("q3")]));
+    expect(plan(p, { model: "disable_following_in_section" })).toEqual({ model: ["q1", "q2"] });
+    expect(plan(p, { model: "disable_following_on_page" })).toEqual({ model: ["q1", "q2", "q3"] });
+  });
+
+  it("follows numbering order within a split section for disable_following_in_section", () => {
+    const fortySixty = section([question("model", "primary"), question("qA", "secondary"), question("qB", "primary")], "40-60");
+    const p = page(fortySixty, section([question("later")]));
+    expect(plan(p, { model: "disable_following_in_section" })).toEqual({ model: ["qB"] });
+  });
+
   it("plans each of several gating items", () => {
     const p = page(section([embed("m1", true), question("q1"), embed("m2", true), question("q2")]));
     expect(plan(p, gate("m1", "m2"))).toEqual({ m1: ["q1", "m2", "q2"], m2: ["q2"] });
@@ -97,6 +116,12 @@ describe("planTabBanners", () => {
   it("includes the next tab when the first disabled question is in it", () => {
     const p = page(section([question("q0"), embed("m", true)]), section([question("q1")]), section([question("q2")]));
     expect(tabsOf(p, gate("m"))).toEqual({ m: [2, 3] });
+  });
+
+  it("gives a section-limited gate no tab banners", () => {
+    const p = page(section([embed("m", true), question("q1")]), section([question("q2")]));
+    const tabs = planTabBanners(p, plan(p, { m: "disable_following_in_section" }, ActivityLayouts.Notebook));
+    expect(tabs).toEqual({ m: [] });
   });
 
   it("joins a gating item to the banner already covering its first question's tab", () => {
@@ -122,7 +147,10 @@ describe("nextGateStatus", () => {
 
 describe("the sample-disabled-questions activity", () => {
   const activity = sampleActivities["sample-disabled-questions"];
-  const allModels = gate("9101-MwInteractive", "9102-MwInteractive", "9103-MwInteractive", "9104-MwInteractive", "9105-MwInteractive");
+  const allModels = {
+    ...gate("9101-MwInteractive", "9102-MwInteractive", "9103-MwInteractive", "9104-MwInteractive", "9105-MwInteractive"),
+    "9116-MwInteractive": "disable_following_in_section" as const
+  };
   const planPage = (position: number) =>
     planDisabledQuestions(activity.pages[position - 1], activity.layout, allModels);
 
@@ -145,8 +173,12 @@ describe("the sample-disabled-questions activity", () => {
     });
   });
 
+  it("locks only the questions in the model's own section when limited to it", () => {
+    expect(planPage(5)).toEqual({ "9116-MwInteractive": ["9117-ManagedInteractive", "9118-ManagedInteractive"] });
+  });
+
   it("repeats no ref_id on a page", () => {
-    expect(activity.pages).toHaveLength(4);
+    expect(activity.pages).toHaveLength(5);
     activity.pages.forEach(p => {
       const refIds = p.sections.flatMap(s => s.embeddables.map(e => e.ref_id));
       expect(new Set(refIds).size).toBe(refIds.length);

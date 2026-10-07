@@ -8,7 +8,7 @@ export const kDisableQuestionsAfterParam = "override:disableQuestionsAfter";
 export type DisabledQuestionsPlan = Record<string, string[]>;
 
 /** The values of LARA's per-item `question_gating` setting that this Activity Player acts on. */
-export type QuestionGating = "none" | "disable_following_on_page";
+export type QuestionGating = "none" | "disable_following_on_page" | "disable_following_in_section";
 
 /** Item ref_id to its `question_gating` value. */
 export type QuestionGatingSettings = Record<string, QuestionGating>;
@@ -16,21 +16,35 @@ export type QuestionGatingSettings = Record<string, QuestionGating>;
 // Interactives that save learner state, whether or not their question number is shown.
 const savesLearnerState = (embeddable: EmbeddableType) => isQuestion(embeddable, { ignoreHideQuestionNumber: true });
 
-/** The URL parameter sets `question_gating: "disable_following_on_page"` on each item it names. */
+const kSectionSuffix = ":section";
+
+/**
+ * The URL parameter sets `question_gating` on each item it names: `"disable_following_on_page"`, or
+ * `"disable_following_in_section"` for a ref_id ending in `:section`.
+ */
 export const parseQuestionGatingParam = (value: string | undefined): QuestionGatingSettings => {
-  const refIds = (value ?? "").split(",").map(refId => refId.trim()).filter(refId => refId.length > 0);
-  return Object.fromEntries(refIds.map(refId => [refId, "disable_following_on_page" as QuestionGating]));
+  const entries = (value ?? "").split(",").map(entry => entry.trim()).filter(entry => entry.length > 0);
+  return Object.fromEntries(entries.map(entry => entry.endsWith(kSectionSuffix)
+    ? [entry.slice(0, -kSectionSuffix.length), "disable_following_in_section" as QuestionGating]
+    : [entry, "disable_following_on_page" as QuestionGating]
+  ));
 };
 
 export const planDisabledQuestions = (page: Page, activityLayout: number, settings: QuestionGatingSettings): DisabledQuestionsPlan => {
   const plan: DisabledQuestionsPlan = {};
   if (Object.keys(settings).length === 0) return plan;
-  const embeddables = getVisibleSections(page)
-    .flatMap(section => embeddablesInNumberingOrder(section, activityLayout))
-    .filter(embeddable => !embeddable.is_hidden);
-  embeddables.forEach((embeddable, index) => {
-    if (settings[embeddable.ref_id] !== "disable_following_on_page" || !savesLearnerState(embeddable)) return;
-    plan[embeddable.ref_id] = embeddables.slice(index + 1).filter(savesLearnerState).map(e => e.ref_id);
+  const items = getVisibleSections(page)
+    .flatMap((section, sectionIndex) => embeddablesInNumberingOrder(section, activityLayout)
+      .filter(embeddable => !embeddable.is_hidden)
+      .map(embeddable => ({ embeddable, sectionIndex })));
+  items.forEach(({ embeddable, sectionIndex }, index) => {
+    const gating = settings[embeddable.ref_id];
+    if ((gating !== "disable_following_on_page" && gating !== "disable_following_in_section") || !savesLearnerState(embeddable)) return;
+    plan[embeddable.ref_id] = items.slice(index + 1)
+      .filter(item => gating === "disable_following_on_page" || item.sectionIndex === sectionIndex)
+      .map(item => item.embeddable)
+      .filter(savesLearnerState)
+      .map(e => e.ref_id);
   });
   return plan;
 };
