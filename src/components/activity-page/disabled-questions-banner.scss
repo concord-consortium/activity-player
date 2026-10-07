@@ -3,6 +3,7 @@
 $banner-text: #222;
 $banner-locked-bg: #c1daff;
 $banner-unlocked-bg: #63d199;
+$banner-line-height: 1.5;
 
 .disabled-questions-banner {
   display: flex;
@@ -15,16 +16,24 @@ $banner-unlocked-bg: #63d199;
   font-family: "Lato", arial, helvetica, sans-serif;
   font-size: pxToRem(20);
   font-weight: bold;
+  line-height: $banner-line-height;
 
   &.unlocked {
     background-color: $banner-unlocked-bg;
   }
 
-  .icon {
+  // One text line tall, so the icon centers on the first line however many lines the text wraps to.
+  .icon-line {
     flex: none;
+    display: flex;
+    align-items: center;
+    height: #{$banner-line-height}em;
+    margin-right: 10px;
+  }
+
+  .icon {
     width: 32px;
     height: 32px;
-    margin-right: 10px;
     fill: $banner-text;
   }
 

@@ -20,7 +20,7 @@ describe("DisabledQuestionsBanner", () => {
 
   it("hides the icon from assistive technology", () => {
     const { container } = render(<DisabledQuestionsBanner state="locked" />);
-    const icon = container.querySelector(".disabled-questions-banner > :first-child");
+    const icon = container.querySelector(".disabled-questions-banner .icon-line > :first-child");
     expect(icon?.getAttribute("aria-hidden")).toBe("true");
   });
 

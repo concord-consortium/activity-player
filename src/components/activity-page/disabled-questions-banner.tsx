@@ -19,7 +19,9 @@ export const DisabledQuestionsBanner: React.FC<IProps> = ({ state, tab }) => {
   const Icon = state === "locked" ? IconBlock : IconCheckCircle;
   return (
     <div className={classNames("disabled-questions-banner", state, { tab })} data-cy="disabled-questions-banner">
-      <Icon className="icon" aria-hidden="true" focusable="false" />
+      <span className="icon-line">
+        <Icon className="icon" aria-hidden="true" focusable="false" />
+      </span>
       <span>{state === "locked" ? kLockedBannerText : kUnlockedBannerText}</span>
     </div>
   );
