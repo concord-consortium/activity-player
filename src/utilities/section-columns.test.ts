@@ -1,7 +1,7 @@
 import { EmbeddableType, SectionType } from "../types";
 import { DefaultTestSection, DefaultXhtmlComponent } from "../test-utils/model-for-tests";
 import { ActivityLayouts } from "./activity-utils";
-import { embeddablesInNumberingOrder, getSectionColumns } from "./section-columns";
+import { getSectionColumns } from "./section-columns";
 
 const embeddable = (refId: string, column: "primary" | "secondary", isHidden = false): EmbeddableType =>
   ({ ...DefaultXhtmlComponent, ref_id: refId, column, is_hidden: isHidden });
@@ -54,16 +54,5 @@ describe("getSectionColumns", () => {
     const columns = getSectionColumns(section("60-40", [p1, hidden, s1]), ActivityLayouts.MultiplePages);
     expect(refIds(columns.left)).toEqual(["p1"]);
     expect(refIds(columns.right)).toEqual(["s1"]);
-  });
-});
-
-describe("embeddablesInNumberingOrder", () => {
-  it("returns the left column and then the right for a split section", () => {
-    expect(refIds(embeddablesInNumberingOrder(section("40-60"), ActivityLayouts.MultiplePages))).toEqual(["s1", "s2", "p1", "p2"]);
-  });
-
-  it("returns the authored order for a stacked section", () => {
-    expect(refIds(embeddablesInNumberingOrder(section("full-width"), ActivityLayouts.MultiplePages))).toEqual(["p1", "s1", "p2", "s2"]);
-    expect(refIds(embeddablesInNumberingOrder(section("40-60"), ActivityLayouts.SinglePage))).toEqual(["p1", "s1", "p2", "s2"]);
   });
 });

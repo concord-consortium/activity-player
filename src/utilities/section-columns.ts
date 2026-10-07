@@ -32,9 +32,3 @@ export const getSectionColumns = (section: SectionType, activityLayout: number):
     leftIsPrimary
   };
 };
-
-/** A section's embeddables in the order its questions are numbered. */
-export const embeddablesInNumberingOrder = (section: SectionType, activityLayout: number): EmbeddableType[] => {
-  const { stacked, left, right } = getSectionColumns(section, activityLayout);
-  return stacked ? section.embeddables : [...left, ...right];
-};

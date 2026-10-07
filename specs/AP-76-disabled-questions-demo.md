@@ -21,9 +21,10 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
 ### Which questions are disabled
 
 - On the page holding a gating item, every question after it in page order is disabled while the gating item is locked. "Question" means an interactive that saves learner state, including ones whose question number is hidden.
-- Page order is question-numbering order: visible sections in order, and within a split-layout section the left column and then the right. A gating item in the right column of a split section therefore disables nothing in that section's left column.
+- In a split-layout section, a gating item disables the questions below it in its own column and every question in the other column, wherever they sit. Columns are side by side, and which other-column items are beside or below the gate depends on heights that change as the page reflows, so the whole other column counts as after the gate. A question above the gate in its own column stays open. A model pinned on the right therefore locks every question scrolling beside it on the left. A question that should stay open goes in a separate section, above or below the two columns (a separate tab in the notebook layout).
+- Sections follow in order, and questions are listed in question-numbering order (left column, then right).
 - A gating item's reach runs to the end of the page, across later sections (and, in the notebook layout, later tabs). In a single-page activity it still ends with the authored page the gating item is on.
-- With `"disable_following_in_section"`, the reach ends with the gating item's own section (in the notebook layout, its own tab), still in question-numbering order within that section. It can only name the item's own section, since an authored reference to another section would break when items move or sections are deleted.
+- With `"disable_following_in_section"`, the reach ends with the gating item's own section (in the notebook layout, its own tab), with the same column rule inside that section. It can only name the item's own section, since an authored reference to another section would break when items move or sections are deleted.
 - Text boxes, images, and interactives that do not save learner state are never disabled.
 - The gating item itself and everything before it are never disabled by that gating item.
 - When a page has more than one gating item, a question is disabled while any gating item before it on the page is locked.
@@ -39,7 +40,8 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
 
 - While a gating item is locked, a banner sits immediately before the first question it disables, in the same column as that question.
 - In the notebook layout, each tab after the gating item's tab that holds a question it disables also shows the banner, full width under the tabs. The banner before the first disabled question appears only when that question is in the gating item's own tab and that tab has no tab banner; otherwise the gating item joins that tab's banner, so no tab shows two. A tab reached by several gating items shows one banner: locked while any is locked, unlocked once none is locked or still loading and one unlocked during the visit, and absent if all were unlocked when the page loaded.
-- Locked text: "Run the Wildfire Explorer and Hazbot Analysis, then answer these questions!", beside a block icon (a circle with a slash). The icon is not authored.
+- Locked text: "Run the Wildfire Explorer and Hazbot Analysis, then answer these questions!", beside a block icon (a circle with a slash), on a light blue banner (`#C1DAFF`). The icon is not authored.
+- The unlocked banner is green (`#63D199`). Both use `#222` text in Lato, 20px bold, from the Zeplin design: 11.2:1 contrast on the blue and 8.4:1 on the green.
 - When the gating item unlocks during the visit, its questions become usable at once, the text changes to "The questions are now unlocked!" and the icon to a check in a circle. That banner stays until the student leaves the page.
 - Each unlock during the visit is announced to screen readers from one live region per page, outside the questions and the notebook tabs, so it is heard even when the banner sits in a hidden tab or a collapsed column. The banners themselves are not live regions, so an unlock is announced once.
 - Banner text meets WCAG AA contrast in both forms, and the locked state is conveyed by the text, not by color or the icon alone; the icon is decorative to assistive technology.
@@ -77,7 +79,7 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
   |---|---|---|---|
   | Full width (the Hazbot case) | `sample-activity-1100px`, 1 | `100250-MwInteractive`, Wildfire master | The question after the model locks; finishing a run unlocks it |
   | 60-40, model on the left | `sample-new-sections-multiple-layout-types`, 7 | `371-ManagedInteractive` | All 7 questions after it lock, in both columns |
-  | 40-60, model on the right | `sample-new-sections-multiple-layout-types`, 4 | `339-ManagedInteractive` | The left-column question stays open; the 2 below the model lock |
+  | 40-60, model on the right | `sample-new-sections-multiple-layout-types`, 4 | `339-ManagedInteractive` | The left-column question and the 2 below the model lock |
   | Responsive 50-50 | `sample-activity-responsive-50-50-layout`, 1 | `314-ManagedInteractive` | The 2 questions after it lock |
   | Notebook tabs | `sample-activity-notebook`, 2 | `893-ManagedInteractive` | The 3 other questions in its tab and the questions on Tabs 2 and 3 lock; Tabs 2 and 3 show the banner under the tabs |
   | Single-page activity | `sample-new-sections-single-page-layout` | `354-ManagedInteractive` | The question after it on its page locks; later pages' questions do not |
@@ -89,7 +91,7 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
 - The interactive-to-host unlock message and the `@concord-consortium/interactive-api-host` / `lara-interactive-api` bumps to `0.14.0` / `1.15.0` (LARA-226, then a later AP-76 pull request).
 - Wildfire's unlock rule (the PIs chose "ran the model and clicked Hazbot at least once") and sending the message (WM-66).
 - Linked interactives watching each other's state.
-- Final visual design of the unlocked banner (a green treatment or a lock and unlock icon), pending Michael Tirenin. Any green must keep the 4.5:1 text contrast, and a lock must not be confused with the multiple-choice interactive's lock on answers that cannot change.
+- A Hazbot image in the banner, or letting the interactive supply richer banner content once it loads (a possible later version; LARA cannot upload images, so the banner stays text and a generic icon).
 - The authored banner text fields (LARA-226) and the Activity Player's default wording for empty fields.
 - Logging lock and unlock events; worth adding with the real message.
 - Portal and teacher reports.
@@ -147,13 +149,21 @@ The work spans three systems (Activity Player in AP-76, LARA in LARA-226, Wildfi
 ---
 
 ### What does "after" mean in a split-layout section?
-**Context**: Authored order and question-numbering order disagree in layouts that put the secondary column on the left.
+**Context**: Authored order and question-numbering order disagree in layouts that put the secondary column on the left, and a model pinned in the right column sits beside questions scrolling on the left.
 **Options considered**:
 - A) Authored order.
 - B) Numbering order, left column then right.
-- C) Every other question in the section.
+- C) The other column counts as after the gate; within the gate's own column, order applies.
+- D) The gate's whole section.
 
-**Decision**: B (Doug Martin, 2026-10-06): "after" follows the question numbers students see.
+**Decision**: C (Doug Martin, 2026-10-07), replacing B. Under B a right-pinned model locked none of the questions beside it (Scott Cytacki's question during PI review). Comparing positions across columns would depend on heights that change as the page reflows, so the whole other column counts as after. D would also lock questions above the model in a full-width section, which nobody asked for.
+
+---
+
+### What colors does the banner use?
+**Context**: The first demo used light gray; Trudi Lord asked for green when unlocked, and Michael Tirenin's earlier Zeplin design had a blue banner.
+
+**Decision**: Michael's colors (2026-10-07): blue `#C1DAFF` when locked and green `#63D199` when unlocked, with `#222` Lato 20px bold text. Both pass AA with room to spare. A lock icon was avoided because the multiple-choice interactive already uses one for answers that cannot change.
 
 ---
 

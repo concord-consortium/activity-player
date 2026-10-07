@@ -67,13 +67,20 @@ describe("planDisabledQuestions", () => {
     expect(plan(p, gate("model"))).toEqual({ model: ["q1", "q2"] });
   });
 
-  it("follows question-numbering order in split layouts", () => {
-    const fortySixty = section([question("model", "primary"), question("qA", "secondary"), question("qB", "secondary")], "40-60");
-    expect(plan(page(fortySixty), gate("model"))).toEqual({ model: [] });
-    expect(plan(page(fortySixty), gate("model"), ActivityLayouts.SinglePage)).toEqual({ model: ["qA", "qB"] });
+  it("locks the whole other column of a split section and what is below the gate in its own", () => {
+    const rightPinned = section([question("model", "primary"), question("qA", "secondary"), question("qB", "secondary")], "40-60");
+    expect(plan(page(rightPinned), gate("model"))).toEqual({ model: ["qA", "qB"] });
+
+    const aboveInOwnColumn = section([question("qTop", "primary"), question("model", "primary"), question("qA", "secondary")], "40-60");
+    expect(plan(page(aboveInOwnColumn), gate("model"))).toEqual({ model: ["qA"] });
 
     const sixtyForty = section([question("qA", "secondary"), question("model", "primary"), question("qB", "primary")], "60-40");
     expect(plan(page(sixtyForty), gate("model"))).toEqual({ model: ["qB", "qA"] });
+  });
+
+  it("uses authored order when a split section is stacked in a single-page activity", () => {
+    const fortySixty = section([question("qA", "secondary"), question("model", "primary"), question("qB", "secondary")], "40-60");
+    expect(plan(page(fortySixty), gate("model"), ActivityLayouts.SinglePage)).toEqual({ model: ["qB"] });
   });
 
   it("ignores gating ids that are missing, hidden, or save no state", () => {
@@ -90,10 +97,10 @@ describe("planDisabledQuestions", () => {
     expect(plan(p, { model: "disable_following_on_page" })).toEqual({ model: ["q1", "q2", "q3"] });
   });
 
-  it("follows numbering order within a split section for disable_following_in_section", () => {
+  it("locks the other column but not later sections for disable_following_in_section", () => {
     const fortySixty = section([question("model", "primary"), question("qA", "secondary"), question("qB", "primary")], "40-60");
     const p = page(fortySixty, section([question("later")]));
-    expect(plan(p, { model: "disable_following_in_section" })).toEqual({ model: ["qB"] });
+    expect(plan(p, { model: "disable_following_in_section" })).toEqual({ model: ["qA", "qB"] });
   });
 
   it("plans each of several gating items", () => {
@@ -162,8 +169,10 @@ describe("the sample-disabled-questions activity", () => {
     expect(planPage(2)).toEqual({ "9102-MwInteractive": ["9108-ManagedInteractive", "9109-ManagedInteractive", "9110-ManagedInteractive"] });
   });
 
-  it("leaves the left-column question open when the model is on the right", () => {
-    expect(planPage(3)).toEqual({ "9103-MwInteractive": ["9112-ManagedInteractive", "9113-ManagedInteractive"] });
+  it("locks every left-column question when the model is pinned on the right", () => {
+    expect(planPage(3)).toEqual({ "9103-MwInteractive": [
+      "9111-ManagedInteractive", "9112-ManagedInteractive", "9125-ManagedInteractive", "9126-ManagedInteractive", "9113-ManagedInteractive"
+    ] });
   });
 
   it("makes the last question wait for both models", () => {
