@@ -182,7 +182,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
       key={embeddable.ref_id}
       ref={targetDiv}
     >
-      { lock.banner && <DisabledQuestionsBanner state={lock.banner} /> }
+      { lock.banner && <DisabledQuestionsBanner banner={lock.banner} /> }
       { linkedPluginEmbeddable && <div className={"embeddable-sub-one"} ref={embeddableWrapperDivTarget}></div> }
       <div className={"embeddable-sub-two"} ref={embeddableDivTarget}>
         { qComponent }

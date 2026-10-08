@@ -2,27 +2,24 @@ import React from "react";
 import classNames from "classnames";
 import IconBlock from "../../assets/svg-icons/icon-block.svg";
 import IconCheckCircle from "../../assets/svg-icons/icon-check-circle.svg";
-import type { BannerState } from "./disabled-questions-context";
+import type { IBanner } from "../../utilities/disabled-questions";
 
 import "./disabled-questions-banner.scss";
 
-export const kLockedBannerText = "Run the Wildfire Explorer and Hazbot Analysis, then answer these questions!";
-export const kUnlockedBannerText = "The questions are now unlocked!";
-
 interface IProps {
-  state: BannerState;
+  banner: IBanner;
   /** Spans the whole notebook tab, under the tabs, rather than one question's cell. */
   tab?: boolean;
 }
 
-export const DisabledQuestionsBanner: React.FC<IProps> = ({ state, tab }) => {
-  const Icon = state === "locked" ? IconBlock : IconCheckCircle;
+export const DisabledQuestionsBanner: React.FC<IProps> = ({ banner, tab }) => {
+  const Icon = banner.state === "locked" ? IconBlock : IconCheckCircle;
   return (
-    <div className={classNames("disabled-questions-banner", state, { tab })} data-cy="disabled-questions-banner">
+    <div className={classNames("disabled-questions-banner", banner.state, { tab })} data-cy="disabled-questions-banner">
       <span className="icon-line">
         <Icon className="icon" aria-hidden="true" focusable="false" />
       </span>
-      <span>{state === "locked" ? kLockedBannerText : kUnlockedBannerText}</span>
+      <span>{banner.text}</span>
     </div>
   );
 };

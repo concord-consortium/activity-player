@@ -1,4 +1,4 @@
-import { EmbeddableType, Page, SectionType } from "../types";
+import { EmbeddableType, IManagedInteractive, IMwInteractive, Page, SectionType } from "../types";
 import { getVisibleSections, isQuestion } from "./page-walk";
 import { getSectionColumns } from "./section-columns";
 
@@ -12,6 +12,16 @@ export type QuestionGating = "none" | "disable_following_on_page" | "disable_fol
 
 /** Item ref_id to its `question_gating` value. */
 export type QuestionGatingSettings = Record<string, QuestionGating>;
+
+export const defaultLockedBannerText = (name: string | null | undefined) =>
+  name?.trim() ? `Use ${name.trim()} to unlock these questions.` : "Use the interactive to unlock these questions.";
+export const kDefaultUnlockedBannerText = "The questions are now unlocked!";
+
+const kQuestionGatingValues: QuestionGating[] = ["none", "disable_following_on_page", "disable_following_in_section"];
+
+/** A missing, null or unknown value means "none". */
+export const toQuestionGating = (value: unknown): QuestionGating =>
+  kQuestionGatingValues.includes(value as QuestionGating) ? value as QuestionGating : "none";
 
 // Interactives that save learner state, whether or not their question number is shown.
 const savesLearnerState = (embeddable: EmbeddableType) => isQuestion(embeddable, { ignoreHideQuestionNumber: true });
@@ -29,6 +39,30 @@ export const parseQuestionGatingParam = (value: string | undefined): QuestionGat
     : [entry, "disable_following_on_page" as QuestionGating]
   ));
 };
+
+const interactives = (page: Page) => page.sections.flatMap(section => section.embeddables)
+  .filter((e): e is IMwInteractive | IManagedInteractive => e.type === "MwInteractive" || e.type === "ManagedInteractive");
+
+export const authoredQuestionGating = (page: Page): QuestionGatingSettings => Object.fromEntries(
+  interactives(page)
+    .map(e => [e.ref_id, toQuestionGating(e.question_gating)] as const)
+    .filter(([, gating]) => gating !== "none")
+);
+
+/** The authored settings, with the override parameter's values replacing them for the items it names. */
+export const questionGatingSettings = (page: Page, overrideParam: string | undefined): QuestionGatingSettings =>
+  ({ ...authoredQuestionGating(page), ...parseQuestionGatingParam(overrideParam) });
+
+export interface IGateTexts { locked: string; unlocked: string; }
+
+const authoredText = (text: string | null | undefined, fallback: string) => text?.trim() || fallback;
+
+export const gateTexts = (page: Page): Record<string, IGateTexts> => Object.fromEntries(interactives(page).map(e => [e.ref_id, {
+  locked: authoredText(e.question_gating_locked_text, defaultLockedBannerText(e.name)),
+  unlocked: authoredText(e.question_gating_unlocked_text, kDefaultUnlockedBannerText)
+}]));
+
+export interface IBanner { state: "locked" | "unlocked"; text: string; }
 
 interface IPlannedItem {
   embeddable: EmbeddableType;
@@ -107,4 +141,21 @@ export const nextGateStatus = (status: GateStatus, hasSavedState: boolean): Gate
   if (status === "unlockedOnLoad" || status === "unlockedDuringVisit") return status;
   if (hasSavedState) return status === "loading" ? "unlockedOnLoad" : "unlockedDuringVisit";
   return "locked";
+};
+
+export const isSettling = (status: GateStatus) => status === "loading";
+
+/**
+ * The banner that speaks for several gates, given in page order: locked while any is locked, with the first
+ * locked gate's text; unlocked once none is locked or loading and one unlocked during the visit, with the text
+ * of the gate that unlocked last; otherwise none.
+ */
+export const combineBanner = (
+  gateRefIds: string[], statusOf: (refId: string) => GateStatus, unlockOrder: string[], textsOf: (refId: string) => IGateTexts
+): IBanner | undefined => {
+  const lockedGate = gateRefIds.find(refId => statusOf(refId) === "locked");
+  if (lockedGate) return { state: "locked", text: textsOf(lockedGate).locked };
+  if (gateRefIds.some(refId => isSettling(statusOf(refId)))) return undefined;
+  const lastUnlocked = [...unlockOrder].reverse().find(refId => gateRefIds.includes(refId));
+  return lastUnlocked ? { state: "unlocked", text: textsOf(lastUnlocked).unlocked } : undefined;
 };

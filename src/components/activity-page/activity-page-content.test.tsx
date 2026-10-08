@@ -5,7 +5,7 @@ import { DefaultManagedInteractive, DefaultTestPage, DefaultTestActivity, Defaul
 import { DynamicTextTester } from "../../test-utils/dynamic-text";
 import { EmbeddableVisibilityTracker } from "../../utilities/embeddable-visibility-tracker";
 import { answerWatchers, kSavedAnswer } from "../../test-utils/answer-watchers";
-import { kLockedBannerText, kUnlockedBannerText } from "./disabled-questions-banner";
+import { kDefaultUnlockedBannerText } from "../../utilities/disabled-questions";
 
 jest.mock("../../firebase-db", () => jest.requireActual("../../test-utils/answer-watchers").firebaseDbMock);
 
@@ -198,13 +198,13 @@ describe("Activity Page Content component", () => {
         answerWatchers.report(q1.ref_id, null);
       });
       const banner = () => container.querySelector('[data-cy="disabled-questions-banner"]')?.textContent;
-      expect(banner()).toBe(kLockedBannerText);
+      expect(banner()).toBe("Use Model to unlock these questions.");
       expect(screen.getByRole("status").textContent).toBe("");
       expect(q1Runtime(container)?.hasAttribute("inert")).toBe(true);
 
       act(() => answerWatchers.report(model.ref_id, kSavedAnswer));
-      expect(banner()).toBe(kUnlockedBannerText);
-      expect(screen.getByRole("status").textContent).toBe(kUnlockedBannerText);
+      expect(banner()).toBe(kDefaultUnlockedBannerText);
+      expect(screen.getByRole("status").textContent).toBe(kDefaultUnlockedBannerText);
       expect(q1Runtime(container)?.hasAttribute("inert")).toBe(false);
     });
   });
