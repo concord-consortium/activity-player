@@ -3,7 +3,7 @@ import { DefaultLibraryInteractive, DefaultManagedInteractive, DefaultTestPage, 
 import { ActivityLayouts } from "./activity-utils";
 import { sampleActivities } from "../data";
 import {
-  combineBanner, gateTexts, GateStatus, IGateTexts, nextGateStatus, parseQuestionGatingParam, planDisabledQuestions,
+  applyGateEvent, combineBanner, GateEvent, gateTexts, GateStatus, IGateState, IGateTexts, nextGateStatus, parseQuestionGatingParam, planDisabledQuestions,
   planTabBanners, QuestionGatingSettings, questionGatingSettings, toQuestionGating
 } from "./disabled-questions";
 
@@ -144,8 +144,12 @@ describe("combineBanner", () => {
     expect(banner({ a: "unlockedDuringVisit", b: "unlockedDuringVisit" }, ["b", "a"])).toEqual({ state: "unlocked", text: "a unlocked" });
   });
 
-  it("shows nothing when every gate unlocked on load", () => {
-    expect(banner({ a: "unlockedOnLoad", b: "unlockedOnLoad" })).toBeUndefined();
+  it("shows nothing while a gate is awaiting a restored unlock", () => {
+    expect(banner({ a: "awaitingRestore", b: "unlockedDuringVisit" }, ["b"])).toBeUndefined();
+  });
+
+  it("shows nothing when every gate is open", () => {
+    expect(banner({ a: "open", b: "open" })).toBeUndefined();
   });
 });
 
@@ -252,17 +256,56 @@ describe("planTabBanners", () => {
 });
 
 describe("nextGateStatus", () => {
-  it.each<[GateStatus, boolean, GateStatus]>([
-    ["loading", false, "locked"],
-    ["loading", true, "unlockedOnLoad"],
-    ["locked", false, "locked"],
-    ["locked", true, "unlockedDuringVisit"],
-    ["unlockedOnLoad", false, "unlockedOnLoad"],
-    ["unlockedOnLoad", true, "unlockedOnLoad"],
-    ["unlockedDuringVisit", false, "unlockedDuringVisit"],
-    ["unlockedDuringVisit", true, "unlockedDuringVisit"],
-  ])("moves %s with saved state %s to %s", (status, hasSavedState, expected) => {
-    expect(nextGateStatus(status, hasSavedState)).toBe(expected);
+  const declared = (hasState: boolean): GateEvent => ({ type: "declared", hasState });
+  const unlocked = (restored: boolean): GateEvent => ({ type: "unlocked", restored });
+  const restoreWindowEnded: GateEvent = { type: "restoreWindowEnded" };
+  const declarationWindowEnded: GateEvent = { type: "declarationWindowEnded" };
+
+  it.each<[GateStatus, GateEvent, GateStatus]>([
+    ["loading", declared(false), "locked"],
+    ["loading", declared(true), "awaitingRestore"],
+    ["loading", restoreWindowEnded, "loading"],
+    ["loading", declarationWindowEnded, "open"],
+    ["loading", unlocked(true), "open"],
+    ["loading", unlocked(false), "open"],
+    ["awaitingRestore", declared(false), "awaitingRestore"],
+    ["awaitingRestore", restoreWindowEnded, "locked"],
+    ["awaitingRestore", declarationWindowEnded, "awaitingRestore"],
+    ["awaitingRestore", unlocked(true), "open"],
+    ["awaitingRestore", unlocked(false), "open"],
+    ["locked", declared(true), "locked"],
+    ["locked", restoreWindowEnded, "locked"],
+    ["locked", declarationWindowEnded, "locked"],
+    ["locked", unlocked(true), "open"],
+    ["locked", unlocked(false), "unlockedDuringVisit"],
+    ...(["open", "unlockedDuringVisit"] as GateStatus[]).flatMap(status =>
+      [declared(false), declared(true), restoreWindowEnded, declarationWindowEnded, unlocked(true), unlocked(false)]
+        .map((event): [GateStatus, GateEvent, GateStatus] => [status, event, status]))
+  ])("moves %s on %j to %s", (status, event, expected) => {
+    expect(nextGateStatus(status, event)).toBe(expected);
+  });
+});
+
+describe("applyGateEvent", () => {
+  const empty: IGateState = { statuses: {}, unlockOrder: [] };
+  const unlock: GateEvent = { type: "unlocked", restored: false };
+
+  it("returns the same state when the event changes nothing", () => {
+    const unchanged = applyGateEvent(empty, "a", { type: "restoreWindowEnded" });
+    expect(unchanged).toBe(empty);
+  });
+
+  it("records each gate's unlock during the visit once, in order", () => {
+    const locked = ["a", "b"].reduce((state, refId) => applyGateEvent(state, refId, { type: "declared", hasState: false }), empty);
+    expect(locked).toEqual({ statuses: { a: "locked", b: "locked" }, unlockOrder: [] });
+    const unlockedB = applyGateEvent(locked, "b", unlock);
+    const unlockedBoth = applyGateEvent(applyGateEvent(unlockedB, "a", unlock), "b", unlock);
+    expect(unlockedBoth).toEqual({ statuses: { a: "unlockedDuringVisit", b: "unlockedDuringVisit" }, unlockOrder: ["b", "a"] });
+  });
+
+  it("records no unlock for a gate that opens", () => {
+    const opened = applyGateEvent(empty, "a", { type: "unlocked", restored: true });
+    expect(opened).toEqual({ statuses: { a: "open" }, unlockOrder: [] });
   });
 });
 

@@ -134,7 +134,8 @@ export const planTabBanners = (page: Page, plan: DisabledQuestionsPlan): Record<
   return tabs;
 };
 
-export type GateStatus = "loading" | "locked" | "unlockedOnLoad" | "unlockedDuringVisit";
+/** "loading" and "awaitingRestore" both show as disabled but not grayed, with no banner. */
+export type GateStatus = "loading" | "awaitingRestore" | "locked" | "unlockedDuringVisit" | "open";
 
 export type GateEvent =
   | { type: "declared"; hasState: boolean }
@@ -142,14 +143,36 @@ export type GateEvent =
   | { type: "declarationWindowEnded" }
   | { type: "unlocked"; restored: boolean };
 
-/** Applies one saved-state report for a gating item. Unlocking is one way within a visit. */
-export const nextGateStatus = (status: GateStatus, hasSavedState: boolean): GateStatus => {
-  if (status === "unlockedOnLoad" || status === "unlockedDuringVisit") return status;
-  if (hasSavedState) return status === "loading" ? "unlockedOnLoad" : "unlockedDuringVisit";
-  return "locked";
+export const isSettling = (status: GateStatus) => status === "loading" || status === "awaitingRestore";
+
+/** Unlocking is one way within a visit, and a gate never returns to loading. */
+export const nextGateStatus = (status: GateStatus, event: GateEvent): GateStatus => {
+  if (status === "open" || status === "unlockedDuringVisit") return status;
+  switch (event.type) {
+    case "declared":
+      return status === "loading" ? (event.hasState ? "awaitingRestore" : "locked") : status;
+    case "restoreWindowEnded":
+      return status === "awaitingRestore" ? "locked" : status;
+    case "declarationWindowEnded":
+      return status === "loading" ? "open" : status;
+    case "unlocked":
+      // The unlocked banner announces a change the student saw, so only a locked gate shows it.
+      return status === "locked" && !event.restored ? "unlockedDuringVisit" : "open";
+  }
 };
 
-export const isSettling = (status: GateStatus) => status === "loading";
+export interface IGateState { statuses: Record<string, GateStatus>; unlockOrder: string[]; }
+
+/** Returns the same state when the event changes nothing, so repeated messages do not re-render. */
+export const applyGateEvent = (state: IGateState, refId: string, event: GateEvent): IGateState => {
+  const status = state.statuses[refId] ?? "loading";
+  const next = nextGateStatus(status, event);
+  if (next === status) return state;
+  return {
+    statuses: { ...state.statuses, [refId]: next },
+    unlockOrder: next === "unlockedDuringVisit" ? [...state.unlockOrder, refId] : state.unlockOrder
+  };
+};
 
 /**
  * The banner that speaks for several gates, given in page order: locked while any is locked, with the first

@@ -17,7 +17,8 @@ jest.mock("../../firebase-db", () => ({
 let mockTabBanner: IBanner | undefined;
 jest.mock("./disabled-questions-context", () => ({
   useQuestionLock: () => ({ disabled: false, locked: false }),
-  useTabBanner: () => mockTabBanner
+  useTabBanner: () => mockTabBanner,
+  useQuestionGateReporter: () => undefined
 }));
 
 describe("Section component", () => {

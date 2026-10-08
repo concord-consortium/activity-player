@@ -12,7 +12,7 @@ import { IInteractiveSupportedFeaturesEvent } from "../../lara-plugin/events";
 import { ICustomMessage, ISupportedFeatures, INavigationOptions, IGetInteractiveState } from "@concord-consortium/lara-interactive-api";
 import { SpikeMediaLibrary } from "./spike-media-library/spike-media-library";
 import { EmbeddableVisibilityContext } from "../embeddable-visibility-context";
-import { useQuestionLock } from "./disabled-questions-context";
+import { useQuestionGateReporter, useQuestionLock } from "./disabled-questions-context";
 import { DisabledQuestionsBanner } from "./disabled-questions-banner";
 import { useInert } from "../../utilities/use-inert";
 
@@ -56,6 +56,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   }, []);
   const LARA = useContext(LaraGlobalContext);
   const lock = useQuestionLock(embeddable.ref_id);
+  const reportGateEvent = useQuestionGateReporter(embeddable.ref_id);
   useInert(embeddableWrapperDivTarget, lock.disabled);
 
   useEffect(() => {
@@ -124,6 +125,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
                     saveInteractiveStateHistory={saveInteractiveStateHistory}
                     disabled={lock.disabled}
                     locked={lock.locked}
+                    onQuestionGateEvent={reportGateEvent}
                  />;
   } else if (embeddable.type === "ManagedInteractive" && !embeddable.library_interactive) {
     qComponent = <div>Content type not supported</div>;

@@ -1,13 +1,13 @@
-import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useMemo, useRef, useState } from "react";
 import { Page, SectionType } from "../../types";
-import { watchAnswer } from "../../firebase-db";
 import { ActivityLayouts } from "../../utilities/activity-utils";
 import { queryValue } from "../../utilities/url-query";
 import { isOfferingLocked } from "../../utilities/portal-data-utils";
 import { PortalDataContext } from "../portal-data-context";
 import {
-  combineBanner, defaultLockedBannerText, gateTexts, GateStatus, IBanner, IGateTexts, kDefaultUnlockedBannerText,
-  isSettling, kDisableQuestionsAfterParam, nextGateStatus, planDisabledQuestions, planTabBanners, questionGatingSettings
+  applyGateEvent, combineBanner, defaultLockedBannerText, GateEvent, gateTexts, IBanner, IGateState, IGateTexts,
+  isSettling, kDefaultUnlockedBannerText, kDisableQuestionsAfterParam, planDisabledQuestions, planTabBanners,
+  questionGatingSettings
 } from "../../utilities/disabled-questions";
 
 export interface IQuestionLock {
@@ -33,21 +33,26 @@ const readQuestionGatingSettings = (page: Page) => {
   }
 };
 
-interface IGateState { statuses: Record<string, GateStatus>; unlockOrder: string[]; }
+type GateReporter = (event: GateEvent) => void;
 
 interface IDisabledQuestions {
   getLock: (refId: string) => IQuestionLock;
   getTabBanner: (section: SectionType) => IBanner | undefined;
+  getGateReporter: (refId: string) => GateReporter | undefined;
 }
 
 const DisabledQuestionsContext = React.createContext<IDisabledQuestions>({
   getLock: () => kUnlocked,
-  getTabBanner: () => undefined
+  getTabBanner: () => undefined,
+  getGateReporter: () => undefined
 });
 
 export const useQuestionLock = (refId: string) => useContext(DisabledQuestionsContext).getLock(refId);
 
 export const useTabBanner = (section: SectionType) => useContext(DisabledQuestionsContext).getTabBanner(section);
+
+/** Undefined unless the item is a gate on the current page. */
+export const useQuestionGateReporter = (refId: string) => useContext(DisabledQuestionsContext).getGateReporter(refId);
 
 interface IProps {
   page: Page;
@@ -69,30 +74,20 @@ export const DisabledQuestionsProvider: React.FC<IProps> = ({ page, activityLayo
   const texts = useMemo(() => gateTexts(page), [page]);
   const gatingKey = Object.keys(plan).join(",");
   const [{ statuses, unlockOrder }, setGates] = useState<IGateState>({ statuses: {}, unlockOrder: [] });
+  const warnedUndeclared = useRef(new Set<string>());
 
-  useEffect(() => {
-    if (!gatingKey) return;
-    const gatingRefIds = gatingKey.split(",");
-    setGates({ statuses: Object.fromEntries(gatingRefIds.map(refId => [refId, "loading" as GateStatus])), unlockOrder: [] });
-    const report = (refId: string, hasSavedState: boolean) => setGates(prev => {
-      const status = prev.statuses[refId] ?? "loading";
-      const next = nextGateStatus(status, hasSavedState);
-      return {
-        statuses: { ...prev.statuses, [refId]: next },
-        unlockOrder: next === "unlockedDuringVisit" && status !== next ? [...prev.unlockOrder, refId] : prev.unlockOrder
-      };
-    });
-    // A gate whose answer cannot be read shows as locked, so its questions are explained rather than stuck loading.
-    const unsubscribes = gatingRefIds.map(refId => watchAnswer(
-      refId,
-      wrappedAnswer => report(refId, wrappedAnswer?.interactiveState != null),
-      error => {
-        console.warn(`Could not read the saved state of ${refId}: ${error.message}`);
-        report(refId, false);
-      }
-    ));
-    return () => unsubscribes.forEach(unsubscribe => unsubscribe());
-  }, [gatingKey]);
+  const reporters = useMemo(() => {
+    const warnUndeclaredOnce = (refId: string) => {
+      if (warnedUndeclared.current.has(refId)) return;
+      warnedUndeclared.current.add(refId);
+      const name = page.sections.flatMap(section => section.embeddables).find(e => e.ref_id === refId)?.name;
+      console.warn(`The question gate ${refId} ("${name ?? ""}") never declared question-gating support, so it locks nothing.`);
+    };
+    return Object.fromEntries(gatingKey.split(",").filter(Boolean).map(refId => [refId, (event: GateEvent) => {
+      if (event.type === "declarationWindowEnded") warnUndeclaredOnce(refId);
+      setGates(prev => applyGateEvent(prev, refId, event));
+    }]));
+  }, [gatingKey, page]);
 
   const textsOf = useCallback((refId: string) => texts[refId] ?? kUnnamedGateTexts, [texts]);
 
@@ -126,9 +121,10 @@ export const DisabledQuestionsProvider: React.FC<IProps> = ({ page, activityLayo
     tabGates.forEach((gatingRefIds, tab) => tabBanners.set(tab, bannerOf(gatingRefIds)));
     return {
       getLock: (refId: string) => locks[refId] ?? kUnlocked,
-      getTabBanner: (section: SectionType) => tabBanners.get(section)
+      getTabBanner: (section: SectionType) => tabBanners.get(section),
+      getGateReporter: (refId: string) => reporters[refId]
     };
-  }, [plan, tabs, statuses, unlockOrder, textsOf]);
+  }, [plan, tabs, statuses, unlockOrder, textsOf, reporters]);
 
   // A banner can sit in a hidden notebook tab or a collapsed column, so unlocks are announced from here.
   const announced = unlockOrder.filter(refId => (plan[refId]?.length ?? 0) > 0);

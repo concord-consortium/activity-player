@@ -1,6 +1,7 @@
 import React from "react";
 import iframePhone from "iframe-phone";
 import { Embeddable } from "./embeddable";
+import { ManagedInteractive } from "./managed-interactive/managed-interactive";
 import { mount } from "enzyme";
 import { EmbeddableType, IEmbeddablePlugin, IManagedInteractive } from "../../types";
 import { DefaultManagedInteractive, DefaultXhtmlComponent, DefaultTEWindowshadeComponent, DefaultLibraryInteractive } from "../../test-utils/model-for-tests";
@@ -15,8 +16,10 @@ jest.mock("../../firebase-db", () => ({
 }));
 
 let mockQuestionLock: IQuestionLock = { disabled: false, locked: false };
+const mockGateReporters: Record<string, () => void> = {};
 jest.mock("./disabled-questions-context", () => ({
-  useQuestionLock: () => mockQuestionLock
+  useQuestionLock: () => mockQuestionLock,
+  useQuestionGateReporter: (refId: string) => mockGateReporters[refId]
 }));
 
 describe("Embeddable component", () => {
@@ -320,6 +323,14 @@ describe("Embeddable component", () => {
       expect(root.firstElementChild).toBe(banner);
       expect(banner?.textContent).toBe("Run the model.");
       expect(banner?.closest(".embeddable-sub-two")).toBeNull();
+    });
+
+    it("passes the item's gate reporter to its interactive", () => {
+      const reporter = jest.fn();
+      mockGateReporters["123-ManagedInteractive"] = reporter;
+      const wrapper = mountInteractive();
+      expect(wrapper.find(ManagedInteractive).prop("onQuestionGateEvent")).toBe(reporter);
+      delete mockGateReporters["123-ManagedInteractive"];
     });
 
     it("renders no banner without one in the lock", () => {
