@@ -136,6 +136,12 @@ export const planTabBanners = (page: Page, plan: DisabledQuestionsPlan): Record<
 
 export type GateStatus = "loading" | "locked" | "unlockedOnLoad" | "unlockedDuringVisit";
 
+export type GateEvent =
+  | { type: "declared"; hasState: boolean }
+  | { type: "restoreWindowEnded" }
+  | { type: "declarationWindowEnded" }
+  | { type: "unlocked"; restored: boolean };
+
 /** Applies one saved-state report for a gating item. Unlocking is one way within a visit. */
 export const nextGateStatus = (status: GateStatus, hasSavedState: boolean): GateStatus => {
   if (status === "unlockedOnLoad" || status === "unlockedDuringVisit") return status;

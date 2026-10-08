@@ -9,7 +9,7 @@ import {
   ISupportedFeatures, ServerMessage, IShowModal, ICloseModal, INavigationOptions, ILinkedInteractiveStateResponse,
   IAddLinkedInteractiveStateListenerRequest, IRemoveLinkedInteractiveStateListenerRequest, IDecoratedContentEvent,
   ITextDecorationInfo, ITextDecorationHandlerInfo, IAttachmentUrlRequest, IAttachmentUrlResponse, IGetInteractiveState, AttachmentInfoMap,
-  IPubSubCreateChannel, IPubSubSubscribe, IPubSubUnsubscribe, IPubSubPublish
+  IPubSubCreateChannel, IPubSubSubscribe, IPubSubUnsubscribe, IPubSubPublish, IUnlockQuestionsMessage
 } from "@concord-consortium/lara-interactive-api";
 import { PubSubManager, JobManager, FocusManager, type FocusTransport } from "@concord-consortium/interactive-api-host";
 import { firebaseJobExecutor, buildJobContext } from "../../../firebase-job-executor";
@@ -35,6 +35,8 @@ import { anonymousPortalData } from "../../../portal-api";
 import { useCompositeRef } from "../../../utilities/use-composite-ref";
 import { useInert } from "../../../utilities/use-inert";
 import { applyOverrides } from "../../../utilities/url-overrides/state";
+import { GateEvent } from "../../../utilities/disabled-questions";
+import { QuestionGateReporter } from "./question-gate-reporter";
 
 import "./iframe-runtime.scss";
 
@@ -101,6 +103,8 @@ interface IProps {
   afterSentinelRef?: React.Ref<HTMLSpanElement>;
   onFocusTransportReady?: (transport: FocusTransport | undefined) => void;
   disabled?: boolean;
+  /** Set for a gating item: receives its gate events. */
+  onQuestionGateEvent?: (event: GateEvent) => void;
 }
 
 // these are managed outside of the component to persist across component unmount/mount cycles
@@ -120,7 +124,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     proposedHeight, containerWidth, setNewHint, getFirebaseJWT, getAttachmentUrl, showModal, closeModal, setSupportedFeatures,
     setSendCustomMessage, setNavigation, iframeTitle, portalData, answerMetadata, interactiveInfo,
     showDeleteDataButton, setAspectRatio, setHeightFromInteractive, feedback, log,
-    iframeRef: externalIframeRef, beforeSentinelRef, afterSentinelRef, onFocusTransportReady, disabled = false } = props;
+    iframeRef: externalIframeRef, beforeSentinelRef, afterSentinelRef, onFocusTransportReady, disabled = false,
+    onQuestionGateEvent } = props;
 
   const [reloadCount, setReloadCount] = useState<number>(0);
   const iframePhoneTimeout = useRef<number|undefined>(undefined);
@@ -143,6 +148,11 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   // Clear & start over clears it, and a url change takes the parent's, which includes saves made elsewhere.
   const currentInteractiveState = useRef<any>(withoutLegacyNoChange(initialInteractiveState));
   const currentInteractiveStateUrl = useRef(url);
+  const onQuestionGateEventRef = useRef(onQuestionGateEvent);
+  onQuestionGateEventRef.current = onQuestionGateEvent;
+  const [gateReporter] = useState(() =>
+    onQuestionGateEvent && new QuestionGateReporter(event => onQuestionGateEventRef.current?.(event)));
+  useEffect(() => () => gateReporter?.dispose(), [gateReporter]);
 
   const dynamicText = useDynamicTextContext();
   const dynamicTextComponentIds = useRef<Set<string>>(new Set());
@@ -207,10 +217,12 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         // owns "supportedFeatures". Forward the focus-protocol capability to the
         // FocusManager from here instead of letting it add a competing listener.
         focusManagerRef.current?.notifyCapability(!!features.focusProtocol);
+        gateReporter?.supportedFeatures(features, currentInteractiveState.current != null);
       });
       addListener("navigation", (options: INavigationOptions) => {
         setNavigation?.(options);
       });
+      addListener("unlockQuestions", (options: IUnlockQuestionsMessage) => gateReporter?.unlock(options));
       addListener("getFirebaseJWT", async (request: IGetFirebaseJwtRequest) => {
         const { requestId, firebase_app, ...others } = request || {};
         let errorMessage = "Error retrieving Firebase JWT!";
@@ -385,6 +397,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           getFirebaseJwt: {
             version: "1.0.0"
           },
+          questionGating: {
+            version: "1.0.0"
+          },
           domain: window.location.hostname
         },
         authoredState,
@@ -448,6 +463,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           phone.post("loadInteractive", latestInteractiveState);
         }
         phone.post("initInteractive", initInteractiveMsg);
+        gateReporter?.restartDeclarationWindow();
       };
 
       if (objectStorageUser.type === "authenticated") {
@@ -603,6 +619,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
         allow="geolocation; microphone; camera; bluetooth; clipboard-read; clipboard-write"
         title={iframeTitle}
         scrolling="no"
+        onLoad={() => gateReporter?.restartDeclarationWindow()}
       />
       <span
         ref={afterSentinelRef}

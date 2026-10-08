@@ -1,6 +1,6 @@
 import { IRuntimeMetadata } from "@concord-consortium/lara-interactive-api";
-import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState, getLegacyLinkedRefIds, utcString, getApRun, createOrUpdateApRun, watchActivityLevelFeedback, watchQuestionLevelFeedback } from "./firebase-db";
-import { DefaultManagedInteractive } from "./test-utils/model-for-tests";
+import { setPortalData, setAnonymousPortalData, createOrUpdateAnswer, initializeDB, signInWithToken, setLearnerPluginState, getLearnerPluginStateDocId, getLearnerPluginState, getLegacyLinkedRefIds, getLegacyLinkedInteractiveInfo, utcString, getApRun, createOrUpdateApRun, watchActivityLevelFeedback, watchQuestionLevelFeedback } from "./firebase-db";
+import { DefaultManagedInteractive, DefaultTestActivity, DefaultTestPage, DefaultTestSection } from "./test-utils/model-for-tests";
 import { getAnswerWithMetadata, LegacyLinkedRefMap } from "./utilities/embeddable-utils";
 import { IExportableAnswerMetadata } from "./types";
 import firebase from "firebase/compat/app";
@@ -358,6 +358,35 @@ describe("Firestore", () => {
       });
 
       // the rest of the code is handled with other tests
+    });
+  });
+
+  describe("#getLegacyLinkedInteractiveInfo", () => {
+    it("calls onError, and not the callback, when the linked answers cannot be read", async () => {
+      setAnonymousPortalData({
+        type: "anonymous",
+        database: { appName: "report-service-dev", sourceKey: "localhost" },
+        resourceUrl: "http://example/resource",
+        toolId: "activity-player.concord.org",
+        toolUserId: "anonymous",
+        userType: "learner",
+        runKey: "test"
+      });
+      const error = new Error("permission-denied");
+      appMock.firestore().collection().get = jest.fn(() => Promise.reject(error));
+      const embeddables = [
+        { ...DefaultManagedInteractive, ref_id: "a", linked_interactive: { ref_id: "b" } },
+        { ...DefaultManagedInteractive, ref_id: "b" }
+      ];
+      const activity = { ...DefaultTestActivity, pages: [{ ...DefaultTestPage, sections: [{ ...DefaultTestSection, embeddables }] }] };
+      const callback = jest.fn();
+      const onError = jest.fn();
+
+      getLegacyLinkedInteractiveInfo("a", { activity }, callback, onError);
+      await new Promise(resolve => setTimeout(resolve));
+
+      expect(onError).toHaveBeenCalledWith(error);
+      expect(callback).not.toHaveBeenCalled();
     });
   });
 

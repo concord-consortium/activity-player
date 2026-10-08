@@ -752,7 +752,10 @@ export const getLegacyLinkedRefIds = (embeddableRefId: string, linkedRefMap: Leg
   return linkedRefIds;
 };
 
-export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData: ILaraData, callback: (info: ILegacyLinkedInteractiveState) => void) => {
+export const getLegacyLinkedInteractiveInfo = (
+  embeddableRefId: string, laraData: ILaraData, callback: (info: ILegacyLinkedInteractiveState) => void,
+  onError?: (error: Error) => void
+) => {
   // get a map of embeddable refs to linked refs
   const linkedRefMap = getLegacyLinkedRefMap(laraData);
 
@@ -794,7 +797,8 @@ export const getLegacyLinkedInteractiveInfo = (embeddableRefId: string, laraData
         allLinkedStates: allLinkedStates as any,  // any here as we are missing things Lara sets
         externalReportUrl: getReportUrl(embeddableRefId) || undefined
       });
-    });
+    })
+    .catch(error => onError?.(error));
 };
 
 export const getApRun = async (sequenceActivity?: string|null) => {

@@ -28,6 +28,7 @@ import { useQuestionInfoContext } from "../../question-info-context";
 import { isOfferingLocked } from "../../../utilities/portal-data-utils";
 import { applyOverridesToAuthoredState } from "../../../utilities/url-overrides/state";
 import { forwardInteractiveLog } from "../../chat/chat-log-forwarder";
+import { GateEvent } from "../../../utilities/disabled-questions";
 
 import "./managed-interactive.scss";
 
@@ -46,6 +47,8 @@ interface IProps {
   disabled?: boolean;
   /** Its heading says the question is locked. */
   locked?: boolean;
+  /** Set for a gating item: receives its gate events. */
+  onQuestionGateEvent?: (event: GateEvent) => void;
 }
 
 export interface ManagedInteractiveImperativeAPI {
@@ -58,7 +61,8 @@ export interface IClickToPlayOptions {
 }
 
 export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation, saveInteractiveStateHistory, disabled, locked } = props;
+  const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation, saveInteractiveStateHistory, disabled, locked,
+    onQuestionGateEvent } = props;
   const { scrollToQuestionId } = useQuestionInfoContext();
   const portalData = useContext(PortalDataContext);
   const laraData = useContext(LaraDataContext);
@@ -91,6 +95,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   const interactiveStateHistoryIdRef = useRef(nanoid());
 
   const embeddableRefId = embeddable.ref_id;
+  const onQuestionGateEventRef = useRef(onQuestionGateEvent);
+  onQuestionGateEventRef.current = onQuestionGateEvent;
 
   const hasPluginRequiringHeader = useMemo(() => {
     return !!laraData.activity && hasPluginThatRequiresHeader(laraData.activity, embeddableRefId);
@@ -119,24 +125,30 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     }
   }, [embeddableRefId, divSize, scrollToQuestionId]);
 
+  const onStateUnavailable = useCallback((error: Error) => {
+    console.warn(`Could not load the saved state of ${embeddableRefId}: ${error.message}`);
+    // A gate whose interactive cannot run can never declare, so it opens.
+    onQuestionGateEventRef.current?.({ type: "declarationWindowEnded" });
+  }, [embeddableRefId]);
+
   useEffect(() => {
     if (shouldWatchAnswer) {
       return watchAnswer(embeddableRefId, (wrappedAnswer) => {
         answerMeta.current = wrappedAnswer?.meta;
         interactiveState.current = wrappedAnswer?.interactiveState;
         setLoadingAnswer(false);
-      });
+      }, onStateUnavailable);
     }
-  }, [embeddableRefId, shouldWatchAnswer]);
+  }, [embeddableRefId, shouldWatchAnswer, onStateUnavailable]);
 
   useEffect(() => {
     if (shouldLoadLegacyLinkedInteractiveState && (laraData.activity || laraData.sequence)) {
       return getLegacyLinkedInteractiveInfo(embeddableRefId, laraData, (info) => {
         legacyLinkedInteractiveState.current = info;
         setLoadingLegacyLinkedInteractiveState(false);
-      });
+      }, onStateUnavailable);
     }
-  }, [embeddableRefId, laraData, shouldLoadLegacyLinkedInteractiveState]);
+  }, [embeddableRefId, laraData, shouldLoadLegacyLinkedInteractiveState, onStateUnavailable]);
 
   useEffect(() => {
     interactiveInfo.current = getInteractiveInfo(laraData, embeddableRefId);
@@ -408,6 +420,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     closeModal,
     setSendCustomMessage,
     setNavigation,
+    onQuestionGateEvent,
     iframeTitle: questionNumber
       ? `Question ${questionNumber} ${questionName} content`
       : embeddable.name || "Interactive content",
