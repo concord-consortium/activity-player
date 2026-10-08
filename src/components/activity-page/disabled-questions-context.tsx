@@ -1,13 +1,12 @@
-import React, { useCallback, useContext, useMemo, useRef, useState } from "react";
+import React, { useContext, useMemo, useRef, useState } from "react";
 import { Page, SectionType } from "../../types";
 import { ActivityLayouts } from "../../utilities/activity-utils";
 import { queryValue } from "../../utilities/url-query";
 import { isOfferingLocked } from "../../utilities/portal-data-utils";
 import { PortalDataContext } from "../portal-data-context";
 import {
-  applyGateEvent, combineBanner, defaultLockedBannerText, GateEvent, gateTexts, IBanner, IGateState, IGateTexts,
-  isSettling, kDefaultUnlockedBannerText, kDisableQuestionsAfterParam, planDisabledQuestions, planTabBanners,
-  questionGatingSettings
+  applyGateEvent, combineBanner, GateEvent, gateTexts, IBanner, IGateState, isSettling, kDisableQuestionsAfterParam,
+  planDisabledQuestions, planTabBanners, questionGatingSettings
 } from "../../utilities/disabled-questions";
 
 export interface IQuestionLock {
@@ -20,8 +19,6 @@ export interface IQuestionLock {
 }
 
 const kUnlocked: IQuestionLock = { disabled: false, locked: false };
-
-const kUnnamedGateTexts: IGateTexts = { locked: defaultLockedBannerText(undefined), unlocked: kDefaultUnlockedBannerText };
 
 // queryValue throws on a repeated parameter, which would unmount the page during render.
 const readQuestionGatingSettings = (page: Page) => {
@@ -89,8 +86,6 @@ export const DisabledQuestionsProvider: React.FC<IProps> = ({ page, activityLayo
     }]));
   }, [gatingKey, page]);
 
-  const textsOf = useCallback((refId: string) => texts[refId] ?? kUnnamedGateTexts, [texts]);
-
   const value = useMemo((): IDisabledQuestions => {
     const statusOf = (refId: string) => statuses[refId] ?? "loading";
     const locks: Record<string, IQuestionLock> = {};
@@ -112,7 +107,7 @@ export const DisabledQuestionsProvider: React.FC<IProps> = ({ page, activityLayo
         locks[refId] = lock;
       });
     });
-    const bannerOf = (gatingRefIds: string[]) => combineBanner(gatingRefIds, statusOf, unlockOrder, textsOf);
+    const bannerOf = (gatingRefIds: string[]) => combineBanner(gatingRefIds, statusOf, unlockOrder, refId => texts[refId]);
     bannerGates.forEach((gatingRefIds, refId) => {
       const banner = bannerOf(gatingRefIds);
       if (banner) locks[refId].banner = banner;
@@ -124,7 +119,7 @@ export const DisabledQuestionsProvider: React.FC<IProps> = ({ page, activityLayo
       getTabBanner: (section: SectionType) => tabBanners.get(section),
       getGateReporter: (refId: string) => reporters[refId]
     };
-  }, [plan, tabs, statuses, unlockOrder, textsOf, reporters]);
+  }, [plan, tabs, statuses, unlockOrder, texts, reporters]);
 
   // A banner can sit in a hidden notebook tab or a collapsed column, so unlocks are announced from here.
   const announced = unlockOrder.filter(refId => (plan[refId]?.length ?? 0) > 0);
@@ -135,7 +130,7 @@ export const DisabledQuestionsProvider: React.FC<IProps> = ({ page, activityLayo
       {gatingKey &&
         <div className="disabled-questions-announcer" role="status" data-cy="disabled-questions-announcer">
           {announced.length > 0 &&
-            <span key={announced.length}>{textsOf(announced[announced.length - 1]).unlocked}</span>}
+            <span key={announced.length}>{texts[announced[announced.length - 1]].unlocked}</span>}
         </div>
       }
     </DisabledQuestionsContext.Provider>

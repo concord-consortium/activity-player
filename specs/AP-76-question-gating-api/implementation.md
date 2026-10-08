@@ -94,7 +94,7 @@ export const gateTexts = (page: Page): Record<string, IGateTexts> => Object.from
 export interface IBanner { state: "locked" | "unlocked"; text: string; }
 ```
 
-`authoredText` returns the trimmed text, so leading and trailing whitespace an author typed is dropped; LARA already saves whitespace-only text as `null`. A gate named only by the override that is not an interactive is ignored by the planner, so `gateTexts` covering interactives only is enough; `textsFor(refId)` in the provider falls back to the unnamed defaults for a missing entry.
+`authoredText` returns the trimmed text, so leading and trailing whitespace an author typed is dropped; LARA already saves whitespace-only text as `null`. A gate named only by the override that is not an interactive is ignored by the planner, so `gateTexts` covering interactives only is enough: every planned gate is an interactive on the page, so `gateTexts` always has an entry for it.
 
 `combineBanner` is written against the status type of this step and gains the protocol's statuses in the next:
 
@@ -123,7 +123,7 @@ Provider changes in this step:
 - `texts = useMemo(() => gateTexts(page), [page])`.
 - State becomes `{ statuses, unlockOrder }`.
 - Locks: for each question, collect the gates whose first disabled question it is (and that no tab banner covers); `lock.banner = combineBanner(thoseGates, ...)`. Tabs: `combineBanner(gatesReachingTab, ...)`. Both lists are in plan order, which is page order (`planDisabledQuestions` walks items in order).
-- Live region: `const announced = unlockOrder.filter(refId => (plan[refId]?.length ?? 0) > 0)`; render `<span key={announced.length}>{textsOf(last(announced)).unlocked}</span>` when non-empty.
+- Live region: `const announced = unlockOrder.filter(refId => (plan[refId]?.length ?? 0) > 0)`; render `<span key={announced.length}>{texts[last(announced)].unlocked}</span>` when non-empty.
 - `IQuestionLock.banner` and `useTabBanner` return `IBanner | undefined`; `BannerState` is deleted.
 
 `DisabledQuestionsBanner` props become `{ banner: IBanner; tab?: boolean }`, rendering `banner.text` and choosing the icon and class from `banner.state`. `embeddable.tsx` and `section.tsx` (both tab-banner sites) pass `banner={...}`.
