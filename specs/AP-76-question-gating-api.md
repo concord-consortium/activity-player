@@ -1,32 +1,16 @@
 # Question Gating: Authored Setting and Unlock Message
 
 **Jira**: https://concord-consortium.atlassian.net/browse/AP-76
-**Repo**: https://github.com/concord-consortium/activity-player
-**Implementation Spec**: [implementation.md](implementation.md)
-**Status**: **In Development**
+
+**Status**: **Closed**
 
 ## Overview
 
 Questions on an Activity Player page can start locked until the interactive above them unlocks them. The first AP-76 pull request built the locking, banners and reach as a demo driven by a URL parameter and the gate's saved state; this pull request replaces those stand-ins with LARA-226's authored setting and the `unlockQuestions` message that Wildfire (WM-66) sends.
 
-## Project Owner Overview
-
 Hazbot pages need students to run the Wildfire model and get Hazbot's feedback before they answer the questions about it. Authors now choose this per item in LARA ("Question Gating" on the Advanced Options tab), with their own banner text, and the model tells the Activity Player when the student has done enough. A student coming back to a page they already unlocked finds the questions open with no banner.
 
 Nothing can lock students out by mistake: questions lock only behind an interactive that announces it can unlock them, so gating an interactive that cannot (including Wildfire without a Hazbot rule set) locks nothing. LARA's production deploy of the authoring setting waits for this release.
-
-## Background
-
-The demo (PR #591, `fc5bc504`, closed spec `specs/AP-76-disabled-questions-demo.md`) built everything the student sees: the planner and reach rules (page, section, the two-column rule, side-by-side gates), `DisabledQuestionsProvider`, inert disabled questions with readable "(locked)" headings, the per-question and notebook tab banners, the page's live region, the colors, and the Teacher Edition and locked-offering rules. None of that changes here except where listed below.
-
-Two stand-ins are replaced:
-
-- **Which items gate.** The demo read only `override:disableQuestionsAfter=<ref_id[:section],...>`. LARA-226 (lara PR #1270, closed spec `~/projects/lara/specs/LARA-226-question-gating.md`) now exports `question_gating`, `question_gating_locked_text` and `question_gating_unlocked_text` on every `MwInteractive` and `ManagedInteractive` (its R3).
-- **When a gate unlocks.** The demo unlocked once the gate had saved state (Wildfire master saves when a run ends). The real signal is the `unlockQuestions` message, payload `IUnlockQuestionsMessage { restored?: boolean }`, sent only by interactives that declared `supportedFeatures.questionGating` (LARA-226 R10, R11). Hosts advertise `hostFeatures.questionGating = { version: "1.0.0" }` (R11), may receive the message at startup and repeatedly, treat it as idempotent, never persist it, and show no "now unlocked" feedback when `restored` is true (R13).
-
-Wildfire (WM-66, wildfire-model PR #155, live on the Wildfire master build) declares `questionGating` only when a Hazbot rule set loaded (`hazbotRules=<id>` in its URL), sends `unlockQuestions()` on the first Hazbot click after a run ended in the visit, and at startup sends `unlockQuestions({ restored: true })` right after its declaration when its saved state has `questionsUnlocked`. AP-145 (PR #592, on this branch's base) makes every re-init carry the latest state, so a Wildfire top-bar reload keeps the unlock.
-
-Measured on this branch's dev server against local LARA activity 41 (2026-10-08): Wildfire with `hazbotRules=23` said `hello` 900 ms after the page's question interactives, declared `{ questionGating: true }` 37 ms after its `hello`, and fired its iframe `load` event 405 ms after the declaration. Without `hazbotRules` it said `hello` and never posted `supportedFeatures` at all. The question interactives (multiple choice) each post `supportedFeatures` twice, without `questionGating`. On an anonymous run of the same page, Wildfire sent `unlockQuestions({})` on the first Hazbot click after a run ended, and on three return visits it sent `unlockQuestions({ restored: true })` in the same millisecond as its declaration, each time before its iframe `load` event (the LARA-226 end-to-end check measured about 3 ms).
 
 ## Requirements
 
@@ -92,72 +76,144 @@ Each gate is in one of: **loading** (its questions are disabled but not grayed, 
 - Fixing a gate whose collapsed column hides its first question's banner (accepted in the demo).
 - Portal and teacher reports.
 
-## Open Questions
+## Decisions
 
-### RESOLVED: When does a gate leave loading?
-**Context**: The declaration and a restored unlock arrive over the iframe; a gate that never declares must not keep its questions disabled; switching to locked on the declaration shows the locked state for a frame before Wildfire's restored unlock (about 3 ms later).
+### When does a gate leave loading?
+**Context**: The declaration and a restored unlock arrive over the iframe. A gate that never declares must not keep its questions disabled, and switching to locked on the declaration would show the locked state for a frame before Wildfire's restored unlock (about 3 ms later).
 **Options considered**:
 - A) A flat timeout from page render (15 s).
 - B) Settle on the declaration, holding loading briefly only when the item has saved state; open after a window measured from the iframe's `load` event, restarted by each `initInteractive` (R6, R7).
 - C) Keep watching saved state as well (the demo's watch) and hold loading while it is present.
 
-**Decision**: B. A flat window from render punishes slow-loading models (Wildfire's bundle took about 2.9 s locally before `hello`) and is too long for interactives that will never declare. Measured locally, a declaring Wildfire declares 37 ms after `hello` and before its `load` event, so 5 s after `load` (or after a late `initInteractive`) is generous, and it costs time only for misconfigured gates. A 1 s hold covers a restored unlock sent in the same tick as the declaration with a wide margin, and is spent only by returning students who have not unlocked. C keeps a second answer watch and a second unlock source the protocol replaced; the saved state the hold needs is already in the gate's `IframeRuntime`.
+**Decision**: B. A flat window from render punishes slow-loading models (Wildfire's bundle took about 2.9 s locally before `hello`) and is too long for interactives that will never declare. A declaring Wildfire declares 37 ms after `hello` and before its `load` event, so 5 s after `load` (or after a late `initInteractive`) is generous and costs time only for misconfigured gates. A 1 s hold covers a restored unlock sent in the same tick as the declaration with a wide margin. C keeps a second answer watch and a second unlock source the protocol replaced.
 
-### RESOLVED: What does the override do now?
-**Context**: Requiring a declaration means `override:disableQuestionsAfter` on an interactive that does not declare locks nothing; `sample-disabled-questions` uses Wildfire master without `hazbotRules`, so it would stop locking.
+---
+
+### What does the override do now?
+**Context**: Requiring a declaration means `override:disableQuestionsAfter` on an interactive that does not declare locks nothing, and `sample-disabled-questions` used Wildfire master without `hazbotRules`.
 **Options considered**:
 - A) The override also keeps the saved-state unlock, bypassing the declaration.
 - B) The override only sets `question_gating`; the sample moves to authored fields and declaring URLs.
 
-**Decision**: B. A would keep two unlock rules alive, one of which (any saved state) contradicts the PI's Hazbot rule, so testing with the override would show behavior students never get. With B the override still answers "what would gating look like here" on any page whose interactive declares, and the saved-state code and its tests go. Wildfire master with `hazbotRules=23` declares, so the sample keeps working.
+**Decision**: B. A would keep two unlock rules alive, one of which (any saved state) contradicts the Hazbot rule, so testing with the override would show behavior students never get. With B the override still answers "what would gating look like here" on any page whose interactive declares, and the saved-state code and its tests go.
 
-### RESOLVED: Judgment call: which text does a banner shared by several gates show?
+---
+
+### Which text does a banner shared by several gates show?
 **Context**: A notebook tab, or a first disabled question shared by side-by-side gates, can stand for gates with different authored texts.
 **Options considered**:
 - A) The first locked gate's locked text in page order; when unlocked, the text of the gate whose unlock cleared it (R13).
 - B) Default text whenever the gates' texts differ.
 - C) All the texts, one per line.
 
-**Decision**: A. The first locked gate is the one the student can act on next, so its text is the useful instruction, and the unlocked text belongs to the gate that just finished. B throws away authored wording on exactly the pages with more than one model; C stacks instructions in a banner meant to be one line.
+**Decision**: A. The first locked gate is the one the student can act on next, and the unlocked text belongs to the gate that just finished. B throws away authored wording on exactly the pages with more than one model; C stacks instructions in a banner meant to be one line.
 
-### RESOLVED: Judgment call: does a non-restored unlock while loading show the unlocked banner?
+---
+
+### Does a non-restored unlock while loading show the unlocked banner?
 **Options considered**:
 - A) No: the gate becomes open (R8).
 - B) Yes.
 
 **Decision**: A. The unlocked banner announces a change the student saw; a student who never saw the locked state has none, matching the demo's rule that a gate unlocked on load shows no banner.
 
-### RESOLVED: What are the default banner texts?
-**Context**: The demo's locked text, "Run the Wildfire Explorer and Hazbot Analysis, then answer these questions!", is Hazbot-specific and would show for any gate without authored text. The text must make sense whether the questions are below the interactive or in the other column.
+---
+
+### What are the default banner texts?
+**Context**: The demo's locked text was Hazbot-specific and would show for any gate without authored text. The text must make sense whether the questions are below the interactive or in the other column.
 **Options considered**:
 - A) Generic: "Use the interactive to unlock these questions."
 - B) Keep the Hazbot wording.
 - C) Generic, naming the interactive when it has a name.
 
-**Decision**: C (Doug Martin, 2026-10-08), R12. The item's own `name` is used, unquoted; the library interactive's `data.name` is not, since it is the type ("Multiple Choice"), not authored. Names are often empty (every Wildfire item in the sample has `""`), so the fallback is common. Hazbot items carry the Hazbot wording as authored text. The unlocked default needs no name.
+**Decision**: C (Doug Martin, 2026-10-08), R12. The item's own `name` is used, unquoted; the library interactive's `data.name` is not, since it is the type ("Multiple Choice"). Names are often empty, so the fallback is common. Hazbot items carry the Hazbot wording as authored text.
 
-### RESOLVED: Low confidence: what does a click-to-play gate do before it is played?
-**Context**: A gate with click-to-play loads no iframe until the student clicks its prompt, so it cannot declare, and under R5 to R7 its questions would stay loading (disabled, ungrayed, no banner) until the click. The demo, reading saved state, showed it locked (or open with saved state) before the click.
+---
+
+### What does a click-to-play gate do before it is played?
+**Context**: A click-to-play gate loads no iframe until the student clicks its prompt, so it cannot declare.
 **Options considered**:
-- A) Locked with its banner until played, unless it has saved state (then loading); after the click, R6 to R8 apply, and a gate that never declares turns open after the window.
+- A) Locked with its banner until played, unless it has saved state (then loading).
 - B) Loading until played, as R5 to R7 give.
 - C) Open until played; a declaration after the click locks.
 
-**Decision**: B (Doug Martin, 2026-10-08). R5 to R7 apply unchanged: it follows the contract (lock only after a declaration), needs no extra code, and click-to-play gates are rare. Its questions are disabled and ungrayed until the student plays the gate, then settle as any other gate's do.
+**Decision**: B (Doug Martin, 2026-10-08). It follows the contract (lock only after a declaration), needs no extra code, and click-to-play gates are rare. Its questions are disabled and ungrayed until the student plays the gate.
 
-## Self-Review
+---
 
-Roles: Senior Engineer, QA Engineer, Student, WCAG Accessibility Expert, Education Material Developer (author), DevOps. Findings with one defensible fix were applied in place (R6 defines "interactive state", R10 covers a gate collapsed while loading, Technical Notes gained the rollout order). The one that revisited a demo decision was settled by Doug.
-
-### Student
-
-#### RESOLVED: Loading now lasts until the model declares, not until its saved state arrives
-In the demo a gate left loading when Firestore returned its answer, a fraction of a second. Now it leaves loading when the interactive declares, which waits for the model to download and start. Measured locally on a fast machine, the multiple-choice questions below Wildfire were rendered at about 2.0 s and Wildfire declared at about 2.9 s, so the questions sat disabled with no banner and no gray for about a second; on a school Chromebook or a slow network that gap grows to several seconds, and a misconfigured gate holds it for the whole window (R7). During it a click or Tab into a question does nothing and nothing says why. The demo chose "disabled, not grayed" (its "What does the page show while a gate's saved state is loading?" decision) when loading was brief.
+### Loading now lasts until the model declares
+**Context**: In the demo a gate left loading when Firestore returned its answer. Now it leaves loading when the interactive declares, which waits for the model to download and start (about a second locally, longer on slow machines), and a misconfigured gate holds it for the whole window.
 **Options considered**:
-- A) Keep R5 as written: disabled and ungrayed until the gate settles.
-- B) After a short delay (about 1 s), show a loading gate as locked with its banner; if it then turns open, the banner goes away without announcement.
+- A) Keep R5: disabled and ungrayed until the gate settles.
+- B) After a short delay, show a loading gate as locked with its banner.
 - C) Leave questions usable while loading, locking them when the declaration arrives.
 
-Suggested: A. B shows a lock the contract says only a declaring gate may show, and flashes a banner on every misconfigured gate; C lets a student start an answer that then locks under them. Gates normally sit above their questions, so the student usually reaches the questions after the model has loaded.
+**Decision**: A (Doug Martin, 2026-10-08). B shows a lock only a declaring gate may show and flashes a banner on every misconfigured gate; C lets a student start an answer that then locks. Gates normally sit above their questions, so students usually reach the questions after the model has loaded.
 
-**Decision**: A (Doug Martin, 2026-10-08). R5 stays as written.
+---
+
+### A gate whose runtime never mounts
+**Context**: `ManagedInteractive` renders "Loading..." until its answer arrives, so on a Firestore read error the gate's runtime never mounts, no window starts, and the gate would stay loading for the visit.
+**Options considered**:
+- A) `ManagedInteractive` handles the read error and, for a gate, reports the declaration window as ended, so the gate opens.
+- B) A provider-level backstop that opens any gate still loading after some time.
+- C) Accept it and list it as out of scope.
+
+**Decision**: A (Doug Martin, 2026-10-08), R7a. B contradicts the click-to-play decision. The legacy linked-state read hangs the same way, so it gets the same handler.
+
+---
+
+### R7's "connects late" wording
+**Context**: The window starts at the iframe's `load` event, so an interactive whose `hello` or token arrives more than 5 s later finds the gate already open.
+**Options considered**:
+- A) Reword R7 to what the design does: each `initInteractive` restarts the window, and a connection that finishes after it fails open.
+- B) Pause the window from `hello` until `initInteractive` is posted.
+
+**Decision**: A. Failing open is the safe direction; with B a token that never resolves leaves the gate loading. The reporter tests pin the late-restart case.
+
+---
+
+### Where do the windows' timers live?
+**Options considered**:
+- A) In a reporter object owned by each gate's `IframeRuntime`, which reports window-ended events.
+- B) In the provider, fed raw `load`, `initInteractive` and declaration events.
+
+**Decision**: A. The windows are measured from that runtime's own iframe and `initInteractive`, and dispose with it, which gives R10; the provider stays a pure fold over events.
+
+---
+
+### Pass the reporter down as props or read the context in `IframeRuntime`?
+**Options considered**:
+- A) `Embeddable` reads the context and passes `onQuestionGateEvent` down, like `setNavigation`.
+- B) `IframeRuntime` calls the context hook itself.
+
+**Decision**: A. It follows the `navigation` precedent, keeps `IframeRuntime` testable without a provider, and reaches the dialog runtime through the shared runtime props.
+
+---
+
+### What happens to the provider's state when the gates change?
+**Options considered**:
+- A) Key the state by the gating key and treat a mismatched key as empty.
+- B) Keep the demo's reset effect.
+- C) Plain state with no key and no reset.
+
+**Decision**: C. A provider is remounted for every page and its gates are fixed at load. A or B would also strand a gate if they did change: resetting it to loading while its runtime's reporter has already latched its declaration leaves it loading for good.
+
+---
+
+### Commit structure
+**Context**: The protocol work was well over the per-commit size budget.
+**Options considered**:
+- A) Split it into "report gate events from the interactive" (runtime wiring, nothing consuming it) and "settle gates from the interactive's messages" (provider, harness, page tests, deletions).
+- B) Keep one commit.
+
+**Decision**: A, so the runtime wiring reviews apart from the provider rewrite.
+
+---
+
+### A gate that never declares gives the author no sign of why nothing locks
+**Options considered**:
+- A) Log a console warning naming the gate when its declaration window ends.
+- B) Stay silent.
+
+**Decision**: A. The provider warns once per gate, naming its `ref_id` and name, so an author previewing a gate that cannot declare sees why nothing locks.
