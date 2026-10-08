@@ -67,3 +67,7 @@
     }
   }
 }
+
+.managed-interactive .header .visually-hidden {
+  @include visually-hidden;
+}

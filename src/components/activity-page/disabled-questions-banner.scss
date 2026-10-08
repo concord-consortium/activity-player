@@ -1,0 +1,47 @@
+@import "../vars.scss";
+
+$banner-text: #222;
+$banner-locked-bg: #c1daff;
+$banner-unlocked-bg: #63d199;
+$banner-line-height: 1.5;
+
+.disabled-questions-banner {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: $banner-locked-bg;
+  color: $banner-text;
+  font-family: "Lato", arial, helvetica, sans-serif;
+  font-size: pxToRem(20);
+  font-weight: bold;
+  line-height: $banner-line-height;
+
+  &.unlocked {
+    background-color: $banner-unlocked-bg;
+  }
+
+  // One text line tall, so the icon centers on the first line however many lines the text wraps to.
+  .icon-line {
+    flex: none;
+    display: flex;
+    align-items: center;
+    height: #{$banner-line-height}em;
+    margin-right: 10px;
+  }
+
+  .icon {
+    width: 32px;
+    height: 32px;
+    fill: $banner-text;
+  }
+
+  &.tab {
+    grid-column: 1 / -1;
+  }
+}
+
+.disabled-questions-announcer {
+  @include visually-hidden;
+}

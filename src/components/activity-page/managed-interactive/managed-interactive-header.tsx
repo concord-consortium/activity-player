@@ -11,9 +11,13 @@ interface IProps {
   triggerRef?: React.Ref<HTMLButtonElement>;
   onToggleHint: () => void;
   hideHeader: boolean;
+  disabled?: boolean;
+  locked?: boolean;
 }
 
-export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, questionName, hint, showHint, hintPanelId, triggerRef, onToggleHint, hideHeader }) => {
+export const ManagedInteractiveHeader: React.FC<IProps> = ({
+  questionNumber, questionName, hint, showHint, hintPanelId, triggerRef, onToggleHint, hideHeader, disabled, locked
+}) => {
   if (hideHeader) return null;
 
   const trimmedQuestionName = questionName.trim();
@@ -33,7 +37,10 @@ export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, que
           (empty) DynamicText so the header still occupies the layout slot for the
           hint button without introducing an empty heading. */}
       {hasHeadingText
-        ? <h2 className="embeddable-header-text">{headingContent}</h2>
+        ? <h2 className="embeddable-header-text">
+            {headingContent}
+            {locked && <span className="visually-hidden"> (locked)</span>}
+          </h2>
         : headingContent}
       {hint && (
         <button
@@ -45,6 +52,7 @@ export const ManagedInteractiveHeader: React.FC<IProps> = ({ questionNumber, que
           aria-label={trimmedQuestionName ? `Hint for ${trimmedQuestionName}` : "Show hint"}
           aria-expanded={showHint}
           aria-controls={hintPanelId}
+          disabled={disabled}
         >
           <IconQuestion className="question" height={22} width={22} aria-hidden="true" focusable="false" />
         </button>

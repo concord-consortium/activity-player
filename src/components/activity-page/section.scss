@@ -192,6 +192,8 @@
     &.max-aspect-ratio {
       .embeddable.primary {
         height: 98vh;
+        display: flex;
+        flex-direction: column;
         .embeddable.primary, .embeddable-sub-two, .managed-interactive, .runtime-container, .iframe-runtime {
           display: flex;
           flex-direction: column;
@@ -279,5 +281,19 @@
       white-space: nowrap;
       width: auto;
     }
+  }
+}
+
+// A notebook tab banner sits above the section's columns; this keeps the columns laid out as the section lays them out.
+.section-columns {
+  display: contents;
+}
+
+.section.responsive.with-tab-banner {
+  flex-direction: column;
+
+  .section-columns {
+    display: flex;
+    gap: inherit;
   }
 }

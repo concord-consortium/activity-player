@@ -230,7 +230,7 @@ const getAnswerDocsQuery = (questionId?: string) => {
   return query;
 };
 
-const watchAnswerDocs = (listener: DocumentsListener, questionId?: string) => {
+const watchAnswerDocs = (listener: DocumentsListener, questionId?: string, onError?: (error: Error) => void) => {
   const query = getAnswerDocsQuery(questionId);
   // Note that query.onSnapshot returns unsubscribe method.
   return query.onSnapshot((snapshot: firebase.firestore.QuerySnapshot<firebase.firestore.DocumentData>) => {
@@ -242,6 +242,10 @@ const watchAnswerDocs = (listener: DocumentsListener, questionId?: string) => {
       listener([]);
     }
   }, (err) => {
+    if (onError) {
+      onError(err);
+      return;
+    }
     throw new Error(err.message);
   });
 };
@@ -299,8 +303,10 @@ export const getAllAnswers = (): Promise<WrappedDBAnswer[]>  => {
     );
 };
 
-// Watches ONE question answer defined by embeddableRefId.
-export const watchAnswer = (embeddableRefId: string, callback: (wrappedAnswer: WrappedDBAnswer | null) => void) => {
+// Watches ONE question answer defined by embeddableRefId. Without onError, a listener error is thrown.
+export const watchAnswer = (
+  embeddableRefId: string, callback: (wrappedAnswer: WrappedDBAnswer | null) => void, onError?: (error: Error) => void
+) => {
   const questionId = refIdToAnswersQuestionId(embeddableRefId);
   // Note that watchAnswerDocs returns unsubscribe method.
   return watchAnswerDocs((answers: firebase.firestore.DocumentData[]) => {
@@ -315,7 +321,7 @@ export const watchAnswer = (embeddableRefId: string, callback: (wrappedAnswer: W
       );
     }
     callback(firestoreDocToWrappedAnswer(answers[0]));
-  }, questionId); // limit observer to single question
+  }, questionId, onError); // limit observer to single question
 };
 
 // Watches ALL the answers for the given activity.

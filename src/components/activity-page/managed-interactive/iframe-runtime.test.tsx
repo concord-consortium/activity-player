@@ -112,6 +112,14 @@ describe("IframeRuntime component", () => {
       </MediaLibraryTester>;
   const renderWith = (extraProps: Record<string, any> = {}) => render(runtimeWith(extraProps));
 
+  it("makes the whole runtime inert only while disabled", () => {
+    const disabled = renderWith({ disabled: true });
+    expect(disabled.container.querySelector('[data-cy="iframe-runtime"]')?.hasAttribute("inert")).toBe(true);
+    disabled.unmount();
+    const enabled = renderWith();
+    expect(enabled.container.querySelector('[data-cy="iframe-runtime"]')?.hasAttribute("inert")).toBe(false);
+  });
+
   it("renders before/after sentinels around the iframe with tabindex=-1", () => {
     const mockSetInteractiveState = jest.fn();
     const mockSetSupportedFeatures = jest.fn();

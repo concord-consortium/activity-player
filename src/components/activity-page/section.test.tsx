@@ -1,10 +1,23 @@
 import React from "react";
 import { Section } from "./section";
 import { configure, fireEvent, render } from "@testing-library/react";
-import { DefaultTestPage, DefaultTestSection, DefaultXhtmlComponent } from "../../test-utils/model-for-tests";
-import { IEmbeddableXhtml } from "../../types";
+import { DefaultManagedInteractive, DefaultTestPage, DefaultTestSection, DefaultXhtmlComponent } from "../../test-utils/model-for-tests";
+import { IEmbeddableXhtml, IManagedInteractive } from "../../types";
 import { EmbeddableVisibilityContext } from "../embeddable-visibility-context";
 import { IEmbeddableVisibilityTracker } from "../../utilities/embeddable-visibility-tracker";
+import { DynamicTextTester } from "../../test-utils/dynamic-text";
+
+jest.mock("../../firebase-db", () => ({
+  watchAnswer: (id: string, callback: (answer: null) => void) => { callback(null); return () => undefined; },
+  getAnswer: () => Promise.resolve(null),
+  watchQuestionLevelFeedback: () => () => undefined
+}));
+
+let mockTabBanner: "locked" | "unlocked" | undefined;
+jest.mock("./disabled-questions-context", () => ({
+  useQuestionLock: () => ({ disabled: false, locked: false }),
+  useTabBanner: () => mockTabBanner
+}));
 
 describe("Section component", () => {
   const stubFunction = () => {
@@ -239,6 +252,89 @@ describe("Section component", () => {
       expect(queue).not.toHaveBeenCalled();
       rerender(renderSection(false));
       expect(queue.mock.calls).toEqual([["tabChange"]]);
+    });
+  });
+
+  describe("split layout column order", () => {
+    const question = (refId: string, column: "primary" | "secondary"): IManagedInteractive => ({
+      ...DefaultManagedInteractive,
+      ref_id: refId,
+      name: refId,
+      column
+    });
+
+    const renderSplitSection = (layout: string) => render(
+      <DynamicTextTester>
+        <Section
+          activityLayout={0}
+          page={{...DefaultTestPage}}
+          pluginsLoaded={true}
+          questionNumberStart={0}
+          section={{ ...DefaultTestSection, layout, embeddables: [question("primary-q", "primary"), question("secondary-q", "secondary")] }}
+          setNavigation={stubFunction}
+        />
+      </DynamicTextTester>
+    );
+
+    const precedes = (a: HTMLElement, b: HTMLElement) => !!(a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING);
+
+    it("renders and numbers the secondary column first in 40-60", () => {
+      const { getByTestId, getByRole } = renderSplitSection("40-60");
+      expect(precedes(getByTestId("section-column-secondary"), getByTestId("section-column-primary"))).toBe(true);
+      expect(getByRole("heading", { name: "Question #1: secondary-q" })).toBeDefined();
+      expect(getByRole("heading", { name: "Question #2: primary-q" })).toBeDefined();
+    });
+
+    it("renders and numbers the primary column first in 60-40", () => {
+      const { getByTestId, getByRole } = renderSplitSection("60-40");
+      expect(precedes(getByTestId("section-column-primary"), getByTestId("section-column-secondary"))).toBe(true);
+      expect(getByRole("heading", { name: "Question #1: primary-q" })).toBeDefined();
+      expect(getByRole("heading", { name: "Question #2: secondary-q" })).toBeDefined();
+    });
+  });
+
+  describe("notebook tab banner", () => {
+    afterEach(() => { mockTabBanner = undefined; });
+
+    const renderSection = (layout: string) => render(
+      <Section
+        activityLayout={2}
+        page={{...DefaultTestPage}}
+        pluginsLoaded={true}
+        questionNumberStart={0}
+        section={{ ...DefaultTestSection, layout, embeddables: [{ ...DefaultXhtmlComponent, column: "primary" }] }}
+        setNavigation={stubFunction}
+      />
+    );
+
+    it.each([["split", "40-60", "section-split-layout"], ["single-column", "full-width", "section-single-column-layout"]])(
+      "renders the tab banner as the first child of a %s section", (_, layout, testId) => {
+        mockTabBanner = "locked";
+        const sectionElement = renderSection(layout).getByTestId(testId);
+        const banner = sectionElement.firstElementChild;
+        expect(banner?.getAttribute("data-cy")).toBe("disabled-questions-banner");
+        expect(banner?.classList.contains("tab")).toBe(true);
+      }
+    );
+
+    it("puts a responsive section's columns in their own row under the tab banner", () => {
+      mockTabBanner = "locked";
+      const sectionElement = renderSection("responsive-50-50").getByTestId("section-split-layout");
+      expect(sectionElement.classList.contains("with-tab-banner")).toBe(true);
+      expect(sectionElement.firstElementChild?.getAttribute("data-cy")).toBe("disabled-questions-banner");
+      const columns = sectionElement.querySelector(":scope > .section-columns");
+      expect(columns?.querySelectorAll(":scope > .column")).toHaveLength(2);
+    });
+
+    it("leaves a section's columns as direct children without a tab banner", () => {
+      const sectionElement = renderSection("responsive-50-50").getByTestId("section-split-layout");
+      expect(sectionElement.querySelector(".section-columns")).toBeNull();
+      expect(sectionElement.querySelectorAll(":scope > .column")).toHaveLength(2);
+    });
+
+    it("renders no tab banner without one", () => {
+      const { queryByTestId } = renderSection("40-60");
+      expect(queryByTestId("disabled-questions-banner")).toBeNull();
     });
   });
 });

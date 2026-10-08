@@ -42,6 +42,10 @@ interface IProps {
   showQuestionPrefix: boolean;
   hideQuestionNumbers?: boolean;
   saveInteractiveStateHistory?: boolean;
+  /** Out of reach of pointer, keyboard and assistive technology, except for its heading. */
+  disabled?: boolean;
+  /** Its heading says the question is locked. */
+  locked?: boolean;
 }
 
 export interface ManagedInteractiveImperativeAPI {
@@ -54,7 +58,7 @@ export interface IClickToPlayOptions {
 }
 
 export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwardRef((props, ref) => {
-  const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation, saveInteractiveStateHistory } = props;
+  const { embeddable, questionNumber, setSupportedFeatures, setSendCustomMessage, setNavigation, saveInteractiveStateHistory, disabled, locked } = props;
   const { scrollToQuestionId } = useQuestionInfoContext();
   const portalData = useContext(PortalDataContext);
   const laraData = useContext(LaraDataContext);
@@ -416,6 +420,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     hasHeader: !hideQuestionHeader,
     feedback,
     log: handleLog,
+    disabled,
   };
 
   const interactiveIframeRuntime =
@@ -439,6 +444,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
         triggerRef={hintTriggerRef}
         onToggleHint={handleShowHint}
         hideHeader={hideQuestionHeader}
+        disabled={disabled}
+        locked={locked}
       />
       <ManagedInteractiveHint
         hint={hint}
@@ -452,6 +459,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
             prompt={clickToPlayOptions.prompt}
             imageUrl={clickToPlayOptions.imageUrl}
             onClick={handleClickToPlay}
+            disabled={disabled}
           />
         : <>
             { !activeDialog && interactiveIframeRuntime }
