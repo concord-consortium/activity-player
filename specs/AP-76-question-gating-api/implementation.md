@@ -171,8 +171,8 @@ export type GateEvent =
 import { ISupportedFeatures, IUnlockQuestionsMessage } from "@concord-consortium/lara-interactive-api";
 import { GateEvent } from "../../../utilities/disabled-questions";
 
-export const kDeclarationWindowMs = 5000;
-export const kRestoreWindowMs = 1000;
+const kDeclarationWindowMs = 5000;
+const kRestoreWindowMs = 1000;
 
 /** Turns one interactive's messages and iframe events into the events its gate's status is built from. */
 export class QuestionGateReporter {
@@ -226,13 +226,12 @@ onQuestionGateEventRef.current = onQuestionGateEvent;
 const [gateReporter] = useState(() =>
   onQuestionGateEvent && new QuestionGateReporter(event => onQuestionGateEventRef.current?.(event)));
 useEffect(() => () => gateReporter?.dispose(), [gateReporter]);
-const handleIframeLoad = () => gateReporter?.restartDeclarationWindow();
 ```
 
 - `supportedFeatures` listener, after the `focusProtocol` line: `gateReporter?.supportedFeatures(features, currentInteractiveState.current != null);` (`!= null` covers both `null` and absent, R6).
 - New listener after `navigation`: `addListener("unlockQuestions", (options: IUnlockQuestionsMessage) => gateReporter?.unlock(options));`
 - `postInitInteractive`, after `phone.post("initInteractive", ...)`: `gateReporter?.restartDeclarationWindow();`
-- `<iframe ... onLoad={handleIframeLoad}>`.
+- `<iframe ... onLoad={() => gateReporter?.restartDeclarationWindow()}>`.
 - `baseProps.hostFeatures` gains `questionGating: { version: "1.0.0" }` after `getFirebaseJwt`.
 
 The reporter is created once per mounted runtime, and only when the runtime mounts with a callback; a gate's callback is present from its first render, because the plan is computed synchronously from the page. The existing `exhaustive-deps` disable on the main effect is unchanged; `gateReporter` is stable and read inside it.
@@ -242,17 +241,17 @@ The reporter is created once per mounted runtime, and only when the runtime moun
 R7a: `ManagedInteractive` renders "Loading..." until its answer and any legacy linked state arrive, so when either read fails its runtime never mounts, no iframe `load` starts the window, and a gate would stay loading for the visit. Both reads get an error handler:
 
 ```ts
-const onStateUnavailable = (error: Error) => {
+const onStateUnavailable = useCallback((error: Error) => {
   console.warn(`Could not load the saved state of ${embeddableRefId}: ${error.message}`);
   // A gate whose interactive cannot run can never declare, so it opens.
   onQuestionGateEventRef.current?.({ type: "declarationWindowEnded" });
-};
+}, [embeddableRefId]);
 return watchAnswer(embeddableRefId, wrappedAnswer => { ... }, onStateUnavailable);
 ...
 return getLegacyLinkedInteractiveInfo(embeddableRefId, laraData, info => { ... }, onStateUnavailable);
 ```
 
-`onQuestionGateEventRef` mirrors the prop, as `IframeRuntime` does, so the two effects keep their current dependencies. The item itself stays on "Loading...", as it does today. For a non-gate item the only change is that a listener error is logged rather than thrown uncaught from Firestore's callback. `getLegacyLinkedInteractiveInfo` adds `.catch(error => onError?.(error))` after its `.then`.
+`onQuestionGateEventRef` mirrors the prop, as `IframeRuntime` does, so `onStateUnavailable` changes only with the ref id and the two effects, which add it to their dependencies, re-run no more often than before. The item itself stays on "Loading...", as it does today. For a non-gate item the only change is that a listener error is logged rather than thrown uncaught from Firestore's callback. `getLegacyLinkedInteractiveInfo` adds `.catch(error => onError?.(error))` after its `.then`.
 
 Tests:
 
@@ -338,7 +337,7 @@ The provider is remounted for every page (`app.tsx` keys `ActivityPageContent` b
 
 The context gains `getGateReporter: (refId) => reporters[refId]`, with `undefined` for any item that is not a gate on this page (R9), and `useQuestionGateReporter(refId)` reads it. The reporters live in their own memo so their identities do not change when statuses do. The watch effect, `bannerFor` and the saved-state imports are deleted.
 
-Test harness: `src/test-utils/iframe-phones.ts` exports `iframePhones` (per-iframe-id `post` calls and listeners, `dispatch(refId, type, data)`, `reset()`) and a `parentEndpointMock` for `jest.mock("iframe-phone", () => jest.requireActual("../../test-utils/iframe-phones").iframePhoneMock)`. The mock calls the connect callback in a `setTimeout`, as `iframe-runtime.test.tsx`'s own mock does. Page-level tests need an `http` interactive URL (the default test library interactive has `base_url: ""`, which renders `about:blank` and opens no phone) and `getConfiguration` in `firebaseDbMock`.
+Test harness: `src/test-utils/iframe-phones.ts` exports `iframePhones` (listeners per iframe id, `dispatch(refId, type, data)`, which throws when the phone or listener is missing, and `reset()`) and an `iframePhoneMock` for `jest.mock("iframe-phone", () => jest.requireActual("../../test-utils/iframe-phones").iframePhoneMock)`. The mock calls the connect callback in a `setTimeout`, as `iframe-runtime.test.tsx`'s own mock does. Page-level tests need an `http` interactive URL (the default test library interactive has `base_url: ""`, which renders `about:blank` and opens no phone) and `getConfiguration` in `firebaseDbMock`.
 
 Tests:
 
