@@ -3,7 +3,7 @@ import { DefaultLibraryInteractive, DefaultManagedInteractive, DefaultTestPage, 
 import { ActivityLayouts } from "./activity-utils";
 import { sampleActivities } from "../data";
 import {
-  applyGateEvent, combineBanner, GateEvent, gateTexts, GateStatus, IGateState, IGateTexts, nextGateStatus, parseQuestionGatingParam, planDisabledQuestions,
+  applyGateEvent, authoredQuestionGating, combineBanner, GateEvent, gateTexts, GateStatus, IGateState, IGateTexts, nextGateStatus, parseQuestionGatingParam, planDisabledQuestions,
   planTabBanners, QuestionGatingSettings, questionGatingSettings, toQuestionGating
 } from "./disabled-questions";
 
@@ -311,12 +311,10 @@ describe("applyGateEvent", () => {
 
 describe("the sample-disabled-questions activity", () => {
   const activity = sampleActivities["sample-disabled-questions"];
-  const allModels = {
-    ...gate("9101-MwInteractive", "9102-MwInteractive", "9103-MwInteractive", "9104-MwInteractive", "9105-MwInteractive"),
-    "9116-MwInteractive": "disable_following_in_section" as const
+  const planPage = (position: number) => {
+    const p = activity.pages[position - 1];
+    return planDisabledQuestions(p, activity.layout, authoredQuestionGating(p));
   };
-  const planPage = (position: number) =>
-    planDisabledQuestions(activity.pages[position - 1], activity.layout, allModels);
 
   it("locks both questions after the full-width model", () => {
     expect(planPage(1)).toEqual({ "9101-MwInteractive": ["9106-ManagedInteractive", "9107-ManagedInteractive"] });
