@@ -75,6 +75,7 @@ Each gate is in one of: **loading** (its questions are disabled but not grayed, 
 - Re-locking, and persisting unlock state in the Activity Player (the interactive persists it).
 - Fixing a gate whose collapsed column hides its first question's banner (accepted in the demo).
 - Portal and teacher reports.
+- A dialog opened during the 1 s restore wait. The page's runtime unmounts and its restore timer stops, so if the dialog's interactive neither declares nor unlocks, the gate stays disabled with no banner until the dialog closes and the page's runtime declares again. The window is short and the gate recovers.
 
 ## Decisions
 
@@ -155,11 +156,11 @@ Each gate is in one of: **loading** (its questions are disabled but not grayed, 
 ### A gate whose runtime never mounts
 **Context**: `ManagedInteractive` renders "Loading..." until its answer arrives, so on a Firestore read error the gate's runtime never mounts, no window starts, and the gate would stay loading for the visit.
 **Options considered**:
-- A) `ManagedInteractive` handles the read error and, for a gate, reports the declaration window as ended, so the gate opens.
+- A) `ManagedInteractive` handles the read error and, for a gate, reports a `stateUnavailable` event, which opens a gate that is still loading.
 - B) A provider-level backstop that opens any gate still loading after some time.
 - C) Accept it and list it as out of scope.
 
-**Decision**: A (Doug Martin, 2026-10-08), R7a. B contradicts the click-to-play decision. The legacy linked-state read hangs the same way, so it gets the same handler.
+**Decision**: A (Doug Martin, 2026-10-08), R7a. B contradicts the click-to-play decision. The legacy linked-state read hangs the same way, so it gets the same handler. The event is separate from `declarationWindowEnded` so a failed read does not log the "never declared" warning, and it changes nothing for a gate that has already declared.
 
 ---
 
@@ -216,4 +217,4 @@ Each gate is in one of: **loading** (its questions are disabled but not grayed, 
 - A) Log a console warning naming the gate when its declaration window ends.
 - B) Stay silent.
 
-**Decision**: A. The provider warns once per gate, naming its `ref_id` and name, so an author previewing a gate that cannot declare sees why nothing locks.
+**Decision**: A. The provider warns when a gate's declaration window ends while the gate is still loading, naming its `ref_id` and name, so an author previewing a gate that cannot declare sees why nothing locks. A window that ends after the gate settled, such as a dialog runtime's, logs nothing, and the warning appears at most once per gate because that transition happens once.

@@ -73,11 +73,13 @@ describe("Single Page Content component", () => {
       const { container } = render(<DynamicTextTester><SinglePageContent activity={activity} pluginsLoaded={true} /></DynamicTextTester>);
       act(() => ["model", "q1", "q2"].forEach(refId => answerWatchers.report(refId, null)));
       act(() => { jest.advanceTimersByTime(0); });
+      const isLocked = (refId: string) =>
+        !!container.querySelector(`iframe[id="${refId}"]`)?.closest(".disabled-question");
+      expect(isLocked("q1")).toBe(false);
+
       act(() => iframePhones.dispatch("model", "supportedFeatures", { features: { questionGating: true } }));
-      const runtimeIsInert = (refId: string) =>
-        container.querySelector(`iframe[id="${refId}"]`)?.closest('[data-cy="iframe-runtime"]')?.hasAttribute("inert");
-      expect(runtimeIsInert("q1")).toBe(true);
-      expect(runtimeIsInert("q2")).toBe(false);
+      expect(isLocked("q1")).toBe(true);
+      expect(isLocked("q2")).toBe(false);
       expect(container.querySelectorAll('[data-cy="disabled-questions-banner"]')).toHaveLength(1);
     });
   });

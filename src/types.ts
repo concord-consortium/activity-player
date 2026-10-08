@@ -73,7 +73,7 @@ export interface EmbeddableBase {
   aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX";
 }
 
-/** LARA's per-item question gating setting, exported on every MwInteractive and ManagedInteractive. */
+/** LARA's per-item question gating setting, exported by LARA on MwInteractive and ManagedInteractive; may be absent. */
 export interface IQuestionGatingFields {
   question_gating?: string | null;
   question_gating_locked_text?: string | null;

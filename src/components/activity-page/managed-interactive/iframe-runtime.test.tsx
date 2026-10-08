@@ -712,7 +712,26 @@ describe("IframeRuntime component", () => {
       expectWindowToEndIn(onQuestionGateEvent, 5000);
     });
 
-    it("ignores the gate messages without onQuestionGateEvent", () => {
+    it("stops its declaration window when it unmounts", () => {
+      const onQuestionGateEvent = jest.fn();
+      const { unmount } = renderWith({ onQuestionGateEvent });
+      connect();
+      unmount();
+      act(() => { jest.advanceTimersByTime(10000); });
+      expect(onQuestionGateEvent).not.toHaveBeenCalled();
+    });
+
+    it("stops its restore window when it unmounts", () => {
+      const onQuestionGateEvent = jest.fn();
+      const { unmount } = renderWith({ onQuestionGateEvent });
+      connect();
+      declare();
+      unmount();
+      act(() => { jest.advanceTimersByTime(10000); });
+      expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "declared", hasState: true }]]);
+    });
+
+    it("does not throw on gate messages without onQuestionGateEvent", () => {
       renderWith();
       connect();
       expect(() => {

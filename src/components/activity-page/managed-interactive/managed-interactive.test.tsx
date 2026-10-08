@@ -563,20 +563,20 @@ describe("ManagedInteractive component", () => {
       expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "unlocked", restored: true }]]);
     });
 
-    it("ends the declaration window when the saved state cannot be watched", () => {
+    it("reports its state as unavailable when the saved state cannot be watched", () => {
       const warn = jest.spyOn(console, "warn").mockImplementation(() => undefined);
       let fail: ErrorCallback | undefined;
       mockWatchAnswer.mockImplementationOnce((id, callback, onError) => { fail = onError; });
       const onQuestionGateEvent = jest.fn();
       renderGate(onQuestionGateEvent);
       act(() => fail?.(new Error("permission-denied")));
-      expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "declarationWindowEnded" }]]);
+      expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "stateUnavailable" }]]);
       expect(screen.getByText("Loading...")).toBeInTheDocument();
       expect(warn).toHaveBeenCalledWith(expect.stringContaining("gate-test"));
       warn.mockRestore();
     });
 
-    it("ends the declaration window when the legacy linked state cannot be read", () => {
+    it("reports its state as unavailable when the legacy linked state cannot be read", () => {
       const warn = jest.spyOn(console, "warn").mockImplementation(() => undefined);
       const linkedGate: IMwInteractive = { ...gate, linked_interactive: { ref_id: "source" } };
       const source: IMwInteractive = { ...gate, ref_id: "source" };
@@ -599,7 +599,7 @@ describe("ManagedInteractive component", () => {
                </DynamicTextTester>
              </LaraDataContext.Provider>);
       act(() => fail?.(new Error("permission-denied")));
-      expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "declarationWindowEnded" }]]);
+      expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "stateUnavailable" }]]);
       expect(screen.getByText("Loading...")).toBeInTheDocument();
       warn.mockRestore();
     });

@@ -12,13 +12,15 @@ import {
 export interface IQuestionLock {
   /** Out of reach of pointer, keyboard and assistive technology, except for its heading. */
   disabled: boolean;
-  /** Shown grayed out with its heading marked locked. False while the gate is still loading. */
+  /** Shown grayed out with its heading marked locked. False while the gate is still settling (loading or awaiting a restored unlock). */
   locked: boolean;
   /** Set on the first question a gating item disables, unless a notebook tab banner covers it. */
   banner?: IBanner;
 }
 
 const kUnlocked: IQuestionLock = { disabled: false, locked: false };
+
+const kNoGates: IGateState = { statuses: {}, unlockOrder: [] };
 
 // queryValue throws on a repeated parameter, which would unmount the page during render.
 const readQuestionGatingSettings = (page: Page) => {
@@ -70,19 +72,22 @@ export const DisabledQuestionsProvider: React.FC<IProps> = ({ page, activityLayo
   );
   const texts = useMemo(() => gateTexts(page), [page]);
   const gatingKey = Object.keys(plan).join(",");
-  const [{ statuses, unlockOrder }, setGates] = useState<IGateState>({ statuses: {}, unlockOrder: [] });
-  const warnedUndeclared = useRef(new Set<string>());
+  const [{ statuses, unlockOrder }, setGates] = useState(kNoGates);
+  // Reporters read the latest state here, since a gate's events can arrive before React re-renders.
+  const gatesRef = useRef(kNoGates);
 
   const reporters = useMemo(() => {
-    const warnUndeclaredOnce = (refId: string) => {
-      if (warnedUndeclared.current.has(refId)) return;
-      warnedUndeclared.current.add(refId);
+    const warnUndeclared = (refId: string) => {
       const name = page.sections.flatMap(section => section.embeddables).find(e => e.ref_id === refId)?.name;
       console.warn(`The question gate ${refId} ("${name ?? ""}") never declared question-gating support, so it locks nothing.`);
     };
     return Object.fromEntries(gatingKey.split(",").filter(Boolean).map(refId => [refId, (event: GateEvent) => {
-      if (event.type === "declarationWindowEnded") warnUndeclaredOnce(refId);
-      setGates(prev => applyGateEvent(prev, refId, event));
+      const prev = gatesRef.current;
+      const next = applyGateEvent(prev, refId, event);
+      if (next === prev) return;
+      gatesRef.current = next;
+      setGates(next);
+      if (event.type === "declarationWindowEnded") warnUndeclared(refId);
     }]));
   }, [gatingKey, page]);
 

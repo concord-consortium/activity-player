@@ -243,6 +243,38 @@ describe("Activity Page Content component", () => {
       warn.mockRestore();
     });
 
+    it("keeps a click-to-play gate's questions loading until it is played, then settles it", () => {
+      const clickToPlayModel: IManagedInteractive = {
+        ...model,
+        library_interactive: { ...model.library_interactive!, data: { ...model.library_interactive!.data, click_to_play: true } }
+      };
+      const { container } = render(
+        <DynamicTextTester>
+          <ActivityPageContent
+            enableReportButton={false}
+            activityLayout={0}
+            page={{ ...gatedPage, sections: [{ ...gatedPage.sections[0], embeddables: [clickToPlayModel, q1] }] }}
+            pageNumber={1}
+            activity={DefaultTestActivity}
+            totalPreviousQuestions={0}
+            setNavigation={stubFunction}
+            pluginsLoaded={true}
+          />
+        </DynamicTextTester>
+      );
+      loadAnswers(model.ref_id, q1.ref_id);
+      act(() => { jest.advanceTimersByTime(10000); });
+      expect(container.querySelector(`iframe[id="${model.ref_id}"]`)).toBeNull();
+      expect(q1IsInert(container)).toBe(true);
+      expect(container.querySelector(".disabled-question")).toBeNull();
+      expect(banner(container)).toBeUndefined();
+
+      fireEvent.click(container.querySelector('[data-cy="click-to-play"]') as HTMLElement);
+      connect();
+      act(() => iframePhones.dispatch(model.ref_id, "supportedFeatures", { features: { questionGating: true } }));
+      expect(banner(container)).toBe("Use Model to unlock these questions.");
+    });
+
     it("opens the questions when its saved state cannot be loaded", () => {
       const warn = jest.spyOn(console, "warn").mockImplementation(() => undefined);
       const { container } = renderGatedPage();
@@ -252,6 +284,8 @@ describe("Activity Page Content component", () => {
       act(() => answerWatchers.fail(model.ref_id, new Error("permission-denied")));
       expect(q1IsInert(container)).toBe(false);
       expect(banner(container)).toBeUndefined();
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining("Could not load the saved state"));
+      expect(warn).not.toHaveBeenCalledWith(expect.stringContaining("never declared"));
       warn.mockRestore();
     });
   });

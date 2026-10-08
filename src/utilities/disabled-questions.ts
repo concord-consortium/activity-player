@@ -4,7 +4,7 @@ import { getSectionColumns } from "./section-columns";
 
 export const kDisableQuestionsAfterParam = "override:disableQuestionsAfter";
 
-/** Gating item ref_id to the ref_ids of the questions it disables, in page order. */
+/** Gating item ref_id to the ref_ids of the questions it disables, in question-numbering order. */
 export type DisabledQuestionsPlan = Record<string, string[]>;
 
 /** The values of LARA's per-item `question_gating` setting that this Activity Player acts on. */
@@ -141,6 +141,7 @@ export type GateEvent =
   | { type: "declared"; hasState: boolean }
   | { type: "restoreWindowEnded" }
   | { type: "declarationWindowEnded" }
+  | { type: "stateUnavailable" }
   | { type: "unlocked"; restored: boolean };
 
 export const isSettling = (status: GateStatus) => status === "loading" || status === "awaitingRestore";
@@ -154,6 +155,7 @@ export const nextGateStatus = (status: GateStatus, event: GateEvent): GateStatus
     case "restoreWindowEnded":
       return status === "awaitingRestore" ? "locked" : status;
     case "declarationWindowEnded":
+    case "stateUnavailable":
       return status === "loading" ? "open" : status;
     case "unlocked":
       // The unlocked banner announces a change the student saw, so only a locked gate shows it.
@@ -176,8 +178,8 @@ export const applyGateEvent = (state: IGateState, refId: string, event: GateEven
 
 /**
  * The banner that speaks for several gates, given in page order: locked while any is locked, with the first
- * locked gate's text; unlocked once none is locked or loading and one unlocked during the visit, with the text
- * of the gate that unlocked last; otherwise none.
+ * locked gate's text; unlocked once none is locked or still settling (loading or awaiting a restored unlock) and
+ * one unlocked during the visit, with the text of the gate that unlocked last; otherwise none.
  */
 export const combineBanner = (
   gateRefIds: string[], statusOf: (refId: string) => GateStatus, unlockOrder: string[], textsOf: (refId: string) => IGateTexts

@@ -127,8 +127,8 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
 
   const onStateUnavailable = useCallback((error: Error) => {
     console.warn(`Could not load the saved state of ${embeddableRefId}: ${error.message}`);
-    // A gate whose interactive cannot run can never declare, so it opens.
-    onQuestionGateEventRef.current?.({ type: "declarationWindowEnded" });
+    // If the state cannot be read before the interactive runs, it never declares, so its gate opens.
+    onQuestionGateEventRef.current?.({ type: "stateUnavailable" });
   }, [embeddableRefId]);
 
   useEffect(() => {

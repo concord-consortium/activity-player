@@ -25,6 +25,7 @@ const declare = (refId: string, hasState = false) => report(refId, { type: "decl
 const unlock = (refId: string, restored = false) => report(refId, { type: "unlocked", restored });
 const endRestoreWindow = (refId: string) => report(refId, { type: "restoreWindowEnded" });
 const endDeclarationWindow = (refId: string) => report(refId, { type: "declarationWindowEnded" });
+const failStateRead = (refId: string) => report(refId, { type: "stateUnavailable" });
 
 const GateProbe: React.FC<{ refId: string }> = ({ refId }) => {
   gateReporters[refId] = useQuestionGateReporter(refId);
@@ -158,13 +159,35 @@ describe("DisabledQuestionsProvider", () => {
       warn.mockRestore();
     });
 
-    it("does not warn about a gate that declared", () => {
+    it("does not warn about a gate that declared before a window ended", () => {
       setQuery("?override:disableQuestionsAfter=model");
       const warn = jest.spyOn(console, "warn").mockImplementation(() => undefined);
-      renderProbe({ page, refIds });
+      const { read } = renderProbe({ page, refIds });
       declare("model");
+      endDeclarationWindow("model");
+      expect(read()).toEqual({ q0: unlocked, q1: { ...locked, banner: lockedBanner }, q2: locked });
       expect(warn).not.toHaveBeenCalled();
       warn.mockRestore();
+    });
+  });
+
+  describe("a gate whose saved state cannot be read", () => {
+    it("opens while loading, without the never-declared warning", () => {
+      setQuery("?override:disableQuestionsAfter=model");
+      const warn = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+      const { read } = renderProbe({ page, refIds });
+      failStateRead("model");
+      expect(read()).toEqual({ q0: unlocked, q1: unlocked, q2: unlocked });
+      expect(warn).not.toHaveBeenCalled();
+      warn.mockRestore();
+    });
+
+    it("stays locked when the read fails after it declared", () => {
+      setQuery("?override:disableQuestionsAfter=model");
+      const { read } = renderProbe({ page, refIds });
+      declare("model");
+      failStateRead("model");
+      expect(read()).toEqual({ q0: unlocked, q1: { ...locked, banner: lockedBanner }, q2: locked });
     });
   });
 

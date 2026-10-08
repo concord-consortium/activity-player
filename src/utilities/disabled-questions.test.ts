@@ -136,6 +136,14 @@ describe("combineBanner", () => {
     expect(banner({ a: "unlockedDuringVisit", b: "locked" }, ["a"])).toEqual({ state: "locked", text: "b locked" });
   });
 
+  it("stays locked while another gate is still loading", () => {
+    expect(banner({ a: "loading", b: "locked" })).toEqual({ state: "locked", text: "b locked" });
+  });
+
+  it("shows the unlocked banner when the other gate opened without the student seeing it locked", () => {
+    expect(banner({ a: "open", b: "unlockedDuringVisit" }, ["b"])).toEqual({ state: "unlocked", text: "b unlocked" });
+  });
+
   it("shows nothing while a gate that is not locked is still loading", () => {
     expect(banner({ a: "loading", b: "unlockedDuringVisit" }, ["b"])).toBeUndefined();
   });
@@ -260,26 +268,32 @@ describe("nextGateStatus", () => {
   const unlocked = (restored: boolean): GateEvent => ({ type: "unlocked", restored });
   const restoreWindowEnded: GateEvent = { type: "restoreWindowEnded" };
   const declarationWindowEnded: GateEvent = { type: "declarationWindowEnded" };
+  const stateUnavailable: GateEvent = { type: "stateUnavailable" };
 
   it.each<[GateStatus, GateEvent, GateStatus]>([
     ["loading", declared(false), "locked"],
     ["loading", declared(true), "awaitingRestore"],
     ["loading", restoreWindowEnded, "loading"],
     ["loading", declarationWindowEnded, "open"],
+    ["loading", stateUnavailable, "open"],
     ["loading", unlocked(true), "open"],
     ["loading", unlocked(false), "open"],
     ["awaitingRestore", declared(false), "awaitingRestore"],
+    ["awaitingRestore", declared(true), "awaitingRestore"],
     ["awaitingRestore", restoreWindowEnded, "locked"],
     ["awaitingRestore", declarationWindowEnded, "awaitingRestore"],
+    ["awaitingRestore", stateUnavailable, "awaitingRestore"],
     ["awaitingRestore", unlocked(true), "open"],
     ["awaitingRestore", unlocked(false), "open"],
+    ["locked", declared(false), "locked"],
     ["locked", declared(true), "locked"],
     ["locked", restoreWindowEnded, "locked"],
     ["locked", declarationWindowEnded, "locked"],
+    ["locked", stateUnavailable, "locked"],
     ["locked", unlocked(true), "open"],
     ["locked", unlocked(false), "unlockedDuringVisit"],
     ...(["open", "unlockedDuringVisit"] as GateStatus[]).flatMap(status =>
-      [declared(false), declared(true), restoreWindowEnded, declarationWindowEnded, unlocked(true), unlocked(false)]
+      [declared(false), declared(true), restoreWindowEnded, declarationWindowEnded, stateUnavailable, unlocked(true), unlocked(false)]
         .map((event): [GateStatus, GateEvent, GateStatus] => [status, event, status]))
   ])("moves %s on %j to %s", (status, event, expected) => {
     expect(nextGateStatus(status, event)).toBe(expected);
