@@ -39,13 +39,14 @@ Measured on this branch's dev server against local LARA activity 41 (2026-10-08)
 
 ### Gate status
 
-Each gate is in one of: **loading** (its questions are disabled but not grayed, no banner), **locked** (grayed, locked banner), **unlocked during the visit** (usable, unlocked banner), or **open** (usable, no banner). Open covers a gate unlocked from saved state and a gate that never declared support.
+Each gate is in one of: **loading** (its questions are disabled but not grayed, no banner), **locked** (grayed, locked banner), **unlocked during the visit** (usable, unlocked banner), or **open** (usable, no banner). Open covers a gate unlocked from saved state, a gate that never declared support, and a gate whose interactive could not load.
 
 - **R5.** A gate starts loading when the page renders.
 - **R6.** When the gate's interactive declares `questionGating: true`:
   - with no interactive state for that item, the gate becomes locked at once;
   - with interactive state (the latest state the Activity Player sent or received for the item is neither `null` nor absent), the gate stays loading for up to 1 second for a restored unlock, then becomes locked. This keeps a returning student from seeing the locked state for a frame.
-- **R7.** A gate that has not declared within 5 seconds of its interactive's iframe `load` event becomes open. The 5 seconds restart whenever the Activity Player sends that interactive `initInteractive`, so an interactive that connects late, or whose `initInteractive` waits on a token, still gets the full window after it is initialized. A declaration after the gate became open is ignored for the rest of the visit.
+- **R7.** A gate that has not declared within 5 seconds of its interactive's iframe `load` event becomes open. The 5 seconds restart whenever the Activity Player sends that interactive `initInteractive`, so a connection or a token wait that finishes inside the window extends it; one that finishes after the window ended leaves the gate open. A declaration after the gate became open is ignored for the rest of the visit.
+- **R7a.** A gate whose interactive cannot load its saved state (the Activity Player's read of it fails) becomes open, since it can never run to declare.
 - **R8.** `unlockQuestions` from a gate's interactive:
   - with `restored: true`, makes the gate open, whatever its status: no unlocked banner and no announcement;
   - without it, makes a locked gate unlocked during the visit, and a loading gate open (the student never saw it locked).
@@ -94,9 +95,9 @@ Each gate is in one of: **loading** (its questions are disabled but not grayed, 
 ## Open Questions
 
 ### RESOLVED: When does a gate leave loading?
-**Context**: The declaration and a restored unlock arrive over the iframe; a gate that never declares must not keep its questions disabled; switching to locked on the declaration shows the locked state for a frame before Wildfire's restored unlock (about 3 ms later). The integration prototype used a flat 15 s timeout from page render.
+**Context**: The declaration and a restored unlock arrive over the iframe; a gate that never declares must not keep its questions disabled; switching to locked on the declaration shows the locked state for a frame before Wildfire's restored unlock (about 3 ms later).
 **Options considered**:
-- A) A flat timeout from page render (the prototype).
+- A) A flat timeout from page render (15 s).
 - B) Settle on the declaration, holding loading briefly only when the item has saved state; open after a window measured from the iframe's `load` event, restarted by each `initInteractive` (R6, R7).
 - C) Keep watching saved state as well (the demo's watch) and hold loading while it is present.
 
