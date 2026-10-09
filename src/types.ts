@@ -73,7 +73,14 @@ export interface EmbeddableBase {
   aspect_ratio_method?: "DEFAULT" | "MANUAL" | "MAX";
 }
 
-export interface IManagedInteractive extends EmbeddableBase {
+/** LARA's per-item question gating setting, exported by LARA on MwInteractive and ManagedInteractive; may be absent. */
+export interface IQuestionGatingFields {
+  question_gating?: string | null;
+  question_gating_locked_text?: string | null;
+  question_gating_unlocked_text?: string | null;
+}
+
+export interface IManagedInteractive extends EmbeddableBase, IQuestionGatingFields {
   type: "ManagedInteractive";
   library_interactive: LibraryInteractive | null;
   show_in_featured_question_report?: boolean;
@@ -97,7 +104,7 @@ export interface IManagedInteractive extends EmbeddableBase {
   custom_hide_question_number?: boolean;
 }
 
-export interface IMwInteractive extends EmbeddableBase {
+export interface IMwInteractive extends EmbeddableBase, IQuestionGatingFields {
   type: "MwInteractive";
   base_url?: string;
   url?: string;

@@ -250,7 +250,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   if (stacked) {
     return (
       <div className={sectionClass} ref={sectionDivRef} style={responsiveDirectionStyle} data-cy="section-single-column-layout">
-        { tabBanner && <DisabledQuestionsBanner state={tabBanner} tab /> }
+        { tabBanner && <DisabledQuestionsBanner banner={tabBanner} tab /> }
         { renderEmbeddables(section.embeddables, questionNumberStart, singleColumn) }
       </div>
     );
@@ -273,7 +273,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
       <div className={classNames(sectionClass, { "with-tab-banner": tabBanner })} ref={sectionDivRef} data-cy="section-split-layout">
         { tabBanner
           ? <>
-              <DisabledQuestionsBanner state={tabBanner} tab />
+              <DisabledQuestionsBanner banner={tabBanner} tab />
               <div className="section-columns">{columns}</div>
             </>
           : columns

@@ -3,14 +3,18 @@ import { SinglePageContent } from "./single-page-content";
 import { shallow } from "enzyme";
 import { act, render, screen } from "@testing-library/react";
 import { Activity } from "../../types";
-import { DefaultManagedInteractive, DefaultTestActivity, DefaultTestPage, DefaultTestSection } from "../../test-utils/model-for-tests";
+import {
+  DefaultLibraryInteractive, DefaultManagedInteractive, DefaultTestActivity, DefaultTestPage, DefaultTestSection
+} from "../../test-utils/model-for-tests";
 import _activitySinglePage from "../../data/version-2/sample-new-sections-single-page-layout.json";
 import { DynamicTextTester } from "../../test-utils/dynamic-text";
 import { EmbeddableVisibilityTracker } from "../../utilities/embeddable-visibility-tracker";
 import { ActivityLayouts } from "../../utilities/activity-utils";
 import { answerWatchers } from "../../test-utils/answer-watchers";
+import { iframePhones } from "../../test-utils/iframe-phones";
 
 jest.mock("../../firebase-db", () => jest.requireActual("../../test-utils/answer-watchers").firebaseDbMock);
+jest.mock("iframe-phone", () => jest.requireActual("../../test-utils/iframe-phones").iframePhoneMock);
 
 const activitySinglePage = _activitySinglePage as Activity;
 
@@ -47,23 +51,35 @@ describe("Single Page Content component", () => {
 
   describe("with a gating item", () => {
     const interactive = (refId: string) => ({ ...DefaultManagedInteractive, ref_id: refId, name: refId, column: null });
-    const pageWith = (position: number, refIds: string[]) =>
-      ({ ...DefaultTestPage, id: position, position, sections: [{ ...DefaultTestSection, layout: "full-width", embeddables: refIds.map(interactive) }] });
-    const activity: Activity = { ...DefaultTestActivity, layout: ActivityLayouts.SinglePage, pages: [pageWith(1, ["model", "q1"]), pageWith(2, ["q2"])] };
+    const model = {
+      ...interactive("model"),
+      question_gating: "disable_following_on_page",
+      library_interactive: { ...DefaultLibraryInteractive, data: { ...DefaultLibraryInteractive.data, base_url: "https://example.com/model/" } }
+    };
+    const pageWith = (position: number, embeddables: ReturnType<typeof interactive>[]) =>
+      ({ ...DefaultTestPage, id: position, position, sections: [{ ...DefaultTestSection, layout: "full-width", embeddables }] });
+    const activity: Activity = {
+      ...DefaultTestActivity, layout: ActivityLayouts.SinglePage, pages: [pageWith(1, [model, interactive("q1")]), pageWith(2, [interactive("q2")])]
+    };
 
     beforeEach(() => {
+      jest.useFakeTimers();
       answerWatchers.reset();
-      window.history.replaceState({}, "", "/?override:disableQuestionsAfter=model");
+      iframePhones.reset();
     });
-    afterEach(() => window.history.replaceState({}, "", "/"));
+    afterEach(() => jest.useRealTimers());
 
     it("ends the gating item's reach with its authored page", () => {
       const { container } = render(<DynamicTextTester><SinglePageContent activity={activity} pluginsLoaded={true} /></DynamicTextTester>);
       act(() => ["model", "q1", "q2"].forEach(refId => answerWatchers.report(refId, null)));
-      const runtimeIsInert = (refId: string) =>
-        container.querySelector(`iframe[id="${refId}"]`)?.closest('[data-cy="iframe-runtime"]')?.hasAttribute("inert");
-      expect(runtimeIsInert("q1")).toBe(true);
-      expect(runtimeIsInert("q2")).toBe(false);
+      act(() => { jest.advanceTimersByTime(0); });
+      const isLocked = (refId: string) =>
+        !!container.querySelector(`iframe[id="${refId}"]`)?.closest(".disabled-question");
+      expect(isLocked("q1")).toBe(false);
+
+      act(() => iframePhones.dispatch("model", "supportedFeatures", { features: { questionGating: true } }));
+      expect(isLocked("q1")).toBe(true);
+      expect(isLocked("q2")).toBe(false);
       expect(container.querySelectorAll('[data-cy="disabled-questions-banner"]')).toHaveLength(1);
     });
   });

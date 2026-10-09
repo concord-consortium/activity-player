@@ -1,6 +1,6 @@
 {
   "background_image": "",
-  "description": "<p>Questions after each Wildfire model start disabled under a banner until the model finishes a run. Open with override:disableQuestionsAfter naming the models; add :section to a model's ref_id to limit it to its own section.</p>",
+  "description": "<p>Each Wildfire model is authored with Question Gating, so the questions after it start disabled under a banner. Run the model, then click Hazbot Analysis to unlock them. The last page's model gates only its own section.</p>",
   "editor_mode": 0,
   "id": 9100,
   "layout": 0,
@@ -49,7 +49,7 @@
           "embeddables": [
             {
               "column": null,
-              "content": "<p>Run the model before answering the questions below.</p>",
+              "content": "<p>The model above is authored with Question Gating. Run it, then click Hazbot Analysis to unlock the questions below.</p>",
               "is_callout": false,
               "is_half_width": false,
               "is_hidden": false,
@@ -76,9 +76,12 @@
               "no_snapshots": false,
               "show_delete_data_button": true,
               "show_in_featured_question_report": true,
-              "url": "https://models-resources.concord.org/wildfire-model/branch/master/index.html",
+              "url": "https://models-resources.concord.org/wildfire-model/branch/master/index.html?hazbotRules=23",
               "type": "MwInteractive",
               "ref_id": "9101-MwInteractive",
+              "question_gating": "disable_following_on_page",
+              "question_gating_locked_text": "Run the model, then click Hazbot Analysis to unlock these questions.",
+              "question_gating_unlocked_text": "Hazbot has looked at your run. The questions are now unlocked!",
               "linked_interactives": []
             },
             {
@@ -226,9 +229,10 @@
               "no_snapshots": false,
               "show_delete_data_button": true,
               "show_in_featured_question_report": true,
-              "url": "https://models-resources.concord.org/wildfire-model/branch/master/index.html",
+              "url": "https://models-resources.concord.org/wildfire-model/branch/master/index.html?hazbotRules=23",
               "type": "MwInteractive",
               "ref_id": "9102-MwInteractive",
+              "question_gating": "disable_following_on_page",
               "linked_interactives": []
             },
             {
@@ -606,9 +610,10 @@
               "no_snapshots": false,
               "show_delete_data_button": true,
               "show_in_featured_question_report": true,
-              "url": "https://models-resources.concord.org/wildfire-model/branch/master/index.html",
+              "url": "https://models-resources.concord.org/wildfire-model/branch/master/index.html?hazbotRules=23",
               "type": "MwInteractive",
               "ref_id": "9103-MwInteractive",
+              "question_gating": "disable_following_on_page",
               "linked_interactives": []
             }
           ]
@@ -706,9 +711,10 @@
               "no_snapshots": false,
               "show_delete_data_button": true,
               "show_in_featured_question_report": true,
-              "url": "https://models-resources.concord.org/wildfire-model/branch/master/index.html",
+              "url": "https://models-resources.concord.org/wildfire-model/branch/master/index.html?hazbotRules=23",
               "type": "MwInteractive",
               "ref_id": "9104-MwInteractive",
+              "question_gating": "disable_following_on_page",
               "linked_interactives": []
             },
             {
@@ -778,9 +784,10 @@
               "no_snapshots": false,
               "show_delete_data_button": true,
               "show_in_featured_question_report": true,
-              "url": "https://models-resources.concord.org/wildfire-model/branch/master/index.html",
+              "url": "https://models-resources.concord.org/wildfire-model/branch/master/index.html?hazbotRules=23",
               "type": "MwInteractive",
               "ref_id": "9105-MwInteractive",
+              "question_gating": "disable_following_on_page",
               "linked_interactives": []
             },
             {
@@ -880,9 +887,10 @@
               "no_snapshots": false,
               "show_delete_data_button": true,
               "show_in_featured_question_report": true,
-              "url": "https://models-resources.concord.org/wildfire-model/branch/master/index.html",
+              "url": "https://models-resources.concord.org/wildfire-model/branch/master/index.html?hazbotRules=23",
               "type": "MwInteractive",
               "ref_id": "9116-MwInteractive",
+              "question_gating": "disable_following_in_section",
               "linked_interactives": []
             },
             {

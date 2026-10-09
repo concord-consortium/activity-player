@@ -1,13 +1,18 @@
 import React from "react";
 import { ActivityPageContent } from "./activity-page-content";
-import { act, configure, render, screen } from "@testing-library/react";
-import { DefaultManagedInteractive, DefaultTestPage, DefaultTestActivity, DefaultTestSection } from "../../test-utils/model-for-tests";
+import { act, configure, fireEvent, render, screen } from "@testing-library/react";
+import {
+  DefaultLibraryInteractive, DefaultManagedInteractive, DefaultTestPage, DefaultTestActivity, DefaultTestSection
+} from "../../test-utils/model-for-tests";
 import { DynamicTextTester } from "../../test-utils/dynamic-text";
 import { EmbeddableVisibilityTracker } from "../../utilities/embeddable-visibility-tracker";
-import { answerWatchers, kSavedAnswer } from "../../test-utils/answer-watchers";
-import { kLockedBannerText, kUnlockedBannerText } from "./disabled-questions-banner";
+import { answerWatchers } from "../../test-utils/answer-watchers";
+import { iframePhones } from "../../test-utils/iframe-phones";
+import { IManagedInteractive } from "../../types";
+import { kDefaultUnlockedBannerText } from "../../utilities/disabled-questions";
 
 jest.mock("../../firebase-db", () => jest.requireActual("../../test-utils/answer-watchers").firebaseDbMock);
+jest.mock("iframe-phone", () => jest.requireActual("../../test-utils/iframe-phones").iframePhoneMock);
 
 describe("Activity Page Content component", () => {
   const stubFunction = () => {
@@ -165,26 +170,90 @@ describe("Activity Page Content component", () => {
   });
 
   describe("with a gating item", () => {
-    const model = { ...DefaultManagedInteractive, ref_id: "1-ManagedInteractive", name: "Model", column: null };
+    const model: IManagedInteractive = {
+      ...DefaultManagedInteractive,
+      ref_id: "1-ManagedInteractive",
+      name: "Model",
+      column: null,
+      question_gating: "disable_following_on_page",
+      library_interactive: { ...DefaultLibraryInteractive, data: { ...DefaultLibraryInteractive.data, base_url: "https://example.com/model/" } }
+    };
     const q1 = { ...DefaultManagedInteractive, ref_id: "2-ManagedInteractive", name: "Q1", column: null };
     const gatedPage = { ...DefaultTestPage, sections: [{ ...DefaultTestSection, layout: "full-width", embeddables: [model, q1] }] };
 
     beforeEach(() => {
+      jest.useFakeTimers();
       answerWatchers.reset();
-      window.history.replaceState({}, "", "/?override:disableQuestionsAfter=1-ManagedInteractive");
+      iframePhones.reset();
     });
-    afterEach(() => window.history.replaceState({}, "", "/"));
+    afterEach(() => jest.useRealTimers());
 
-    const q1Runtime = (container: HTMLElement) =>
-      container.querySelector(`iframe[id="${q1.ref_id}"]`)?.closest('[data-cy="iframe-runtime"]');
+    const renderGatedPage = () => render(
+      <DynamicTextTester>
+        <ActivityPageContent
+          enableReportButton={false}
+          activityLayout={0}
+          page={gatedPage}
+          pageNumber={1}
+          activity={DefaultTestActivity}
+          totalPreviousQuestions={0}
+          setNavigation={stubFunction}
+          pluginsLoaded={true}
+        />
+      </DynamicTextTester>
+    );
+    const loadAnswers = (...refIds: string[]) => act(() => refIds.forEach(refId => answerWatchers.report(refId, null)));
+    const connect = () => act(() => { jest.advanceTimersByTime(0); });
+    const banner = (container: HTMLElement) => container.querySelector('[data-cy="disabled-questions-banner"]')?.textContent;
+    const q1IsInert = (container: HTMLElement) =>
+      container.querySelector(`iframe[id="${q1.ref_id}"]`)?.closest('[data-cy="iframe-runtime"]')?.hasAttribute("inert");
 
-    it("locks the questions after it until it saves state", () => {
+    it("locks the questions after it once it declares, and unlocks them when it says so", () => {
+      const { container } = renderGatedPage();
+      loadAnswers(model.ref_id, q1.ref_id);
+      connect();
+      expect(q1IsInert(container)).toBe(true);
+      expect(banner(container)).toBeUndefined();
+
+      act(() => iframePhones.dispatch(model.ref_id, "supportedFeatures", { features: { questionGating: true } }));
+      expect(banner(container)).toBe("Use Model to unlock these questions.");
+      expect(screen.getByRole("status").textContent).toBe("");
+      expect(q1IsInert(container)).toBe(true);
+
+      act(() => iframePhones.dispatch(model.ref_id, "unlockQuestions", {}));
+      expect(banner(container)).toBe(kDefaultUnlockedBannerText);
+      expect(screen.getByRole("status").textContent).toBe(kDefaultUnlockedBannerText);
+      expect(q1IsInert(container)).toBe(false);
+    });
+
+    it("opens the questions when it has not declared 5 seconds after its iframe loads", () => {
+      const warn = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+      const { container } = renderGatedPage();
+      loadAnswers(model.ref_id, q1.ref_id);
+      connect();
+      act(() => { jest.advanceTimersByTime(3000); });
+      fireEvent.load(container.querySelector(`iframe[id="${model.ref_id}"]`) as HTMLIFrameElement);
+      act(() => { jest.advanceTimersByTime(4999); });
+      expect(q1IsInert(container)).toBe(true);
+
+      act(() => { jest.advanceTimersByTime(1); });
+      expect(q1IsInert(container)).toBe(false);
+      expect(banner(container)).toBeUndefined();
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining(model.ref_id));
+      warn.mockRestore();
+    });
+
+    it("keeps a click-to-play gate's questions loading until it is played, then settles it", () => {
+      const clickToPlayModel: IManagedInteractive = {
+        ...model,
+        library_interactive: { ...model.library_interactive!, data: { ...model.library_interactive!.data, click_to_play: true } }
+      };
       const { container } = render(
         <DynamicTextTester>
           <ActivityPageContent
             enableReportButton={false}
             activityLayout={0}
-            page={gatedPage}
+            page={{ ...gatedPage, sections: [{ ...gatedPage.sections[0], embeddables: [clickToPlayModel, q1] }] }}
             pageNumber={1}
             activity={DefaultTestActivity}
             totalPreviousQuestions={0}
@@ -193,19 +262,31 @@ describe("Activity Page Content component", () => {
           />
         </DynamicTextTester>
       );
-      act(() => {
-        answerWatchers.report(model.ref_id, null);
-        answerWatchers.report(q1.ref_id, null);
-      });
-      const banner = () => container.querySelector('[data-cy="disabled-questions-banner"]')?.textContent;
-      expect(banner()).toBe(kLockedBannerText);
-      expect(screen.getByRole("status").textContent).toBe("");
-      expect(q1Runtime(container)?.hasAttribute("inert")).toBe(true);
+      loadAnswers(model.ref_id, q1.ref_id);
+      act(() => { jest.advanceTimersByTime(10000); });
+      expect(container.querySelector(`iframe[id="${model.ref_id}"]`)).toBeNull();
+      expect(q1IsInert(container)).toBe(true);
+      expect(container.querySelector(".disabled-question")).toBeNull();
+      expect(banner(container)).toBeUndefined();
 
-      act(() => answerWatchers.report(model.ref_id, kSavedAnswer));
-      expect(banner()).toBe(kUnlockedBannerText);
-      expect(screen.getByRole("status").textContent).toBe(kUnlockedBannerText);
-      expect(q1Runtime(container)?.hasAttribute("inert")).toBe(false);
+      fireEvent.click(container.querySelector('[data-cy="click-to-play"]') as HTMLElement);
+      connect();
+      act(() => iframePhones.dispatch(model.ref_id, "supportedFeatures", { features: { questionGating: true } }));
+      expect(banner(container)).toBe("Use Model to unlock these questions.");
+    });
+
+    it("opens the questions when its saved state cannot be loaded", () => {
+      const warn = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+      const { container } = renderGatedPage();
+      loadAnswers(q1.ref_id);
+      expect(q1IsInert(container)).toBe(true);
+
+      act(() => answerWatchers.fail(model.ref_id, new Error("permission-denied")));
+      expect(q1IsInert(container)).toBe(false);
+      expect(banner(container)).toBeUndefined();
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining("Could not load the saved state"));
+      expect(warn).not.toHaveBeenCalledWith(expect.stringContaining("never declared"));
+      warn.mockRestore();
     });
   });
 });

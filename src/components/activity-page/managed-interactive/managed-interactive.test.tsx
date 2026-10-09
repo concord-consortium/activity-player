@@ -3,6 +3,8 @@ import { act, configure, fireEvent, render, screen } from "@testing-library/reac
 import React from "react";
 import { ManagedInteractive } from "./managed-interactive";
 import { EmbeddableType, IMwInteractive } from "../../../types";
+import { DefaultTestActivity, DefaultTestPage, DefaultTestSection } from "../../../test-utils/model-for-tests";
+import { LaraDataContext } from "../../lara-data-context";
 import { IAttachmentUrlRequest } from "@concord-consortium/lara-interactive-api";
 import { DynamicTextTester } from "../../../test-utils/dynamic-text";
 import { IConfig } from "../../../firebase-db";
@@ -123,9 +125,12 @@ jest.mock("@concord-consortium/interactive-api-host", () => {
   };
 });
 
-const mockWatchAnswer = jest.fn((id: string, callback: (answer: any) => void) => callback({ meta: {} }));
+type ErrorCallback = (error: Error) => void;
+const mockWatchAnswer = jest.fn((id: string, callback: (answer: any) => void, onError?: ErrorCallback) => callback({ meta: {} }));
+const mockGetLegacyLinkedInteractiveInfo = jest.fn();
 jest.mock("../../../firebase-db", () => ({
-  watchAnswer: (id: string, callback: (answer: any) => void) => mockWatchAnswer(id, callback),
+  watchAnswer: (id: string, callback: (answer: any) => void, onError?: ErrorCallback) => mockWatchAnswer(id, callback, onError),
+  getLegacyLinkedInteractiveInfo: (...args: any[]) => mockGetLegacyLinkedInteractiveInfo(...args),
   getAnswer: () => { return { answerType: "multiple_choice_answer", selectedChoiceIds: []}; },
   getPortalData: () => undefined,
   getConfiguration: () => ({} as IConfig)
@@ -509,6 +514,94 @@ describe("ManagedInteractive component", () => {
       });
       await act(async () => { await Promise.resolve(); });
       expect(screen.queryByTestId("dialog-overlay-close")).toBeNull();
+    });
+  });
+
+  describe("question gate events", () => {
+    const gate: IMwInteractive = {
+      type: "MwInteractive",
+      name: "gate",
+      is_hidden: false,
+      ref_id: "gate-test",
+      url: "https://models-resources.concord.org/interactive/index.html",
+      enable_learner_state: true
+    };
+    const renderGate = (onQuestionGateEvent: jest.Mock) =>
+      render(<DynamicTextTester><ManagedInteractive
+                embeddable={gate}
+                questionNumber={1}
+                setSupportedFeatures={mockSetSupportedFeatures}
+                setSendCustomMessage={mockSetSendCustomMessage}
+                setNavigation={mockSetNavigation}
+                showQuestionPrefix={true}
+                onQuestionGateEvent={onQuestionGateEvent}
+                />
+             </DynamicTextTester>);
+    const connect = () => act(() => { jest.advanceTimersByTime(0); });
+
+    afterEach(() => {
+      mockWatchAnswer.mockClear();
+      mockGetLegacyLinkedInteractiveInfo.mockReset();
+    });
+
+    it("reaches the inline runtime", () => {
+      const onQuestionGateEvent = jest.fn();
+      renderGate(onQuestionGateEvent);
+      connect();
+      act(() => { dispatchMessageFromChild("unlockQuestions", {}); });
+      expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "unlocked", restored: false }]]);
+    });
+
+    it("reaches the runtime in a dialog the interactive opens", () => {
+      const onQuestionGateEvent = jest.fn();
+      renderGate(onQuestionGateEvent);
+      connect();
+      act(() => { dispatchMessageFromChild("showModal", { type: "dialog", url: gate.url }); });
+      connect();
+      expect(document.querySelector('.dialog-overlay [data-cy="iframe-runtime"]')).not.toBeNull();
+      act(() => { dispatchMessageFromChild("unlockQuestions", { restored: true }); });
+      expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "unlocked", restored: true }]]);
+    });
+
+    it("reports its state as unavailable when the saved state cannot be watched", () => {
+      const warn = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+      let fail: ErrorCallback | undefined;
+      mockWatchAnswer.mockImplementationOnce((id, callback, onError) => { fail = onError; });
+      const onQuestionGateEvent = jest.fn();
+      renderGate(onQuestionGateEvent);
+      act(() => fail?.(new Error("permission-denied")));
+      expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "stateUnavailable" }]]);
+      expect(screen.getByText("Loading...")).toBeInTheDocument();
+      expect(warn).toHaveBeenCalledWith(expect.stringContaining("gate-test"));
+      warn.mockRestore();
+    });
+
+    it("reports its state as unavailable when the legacy linked state cannot be read", () => {
+      const warn = jest.spyOn(console, "warn").mockImplementation(() => undefined);
+      const linkedGate: IMwInteractive = { ...gate, linked_interactive: { ref_id: "source" } };
+      const source: IMwInteractive = { ...gate, ref_id: "source" };
+      const activity = {
+        ...DefaultTestActivity, pages: [{ ...DefaultTestPage, sections: [{ ...DefaultTestSection, embeddables: [source, linkedGate] }] }]
+      };
+      let fail: ErrorCallback | undefined;
+      mockGetLegacyLinkedInteractiveInfo.mockImplementation((refId, laraData, callback, onError) => { fail = onError; });
+      const onQuestionGateEvent = jest.fn();
+      render(<LaraDataContext.Provider value={{ activity }}>
+               <DynamicTextTester><ManagedInteractive
+                 embeddable={linkedGate}
+                 questionNumber={1}
+                 setSupportedFeatures={mockSetSupportedFeatures}
+                 setSendCustomMessage={mockSetSendCustomMessage}
+                 setNavigation={mockSetNavigation}
+                 showQuestionPrefix={true}
+                 onQuestionGateEvent={onQuestionGateEvent}
+                 />
+               </DynamicTextTester>
+             </LaraDataContext.Provider>);
+      act(() => fail?.(new Error("permission-denied")));
+      expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "stateUnavailable" }]]);
+      expect(screen.getByText("Loading...")).toBeInTheDocument();
+      warn.mockRestore();
     });
   });
 

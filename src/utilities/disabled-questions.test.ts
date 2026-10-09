@@ -1,9 +1,10 @@
 import { EmbeddableType, IManagedInteractive, IMwInteractive, Page, SectionType } from "../types";
-import { DefaultManagedInteractive, DefaultTestPage, DefaultTestSection, DefaultXhtmlComponent } from "../test-utils/model-for-tests";
+import { DefaultLibraryInteractive, DefaultManagedInteractive, DefaultTestPage, DefaultTestSection, DefaultXhtmlComponent } from "../test-utils/model-for-tests";
 import { ActivityLayouts } from "./activity-utils";
 import { sampleActivities } from "../data";
 import {
-  GateStatus, nextGateStatus, parseQuestionGatingParam, planDisabledQuestions, planTabBanners, QuestionGatingSettings
+  applyGateEvent, authoredQuestionGating, combineBanner, GateEvent, gateTexts, GateStatus, IGateState, IGateTexts, nextGateStatus, parseQuestionGatingParam, planDisabledQuestions,
+  planTabBanners, QuestionGatingSettings, questionGatingSettings, toQuestionGating
 } from "./disabled-questions";
 
 type Column = "primary" | "secondary" | null;
@@ -39,6 +40,124 @@ describe("parseQuestionGatingParam", () => {
       "9101-MwInteractive": "disable_following_in_section",
       b: "disable_following_on_page"
     });
+  });
+});
+
+describe("toQuestionGating", () => {
+  it.each(["none", "disable_following_on_page", "disable_following_in_section"])("keeps %s", value => {
+    expect(toQuestionGating(value)).toBe(value);
+  });
+
+  it.each([undefined, null, "", "disable_everything", 42])("reads %p as none", value => {
+    expect(toQuestionGating(value)).toBe("none");
+  });
+});
+
+describe("questionGatingSettings", () => {
+  const authored = page(section([
+    embed("mw", true),
+    question("mi"),
+    question("off"),
+    question("unset"),
+    question("odd"),
+    question("sectionGate")
+  ].map((e, index): EmbeddableType => ({
+    ...e,
+    question_gating: ["disable_following_on_page", "disable_following_in_section", "none", null, "disable_everything",
+      "disable_following_in_section"][index]
+  }))));
+
+  it("reads the authored values of both interactive types, leaving out none, null and unknown values", () => {
+    expect(questionGatingSettings(authored, undefined)).toEqual({
+      mw: "disable_following_on_page",
+      mi: "disable_following_in_section",
+      sectionGate: "disable_following_in_section"
+    });
+  });
+
+  it("lets the override add gates and replace the authored values of the items it names", () => {
+    expect(questionGatingSettings(authored, "off:section,sectionGate")).toEqual({
+      mw: "disable_following_on_page",
+      mi: "disable_following_in_section",
+      off: "disable_following_in_section",
+      sectionGate: "disable_following_on_page"
+    });
+  });
+});
+
+describe("gateTexts", () => {
+  const textsOf = (extra: Partial<IManagedInteractive>) => gateTexts(page(section([question("gate", null, extra)]))).gate;
+
+  it("uses authored text, trimmed", () => {
+    expect(textsOf({ question_gating_locked_text: "  Run it.  ", question_gating_unlocked_text: "\tDone!\n" }))
+      .toEqual({ locked: "Run it.", unlocked: "Done!" });
+  });
+
+  it.each([null, undefined, "", "   "])("falls back to each default for %p", authored => {
+    expect(textsOf({ question_gating_locked_text: authored, question_gating_unlocked_text: authored })).toEqual({
+      locked: "Use the interactive to unlock these questions.",
+      unlocked: "The questions are now unlocked!"
+    });
+  });
+
+  it("falls back for each state independently", () => {
+    expect(textsOf({ question_gating_locked_text: "Run it." })).toEqual({ locked: "Run it.", unlocked: "The questions are now unlocked!" });
+    expect(textsOf({ question_gating_unlocked_text: "Done!" }))
+      .toEqual({ locked: "Use the interactive to unlock these questions.", unlocked: "Done!" });
+  });
+
+  it("names the gate in the default locked text when it has a name of its own", () => {
+    expect(textsOf({ name: " Wildfire Explorer " }).locked).toBe("Use Wildfire Explorer to unlock these questions.");
+    expect(textsOf({ name: "  " }).locked).toBe("Use the interactive to unlock these questions.");
+    expect(textsOf({ name: undefined }).locked).toBe("Use the interactive to unlock these questions.");
+  });
+
+  it("does not name a managed interactive after its library interactive", () => {
+    const library_interactive = { ...DefaultLibraryInteractive, data: { ...DefaultLibraryInteractive.data, name: "Multiple Choice" } };
+    expect(textsOf({ name: "", library_interactive }).locked).toBe("Use the interactive to unlock these questions.");
+  });
+
+  it("covers interactives of both types and nothing else", () => {
+    const p = page(section([embed("mw", true), question("mi"), text("text")]));
+    expect(Object.keys(gateTexts(p))).toEqual(["mw", "mi"]);
+  });
+});
+
+describe("combineBanner", () => {
+  const texts: Record<string, IGateTexts> = {
+    a: { locked: "a locked", unlocked: "a unlocked" },
+    b: { locked: "b locked", unlocked: "b unlocked" }
+  };
+  const banner = (statuses: Record<string, GateStatus>, unlockOrder: string[] = []) =>
+    combineBanner(["a", "b"], refId => statuses[refId], unlockOrder, refId => texts[refId]);
+
+  it("uses the first locked gate's text in page order", () => {
+    expect(banner({ a: "locked", b: "locked" })).toEqual({ state: "locked", text: "a locked" });
+    expect(banner({ a: "unlockedDuringVisit", b: "locked" }, ["a"])).toEqual({ state: "locked", text: "b locked" });
+  });
+
+  it("stays locked while another gate is still loading", () => {
+    expect(banner({ a: "loading", b: "locked" })).toEqual({ state: "locked", text: "b locked" });
+  });
+
+  it("shows the unlocked banner when the other gate opened without the student seeing it locked", () => {
+    expect(banner({ a: "open", b: "unlockedDuringVisit" }, ["b"])).toEqual({ state: "unlocked", text: "b unlocked" });
+  });
+
+  it("shows nothing while a gate that is not locked is still loading", () => {
+    expect(banner({ a: "loading", b: "unlockedDuringVisit" }, ["b"])).toBeUndefined();
+  });
+
+  it("uses the text of the gate that unlocked last", () => {
+    expect(banner({ a: "unlockedDuringVisit", b: "unlockedDuringVisit" }, ["b", "a"])).toEqual({ state: "unlocked", text: "a unlocked" });
+  });
+
+  it("shows nothing while a gate is awaiting a restored unlock", () => {
+    expect(banner({ a: "awaitingRestore", b: "unlockedDuringVisit" }, ["b"])).toBeUndefined();
+  });
+
+  it("shows nothing when every gate is open", () => {
+    expect(banner({ a: "open", b: "open" })).toBeUndefined();
   });
 });
 
@@ -145,28 +264,71 @@ describe("planTabBanners", () => {
 });
 
 describe("nextGateStatus", () => {
-  it.each<[GateStatus, boolean, GateStatus]>([
-    ["loading", false, "locked"],
-    ["loading", true, "unlockedOnLoad"],
-    ["locked", false, "locked"],
-    ["locked", true, "unlockedDuringVisit"],
-    ["unlockedOnLoad", false, "unlockedOnLoad"],
-    ["unlockedOnLoad", true, "unlockedOnLoad"],
-    ["unlockedDuringVisit", false, "unlockedDuringVisit"],
-    ["unlockedDuringVisit", true, "unlockedDuringVisit"],
-  ])("moves %s with saved state %s to %s", (status, hasSavedState, expected) => {
-    expect(nextGateStatus(status, hasSavedState)).toBe(expected);
+  const declared = (hasState: boolean): GateEvent => ({ type: "declared", hasState });
+  const unlocked = (restored: boolean): GateEvent => ({ type: "unlocked", restored });
+  const restoreWindowEnded: GateEvent = { type: "restoreWindowEnded" };
+  const declarationWindowEnded: GateEvent = { type: "declarationWindowEnded" };
+  const stateUnavailable: GateEvent = { type: "stateUnavailable" };
+
+  it.each<[GateStatus, GateEvent, GateStatus]>([
+    ["loading", declared(false), "locked"],
+    ["loading", declared(true), "awaitingRestore"],
+    ["loading", restoreWindowEnded, "loading"],
+    ["loading", declarationWindowEnded, "open"],
+    ["loading", stateUnavailable, "open"],
+    ["loading", unlocked(true), "open"],
+    ["loading", unlocked(false), "open"],
+    ["awaitingRestore", declared(false), "awaitingRestore"],
+    ["awaitingRestore", declared(true), "awaitingRestore"],
+    ["awaitingRestore", restoreWindowEnded, "locked"],
+    ["awaitingRestore", declarationWindowEnded, "awaitingRestore"],
+    ["awaitingRestore", stateUnavailable, "awaitingRestore"],
+    ["awaitingRestore", unlocked(true), "open"],
+    ["awaitingRestore", unlocked(false), "open"],
+    ["locked", declared(false), "locked"],
+    ["locked", declared(true), "locked"],
+    ["locked", restoreWindowEnded, "locked"],
+    ["locked", declarationWindowEnded, "locked"],
+    ["locked", stateUnavailable, "locked"],
+    ["locked", unlocked(true), "open"],
+    ["locked", unlocked(false), "unlockedDuringVisit"],
+    ...(["open", "unlockedDuringVisit"] as GateStatus[]).flatMap(status =>
+      [declared(false), declared(true), restoreWindowEnded, declarationWindowEnded, stateUnavailable, unlocked(true), unlocked(false)]
+        .map((event): [GateStatus, GateEvent, GateStatus] => [status, event, status]))
+  ])("moves %s on %j to %s", (status, event, expected) => {
+    expect(nextGateStatus(status, event)).toBe(expected);
+  });
+});
+
+describe("applyGateEvent", () => {
+  const empty: IGateState = { statuses: {}, unlockOrder: [] };
+  const unlock: GateEvent = { type: "unlocked", restored: false };
+
+  it("returns the same state when the event changes nothing", () => {
+    const unchanged = applyGateEvent(empty, "a", { type: "restoreWindowEnded" });
+    expect(unchanged).toBe(empty);
+  });
+
+  it("records each gate's unlock during the visit once, in order", () => {
+    const locked = ["a", "b"].reduce((state, refId) => applyGateEvent(state, refId, { type: "declared", hasState: false }), empty);
+    expect(locked).toEqual({ statuses: { a: "locked", b: "locked" }, unlockOrder: [] });
+    const unlockedB = applyGateEvent(locked, "b", unlock);
+    const unlockedBoth = applyGateEvent(applyGateEvent(unlockedB, "a", unlock), "b", unlock);
+    expect(unlockedBoth).toEqual({ statuses: { a: "unlockedDuringVisit", b: "unlockedDuringVisit" }, unlockOrder: ["b", "a"] });
+  });
+
+  it("records no unlock for a gate that opens", () => {
+    const opened = applyGateEvent(empty, "a", { type: "unlocked", restored: true });
+    expect(opened).toEqual({ statuses: { a: "open" }, unlockOrder: [] });
   });
 });
 
 describe("the sample-disabled-questions activity", () => {
   const activity = sampleActivities["sample-disabled-questions"];
-  const allModels = {
-    ...gate("9101-MwInteractive", "9102-MwInteractive", "9103-MwInteractive", "9104-MwInteractive", "9105-MwInteractive"),
-    "9116-MwInteractive": "disable_following_in_section" as const
+  const planPage = (position: number) => {
+    const p = activity.pages[position - 1];
+    return planDisabledQuestions(p, activity.layout, authoredQuestionGating(p));
   };
-  const planPage = (position: number) =>
-    planDisabledQuestions(activity.pages[position - 1], activity.layout, allModels);
 
   it("locks both questions after the full-width model", () => {
     expect(planPage(1)).toEqual({ "9101-MwInteractive": ["9106-ManagedInteractive", "9107-ManagedInteractive"] });

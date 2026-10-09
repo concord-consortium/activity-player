@@ -6,6 +6,7 @@ import { IEmbeddableXhtml, IManagedInteractive } from "../../types";
 import { EmbeddableVisibilityContext } from "../embeddable-visibility-context";
 import { IEmbeddableVisibilityTracker } from "../../utilities/embeddable-visibility-tracker";
 import { DynamicTextTester } from "../../test-utils/dynamic-text";
+import { IBanner } from "../../utilities/disabled-questions";
 
 jest.mock("../../firebase-db", () => ({
   watchAnswer: (id: string, callback: (answer: null) => void) => { callback(null); return () => undefined; },
@@ -13,10 +14,11 @@ jest.mock("../../firebase-db", () => ({
   watchQuestionLevelFeedback: () => () => undefined
 }));
 
-let mockTabBanner: "locked" | "unlocked" | undefined;
+let mockTabBanner: IBanner | undefined;
 jest.mock("./disabled-questions-context", () => ({
   useQuestionLock: () => ({ disabled: false, locked: false }),
-  useTabBanner: () => mockTabBanner
+  useTabBanner: () => mockTabBanner,
+  useQuestionGateReporter: () => undefined
 }));
 
 describe("Section component", () => {
@@ -309,16 +311,17 @@ describe("Section component", () => {
 
     it.each([["split", "40-60", "section-split-layout"], ["single-column", "full-width", "section-single-column-layout"]])(
       "renders the tab banner as the first child of a %s section", (_, layout, testId) => {
-        mockTabBanner = "locked";
+        mockTabBanner = { state: "locked", text: "Run the model." };
         const sectionElement = renderSection(layout).getByTestId(testId);
         const banner = sectionElement.firstElementChild;
         expect(banner?.getAttribute("data-cy")).toBe("disabled-questions-banner");
         expect(banner?.classList.contains("tab")).toBe(true);
+        expect(banner?.textContent).toBe("Run the model.");
       }
     );
 
     it("puts a responsive section's columns in their own row under the tab banner", () => {
-      mockTabBanner = "locked";
+      mockTabBanner = { state: "locked", text: "Run the model." };
       const sectionElement = renderSection("responsive-50-50").getByTestId("section-split-layout");
       expect(sectionElement.classList.contains("with-tab-banner")).toBe(true);
       expect(sectionElement.firstElementChild?.getAttribute("data-cy")).toBe("disabled-questions-banner");

@@ -1,10 +1,12 @@
 import React from "react";
 import iframePhone from "iframe-phone";
 import { Embeddable } from "./embeddable";
+import { ManagedInteractive } from "./managed-interactive/managed-interactive";
 import { mount } from "enzyme";
 import { EmbeddableType, IEmbeddablePlugin, IManagedInteractive } from "../../types";
 import { DefaultManagedInteractive, DefaultXhtmlComponent, DefaultTEWindowshadeComponent, DefaultLibraryInteractive } from "../../test-utils/model-for-tests";
 import { LaraGlobalContext } from "../lara-global-context";
+import { IQuestionLock } from "./disabled-questions-context";
 import { DynamicTextTester } from "../../test-utils/dynamic-text";
 import { EmbeddableVisibilityContext } from "../embeddable-visibility-context";
 import { IEmbeddableVisibilityTracker } from "../../utilities/embeddable-visibility-tracker";
@@ -13,9 +15,11 @@ jest.mock("../../firebase-db", () => ({
   getAnswer: () => { return { answerType: "multiple_choice_answer", selectedChoiceIds: []}; }
 }));
 
-let mockQuestionLock: { disabled: boolean, locked: boolean, banner?: "locked" | "unlocked" } = { disabled: false, locked: false };
+let mockQuestionLock: IQuestionLock = { disabled: false, locked: false };
+const mockGateReporters: Record<string, () => void> = {};
 jest.mock("./disabled-questions-context", () => ({
-  useQuestionLock: () => mockQuestionLock
+  useQuestionLock: () => mockQuestionLock,
+  useQuestionGateReporter: (refId: string) => mockGateReporters[refId]
 }));
 
 describe("Embeddable component", () => {
@@ -313,11 +317,20 @@ describe("Embeddable component", () => {
     });
 
     it("renders the banner as the embeddable's first child, outside the grayed body", () => {
-      mockQuestionLock = { disabled: true, locked: true, banner: "locked" };
+      mockQuestionLock = { disabled: true, locked: true, banner: { state: "locked", text: "Run the model." } };
       const root = mountInteractive().find('[data-cy="embeddable"]').getDOMNode();
       const banner = root.querySelector('[data-cy="disabled-questions-banner"]');
       expect(root.firstElementChild).toBe(banner);
+      expect(banner?.textContent).toBe("Run the model.");
       expect(banner?.closest(".embeddable-sub-two")).toBeNull();
+    });
+
+    it("passes the item's gate reporter to its interactive", () => {
+      const reporter = jest.fn();
+      mockGateReporters["123-ManagedInteractive"] = reporter;
+      const wrapper = mountInteractive();
+      expect(wrapper.find(ManagedInteractive).prop("onQuestionGateEvent")).toBe(reporter);
+      delete mockGateReporters["123-ManagedInteractive"];
     });
 
     it("renders no banner without one in the lock", () => {

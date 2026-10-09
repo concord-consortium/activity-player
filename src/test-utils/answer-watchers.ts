@@ -22,7 +22,6 @@ export const answerWatchers = {
   }),
   report: (refId: string, answer: WrappedDBAnswer | null) => (subscribers[refId] ?? []).forEach(callback => callback(answer)),
   fail: (refId: string, error: Error) => (errorHandlers[refId] ?? []).forEach(onError => onError(error)),
-  subscriberCount: (refId: string) => (subscribers[refId] ?? []).length,
   reset: () => {
     Object.keys(subscribers).forEach(refId => delete subscribers[refId]);
     Object.keys(errorHandlers).forEach(refId => delete errorHandlers[refId]);
@@ -37,7 +36,6 @@ export const firebaseDbMock = {
   watchQuestionLevelFeedback: () => () => undefined,
   getLegacyLinkedInteractiveInfo: () => () => undefined,
   createOrUpdateAnswer: jest.fn(),
-  getPortalData: () => undefined
+  getPortalData: () => undefined,
+  getConfiguration: () => ({})
 };
-
-export const kSavedAnswer: WrappedDBAnswer = { meta: {} as WrappedDBAnswer["meta"], interactiveState: { saved: true } };

@@ -284,7 +284,10 @@ describe("IframeRuntime component", () => {
       collaboratorUrls: null,
       error: "",
       globalInteractiveState: null,
-      hostFeatures: {getFirebaseJwt: {version: "1.0.0"}, modal: {alert: false, dialog: true, lightbox: true, version: "1.0.0"}, domain: "activity-player.unexisting.url.com"},
+      hostFeatures: {
+        getFirebaseJwt: {version: "1.0.0"}, modal: {alert: false, dialog: true, lightbox: true, version: "1.0.0"},
+        questionGating: {version: "1.0.0"}, domain: "activity-player.unexisting.url.com"
+      },
       interactive: {id: "123-Interactive", name: ""},
       interactiveState: {testing: true},
       interactiveStateUrl: "",
@@ -650,6 +653,92 @@ describe("IframeRuntime component", () => {
       setInteractiveState.mockClear();
       act(() => { dispatchMessageFromChild("interactiveState", "touch"); });
       expect(setInteractiveState).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("question gate events", () => {
+    const connect = () => act(() => { jest.advanceTimersByTime(0); });
+    const declare = () => act(() => { dispatchMessageFromChild("supportedFeatures", { features: { questionGating: true } }); });
+
+    it("reports a declaration with the interactive's state", () => {
+      const onQuestionGateEvent = jest.fn();
+      renderWith({ onQuestionGateEvent });
+      connect();
+      declare();
+      expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "declared", hasState: true }]]);
+    });
+
+    it("reports a declaration without state after Clear & start over", () => {
+      const onQuestionGateEvent = jest.fn();
+      const { getByTestId } = renderWith({ onQuestionGateEvent, showDeleteDataButton: true });
+      connect();
+      act(() => { fireEvent.click(getByTestId("reset-button")); });
+      connect();
+      declare();
+      expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "declared", hasState: false }]]);
+    });
+
+    it("reports unlockQuestions", () => {
+      const onQuestionGateEvent = jest.fn();
+      renderWith({ onQuestionGateEvent });
+      connect();
+      act(() => { dispatchMessageFromChild("unlockQuestions", { restored: true }); });
+      expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "unlocked", restored: true }]]);
+    });
+
+    const expectWindowToEndIn = (onQuestionGateEvent: jest.Mock, ms: number) => {
+      act(() => { jest.advanceTimersByTime(ms - 1); });
+      expect(onQuestionGateEvent).not.toHaveBeenCalled();
+      act(() => { jest.advanceTimersByTime(1); });
+      expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "declarationWindowEnded" }]]);
+    };
+
+    it("restarts the declaration window on the iframe's load event", () => {
+      const onQuestionGateEvent = jest.fn();
+      const { container } = renderWith({ onQuestionGateEvent });
+      connect();
+      act(() => { jest.advanceTimersByTime(3000); });
+      fireEvent.load(container.querySelector("iframe") as HTMLIFrameElement);
+      expectWindowToEndIn(onQuestionGateEvent, 5000);
+    });
+
+    it("restarts the declaration window on each initInteractive", () => {
+      const onQuestionGateEvent = jest.fn();
+      renderWith({ onQuestionGateEvent });
+      connect();
+      act(() => { jest.advanceTimersByTime(3000); });
+      const [, afterConnectedCallback] = lastCall(iframePhone.ParentEndpoint as unknown as jest.Mock);
+      act(() => { afterConnectedCallback(); });
+      expectWindowToEndIn(onQuestionGateEvent, 5000);
+    });
+
+    it("stops its declaration window when it unmounts", () => {
+      const onQuestionGateEvent = jest.fn();
+      const { unmount } = renderWith({ onQuestionGateEvent });
+      connect();
+      unmount();
+      act(() => { jest.advanceTimersByTime(10000); });
+      expect(onQuestionGateEvent).not.toHaveBeenCalled();
+    });
+
+    it("stops its restore window when it unmounts", () => {
+      const onQuestionGateEvent = jest.fn();
+      const { unmount } = renderWith({ onQuestionGateEvent });
+      connect();
+      declare();
+      unmount();
+      act(() => { jest.advanceTimersByTime(10000); });
+      expect(onQuestionGateEvent.mock.calls).toEqual([[{ type: "declared", hasState: true }]]);
+    });
+
+    it("does not throw on gate messages without onQuestionGateEvent", () => {
+      renderWith();
+      connect();
+      expect(() => {
+        declare();
+        act(() => { dispatchMessageFromChild("unlockQuestions", {}); });
+        act(() => { jest.advanceTimersByTime(10000); });
+      }).not.toThrow();
     });
   });
 
