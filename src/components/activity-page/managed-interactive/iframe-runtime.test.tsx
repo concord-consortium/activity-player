@@ -797,17 +797,21 @@ describe("IframeRuntime component", () => {
   });
 });
 
+const authenticatedPortalData: any = {
+  type: "authenticated",
+  contextId: "class-hash",
+  platformId: "https://portal",
+  platformUserId: "7",
+  resourceLinkId: "3",
+  offering: { id: 3, activityUrl: "", rubricUrl: "", locked: false },
+  runRemoteEndpoint: "https://portal/learners/5",
+  database: { appName: "report-service-dev", sourceKey: "source", rawFirebaseJWT: "launch-jwt" }
+};
+const launchJWT = jwt.sign({ iat: 1_000_000, exp: 1_000_000 + 3600 }, "secret");
+const staleClock = 48 * 60 * 1000;
+const flush = async () => { for (let i = 0; i < 5; i++) await Promise.resolve(); };
+
 describe("IframeRuntime object storage token", () => {
-  const authenticatedPortalData: any = {
-    type: "authenticated",
-    contextId: "class-hash",
-    platformId: "https://portal",
-    platformUserId: "7",
-    resourceLinkId: "3",
-    offering: { id: 3, activityUrl: "", rubricUrl: "", locked: false },
-    runRemoteEndpoint: "https://portal/learners/5",
-    database: { appName: "report-service-dev", sourceKey: "source", rawFirebaseJWT: "launch-jwt" }
-  };
   const renderRuntime = () => render(
     <MediaLibraryTester>
       <DynamicTextTester>
@@ -834,7 +838,6 @@ describe("IframeRuntime object storage token", () => {
       </DynamicTextTester>
     </MediaLibraryTester>
   );
-  const flush = async () => { for (let i = 0; i < 5; i++) await Promise.resolve(); };
 
   beforeEach(() => {
     jest.useFakeTimers();
@@ -842,14 +845,12 @@ describe("IframeRuntime object storage token", () => {
   });
   afterEach(() => jest.useRealTimers());
 
-  const launchJWT = jwt.sign({ iat: 1_000_000, exp: 1_000_000 + 3600 }, "secret");
-
   it("sends the current object storage token, not the launch token", async () => {
     const mint = jest.fn().mockResolvedValue("fresh-jwt");
     let clock = 0;
     initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint, now: () => clock });
     // past 80% of the launch token's hour, so it is stale on first use
-    clock = 48 * 60 * 1000;
+    clock = staleClock;
     renderRuntime();
     jest.runAllTimers();
     await act(flush);
@@ -875,7 +876,7 @@ describe("IframeRuntime object storage token", () => {
     let resolve!: (jwt: string) => void;
     let clock = 0;
     initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint: () => new Promise(r => { resolve = r; }), now: () => clock });
-    clock = 48 * 60 * 1000;
+    clock = staleClock;
     renderRuntime();
     jest.runAllTimers();
     act(() => { dispatchMessageFromChild("interactiveState", { run: 1 }); });
@@ -892,7 +893,7 @@ describe("IframeRuntime object storage token", () => {
     let resolve!: (jwt: string) => void;
     let clock = 0;
     initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint: () => new Promise(r => { resolve = r; }), now: () => clock });
-    clock = 48 * 60 * 1000;
+    clock = staleClock;
     const view = renderRuntime();
     jest.runAllTimers();
     view.unmount();
@@ -904,20 +905,7 @@ describe("IframeRuntime object storage token", () => {
 
 
 describe("IframeRuntime state requests around initInteractive", () => {
-  const authenticatedPortalData: any = {
-    type: "authenticated",
-    contextId: "class-hash",
-    platformId: "https://portal",
-    platformUserId: "7",
-    resourceLinkId: "3",
-    offering: { id: 3, activityUrl: "", rubricUrl: "", locked: false },
-    runRemoteEndpoint: "https://portal/learners/5",
-    database: { appName: "report-service-dev", sourceKey: "source", rawFirebaseJWT: "launch-jwt" }
-  };
   const savedAnswer = { answerText: "my saved answer" };
-  const launchJWT = jwt.sign({ iat: 1_000_000, exp: 1_000_000 + 3600 }, "secret");
-  const staleClock = 48 * 60 * 1000;
-  const flush = async () => { for (let i = 0; i < 5; i++) await Promise.resolve(); };
 
   // The ordering under test belongs to iframe-phone, so these tests use the real ParentEndpoint.
   const mockedParentEndpoint = iframePhone.ParentEndpoint as unknown as jest.Mock;
@@ -993,13 +981,11 @@ describe("IframeRuntime state requests around initInteractive", () => {
     return { view, client, runtime, setInteractiveState, changePage };
   };
 
-  // A token past 80% of its life, so the next get() waits on this mint until resolveToken is called.
+  // A token past 80% of its life, so the next get() goes through mint, which by default waits for resolveToken.
   let resolveToken: (jwt: string) => void;
-  const useStalledToken = () => {
+  const useStaleToken = (mint = () => new Promise<string>(resolve => { resolveToken = resolve; })) => {
     let clock = 0;
-    initializeObjectStorageJWT({
-      rawFirebaseJWT: launchJWT, mint: () => new Promise(resolve => { resolveToken = resolve; }), now: () => clock
-    });
+    initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint, now: () => clock });
     clock = staleClock;
   };
   const useCurrentToken = () => {
@@ -1033,7 +1019,7 @@ describe("IframeRuntime state requests around initInteractive", () => {
     });
 
     it("saves nothing for a page change during the token wait", async () => {
-      useStalledToken();
+      useStaleToken();
       const { client, setInteractiveState, changePage } = setup(authenticatedPortalData);
       await client.hello();
 
@@ -1048,7 +1034,7 @@ describe("IframeRuntime state requests around initInteractive", () => {
     });
 
     it("does not hold up the page change for an interactive that has not started", async () => {
-      useStalledToken();
+      useStaleToken();
       const { client, changePage } = setup(authenticatedPortalData);
       expect(await changePage()).toHaveBeenCalledWith(undefined);
 
@@ -1056,11 +1042,11 @@ describe("IframeRuntime state requests around initInteractive", () => {
       expect(await changePage()).toHaveBeenCalledWith(undefined);
     });
 
-    it("saves nothing for a page change while a self-reloaded interactive waits for the token", async () => {
+    it("saves nothing for a page change while a self-reloaded interactive waits for the token, then saves once it restarts", async () => {
       useCurrentToken();
       const { client, setInteractiveState, changePage } = setup(authenticatedPortalData);
       await client.hello();
-      useStalledToken();
+      useStaleToken();
       client.reload();
       await client.hello();
 
@@ -1069,9 +1055,17 @@ describe("IframeRuntime state requests around initInteractive", () => {
 
       expect(setInteractiveState).not.toHaveBeenCalled();
       expect(client.received).not.toContain("getInteractiveState");
+
+      resolveToken("fresh-jwt");
+      await act(flush);
+      client.state = { answerText: "edited" };
+      await changePage();
+
+      expect(setInteractiveState).toHaveBeenCalledTimes(1);
+      expect(setInteractiveState).toHaveBeenCalledWith({ answerText: "edited" });
     });
 
-    it("saves nothing for a page change after the url changes, until the new interactive starts", async () => {
+    it("saves nothing for a page change after the url changes until the new interactive starts, then saves", async () => {
       useCurrentToken();
       const { view, client, runtime, setInteractiveState, changePage } = setup(authenticatedPortalData);
       await client.hello();
@@ -1085,6 +1079,12 @@ describe("IframeRuntime state requests around initInteractive", () => {
       expect(setInteractiveState).not.toHaveBeenCalled();
       expect(newClient.received).toContain("initInteractive");
       expect(newClient.received).not.toContain("getInteractiveState");
+
+      newClient.state = { answerText: "edited" };
+      await changePage();
+
+      expect(setInteractiveState).toHaveBeenCalledTimes(1);
+      expect(setInteractiveState).toHaveBeenCalledWith({ answerText: "edited" });
     });
 
     it("saves on a page change once the interactive has started", async () => {
@@ -1102,11 +1102,7 @@ describe("IframeRuntime state requests around initInteractive", () => {
     });
 
     it("saves on a page change after a failed token refresh starts the interactive with the held token", async () => {
-      let clock = 0;
-      initializeObjectStorageJWT({
-        rawFirebaseJWT: launchJWT, mint: () => Promise.reject("Timeout of 10000ms exceeded"), now: () => clock
-      });
-      clock = staleClock;
+      useStaleToken(() => Promise.reject("Timeout of 10000ms exceeded"));
       const { client, setInteractiveState, changePage } = setup(authenticatedPortalData);
       await client.hello();
       client.state = { answerText: "edited" };
@@ -1128,7 +1124,7 @@ describe("IframeRuntime state requests around initInteractive", () => {
       expect(setInteractiveState).toHaveBeenCalledWith(null);
     });
 
-    it("clears the answer on Clear & start over, and saves nothing more until the interactive restarts", async () => {
+    it("clears the answer on Clear & start over, and saves again only once the interactive restarts", async () => {
       useCurrentToken();
       const { view, client, setInteractiveState, changePage } = setup(authenticatedPortalData);
       await client.hello();
@@ -1144,6 +1140,12 @@ describe("IframeRuntime state requests around initInteractive", () => {
       expect(reloaded.received).toContain("initInteractive");
       expect(reloaded.received).not.toContain("getInteractiveState");
       expect(setInteractiveState).not.toHaveBeenCalled();
+
+      reloaded.state = { answerText: "edited" };
+      await changePage();
+
+      expect(setInteractiveState).toHaveBeenCalledTimes(1);
+      expect(setInteractiveState).toHaveBeenCalledWith({ answerText: "edited" });
     });
   });
 
