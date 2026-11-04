@@ -544,7 +544,7 @@ describe("IframeRuntime component", () => {
     const ref = React.createRef<IframeRuntimeImperativeAPI>();
     renderWith({ url: "javascript:alert(1)", ref });
     act(() => { jest.runAllTimers(); });
-    const request = ref.current!.requestInteractiveState();
+    const request = ref.current!.saveInteractiveStateBeforeClose();
     act(() => { jest.runAllTimers(); });
     await expect(request).resolves.toBeUndefined();
   });
@@ -797,17 +797,21 @@ describe("IframeRuntime component", () => {
   });
 });
 
+const authenticatedPortalData: any = {
+  type: "authenticated",
+  contextId: "class-hash",
+  platformId: "https://portal",
+  platformUserId: "7",
+  resourceLinkId: "3",
+  offering: { id: 3, activityUrl: "", rubricUrl: "", locked: false },
+  runRemoteEndpoint: "https://portal/learners/5",
+  database: { appName: "report-service-dev", sourceKey: "source", rawFirebaseJWT: "launch-jwt" }
+};
+const launchJWT = jwt.sign({ iat: 1_000_000, exp: 1_000_000 + 3600 }, "secret");
+const staleClock = 48 * 60 * 1000;
+const flush = async () => { for (let i = 0; i < 5; i++) await Promise.resolve(); };
+
 describe("IframeRuntime object storage token", () => {
-  const authenticatedPortalData: any = {
-    type: "authenticated",
-    contextId: "class-hash",
-    platformId: "https://portal",
-    platformUserId: "7",
-    resourceLinkId: "3",
-    offering: { id: 3, activityUrl: "", rubricUrl: "", locked: false },
-    runRemoteEndpoint: "https://portal/learners/5",
-    database: { appName: "report-service-dev", sourceKey: "source", rawFirebaseJWT: "launch-jwt" }
-  };
   const renderRuntime = () => render(
     <MediaLibraryTester>
       <DynamicTextTester>
@@ -834,7 +838,6 @@ describe("IframeRuntime object storage token", () => {
       </DynamicTextTester>
     </MediaLibraryTester>
   );
-  const flush = async () => { for (let i = 0; i < 5; i++) await Promise.resolve(); };
 
   beforeEach(() => {
     jest.useFakeTimers();
@@ -842,14 +845,12 @@ describe("IframeRuntime object storage token", () => {
   });
   afterEach(() => jest.useRealTimers());
 
-  const launchJWT = jwt.sign({ iat: 1_000_000, exp: 1_000_000 + 3600 }, "secret");
-
   it("sends the current object storage token, not the launch token", async () => {
     const mint = jest.fn().mockResolvedValue("fresh-jwt");
     let clock = 0;
     initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint, now: () => clock });
     // past 80% of the launch token's hour, so it is stale on first use
-    clock = 48 * 60 * 1000;
+    clock = staleClock;
     renderRuntime();
     jest.runAllTimers();
     await act(flush);
@@ -875,7 +876,7 @@ describe("IframeRuntime object storage token", () => {
     let resolve!: (jwt: string) => void;
     let clock = 0;
     initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint: () => new Promise(r => { resolve = r; }), now: () => clock });
-    clock = 48 * 60 * 1000;
+    clock = staleClock;
     renderRuntime();
     jest.runAllTimers();
     act(() => { dispatchMessageFromChild("interactiveState", { run: 1 }); });
@@ -892,7 +893,7 @@ describe("IframeRuntime object storage token", () => {
     let resolve!: (jwt: string) => void;
     let clock = 0;
     initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint: () => new Promise(r => { resolve = r; }), now: () => clock });
-    clock = 48 * 60 * 1000;
+    clock = staleClock;
     const view = renderRuntime();
     jest.runAllTimers();
     view.unmount();
@@ -902,3 +903,274 @@ describe("IframeRuntime object storage token", () => {
   });
 });
 
+
+describe("IframeRuntime state requests around initInteractive", () => {
+  const savedAnswer = { answerText: "my saved answer" };
+
+  // The ordering under test belongs to iframe-phone, so these tests use the real ParentEndpoint.
+  const mockedParentEndpoint = iframePhone.ParentEndpoint as unknown as jest.Mock;
+  const defaultParentEndpoint = mockedParentEndpoint.getMockImplementation();
+
+  // Models the lara-interactive-api client: it ignores messages until the parent's "hello", starts
+  // with null state, takes its state from initInteractive, and answers getInteractiveState with it.
+  const attachClient = (iframe: HTMLIFrameElement) => {
+    const client = {
+      connected: false,
+      state: null as any,
+      received: [] as string[],
+      send: (type: string, content?: any) => window.dispatchEvent(new MessageEvent("message", {
+        data: { type, content }, origin: "https://concord.org", source: iframe.contentWindow
+      })),
+      hello: () => act(async () => { client.send("hello"); await flush(); }),
+      reload: () => { client.connected = false; client.state = null; client.received = []; },
+    };
+    jest.spyOn(iframe.contentWindow as Window, "postMessage").mockImplementation((message: any) => {
+      const { type, content } = typeof message === "string" ? JSON.parse(message) : message;
+      if (type === "hello") client.connected = true;
+      if (!client.connected) return;
+      client.received.push(type);
+      if (type === "initInteractive") client.state = content.interactiveState;
+      if (type === "getInteractiveState") {
+        const reply = client.state;
+        void Promise.resolve().then(() => client.send("interactiveState", reply));
+      }
+    });
+    return client;
+  };
+
+  const setup = (portalData?: any) => {
+    const ref = React.createRef<IframeRuntimeImperativeAPI>();
+    const setInteractiveState = jest.fn();
+    const runtime = (url = "https://concord.org/") => (
+      <MediaLibraryTester>
+        <DynamicTextTester>
+          <IframeRuntime
+            ref={ref}
+            url={url}
+            id={"123-Interactive"}
+            authoredState={null}
+            initialInteractiveState={savedAnswer}
+            legacyLinkedInteractiveState={null}
+            setInteractiveState={setInteractiveState}
+            setAspectRatio={jest.fn()}
+            setHeightFromInteractive={jest.fn()}
+            setSupportedFeatures={jest.fn()}
+            setNewHint={jest.fn()}
+            getFirebaseJWT={jest.fn()}
+            getAttachmentUrl={jest.fn()}
+            showModal={jest.fn()}
+            closeModal={jest.fn()}
+            setSendCustomMessage={jest.fn()}
+            log={jest.fn()}
+            iframeTitle="Interactive content"
+            portalData={portalData}
+            showDeleteDataButton={true}
+          />
+        </DynamicTextTester>
+      </MediaLibraryTester>
+    );
+    const view = render(runtime());
+    const client = attachClient(view.container.querySelector("iframe") as HTMLIFrameElement);
+    const changePage = async () => {
+      const onSettled = jest.fn();
+      const request = ref.current!.saveInteractiveStateBeforeClose({ unloading: true });
+      void request.then(onSettled, onSettled);
+      await act(flush);
+      return onSettled;
+    };
+    return { view, client, runtime, setInteractiveState, changePage };
+  };
+
+  // A token past 80% of its life, so the next get() goes through mint, which by default waits for resolveToken.
+  let resolveToken: (jwt: string) => void;
+  const useStaleToken = (mint = () => new Promise<string>(resolve => { resolveToken = resolve; })) => {
+    let clock = 0;
+    initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint, now: () => clock });
+    clock = staleClock;
+  };
+  const useCurrentToken = () => {
+    initializeObjectStorageJWT({ rawFirebaseJWT: launchJWT, mint: jest.fn(), now: () => 0 });
+  };
+
+  beforeEach(() => {
+    jest.useFakeTimers();
+    global.confirm = jest.fn(() => true) as jest.Mock<any>;
+    mockedParentEndpoint.mockImplementation(jest.requireActual("iframe-phone").ParentEndpoint);
+  });
+
+  afterEach(() => {
+    mockedParentEndpoint.mockImplementation(defaultParentEndpoint);
+    jest.useRealTimers();
+    jest.restoreAllMocks();
+  });
+
+  describe("authenticated", () => {
+    it("saves nothing for a page change before the interactive connects", async () => {
+      useCurrentToken();
+      const { client, setInteractiveState, changePage } = setup(authenticatedPortalData);
+
+      await changePage();
+      await client.hello();
+      await act(flush);
+
+      expect(setInteractiveState).not.toHaveBeenCalled();
+      expect(client.received).toContain("initInteractive");
+      expect(client.received).not.toContain("getInteractiveState");
+    });
+
+    it("saves nothing for a page change during the token wait", async () => {
+      useStaleToken();
+      const { client, setInteractiveState, changePage } = setup(authenticatedPortalData);
+      await client.hello();
+
+      await changePage();
+      await act(flush);
+      resolveToken("fresh-jwt");
+      await act(flush);
+
+      expect(setInteractiveState).not.toHaveBeenCalled();
+      expect(client.received).toContain("initInteractive");
+      expect(client.received).not.toContain("getInteractiveState");
+    });
+
+    it("does not hold up the page change for an interactive that has not started", async () => {
+      useStaleToken();
+      const { client, changePage } = setup(authenticatedPortalData);
+      expect(await changePage()).toHaveBeenCalledWith(undefined);
+
+      await client.hello();
+      expect(await changePage()).toHaveBeenCalledWith(undefined);
+    });
+
+    it("saves nothing for a page change while a self-reloaded interactive waits for the token, then saves once it restarts", async () => {
+      useCurrentToken();
+      const { client, setInteractiveState, changePage } = setup(authenticatedPortalData);
+      await client.hello();
+      useStaleToken();
+      client.reload();
+      await client.hello();
+
+      await changePage();
+      await act(flush);
+
+      expect(setInteractiveState).not.toHaveBeenCalled();
+      expect(client.received).not.toContain("getInteractiveState");
+
+      resolveToken("fresh-jwt");
+      await act(flush);
+      client.state = { answerText: "edited" };
+      await changePage();
+
+      expect(setInteractiveState).toHaveBeenCalledTimes(1);
+      expect(setInteractiveState).toHaveBeenCalledWith({ answerText: "edited" });
+    });
+
+    it("saves nothing for a page change after the url changes until the new interactive starts, then saves", async () => {
+      useCurrentToken();
+      const { view, client, runtime, setInteractiveState, changePage } = setup(authenticatedPortalData);
+      await client.hello();
+
+      view.rerender(runtime("https://concord.org/other"));
+      const newClient = attachClient(view.container.querySelector("iframe") as HTMLIFrameElement);
+      await changePage();
+      await newClient.hello();
+      await act(flush);
+
+      expect(setInteractiveState).not.toHaveBeenCalled();
+      expect(newClient.received).toContain("initInteractive");
+      expect(newClient.received).not.toContain("getInteractiveState");
+
+      newClient.state = { answerText: "edited" };
+      await changePage();
+
+      expect(setInteractiveState).toHaveBeenCalledTimes(1);
+      expect(setInteractiveState).toHaveBeenCalledWith({ answerText: "edited" });
+    });
+
+    it("saves on a page change once the interactive has started", async () => {
+      useCurrentToken();
+      const { client, setInteractiveState, changePage } = setup(authenticatedPortalData);
+      await client.hello();
+      client.state = { answerText: "edited" };
+
+      const onSettled = await changePage();
+
+      expect(client.received).toContain("getInteractiveState");
+      expect(setInteractiveState).toHaveBeenCalledTimes(1);
+      expect(setInteractiveState).toHaveBeenCalledWith({ answerText: "edited" });
+      expect(onSettled).toHaveBeenCalledWith(undefined);
+    });
+
+    it("saves on a page change after a failed token refresh starts the interactive with the held token", async () => {
+      useStaleToken(() => Promise.reject("Timeout of 10000ms exceeded"));
+      const { client, setInteractiveState, changePage } = setup(authenticatedPortalData);
+      await client.hello();
+      client.state = { answerText: "edited" };
+
+      await changePage();
+
+      expect(setInteractiveState).toHaveBeenCalledWith({ answerText: "edited" });
+    });
+
+    it("saves a null state a started interactive reports", async () => {
+      useCurrentToken();
+      const { client, setInteractiveState, changePage } = setup(authenticatedPortalData);
+      await client.hello();
+      client.state = null;
+
+      await changePage();
+
+      expect(setInteractiveState).toHaveBeenCalledTimes(1);
+      expect(setInteractiveState).toHaveBeenCalledWith(null);
+    });
+
+    it("clears the answer on Clear & start over, and saves again only once the interactive restarts", async () => {
+      useCurrentToken();
+      const { view, client, setInteractiveState, changePage } = setup(authenticatedPortalData);
+      await client.hello();
+
+      await act(async () => { fireEvent.click(view.getByTestId("reset-button")); await flush(); });
+      expect(setInteractiveState).toHaveBeenCalledWith(null);
+      setInteractiveState.mockClear();
+
+      const reloaded = attachClient(view.container.querySelector("iframe") as HTMLIFrameElement);
+      await changePage();
+      await reloaded.hello();
+
+      expect(reloaded.received).toContain("initInteractive");
+      expect(reloaded.received).not.toContain("getInteractiveState");
+      expect(setInteractiveState).not.toHaveBeenCalled();
+
+      reloaded.state = { answerText: "edited" };
+      await changePage();
+
+      expect(setInteractiveState).toHaveBeenCalledTimes(1);
+      expect(setInteractiveState).toHaveBeenCalledWith({ answerText: "edited" });
+    });
+  });
+
+  describe("anonymous", () => {
+    it("saves nothing for a page change before the interactive connects", async () => {
+      const { client, setInteractiveState, changePage } = setup();
+
+      await changePage();
+      await client.hello();
+      await act(flush);
+
+      expect(setInteractiveState).not.toHaveBeenCalled();
+      expect(client.received).toContain("initInteractive");
+      expect(client.received).not.toContain("getInteractiveState");
+    });
+
+    it("saves on a page change once the interactive has started", async () => {
+      const { client, setInteractiveState, changePage } = setup();
+      await client.hello();
+      client.state = { answerText: "edited" };
+
+      await changePage();
+
+      expect(setInteractiveState).toHaveBeenCalledTimes(1);
+      expect(setInteractiveState).toHaveBeenCalledWith({ answerText: "edited" });
+    });
+  });
+});

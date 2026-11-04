@@ -64,7 +64,12 @@ const createTextDecorationInfo = () => {
 };
 
 export interface IframeRuntimeImperativeAPI {
-  requestInteractiveState: (options?: IGetInteractiveState) => Promise<void>;
+  /**
+   * Asks the interactive for its state so it can be saved before the interactive is closed.
+   * Resolves at once, without asking, if the interactive hasn't been sent initInteractive: it
+   * hasn't been given its saved state yet, so anything it reported would overwrite the saved answer.
+   */
+  saveInteractiveStateBeforeClose: (options?: IGetInteractiveState) => Promise<void>;
   getIframeElement: () => HTMLIFrameElement | null;
 }
 
@@ -136,6 +141,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const rootRef = useRef<HTMLDivElement>(null);
   useInert(rootRef, disabled);
   const phoneRef = useRef<IframePhone>();
+  // The phone whose interactive has been sent initInteractive. Holding the phone rather than a
+  // boolean means a new connection counts as not started without anything having to reset it.
+  const startedPhoneRef = useRef<IframePhone>();
   const focusManagerRef = useRef<FocusManager>();
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
@@ -168,6 +176,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       if (!phone) {
         return;
       }
+
+      // Every "hello" comes from a client waiting for initInteractive, even on an existing connection.
+      startedPhoneRef.current = undefined;
 
       const preview = queryValueBoolean("preview") || queryValue("mode")?.toLowerCase() === "teacher-edition";
 
@@ -463,6 +474,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           phone.post("loadInteractive", latestInteractiveState);
         }
         phone.post("initInteractive", initInteractiveMsg);
+        startedPhoneRef.current = phone;
         gateReporter?.restartDeclarationWindow();
       };
 
@@ -545,12 +557,13 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   }, []);
 
   useImperativeHandle(ref, () => ({
-    requestInteractiveState: (options?: IGetInteractiveState) => {
+    saveInteractiveStateBeforeClose: (options?: IGetInteractiveState) => {
       // An iframe that never loaded an interactive has no state to request, and nothing
       // would arrive to resolve the request, so it would time out and report a save failure.
-      if (!phoneRef.current) return Promise.resolve();
+      const phone = phoneRef.current;
+      if (!phone || startedPhoneRef.current !== phone) return Promise.resolve();
       if (!interactiveStateRequest.promise.current) {
-        phoneRef.current?.post("getInteractiveState", options);
+        phone.post("getInteractiveState", options);
         interactiveStateRequest.promise.current = new Promise<void>((resolve, reject) => {
           const cleanup = () => {
             interactiveStateRequest.promise.current = undefined;

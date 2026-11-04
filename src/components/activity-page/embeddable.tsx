@@ -35,7 +35,7 @@ interface IProps {
 }
 
 export interface EmbeddableImperativeAPI {
-  requestInteractiveState: (options?: IGetInteractiveState) => Promise<void>;
+  saveInteractiveStateBeforeClose: (options?: IGetInteractiveState) => Promise<void>;
 }
 
 type ISendCustomMessage = (message: ICustomMessage) => void;
@@ -88,7 +88,7 @@ export const Embeddable: React.ForwardRefExoticComponent<IProps> = forwardRef((p
   }, [visibility, embeddable.ref_id, embeddable.name, embeddable.is_hidden, questionNumber, hideQuestionNumbers]);
 
   useImperativeHandle(ref, () => ({
-    requestInteractiveState: (options?: IGetInteractiveState) => managedInteractiveRef.current?.requestInteractiveState(options) || Promise.resolve()
+    saveInteractiveStateBeforeClose: (options?: IGetInteractiveState) => managedInteractiveRef.current?.saveInteractiveStateBeforeClose(options) || Promise.resolve()
   }));
 
   const handleSetSupportedFeatures = useCallback((container: HTMLElement, features: ISupportedFeatures) => {

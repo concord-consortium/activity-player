@@ -148,10 +148,10 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
     );
   }
 
-  public requestInteractiveStates(options?: IGetInteractiveState) {
+  public saveInteractiveStatesBeforeClose(options?: IGetInteractiveState) {
     const promises: Promise<void>[] = [];
     this.props.page.sections.forEach((section: SectionType, idx: number) =>
-      promises.push(...(this.sectionRefs[idx]?.current?.requestInteractiveStates(options) || [Promise.resolve()]))
+      promises.push(...(this.sectionRefs[idx]?.current?.saveInteractiveStatesBeforeClose(options) || [Promise.resolve()]))
     );
     return promises;
   }

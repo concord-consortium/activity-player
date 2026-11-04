@@ -52,7 +52,7 @@ interface IProps {
 }
 
 export interface ManagedInteractiveImperativeAPI {
-  requestInteractiveState: (options?: IGetInteractiveState) => Promise<void>;
+  saveInteractiveStateBeforeClose: (options?: IGetInteractiveState) => Promise<void>;
 }
 
 export interface IClickToPlayOptions {
@@ -290,7 +290,7 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
     // outcome: an interactive that cannot be reached, or that answers "nochange", must not
     // leave the learner shut inside the dialog.
     const close = () => setActiveDialog(null);
-    const request = iframeRuntimeRef.current?.requestInteractiveState();
+    const request = iframeRuntimeRef.current?.saveInteractiveStateBeforeClose();
     if (request) {
       void request.then(close, close);
     } else {
@@ -370,9 +370,9 @@ export const ManagedInteractive: React.ForwardRefExoticComponent<IProps> = forwa
   };
 
   useImperativeHandle(ref, () => ({
-    requestInteractiveState: (options?: IGetInteractiveState) => {
+    saveInteractiveStateBeforeClose: (options?: IGetInteractiveState) => {
       if (shouldWatchAnswer && iframeRuntimeRef.current) {
-        return iframeRuntimeRef.current.requestInteractiveState(options);
+        return iframeRuntimeRef.current.saveInteractiveStateBeforeClose(options);
       } else {
         // Interactive doesn't save state, so return resolved promise immediately.
         return Promise.resolve();
