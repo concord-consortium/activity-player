@@ -136,6 +136,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   const rootRef = useRef<HTMLDivElement>(null);
   useInert(rootRef, disabled);
   const phoneRef = useRef<IframePhone>();
+  // The phone whose interactive has been sent initInteractive. Holding the phone rather than a
+  // boolean means a new connection counts as not started without anything having to reset it.
+  const startedPhoneRef = useRef<IframePhone>();
   const focusManagerRef = useRef<FocusManager>();
   const setInteractiveStateRef = useRef<((state: any) => void)>(setInteractiveState);
   setInteractiveStateRef.current = setInteractiveState;
@@ -168,6 +171,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       if (!phone) {
         return;
       }
+
+      // Every "hello" comes from a client waiting for initInteractive, even on an existing connection.
+      startedPhoneRef.current = undefined;
 
       const preview = queryValueBoolean("preview") || queryValue("mode")?.toLowerCase() === "teacher-edition";
 
@@ -463,6 +469,7 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
           phone.post("loadInteractive", latestInteractiveState);
         }
         phone.post("initInteractive", initInteractiveMsg);
+        startedPhoneRef.current = phone;
         gateReporter?.restartDeclarationWindow();
       };
 
@@ -548,9 +555,12 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
     requestInteractiveState: (options?: IGetInteractiveState) => {
       // An iframe that never loaded an interactive has no state to request, and nothing
       // would arrive to resolve the request, so it would time out and report a save failure.
-      if (!phoneRef.current) return Promise.resolve();
+      // An interactive that has not been sent initInteractive has nothing new to report either,
+      // and would answer with its empty initial state, which would be saved over the answer.
+      const phone = phoneRef.current;
+      if (!phone || startedPhoneRef.current !== phone) return Promise.resolve();
       if (!interactiveStateRequest.promise.current) {
-        phoneRef.current?.post("getInteractiveState", options);
+        phone.post("getInteractiveState", options);
         interactiveStateRequest.promise.current = new Promise<void>((resolve, reject) => {
           const cleanup = () => {
             interactiveStateRequest.promise.current = undefined;
