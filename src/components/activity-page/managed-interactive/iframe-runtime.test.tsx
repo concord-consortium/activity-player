@@ -544,7 +544,7 @@ describe("IframeRuntime component", () => {
     const ref = React.createRef<IframeRuntimeImperativeAPI>();
     renderWith({ url: "javascript:alert(1)", ref });
     act(() => { jest.runAllTimers(); });
-    const request = ref.current!.requestInteractiveState();
+    const request = ref.current!.saveInteractiveStateBeforeClose();
     act(() => { jest.runAllTimers(); });
     await expect(request).resolves.toBeUndefined();
   });
@@ -973,7 +973,7 @@ describe("IframeRuntime state requests around initInteractive", () => {
     const client = attachClient(view.container.querySelector("iframe") as HTMLIFrameElement);
     const changePage = async () => {
       const onSettled = jest.fn();
-      const request = ref.current!.requestInteractiveState({ unloading: true });
+      const request = ref.current!.saveInteractiveStateBeforeClose({ unloading: true });
       void request.then(onSettled, onSettled);
       await act(flush);
       return onSettled;

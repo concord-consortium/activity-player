@@ -57,7 +57,7 @@ context("Saving and loading data as an anonymous user", () => {
       // Select a MC answer on page 2, immediately (!) change page to 1, and then change page to 2 again.
       // Answer should not be lost, as AP should request all the interactive states before switching a page.
       // Do NOT use any cy.wait in this test, as it'll break its purpose. If this test fails, it most likely means
-      // that one of the Imperative API #requestInteractiveState(s) functions is broken.
+      // that one of the Imperative API #saveInteractiveState(s)BeforeClose functions is broken.
       activityPage.getNavPage(2).click();
       cy.contains("Question #2");
       getInIframe("body", "[data-cy=choices-container] input").eq(1).click({force: true});

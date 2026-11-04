@@ -64,7 +64,12 @@ const createTextDecorationInfo = () => {
 };
 
 export interface IframeRuntimeImperativeAPI {
-  requestInteractiveState: (options?: IGetInteractiveState) => Promise<void>;
+  /**
+   * Asks the interactive for its state so it can be saved before the interactive is closed.
+   * Resolves at once, without asking, if the interactive hasn't been sent initInteractive: it
+   * hasn't been given its saved state yet, so anything it reported would overwrite the saved answer.
+   */
+  saveInteractiveStateBeforeClose: (options?: IGetInteractiveState) => Promise<void>;
   getIframeElement: () => HTMLIFrameElement | null;
 }
 
@@ -552,11 +557,9 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
   }, []);
 
   useImperativeHandle(ref, () => ({
-    requestInteractiveState: (options?: IGetInteractiveState) => {
+    saveInteractiveStateBeforeClose: (options?: IGetInteractiveState) => {
       // An iframe that never loaded an interactive has no state to request, and nothing
       // would arrive to resolve the request, so it would time out and report a save failure.
-      // An interactive that has not been sent initInteractive has nothing new to report either,
-      // and would answer with its empty initial state, which would be saved over the answer.
       const phone = phoneRef.current;
       if (!phone || startedPhoneRef.current !== phone) return Promise.resolve();
       if (!interactiveStateRequest.promise.current) {

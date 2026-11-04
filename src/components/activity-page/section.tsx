@@ -33,7 +33,7 @@ interface IProps {
 }
 
 export interface SectionImperativeAPI {
-  requestInteractiveStates: (options?: IGetInteractiveState) => Promise<void>[];
+  saveInteractiveStatesBeforeClose: (options?: IGetInteractiveState) => Promise<void>[];
 }
 
 const right = "right";
@@ -85,9 +85,9 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
   }, [screenHeight]);
 
   useImperativeHandle(ref, () => ({
-    requestInteractiveStates: (options?: IGetInteractiveState) =>
+    saveInteractiveStatesBeforeClose: (options?: IGetInteractiveState) =>
       section.embeddables.map((embeddable: EmbeddableType) =>
-        embeddableRefs.current[embeddable.ref_id]?.current?.requestInteractiveState(options) || Promise.resolve()
+        embeddableRefs.current[embeddable.ref_id]?.current?.saveInteractiveStateBeforeClose(options) || Promise.resolve()
       )
   }));
 
