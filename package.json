@@ -25,7 +25,8 @@
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "/cypress/"
+      "/cypress/",
+      "/playwright/"
     ],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
@@ -63,8 +64,8 @@
     "lint:plugins": "eslint -c \"./src/lara-plugin/.eslintrc.js\" \"./src/lara-plugin\"",
     "lint:lib": "eslint -c \"./src/lib/.eslintrc.js\" \"./src/lib\"",
     "lint:build": "npm run lint:others && npm run lint:plugins && npm run lint:lib",
-    "lint": "eslint \"./src/**/*.{json,js,jsx,ts,tsx}\" \"./cypress/**/*.{json,js,jsx,ts,tsx}\"",
-    "lint:fix": "eslint --fix \"./src/**/*.{json,js,jsx,ts,tsx}\" \"./cypress/**/*.{json,js,jsx,ts,tsx}\"",
+    "lint": "eslint \"./src/**/*.{json,js,jsx,ts,tsx}\" \"./cypress/**/*.{json,js,jsx,ts,tsx}\" \"./playwright/**/*.{json,js,jsx,ts,tsx}\" playwright.config.ts",
+    "lint:fix": "eslint --fix \"./src/**/*.{json,js,jsx,ts,tsx}\" \"./cypress/**/*.{json,js,jsx,ts,tsx}\" \"./playwright/**/*.{json,js,jsx,ts,tsx}\" playwright.config.ts",
     "test": "jest",
     "test:all": "npm-run-all build test start",
     "test:coverage": "jest --coverage",
@@ -73,7 +74,9 @@
     "test:coverage:watch": "jest --coverage --watchAll",
     "test:cypress": "cypress run --headless",
     "test:cypress:open": "cypress open",
-    "test:full": "npm-run-all test test:cypress"
+    "test:playwright": "playwright test",
+    "test:playwright:open": "playwright test --ui",
+    "test:full": "npm-run-all test test:cypress test:playwright"
   },
   "repository": {
     "type": "git",
@@ -87,9 +90,11 @@
   "homepage": "https://github.com/concord-consortium/activity-player#readme",
   "devDependencies": {
     "@babel/core": "^7.16.0",
+    "@bgotink/playwright-coverage": "^0.3.2",
     "@cypress/code-coverage": "^3.10.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
+    "@playwright/test": "^1.65.1",
     "@svgr/webpack": "^8.1.0",
     "@testing-library/dom": "^8.11.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -112,6 +117,7 @@
     "@typescript-eslint/parser": "^5.62.0",
     "autoprefixer": "^10.4.0",
     "babel-jest": "^27.4.2",
+    "bonjour-service": "^1.4.4",
     "copy-webpack-plugin": "^6.4.1",
     "css-loader": "^5.2.7",
     "cypress": "^13.6.3",

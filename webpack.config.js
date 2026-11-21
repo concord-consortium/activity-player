@@ -22,7 +22,18 @@ module.exports = (env, argv) => {
 
   return {
     context: __dirname, // to automatically find tsconfig.json
-    devtool: "source-map",
+    devServer: {
+      // Playwright's global setup finds the dev server by this name (playwright/lib/global-setup.ts).
+      // The checkout's folder name keeps the servers of separate worktrees apart.
+      bonjour: {
+        name: process.env.BONJOUR_SERVICE_NAME || path.basename(__dirname)
+      }
+    },
+    // Playwright's coverage reporter reads one source map per script. With "source-map" the bundle is
+    // a single script whose text also holds dependencies' inline source map comments, and the reporter
+    // takes one of those as the bundle's map, so no coverage maps to src. An eval devtool gives each
+    // module its own script and source map. playwright.config.ts sets PLAYWRIGHT_COVERAGE.
+    devtool: process.env.PLAYWRIGHT_COVERAGE ? "eval-cheap-module-source-map" : "source-map",
     entry: "./src/index.tsx",
     mode: "development",
     output: {
