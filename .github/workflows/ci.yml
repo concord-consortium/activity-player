@@ -63,6 +63,64 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           flags: cypress
+  playwright:
+    name: Run Playwright Tests
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - name: Install Dependencies
+        run: npm ci
+        env:
+          # Playwright tests don't need the Cypress binary
+          CYPRESS_INSTALL_BINARY: 0
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Run Playwright tests
+        run: npx playwright test
+        env:
+          CI: "true"
+      - name: Upload coverage to Codecov
+        if: always()
+        uses: codecov/codecov-action@v3
+        with:
+          flags: playwright
+          files: test-results/coverage/coverage.lcov
+      - uses: concord-consortium/s3-deploy-action/deploy-path@v1
+        if: always()
+        id: s3-deploy-path
+      - uses: aws-actions/configure-aws-credentials@v6
+        if: always()
+        with:
+          role-to-assume: arn:aws:iam::612297603577:role/activity-player
+          aws-region: us-east-1
+      - name: Upload Playwright Report
+        # Without a deploy path, the --delete would empty every other branch's report.
+        if: always() && steps.s3-deploy-path.outputs.deployPath
+        run: aws s3 sync ./playwright-report s3://models-resources/activity-player/playwright-report/${{ steps.s3-deploy-path.outputs.deployPath }} --delete --cache-control "no-cache, max-age=0"
+      # This workflow runs on push, not pull_request, so the report action can't find the PR
+      # itself. With no open PR for the branch the number is empty and the action skips the comment.
+      - name: Find the pull request for this branch
+        if: always()
+        id: find-pr
+        run: echo "number=$(gh pr list --head "$GITHUB_REF_NAME" --state open --json number --jq '.[0].number')" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+      - uses: daun/playwright-report-summary@v3
+        if: always()
+        with:
+          report-file: test-results/results.json
+          report-url: https://models-resources.concord.org/activity-player/playwright-report/${{ steps.s3-deploy-path.outputs.deployPath }}/
+          pr-number: ${{ steps.find-pr.outputs.number }}
+  # The deploy waits for Jest and Cypress but not for Playwright, so a failing Playwright test
+  # doesn't hold back the branch build.
   s3-deploy:
     name: S3 Deploy
     needs:
