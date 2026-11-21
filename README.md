@@ -50,7 +50,7 @@ Testing this is complicated. Here is one approach:
 Deployment is handled by GitHub Actions using OIDC for AWS authentication. The `s3-deploy` job in
 [`ci.yml`](.github/workflows/ci.yml) runs on every push, branches and tags alike, and writes to
 `models-resources/activity-player/`. It `needs` the build and Cypress jobs, so a failing test stops
-the deploy and nothing is published for that push. You do not need to build locally to deploy.
+the deploy and nothing is published for that push. It does not wait for the Playwright job. You do not need to build locally to deploy.
 
 Branches are published at `https://activity-player.concord.org/branch/<name>/` and tags at
 `https://activity-player.concord.org/version/<name>/`.
@@ -95,10 +95,10 @@ only bug fixes: `2.16.1` and `2.17.1` were patches, but the number is whatever J
    git push origin master
    ```
 
-   CI repeats the build and the jest tests on the push, and runs Cypress, but it never runs
+   CI repeats the build and the jest tests on the push, and runs Cypress and Playwright, but it never runs
    `npm run lint`: the only linting it does is the `lint:build` step inside `npm run build`, which is
-   scoped to `src` and uses the build eslint configs. `npm run lint` additionally covers `cypress/**`,
-   so skipping it locally means nothing checks those files.
+   scoped to `src` and uses the build eslint configs. `npm run lint` additionally covers `cypress/**`
+   and `playwright/**`, so skipping it locally means nothing checks those files.
 
    There is no `release-<version>` branch and no PR. The commit message is a bare subject with no
    body and no ticket id.
@@ -174,7 +174,35 @@ never been run and is not part of the process above.
 
 ## Testing
 
-Run `npm test` to run jest tests. Run `npm run test:full` to run jest and Cypress tests.
+Run `npm test` to run jest tests. Run `npm run test:full` to run jest, Cypress and Playwright tests.
+
+We are moving the browser tests from Cypress to Playwright. Write new browser tests in Playwright, and
+convert a Cypress spec to Playwright when your work touches it.
+
+### Playwright
+
+The Playwright tests are in [`playwright/`](playwright/). To run them locally:
+
+1. Start the dev server: `npm start`
+2. In another terminal: `npm run test:playwright`
+
+Or use `npm run test:playwright:open` to open Playwright's UI mode.
+
+The tests find the dev server over Bonjour, by a name that defaults to the checkout's folder name, so
+each worktree's tests use that worktree's dev server. Set `BONJOUR_SERVICE_NAME` to override it; the
+dev server and the tests both read it.
+
+Sample activities in [`src/data`](src/data/) load by name, e.g. `/?activity=sample-activity-1&preview`,
+so tests can use them without reaching LARA.
+
+When writing Playwright tests, prefer accessible locators over CSS selectors or `data-testid` attributes.
+See the [Playwright locator guide](https://playwright.dev/docs/locators#quick-guide) for the recommended
+priority: `getByRole` > `getByText` > `getByLabel` > `getByPlaceholder` > `getByTestId`.
+
+On CI, the Playwright job uploads its coverage to Codecov under the `playwright` flag, publishes the HTML
+report to `https://models-resources.concord.org/activity-player/playwright-report/<deploy path>/`, and
+comments on the branch's open PR with a summary and a link to the report. The deploy doesn't wait for
+this job.
 
 ### Cypress Run Options
 
