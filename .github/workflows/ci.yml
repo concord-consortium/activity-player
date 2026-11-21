@@ -18,9 +18,10 @@ jobs:
       - name: Run Tests
         run: npm run test:coverage -- --runInBand
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
           flags: jest
+          token: ${{ secrets.CODECOV_TOKEN }}
   cypress:
     runs-on: ubuntu-latest
     container: cypress/browsers:node-22.21.0-chrome-141.0.7390.107-1-ff-144.0-edge-141.0.3537.92-1
@@ -60,9 +61,10 @@ jobs:
           # should be much faster
           CODE_COVERAGE: true
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
           flags: cypress
+          token: ${{ secrets.CODECOV_TOKEN }}
   playwright:
     name: Run Playwright Tests
     runs-on: ubuntu-latest
@@ -88,9 +90,10 @@ jobs:
           CI: "true"
       - name: Upload coverage to Codecov
         if: always()
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v5
         with:
           flags: playwright
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: test-results/coverage/coverage.lcov
       - uses: concord-consortium/s3-deploy-action/deploy-path@v1
         if: always()
