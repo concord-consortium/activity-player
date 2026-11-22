@@ -92,6 +92,17 @@ module.exports = {
           "@typescript-eslint/no-non-null-assertion": "off",
         }
       },
+      { // Playwright tests get coverage and the dev server's URL from the shared fixture
+        files: ["playwright/**/*"],
+        excludedFiles: ["playwright/lib/base-url.ts"],
+        rules: {
+          "no-restricted-imports": ["error", { paths: [{
+            name: "@playwright/test",
+            importNames: ["test"],
+            message: "Import test from playwright/lib/base-url.ts, which collects coverage and sets the dev server URL."
+          }] }]
+        }
+      },
       {
         files: ["**/setupTests.js", "**/webpack.config.js"],
         rules: {
