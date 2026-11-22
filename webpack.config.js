@@ -29,11 +29,7 @@ module.exports = (env, argv) => {
         name: process.env.BONJOUR_SERVICE_NAME || path.basename(__dirname)
       }
     },
-    // Playwright's coverage reporter reads one source map per script. With "source-map" the bundle is
-    // a single script whose text also holds dependencies' inline source map comments, and the reporter
-    // takes one of those as the bundle's map, so no coverage maps to src. An eval devtool gives each
-    // module its own script and source map. playwright.config.ts sets PLAYWRIGHT_COVERAGE.
-    devtool: process.env.PLAYWRIGHT_COVERAGE ? "eval-cheap-module-source-map" : "source-map",
+    devtool: "source-map",
     entry: "./src/index.tsx",
     mode: "development",
     output: {

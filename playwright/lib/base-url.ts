@@ -3,13 +3,14 @@
  * discovered by global-setup.ts. On CI, baseURL is set explicitly in
  * playwright.config.ts. Import `test` from this file instead of from
  * `@playwright/test` in all test files.
+ *
+ * It also collects each test's browser coverage when coverage is on (see coverage.ts).
  */
 import { test as pwTest } from "@playwright/test";
-import { mixinFixtures as mixinCoverage } from "@bgotink/playwright-coverage";
+import { MCR } from "monocart-coverage-reports";
+import { attachSourceMaps, collectCoverage, coverageOptions } from "./coverage";
 
-const base = mixinCoverage(pwTest);
-
-export const test = base.extend({
+export const test = pwTest.extend<{ coverage: void }>({
   baseURL: async ({ baseURL }, use) => {
     if (!baseURL) {
       if (process.env.CI) {
@@ -24,4 +25,19 @@ export const test = base.extend({
     }
     await use(baseURL);
   },
+  coverage: [async ({ page }, use) => {
+    if (!collectCoverage) {
+      await use();
+      return;
+    }
+    // Keep the coverage across navigations within the test.
+    await page.coverage.startJSCoverage({ resetOnNavigation: false });
+    try {
+      await use();
+    } finally {
+      const entries = await page.coverage.stopJSCoverage();
+      await attachSourceMaps(page.request, entries);
+      await MCR(coverageOptions).add(entries);
+    }
+  }, { auto: true }],
 });

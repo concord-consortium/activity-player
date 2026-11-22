@@ -204,6 +204,12 @@ report to `https://models-resources.concord.org/activity-player/playwright-repor
 comments on the branch's open PR with a summary and a link to the report. The deploy doesn't wait for
 this job.
 
+The coverage comes from Chromium's built-in (V8) coverage, so the app runs without instrumentation.
+[monocart-coverage-reports](https://github.com/cenfun/monocart-coverage-reports) maps it to the source
+files and counts statements the way istanbul does, so the `playwright` flag's lines match the `jest` and
+`cypress` flags and Codecov merges them evenly. The setup is in
+[`playwright/lib/coverage.ts`](playwright/lib/coverage.ts). It needs Node 22.15 or later.
+
 ### Cypress Run Options
 
 Inside of your `package.json` file:
