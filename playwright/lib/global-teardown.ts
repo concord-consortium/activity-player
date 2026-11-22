@@ -9,9 +9,11 @@ export default async function globalTeardown() {
   if (!collectCoverage) return;
 
   const results = await MCR(coverageOptions).generate();
-  // An empty report usually means the source maps or filters stopped matching, which would
-  // otherwise only show up as a drop in Codecov.
+  // An empty report means the source map or the filters stopped matching, which would otherwise
+  // only show up as a drop in Codecov.
   if (!results?.files.length) {
-    throw new Error("No Playwright coverage was generated. Check the filters in playwright/lib/coverage.ts.");
+    throw new Error(
+      "No Playwright coverage was generated. Check the source map and filters in playwright/lib/coverage.ts."
+    );
   }
 }

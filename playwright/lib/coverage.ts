@@ -7,6 +7,7 @@
  *
  * The fixture in base-url.ts adds each test's coverage, and global-teardown.ts writes the reports.
  */
+import fs from "fs";
 import path from "path";
 import type { APIRequestContext } from "@playwright/test";
 import type { CoverageReportOptions, V8CoverageEntry } from "monocart-coverage-reports";
@@ -18,8 +19,10 @@ const repositoryName = process.env.REPOSITORY_NAME || "activity-player";
 // The webpack bundle. This leaves out the page's inline scripts.
 const isBundle = (entry: V8CoverageEntry) => /\/assets\/[^/]+\.js$/.test(entry.url);
 
+const rootDir = path.join(__dirname, "..", "..");
+
 // The CI workflow uploads coverage.lcov from here.
-export const coverageDir = path.join(__dirname, "..", "..", "test-results", "coverage");
+export const coverageDir = path.join(rootDir, "test-results", "coverage");
 
 export const coverageOptions: CoverageReportOptions = {
   name: "Playwright Coverage",
@@ -36,8 +39,11 @@ export const coverageOptions: CoverageReportOptions = {
   sourcePath: (filePath) => filePath.replace(`${repositoryName}/`, ""),
   // Only the app's own scripts. This sees the paths sourcePath returns. Stylesheets and SVGs are
   // mapped too, through the loader modules that insert them, but they aren't JavaScript source and
-  // Jest doesn't measure them either.
-  sourceFilter: (sourcePath) => sourcePath.startsWith("src/") && /\.(js|jsx|ts|tsx)$/.test(sourcePath),
+  // Jest doesn't measure them either. A path that isn't a file here comes from a wrong source map,
+  // such as a dependency's inline one, so it is left out and global teardown reports no coverage.
+  sourceFilter: (sourcePath) =>
+    sourcePath.startsWith("src/") && /\.(js|jsx|ts|tsx)$/.test(sourcePath) &&
+    fs.existsSync(path.join(rootDir, sourcePath)),
 };
 
 const sourceMaps = new Map<string, Promise<unknown>>();
