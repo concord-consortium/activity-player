@@ -109,7 +109,11 @@ jobs:
       - name: Upload Playwright Report
         # Without a deploy path, the --delete would empty every other branch's report.
         if: always() && steps.s3-deploy-path.outputs.deployPath
-        run: aws s3 sync ./playwright-report s3://models-resources/activity-player/playwright-report/${{ steps.s3-deploy-path.outputs.deployPath }} --delete --cache-control "no-cache, max-age=0"
+        # The deploy path comes from the branch or tag name, which can contain shell syntax, so it
+        # is passed in the environment and quoted rather than written into the command.
+        run: aws s3 sync ./playwright-report "s3://models-resources/activity-player/playwright-report/$DEPLOY_PATH" --delete --cache-control "no-cache, max-age=0"
+        env:
+          DEPLOY_PATH: ${{ steps.s3-deploy-path.outputs.deployPath }}
       # This workflow runs on push, not pull_request, so the report action can't find the PR
       # itself. With no open PR for the branch the number is empty and the action skips the comment.
       - name: Find the pull request for this branch
