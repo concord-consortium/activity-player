@@ -3,7 +3,6 @@ import path from "path";
 
 const rootDir = __dirname;
 
-process.env.REPOSITORY_NAME = process.env.REPOSITORY_NAME || "activity-player";
 // webpack.config.js advertises the dev server under the same default name. Using the checkout's
 // folder name means each worktree's tests find that worktree's dev server, not another one's.
 process.env.BONJOUR_SERVICE_NAME = process.env.BONJOUR_SERVICE_NAME || path.basename(rootDir);

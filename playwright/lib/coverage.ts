@@ -14,12 +14,14 @@ import type { CoverageReportOptions, V8CoverageEntry } from "monocart-coverage-r
 
 export const collectCoverage = !!process.env.CI;
 
-const repositoryName = process.env.REPOSITORY_NAME || "activity-player";
-
 // The webpack bundle. This leaves out the page's inline scripts.
 const isBundle = (entry: V8CoverageEntry) => /\/assets\/[^/]+\.js$/.test(entry.url);
 
 const rootDir = path.join(__dirname, "..", "..");
+
+// Webpack prefixes source paths with its namespace, which defaults to package.json's name:
+// "activity-player/src/...", "activity-player/node_modules/..." and so on.
+const sourcePrefix = `${JSON.parse(fs.readFileSync(path.join(rootDir, "package.json"), "utf8")).name}/`;
 
 // The CI workflow uploads coverage.lcov from here.
 export const coverageDir = path.join(rootDir, "test-results", "coverage");
@@ -35,8 +37,7 @@ export const coverageOptions: CoverageReportOptions = {
   // Every worker adds to the same cache, so only global setup may clear it.
   cleanCache: false,
   entryFilter: isBundle,
-  // Webpack names the sources "<repository>/src/...", "<repository>/node_modules/..." and so on.
-  sourcePath: (filePath) => filePath.replace(`${repositoryName}/`, ""),
+  sourcePath: (filePath) => filePath.startsWith(sourcePrefix) ? filePath.slice(sourcePrefix.length) : filePath,
   // Only the app's own scripts. This sees the paths sourcePath returns. Stylesheets and SVGs are
   // mapped too, through the loader modules that insert them, but they aren't JavaScript source and
   // Jest doesn't measure them either. A path that isn't a file here comes from a wrong source map,
