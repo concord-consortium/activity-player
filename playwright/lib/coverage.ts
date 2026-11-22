@@ -2,8 +2,9 @@
  * Browser code coverage for the Playwright tests, reported with monocart-coverage-reports (MCR).
  *
  * Chromium measures the coverage natively (V8), so the app runs without instrumentation. MCR maps it
- * back to the source files and counts statements by parsing the code, so its line counts match the
- * istanbul reports from Jest and Cypress and the three Codecov flags merge on equal terms.
+ * back to the source files and counts statements by parsing the code, so its lines closely match the
+ * istanbul reports from Jest and Cypress. It also counts a line where an untested branch starts on
+ * its own line, such as the `? ...` arm of a conditional, which istanbul counts only as a branch.
  *
  * The fixture in base-url.ts adds each test's coverage, and global-teardown.ts writes the reports.
  */
@@ -37,9 +38,9 @@ export const coverageOptions: CoverageReportOptions = {
   cleanCache: false,
   entryFilter: isBundle,
   sourcePath: (filePath) => filePath.startsWith(sourcePrefix) ? filePath.slice(sourcePrefix.length) : filePath,
-  // Only the app's own scripts. This sees the paths sourcePath returns. Stylesheets and SVGs are
-  // mapped too, through the loader modules that insert them, but they aren't JavaScript source and
-  // Jest doesn't measure them either. A path that isn't a file here comes from a wrong source map,
+  // Only the app's own scripts. This sees the paths sourcePath returns. Stylesheets (through the
+  // loader modules that insert them) and SVGs (as SVGR components) are mapped too, but neither is
+  // JavaScript source, and Jest doesn't measure them either. A path that isn't a file here comes from a wrong source map,
   // such as a dependency's inline one, so it is left out and global teardown reports no coverage.
   sourceFilter: (sourcePath) =>
     sourcePath.startsWith("src/") && /\.(js|jsx|ts|tsx)$/.test(sourcePath) &&
