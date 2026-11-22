@@ -13,6 +13,24 @@ This is a single page React and Typescript application intended to provide a pla
    `engine-strict` enforces.
 3. Run `npm start` to run `webpack-dev-server` in development mode with hot module replacement
 
+### Run using HTTPS
+
+To serve the dev server over HTTPS, give it a certificate from
+[mkcert](https://github.com/FiloSottile/mkcert). mkcert adds its own root certificate to the
+operating system's trust store, so browsers, including the one Playwright runs, accept the
+certificate.
+
+1. Install mkcert: `brew install mkcert` (on Windows, use Scoop or Chocolatey)
+2. Add mkcert's root certificate to the trust store, if you haven't before: `mkcert -install`
+3. Create a `.localhost-ssl` folder in your home folder and `cd` into it
+4. Make the certificate: `mkcert -cert-file localhost.pem -key-file localhost.key localhost 127.0.0.1 ::1`
+5. Run `npm run start:secure`
+
+`npm run start:secure:no-certs` serves HTTPS with a self-signed certificate instead. Browsers reject
+it unless you allow insecure localhost, for example with Chrome's
+`chrome://flags/#allow-insecure-localhost`, and the Playwright tests fail against it with
+`ERR_CERT_AUTHORITY_INVALID`.
+
 ### Building
 
 If you want to build a local version run `npm run build`, it will create the files in the `dist` folder.
