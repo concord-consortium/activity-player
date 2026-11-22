@@ -85,6 +85,9 @@ jobs:
         env:
           # Playwright tests don't need the Cypress binary
           CYPRESS_INSTALL_BINARY: 0
+      # Playwright runs tests without checking their types, and the root tsconfig covers only src.
+      - name: Type-check Playwright tests
+        run: npm run check:playwright
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium
       - name: Run Playwright tests

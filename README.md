@@ -188,6 +188,8 @@ The Playwright tests are in [`playwright/`](playwright/). To run them locally:
 
 Or use `npm run test:playwright:open` to open Playwright's UI mode.
 
+Playwright doesn't check types when it runs the tests. `npm run check:playwright` does, and CI runs it.
+
 The tests find the dev server over Bonjour, by a name that defaults to the checkout's folder name, so
 each worktree's tests use that worktree's dev server. Set `BONJOUR_SERVICE_NAME` to override it; the
 dev server and the tests both read it.
