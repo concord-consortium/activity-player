@@ -4,7 +4,7 @@
   "description": "Concord Consortium Activity Player",
   "main": "index.js",
   "engines": {
-    "node": ">= 18",
+    "node": ">= 22.15",
     "npm": ">= 8"
   },
   "jest": {
