@@ -2,11 +2,8 @@
  * Playwright global setup — runs once before all tests.
  * Discovers the webpack dev server via Bonjour and stores the
  * connection info in environment variables for the base-url fixture.
- * When coverage is on, it also clears the previous run's coverage.
  */
-import fs from "fs";
 import { Bonjour, Service } from "bonjour-service";
-import { collectCoverage, coverageDir } from "./coverage";
 
 async function findDevServer(): Promise<{ port: string; protocol: string }> {
   const bonjour = new Bonjour();
@@ -45,12 +42,6 @@ async function findDevServer(): Promise<{ port: string; protocol: string }> {
 }
 
 export default async function globalSetup() {
-  if (collectCoverage) {
-    // Clear the last run's coverage cache and reports, so a run that collects nothing can't leave
-    // old reports to be uploaded.
-    fs.rmSync(coverageDir, { recursive: true, force: true });
-  }
-
   if (process.env.CI) return;
 
   const server = await findDevServer();

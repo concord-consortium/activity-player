@@ -23,18 +23,17 @@ const rootDir = path.join(__dirname, "..", "..");
 // "activity-player/src/...", "activity-player/node_modules/..." and so on.
 const sourcePrefix = `${JSON.parse(fs.readFileSync(path.join(rootDir, "package.json"), "utf8")).name}/`;
 
-// The CI workflow uploads coverage.lcov from here.
-export const coverageDir = path.join(rootDir, "test-results", "coverage");
-
 export const coverageOptions: CoverageReportOptions = {
   name: "Playwright Coverage",
-  outputDir: coverageDir,
+  // The CI workflow uploads coverage.lcov from here. Playwright clears test-results at the start of
+  // each run, which also clears the last run's coverage.
+  outputDir: path.join(rootDir, "test-results", "coverage"),
   reports: [
     ["v8"],
     ["lcovonly", { file: "coverage.lcov" }],
     ["console-summary"],
   ],
-  // Every worker adds to the same cache, so only global setup may clear it.
+  // Every worker adds to the same cache, so none of them may clear it.
   cleanCache: false,
   entryFilter: isBundle,
   sourcePath: (filePath) => filePath.startsWith(sourcePrefix) ? filePath.slice(sourcePrefix.length) : filePath,
