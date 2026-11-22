@@ -9,7 +9,8 @@ This is a single page React and Typescript application intended to provide a pla
 ### Initial steps
 
 1. Clone this repo and `cd` into it
-2. Run `npm install` to pull dependencies
+2. Run `npm install` to pull dependencies. It needs Node 22.15 or later, which `.npmrc`'s
+   `engine-strict` enforces.
 3. Run `npm start` to run `webpack-dev-server` in development mode with hot module replacement
 
 ### Building
@@ -50,7 +51,8 @@ Testing this is complicated. Here is one approach:
 Deployment is handled by GitHub Actions using OIDC for AWS authentication. The `s3-deploy` job in
 [`ci.yml`](.github/workflows/ci.yml) runs on every push, branches and tags alike, and writes to
 `models-resources/activity-player/`. It `needs` the build and Cypress jobs, so a failing test stops
-the deploy and nothing is published for that push. It does not wait for the Playwright job. You do not need to build locally to deploy.
+the deploy and nothing is published for that push. It does not wait for the Playwright job. You do
+not need to build locally to deploy.
 
 Branches are published at `https://activity-player.concord.org/branch/<name>/` and tags at
 `https://activity-player.concord.org/version/<name>/`.
@@ -183,8 +185,9 @@ convert a Cypress spec to Playwright when your work touches it.
 
 The Playwright tests are in [`playwright/`](playwright/). To run them locally:
 
-1. Start the dev server: `npm start`
-2. In another terminal: `npm run test:playwright`
+1. Install Playwright's Chromium, once: `npx playwright install chromium`
+2. Start the dev server: `npm start`
+3. In another terminal: `npm run test:playwright`
 
 Or use `npm run test:playwright:open` to open Playwright's UI mode.
 
@@ -206,14 +209,11 @@ priority: `getByRole` > `getByText` > `getByLabel` > `getByPlaceholder` > `getBy
 
 On CI, the Playwright job uploads its coverage to Codecov under the `playwright` flag, publishes the HTML
 report to `https://models-resources.concord.org/activity-player/playwright-report/<deploy path>/`, and
-comments on the branch's open PR with a summary and a link to the report. The deploy doesn't wait for
-this job.
+comments on the branch's open PR with a summary and a link to the report.
 
-The coverage comes from Chromium's built-in (V8) coverage, so the app runs without instrumentation.
-[monocart-coverage-reports](https://github.com/cenfun/monocart-coverage-reports) maps it to the source
-files and counts statements the way istanbul does, so the `playwright` flag's lines match the `jest` and
-`cypress` flags and Codecov merges them evenly. The setup is in
-[`playwright/lib/coverage.ts`](playwright/lib/coverage.ts). It needs Node 22.15 or later.
+The coverage comes from Chromium's built-in (V8) coverage, mapped to the source files by
+[monocart-coverage-reports](https://github.com/cenfun/monocart-coverage-reports); see
+[`playwright/lib/coverage.ts`](playwright/lib/coverage.ts).
 
 ### Cypress Run Options
 
