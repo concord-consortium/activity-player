@@ -55,7 +55,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --hot",
-    "start:secure": "webpack-dev-server --https --hot --cert ~/.localhost-ssl/localhost.pem --key ~/.localhost-ssl/localhost.key",
+    "start:secure": "webpack-dev-server --server-type https --hot --server-options-cert ~/.localhost-ssl/localhost.pem --server-options-key ~/.localhost-ssl/localhost.key",
     "start:secure:no-certs": "webpack-dev-server --https --hot",
     "build": "npm-run-all lint:build clean build:webpack",
     "build:webpack": "webpack --mode production --devtool source-map",
