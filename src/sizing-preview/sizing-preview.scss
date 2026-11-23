@@ -5,6 +5,13 @@
   flex-direction: column;
   flex: 1;
   min-width: 0;
+
+  // In App, .app's 100% width shrinks to fit its 40 px padding, because it is a flex item of #app's
+  // row. Here, across a column, it would overflow by the padding instead, making a responsive page
+  // 80 px wider than App's. Stretching it gives it App's width.
+  > .app {
+    width: auto;
+  }
 }
 
 .controls-panel {
