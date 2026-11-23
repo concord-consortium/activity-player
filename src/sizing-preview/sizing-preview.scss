@@ -5,13 +5,14 @@
   flex-direction: column;
   flex: 1;
   min-width: 0;
+}
 
-  // In App, .app's 100% width shrinks to fit its 40 px padding, because it is a flex item of #app's
-  // row. Here, across a column, it would overflow by the padding instead, making a responsive page
-  // 80 px wider than App's. Stretching it gives it App's width.
-  > .app {
-    width: auto;
-  }
+// In App, .app is a flex item of #app's centered row. Its 100% width shrinks to fit its 40 px
+// padding, and a fixed page wider than the window keeps it page-wide and centered, overflowing on
+// both sides. This row gives .app the same place in the preview's column.
+.sizing-preview-page {
+  display: flex;
+  justify-content: center;
 }
 
 .controls-panel {

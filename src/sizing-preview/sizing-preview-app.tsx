@@ -54,19 +54,21 @@ export const SizingPreviewApp = () => {
                   <ReadAloudContext.Provider value={readAloud}>
                     <div className="sizing-preview">
                       <ControlsPanel settings={settings} onChange={setSettings} />
-                      <div className="app" ref={setAppElement}>
-                        <div className={activityClassName(pageHasResponsiveSection(page), activity.fixed_width_layout)}>
-                          <ActivityPageContent
-                            hideTitleRow={true}
-                            enableReportButton={false}
-                            activityLayout={activity.layout}
-                            activity={activity}
-                            page={page}
-                            pageNumber={1}
-                            totalPreviousQuestions={0}
-                            setNavigation={setNavigation}
-                            pluginsLoaded={true}
-                          />
+                      <div className="sizing-preview-page">
+                        <div className="app" ref={setAppElement}>
+                          <div className={activityClassName(pageHasResponsiveSection(page), activity.fixed_width_layout)}>
+                            <ActivityPageContent
+                              hideTitleRow={true}
+                              enableReportButton={false}
+                              activityLayout={activity.layout}
+                              activity={activity}
+                              page={page}
+                              pageNumber={1}
+                              totalPreviousQuestions={0}
+                              setNavigation={setNavigation}
+                              pluginsLoaded={true}
+                            />
+                          </div>
                         </div>
                       </div>
                       <SizeReadout root={appElement} />
