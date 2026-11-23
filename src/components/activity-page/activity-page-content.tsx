@@ -55,6 +55,7 @@ interface IProps {
   pluginsLoaded: boolean;
   pageChangeNotification?: IPageChangeNotification;
   hideReadAloud?: boolean;
+  hideTitleRow?: boolean;
   hideQuestionNumbers?: boolean;
   saveInteractiveStateHistory?: boolean;
   addRefToQuestionMap?: (refId: string, ref: any) => void;
@@ -125,10 +126,12 @@ export class ActivityPageContent extends React.Component<IProps, IState> {
         {this.renderPageChangeNotification()}
         <main className={`page-content full ${isResponsiveLayout ? "responsive" : ""}`} data-cy="page-content">
           <EmbeddableVisibilityProvider>
-            <div className={headerClass}>
-              <h1 className="name"><DynamicText>{pageTitle}</DynamicText></h1>
-              <ReadAloudToggle />
-            </div>
+            {!this.props.hideTitleRow &&
+              <div className={headerClass}>
+                <h1 className="name"><DynamicText>{pageTitle}</DynamicText></h1>
+                <ReadAloudToggle />
+              </div>
+            }
             {isNotebookLayout && <div className="notebookHeader" />}
             <DisabledQuestionsProvider page={page} activityLayout={this.props.activityLayout} teacherEditionMode={this.props.teacherEditionMode}>
               <div className="sections">
