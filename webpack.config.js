@@ -30,10 +30,13 @@ module.exports = (env, argv) => {
       }
     },
     devtool: "source-map",
-    entry: "./src/index.tsx",
+    entry: {
+      index: "./src/index.tsx",
+      "sizing-preview": "./src/sizing-preview/index.tsx"
+    },
     mode: "development",
     output: {
-      filename: "assets/index.[hash].js",
+      filename: "assets/[name].[hash].js",
       hashFunction: "sha512"
     },
     performance: { hints: false },
@@ -144,17 +147,24 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new MiniCssExtractPlugin({
-        filename: devMode ? "assets/index.css" : "assets/index.[hash].css"
+        filename: devMode ? "assets/[name].css" : "assets/[name].[hash].css"
       }),
       new HtmlWebpackPlugin({
         filename: "index.html",
-        template: "src/index.html"
+        template: "src/index.html",
+        chunks: ["index"]
       }),
       ...(DEPLOY_PATH ? [new HtmlWebpackPlugin({
         filename: "index-top.html",
         template: "src/index.html",
         publicPath: DEPLOY_PATH,
+        chunks: ["index"]
       })] : []),
+      new HtmlWebpackPlugin({
+        filename: "sizing-preview.html",
+        template: "src/sizing-preview/index.html",
+        chunks: ["sizing-preview"]
+      }),
       new HtmlReplaceWebpackPlugin([
         {
           pattern: '__APP_VERSION_INFO__',

@@ -1,0 +1,8 @@
+// #app is a flex row (app.scss). This column puts the controls panel above .app instead of
+// beside it, where it would narrow the page.
+.sizing-preview {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
