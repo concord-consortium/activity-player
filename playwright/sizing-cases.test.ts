@@ -3,9 +3,10 @@
  * sizes. Each case sets the sizing preview's hash on one shared page and compares the iframe's box
  * with the oracle in lib/ap-sizing.ts, which works the size out from the AP's CSS and code.
  *
- * Where the AP doesn't do what it should yet, the case expects the size it should have
- * (`apSizeAsSpecified`) and is marked as an expected failure. When the AP is fixed, Playwright
- * reports the case as passing unexpectedly: update `apSize` to match.
+ * Where the AP doesn't do what it should yet, the case first checks the size the AP gives today
+ * (`apSize`), so any other change to that size fails the case. Only then is it marked as an expected
+ * failure, and it expects the size it should have (`apSizeAsSpecified`). When the AP is fixed, the
+ * first check fails, unexpectedly, which flags the case: update `apSize` to match.
  */
 import { test } from "./lib/base-url";
 import { expect, Page } from "@playwright/test";
@@ -151,6 +152,60 @@ async function apWindow(page: Page, sizingCase: SizingCase): Promise<ApWindow> {
   return { width, height: sizingCase.viewport.height, clearButtonHeight };
 }
 
+/**
+ * Waits until the page shows the case's settings and window size, so the iframe isn't measured
+ * under the previous case's. Every case differs from the one before in a setting the controls show
+ * or in the window size the readout shows.
+ */
+async function expectSettingsApplied(page: Page, { oracle, viewport }: SizingCase) {
+  const combobox = (name: string) => page.getByRole("combobox", { name, exact: true });
+  const checkbox = (name: string) => page.getByRole("checkbox", { name, exact: true });
+  await expect(combobox("Activity Page Fixed Width")).toHaveValue(oracle.fixedWidthLayout);
+  await expect(combobox("Layout")).toHaveValue(oracle.layout);
+  if (isTwoColumn(oracle.layout)) {
+    await expect(combobox("Interactive's column")).toHaveValue(oracle.column);
+  }
+  await expect(combobox("Interactive type")).toHaveValue(oracle.kind);
+  await expect(combobox("Aspect Ratio")).toHaveValue(oracle.aspectRatioMethod);
+  if (oracle.aspectRatioMethod === "MANUAL") {
+    await expect(page.getByRole("textbox", { name: "Width", exact: true })).toHaveValue(String(oracle.nativeWidth));
+    await expect(page.getByRole("textbox", { name: "Height", exact: true })).toHaveValue(String(oracle.nativeHeight));
+  }
+  await expect(checkbox("Has a name")).toBeChecked({ checked: oracle.named });
+  await expect(checkbox('Show "Clear & start over" button')).toBeChecked({ checked: oracle.clearButton });
+  await expect(page.getByTestId("readout-window")).toHaveText(`${viewport.width} × ${viewport.height}`);
+}
+
+/**
+ * The iframe's size once it holds still for two frames: after a settings change, the AP sizes it in
+ * more than one render.
+ */
+async function settledIframeSize(page: Page) {
+  return page.locator(".iframe-runtime iframe").evaluate(async iframe => {
+    const nextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
+    const before = iframe.getBoundingClientRect();
+    await nextFrame();
+    await nextFrame();
+    const after = iframe.getBoundingClientRect();
+    const still = iframe.isConnected && before.width === after.width && before.height === after.height;
+    return still ? { width: after.width, height: after.height } : null;
+  });
+}
+
+/**
+ * Expects the iframe's size the oracle gives. The window's width and the button's height are read
+ * again on each try: until the page has laid out the new settings, a scrollbar may come or go.
+ */
+async function expectIframeSize(page: Page, sizingCase: SizingCase, size: typeof apSize) {
+  await expect(async () => {
+    const expected = size(sizingCase.oracle, await apWindow(page, sizingCase));
+    expect(await settledIframeSize(page)).toEqual({
+      width: expect.closeTo(expected.iframeWidth, 0),
+      height: expect.closeTo(expected.iframeHeight, 0),
+    });
+  }).toPass({ timeout: 3000 });
+}
+
 /** Why the AP doesn't give a case the size it should have yet, in plain words. */
 function knownBug(settings: ApSettings) {
   if (settings.aspectRatioMethod !== "MAX") {
@@ -185,23 +240,16 @@ test.describe("iframe sizes", () => {
     test(sizingCase.name, async () => {
       await page.setViewportSize(sizingCase.viewport);
       await page.evaluate(hash => { window.location.hash = hash; }, sizingCase.hash);
+      await expectSettingsApplied(page, sizingCase);
 
-      // A case the AP doesn't size as it should yet is an expected failure; knownBug says why.
       const apWin = await apWindow(page, sizingCase);
-      test.fail(!sameSize(apSize(sizingCase.oracle, apWin), apSizeAsSpecified(sizingCase.oracle, apWin)),
-        knownBug(sizingCase.oracle));
-
-      // The window's width and the button's height are read again on each try: until the page has
-      // applied the new settings, a scrollbar may come or go.
-      const iframe = page.locator(".iframe-runtime iframe");
-      await expect(async () => {
-        const expected = apSizeAsSpecified(sizingCase.oracle, await apWindow(page, sizingCase));
-        const box = await iframe.boundingBox();
-        expect(box && { width: box.width, height: box.height }).toEqual({
-          width: expect.closeTo(expected.iframeWidth, 0),
-          height: expect.closeTo(expected.iframeHeight, 0),
-        });
-      }).toPass({ timeout: 3000 });
+      if (!sameSize(apSize(sizingCase.oracle, apWin), apSizeAsSpecified(sizingCase.oracle, apWin))) {
+        // A known bug: the AP's size today must still be what the oracle says, so any other change
+        // fails the case. Once the AP is fixed, this check fails, unexpectedly, and flags the case.
+        await expectIframeSize(page, sizingCase, apSize);
+        test.fail(true, knownBug(sizingCase.oracle));
+      }
+      await expectIframeSize(page, sizingCase, apSizeAsSpecified);
     });
   }
 });

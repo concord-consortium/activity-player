@@ -2,11 +2,11 @@
 // in LARA. It copies the AP's CSS and its use-aspect-ratio hook, so when the AP changes, this
 // changes. References name the CSS selector, function or variable and its file.
 //
-// Ported from Neural Pathways' `src/ap-preview/ap-sizing.ts` on its NPW-75-ap-preview-page branch
-// (3afb8a1), which was checked against the AP's 3a38f74d and the measurements in that branch's
-// `src/ap-preview/measurements.md`. The port leaves out the explanation and warning text NPW's page
-// shows, and adds the interactive's kind, its name and the "Clear & start over" button. It was
-// checked against the AP at 4c292cf0.
+// Ported from `src/ap-preview/ap-sizing.ts` in concord-consortium/neural-pathways at commit
+// 3afb8a1b79af47cc5d0240d09949ef2191f1975c, which was checked against the AP's 3a38f74d and the
+// measurements in `src/ap-preview/measurements.md` at the same commit. The port leaves out the
+// explanation and warning text Neural Pathways' page shows, and adds the interactive's kind, its
+// name and the "Clear & start over" button. It was checked against the AP at 4c292cf0.
 //
 // It assumes a Multiple Pages activity, and an interactive that doesn't send the AP an aspect ratio
 // or a height.
