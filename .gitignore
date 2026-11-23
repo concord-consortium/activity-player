@@ -7,6 +7,8 @@ cypress/screenshots
 cypress/videos
 coverage-cypress
 coverage-jest
+playwright-report
+test-results
 .nyc_output
 .yalc
 yalc.lock

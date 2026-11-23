@@ -4,7 +4,7 @@
   "description": "Concord Consortium Activity Player",
   "main": "index.js",
   "engines": {
-    "node": ">= 18",
+    "node": ">= 22.15",
     "npm": ">= 8"
   },
   "jest": {
@@ -25,7 +25,8 @@
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "testPathIgnorePatterns": [
       "/node_modules/",
-      "/cypress/"
+      "/cypress/",
+      "/playwright/"
     ],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
@@ -54,7 +55,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --hot",
-    "start:secure": "webpack-dev-server --https --hot --cert ~/.localhost-ssl/localhost.pem --key ~/.localhost-ssl/localhost.key",
+    "start:secure": "webpack-dev-server --server-type https --hot --server-options-cert ~/.localhost-ssl/localhost.pem --server-options-key ~/.localhost-ssl/localhost.key",
     "start:secure:no-certs": "webpack-dev-server --https --hot",
     "build": "npm-run-all lint:build clean build:webpack",
     "build:webpack": "webpack --mode production --devtool source-map",
@@ -63,8 +64,8 @@
     "lint:plugins": "eslint -c \"./src/lara-plugin/.eslintrc.js\" \"./src/lara-plugin\"",
     "lint:lib": "eslint -c \"./src/lib/.eslintrc.js\" \"./src/lib\"",
     "lint:build": "npm run lint:others && npm run lint:plugins && npm run lint:lib",
-    "lint": "eslint \"./src/**/*.{json,js,jsx,ts,tsx}\" \"./cypress/**/*.{json,js,jsx,ts,tsx}\"",
-    "lint:fix": "eslint --fix \"./src/**/*.{json,js,jsx,ts,tsx}\" \"./cypress/**/*.{json,js,jsx,ts,tsx}\"",
+    "lint": "eslint \"./src/**/*.{json,js,jsx,ts,tsx}\" \"./cypress/**/*.{json,js,jsx,ts,tsx}\" \"./playwright/**/*.{json,js,jsx,ts,tsx}\" playwright.config.ts",
+    "lint:fix": "eslint --fix \"./src/**/*.{json,js,jsx,ts,tsx}\" \"./cypress/**/*.{json,js,jsx,ts,tsx}\" \"./playwright/**/*.{json,js,jsx,ts,tsx}\" playwright.config.ts",
     "test": "jest",
     "test:all": "npm-run-all build test start",
     "test:coverage": "jest --coverage",
@@ -73,7 +74,10 @@
     "test:coverage:watch": "jest --coverage --watchAll",
     "test:cypress": "cypress run --headless",
     "test:cypress:open": "cypress open",
-    "test:full": "npm-run-all test test:cypress"
+    "test:playwright": "playwright test",
+    "test:playwright:open": "playwright test --ui",
+    "check:playwright": "tsc -p playwright",
+    "test:full": "npm-run-all test test:cypress test:playwright"
   },
   "repository": {
     "type": "git",
@@ -90,6 +94,7 @@
     "@cypress/code-coverage": "^3.10.0",
     "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
+    "@playwright/test": "^1.65.1",
     "@svgr/webpack": "^8.1.0",
     "@testing-library/dom": "^8.11.1",
     "@testing-library/jest-dom": "^6.9.1",
@@ -112,6 +117,7 @@
     "@typescript-eslint/parser": "^5.62.0",
     "autoprefixer": "^10.4.0",
     "babel-jest": "^27.4.2",
+    "bonjour-service": "^1.4.4",
     "copy-webpack-plugin": "^6.4.1",
     "css-loader": "^5.2.7",
     "cypress": "^13.6.3",
@@ -136,6 +142,7 @@
     "jest-environment-jsdom": "^29.7.0",
     "jest-fetch-mock": "^3.0.3",
     "mini-css-extract-plugin": "^1.6.2",
+    "monocart-coverage-reports": "^3.2.1",
     "npm-run-all": "^4.1.5",
     "nyc": "^15.1.0",
     "postcss-loader": "^4.3.0",

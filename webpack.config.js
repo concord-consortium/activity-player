@@ -22,6 +22,13 @@ module.exports = (env, argv) => {
 
   return {
     context: __dirname, // to automatically find tsconfig.json
+    devServer: {
+      // Playwright's global setup finds the dev server by this name (playwright/lib/global-setup.ts).
+      // The checkout's folder name keeps the servers of separate worktrees apart.
+      bonjour: {
+        name: process.env.BONJOUR_SERVICE_NAME || path.basename(__dirname)
+      }
+    },
     devtool: "source-map",
     entry: "./src/index.tsx",
     mode: "development",
