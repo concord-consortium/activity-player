@@ -63,6 +63,16 @@ describe("ControlsPanel", () => {
       expect(onChange).toHaveBeenCalledWith({ ...settings, nativeWidth: 800 });
     });
 
+    it("is applied without the spaces around it", () => {
+      const { onChange, settings } = renderPanel({ aspectRatioMethod: "MANUAL" });
+      const width = screen.getByRole("textbox", { name: "Width" });
+      userEvent.clear(width);
+      userEvent.type(width, " 800 ");
+      fireEvent.blur(width);
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledWith({ ...settings, nativeWidth: 800 });
+    });
+
     it("is applied on Enter", () => {
       const { onChange, settings } = renderPanel({ aspectRatioMethod: "MANUAL" });
       const height = screen.getByRole("textbox", { name: "Height" });
@@ -102,6 +112,15 @@ describe("ControlsPanel", () => {
       expect(onChange).toHaveBeenCalledTimes(1);
       expect(onChange).toHaveBeenCalledWith({ ...settings, interactive: "https://example.com/x" });
     });
+  });
+
+  it("applies a URL without the spaces around it", () => {
+    const { onChange, settings } = renderPanel();
+    const url = screen.getByRole("textbox", { name: "Interactive URL" });
+    userEvent.clear(url);
+    userEvent.type(url, " https://example.com/x ");
+    fireEvent.blur(url);
+    expect(onChange).toHaveBeenCalledWith({ ...settings, interactive: "https://example.com/x" });
   });
 
   it("turns on the Clear & start over button", () => {

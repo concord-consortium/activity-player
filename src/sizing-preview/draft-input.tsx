@@ -10,7 +10,7 @@ interface IProps {
 
 // A text input that keeps what is typed as a draft and applies it on blur or Enter, so a
 // half-typed value (the "8" on the way to "800") never reaches the page. An invalid draft
-// shows a message and leaves the applied value alone.
+// shows a message and leaves the applied value alone. Spaces around the value are dropped.
 export const DraftInput: React.FC<IProps> = ({ label, value, isValid, invalidMessage, onCommit }) => {
   const [draft, setDraft] = useState(value);
   const [invalid, setInvalid] = useState(false);
@@ -22,9 +22,10 @@ export const DraftInput: React.FC<IProps> = ({ label, value, isValid, invalidMes
   }, [value]);
 
   const commit = () => {
-    if (isValid(draft)) {
+    const trimmed = draft.trim();
+    if (isValid(trimmed)) {
       setInvalid(false);
-      if (draft !== value) onCommit(draft);
+      if (trimmed !== value) onCommit(trimmed);
     } else {
       setInvalid(true);
     }

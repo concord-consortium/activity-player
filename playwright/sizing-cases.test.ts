@@ -218,7 +218,8 @@ test.describe("iframe sizes", () => {
   });
 
   test.afterAll(async () => {
-    await closeSharedPage(page);
+    // page is undefined when beforeAll failed, and closing it would hide that error.
+    if (page) await closeSharedPage(page);
   });
 
   for (const sizingCase of cases.values()) {
