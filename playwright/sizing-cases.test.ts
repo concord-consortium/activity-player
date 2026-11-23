@@ -14,6 +14,7 @@ import {
   apSize, apSizeAsSpecified, ApSettings, ApSize, ApWindow, ASPECT_RATIO_METHODS, COLUMNS, FIXED_WIDTH_LAYOUTS,
   isResponsive, isTwoColumn, KINDS, SECTION_LAYOUTS
 } from "./lib/ap-sizing";
+import { settledIframeBox } from "./lib/iframe-box";
 import { closeSharedPage, openSharedPage } from "./lib/shared-page";
 
 interface Viewport { width: number; height: number }
@@ -177,29 +178,13 @@ async function expectSettingsApplied(page: Page, { oracle, viewport }: SizingCas
 }
 
 /**
- * The iframe's size once it holds still for two frames: after a settings change, the AP sizes it in
- * more than one render.
- */
-async function settledIframeSize(page: Page) {
-  return page.locator(".iframe-runtime iframe").evaluate(async iframe => {
-    const nextFrame = () => new Promise(resolve => requestAnimationFrame(resolve));
-    const before = iframe.getBoundingClientRect();
-    await nextFrame();
-    await nextFrame();
-    const after = iframe.getBoundingClientRect();
-    const still = iframe.isConnected && before.width === after.width && before.height === after.height;
-    return still ? { width: after.width, height: after.height } : null;
-  });
-}
-
-/**
  * Expects the iframe's size the oracle gives. The window's width and the button's height are read
  * again on each try: until the page has laid out the new settings, a scrollbar may come or go.
  */
 async function expectIframeSize(page: Page, sizingCase: SizingCase, size: typeof apSize) {
   await expect(async () => {
     const expected = size(sizingCase.oracle, await apWindow(page, sizingCase));
-    expect(await settledIframeSize(page)).toEqual({
+    expect(await settledIframeBox(page)).toMatchObject({
       width: expect.closeTo(expected.iframeWidth, 0),
       height: expect.closeTo(expected.iframeHeight, 0),
     });
