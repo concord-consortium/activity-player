@@ -6,3 +6,54 @@
   flex: 1;
   min-width: 0;
 }
+
+.controls-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: flex-start;
+  padding: 8px 16px;
+  background-color: #f4f4f4;
+  border-bottom: 1px solid #ccc;
+  font-size: 14px;
+
+  .control {
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    select, input[type="text"] {
+      font-size: 14px;
+      padding: 2px 4px;
+    }
+
+    input[type="text"][aria-invalid="true"] {
+      border-color: #b00020;
+    }
+  }
+
+  .control:first-child input {
+    width: 28em;
+  }
+
+  .control-checkbox label {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    padding-top: 20px;
+  }
+
+  .control-note {
+    max-width: 18em;
+    color: #555;
+    font-size: 12px;
+  }
+
+  .control-error {
+    max-width: 28em;
+    color: #b00020;
+    font-size: 12px;
+  }
+}

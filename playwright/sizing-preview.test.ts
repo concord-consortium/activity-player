@@ -25,6 +25,20 @@ test("applies a changed hash without reloading", async ({ page }) => {
   expect(await page.evaluate(() => (window as any).__marker)).toBe(1);
 });
 
+test("changing a control doesn't add history entries", async ({ page }) => {
+  await page.goto("about:blank");
+  await page.goto("/sizing-preview.html");
+  const layout = page.getByRole("combobox", { name: "Layout" });
+  await expect(layout).toBeVisible();
+  const before = await page.evaluate(() => window.history.length);
+
+  await layout.selectOption("60-40");
+  await layout.selectOption("responsive-50-50");
+
+  expect(await page.evaluate(() => window.history.length)).toBe(before);
+  expect(await page.evaluate(() => window.location.hash)).toContain("layout=responsive-50-50");
+});
+
 function escapeRegExp(text: string) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }

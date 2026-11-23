@@ -9,6 +9,7 @@ import { PortalDataContext } from "../components/portal-data-context";
 import { QuestionInfoContext } from "../components/question-info-context";
 import { IReadAloudData, ReadAloudContext } from "../components/read-aloud-context";
 import { activityClassName, pageHasResponsiveSection } from "../utilities/activity-utils";
+import { ControlsPanel } from "./controls-panel";
 import { buildActivity } from "./build-activity";
 import { useHashSettings } from "./use-hash-settings";
 
@@ -34,7 +35,7 @@ const readAloud: IReadAloudData = { readAloud: false, readAloudDisabled: true, h
 const setNavigation = () => undefined;
 
 export const SizingPreviewApp = () => {
-  const [settings] = useHashSettings();
+  const [settings, setSettings] = useHashSettings();
   const activity = useMemo(() => buildActivity(settings), [settings]);
   const laraData = useMemo(() => ({ activity }), [activity]);
   const page = activity.pages[0];
@@ -49,7 +50,7 @@ export const SizingPreviewApp = () => {
                 <DynamicTextContext.Provider value={dynamicTextManager}>
                   <ReadAloudContext.Provider value={readAloud}>
                     <div className="sizing-preview">
-                      {/* The controls panel goes here, above the activity. */}
+                      <ControlsPanel settings={settings} onChange={setSettings} />
                       <div className="app">
                         <div className={activityClassName(pageHasResponsiveSection(page), activity.fixed_width_layout)}>
                           <ActivityPageContent

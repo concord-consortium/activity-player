@@ -9,8 +9,15 @@ export function useHashSettings(): [ISizingSettings, (next: ISizingSettings) => 
   const [settings, setSettings] = useState(() => parseSettings(window.location.hash));
 
   useEffect(() => {
-    const handleHashChange = () => setSettings(parseSettings(window.location.hash));
+    // Keep the current settings object when the hash holds the same values, so catching up
+    // doesn't rebuild the activity and remount the interactive.
+    const handleHashChange = () => setSettings(current => {
+      const parsed = parseSettings(window.location.hash);
+      return formatSettings(parsed) === formatSettings(current) ? current : parsed;
+    });
     window.addEventListener("hashchange", handleHashChange);
+    // The hash can change between the first render and this effect, before the listener exists.
+    handleHashChange();
     return () => window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
