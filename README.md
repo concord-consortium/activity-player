@@ -233,6 +233,45 @@ The coverage comes from Chromium's built-in (V8) coverage, mapped to the source 
 [monocart-coverage-reports](https://github.com/cenfun/monocart-coverage-reports); see
 [`playwright/lib/coverage.ts`](playwright/lib/coverage.ts).
 
+### Sizing preview
+
+`sizing-preview.html` shows how the Activity Player sizes an interactive. It sits next to `index.html` on
+every deploy, so on the dev server it is `https://localhost:8080/sizing-preview.html`, and on a branch deploy
+`https://activity-player.concord.org/branch/<branch>/sizing-preview.html`.
+
+It renders a Multiple Pages activity page with the Activity Player's own components and stylesheets, in your
+real browser window. Controls set the activity page's fixed width, the section layout, the interactive's column,
+kind, aspect ratio method and native size, whether it has a name, whether it shows "Clear & start over", and
+what text fills the other column (the tall text lets you check by hand that the interactive pins). A readout
+shows the size the iframe gets. It doesn't cover the Single Page and Notebook layouts, saving state, teacher
+feedback, or an interactive talking to the Activity Player beyond asking for a size.
+
+The settings live in the URL's hash, so a link keeps them: for example
+`sizing-preview.html#layout=70-30&column=secondary&aspect_ratio_method=MAX`. The keys match the activity
+JSON's field names. A missing or invalid value falls back to its default.
+
+| Key | Values (default first) |
+| --- | --- |
+| `interactive` | an http(s) URL (the sizing demo interactive) |
+| `fixed_width_layout` | `1100px`, `ipad_friendly` |
+| `layout` | `full-width`, `60-40`, `40-60`, `70-30`, `30-70`, `responsive-30-70`, `responsive-50-50`, `responsive-full-width` |
+| `column` | `primary`, `secondary` (two-column layouts only) |
+| `kind` | `library`, `mw`, `library-custom` |
+| `aspect_ratio_method` | `DEFAULT`, `MANUAL`, `MAX` |
+| `native_width`, `native_height` | positive integers (576 and 435), used by `MANUAL` |
+| `name` | `1`, `0` |
+| `show_delete_data_button` | `0`, `1` |
+| `other_text` | `tall`, `short` (two-column layouts only) |
+
+[`playwright/sizing-cases.test.ts`](playwright/sizing-cases.test.ts) opens the preview with a table of these
+settings and window sizes, and checks each iframe's size against the size worked out from the Activity Player's
+CSS and code. [`playwright/sizing-parity.test.ts`](playwright/sizing-parity.test.ts) checks the preview's sizes
+match the Activity Player's. A case marked as an expected failure is a place where the Activity Player doesn't
+do what it should: it doesn't stretch "Use all available space" in some places, and it doesn't leave room for
+"Clear & start over" under the default aspect ratio's height cap. When the Activity Player is fixed, such a case
+fails unexpectedly. Update it then, by changing the size it records for today's behavior and removing the
+expected-failure mark.
+
 ### Cypress Run Options
 
 Inside of your `package.json` file:
