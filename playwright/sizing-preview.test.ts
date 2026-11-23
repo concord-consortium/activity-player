@@ -61,19 +61,21 @@ test("follows the iframe when it is replaced", async ({ page }) => {
   await page.goto("/sizing-preview.html");
   const iframe = page.locator(".iframe-runtime iframe");
   const iframeReadout = page.getByTestId("readout-iframe");
-
-  await page.evaluate(() => { window.location.hash = "#kind=library"; });
   await expect(iframeReadout).toBeVisible();
-  const handle = await iframe.elementHandle();
 
-  await page.evaluate(() => { window.location.hash = "#kind=mw&layout=60-40&column=secondary"; });
-  await expect(page.locator(".column.secondary .iframe-runtime iframe")).toBeAttached();
-  const replaced = !(await handle?.evaluate(el => el.isConnected));
-  // Either way, the readout must match the iframe that is on the page now.
-  expect(typeof replaced).toBe("boolean");
-  await expect(async () => {
-    await expect(iframeReadout).toHaveText(await formattedBox(iframe));
-  }).toPass();
+  // Swap in a clone with a different size, as a remount would swap in a new element.
+  await iframe.evaluate(original => {
+    original.setAttribute("data-original", "true");
+    const clone = original.cloneNode() as HTMLIFrameElement;
+    clone.removeAttribute("data-original");
+    clone.style.width = "333px";
+    clone.style.height = "222px";
+    original.replaceWith(clone);
+  });
+
+  await expect(page.locator("iframe[data-original]")).toHaveCount(0);
+  await expect(iframeReadout).toHaveText("333.0 × 222.0");
+  await expect(iframeReadout).toHaveText(await formattedBox(iframe));
 });
 
 async function formattedBox(iframe: Locator) {
