@@ -30,9 +30,10 @@ async function findDevServer(): Promise<{ port: string; protocol: string }> {
     });
 
     if (!service) {
-      console.error(`\nNo dev server found (looked for Bonjour service '${process.env.BONJOUR_SERVICE_NAME}').`);
-      console.error("Start the dev server with: npm start or npm run start:secure\n");
-      process.exit(1);
+      throw new Error(
+        `No dev server found (looked for Bonjour service '${process.env.BONJOUR_SERVICE_NAME}'). ` +
+        "Start the dev server with: npm start or npm run start:secure"
+      );
     }
 
     return { port: service.port.toString(), protocol: service.type === "https" ? "https" : "http" };
