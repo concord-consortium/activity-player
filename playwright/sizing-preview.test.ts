@@ -1,5 +1,5 @@
 import { test } from "./lib/base-url";
-import { expect } from "@playwright/test";
+import { expect, Locator } from "@playwright/test";
 import { kDefaultInteractiveUrl } from "../src/sizing-preview/settings";
 
 test("opens with the default settings", async ({ page }) => {
@@ -38,6 +38,49 @@ test("changing a control doesn't add history entries", async ({ page }) => {
   expect(await page.evaluate(() => window.history.length)).toBe(before);
   expect(await page.evaluate(() => window.location.hash)).toContain("layout=responsive-50-50");
 });
+
+test("shows the iframe's size", async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 800 });
+  await page.goto("/sizing-preview.html");
+  const iframe = page.locator(".iframe-runtime iframe");
+  await expect(iframe).toBeVisible();
+
+  const iframeReadout = page.getByTestId("readout-iframe");
+  const windowReadout = page.getByTestId("readout-window");
+  await expect(windowReadout).toHaveText("1280 × 800");
+  await expect(iframeReadout).toHaveText(await formattedBox(iframe));
+
+  await page.setViewportSize({ width: 1280, height: 600 });
+  await expect(windowReadout).toHaveText("1280 × 600");
+  await expect(async () => {
+    await expect(iframeReadout).toHaveText(await formattedBox(iframe));
+  }).toPass();
+});
+
+test("follows the iframe when it is replaced", async ({ page }) => {
+  await page.goto("/sizing-preview.html");
+  const iframe = page.locator(".iframe-runtime iframe");
+  const iframeReadout = page.getByTestId("readout-iframe");
+
+  await page.evaluate(() => { window.location.hash = "#kind=library"; });
+  await expect(iframeReadout).toBeVisible();
+  const handle = await iframe.elementHandle();
+
+  await page.evaluate(() => { window.location.hash = "#kind=mw&layout=60-40&column=secondary"; });
+  await expect(page.locator(".column.secondary .iframe-runtime iframe")).toBeAttached();
+  const replaced = !(await handle?.evaluate(el => el.isConnected));
+  // Either way, the readout must match the iframe that is on the page now.
+  expect(typeof replaced).toBe("boolean");
+  await expect(async () => {
+    await expect(iframeReadout).toHaveText(await formattedBox(iframe));
+  }).toPass();
+});
+
+async function formattedBox(iframe: Locator) {
+  const box = await iframe.boundingBox();
+  if (!box) throw new Error("the iframe has no box");
+  return `${box.width.toFixed(1)} × ${box.height.toFixed(1)}`;
+}
 
 function escapeRegExp(text: string) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");

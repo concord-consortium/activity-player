@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { DynamicTextContext, DynamicTextManager } from "@concord-consortium/dynamic-text";
 import { ActivityPageContent } from "../components/activity-page/activity-page-content";
 import { AccessibilityContext, getFamilyForFontType, getFontSizeInPx, IAccessibility } from "../components/accessibility-context";
@@ -11,6 +11,7 @@ import { IReadAloudData, ReadAloudContext } from "../components/read-aloud-conte
 import { activityClassName, pageHasResponsiveSection } from "../utilities/activity-utils";
 import { ControlsPanel } from "./controls-panel";
 import { buildActivity } from "./build-activity";
+import { SizeReadout } from "./size-readout";
 import { useHashSettings } from "./use-hash-settings";
 
 import "./sizing-preview.scss";
@@ -39,6 +40,8 @@ export const SizingPreviewApp = () => {
   const activity = useMemo(() => buildActivity(settings), [settings]);
   const laraData = useMemo(() => ({ activity }), [activity]);
   const page = activity.pages[0];
+  // State, not a ref object, so the readout renders again once .app exists.
+  const [appElement, setAppElement] = useState<HTMLDivElement | null>(null);
 
   return (
     <LaraGlobalContext.Provider value={undefined}>
@@ -51,7 +54,7 @@ export const SizingPreviewApp = () => {
                   <ReadAloudContext.Provider value={readAloud}>
                     <div className="sizing-preview">
                       <ControlsPanel settings={settings} onChange={setSettings} />
-                      <div className="app">
+                      <div className="app" ref={setAppElement}>
                         <div className={activityClassName(pageHasResponsiveSection(page), activity.fixed_width_layout)}>
                           <ActivityPageContent
                             hideTitleRow={true}
@@ -66,7 +69,7 @@ export const SizingPreviewApp = () => {
                           />
                         </div>
                       </div>
-                      {/* The size readout goes here. */}
+                      <SizeReadout root={appElement} />
                     </div>
                   </ReadAloudContext.Provider>
                 </DynamicTextContext.Provider>
