@@ -40,8 +40,9 @@ export const coverageOptions: CoverageReportOptions = {
   sourcePath: (filePath) => filePath.startsWith(sourcePrefix) ? filePath.slice(sourcePrefix.length) : filePath,
   // Only the app's own scripts. This sees the paths sourcePath returns. Stylesheets (through the
   // loader modules that insert them) and SVGs (as SVGR components) are mapped too, but neither is
-  // JavaScript source, and Jest doesn't measure them either. A path that isn't a file here comes from a wrong source map,
-  // such as a dependency's inline one, so it is left out and global teardown reports no coverage.
+  // JavaScript source, and Jest doesn't measure them either. A path that isn't a file here comes
+  // from a wrong source map, such as a dependency's inline one, so it is left out and global
+  // teardown reports no coverage.
   sourceFilter: (sourcePath) =>
     sourcePath.startsWith("src/") && /\.(js|jsx|ts|tsx)$/.test(sourcePath) &&
     fs.existsSync(path.join(rootDir, sourcePath)),
