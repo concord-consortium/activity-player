@@ -1,6 +1,5 @@
 import React from "react";
 import Modal from "react-modal";
-import classNames from "classnames";
 import { DynamicTextContext, DynamicTextManager } from "@concord-consortium/dynamic-text";
 
 import { PortalDataContext } from "./portal-data-context";
@@ -14,7 +13,8 @@ import {
   ActivityLayouts, numQuestionsOnPreviousPages,
   enableReportButton, setDocumentTitle, getPagePositionFromQueryValue,
   getSequenceActivityFromQueryValue, getSequenceActivityId,
-  setAppBackgroundImage, getPageIDFromPosition, ActivityLayoutOverrides
+  setAppBackgroundImage, getPageIDFromPosition, ActivityLayoutOverrides,
+  pageHasResponsiveSection, activityClassName, kDefaultFixedWidthLayout
 } from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
@@ -88,7 +88,7 @@ const kLearnPortalUrl = "https://learn.concord.org";
 
 const kAnonymousUserName = "Anonymous";
 
-export const kDefaultFixedWidthLayout = "1100px";
+export { kDefaultFixedWidthLayout };
 
 // this is exported to that the TextBox component can pass it directly to DynamicText
 // as the context due to it not re-rendering because of multiple forward refs components wrapping it
@@ -559,9 +559,7 @@ export class App extends React.PureComponent<IProps, IState> {
     const { activity, idle, errorType, currentPage, username, pluginsLoaded, teacherEditionMode, sequence, portalData, activityIndex } = this.state;
     if (!activity) return (<div>Loading</div>);
     const totalPreviousQuestions = numQuestionsOnPreviousPages(currentPage, activity);
-    const hasResponsiveSection = activity.pages[currentPage - 1]?.sections.filter(
-      s => s.layout.includes("responsive"));
-    const fullWidth = (currentPage !== 0) && (hasResponsiveSection.length > 0);
+    const fullWidth = (currentPage !== 0) && pageHasResponsiveSection(activity.pages[currentPage - 1]);
     const project = activity.project ? activity.project : null;
     const activityLevelPlugins: IEmbeddablePlugin[] = getActivityLevelPlugins(activity);
     const isCompletionPage = currentPage > 0 && activity.pages[currentPage - 1].is_completion;
@@ -570,9 +568,7 @@ export class App extends React.PureComponent<IProps, IState> {
       setAppBackgroundImage(backgroundImage);
     }
 
-    // convert option with Ruby snake case to kebab case for css
-    const fixedWidthLayout = (sequence?.fixed_width_layout || activity.fixed_width_layout || kDefaultFixedWidthLayout).replace(/_/g, "-");
-    const activityClasses = classNames("activity", fullWidth ? "responsive" : `fixed-width-${fixedWidthLayout}`);
+    const activityClasses = activityClassName(fullWidth, sequence?.fixed_width_layout || activity.fixed_width_layout);
     const pagesVisible = this.getVisiblePages(activity);
 
     // create a key so when activities switch within a sequence React knows to update the DOM

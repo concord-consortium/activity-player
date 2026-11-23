@@ -1,9 +1,24 @@
+import classNames from "classnames";
 import { Page, Activity, EmbeddableType, Sequence, SectionType } from "../types";
 import { SidebarConfiguration } from "../components/page-sidebar/sidebar-wrapper";
 import { answerHasResponse, isQuestion as isEmbeddableQuestion, refIdToAnswersQuestionId } from "./embeddable-utils";
 import { queryValue } from "./url-query";
 import { WrappedDBAnswer } from "../firebase-db";
 import { getVisiblePages, getVisibleSections, getVisibleEmbeddables } from "./page-walk";
+
+export const kDefaultFixedWidthLayout = "1100px";
+
+// True when any section of the page, hidden or not, uses a responsive layout.
+export const pageHasResponsiveSection = (page: Page | undefined): boolean => {
+  return !!page?.sections.some(s => s.layout.includes("responsive"));
+};
+
+// The classes that size the `.activity` element: responsive, or a fixed width.
+// The layout option comes from Ruby in snake case, so it is converted to kebab case for css.
+export const activityClassName = (responsive: boolean, fixedWidthLayout?: string | null): string => {
+  const layout = (fixedWidthLayout || kDefaultFixedWidthLayout).replace(/_/g, "-");
+  return classNames("activity", responsive ? "responsive" : `fixed-width-${layout}`);
+};
 
 export enum ActivityLayouts {
   MultiplePages = 0,

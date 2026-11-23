@@ -1,5 +1,5 @@
-import { Activity } from "../types";
-import { displayedQuestionNumber, isQuestion, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isSectionHidden, numQuestionsOnPreviousSections, getPageIDFromPosition, getPageIdFromEmbeddable, getPageNumberFromEmbeddable } from "./activity-utils";
+import { Activity, Page } from "../types";
+import { displayedQuestionNumber, isQuestion, numQuestionsOnPreviousPages, enableReportButton, getPagePositionFromQueryValue, isSectionHidden, numQuestionsOnPreviousSections, getPageIDFromPosition, getPageIdFromEmbeddable, getPageNumberFromEmbeddable, pageHasResponsiveSection, activityClassName, kDefaultFixedWidthLayout } from "./activity-utils";
 import _activityHidden from "../data/version-2/sample-new-sections-hidden-content.json";
 import _activity from "../data/version-2/sample-new-sections-activity-1.json";
 import { DefaultTestActivity } from "../test-utils/model-for-tests";
@@ -102,5 +102,37 @@ describe("Activity utility functions", () => {
 
     expect(getPageIdFromEmbeddable(activityHidden, refId)).toBe(3000);
     expect(getPageIdFromEmbeddable(activityHidden, "does-not-exist")).toBe(null);
+  });
+
+  describe("pageHasResponsiveSection", () => {
+    const pageWith = (...sections: Array<{ layout: string, is_hidden?: boolean }>) =>
+      ({ sections } as unknown as Page);
+
+    it("is false when there is no page", () => {
+      expect(pageHasResponsiveSection(undefined)).toBe(false);
+    });
+    it("is false when no section is responsive", () => {
+      expect(pageHasResponsiveSection(pageWith({ layout: "full-width" }, { layout: "60-40" }))).toBe(false);
+    });
+    it("is true when a section is responsive", () => {
+      expect(pageHasResponsiveSection(pageWith({ layout: "full-width" }, { layout: "responsive-30-70" }))).toBe(true);
+    });
+    it("is true when the responsive section is hidden", () => {
+      expect(pageHasResponsiveSection(pageWith({ layout: "responsive-30-70", is_hidden: true }))).toBe(true);
+    });
+  });
+
+  describe("activityClassName", () => {
+    it("is responsive regardless of the fixed width layout", () => {
+      expect(activityClassName(true, "1100px")).toBe("activity responsive");
+    });
+    it("converts underscores in the fixed width layout", () => {
+      expect(activityClassName(false, "ipad_friendly")).toBe("activity fixed-width-ipad-friendly");
+    });
+    it("uses the default fixed width layout when none is given", () => {
+      const expected = `activity fixed-width-${kDefaultFixedWidthLayout}`;
+      expect(activityClassName(false, undefined)).toBe(expected);
+      expect(activityClassName(false, null)).toBe(expected);
+    });
   });
 });
