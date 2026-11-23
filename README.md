@@ -236,7 +236,8 @@ The coverage comes from Chromium's built-in (V8) coverage, mapped to the source 
 ### Sizing preview
 
 `sizing-preview.html` shows how the Activity Player sizes an interactive. It sits next to `index.html` on
-every deploy, so on the dev server it is `https://localhost:8080/sizing-preview.html`, and on a branch deploy
+every deploy, so on the dev server (`npm start`) it is `http://localhost:8080/sizing-preview.html`
+(`https` with `npm run start:secure`), and on a branch deploy
 `https://activity-player.concord.org/branch/<branch>/sizing-preview.html`.
 
 It renders a Multiple Pages activity page with the Activity Player's own components and stylesheets, in your
@@ -268,9 +269,10 @@ settings and window sizes, and checks each iframe's size against the size worked
 CSS and code. [`playwright/sizing-parity.test.ts`](playwright/sizing-parity.test.ts) checks the preview's sizes
 match the Activity Player's. A case marked as an expected failure is a place where the Activity Player doesn't
 do what it should: it doesn't stretch "Use all available space" in some places, and it doesn't leave room for
-"Clear & start over" under the default aspect ratio's height cap. When the Activity Player is fixed, such a case
-fails unexpectedly. Update it then, by changing the size it records for today's behavior and removing the
-expected-failure mark.
+"Clear & start over" under the default aspect ratio's height cap. A case is expected to fail where the size the Activity Player gives today (`apSize` in
+[`playwright/lib/ap-sizing.ts`](playwright/lib/ap-sizing.ts)) differs from the size it should give
+(`apSizeAsSpecified`). When the Activity Player is fixed, the check of today's size fails unexpectedly. Update
+`apSize` to the fixed behavior: the two sizes then agree, and the case is a normal check again.
 
 ### Cypress Run Options
 
