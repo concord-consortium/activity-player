@@ -217,9 +217,11 @@ test.describe("iframe sizes", () => {
     await expect(page.locator(".iframe-runtime iframe")).toBeVisible();
   });
 
-  test.afterAll(async () => {
+  // Playwright needs the fixtures argument destructured, even when no fixture is used.
+  // eslint-disable-next-line no-empty-pattern
+  test.afterAll(async ({}, testInfo) => {
     // page is undefined when beforeAll failed, and closing it would hide that error.
-    if (page) await closeSharedPage(page);
+    if (page) await closeSharedPage(page, testInfo);
   });
 
   for (const sizingCase of cases.values()) {

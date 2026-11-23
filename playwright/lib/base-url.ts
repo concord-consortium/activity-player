@@ -7,8 +7,7 @@
  * It also collects each test's browser coverage when coverage is on (see coverage.ts).
  */
 import { test as pwTest } from "@playwright/test";
-import { MCR } from "monocart-coverage-reports";
-import { attachSourceMaps, collectCoverage, coverageOptions } from "./coverage";
+import { addPageCoverage, collectCoverage } from "./coverage";
 
 /** The configured baseURL, or else the dev server that global-setup.ts found. */
 export function resolveBaseURL(configured: string | undefined): string {
@@ -28,7 +27,7 @@ export const test = pwTest.extend<{ coverage: void }>({
   baseURL: async ({ baseURL }, use) => {
     await use(resolveBaseURL(baseURL));
   },
-  coverage: [async ({ page }, use) => {
+  coverage: [async ({ page, baseURL }, use) => {
     if (!collectCoverage) {
       await use();
       return;
@@ -38,9 +37,7 @@ export const test = pwTest.extend<{ coverage: void }>({
     try {
       await use();
     } finally {
-      const entries = await page.coverage.stopJSCoverage();
-      await attachSourceMaps(page.request, entries);
-      await MCR(coverageOptions).add(entries);
+      await addPageCoverage(page, resolveBaseURL(baseURL));
     }
   }, { auto: true }],
 });

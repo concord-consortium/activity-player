@@ -5,9 +5,8 @@
  * coverage is on.
  */
 import type { Browser, Page, TestInfo } from "@playwright/test";
-import { MCR } from "monocart-coverage-reports";
 import { resolveBaseURL } from "./base-url";
-import { attachSourceMaps, collectCoverage, coverageOptions } from "./coverage";
+import { addPageCoverage, collectCoverage } from "./coverage";
 
 export async function openSharedPage(browser: Browser, testInfo: TestInfo): Promise<Page> {
   const page = await browser.newPage({ baseURL: resolveBaseURL(testInfo.project.use.baseURL) });
@@ -18,12 +17,10 @@ export async function openSharedPage(browser: Browser, testInfo: TestInfo): Prom
   return page;
 }
 
-export async function closeSharedPage(page: Page): Promise<void> {
+export async function closeSharedPage(page: Page, testInfo: TestInfo): Promise<void> {
   try {
     if (collectCoverage) {
-      const entries = await page.coverage.stopJSCoverage();
-      await attachSourceMaps(page.request, entries);
-      await MCR(coverageOptions).add(entries);
+      await addPageCoverage(page, resolveBaseURL(testInfo.project.use.baseURL));
     }
   } finally {
     // browser.newPage gives the page a context of its own.

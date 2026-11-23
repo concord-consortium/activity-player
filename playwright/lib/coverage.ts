@@ -10,13 +10,16 @@
  */
 import fs from "fs";
 import path from "path";
-import type { APIRequestContext } from "@playwright/test";
-import type { CoverageReportOptions, V8CoverageEntry } from "monocart-coverage-reports";
+import type { APIRequestContext, Page } from "@playwright/test";
+import { MCR, type CoverageReportOptions, type V8CoverageEntry } from "monocart-coverage-reports";
 
 export const collectCoverage = !!process.env.CI;
 
-// The webpack bundle. This leaves out the page's inline scripts.
-const isBundle = (entry: V8CoverageEntry) => /\/assets\/[^/]+\.js$/.test(entry.url);
+// The app's webpack bundles. This leaves out the page's inline scripts, and the scripts of
+// interactives on other origins: Chromium measures the page's iframes too, and an interactive's
+// bundle can also sit in an assets folder.
+const isAppBundle = (entry: V8CoverageEntry, appOrigin: string) =>
+  entry.url.startsWith(`${appOrigin}/`) && /\/assets\/[^/]+\.js$/.test(entry.url);
 
 const rootDir = path.join(__dirname, "..", "..");
 
@@ -36,7 +39,6 @@ export const coverageOptions: CoverageReportOptions = {
   ],
   // Every worker adds to the same cache, so none of them may clear it.
   cleanCache: false,
-  entryFilter: isBundle,
   sourcePath: (filePath) => filePath.startsWith(sourcePrefix) ? filePath.slice(sourcePrefix.length) : filePath,
   // Only the app's own scripts. This sees the paths sourcePath returns. Stylesheets (through the
   // loader modules that insert them) and SVGs (as SVGR components) are mapped too, but neither is
@@ -55,8 +57,8 @@ const sourceMaps = new Map<string, Promise<unknown>>();
  * of those as the bundle's map. Attaching the bundle's own map file avoids that. Each worker fetches
  * a map once.
  */
-export async function attachSourceMaps(request: APIRequestContext, entries: V8CoverageEntry[]) {
-  for (const entry of entries.filter(isBundle)) {
+async function attachSourceMaps(request: APIRequestContext, entries: V8CoverageEntry[]) {
+  for (const entry of entries) {
     let sourceMap = sourceMaps.get(entry.url);
     if (!sourceMap) {
       sourceMap = request.get(`${entry.url}.map`).then(response => {
@@ -69,4 +71,18 @@ export async function attachSourceMaps(request: APIRequestContext, entries: V8Co
     }
     entry.sourceMap = await sourceMap;
   }
+}
+
+/**
+ * Stops the page's coverage, which must have been started, and adds the app's bundles to the
+ * report. `baseURL` is the app's, which says which bundles are the app's.
+ */
+export async function addPageCoverage(page: Page, baseURL: string) {
+  const appOrigin = new URL(baseURL).origin;
+  const entries: V8CoverageEntry[] = (await page.coverage.stopJSCoverage())
+    .filter(entry => isAppBundle(entry, appOrigin));
+  // A test on a shared page leaves its own page blank, and MCR logs an error for an empty list.
+  if (entries.length === 0) return;
+  await attachSourceMaps(page.request, entries);
+  await MCR(coverageOptions).add(entries);
 }
