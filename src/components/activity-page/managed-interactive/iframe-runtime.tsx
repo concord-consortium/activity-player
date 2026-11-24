@@ -16,7 +16,7 @@ import { firebaseJobExecutor, buildJobContext } from "../../../firebase-job-exec
 import { DynamicTextCustomMessageType, DynamicTextMessage, useDynamicTextContext } from "@concord-consortium/dynamic-text";
 import { FirebaseObjectStorageConfig, FirebaseObjectStorageUser } from "@concord-consortium/object-storage";
 import Shutterbug from "shutterbug";
-import { getConfiguration, watchAnswer } from "../../../firebase-db";
+import { getConfiguration, getPortalData, watchAnswer } from "../../../firebase-db";
 import { IEventListener, pluginInfo } from "../../../lara-plugin/plugin-api/decorate-content";
 import { isSessionExpiredError } from "../../../portal-jwt-manager";
 import { getObjectStorageJWT } from "../../../firebase-jwt-cache";
@@ -180,10 +180,13 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       // Every "hello" comes from a client waiting for initInteractive, even on an existing connection.
       startedPhoneRef.current = undefined;
 
+      // An anonymous run has no portal data in context. App stores its data when it sets up the
+      // database, so the runtime uses that, and works it out from the URL only if nothing is stored.
       const preview = queryValueBoolean("preview") || queryValue("mode")?.toLowerCase() === "teacher-edition";
+      const runPortalData = portalData ?? getPortalData() ?? anonymousPortalData(preview);
 
       pubSubManager.addInteractive(id, phone);
-      jobManager.addInteractive(id, phone, buildJobContext(id, portalData ?? anonymousPortalData(preview)));
+      jobManager.addInteractive(id, phone, buildJobContext(id, runPortalData));
 
       // Just to add some type checking to phone post (ServerMessage).
       const post = (type: ServerMessage, data: any) => phone.post(type, data);
@@ -370,25 +373,23 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       });
 
       // create object storage config
-      const objectStorePortalData = portalData ?? anonymousPortalData(preview);
-
       const objectStorageUser: FirebaseObjectStorageUser =
-        objectStorePortalData.type === "authenticated" ? {
+        runPortalData.type === "authenticated" ? {
           type: "authenticated",
-          jwt: objectStorePortalData.database.rawFirebaseJWT,
-          contextId: objectStorePortalData.contextId,
-          platformId: objectStorePortalData.platformId,
-          platformUserId: objectStorePortalData.platformUserId,
-          resourceLinkId: objectStorePortalData.resourceLinkId,
+          jwt: runPortalData.database.rawFirebaseJWT,
+          contextId: runPortalData.contextId,
+          platformId: runPortalData.platformId,
+          platformUserId: runPortalData.platformUserId,
+          resourceLinkId: runPortalData.resourceLinkId,
         } : {
           type: "anonymous",
-          runKey: objectStorePortalData.runKey,
+          runKey: runPortalData.runKey,
         };
       const objectStorageConfig: FirebaseObjectStorageConfig = {
         version: 1,
         type: "firebase",
-        app: getConfiguration(objectStorePortalData.database.appName),
-        root: `sources/${objectStorePortalData.database.sourceKey}`,
+        app: getConfiguration(runPortalData.database.appName),
+        root: `sources/${runPortalData.database.sourceKey}`,
         user: objectStorageUser,
         questionId: refIdToAnswersQuestionId(id)
       };

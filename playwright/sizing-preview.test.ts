@@ -95,6 +95,22 @@ test("starts a new interactive only when the URL changes", async ({ page }) => {
   await expect(interactive).toHaveCount(1);
 });
 
+test("doesn't add a run key to the URL", async ({ page }) => {
+  // Runs in every frame, so the interactive's frame records when the runtime has started it.
+  await page.addInitScript(() => {
+    window.addEventListener("message", event => {
+      if (JSON.stringify(event.data ?? "").includes("initInteractive")) (window as any).__started = true;
+    });
+  });
+  await page.goto("/sizing-preview.html");
+  const iframe = page.locator(".iframe-runtime iframe");
+  await expect(iframe).toBeAttached();
+  const frame = await (await iframe.elementHandle())!.contentFrame();
+
+  await expect.poll(() => frame!.evaluate(() => !!(window as any).__started)).toBe(true);
+  expect(new URL(page.url()).searchParams.has("runKey")).toBe(false);
+});
+
 // The preview keeps a section mounted across settings changes, so its primary column can appear,
 // or move to the other side, after the section measured it. Pinning needs the new column measured.
 test.describe("pinning after the layout changes in place", () => {
