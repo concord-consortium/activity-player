@@ -19,6 +19,27 @@ describe("ControlsPanel", () => {
     expect(onChange).toHaveBeenCalledWith({ ...settings, layout: "60-40" });
   });
 
+  // Each option is picked by the label a designer sees, so a label on the wrong value fails too.
+  it.each([
+    ["Activity Page Fixed Width", "iPad Friendly (960px)", {}, { fixedWidthLayout: "ipad_friendly" }],
+    ["Interactive kind", "Basic iframe interactive", {}, { kind: "mw" }],
+    ["Interactive kind", "Library interactive, customized", {}, { kind: "library-custom" }],
+    ["Aspect Ratio", "Use all available space for the interactive", {}, { aspectRatioMethod: "MAX" }],
+    ["Interactive's column", "Secondary", { layout: "60-40" }, { column: "secondary" }],
+    ["Other column's text", "A short paragraph", { layout: "60-40" }, { otherText: "short" }],
+  ] as const)("changes %s to %s", (name, option, start, change) => {
+    const { onChange, settings } = renderPanel(start as Partial<ISizingSettings>);
+    userEvent.selectOptions(screen.getByRole("combobox", { name }), option);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith({ ...settings, ...change });
+  });
+
+  it("turns off Has a name", () => {
+    const { onChange, settings } = renderPanel();
+    userEvent.click(screen.getByRole("checkbox", { name: "Has a name" }));
+    expect(onChange).toHaveBeenCalledWith({ ...settings, named: false });
+  });
+
   it("shows the column and other-text controls only for a two-column layout", () => {
     const { unmount } = render(<ControlsPanel settings={kDefaultSettings} onChange={jest.fn()} />);
     expect(screen.queryByRole("combobox", { name: "Interactive's column" })).toBeNull();
