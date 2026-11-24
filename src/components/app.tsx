@@ -14,7 +14,7 @@ import {
   enableReportButton, setDocumentTitle, getPagePositionFromQueryValue,
   getSequenceActivityFromQueryValue, getSequenceActivityId,
   setAppBackgroundImage, getPageIDFromPosition, ActivityLayoutOverrides,
-  pageHasResponsiveSection, activityClassName, kDefaultFixedWidthLayout
+  pageHasResponsiveSection, activityClassName
 } from "../utilities/activity-utils";
 import { getActivityDefinition, getSequenceDefinition } from "../lara-api";
 import { ThemeButtons } from "./theme-buttons";
@@ -87,8 +87,6 @@ const kTimeout = 5 * 60 * 1000; // 5 minutes
 const kLearnPortalUrl = "https://learn.concord.org";
 
 const kAnonymousUserName = "Anonymous";
-
-export { kDefaultFixedWidthLayout };
 
 // this is exported to that the TextBox component can pass it directly to DynamicText
 // as the context due to it not re-rendering because of multiple forward refs components wrapping it
@@ -523,7 +521,7 @@ export class App extends React.PureComponent<IProps, IState> {
                         { this.state.teacherEditionMode && <TeacherEditionBanner/>}
                         <OverrideBanner info={this.state.overrideInfo}/>
                         { this.state.errorType && !this.state.activity
-                          ? <div className={`activity fixed-width-${kDefaultFixedWidthLayout}`}>
+                          ? <div className={activityClassName(false)}>
                               <Error type={this.state.errorType} />
                             </div>
                           : this.state.showSequenceIntro
