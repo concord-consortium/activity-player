@@ -25,7 +25,11 @@
   border-bottom: 1px solid #ccc;
   font-size: 14px;
 
+  // A narrow window wraps the controls, and a control narrower than its field shrinks the field.
   .control {
+    min-width: 0;
+    max-width: 100%;
+
     label {
       display: flex;
       flex-direction: column;
@@ -43,7 +47,9 @@
   }
 
   .control:first-child input {
+    box-sizing: border-box;
     width: 28em;
+    max-width: 100%;
   }
 
   .control-checkbox label {
