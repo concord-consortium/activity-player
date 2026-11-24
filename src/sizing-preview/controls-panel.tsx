@@ -110,7 +110,7 @@ export const ControlsPanel: React.FC<IProps> = ({ settings, onChange }) => {
           onChange={column => update({ column })}
         />}
       <SelectControl
-        label="Interactive type"
+        label="Interactive kind"
         value={settings.kind}
         labels={kKindLabels}
         onChange={kind => update({ kind })}

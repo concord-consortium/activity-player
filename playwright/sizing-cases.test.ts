@@ -166,7 +166,7 @@ async function expectSettingsApplied(page: Page, { oracle, viewport }: SizingCas
   if (isTwoColumn(oracle.layout)) {
     await expect(combobox("Interactive's column")).toHaveValue(oracle.column);
   }
-  await expect(combobox("Interactive type")).toHaveValue(oracle.kind);
+  await expect(combobox("Interactive kind")).toHaveValue(oracle.kind);
   await expect(combobox("Aspect Ratio")).toHaveValue(oracle.aspectRatioMethod);
   if (oracle.aspectRatioMethod === "MANUAL") {
     await expect(page.getByRole("textbox", { name: "Width", exact: true })).toHaveValue(String(oracle.nativeWidth));
