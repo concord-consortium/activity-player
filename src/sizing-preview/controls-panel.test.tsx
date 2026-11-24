@@ -103,11 +103,11 @@ describe("ControlsPanel", () => {
       expect(onChange).toHaveBeenCalledWith({ ...settings, nativeHeight: 300 });
     });
 
-    it("isn't applied when it isn't a positive whole number", () => {
+    it.each(["-5", "0", "8.5", "abc"])("isn't applied when it is %j", (draft) => {
       const { onChange } = renderPanel({ aspectRatioMethod: "MANUAL" });
       const width = screen.getByRole("textbox", { name: "Width" });
       userEvent.clear(width);
-      userEvent.type(width, "-5");
+      userEvent.type(width, draft);
       fireEvent.blur(width);
       expect(onChange).not.toHaveBeenCalled();
       expect(screen.getByRole("alert")).toHaveTextContent("whole number");
