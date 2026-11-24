@@ -235,22 +235,24 @@ The coverage comes from Chromium's built-in (V8) coverage, mapped to the source 
 
 ### Sizing preview
 
-`sizing-preview.html` shows how the Activity Player sizes an interactive. It sits next to `index.html` on
-the dev server (`npm start`), where it is `http://localhost:8080/sizing-preview.html` (`https` with
-`npm run start:secure`), and on branch and version deploys, for example
-`https://activity-player.concord.org/branch/<branch>/sizing-preview.html`. The release workflows copy only
-`index-top.html` to the top level, so it isn't at the top level of the production or staging site.
+`sizing-preview.html` shows how the Activity Player sizes an interactive. It sits next to `index.html` on the dev
+server (`npm start`), where it is `http://localhost:8080/sizing-preview.html` (`https` with
+`npm run start:secure`, and another port if 8080 is taken: the dev server prints it), and on branch and version
+deploys, for example `https://activity-player.concord.org/branch/<branch>/sizing-preview.html`. The release
+workflows copy only `index-top.html` to the top level, so it isn't at the top level of the production or staging
+site.
 
-It renders a Multiple Pages activity page with the Activity Player's own components and stylesheets, in your
-real browser window. Controls set the activity page's fixed width, the section layout, the interactive's column,
-kind, aspect ratio method and native size, whether it has a name, whether it shows "Clear & start over", and
-what text fills the other column (the tall text lets you check by hand that the interactive pins). A readout
-shows the size the iframe gets. It doesn't cover the Single Page and Notebook layouts, saving state, teacher
-feedback, or an interactive talking to the Activity Player beyond asking for a size.
+It renders a Multiple Pages activity page with the Activity Player's own components and stylesheets, in your real
+browser window. Controls set the interactive's URL, the activity page's fixed width, the section layout, the
+interactive's column, kind, aspect ratio method and native size, whether it has a name, whether it shows "Clear &
+start over", and what text fills the other column (the tall text lets you check by hand that the interactive
+pins). A readout shows the size the iframe gets. It doesn't cover the Single Page and Notebook layouts, saving
+state, teacher feedback, or an interactive talking to the Activity Player beyond asking for a size.
 
 The settings live in the URL's hash, so a link keeps them: for example
 `sizing-preview.html#layout=70-30&column=secondary&aspect_ratio_method=MAX`. Most keys match the activity
-JSON's field names. A missing or invalid value falls back to its default.
+JSON's field names; `interactive`, `kind`, `name` (whether it has a name) and `other_text` are the preview's own.
+A missing or invalid value falls back to its default.
 
 | Key | Values (default first) |
 | --- | --- |
@@ -268,12 +270,9 @@ JSON's field names. A missing or invalid value falls back to its default.
 [`playwright/sizing-cases.test.ts`](playwright/sizing-cases.test.ts) opens the preview with a table of these
 settings and window sizes, and checks each iframe's size against the size worked out from the Activity Player's
 CSS and code. [`playwright/sizing-parity.test.ts`](playwright/sizing-parity.test.ts) checks the preview's sizes
-match the Activity Player's. A case marked as an expected failure is a place where the Activity Player doesn't
-do what it should: it doesn't stretch "Use all available space" in some places, and it doesn't leave room for
-"Clear & start over" under the default aspect ratio's height cap. Such a case is expected to fail because the
-size the Activity Player gives today (`apSize` in [`playwright/lib/ap-sizing.ts`](playwright/lib/ap-sizing.ts))
-differs from the size it should give (`apSizeAsSpecified`). When the Activity Player is fixed, the check of today's size fails unexpectedly. Update
-`apSize` to the fixed behavior: the two sizes then agree, and the case is a normal check again.
+match the Activity Player's. A case marked as an expected failure is a known bug: the Activity Player doesn't
+stretch "Use all available space" in some places, or leave room for "Clear & start over" under the default aspect
+ratio's height cap. The comment at the top of `sizing-cases.test.ts` explains how such a case flags the bug's fix.
 
 ### Cypress Run Options
 
