@@ -62,13 +62,16 @@ describe("ControlsPanel", () => {
 
   it("disables the fixed width for a responsive layout and says why", () => {
     renderPanel({ layout: "responsive-30-70" });
-    expect(screen.getByRole("combobox", { name: "Activity Page Fixed Width" })).toBeDisabled();
-    expect(screen.getByText("Not used: a responsive section makes the page full width")).toBeInTheDocument();
+    const fixedWidth = screen.getByRole("combobox", { name: "Activity Page Fixed Width" });
+    expect(fixedWidth).toBeDisabled();
+    expect(fixedWidth).toHaveAccessibleDescription("Not used: a responsive section makes the page full width");
   });
 
   it("enables the fixed width for a layout that isn't responsive", () => {
     renderPanel({ layout: "60-40" });
-    expect(screen.getByRole("combobox", { name: "Activity Page Fixed Width" })).toBeEnabled();
+    const fixedWidth = screen.getByRole("combobox", { name: "Activity Page Fixed Width" });
+    expect(fixedWidth).toBeEnabled();
+    expect(fixedWidth).not.toHaveAccessibleDescription();
     expect(screen.queryByText(/Not used/)).toBeNull();
   });
 

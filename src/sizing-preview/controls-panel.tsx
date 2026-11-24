@@ -56,15 +56,17 @@ interface ISelectProps<T extends string> {
 }
 
 function SelectControl<T extends string>({ label, value, labels, disabled, note, onChange }: ISelectProps<T>) {
+  const noteId = `select-control-note-${label.replace(/\W+/g, "-")}`;
   return (
     <div className="control">
       <label>
         <span className="control-label">{label}</span>
-        <select value={value} disabled={disabled} onChange={e => onChange(e.target.value as T)}>
+        <select value={value} disabled={disabled} aria-describedby={note ? noteId : undefined}
+            onChange={e => onChange(e.target.value as T)}>
           {(Object.keys(labels) as T[]).map(key => <option key={key} value={key}>{labels[key]}</option>)}
         </select>
       </label>
-      {note && <div className="control-note">{note}</div>}
+      {note && <div id={noteId} className="control-note">{note}</div>}
     </div>
   );
 }
