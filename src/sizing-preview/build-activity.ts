@@ -2,16 +2,14 @@ import {
   Activity, EmbeddableType, IEmbeddableXhtml, IManagedInteractive, IMwInteractive, LibraryInteractiveData
 } from "../types";
 import { ActivityLayouts } from "../utilities/activity-utils";
-import { isTwoColumnLayout, ISizingSettings } from "./settings";
+import { isTwoColumnLayout, ISizingSettings, kLaraDefaultNativeHeight, kLaraDefaultNativeWidth } from "./settings";
 
 export const kInteractiveName = "Sizing interactive";
 export const kInteractiveRefId = "sizing-interactive";
 const kOtherTextRefId = "sizing-other-text";
 
-// LARA's defaults for a library interactive's size.
+// LARA's default for a library interactive's aspect ratio method.
 const kLaraDefaultAspectRatioMethod = "DEFAULT";
-const kLaraDefaultNativeWidth = 576;
-const kLaraDefaultNativeHeight = 435;
 
 const kFillerParagraph = "This is placeholder text for the other column. It doesn't explain anything. " +
   "It is here to make the column as tall as a real activity's text would be, so the page can be " +

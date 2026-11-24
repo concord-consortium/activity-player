@@ -31,6 +31,10 @@ export interface ISizingSettings {
 
 export const kDefaultInteractiveUrl = "https://models-resources.concord.org/sizing-demo-interactive/index.html";
 
+// LARA's defaults for a library interactive's size.
+export const kLaraDefaultNativeWidth = 576;
+export const kLaraDefaultNativeHeight = 435;
+
 export const kDefaultSettings: ISizingSettings = {
   interactive: kDefaultInteractiveUrl,
   fixedWidthLayout: "1100px",
@@ -38,8 +42,8 @@ export const kDefaultSettings: ISizingSettings = {
   column: "primary",
   kind: "library",
   aspectRatioMethod: "DEFAULT",
-  nativeWidth: 576,
-  nativeHeight: 435,
+  nativeWidth: kLaraDefaultNativeWidth,
+  nativeHeight: kLaraDefaultNativeHeight,
   named: true,
   clearButton: false,
   otherText: "tall"
