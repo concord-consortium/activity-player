@@ -57,7 +57,10 @@ export const SizingPreviewApp = () => {
                       <div className="sizing-preview-page">
                         <div className="app" ref={setAppElement}>
                           <div className={activityClassName(pageHasResponsiveSection(page), activity.fixed_width_layout)}>
+                            {/* An interactive keeps the size it asked for, so a new URL gets a new
+                                one, as another activity would in App. Other settings apply in place. */}
                             <ActivityPageContent
+                              key={settings.interactive}
                               hideTitleRow={true}
                               enableReportButton={false}
                               activityLayout={activity.layout}

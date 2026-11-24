@@ -78,6 +78,23 @@ test("follows the iframe when it is replaced", async ({ page }) => {
   await expect(iframeReadout).toHaveText(await formattedBox(iframe));
 });
 
+test("starts a new interactive only when the URL changes", async ({ page }) => {
+  await page.goto("/sizing-preview.html");
+  const interactive = page.locator(".managed-interactive");
+  await expect(interactive).toHaveCount(1);
+  await interactive.evaluate(element => element.setAttribute("data-marked", "true"));
+
+  await page.evaluate(() => { window.location.hash = "#aspect_ratio_method=MAX"; });
+  await expect(page.getByRole("combobox", { name: "Aspect Ratio" })).toHaveValue("MAX");
+  await expect(page.locator(".managed-interactive[data-marked]")).toHaveCount(1);
+
+  await page.evaluate(url => { window.location.hash = `#interactive=${encodeURIComponent(url)}`; },
+    `${kDefaultInteractiveUrl}?another=1`);
+  await expect(page.locator(".iframe-runtime iframe")).toHaveAttribute("src", /another=1/);
+  await expect(page.locator(".managed-interactive[data-marked]")).toHaveCount(0);
+  await expect(interactive).toHaveCount(1);
+});
+
 // The preview keeps a section mounted across settings changes, so its primary column can appear,
 // or move to the other side, after the section measured it. Pinning needs the new column measured.
 test.describe("pinning after the layout changes in place", () => {
