@@ -78,6 +78,46 @@ test("follows the iframe when it is replaced", async ({ page }) => {
   await expect(iframeReadout).toHaveText(await formattedBox(iframe));
 });
 
+// The preview keeps a section mounted across settings changes, so its primary column can appear,
+// or move to the other side, after the section measured it. Pinning needs the new column measured.
+test.describe("pinning after the layout changes in place", () => {
+  const pinned = /(^|\s)pinned(\s|$)/;
+
+  test.beforeEach(async ({ page }) => {
+    // Tall enough for the interactive's column to be shorter than the window, so it pins.
+    await page.setViewportSize({ width: 1280, height: 800 });
+  });
+
+  test("pins a primary column that appears after the page opens", async ({ page }) => {
+    // The default full-width section has no primary column.
+    await page.goto("/sizing-preview.html");
+    await expect(page.locator(".iframe-runtime iframe")).toBeAttached();
+
+    await page.evaluate(() => { window.location.hash = "#layout=40-60"; });
+
+    const wrapper = page.locator(".column.primary .embeddableWrapper");
+    await expect(wrapper).toHaveClass(pinned);
+    // #app is the page's scroll container. A pinned column sticks 10 px from the top.
+    await page.locator("#app").evaluate(app => { app.scrollTop = 400; });
+    await expect(async () => {
+      expect((await wrapper.boundingBox())?.y).toBeCloseTo(10, 0);
+    }).toPass();
+  });
+
+  test("measures a primary column that moves to the other side", async ({ page }) => {
+    await page.goto("/sizing-preview.html#layout=60-40");
+    const wrapper = page.locator(".column.primary .embeddableWrapper");
+    await expect(wrapper).toHaveClass(pinned);
+
+    // 40-60 puts the primary column on the right, as a new element, and the column setting puts
+    // the tall text in it. Taller than the window, it doesn't pin.
+    await page.evaluate(() => { window.location.hash = "#layout=40-60&column=secondary"; });
+
+    await expect(page.locator(".column.secondary .iframe-runtime iframe")).toBeAttached();
+    await expect(wrapper).not.toHaveClass(pinned);
+  });
+});
+
 async function formattedBox(iframe: Locator) {
   const box = await iframe.boundingBox();
   if (!box) throw new Error("the iframe has no box");

@@ -127,8 +127,10 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
     );
   };
 
-    const embeddableWrapperDivRef = React.useRef(null);
-    const wrapperSize: any = useSize(embeddableWrapperDivRef);
+    // The wrapper element is held in state rather than a ref so the observer follows it: a layout
+    // change can add the wrapper to a section that had none, or replace it with a new element.
+    const [embeddableWrapperDiv, setEmbeddableWrapperDiv] = useState<HTMLDivElement | null>(null);
+    const wrapperSize: any = useSize(embeddableWrapperDiv);
 
     const renderPrimaryEmbeddables = (primaryEmbeddablesToRender: EmbeddableType[], questionNumStart: number) => {
     const maxAspectRatioEmbeddables = primaryEmbeddablesToRender.filter(e => {
@@ -146,7 +148,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
     const wrapperClass = classNames ("embeddableWrapper", {"pinned": isPinned});
     return (
       <div className={containerClass} ref={primaryDivRef} data-cy="section-column-primary">
-        <div className={wrapperClass} ref={embeddableWrapperDivRef}>
+        <div className={wrapperClass} ref={setEmbeddableWrapperDiv}>
           {renderEmbeddables(primaryEmbeddablesToRender, questionNumStart)}
         </div>
       </div>
