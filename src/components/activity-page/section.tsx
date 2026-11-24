@@ -127,7 +127,7 @@ export const Section: React.ForwardRefExoticComponent<IProps> = forwardRef((prop
     );
   };
 
-    // The wrapper element is held in state rather than a ref so the observer follows it: a layout
+    // The embeddable wrapper is held in state rather than a ref so the observer follows it: a layout
     // change can add the wrapper to a section that had none, or replace it with a new element.
     const [embeddableWrapperDiv, setEmbeddableWrapperDiv] = useState<HTMLDivElement | null>(null);
     const wrapperSize: any = useSize(embeddableWrapperDiv);

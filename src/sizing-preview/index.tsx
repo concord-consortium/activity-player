@@ -6,7 +6,8 @@ import { SizingPreviewApp } from "./sizing-preview-app";
 import "../index.sass";
 import "../components/app.scss";
 
-// Plugin scripts and some page components expect these globals, as src/index.tsx sets them.
+// src/index.tsx sets these globals for plugin scripts. The preview loads none, but keeps them so
+// the page runs as it does in App.
 (window as any).React = React;
 (window as any).ReactDOM = ReactDOM;
 

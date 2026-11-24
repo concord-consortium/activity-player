@@ -14,7 +14,7 @@ const xhtmlOf = (settings: ISizingSettings) =>
   sectionOf(settings).embeddables.find(e => e.type === "Embeddable::Xhtml") as IEmbeddableXhtml | undefined;
 
 describe("buildActivity", () => {
-  it("builds a single-page version 2 activity without an id", () => {
+  it("builds a one-page Multiple Pages version 2 activity without an id", () => {
     const activity = buildActivity(settingsWith({ fixedWidthLayout: "ipad_friendly" }));
     expect(activity.version).toBe(2);
     expect(activity.id).toBeUndefined();

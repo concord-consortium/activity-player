@@ -88,7 +88,7 @@ export function parseSettings(hash: string): ISizingSettings {
   };
 }
 
-// Writes only the settings that apply, in the order of the settings table.
+// Writes only the settings that apply, in the order of the README's hash table.
 export function formatSettings(settings: ISizingSettings): string {
   const params = new URLSearchParams();
   const twoColumn = isTwoColumnLayout(settings.layout);

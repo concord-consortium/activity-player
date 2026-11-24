@@ -15,7 +15,7 @@ export function useHashSettings(): [ISizingSettings, (next: ISizingSettings) => 
 
   useEffect(() => {
     // Keep the current settings object when the hash holds the same values, so catching up
-    // doesn't rebuild the activity and remount the interactive.
+    // doesn't rebuild the activity and render the page again.
     const handleHashChange = () => setSettings(current => {
       const parsed = parseSettings(window.location.hash);
       return sameSettings(parsed, current) ? current : parsed;

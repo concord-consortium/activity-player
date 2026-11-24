@@ -10,6 +10,9 @@
 //
 // It assumes a Multiple Pages activity, and an interactive that doesn't send the AP an aspect ratio
 // or a height.
+//
+// It doesn't import the sizing preview's settings module, so a mistake there can't make the oracle
+// agree with the preview.
 
 export const FIXED_WIDTH_LAYOUTS = ["1100px", "ipad_friendly"] as const;
 export type FixedWidthLayout = typeof FIXED_WIDTH_LAYOUTS[number];
@@ -61,7 +64,8 @@ export interface ApSize {
 }
 
 // LARA's default native size (`ASPECT_RATIO_DEFAULT_WIDTH` and `_HEIGHT` in LARA's
-// has_aspect_ratio.rb), used when the native size can't be divided by.
+// has_aspect_ratio.rb). The oracle falls back to it for a zero size, which the preview never sends;
+// the AP would divide by zero.
 const DEFAULT_NATIVE_WIDTH = 576;
 const DEFAULT_NATIVE_HEIGHT = 435;
 // `kDefaultAspectRatio` and `kBottomMargin` in use-aspect-ratio.ts, and `kDefaultHeight` in
@@ -139,7 +143,7 @@ function columnWidths(settings: ApSettings, windowWidth: number): { primary: num
  * Whether "Use all available space" (MAX) stretches the iframe to 98vh in the AP today. CSS does it
  * in a full-width section (`.section.full-width .embeddable.full-width.max-aspect-ratio` in
  * section.scss), for every kind: `hasMaxAspectRatio` in embeddable.tsx reads the library
- * interactive's setting when the embed inherits it. It does it in a primary column
+ * interactive's setting when the embeddable inherits it. It does it in a primary column
  * (`.column.primary.max-aspect-ratio` in section.scss) only when `renderPrimaryEmbeddables` in
  * section.tsx adds that class, which reads `custom_aspect_ratio_method` for a managed interactive
  * and `aspect_ratio_method` for a basic one, so not for `library`. That selector isn't limited to the
@@ -195,8 +199,7 @@ function size(settings: ApSettings, window: ApWindow, rules: SizeRules): ApSize 
     // (`hideQuestionHeader` in managed-interactive.tsx); with "Clear & start over" on, the
     // interactive saves state, so it is a numbered question. Every managed interactive has the
     // border, and a basic one has it only with the title bar (`hasBorder` in
-    // managed-interactive.tsx). The button and its bottom margin (`.iframe-runtime button.button`
-    // in iframe-runtime.scss) sit in the div under the iframe.
+    // managed-interactive.tsx). The button sits in the div under the iframe.
     const hasHeader = settings.named || settings.clearButton;
     const hasBorder = settings.kind !== "mw" || hasHeader;
     iframeHeight = M - BELOW_IFRAME_HEIGHT - (hasHeader ? HEADER_HEIGHT : 0) - (hasBorder ? BORDER : 0) -
@@ -217,10 +220,11 @@ export function apSize(settings: ApSettings, window: ApWindow): ApSize {
 /**
  * The size the iframe should have, where that differs from what the AP does today:
  * - "Use all available space" stretches the iframe in a responsive-full-width section, in a
- *   secondary column, and in a primary column whose embed inherits the setting, to the same height
+ *   secondary column, and in a primary column whose embeddable inherits the setting, to the same height
  *   as in a full-width section. The AP leaves it at 300 px there.
  * - With "Clear & start over" on, the DEFAULT height cap is 44 px lower, leaving room for the button,
- *   as it was before managed-interactive.tsx started passing `showDeleteDataButton: false`.
+ *   which use-aspect-ratio.ts does when told the button shows. managed-interactive.tsx always tells
+ *   it the button doesn't.
  */
 export function apSizeAsSpecified(settings: ApSettings, window: ApWindow): ApSize {
   return size(settings, window, { maxStretchesEverywhere: true, defaultCapLeavesRoomForButton: true });

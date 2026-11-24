@@ -16,8 +16,8 @@ import { useHashSettings } from "./use-hash-settings";
 
 import "./sizing-preview.scss";
 
-// The values below are the simple ones App provides for an anonymous run of an activity with
-// the normal font size and read aloud off.
+// Simple stand-ins for the values App provides, for an anonymous run with the normal font size and
+// read aloud off.
 const dynamicTextManager = new DynamicTextManager({ onEvent: () => undefined });
 
 const accessibility: IAccessibility = {

@@ -194,12 +194,12 @@ async function expectIframeSize(page: Page, sizingCase: SizingCase, size: typeof
 /** Why the AP doesn't give a case the size it should have yet, in plain words. */
 function knownBug(settings: ApSettings) {
   if (settings.aspectRatioMethod !== "MAX") {
-    return "The AP no longer leaves room for the \"Clear & start over\" button under the default aspect ratio's " +
+    return "The AP doesn't leave room for the \"Clear & start over\" button under the default aspect ratio's " +
       "height cap.";
   }
   const where = !isTwoColumn(settings.layout) ? "in a responsive-full-width section"
     : settings.column === "secondary" ? "in a secondary column"
-    : "in a primary column when the embed inherits the setting from its library interactive";
+    : "in a primary column when the embeddable inherits the setting from its library interactive";
   return `The AP doesn't stretch "Use all available space" ${where}, so the iframe stays at its 300 px default.`;
 }
 
@@ -220,7 +220,7 @@ test.describe("iframe sizes", () => {
   // Playwright needs the fixtures argument destructured, even when no fixture is used.
   // eslint-disable-next-line no-empty-pattern
   test.afterAll(async ({}, testInfo) => {
-    // page is undefined when beforeAll failed, and closing it would hide that error.
+    // page is undefined when opening it failed, and closing it would hide that error.
     if (page) await closeSharedPage(page, testInfo);
   });
 
@@ -232,8 +232,7 @@ test.describe("iframe sizes", () => {
 
       const apWin = await apWindow(page, sizingCase);
       if (!sameSize(apSize(sizingCase.oracle, apWin), apSizeAsSpecified(sizingCase.oracle, apWin))) {
-        // A known bug: the AP's size today must still be what the oracle says, so any other change
-        // fails the case. Once the AP is fixed, this check fails, unexpectedly, and flags the case.
+        // A known bug (see the comment at the top of this file).
         await expectIframeSize(page, sizingCase, apSize);
         test.fail(true, knownBug(sizingCase.oracle));
       }

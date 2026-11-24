@@ -12,8 +12,7 @@ interface ISize {
 const findIframe = (root: HTMLElement | null) =>
   root?.querySelector<HTMLIFrameElement>(".iframe-runtime iframe") ?? null;
 
-// Shows the interactive iframe's live size and the window's size, fixed to a corner so it never
-// changes the layout being measured.
+// Shows the interactive iframe's live size and the window's size.
 export const SizeReadout = ({ root }: IProps) => {
   const [iframeSize, setIframeSize] = useState<ISize | null>(null);
   const [windowSize, setWindowSize] = useState<ISize>({ width: window.innerWidth, height: window.innerHeight });

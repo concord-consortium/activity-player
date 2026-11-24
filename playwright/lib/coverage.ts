@@ -6,7 +6,8 @@
  * istanbul reports from Jest and Cypress. It also counts a line where an untested branch starts on
  * its own line, such as the `? ...` arm of a conditional, which istanbul counts only as a branch.
  *
- * The fixture in base-url.ts adds each test's coverage, and global-teardown.ts writes the reports.
+ * The fixture in base-url.ts and the shared page in shared-page.ts add their pages' coverage, and
+ * global-teardown.ts writes the reports.
  */
 import fs from "fs";
 import path from "path";

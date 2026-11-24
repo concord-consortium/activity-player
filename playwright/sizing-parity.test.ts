@@ -1,7 +1,8 @@
 /**
  * The sizing preview copies the wrappers App draws around a page. These tests open a bundled sample
  * activity in App and the same settings in the preview, at the same window size, and check the
- * interactive's iframe gets the same box in both.
+ * interactive's iframe gets the same x position, width and height in both. Its y position differs:
+ * the preview has its controls above the page and no title row.
  */
 import { test } from "./lib/base-url";
 import { expect, Page } from "@playwright/test";
