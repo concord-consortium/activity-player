@@ -49,7 +49,7 @@ div.sizing-preview-page               ← a centered row, as #app is in App
 
 ### Settings
 
-Each control that has a LARA counterpart uses LARA's label, so the settings read as an author sees them. The labels below come from Neural Pathways' `src/ap-preview/components/preview-controls.tsx` on its `NPW-75-ap-preview-page` branch, which took them from LARA. The "Clear & start over" control takes its label from LARA's authoring form for `show_delete_data_button`.
+Each control that has a LARA counterpart uses LARA's label, so the settings read as an author sees them. The "Clear & start over" control takes its label from LARA's authoring form for `show_delete_data_button`.
 
 | Control | Hash key | Values | Default |
 |---|---|---|---|
@@ -141,10 +141,10 @@ The preview builds a version 2 `Activity` from the settings, in a pure function 
     - a window narrower than the fixed page;
     - the DEFAULT height cap;
     - each responsive layout at two window widths.
-  - Expected sizes come from the rules in Neural Pathways' `docs/activity-player-sizing.md`, checked against the measured widths in `src/ap-preview/measurements.md` on its `NPW-75-ap-preview-page` branch. That branch's `src/ap-preview/ap-sizing.ts` computes those rules, and is ported as the tests' oracle, `playwright/lib/ap-sizing.ts`. A comment names its source and the AP commit it was checked against.
+  - Expected sizes come from the rules in [docs/activity-player-sizing.md](../docs/activity-player-sizing.md), which the tests' oracle, `playwright/lib/ap-sizing.ts`, computes. A comment names the AP commit it was checked against.
   - Those rules assume no "Clear & start over" button. `use-aspect-ratio.ts` can take 44 px off the DEFAULT height cap for the button, but [managed-interactive.tsx](../src/components/activity-page/managed-interactive/managed-interactive.tsx) always passes it `showDeleteDataButton: false` (since a January 2025 refactor), so today the button doesn't change a DEFAULT or MANUAL iframe's size. That looks like an accident of the refactor: the code before it took the 44 px off.
     - The tests expect the 44 px cut. A DEFAULT case whose height hits the cap with the button on expects the cap 44 px lower, and is marked as an expected failure (`test.fail`), like AP-151's cases, with a comment saying the AP no longer leaves room for the button. Like them, the case first checks the size the AP gives today. A DEFAULT case under the cap and a MANUAL case are unaffected and pass.
-    - Where CSS stretches the iframe to fill 98vh (MAX), the button already takes its room: the iframe loses the button's height and its 5 px bottom margin. The oracle is extended for that, taking the button's height from its rendered box. That measures the button, not the iframe, so it doesn't check the preview against itself.
+    - Where CSS stretches the iframe to fill 98vh (MAX), the button already takes its room: the iframe loses the button's height and its 5 px bottom margin. The oracle covers that, taking the button's height from its rendered box. That measures the button, not the iframe, so it doesn't check the preview against itself.
   - Unnamed cases follow from the same rules: no title bar, and no border for `mw`, unless "Clear & start over" is on, which keeps the "Question #1" title bar and the border. Every expected size comes from the rules, the measurements and the AP's code, never from measuring the preview, which would check the preview against itself.
   - **AP-151's cases** are the cases where "Use all available space" leaves the iframe at its 300 px default: a responsive-full-width section, a secondary column, and a primary column whose embed inherits the setting from its library interactive.
     - They are written with the height AP-151 says they should have, the same as in a full-width section.
@@ -162,6 +162,8 @@ The README gets a short section on the sizing preview:
 - what it covers: the settings above, a Multiple Pages activity, the real window, and checking pinning by hand;
 - what it doesn't: the other activity layouts, saving state, teacher feedback, and an interactive talking to the AP beyond sizing;
 - how the Playwright sizing tests use it.
+
+[docs/activity-player-sizing.md](../docs/activity-player-sizing.md) describes the sizing rules the tests check.
 
 ## Approaches
 
@@ -183,7 +185,6 @@ We considered where the controls go and how the page is built.
 - Automated tests of pinning for each layout.
 - Sequences, and a sequence's `fixed_width_layout` overriding the activity's.
 - Fixing AP-151. Its cases are expected failures here.
-- Neural Pathways' page of links to each of its views.
 
 ## Decisions
 
@@ -207,6 +208,6 @@ These were left to the builder; what was chosen is noted.
 - The look of the panel and the readout, within the AP's existing styles. The panel's controls need labels and keyboard access.
 - Where the corner readout sits, and what it does on a narrow window: the bottom right.
 - Whether React keeps the iframe across a settings change, and whether it needs to: it does, except for a new URL.
-- The exact case table, within the coverage listed under "Tests", and whether to port `ap-sizing.ts` as the oracle or write the expected numbers into the table: it was ported.
+- The exact case table, within the coverage listed under "Tests", and whether to compute the expected sizes with an oracle or write them into the table: an oracle, `playwright/lib/ap-sizing.ts`, computes them.
 - Which bundled sample (or a new small one) the parity test uses: a new one, `sample-sizing-parity`.
 - The page's HTML template, and how much filler text "tall" uses: a trimmed copy, and 25 paragraphs.

@@ -269,8 +269,9 @@ A missing or invalid value falls back to its default.
 
 [`playwright/sizing-cases.test.ts`](playwright/sizing-cases.test.ts) opens the preview with a table of these
 settings and window sizes, and checks each iframe's size against the size worked out from the Activity Player's
-CSS and code. [`playwright/sizing-parity.test.ts`](playwright/sizing-parity.test.ts) checks the preview's sizes
-match the Activity Player's. A case marked as an expected failure is a known bug: the Activity Player doesn't
+CSS and code, following the rules in [`docs/activity-player-sizing.md`](docs/activity-player-sizing.md).
+[`playwright/sizing-parity.test.ts`](playwright/sizing-parity.test.ts) checks the preview's sizes match the
+Activity Player's. A case marked as an expected failure is a known bug: the Activity Player doesn't
 stretch "Use all available space" in some places, or leave room for "Clear & start over" under the default aspect
 ratio's height cap. The comment at the top of `sizing-cases.test.ts` explains how such a case flags the bug's fix.
 
