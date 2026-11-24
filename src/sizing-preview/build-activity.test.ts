@@ -1,6 +1,8 @@
 import { buildActivity, kInteractiveName, kInteractiveRefId } from "./build-activity";
-import { kDefaultSettings, ISizingSettings } from "./settings";
+import { kParityFixedHash, kParityResponsiveHash } from "./parity-hashes";
+import { kDefaultSettings, ISizingSettings, parseSettings } from "./settings";
 import { IEmbeddableXhtml, IManagedInteractive, IMwInteractive } from "../types";
+import paritySample from "../data/version-2/sample-new-sections-sizing-parity.json";
 
 const settingsWith = (overrides: Partial<ISizingSettings>): ISizingSettings =>
   ({ ...kDefaultSettings, ...overrides });
@@ -148,6 +150,24 @@ describe("buildActivity", () => {
     it("gives every embeddable a unique ref_id", () => {
       const ids = sectionOf(settingsWith({ layout: "60-40" })).embeddables.map(e => e.ref_id);
       expect(new Set(ids).size).toBe(ids.length);
+    });
+  });
+
+  // The parity tests compare App showing the sample with the preview showing these settings, which
+  // means something only while the two are the same activity.
+  describe("the sample-sizing-parity activity", () => {
+    // Ids and the filler text differ, and don't change a size.
+    const withoutIdsOrText = (value: unknown) => JSON.parse(JSON.stringify(value,
+      (key, v) => ["ref_id", "content", "id", "position"].includes(key) ? undefined : v));
+
+    it.each([
+      ["page_1", 0, kParityFixedHash],
+      ["page_2", 1, kParityResponsiveHash],
+    ])("has the section the preview builds for its %s", (_name, index, hash) => {
+      const built = buildActivity(parseSettings(hash));
+      expect(built.fixed_width_layout).toBe(paritySample.fixed_width_layout);
+      expect(withoutIdsOrText(built.pages[0].sections))
+        .toEqual(withoutIdsOrText(paritySample.pages[index].sections));
     });
   });
 

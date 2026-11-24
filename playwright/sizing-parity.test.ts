@@ -6,6 +6,7 @@
 import { test } from "./lib/base-url";
 import { expect, Page } from "@playwright/test";
 import { IframeBox, settledIframeBox } from "./lib/iframe-box";
+import { kParityFixedHash, kParityResponsiveHash } from "../src/sizing-preview/parity-hashes";
 
 interface ParityCase {
   name: string;
@@ -16,29 +17,24 @@ interface ParityCase {
   previewHash: string;
 }
 
-const kInteractiveSettings = "kind=library&aspect_ratio_method=DEFAULT&name=1&show_delete_data_button=0";
-const kFixedPage = `fixed_width_layout=1100px&layout=full-width&${kInteractiveSettings}`;
-const kResponsivePage =
-  `fixed_width_layout=1100px&layout=responsive-50-50&column=primary&other_text=tall&${kInteractiveSettings}`;
-
 const cases: ParityCase[] = [
   {
     name: "a full-width section on a fixed 1100px page",
     viewport: { width: 1280, height: 800 },
     appPage: "page_1",
-    previewHash: kFixedPage,
+    previewHash: kParityFixedHash,
   },
   {
     name: "a full-width section on a fixed 1100px page, in a window narrower than the page",
     viewport: { width: 1000, height: 800 },
     appPage: "page_1",
-    previewHash: kFixedPage,
+    previewHash: kParityFixedHash,
   },
   {
     name: "the primary column of a responsive-50-50 section",
     viewport: { width: 1280, height: 800 },
     appPage: "page_2",
-    previewHash: kResponsivePage,
+    previewHash: kParityResponsiveHash,
   },
 ];
 
