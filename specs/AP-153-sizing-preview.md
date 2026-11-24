@@ -11,7 +11,7 @@ How big the Activity Player (AP) makes an interactive depends on settings an aut
 It is about sizing. Saving the interactive's work and the other ways an interactive talks to the AP are out of scope, except for "Clear & start over", whose button changes the interactive's height and, with "Use all available space", the iframe's.
 
 Two things drive the design:
-- **Settings changes must apply quickly.** The tests run through many combinations, and a designer flips between settings to compare them. A change re-renders the page in place, with no reload or remount and no repeated Firestore setup.
+- **Settings changes must apply quickly.** The tests run through many combinations, and a designer flips between settings to compare them. A change re-renders the page in place, with no reload and no repeated Firestore setup. Only a new interactive URL starts a new interactive.
 - **The sizes must be the ones a student gets.** The preview renders the AP's real page components and stylesheets, not a model of them. Where it has to copy something App does, a test checks that the copy still matches.
 
 ## Requirements
@@ -23,8 +23,8 @@ Two things drive the design:
   - The entries are named, `index` and `sizing-preview`, and the JS and CSS output filenames use `[name]` in place of the fixed `index`, so the main bundle keeps its `assets/index.*` name.
   - Each HTML page lists its own chunk: `index.html` and `index-top.html` load only `index`, and `sizing-preview.html` loads only `sizing-preview`.
   - No preview code goes into the main bundle, and [src/index.tsx](../src/index.tsx) is unchanged.
-- The page's template is the builder's choice: `src/index.html`, or a copy trimmed to what the preview needs.
-- The Playwright coverage setup counts every `assets/*.js` bundle (`isBundle` in [coverage.ts](../playwright/lib/coverage.ts)), so the preview's bundle is covered with no change.
+- The page's template is `src/sizing-preview/index.html`, a copy of `src/index.html` trimmed to what the preview needs.
+- The Playwright coverage code counts the app's `assets/*.js` bundles on the app's own origin (`isAppBundle` in [coverage.ts](../playwright/lib/coverage.ts)), so the preview's bundle is covered. Chromium also measures the interactive's iframe, whose bundle can sit in an `assets` folder too, so bundles from other origins are left out. The shared page the sizing cases use adds its coverage through the same function as the per-test fixture.
 - The settings live in the URL's hash, as `URLSearchParams` (see "Settings"). A link to the page reproduces the preview. Changing a control updates the hash with `history.replaceState`, so the back button doesn't step through each change. Changing the hash yourself, by editing the address bar or from a test, applies the new settings without reloading (the preview listens for `hashchange`).
 - An unknown or missing setting falls back to its default, value by value, so a partial or hand-edited link still opens.
 
@@ -34,38 +34,39 @@ From top to bottom:
 
 ```
 Sizing controls panel                 ← in normal flow; scrolls up out of the way
-div.app
-  div.activity.fixed-width-1100px     ← or .fixed-width-ipad-friendly or .responsive
-    ActivityPageContent, title row off
-      main.page-content > div.sections > Section > Embeddable > the interactive
+div.sizing-preview-page               ← a centered row, as #app is in App
+  div.app
+    div.activity.fixed-width-1100px   ← or .fixed-width-ipad-friendly or .responsive
+      ActivityPageContent, title row off
+        main.page-content > div.sections > Section > Embeddable > the interactive
 ```
 
 - **Not shown:** the AP's header (project logo, activity title, account), the page navigation above and below the page, the page title and read-aloud toggle, the bottom buttons, the footer, the sidebar and other activity-level plugins, the version info and the idle warning.
 - The page has one section, holding the interactive. In a two-column layout, the other column holds a block of text (see "The other column's text").
 - The interactive's own title bar is shown when "has a name" is on (it is one of the settings).
-- `#app` is `position: fixed`, a flex row, and the page's scroll container ([app.scss](../src/components/app.scss)). The preview renders the panel and `.app` inside a column wrapper (or scoped CSS) in `#app`. Otherwise the panel would sit beside `.app` and narrow the page. Because `#app` scrolls, the panel scrolls away inside it.
-- The panel sits above `.app`, outside the activity, and spans the window. It doesn't change the interactive's size. The AP sizes the iframe from the window (`window.innerHeight` in [use-aspect-ratio.ts](../src/hooks/use-aspect-ratio.ts) and `98vh` in [section.scss](../src/components/activity-page/section.scss)), not from the space left on the page, so the panel only pushes the interactive down, as the AP's header does.
+- `#app` is `position: fixed`, a flex row, and the page's scroll container ([app.scss](../src/components/app.scss)). The preview renders the panel and `.app` inside a flex column (`.sizing-preview`) in `#app`, with `.app` in a centered row as it is in App. Otherwise the panel would sit beside `.app` and narrow the page. Because `#app` scrolls, the panel scrolls away inside it.
+- The panel sits above `.app`, outside the activity, and spans the window. It doesn't change the interactive's size. The AP sizes the iframe from the window (`window.innerHeight` in [managed-interactive.tsx](../src/components/activity-page/managed-interactive/managed-interactive.tsx), which passes it to [use-aspect-ratio.ts](../src/hooks/use-aspect-ratio.ts), and `98vh` in [section.scss](../src/components/activity-page/section.scss)), not from the space left on the page, so the panel only pushes the interactive down, as the AP's header does.
 
 ### Settings
 
-Each control uses LARA's label, so the settings read as an author sees them. The labels below come from Neural Pathways' `src/ap-preview/components/preview-controls.tsx` on its `NPW-75-ap-preview-page` branch, which took them from LARA. The "Clear & start over" control takes its label from LARA's authoring form for `show_delete_data_button`.
+Each control that has a LARA counterpart uses LARA's label, so the settings read as an author sees them. The labels below come from Neural Pathways' `src/ap-preview/components/preview-controls.tsx` on its `NPW-75-ap-preview-page` branch, which took them from LARA. The "Clear & start over" control takes its label from LARA's authoring form for `show_delete_data_button`.
 
-| Control (LARA's label) | Hash key | Values | Default |
+| Control | Hash key | Values | Default |
 |---|---|---|---|
 | Interactive URL | `interactive` | any absolute http(s) URL | the sizing demo interactive (see "The default interactive") |
 | Activity Page Fixed Width | `fixed_width_layout` | `1100px` "Standard (1100px)", `ipad_friendly` "iPad Friendly (960px)" | `1100px` |
 | Layout | `layout` | `full-width`, `60-40`, `40-60`, `70-30`, `30-70`, `responsive-30-70`, `responsive-50-50`, `responsive-full-width`, with LARA's display text (e.g. "60-40 (primary on left)") | `full-width` |
 | Interactive's column | `column` | `primary`, `secondary`; shown only for a two-column layout | `primary` |
-| Interactive type | `kind` | `mw` "Basic iframe interactive", `library` "Library interactive", `library-custom` "Library interactive, customized" | `library` |
+| Interactive kind | `kind` | `mw` "Basic iframe interactive", `library` "Library interactive", `library-custom` "Library interactive, customized" | `library` |
 | Aspect Ratio | `aspect_ratio_method` | `DEFAULT` "Default aspect ratio, or set by interactive", `MANUAL` "Manually set the native width & height", `MAX` "Use all available space for the interactive" | `DEFAULT` |
 | Width, Height | `native_width`, `native_height` | positive whole numbers; shown only for `MANUAL` | 576, 435 (LARA's defaults) |
 | Has a name | `name` | `1` or `0` | `1` |
-| Show "Clear & start over" | `show_delete_data_button` | `1` or `0` | `0` |
+| Show "Clear & start over" button | `show_delete_data_button` | `1` or `0` | `0` |
 | Other column's text | `other_text` | `tall` "Taller than the window", `short` "A short paragraph"; shown only for a two-column layout | `tall` |
 
 - The hash holds only the settings that apply: `column` and `other_text` only for two-column layouts, the native size only for `MANUAL`, and `interactive` only when it isn't the default.
 - "Activity Page Fixed Width" stays visible but is disabled for a responsive layout, with a note that a responsive section makes the page full width.
-- The native width and height inputs keep what is typed as a draft and apply it on blur or Enter, so typing 800 doesn't pass through 8 and make the iframe thousands of pixels tall. A draft that isn't a positive whole number is dropped. The interactive URL input works the same way.
+- The native width and height inputs keep what is typed as a draft and apply it on blur or Enter, so typing 800 doesn't pass through 8 and make the iframe thousands of pixels tall. A draft that isn't a positive whole number isn't applied: the field keeps it and shows an error, and the last valid value stays applied, so the designer can correct what they typed. The interactive URL input works the same way.
 - The AP loads a blank page for any interactive URL that isn't absolute http(s) (`isHttpUrl` in [iframe-runtime.tsx](../src/components/activity-page/managed-interactive/iframe-runtime.tsx)). The URL input says so when what was typed isn't one, and keeps the last valid URL.
 
 ### The generated activity
@@ -88,9 +89,9 @@ The preview builds a version 2 `Activity` from the settings, in a pure function 
 
 - In a two-column layout, the column without the interactive holds an `Embeddable::Xhtml` text block.
 - By default the text is taller than the window, so the page scrolls and the AP's pinning shows: a primary column shorter than the window sticks while the page scrolls ([section.tsx](../src/components/activity-page/section.tsx), `isPinned`). That makes the preview useful for checking pinning by hand.
-- "Tall" means taller than any window the tests or a designer are likely to use, at the narrowest column (the responsive-30-70 secondary column is 365 px). Generated paragraphs of filler text are enough. It doesn't need to follow the window's height.
+- "Tall" means taller than any window the tests or a designer are likely to use, even in the widest column the text can be in, where it is shortest. Generated paragraphs of filler text are enough: it is 25. It doesn't need to follow the window's height.
 - "Short" is one short paragraph, for checking a layout without pinning.
-- Testing pinning is not part of this story. The page only makes it possible to check by hand.
+- Testing pinning across layouts is not part of this story. The page makes it possible to check by hand. The Playwright tests check only that a primary column added or replaced by a settings change is measured again, which the preview's in-place changes need (see "Changes to App's code").
 
 ### The size readout
 
@@ -111,20 +112,22 @@ The preview builds a version 2 `Activity` from the settings, in a pure function 
 ### Changes to App's code
 
 - **ActivityPageContent** gets a prop that turns off its title row (the `<h1>` page title and the read-aloud toggle). It defaults to showing it, so App is unchanged. The preview passes it, `enableReportButton={false}`, and the generated page.
-- **The `.activity` classes.** The code in `App.renderActivity` that picks `responsive` or `fixed-width-<layout>` (from `hasResponsiveSection`, `fixed_width_layout` and `kDefaultFixedWidthLayout`) moves into a function that App and the preview both call. App's behavior doesn't change.
+- **The `.activity` classes.** The code in `App.renderActivity` that picks `responsive` or `fixed-width-<layout>` (from `hasResponsiveSection`, `fixed_width_layout` and `kDefaultFixedWidthLayout`) moves into `pageHasResponsiveSection` and `activityClassName` in [activity-utils.ts](../src/utilities/activity-utils.ts), which App and the preview both call, with `kDefaultFixedWidthLayout`. App's behavior doesn't change.
+- **Section** measures its primary column's embeddable wrapper, to decide whether to pin it, through an element held in state rather than a ref. `useResizeObserver` subscribes to the element a ref holds at mount, and the preview changes a section's layout while it is mounted, which can add the wrapper or replace it. App's behavior doesn't change.
 - Nothing else in App changes. The preview doesn't remount App, so the Firestore and IdleDetector issues found during design don't arise.
 
 ### The preview app
 
 - It provides the contexts App provides, with simple values: `LaraGlobalContext`, `PortalDataContext`, `LaraDataContext` (the generated activity), `AccessibilityContext` (normal font size), `MediaLibraryContext`, `QuestionInfoContext` (an empty question map), `DynamicTextContext` and `ReadAloudContext` (read aloud off).
 - It sets up offline Firestore once when the page loads, as App does with `?preview` (`initializeAnonymousDB(true)`). ManagedInteractive reads Firestore for every interactive: it looks up feedback through `getAnswer`, and with "Clear & start over" on it watches the saved answer through `watchAnswer`, which throws during render if Firestore isn't set up. Setting it up once keeps settings changes free of it. Nothing is saved: preview mode keeps Firestore offline.
-- Whatever the plugin globals in [src/index.tsx](../src/index.tsx) provide that the page components rely on (`window.React`, `window.ReactDOM`) is set up the same way.
+- It sets the `window.React` and `window.ReactDOM` globals as [src/index.tsx](../src/index.tsx) does for plugin scripts. The preview loads none, but keeps them so the page runs as it does in App.
 - It doesn't start the IdleDetector, load plugin scripts, initialize the Logger, run `initializeAuthorization`, or read the portal or overrides.
-- A settings change replaces the generated activity in state and re-renders. When the new page still holds the interactive in the same place, React should keep the iframe rather than reload it. Whether it does is left to the builder (see "Left to the builder").
+- A settings change replaces the generated activity in state and re-renders. The interactive keeps its `ref_id`, so React keeps it and its iframe across a change, except a new interactive URL: the page content is keyed by the URL, so a new one starts a new interactive, which doesn't keep the size the old one asked for.
 
 ### Tests
 
 - **Unit tests** (Jest) for parsing and formatting the hash, and for building the activity from the settings: each `kind`, with "Clear & start over" on and off, and the other column's text tall and short.
+- **Jest tests** for the hash hook (an edit to a setting the formatted hash leaves out is applied, and an unchanged hash keeps the same settings), the controls (each control and its labels, which controls show for which layout, and the drafts), the draft input, and the new `activity-utils` functions. A Jest test checks that the parity sample (below) is the activity the preview builds from the parity test's settings.
 - **A Jest test** that ActivityPageContent leaves out the title row when asked, and shows it by default.
 - **Playwright sizing tests**, using the setup from AP-152 (tests import the shared fixture from `playwright/lib/base-url`):
   - Each case is a set of settings, a window size, and the expected iframe width and height.
@@ -137,19 +140,19 @@ The preview builds a version 2 `Activity` from the settings, in a pure function 
     - a window narrower than the fixed page;
     - the DEFAULT height cap;
     - each responsive layout at two window widths.
-  - Expected sizes come from the rules in Neural Pathways' `docs/activity-player-sizing.md`, checked against the measured widths in `src/ap-preview/measurements.md` on its `NPW-75-ap-preview-page` branch. That branch's `src/ap-preview/ap-sizing.ts` computes those rules and may be ported as the tests' oracle. If it is, a comment names its source and the AP commit it was checked against.
+  - Expected sizes come from the rules in Neural Pathways' `docs/activity-player-sizing.md`, checked against the measured widths in `src/ap-preview/measurements.md` on its `NPW-75-ap-preview-page` branch. That branch's `src/ap-preview/ap-sizing.ts` computes those rules, and is ported as the tests' oracle, `playwright/lib/ap-sizing.ts`. A comment names its source and the AP commit it was checked against.
   - Those rules assume no "Clear & start over" button. `use-aspect-ratio.ts` can take 44 px off the DEFAULT height cap for the button, but [managed-interactive.tsx](../src/components/activity-page/managed-interactive/managed-interactive.tsx) always passes it `showDeleteDataButton: false` (since a January 2025 refactor), so today the button doesn't change a DEFAULT or MANUAL iframe's size. That looks like an accident of the refactor: the code before it took the 44 px off.
-    - The tests expect the 44 px cut. A DEFAULT case whose height hits the cap with the button on expects the cap 44 px lower, and is marked as an expected failure (`test.fail`), like AP-151's cases, with a comment saying the AP no longer leaves room for the button. A DEFAULT case under the cap and a MANUAL case are unaffected and pass.
+    - The tests expect the 44 px cut. A DEFAULT case whose height hits the cap with the button on expects the cap 44 px lower, and is marked as an expected failure (`test.fail`), like AP-151's cases, with a comment saying the AP no longer leaves room for the button. Like them, the case first checks the size the AP gives today. A DEFAULT case under the cap and a MANUAL case are unaffected and pass.
     - Where CSS stretches the iframe to fill 98vh (MAX), the button already takes its room: the iframe loses the button's height and its 5 px bottom margin. The oracle is extended for that, taking the button's height from its rendered box. That measures the button, not the iframe, so it doesn't check the preview against itself.
   - Unnamed cases follow from the same rules: no title bar, and no border for `mw`, unless "Clear & start over" is on, which keeps the "Question #1" title bar and the border. Every expected size comes from the rules, the measurements and the AP's code, never from measuring the preview, which would check the preview against itself.
   - **AP-151's cases** are the cases where "Use all available space" leaves the iframe at its 300 px default: a responsive-full-width section, a secondary column, and a primary column whose embed inherits the setting from its library interactive.
     - They are written with the height AP-151 says they should have, the same as in a full-width section.
-    - They are marked as expected failures (`test.fail`), with a comment saying why. AP-151's fix turns them into passes, and Playwright then flags the stale marking.
+    - Each first checks the size the AP gives today, then is marked as an expected failure (`test.fail`), with a comment saying why, and checked against the size it should have. AP-151's fix makes the first check fail, which flags the case for updating.
     - The secondary column is one of these cases, expecting the stretched height, even though AP-151 may yet decide to keep 300 px there. If it does, AP-151 updates that case.
-  - For speed, the tests share one loaded page and change settings through the hash, waiting for the iframe's box to settle before reading it. Each case is still its own `test()`, because `test.fail` marks a whole test. The cases run serially on a shared page: for example, a page created in `beforeAll` with `test.describe.configure({ mode: "serial" })`, one group per window size.
+  - For speed, the tests share one loaded page and change settings through the hash, waiting for the iframe's box to settle before reading it. Each case is still its own `test()`, because `test.fail` marks a whole test. The cases run in order on one shared page, opened in `beforeAll` (`playwright/lib/shared-page.ts`), with `test.describe.configure({ mode: "default" })`, so an unexpected failure reopens the page in a new worker rather than skipping the rest. Each case sets its own viewport. `playwright/lib/iframe-box.ts` reads the iframe's box once it settles.
 - **A parity test** (Playwright): open a bundled sample activity in the real App and the same settings in the preview, at the same window size, and check that the iframe sizes match. This guards the wrappers the preview copies from App.
-  - One case per page kind (a fixed page and a responsive page) is enough.
-  - The bundled sizing demo activities use the same interactive and may already hold a fitting case. If not, add a small sample to `src/data` that uses the sizing demo interactive.
+  - It uses a new small sample, `sample-sizing-parity` (`src/data/version-2/sample-new-sections-sizing-parity.json`), with the sizing demo interactive. Its cases are a fixed page, the same page in a window narrower than it, and a responsive page.
+- **Playwright tests of the page** (`playwright/sizing-preview.test.ts`): its default settings, a hash change applied without a reload, controls that don't add history entries, the readout (also after the iframe is replaced), a new interactive URL starting a new interactive, and pinning after a layout change in place.
 
 ### Documentation
 
@@ -176,7 +179,7 @@ We considered where the controls go and how the page is built.
 
 - The Single Page and Notebook activity layouts, which size interactives differently. A control for them was an optional extra in the story; it is left out.
 - Saving the interactive's state, teacher feedback, and an interactive talking to the AP beyond asking for a size. Pressing "Clear & start over" isn't tested; only the button's effect on the size is.
-- Automated tests of pinning.
+- Automated tests of pinning for each layout.
 - Sequences, and a sequence's `fixed_width_layout` overriding the activity's.
 - Fixing AP-151. Its cases are expected failures here.
 - Neural Pathways' page of links to each of its views.
@@ -186,7 +189,7 @@ We considered where the controls go and how the page is built.
 Calls made during design, for review:
 
 - **Settings in the hash**, not the query: changing the hash doesn't reload, and `hashchange` gives tests and hand-edited links a way in.
-- **Hash keys are the activity JSON's field names** (`fixed_width_layout`, `aspect_ratio_method`, `show_delete_data_button`, ...) where there is one, so a link reads like the activity it builds. `kind`, `name` and `other_text` are the exceptions.
+- **Hash keys are the activity JSON's field names** (`fixed_width_layout`, `aspect_ratio_method`, `show_delete_data_button`, ...) where there is one, so a link reads like the activity it builds. `interactive`, `kind`, `name` and `other_text` are the exceptions.
 - **Three interactive kinds in one control** (`mw`, `library`, `library-custom`), because inherit-versus-customize changes the size only for managed interactives (see AP-151).
 - **Native size defaults to LARA's 576 × 435.**
 - **The button's 44 px is expected.** The tests expect the DEFAULT cap 44 px lower with "Clear & start over" on, as the AP did before its January 2025 refactor, and mark those cases as expected failures. Chosen by Scott.
@@ -198,9 +201,11 @@ Calls made during design, for review:
 
 ## Left to the builder
 
+These were left to the builder; what was chosen is noted.
+
 - The look of the panel and the readout, within the AP's existing styles. The panel's controls need labels and keyboard access.
-- Where the corner readout sits, and what it does on a narrow window.
-- Whether React keeps the iframe across a settings change, and whether it needs to. Keeping it is faster for tests but not required.
-- The exact case table, within the coverage listed under "Tests", and whether to port `ap-sizing.ts` as the oracle or write the expected numbers into the table.
-- Which bundled sample (or a new small one) the parity test uses.
-- The page's HTML template, and how much filler text "tall" uses.
+- Where the corner readout sits, and what it does on a narrow window: the bottom right.
+- Whether React keeps the iframe across a settings change, and whether it needs to: it does, except for a new URL.
+- The exact case table, within the coverage listed under "Tests", and whether to port `ap-sizing.ts` as the oracle or write the expected numbers into the table: it was ported.
+- Which bundled sample (or a new small one) the parity test uses: a new one, `sample-sizing-parity`.
+- The page's HTML template, and how much filler text "tall" uses: a trimmed copy, and 25 paragraphs.
