@@ -1,13 +1,9 @@
 import React, { useMemo, useState } from "react";
-import { DynamicTextContext, DynamicTextManager } from "@concord-consortium/dynamic-text";
+import { DynamicTextManager } from "@concord-consortium/dynamic-text";
 import { ActivityPageContent } from "../components/activity-page/activity-page-content";
-import { AccessibilityContext, getFamilyForFontType, getFontSizeInPx, IAccessibility } from "../components/accessibility-context";
-import { LaraDataContext } from "../components/lara-data-context";
-import { LaraGlobalContext } from "../components/lara-global-context";
-import { MediaLibraryContext } from "../components/media-library-context";
-import { PortalDataContext } from "../components/portal-data-context";
-import { QuestionInfoContext } from "../components/question-info-context";
-import { IReadAloudData, ReadAloudContext } from "../components/read-aloud-context";
+import { getFamilyForFontType, getFontSizeInPx, IAccessibility } from "../components/accessibility-context";
+import { AppContextProviders } from "../components/app-context-providers";
+import { IReadAloudData } from "../components/read-aloud-context";
 import { activityClassName, pageHasResponsiveSection } from "../utilities/activity-utils";
 import { ControlsPanel } from "./controls-panel";
 import { buildActivity } from "./build-activity";
@@ -44,45 +40,40 @@ export const SizingPreviewApp = () => {
   const [appElement, setAppElement] = useState<HTMLDivElement | null>(null);
 
   return (
-    <LaraGlobalContext.Provider value={undefined}>
-      <PortalDataContext.Provider value={undefined}>
-        <LaraDataContext.Provider value={laraData}>
-          <AccessibilityContext.Provider value={accessibility}>
-            <MediaLibraryContext.Provider value={mediaLibrary}>
-              <QuestionInfoContext.Provider value={questionInfo}>
-                <DynamicTextContext.Provider value={dynamicTextManager}>
-                  <ReadAloudContext.Provider value={readAloud}>
-                    <div className="sizing-preview">
-                      <ControlsPanel settings={settings} onChange={setSettings} />
-                      <div className="sizing-preview-page">
-                        <div className="app" ref={setAppElement}>
-                          <div className={activityClassName(pageHasResponsiveSection(page), activity.fixed_width_layout)}>
-                            {/* An interactive keeps the size it asked for, so a new URL gets a new
-                                one, as another activity would in App. Other settings apply in place. */}
-                            <ActivityPageContent
-                              key={settings.interactive}
-                              hideTitleRow={true}
-                              enableReportButton={false}
-                              activityLayout={activity.layout}
-                              activity={activity}
-                              page={page}
-                              pageNumber={1}
-                              totalPreviousQuestions={0}
-                              setNavigation={setNavigation}
-                              pluginsLoaded={true}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <SizeReadout root={appElement} />
-                    </div>
-                  </ReadAloudContext.Provider>
-                </DynamicTextContext.Provider>
-              </QuestionInfoContext.Provider>
-            </MediaLibraryContext.Provider>
-          </AccessibilityContext.Provider>
-        </LaraDataContext.Provider>
-      </PortalDataContext.Provider>
-    </LaraGlobalContext.Provider>
+    <AppContextProviders
+      laraGlobal={undefined}
+      portalData={undefined}
+      laraData={laraData}
+      accessibility={accessibility}
+      mediaLibrary={mediaLibrary}
+      questionInfo={questionInfo}
+      dynamicText={dynamicTextManager}
+      readAloud={readAloud}
+    >
+      <div className="sizing-preview">
+        <ControlsPanel settings={settings} onChange={setSettings} />
+        <div className="sizing-preview-page">
+          <div className="app" ref={setAppElement}>
+            <div className={activityClassName(pageHasResponsiveSection(page), activity.fixed_width_layout)}>
+              {/* An interactive keeps the size it asked for, so a new URL gets a new
+                  one, as another activity would in App. Other settings apply in place. */}
+              <ActivityPageContent
+                key={settings.interactive}
+                hideTitleRow={true}
+                enableReportButton={false}
+                activityLayout={activity.layout}
+                activity={activity}
+                page={page}
+                pageNumber={1}
+                totalPreviousQuestions={0}
+                setNavigation={setNavigation}
+                pluginsLoaded={true}
+              />
+            </div>
+          </div>
+        </div>
+        <SizeReadout root={appElement} />
+      </div>
+    </AppContextProviders>
   );
 };

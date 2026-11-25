@@ -1,8 +1,8 @@
 import React from "react";
 import Modal from "react-modal";
-import { DynamicTextContext, DynamicTextManager } from "@concord-consortium/dynamic-text";
+import { DynamicTextManager } from "@concord-consortium/dynamic-text";
 
-import { PortalDataContext } from "./portal-data-context";
+import { AppContextProviders } from "./app-context-providers";
 import { Header } from "./activity-header/header";
 import { ActivityNav } from "./activity-header/activity-nav";
 import { SequenceNav } from "./activity-header/sequence-nav";
@@ -33,7 +33,6 @@ import {
 } from "../firebase-db";
 import { Activity, IEmbeddablePlugin, Page, QuestionMap, Sequence } from "../types";
 import { initializeLara, LaraGlobalType } from "../lara-plugin/index";
-import { LaraGlobalContext } from "./lara-global-context";
 import { loadPluginScripts, getActivityLevelPlugins, loadLearnerPluginState } from "../utilities/plugin-utils";
 import { TeacherEditionBanner } from "./teacher-edition-banner";
 import { Error } from "./error/error";
@@ -47,7 +46,6 @@ import { EmbeddablePlugin } from "./activity-page/plugins/embeddable-plugin";
 import { getAttachmentsManagerOptions } from "../utilities/get-attachments-manager-options";
 import { IdleDetector } from "../utilities/idle-detector";
 import { initializeAttachmentsManager } from "@concord-consortium/interactive-api-host";
-import { LaraDataContext } from "./lara-data-context";
 import { ChatSidebar } from "./chat/chat-sidebar";
 import { resolveChatEnabled } from "../utilities/chat-flag";
 import { getChatIdentity, shouldShowChat } from "./chat/chat-eligibility";
@@ -57,11 +55,8 @@ import { IPageChangeNotification, PageChangeNotificationErrorTimeout, PageChange
 import { getBearerToken } from "../utilities/auth-utils";
 import { configure as configureJobExecutor } from "../firebase-job-executor";
 import { handleGetFirebaseJWT } from "../portal-utils";
-import { ReadAloudContext } from "./read-aloud-context";
-import { AccessibilityContext, FontSize, FontType, getFamilyForFontType, getFontSize, getFontSizeInPx, getFontType } from "./accessibility-context";
-import { MediaLibraryContext } from "./media-library-context";
+import { FontSize, FontType, getFamilyForFontType, getFontSize, getFontSizeInPx, getFontType } from "./accessibility-context";
 import { parseMediaLibraryItems } from "../lib/parse-media-library-items";
-import { QuestionInfoContext } from "./question-info-context";
 import { LockedBanner } from "./locked-banner";
 import { isOfferingLocked } from "../utilities/portal-data-utils";
 import { LogMonitor } from "@concord-consortium/log-monitor";
@@ -505,51 +500,46 @@ export class App extends React.PureComponent<IProps, IState> {
           : loadingOverrides ? false
             : !!activity && !idle && !errorType;
     return (
-      <LaraGlobalContext.Provider value={this.LARA}>
-        <PortalDataContext.Provider value={this.state.portalData}>
-          <LaraDataContext.Provider value={{activity: this.state.activity, sequence: this.state.sequence}}>
-            <AccessibilityContext.Provider value={{fontSize: this.state.fontSize, fontSizeInPx: this.state.fontSizeInPx, fontType: this.state.fontType, fontFamilyForType: this.state.fontFamilyForType}}>
-              <MediaLibraryContext.Provider value={this.state.mediaLibrary}>
-                <QuestionInfoContext.Provider value={{questionMap: this.state.questionMap, scrollToQuestionId: this.state.scrollToQuestionId}}>
-                  <DynamicTextContext.Provider value={dynamicTextManager}>
-                    <ReadAloudContext.Provider value={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}>
-                      <div className="app" data-cy="app">
-                        {hasMainContent && <a className="skip-link" href="#main-content" data-cy="skip-link">Skip to main content</a>}
-                        { this.state.showDefunctBanner && <DefunctBanner/> }
-                        { this.state.showWarning && <WarningBanner/> }
-                        { isOfferingLocked(this.state.portalData) && <LockedBanner isSequence={!!this.state.sequence}/> }
-                        { this.state.teacherEditionMode && <TeacherEditionBanner/>}
-                        <OverrideBanner info={this.state.overrideInfo}/>
-                        { this.state.errorType && !this.state.activity
-                          ? <div className={activityClassName(false)}>
-                              <Error type={this.state.errorType} />
-                            </div>
-                          : this.state.showSequenceIntro
-                            ? <SequenceIntroduction
-                                sequence={this.state.sequence}
-                                username={this.state.username}
-                                onSelectActivity={this.handleSelectActivity}
-                              />
-                            : this.state.loadingOverrides
-                              ? <div className="loading">Loading overrides…</div>
-                              : this.renderActivity() }
-                        { this.state.showThemeButtons && <ThemeButtons/>}
-                        <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
-                        <ModalDialog
-                          label={this.state.modalLabel}
-                          onClose={() => {this.setShowModal(false);}}
-                          showModal={this.state.showModal}
-                        />
-                      </div>
-                      {logMonitorEnabled && <LogMonitor logFilePrefix="activity-player-log-events" />}
-                    </ReadAloudContext.Provider>
-                  </DynamicTextContext.Provider>
-                </QuestionInfoContext.Provider>
-              </MediaLibraryContext.Provider>
-            </AccessibilityContext.Provider>
-          </LaraDataContext.Provider>
-        </PortalDataContext.Provider>
-      </LaraGlobalContext.Provider>
+      <AppContextProviders
+        laraGlobal={this.LARA}
+        portalData={this.state.portalData}
+        laraData={{activity: this.state.activity, sequence: this.state.sequence}}
+        accessibility={{fontSize: this.state.fontSize, fontSizeInPx: this.state.fontSizeInPx, fontType: this.state.fontType, fontFamilyForType: this.state.fontFamilyForType}}
+        mediaLibrary={this.state.mediaLibrary}
+        questionInfo={{questionMap: this.state.questionMap, scrollToQuestionId: this.state.scrollToQuestionId}}
+        dynamicText={dynamicTextManager}
+        readAloud={{readAloud: this.state.readAloud, readAloudDisabled: this.state.readAloudDisabled, setReadAloud: this.handleSetReadAloud, hideReadAloud: this.state.hideReadAloud}}
+      >
+        <div className="app" data-cy="app">
+          {hasMainContent && <a className="skip-link" href="#main-content" data-cy="skip-link">Skip to main content</a>}
+          { this.state.showDefunctBanner && <DefunctBanner/> }
+          { this.state.showWarning && <WarningBanner/> }
+          { isOfferingLocked(this.state.portalData) && <LockedBanner isSequence={!!this.state.sequence}/> }
+          { this.state.teacherEditionMode && <TeacherEditionBanner/>}
+          <OverrideBanner info={this.state.overrideInfo}/>
+          { this.state.errorType && !this.state.activity
+            ? <div className={activityClassName(false)}>
+                <Error type={this.state.errorType} />
+              </div>
+            : this.state.showSequenceIntro
+              ? <SequenceIntroduction
+                  sequence={this.state.sequence}
+                  username={this.state.username}
+                  onSelectActivity={this.handleSelectActivity}
+                />
+              : this.state.loadingOverrides
+                ? <div className="loading">Loading overrides…</div>
+                : this.renderActivity() }
+          { this.state.showThemeButtons && <ThemeButtons/>}
+          <div className="version-info" data-cy="version-info">{(window as any).__appVersionInfo || "(No Version Info)"}</div>
+          <ModalDialog
+            label={this.state.modalLabel}
+            onClose={() => {this.setShowModal(false);}}
+            showModal={this.state.showModal}
+          />
+        </div>
+        {logMonitorEnabled && <LogMonitor logFilePrefix="activity-player-log-events" />}
+      </AppContextProviders>
     );
   }
 
