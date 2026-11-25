@@ -164,31 +164,31 @@ interface SizeRules {
 function size(settings: ApSettings, window: ApWindow, rules: SizeRules): ApSize {
   const cols = columnWidths(settings, window.width);
   const column: Column = isTwoColumn(settings.layout) ? settings.column : "primary";
-  const D = Math.max(0, column === "primary" ? cols.primary : cols.secondary ?? 0);
+  const columnWidth = Math.max(0, column === "primary" ? cols.primary : cols.secondary ?? 0);
 
-  let iframeWidth = D;
+  let iframeWidth = columnWidth;
   let iframeHeight: number;
   // `maxHeight` and `unusableHeight` in use-aspect-ratio.ts. The header term in `unusableHeight` is
   // always 0: managed-interactive.tsx never attaches `headerTarget` to an element. It also passes
   // `showDeleteDataButton: false`, so the AP leaves the button out of the DEFAULT cap today.
-  const M = 0.98 * window.height;
+  const maxHeight = 0.98 * window.height;
 
   if (settings.aspectRatioMethod === "MANUAL") {
     // The MANUAL case in use-aspect-ratio.ts: the native ratio of the width, with no cap.
     const valid = settings.nativeWidth > 0 && settings.nativeHeight > 0;
     const nw = valid ? settings.nativeWidth : DEFAULT_NATIVE_WIDTH;
     const nh = valid ? settings.nativeHeight : DEFAULT_NATIVE_HEIGHT;
-    iframeHeight = D * nh / nw;
+    iframeHeight = columnWidth * nh / nw;
   } else if (settings.aspectRatioMethod === "DEFAULT") {
     // The DEFAULT case in use-aspect-ratio.ts, with the interactive sending no aspect ratio: 4:3.
     const buttonRoom = rules.defaultCapLeavesRoomForButton && settings.clearButton ? DELETE_DATA_BUTTON_HEIGHT : 0;
-    const cap = M - BOTTOM_MARGIN - buttonRoom;
-    if (D / DEFAULT_ASPECT_RATIO <= cap) {
-      iframeHeight = D / DEFAULT_ASPECT_RATIO;
+    const cap = maxHeight - BOTTOM_MARGIN - buttonRoom;
+    if (columnWidth / DEFAULT_ASPECT_RATIO <= cap) {
+      iframeHeight = columnWidth / DEFAULT_ASPECT_RATIO;
     } else {
       iframeHeight = cap;
-      // The width is narrowed from M, not from the cap.
-      iframeWidth = Math.min(D, M * DEFAULT_ASPECT_RATIO);
+      // The width is narrowed from maxHeight, not from the cap.
+      iframeWidth = Math.min(columnWidth, maxHeight * DEFAULT_ASPECT_RATIO);
     }
   } else if (rules.maxStretchesEverywhere || maxStretches(settings, column)) {
     // MAX, stretched: `iframe { flex: 1 }` fills the 98vh embeddable, less what is around the
@@ -199,14 +199,14 @@ function size(settings: ApSettings, window: ApWindow, rules: SizeRules): ApSize 
     // managed-interactive.tsx). The button sits in the div under the iframe.
     const hasHeader = settings.named || settings.clearButton;
     const hasBorder = settings.kind !== "mw" || hasHeader;
-    iframeHeight = M - BELOW_IFRAME_HEIGHT - (hasHeader ? HEADER_HEIGHT : 0) - (hasBorder ? BORDER : 0) -
+    iframeHeight = maxHeight - BELOW_IFRAME_HEIGHT - (hasHeader ? HEADER_HEIGHT : 0) - (hasBorder ? BORDER : 0) -
       (settings.clearButton ? window.clearButtonHeight : 0);
   } else {
     // MAX, not stretched: the iframe keeps its 300 px height attribute.
     iframeHeight = DEFAULT_IFRAME_HEIGHT;
   }
 
-  return { columnWidth: D, iframeWidth: Math.max(0, iframeWidth), iframeHeight: Math.max(0, iframeHeight) };
+  return { columnWidth, iframeWidth: Math.max(0, iframeWidth), iframeHeight: Math.max(0, iframeHeight) };
 }
 
 /** The size the AP gives the iframe today. */
