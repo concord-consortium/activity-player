@@ -180,8 +180,8 @@ export const IframeRuntime: React.ForwardRefExoticComponent<IProps> = forwardRef
       // Every "hello" comes from a client waiting for initInteractive, even on an existing connection.
       startedPhoneRef.current = undefined;
 
-      // An anonymous run has no portal data in context. App stores its data when it sets up the
-      // database, so the runtime uses that, and works it out from the URL only if nothing is stored.
+      // An anonymous run has no portal data in context: use what initializeAnonymousDB stored, else
+      // work it out from the URL.
       const preview = queryValueBoolean("preview") || queryValue("mode")?.toLowerCase() === "teacher-edition";
       const runPortalData = portalData ?? getPortalData() ?? anonymousPortalData(preview);
 

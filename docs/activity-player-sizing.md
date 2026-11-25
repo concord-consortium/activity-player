@@ -38,8 +38,9 @@ Activity Player used to lower the default aspect ratio's height cap by 44 px to 
 button, but no longer does; that is a known bug too.
 
 These sizes assume:
-- **A managed interactive**, an embed of a library interactive. Its 1 px border, top and bottom,
-  takes 2 px; a basic iframe interactive has none, so its iframe is 2 px wider.
+- **A managed interactive**, an embed of a library interactive. It always has a 1 px border; a
+  basic iframe interactive has one only when it shows a title bar. The border doesn't narrow the
+  iframe. Under "Use all available space", its top and bottom take 2 px of the stretched height.
 - **The author gives the interactive a name.** The Activity Player shows it in a 36 px title bar
   above the iframe. Without a name there is no title bar.
 - **A Multiple Pages activity.** The Single Page and Notebook layouts size Interactives differently.
