@@ -122,7 +122,6 @@ The preview builds a version 2 `Activity` from the settings, in a pure function 
 
 - It provides the contexts App provides through `AppContextProviders`, with simple values: `LaraGlobalContext`, `PortalDataContext`, `LaraDataContext` (the generated activity), `AccessibilityContext` (normal font size), `MediaLibraryContext`, `QuestionInfoContext` (an empty question map), `DynamicTextContext` and `ReadAloudContext` (read aloud off).
 - It sets up offline Firestore once when the page loads, as App does with `?preview` (`initializeAnonymousDB(true)`). ManagedInteractive reads Firestore for every interactive: it looks up feedback through `getAnswer`, and with "Clear & start over" on it watches the saved answer through `watchAnswer`, which throws during render if Firestore isn't set up. Setting it up once keeps settings changes free of it. Nothing is saved: preview mode keeps Firestore offline.
-- It sets the `window.React` and `window.ReactDOM` globals as [src/index.tsx](../src/index.tsx) does for plugin scripts. The preview loads none, but keeps them so the page runs as it does in App.
 - It doesn't start the IdleDetector, load plugin scripts, initialize the Logger, run `initializeAuthorization`, or read the portal or overrides.
 - A settings change replaces the generated activity in state and re-renders. The interactive keeps its `ref_id`, so React keeps it and its iframe across a change, except a new interactive URL: the page content is keyed by the URL, so a new one starts a new interactive, which doesn't keep the size the old one asked for.
 

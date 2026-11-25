@@ -6,11 +6,6 @@ import { SizingPreviewApp } from "./sizing-preview-app";
 import "../index.sass";
 import "../components/app.scss";
 
-// src/index.tsx sets these globals for plugin scripts. The preview loads none, but keeps them so
-// the page runs as it does in App.
-(window as any).React = React;
-(window as any).ReactDOM = ReactDOM;
-
 const start = async () => {
   // Set up offline Firestore once, as App does with ?preview. ManagedInteractive reads it for
   // every interactive, and nothing is saved.
