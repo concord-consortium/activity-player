@@ -39,39 +39,56 @@ function libraryData(settings: ISizingSettings, useSettingsForSize: boolean): Li
   };
 }
 
-function buildInteractive(settings: ISizingSettings, column: "primary" | "secondary"): EmbeddableType {
-  const name = settings.named ? kInteractiveName : "";
-  const common = { column, is_hidden: false, is_half_width: false, name, ref_id: kInteractiveRefId };
+type CommonFields = Pick<IManagedInteractive, "column" | "is_hidden" | "is_half_width" | "name" | "ref_id">;
 
-  if (settings.kind === "mw") {
-    const mw: IMwInteractive = {
-      ...common,
-      type: "MwInteractive",
-      url: settings.interactive,
-      aspect_ratio_method: settings.aspectRatioMethod,
-      native_width: settings.nativeWidth,
-      native_height: settings.nativeHeight,
-      enable_learner_state: settings.clearButton,
-      show_delete_data_button: settings.clearButton,
-      click_to_play: false
-    };
-    return mw;
-  }
+function buildMwInteractive(settings: ISizingSettings, common: CommonFields): IMwInteractive {
+  return {
+    ...common,
+    type: "MwInteractive",
+    url: settings.interactive,
+    aspect_ratio_method: settings.aspectRatioMethod,
+    native_width: settings.nativeWidth,
+    native_height: settings.nativeHeight,
+    enable_learner_state: settings.clearButton,
+    show_delete_data_button: settings.clearButton,
+    click_to_play: false
+  };
+}
 
-  const inherits = settings.kind === "library";
-  const managed: IManagedInteractive = {
+/**
+ * With `inheritsSize`, the size settings go on the library interactive and the embed inherits them.
+ * Without it, the library interactive keeps LARA's defaults and the embed sets the size itself, as
+ * Customize does.
+ */
+function buildManagedInteractive(
+  settings: ISizingSettings, common: CommonFields, inheritsSize: boolean
+): IManagedInteractive {
+  return {
     ...common,
     type: "ManagedInteractive",
-    library_interactive: { hash: "sizing-preview", data: libraryData(settings, inherits) },
-    inherit_aspect_ratio_method: inherits,
-    inherit_native_width: inherits,
-    inherit_native_height: inherits,
+    library_interactive: { hash: "sizing-preview", data: libraryData(settings, inheritsSize) },
+    inherit_aspect_ratio_method: inheritsSize,
+    inherit_native_width: inheritsSize,
+    inherit_native_height: inheritsSize,
     // The types don't allow null for the custom size, but LARA exports null when inheriting.
-    custom_aspect_ratio_method: inherits ? null : settings.aspectRatioMethod,
-    custom_native_width: (inherits ? null : settings.nativeWidth) as number,
-    custom_native_height: (inherits ? null : settings.nativeHeight) as number
+    custom_aspect_ratio_method: inheritsSize ? null : settings.aspectRatioMethod,
+    custom_native_width: (inheritsSize ? null : settings.nativeWidth) as number,
+    custom_native_height: (inheritsSize ? null : settings.nativeHeight) as number
   };
-  return managed;
+}
+
+function buildInteractive(settings: ISizingSettings, column: "primary" | "secondary"): EmbeddableType {
+  const name = settings.named ? kInteractiveName : "";
+  const common: CommonFields = { column, is_hidden: false, is_half_width: false, name, ref_id: kInteractiveRefId };
+
+  switch (settings.kind) {
+    case "mw":
+      return buildMwInteractive(settings, common);
+    case "library":
+      return buildManagedInteractive(settings, common, true);
+    case "library-custom":
+      return buildManagedInteractive(settings, common, false);
+  }
 }
 
 export function buildActivity(settings: ISizingSettings): Activity {
