@@ -5,6 +5,8 @@ import { IframeRuntime, IframeRuntimeImperativeAPI } from "./iframe-runtime";
 import { kSessionExpiredMessage } from "../../error/error-messages";
 import { sessionExpiredError } from "../../../portal-jwt-manager";
 import { initializeObjectStorageJWT } from "../../../firebase-jwt-cache";
+import { setAnonymousPortalData, setPortalData } from "../../../firebase-db";
+import { anonymousPortalData } from "../../../portal-api";
 import { act, configure, fireEvent, render } from "@testing-library/react";
 import { ICustomMessage } from "@concord-consortium/lara-interactive-api";
 import { DynamicTextTester } from "../../../test-utils/dynamic-text";
@@ -470,6 +472,18 @@ describe("IframeRuntime component", () => {
     });
     expect(global.confirm).toHaveBeenCalledTimes(1);
     expect(mockSetInteractiveState).toHaveBeenCalledTimes(5);
+  });
+
+  it("uses the anonymous run's stored portal data rather than working out new data", () => {
+    setAnonymousPortalData({ ...anonymousPortalData(true), runKey: "stored-run-key" });
+    try {
+      renderWith();
+      jest.runAllTimers();
+      expect(lastPost()).toBe("initInteractive");
+      expect(lastPostData().objectStorageConfig.user.runKey).toBe("stored-run-key");
+    } finally {
+      setPortalData(null);
+    }
   });
 
   it("applies an active URL override to the iframe src (AP-115)", async () => {

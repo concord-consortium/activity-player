@@ -1,0 +1,91 @@
+// #app is a flex row (app.scss). This flex column puts the controls panel above .app instead of
+// beside it, where it would narrow the page.
+.sizing-preview {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+// In App, .app is a flex item of #app's centered row. Its 100% width shrinks so its 40 px padding
+// fits the window, except under a fixed page wider than the window: then it keeps the window's
+// width plus its padding, centered and overflowing on both sides. This row gives .app the same place
+// in the preview's flex column.
+.sizing-preview-page {
+  display: flex;
+  justify-content: center;
+}
+
+.controls-panel {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: flex-start;
+  padding: 8px 16px;
+  background-color: #f4f4f4;
+  border-bottom: 1px solid #ccc;
+  font-size: 14px;
+
+  // A narrow window wraps the controls, and a control narrower than its field shrinks the field.
+  .control {
+    min-width: 0;
+    max-width: 100%;
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    select, input[type="text"] {
+      font-size: 14px;
+      padding: 2px 4px;
+    }
+
+    input[type="text"][aria-invalid="true"] {
+      border-color: #b00020;
+    }
+  }
+
+  .control:first-child input {
+    box-sizing: border-box;
+    width: 28em;
+    max-width: 100%;
+  }
+
+  .control-checkbox label {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    padding-top: 20px;
+  }
+
+  .control-note {
+    max-width: 18em;
+    color: #555;
+    font-size: 12px;
+  }
+
+  .control-error {
+    max-width: 28em;
+    color: #b00020;
+    font-size: 12px;
+  }
+}
+
+// Fixed to a corner so it stays visible when the page scrolls and never affects the layout.
+.size-readout {
+  position: fixed;
+  right: 8px;
+  bottom: 8px;
+  z-index: 1000;
+  padding: 6px 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  font: 13px/1.4 monospace;
+  pointer-events: none;
+
+  .size-readout-label {
+    opacity: 0.7;
+  }
+}

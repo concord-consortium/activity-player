@@ -1,0 +1,127 @@
+{
+  "version": 2,
+  "layout": 0,
+  "fixed_width_layout": "1100px",
+  "plugins": [],
+  "font_size": "normal",
+  "name": "Sizing Parity Sample",
+  "type": "LightweightActivity",
+  "description": null,
+  "editor_mode": 0,
+  "show_submit_button": false,
+  "student_report_enabled": false,
+  "thumbnail_url": null,
+  "time_to_complete": null,
+  "pages": [
+    {
+      "id": 1,
+      "position": 1,
+      "is_hidden": false,
+      "is_completion": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": null,
+      "sections": [
+        {
+          "layout": "full-width",
+          "secondary_column_display_mode": "stacked",
+          "secondary_column_collapsible": false,
+          "is_hidden": false,
+          "embeddables": [
+            {
+              "column": "primary",
+              "is_hidden": false,
+              "is_half_width": false,
+              "name": "Sizing interactive",
+              "ref_id": "sizing-interactive-page-1",
+              "type": "ManagedInteractive",
+              "library_interactive": {
+                "hash": "sizing-preview",
+                "data": {
+                  "base_url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+                  "aspect_ratio_method": "DEFAULT",
+                  "native_width": 576,
+                  "native_height": 435,
+                  "enable_learner_state": false,
+                  "show_delete_data_button": false,
+                  "click_to_play": false,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "no_snapshots": false,
+                  "customizable": false,
+                  "authorable": false
+                }
+              },
+              "inherit_aspect_ratio_method": true,
+              "inherit_native_width": true,
+              "inherit_native_height": true,
+              "custom_aspect_ratio_method": null,
+              "custom_native_width": null,
+              "custom_native_height": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "position": 2,
+      "is_hidden": false,
+      "is_completion": false,
+      "show_sidebar": false,
+      "sidebar": null,
+      "sidebar_title": null,
+      "sections": [
+        {
+          "layout": "responsive-50-50",
+          "secondary_column_display_mode": "stacked",
+          "secondary_column_collapsible": false,
+          "is_hidden": false,
+          "embeddables": [
+            {
+              "column": "primary",
+              "is_hidden": false,
+              "is_half_width": false,
+              "name": "Sizing interactive",
+              "ref_id": "sizing-interactive-page-2",
+              "type": "ManagedInteractive",
+              "library_interactive": {
+                "hash": "sizing-preview",
+                "data": {
+                  "base_url": "https://models-resources.concord.org/sizing-demo-interactive/index.html",
+                  "aspect_ratio_method": "DEFAULT",
+                  "native_width": 576,
+                  "native_height": 435,
+                  "enable_learner_state": false,
+                  "show_delete_data_button": false,
+                  "click_to_play": false,
+                  "full_window": false,
+                  "has_report_url": false,
+                  "no_snapshots": false,
+                  "customizable": false,
+                  "authorable": false
+                }
+              },
+              "inherit_aspect_ratio_method": true,
+              "inherit_native_width": true,
+              "inherit_native_height": true,
+              "custom_aspect_ratio_method": null,
+              "custom_native_width": null,
+              "custom_native_height": null
+            },
+            {
+              "type": "Embeddable::Xhtml",
+              "column": "secondary",
+              "is_hidden": false,
+              "is_half_width": false,
+              "is_callout": false,
+              "name": "",
+              "ref_id": "sizing-other-text-page-2",
+              "content": "<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>\n<p>This is placeholder text for the other column. It doesn't explain anything. It is here to make the column as tall as a real activity's text would be, so the page can be taller than the window and the interactive's pinning can be seen working. Keep scrolling to see how the interactive behaves next to text that keeps going.</p>"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

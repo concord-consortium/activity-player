@@ -105,6 +105,26 @@ describe("Activity Page Content component", () => {
     expect(h1).toHaveTextContent("Test Page Title");
   });
 
+  it("leaves out the page title row when hideTitleRow is set", () => {
+    render(
+      <DynamicTextTester>
+        <ActivityPageContent
+          enableReportButton={false}
+          activityLayout={0}
+          page={page}
+          pageNumber={5}
+          activity={DefaultTestActivity}
+          totalPreviousQuestions={5}
+          setNavigation={stubFunction}
+          pluginsLoaded={true}
+          hideTitleRow={true}
+        />
+      </DynamicTextTester>
+    );
+    expect(screen.queryByRole("heading", { level: 1 })).toBeNull();
+    expect(screen.getByTestId("page-content")).toBeDefined();
+  });
+
   it("falls back to 'Page N' for the h1 when the page has no name (avoids an empty heading)", () => {
     const unnamedPage = { ...page, name: null };
     render(
