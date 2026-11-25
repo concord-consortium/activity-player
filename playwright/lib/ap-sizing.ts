@@ -60,11 +60,6 @@ export interface ApSize {
   iframeHeight: number;
 }
 
-// LARA's default native size (`ASPECT_RATIO_DEFAULT_WIDTH` and `_HEIGHT` in LARA's
-// has_aspect_ratio.rb). The oracle falls back to it for a zero size, which the preview never sends;
-// the AP would divide by zero.
-const DEFAULT_NATIVE_WIDTH = 576;
-const DEFAULT_NATIVE_HEIGHT = 435;
 // `kDefaultAspectRatio` and `kBottomMargin` in use-aspect-ratio.ts, and `kDefaultHeight` in
 // iframe-runtime.tsx.
 const DEFAULT_ASPECT_RATIO = 4 / 3;
@@ -175,10 +170,7 @@ function size(settings: ApSettings, window: ApWindow, rules: SizeRules): ApSize 
 
   if (settings.aspectRatioMethod === "MANUAL") {
     // The MANUAL case in use-aspect-ratio.ts: the native ratio of the width, with no cap.
-    const valid = settings.nativeWidth > 0 && settings.nativeHeight > 0;
-    const nw = valid ? settings.nativeWidth : DEFAULT_NATIVE_WIDTH;
-    const nh = valid ? settings.nativeHeight : DEFAULT_NATIVE_HEIGHT;
-    iframeHeight = columnWidth * nh / nw;
+    iframeHeight = columnWidth * settings.nativeHeight / settings.nativeWidth;
   } else if (settings.aspectRatioMethod === "DEFAULT") {
     // The DEFAULT case in use-aspect-ratio.ts, with the interactive sending no aspect ratio: 4:3.
     const buttonRoom = rules.defaultCapLeavesRoomForButton && settings.clearButton ? DELETE_DATA_BUTTON_HEIGHT : 0;

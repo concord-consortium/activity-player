@@ -31,7 +31,8 @@ export interface ISizingSettings {
 
 export const kDefaultInteractiveUrl = "https://models-resources.concord.org/sizing-demo-interactive/index.html";
 
-// LARA's defaults for a library interactive's size.
+// LARA's defaults for a library interactive's size (`ASPECT_RATIO_DEFAULT_WIDTH` and `_HEIGHT` in
+// LARA's has_aspect_ratio.rb).
 export const kLaraDefaultNativeWidth = 576;
 export const kLaraDefaultNativeHeight = 435;
 
